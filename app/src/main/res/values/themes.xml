@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MyShopping" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/green_900</item>
+    </style>
+    <style name="Theme.MyShopping.Splash" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="postSplashScreenTheme">@style/Theme.MyShopping</item>
+    </style>
+    <style name="Theme.MyShopping.DateTimePicket.Light" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/green_900</item>
+    </style>
+    <style name="Theme.MyShopping.DateTimePicket.Dark" parent="android:Theme.Material.Dialog">
+        <item name="android:colorAccent">@color/green_300</item>
+    </style>
+</resources>

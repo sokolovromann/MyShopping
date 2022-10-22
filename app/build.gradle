@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    namespace 'ru.sokolovromann.myshopping'
+    compileSdk compile_sdk_version
+
+    defaultConfig {
+        applicationId "ru.sokolovromann.myshopping"
+        minSdk min_sdk_version
+        targetSdk target_sdk_version
+        versionCode app_code_version
+        versionName app_name_version
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.core:core:$core_version"
+    implementation "androidx.core:core-splashscreen:$core_splashscreen_version"
+
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_tooling_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_tooling_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_tooling_version"
+
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$system_ui_controller_version"
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    implementation "androidx.activity:activity-compose:$activity_compose_version"
+    implementation "androidx.navigation:navigation-compose:$navigation_compose_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
+
+    implementation "androidx.datastore:datastore-preferences:$datastore_preferences_version"
+
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$android_junit_version"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+}
