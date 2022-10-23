@@ -13,10 +13,10 @@ interface TrashDao {
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 1")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToPurchases(uid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToArchive(uid: String, lastModified: Long)
 
     @Query("DELETE FROM shoppings WHERE deleted = 1")

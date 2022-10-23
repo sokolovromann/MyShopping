@@ -19,9 +19,9 @@ interface PurchasesDao {
     @Insert(onConflict = REPLACE)
     fun insertShopping(shoppingEntity: ShoppingEntity)
 
-    @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToArchive(uid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToTrash(uid: String, lastModified: Long)
 }

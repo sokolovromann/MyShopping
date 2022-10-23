@@ -13,9 +13,9 @@ interface ArchiveDao {
     @Query("SELECT * FROM shoppings WHERE archived = 1 AND deleted = 0")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToPurchases(uid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToTrash(uid: String, lastModified: Long)
 }

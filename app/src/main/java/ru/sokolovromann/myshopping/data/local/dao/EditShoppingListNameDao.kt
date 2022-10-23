@@ -13,6 +13,6 @@ interface EditShoppingListNameDao {
     @Query("SELECT * FROM shoppings WHERE uid = :uid")
     fun getShoppingList(uid: String): Flow<ShoppingListEntity?>
 
-    @Query("UPDATE shoppings SET name = :name, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET name = :name, last_modified = :lastModified WHERE uid = :uid")
     fun updateShoppingName(uid: String, name: String, lastModified: Long)
 }

@@ -13,9 +13,9 @@ interface MoveProductDao {
     @Query("SELECT * FROM shoppings")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
-    @Query("UPDATE products SET shopping_uid = :shoppingUid, last_modified = last_modified WHERE product_uid = :productUid")
+    @Query("UPDATE products SET shopping_uid = :shoppingUid, last_modified = :lastModified WHERE product_uid = :productUid")
     fun moveProduct(productUid: String, shoppingUid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET last_modified = :lastModified WHERE uid = :uid")
     fun updateShoppingLastModified(uid: String, lastModified: Long)
 }

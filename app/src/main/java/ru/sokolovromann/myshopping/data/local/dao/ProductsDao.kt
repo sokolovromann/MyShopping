@@ -13,13 +13,13 @@ interface ProductsDao {
     @Query("SELECT * FROM shoppings WHERE uid = :uid")
     fun getShoppingList(uid: String): Flow<ShoppingListEntity?>
 
-    @Query("UPDATE shoppings SET last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET last_modified = :lastModified WHERE uid = :uid")
     fun updateShoppingLastModified(uid: String, lastModified: Long)
 
-    @Query("UPDATE products SET completed = 1, last_modified = last_modified WHERE product_uid = :uid")
+    @Query("UPDATE products SET completed = 1, last_modified = :lastModified WHERE product_uid = :uid")
     fun completeProduct(uid: String, lastModified: Long)
 
-    @Query("UPDATE products SET completed = 0, last_modified = last_modified WHERE product_uid = :uid")
+    @Query("UPDATE products SET completed = 0, last_modified = :lastModified WHERE product_uid = :uid")
     fun activeProduct(uid: String, lastModified: Long)
 
     @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid")

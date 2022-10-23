@@ -22,6 +22,6 @@ interface CopyProductDao {
     @Insert(onConflict = REPLACE)
     fun insertProduct(productEntity: ProductEntity)
 
-    @Query("UPDATE shoppings SET last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET last_modified = :lastModified WHERE uid = :uid")
     fun updateShoppingLastModified(uid: String, lastModified: Long)
 }

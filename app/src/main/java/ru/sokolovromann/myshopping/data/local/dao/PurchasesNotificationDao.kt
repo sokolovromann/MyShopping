@@ -14,8 +14,8 @@ interface PurchasesNotificationDao {
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
     @Query("SELECT * FROM shoppings WHERE uid = :uid")
-    fun getShoppingList(uid: String)
+    fun getShoppingList(uid: String): Flow<ShoppingListEntity?>
 
-    @Query("UPDATE shoppings SET reminder = 0, last_modified = last_modified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET reminder = 0, last_modified = :lastModified WHERE uid = :uid")
     fun deleteReminder(uid: String, lastModified: Long)
 }
