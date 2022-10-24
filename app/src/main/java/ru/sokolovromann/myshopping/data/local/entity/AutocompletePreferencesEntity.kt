@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.data.local.entity
 
 data class AutocompletePreferencesEntity(
     val currency: String = "",
-    val currencyDisplayLeft: Boolean = false,
+    val currencyDisplayToLeft: Boolean = false,
     val fontSize: String = "",
     val firstLetterUppercase: Boolean = false,
     val sortBy: String = "",
