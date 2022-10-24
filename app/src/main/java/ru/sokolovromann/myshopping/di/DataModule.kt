@@ -12,6 +12,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.*
+import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
+import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatabase
 import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
@@ -35,8 +37,20 @@ object DataModule {
 
     @Singleton
     @Provides
+    fun providesAppVersion14LocalPreferences(@ApplicationContext context: Context): AppVersion14LocalPreferences {
+        return AppVersion14LocalPreferences(context)
+    }
+
+    @Singleton
+    @Provides
     fun providesLocalDatabase(@ApplicationContext context: Context): LocalDatabase {
         return LocalDatabase.build(context)
+    }
+
+    @Singleton
+    @Provides
+    fun providesAppVersion14LocalDatabase(@ApplicationContext context: Context): AppVersion14LocalDatabase {
+        return AppVersion14LocalDatabase(context)
     }
 
     @Singleton
