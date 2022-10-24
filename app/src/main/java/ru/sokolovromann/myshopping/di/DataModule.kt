@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.di
 
 import android.content.Context
+import android.content.res.Resources
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -13,6 +14,9 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatabase
+import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
+import ru.sokolovromann.myshopping.data.local.resources.MainResources
+import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
 import javax.inject.Singleton
 
 @Module
@@ -39,6 +43,11 @@ object DataModule {
     @Provides
     fun providesAppDispatchers(): AppDispatchers {
         return AppDispatchers()
+    }
+
+    @Provides
+    fun providesResources(@ApplicationContext context: Context): Resources {
+        return context.resources
     }
 
     @Provides
@@ -109,5 +118,20 @@ object DataModule {
     @Provides
     fun providesTrashPreferencesDao(localDataStore: LocalDataStore): TrashPreferencesDao {
         return TrashPreferencesDao(localDataStore)
+    }
+
+    @Provides
+    fun providesAddEditProductsResources(resources: Resources): AddEditProductsResources {
+        return AddEditProductsResources(resources)
+    }
+
+    @Provides
+    fun providesSettingsResources(resources: Resources): SettingsResources {
+        return SettingsResources(resources)
+    }
+
+    @Provides
+    fun providesMainResources(resources: Resources): MainResources {
+        return MainResources(resources)
     }
 }

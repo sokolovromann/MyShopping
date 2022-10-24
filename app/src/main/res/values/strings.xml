@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="all_appName">My Shopping List</string>
+
+    <string-array name="data_defaultAutocompleteNames"/>
+    <string name="data_defaultCurrency">$</string>
+    <bool name="data_defaultCurrencyDisplayToLeft">true</bool>
+    <string name="data_developerEmail">sokolovromann@gmail.com</string>
+    <string name="data_developerName">Roman Sokolov</string>
+    <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
 </resources>
