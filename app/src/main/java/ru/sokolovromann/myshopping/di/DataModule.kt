@@ -19,6 +19,7 @@ import ru.sokolovromann.myshopping.data.local.datasource.LocalDatabase
 import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
+import ru.sokolovromann.myshopping.data.repository.RepositoryMapping
 import javax.inject.Singleton
 
 @Module
@@ -62,6 +63,11 @@ object DataModule {
     @Provides
     fun providesResources(@ApplicationContext context: Context): Resources {
         return context.resources
+    }
+
+    @Provides
+    fun providesRepositoryMapping(): RepositoryMapping {
+        return RepositoryMapping()
     }
 
     @Provides

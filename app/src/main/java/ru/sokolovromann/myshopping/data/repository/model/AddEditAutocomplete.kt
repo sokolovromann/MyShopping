@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
-data class AddEditAutocompletes(
+data class AddEditAutocomplete(
     val autocomplete: Autocomplete = Autocomplete(),
     val preferences: AutocompletePreferences = AutocompletePreferences()
 ) {

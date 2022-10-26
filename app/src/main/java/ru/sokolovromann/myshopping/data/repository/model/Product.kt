@@ -3,7 +3,8 @@ package ru.sokolovromann.myshopping.data.repository.model
 import java.util.UUID
 
 data class Product(
-    val uid: String = UUID.randomUUID().toString(),
+    val productUid: String = UUID.randomUUID().toString(),
+    val shoppingUid: String = "",
     val created: Long = System.currentTimeMillis(),
     val lastModified: Long = created,
     val name: String = "",
