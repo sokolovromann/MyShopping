@@ -51,13 +51,13 @@ class LocalDataStore @Inject constructor(
                 currency = it[currencyKey] ?: "",
                 currencyDisplayToLeft = it[currencyDisplayToLeftKey] ?: false,
                 taxRate = it[taxRateKey] ?: 0f,
-                taxRateAsPercent = it[taxRateAsPercentKey] ?: false,
+                taxRateAsPercent = it[taxRateAsPercentKey] ?: true,
                 fontSize = it[fontSizeKey] ?: "",
-                firstLetterUppercase = it[firstLetterUppercaseKey] ?: false,
+                firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
                 multiColumns = it[shoppingsMultiColumnsKey] ?: false,
                 sortBy = it[shoppingsSortByKey] ?: "",
                 sortAscending = it[shoppingsSortAscendingKey] ?: false,
-                displayMoney = it[displayMoneyKey] ?: false,
+                displayMoney = it[displayMoneyKey] ?: true,
                 displayCompleted = it[shoppingsDisplayCompletedKey] ?: "",
                 displayTotal = it[shoppingsDisplayTotalKey] ?: "",
                 screenSize = it[screenSizeKey] ?: ""
@@ -71,19 +71,19 @@ class LocalDataStore @Inject constructor(
                 currency = it[currencyKey] ?: "",
                 currencyDisplayToLeft = it[currencyDisplayToLeftKey] ?: false,
                 taxRate = it[taxRateKey] ?: 0f,
-                taxRateAsPercent = it[taxRateAsPercentKey] ?: false,
+                taxRateAsPercent = it[taxRateAsPercentKey] ?: true,
                 fontSize = it[fontSizeKey] ?: "",
-                firstLetterUppercase = it[firstLetterUppercaseKey] ?: false,
+                firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
                 multiColumns = it[productsMultiColumnsKey] ?: false,
                 sortBy = it[productsSortByKey] ?: "",
                 sortAscending = it[productsSortAscendingKey] ?: false,
-                displayMoney = it[displayMoneyKey] ?: false,
+                displayMoney = it[displayMoneyKey] ?: true,
                 displayCompleted = it[productsDisplayCompletedKey] ?: "",
                 displayTotal = it[productsDisplayTotalKey] ?: "",
                 displayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
                 lockQuantity = it[productsLockQuantityKey] ?: false,
                 editCompleted = it[productsEditCompletedKey] ?: false,
-                addLastProduct = it[productsAddLastProductKey] ?: false,
+                addLastProduct = it[productsAddLastProductKey] ?: true,
                 screenSize = it[screenSizeKey] ?: ""
             )
         }
@@ -95,7 +95,7 @@ class LocalDataStore @Inject constructor(
                 currency = it[currencyKey] ?: "",
                 currencyDisplayToLeft = it[currencyDisplayToLeftKey] ?: false,
                 fontSize = it[fontSizeKey] ?: "",
-                firstLetterUppercase = it[firstLetterUppercaseKey] ?: false,
+                firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
                 sortBy = it[autocompletesSortByKey] ?: "",
                 sortAscending = it[autocompletesSortAscendingKey] ?: false,
                 screenSize = it[screenSizeKey] ?: ""
@@ -110,15 +110,15 @@ class LocalDataStore @Inject constructor(
                 currency = it[currencyKey] ?: "",
                 currencyDisplayToLeft = it[currencyDisplayToLeftKey] ?: false,
                 taxRate = it[taxRateKey] ?: 0f,
-                taxRateAsPercent = it[taxRateAsPercentKey] ?: false,
+                taxRateAsPercent = it[taxRateAsPercentKey] ?: true,
                 fontSize = it[fontSizeKey] ?: "",
-                firstLetterUppercase = it[firstLetterUppercaseKey] ?: false,
-                displayMoney = it[displayMoneyKey] ?: false,
+                firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
+                displayMoney = it[displayMoneyKey] ?: true,
                 shoppingsMultiColumns = it[shoppingsMultiColumnsKey] ?: false,
                 productsMultiColumns = it[productsMultiColumnsKey] ?: false,
                 productsDisplayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
                 productsEditCompleted = it[productsEditCompletedKey] ?: false,
-                productsAddLastProduct = it[productsAddLastProductKey] ?: false
+                productsAddLastProduct = it[productsAddLastProductKey] ?: true
             )
         }
     }
@@ -151,7 +151,7 @@ class LocalDataStore @Inject constructor(
         return@withContext dataStore.data.map {
             EditTaxRateEntity(
                 taxRate = it[taxRateKey] ?: 0f,
-                taxRateAsPercent = it[taxRateAsPercentKey] ?: false
+                taxRateAsPercent = it[taxRateAsPercentKey] ?: true
             )
         }
     }
