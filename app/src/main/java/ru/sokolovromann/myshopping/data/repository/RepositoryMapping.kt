@@ -324,6 +324,56 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toEditCurrencySymbol(
+        entity: EditCurrencySymbolEntity,
+        preferencesEntity: SettingsPreferencesEntity
+    ): EditCurrencySymbol {
+        return EditCurrencySymbol(
+            currency = entity.currency,
+            preferences = toSettingsPreferences(preferencesEntity)
+        )
+    }
+
+    fun toEditTaxRate(
+        entity: EditTaxRateEntity,
+        preferencesEntity: SettingsPreferencesEntity
+    ): EditTaxRate {
+        return EditTaxRate(
+            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
+            preferences = toSettingsPreferences(preferencesEntity)
+        )
+    }
+
+    fun toEditReminder(
+        entity: ShoppingListEntity,
+        preferencesEntity: ProductPreferencesEntity
+    ): EditReminder {
+        return EditReminder(
+            shoppingList = toShoppingList(entity, preferencesEntity),
+            preferences = toProductPreferences(preferencesEntity)
+        )
+    }
+
+    fun toEditShoppingListName(
+        entity: ShoppingListEntity,
+        preferencesEntity: ProductPreferencesEntity
+    ): EditShoppingListName {
+        return EditShoppingListName(
+            shoppingList = toShoppingList(entity, preferencesEntity),
+            preferences = toProductPreferences(preferencesEntity)
+        )
+    }
+
+    fun toCalculateChange(
+        entity: ShoppingListEntity,
+        preferencesEntity: ProductPreferencesEntity
+    ): CalculateChange {
+        return CalculateChange(
+            shoppingList = toShoppingList(entity, preferencesEntity),
+            preferences = toProductPreferences(preferencesEntity)
+        )
+    }
+
     fun toDeveloperName(entity: SettingsResourcesEntity): String {
         return entity.developerName
     }
@@ -414,6 +464,10 @@ class RepositoryMapping @Inject constructor() {
 
     fun toSortByName(sort: Sort): String {
         return sort.sortBy.name
+    }
+
+    fun toSortByName(sortBy: SortBy): String {
+        return sortBy.name
     }
 
     fun toSortAscending(sort: Sort): Boolean {
