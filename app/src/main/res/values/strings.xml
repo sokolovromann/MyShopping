@@ -8,4 +8,7 @@
     <string name="data_developerEmail">sokolovromann@gmail.com</string>
     <string name="data_developerName">Roman Sokolov</string>
     <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
+
+    <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
+    <string name="notificationChannel_purchasesName">Purchases</string>
 </resources>

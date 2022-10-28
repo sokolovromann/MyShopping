@@ -20,11 +20,13 @@ import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
 import ru.sokolovromann.myshopping.data.repository.*
+import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
+import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
+object AppModule {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
         name = LocalDataStore.DATASTORE_NAME
@@ -362,12 +364,12 @@ object DataModule {
 
     @Provides
     fun providesPurchasesNotificationRepositoryImpl(
-        notificationDao: PurchasesNotificationDao,
+        localDatabase: LocalDatabase,
         preferencesDao: PurchasesNotificationPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): PurchasesNotificationRepositoryImpl {
-        return PurchasesNotificationRepositoryImpl(notificationDao, preferencesDao, mapping, dispatchers)
+        return PurchasesNotificationRepositoryImpl(localDatabase.purchasesNotificationDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -417,5 +419,19 @@ object DataModule {
         dispatchers: AppDispatchers
     ): CalculateChangeRepositoryImpl {
         return CalculateChangeRepositoryImpl(calculateChangeDao, preferencesDao, mapping, dispatchers)
+    }
+
+    @Provides
+    fun providesPurchasesAlarmManager(
+        @ApplicationContext context: Context
+    ): PurchasesAlarmManager {
+        return PurchasesAlarmManager(context)
+    }
+
+    @Provides
+    fun providesPurchasesNotificationManager(
+        @ApplicationContext context: Context
+    ): PurchasesNotificationManager {
+        return PurchasesNotificationManager(context)
     }
 }

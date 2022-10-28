@@ -5,6 +5,10 @@ data class ShoppingListNotification(
     val preferences: ShoppingListPreferences = ShoppingListPreferences()
 ) {
 
+    fun id(): Int {
+        return shoppingList.created.toInt()
+    }
+
     fun title(): String {
         return shoppingList.name.formatFirst(preferences.firstLetterUppercase)
     }
