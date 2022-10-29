@@ -9,6 +9,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toShoppingEntity(shoppingList: ShoppingList): ShoppingEntity {
         return ShoppingEntity(
+            id = shoppingList.id,
             uid = shoppingList.uid,
             created = shoppingList.created,
             lastModified = shoppingList.lastModified,
@@ -22,6 +23,7 @@ class RepositoryMapping @Inject constructor() {
     fun toShoppingList(shoppingListEntity: ShoppingListEntity, preferencesEntity: ShoppingPreferencesEntity): ShoppingList {
         val entity = shoppingListEntity.shoppingEntity
         return ShoppingList(
+            id = entity.id,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
@@ -37,6 +39,7 @@ class RepositoryMapping @Inject constructor() {
     fun toShoppingList(shoppingListEntity: ShoppingListEntity, preferencesEntity: ProductPreferencesEntity): ShoppingList {
         val entity = shoppingListEntity.shoppingEntity
         return ShoppingList(
+            id = entity.id,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
@@ -95,6 +98,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toProductEntity(product: Product): ProductEntity {
         return ProductEntity(
+            id = product.id,
             productUid = product.productUid,
             shoppingUid = product.shoppingUid,
             created = product.created,
@@ -113,6 +117,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toProduct(entity: ProductEntity, preferencesEntity: ShoppingPreferencesEntity): Product {
         return Product(
+            id = entity.id,
             productUid = entity.productUid,
             shoppingUid = entity.shoppingUid,
             created = entity.created,
@@ -131,6 +136,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toProduct(entity: ProductEntity, preferencesEntity: ProductPreferencesEntity): Product {
         return Product(
+            id = entity.id,
             productUid = entity.productUid,
             shoppingUid = entity.shoppingUid,
             created = entity.created,
@@ -201,6 +207,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAutocompleteEntity(autocomplete: Autocomplete): AutocompleteEntity {
         return AutocompleteEntity(
+            id = autocomplete.id,
             uid = autocomplete.uid,
             created = autocomplete.created,
             lastModified = autocomplete.lastModified,
@@ -217,6 +224,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAutocomplete(entity: AutocompleteEntity, preferencesEntity: ProductPreferencesEntity): Autocomplete {
         return Autocomplete(
+            id = entity.id,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
@@ -233,6 +241,7 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAutocomplete(entity: AutocompleteEntity, preferencesEntity: AutocompletePreferencesEntity): Autocomplete {
         return Autocomplete(
+            id = entity.id,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,

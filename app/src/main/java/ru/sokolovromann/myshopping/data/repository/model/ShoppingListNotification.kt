@@ -6,7 +6,7 @@ data class ShoppingListNotification(
 ) {
 
     fun id(): Int {
-        return shoppingList.created.toInt()
+        return shoppingList.id
     }
 
     fun title(): String {
