@@ -164,12 +164,12 @@ object AppModule {
 
     @Provides
     fun providesPurchasesRepositoryImpl(
-        purchasesDao: PurchasesDao,
+        localDatabase: LocalDatabase,
         preferencesDao: PurchasesPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): PurchasesRepositoryImpl {
-        return PurchasesRepositoryImpl(purchasesDao, preferencesDao, mapping, dispatchers)
+        return PurchasesRepositoryImpl(localDatabase.purchasesDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -179,12 +179,12 @@ object AppModule {
 
     @Provides
     fun providesProductsRepositoryImpl(
-        productsDao: ProductsDao,
+        localDatabase: LocalDatabase,
         preferencesDao: ProductsPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): ProductsRepositoryImpl {
-        return ProductsRepositoryImpl(productsDao, preferencesDao, mapping, dispatchers)
+        return ProductsRepositoryImpl(localDatabase.productsDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -194,13 +194,13 @@ object AppModule {
 
     @Provides
     fun providesAddEditProductRepositoryImpl(
-        productDao: AddEditProductDao,
+        localDatabase: LocalDatabase,
         preferencesDao: AddEditProductPreferencesDao,
         resources: AddEditProductsResources,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): AddEditProductRepositoryImpl {
-        return AddEditProductRepositoryImpl(productDao, resources, preferencesDao, mapping, dispatchers)
+        return AddEditProductRepositoryImpl(localDatabase.addEditProductDao(), resources, preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -210,12 +210,12 @@ object AppModule {
 
     @Provides
     fun providesAutocompletesRepositoryImpl(
-        autocompletesDao: AutocompletesDao,
+        localDatabase: LocalDatabase,
         preferencesDao: AutocompletesPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): AutocompletesRepositoryImpl {
-        return AutocompletesRepositoryImpl(autocompletesDao, preferencesDao, mapping, dispatchers)
+        return AutocompletesRepositoryImpl(localDatabase.autocompletesDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -227,12 +227,12 @@ object AppModule {
 
     @Provides
     fun providesAddEditAutocompleteRepositoryImpl(
-        autocompleteDao: AddEditAutocompleteDao,
+        localDatabase: LocalDatabase,
         preferencesDao: AddEditAutocompletePreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): AddEditAutocompleteRepositoryImpl {
-        return AddEditAutocompleteRepositoryImpl(autocompleteDao, preferencesDao, mapping, dispatchers)
+        return AddEditAutocompleteRepositoryImpl(localDatabase.addEditAutocompleteDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -287,12 +287,12 @@ object AppModule {
 
     @Provides
     fun providesArchiveRepositoryImpl(
-        archiveDao: ArchiveDao,
+        localDatabase: LocalDatabase,
         preferencesDao: ArchivePreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): ArchiveRepositoryImpl {
-        return ArchiveRepositoryImpl(archiveDao, preferencesDao, mapping, dispatchers)
+        return ArchiveRepositoryImpl(localDatabase.archiveDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -302,12 +302,12 @@ object AppModule {
 
     @Provides
     fun providesTrashRepositoryImpl(
-        trashDao: TrashDao,
+        localDatabase: LocalDatabase,
         preferencesDao: TrashPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): TrashRepositoryImpl {
-        return TrashRepositoryImpl(trashDao, preferencesDao, mapping, dispatchers)
+        return TrashRepositoryImpl(localDatabase.trashDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -317,12 +317,12 @@ object AppModule {
 
     @Provides
     fun providesCopyProductRepositoryImpl(
-        productDao: CopyProductDao,
+        localDatabase: LocalDatabase,
         preferencesDao: CopyProductPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): CopyProductRepositoryImpl {
-        return CopyProductRepositoryImpl(productDao, preferencesDao, mapping, dispatchers)
+        return CopyProductRepositoryImpl(localDatabase.copyProductDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -332,12 +332,12 @@ object AppModule {
 
     @Provides
     fun providesMoveProductRepositoryImpl(
-        productDao: MoveProductDao,
+        localDatabase: LocalDatabase,
         preferencesDao: MoveProductPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): MoveProductRepositoryImpl {
-        return MoveProductRepositoryImpl(productDao, preferencesDao, mapping, dispatchers)
+        return MoveProductRepositoryImpl(localDatabase.moveProductDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -379,12 +379,12 @@ object AppModule {
 
     @Provides
     fun providesEditReminderRepositoryImpl(
-        reminderDao: EditReminderDao,
+        localDatabase: LocalDatabase,
         preferencesDao: ProductsPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): EditReminderRepositoryImpl {
-        return EditReminderRepositoryImpl(reminderDao, preferencesDao, mapping, dispatchers)
+        return EditReminderRepositoryImpl(localDatabase.editReminderDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -396,12 +396,12 @@ object AppModule {
 
     @Provides
     fun providesEditShoppingListNameRepositoryImpl(
-        shoppingListDao: EditShoppingListNameDao,
+        localDatabase: LocalDatabase,
         preferencesDao: ProductsPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): EditShoppingListNameRepositoryImpl {
-        return EditShoppingListNameRepositoryImpl(shoppingListDao, preferencesDao, mapping, dispatchers)
+        return EditShoppingListNameRepositoryImpl(localDatabase.editShoppingListDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
@@ -413,12 +413,12 @@ object AppModule {
 
     @Provides
     fun providesCalculateChangeRepositoryImpl(
-        calculateChangeDao: CalculateChangeDao,
+        localDatabase: LocalDatabase,
         preferencesDao: ProductsPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): CalculateChangeRepositoryImpl {
-        return CalculateChangeRepositoryImpl(calculateChangeDao, preferencesDao, mapping, dispatchers)
+        return CalculateChangeRepositoryImpl(localDatabase.calculateChangeDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides
