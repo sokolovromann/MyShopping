@@ -5,51 +5,35 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-
-sealed class AppColors(val light: Color, val dark: Color) {
-    object Primary : AppColors(Green900, Green300)
-    object PrimaryVariant : AppColors(Green900, Green300)
-    object Secondary : AppColors(Green900, Green300)
-    object SecondaryVariant : AppColors(Green900, Green300)
-    object Surface : AppColors(Color.White, Gray900)
-    object Background : AppColors(Gray200, Color.Black)
-    object Error : AppColors(Color.Red, Color.Red)
-    object OnPrimary : AppColors(Color.White, Color.Black)
-    object OnSecondary : AppColors(Color.White, Color.Black)
-    object OnSurface : AppColors(Color.Black, Color.White)
-    object OnBackground : AppColors(Color.Black, Color.White)
-    object OnError : AppColors(Color.Black, Color.Black)
-}
 
 private val LightColorPalette = lightColors(
-    primary = AppColors.Primary.light,
-    primaryVariant = AppColors.PrimaryVariant.light,
-    secondary = AppColors.Secondary.light,
-    secondaryVariant = AppColors.SecondaryVariant.light,
-    surface = AppColors.Surface.light,
-    background = AppColors.Background.light,
-    error = AppColors.Error.light,
-    onPrimary = AppColors.OnPrimary.light,
-    onSecondary = AppColors.OnSecondary.light,
-    onSurface = AppColors.OnSurface.light,
-    onBackground = AppColors.OnBackground.light,
-    onError = AppColors.OnError.light
+    primary = AppColor.Primary.light,
+    primaryVariant = AppColor.PrimaryVariant.light,
+    secondary = AppColor.Secondary.light,
+    secondaryVariant = AppColor.SecondaryVariant.light,
+    surface = AppColor.Surface.light,
+    background = AppColor.Background.light,
+    error = AppColor.Error.light,
+    onPrimary = AppColor.OnPrimary.light,
+    onSecondary = AppColor.OnSecondary.light,
+    onSurface = AppColor.OnSurface.light,
+    onBackground = AppColor.OnBackground.light,
+    onError = AppColor.OnError.light
 )
 
 private val DarkColorPalette = darkColors(
-    primary = AppColors.Primary.dark,
-    primaryVariant = AppColors.PrimaryVariant.dark,
-    secondary = AppColors.Secondary.dark,
-    secondaryVariant = AppColors.SecondaryVariant.dark,
-    surface = AppColors.Surface.dark,
-    background = AppColors.Background.dark,
-    error = AppColors.Error.dark,
-    onPrimary = AppColors.OnPrimary.dark,
-    onSecondary = AppColors.OnSecondary.dark,
-    onSurface = AppColors.OnSurface.dark,
-    onBackground = AppColors.OnBackground.dark,
-    onError = AppColors.OnError.dark
+    primary = AppColor.Primary.dark,
+    primaryVariant = AppColor.PrimaryVariant.dark,
+    secondary = AppColor.Secondary.dark,
+    secondaryVariant = AppColor.SecondaryVariant.dark,
+    surface = AppColor.Surface.dark,
+    background = AppColor.Background.dark,
+    error = AppColor.Error.dark,
+    onPrimary = AppColor.OnPrimary.dark,
+    onSecondary = AppColor.OnSecondary.dark,
+    onSurface = AppColor.OnSurface.dark,
+    onBackground = AppColor.OnBackground.dark,
+    onError = AppColor.OnError.dark
 )
 
 @Composable
