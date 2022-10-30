@@ -17,7 +17,7 @@ data class ColorData(
     ) : this(light = appColor, lightAlpha = alpha, dark = appColor, darkAlpha = alpha)
 
     @Composable
-    fun color(): Color {
+    fun asCompose(): Color {
         return if (isSystemInDarkTheme()) {
             if (darkAlpha == null) {
                 dark.dark
