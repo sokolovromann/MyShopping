@@ -1,12 +1,13 @@
 package ru.sokolovromann.myshopping.ui.compose.state
 
-import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
-
 data class ShoppingListsTotalMenu(
     val title: TextData = TextData.Title,
     val allBody: TextData = TextData.Body,
+    val allSelected: RadioButtonData = RadioButtonData.OnSurface,
     val completedBody: TextData = TextData.Body,
+    val completedSelected: RadioButtonData = RadioButtonData.OnSurface,
     val activeBody: TextData = TextData.Body,
+    val activeSelected: RadioButtonData = RadioButtonData.OnSurface,
     val hideBody: TextData = TextData.Body,
-    val selected: DisplayTotal = DisplayTotal.DefaultValue
+    val hideSelected: RadioButtonData = RadioButtonData.OnSurface
 )

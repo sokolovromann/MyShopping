@@ -1,10 +1,10 @@
 package ru.sokolovromann.myshopping.ui.compose.state
 
-import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
-
 data class ProductsDisplayAutocompleteMenu(
     val allBody: TextData = TextData.Body,
+    val allSelected: RadioButtonData = RadioButtonData.OnSurface,
     val nameBody: TextData = TextData.Body,
+    val nameSelected: RadioButtonData = RadioButtonData.OnSurface,
     val hideBody: TextData = TextData.Body,
-    val selected: DisplayAutocomplete = DisplayAutocomplete.DefaultValue
+    val hideSelected: RadioButtonData = RadioButtonData.OnSurface
 )

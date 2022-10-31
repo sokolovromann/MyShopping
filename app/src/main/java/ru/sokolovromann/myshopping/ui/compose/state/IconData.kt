@@ -6,7 +6,7 @@ import ru.sokolovromann.myshopping.ui.theme.AppColor
 data class IconData(
     val icon: UiIcon = UiIcon.Nothing,
     val contentDescription: UiText = UiText.Nothing,
-    val size: Dp? = null,
+    val size: Dp = Dp.Unspecified,
     val tint: ColorData = OnSurface.tint
 ) {
 
@@ -26,6 +26,10 @@ data class IconData(
                 dark = AppColor.OnSurface,
                 darkAlpha = 0.7f
             )
+        )
+
+        val OnFloatingActionButton: IconData = IconData(
+            tint = ColorData(appColor = AppColor.OnSecondary)
         )
     }
 }

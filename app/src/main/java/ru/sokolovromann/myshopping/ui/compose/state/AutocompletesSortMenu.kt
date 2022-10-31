@@ -1,10 +1,9 @@
 package ru.sokolovromann.myshopping.ui.compose.state
 
-import ru.sokolovromann.myshopping.data.repository.model.Sort
-
 data class AutocompletesSortMenu(
     val title: TextData = TextData.Title,
     val byCreatedBody: TextData = TextData.Body,
+    val byCreatedSelected: RadioButtonData = RadioButtonData.OnSurface,
     val byNameBody: TextData = TextData.Body,
-    val selected: Sort = Sort()
+    val byNameSelected: RadioButtonData = RadioButtonData.OnSurface
 )
