@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 sealed class AppColor(val light: Color, val dark: Color) {
@@ -15,6 +17,15 @@ sealed class AppColor(val light: Color, val dark: Color) {
     object OnSurface : AppColor(Color.Black, Color.White)
     object OnBackground : AppColor(Color.Black, Color.White)
     object OnError : AppColor(Color.Black, Color.Black)
+
+    @Composable
+    fun asCompose(): Color {
+        return if (isSystemInDarkTheme()) {
+            this.dark
+        } else {
+            this.light
+        }
+    }
 }
 
 private val Green300 = Color(0XFF81C784)
