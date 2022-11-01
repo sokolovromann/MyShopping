@@ -34,6 +34,14 @@ data class TextData(
             overflow = TextOverflow.Ellipsis,
             maxLines = 2
         )
+
+        val AppBar: TextData = TextData(
+            style = AppTypography.H5.textStyle,
+            fontWeight = FontWeight.Normal,
+            color = ColorData(light = AppColor.OnPrimary, dark = AppColor.OnSurface),
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2
+        )
     }
 
     fun isTextShowing(): Boolean {
