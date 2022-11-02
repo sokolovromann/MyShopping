@@ -19,12 +19,19 @@ data class IconData(
             tint = ColorData(appColor = AppColor.OnBackground, alpha = 0.7f)
         )
 
-        val OnAppBar: IconData = IconData(
+        val OnTopAppBar: IconData = IconData(
             tint = ColorData(
                 light = AppColor.OnPrimary,
                 lightAlpha = 0.7f,
                 dark = AppColor.OnSurface,
                 darkAlpha = 0.7f
+            )
+        )
+
+        val OnBottomAppBar: IconData = IconData(
+            tint = ColorData(
+                appColor = AppColor.OnBackground,
+                alpha = 0.7f
             )
         )
 

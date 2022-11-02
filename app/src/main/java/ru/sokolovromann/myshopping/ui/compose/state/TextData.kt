@@ -35,10 +35,17 @@ data class TextData(
             maxLines = 2
         )
 
-        val AppBar: TextData = TextData(
+        val TopAppBar: TextData = TextData(
             style = AppTypography.H5.textStyle,
             fontWeight = FontWeight.Normal,
             color = ColorData(light = AppColor.OnPrimary, dark = AppColor.OnSurface),
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2
+        )
+
+        val BottomAppBar: TextData = TextData(
+            style = AppTypography.Body1.textStyle,
+            color = ColorData(appColor = AppColor.OnBackground, alpha = 0.7f),
             overflow = TextOverflow.Ellipsis,
             maxLines = 2
         )

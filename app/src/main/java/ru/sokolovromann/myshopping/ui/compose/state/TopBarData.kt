@@ -4,7 +4,7 @@ import ru.sokolovromann.myshopping.ui.theme.AppColor
 
 data class TopBarData(
     val title: TextData = TextData(),
-    val navigationIcon: IconData = IconData.OnAppBar,
+    val navigationIcon: IconData = IconData.OnTopAppBar,
     val backgroundColor: ColorData = ColorData(
         light = AppColor.Primary,
         dark = AppColor.Surface
@@ -18,7 +18,7 @@ data class TopBarData(
     companion object {
         fun Default(title: UiText): TopBarData {
             return TopBarData(
-                title = TextData.AppBar.copy(text = title)
+                title = TextData.TopAppBar.copy(text = title)
             )
         }
     }

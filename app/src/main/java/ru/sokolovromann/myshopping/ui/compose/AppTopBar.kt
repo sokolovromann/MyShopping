@@ -57,31 +57,31 @@ private fun AppTopBarPreview() {
             AppTopBar(
                 modifier = Modifier.padding(8.dp),
                 data = TopBarData(
-                    title = TextData.AppBar.copy(text = UiText.FromString("My Shopping List")),
-                    navigationIcon = IconData.OnAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Menu))
+                    title = TextData.TopAppBar.copy(text = UiText.FromString("My Shopping List")),
+                    navigationIcon = IconData.OnTopAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Menu))
                 ),
                 actions = {
-                    AppIcon(data = IconData.OnAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Send)))
+                    AppIcon(data = IconData.OnTopAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Send)))
                 }
             )
 
             AppTopBar(
                 modifier = Modifier.padding(8.dp),
                 data = TopBarData(
-                    navigationIcon = IconData.OnAppBar.copy(icon = UiIcon.FromVector(Icons.Default.ArrowBack))
+                    navigationIcon = IconData.OnTopAppBar.copy(icon = UiIcon.FromVector(Icons.Default.ArrowBack))
                 ),
                 actions = {
                     AppIcon(
                         modifier = Modifier.padding(8.dp),
-                        data = IconData.OnAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Favorite))
+                        data = IconData.OnTopAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Favorite))
                     )
                     AppIcon(
                         modifier = Modifier.padding(8.dp),
-                        data = IconData.OnAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Share))
+                        data = IconData.OnTopAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Share))
                     )
                     AppIcon(
                         modifier = Modifier.padding(8.dp),
-                        data = IconData.OnAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Send))
+                        data = IconData.OnTopAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Send))
                     )
                 }
             )
