@@ -17,6 +17,7 @@ sealed class AppColor(val light: Color, val dark: Color) {
     object OnSurface : AppColor(Color.Black, Color.White)
     object OnBackground : AppColor(Color.Black, Color.White)
     object OnError : AppColor(Color.Black, Color.Black)
+    object Transparent : AppColor(Color.Transparent, Color.Transparent)
 
     @Composable
     fun asCompose(): Color {
