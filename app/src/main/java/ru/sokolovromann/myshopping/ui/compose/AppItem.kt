@@ -21,11 +21,14 @@ fun AppItem(
     dropdownMenu: @Composable (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .defaultMinSize(minHeight = 48.dp)
-        .clickable { onClick() }
-        .then(modifier)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 48.dp)
+            .clickable { onClick() }
+            .then(modifier),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ) {
         AppItemImpl(
             modifier = Modifier.padding(all = 8.dp),
@@ -50,11 +53,14 @@ fun AppItem(
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .defaultMinSize(minHeight = 48.dp)
-        .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-        .then(modifier)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 48.dp)
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+            .then(modifier),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ) {
         AppItemImpl(
             modifier = Modifier.padding(all = 8.dp),
@@ -87,16 +93,21 @@ fun AppSurfaceItem(
         shape = MaterialTheme.shapes.medium,
         elevation = 1.dp
     ) {
-        AppItemImpl(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 8.dp),
-            before = before,
-            title = title,
-            body = body,
-            after = after,
-            dropdownMenu = dropdownMenu
-        )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            AppItemImpl(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 8.dp),
+                before = before,
+                title = title,
+                body = body,
+                after = after,
+                dropdownMenu = dropdownMenu
+            )
+        }
     }
 }
 
@@ -122,16 +133,21 @@ fun AppSurfaceItem(
         shape = MaterialTheme.shapes.medium,
         elevation = 1.dp
     ) {
-        AppItemImpl(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 8.dp),
-            before = before,
-            title = title,
-            body = body,
-            after = after,
-            dropdownMenu = dropdownMenu
-        )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            AppItemImpl(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 8.dp),
+                before = before,
+                title = title,
+                body = body,
+                after = after,
+                dropdownMenu = dropdownMenu
+            )
+        }
     }
 }
 
