@@ -2,6 +2,18 @@
 <resources>
     <string name="all_appName">My Shopping List</string>
 
+    <string name="calendar_currentYear">%ta, %tb %td</string>
+    <string name="calendar_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
+    <string name="calendar_other">%tb %td, %tY</string>
+    <string name="calendar_otherAt">%tb %td, %tY at %tl:%tM %Tp</string>
+    <string name="calendar_time">%tl:%tM %Tp</string>
+    <string name="calendar_today">Today</string>
+    <string name="calendar_todayAt">Today at %tl:%tM %Tp</string>
+    <string name="calendar_tomorrow">Tomorrow</string>
+    <string name="calendar_tomorrowAt">Tomorrow at %tl:%tM %Tp</string>
+    <string name="calendar_yesterday">Yesterday</string>
+    <string name="calendar_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
+
     <string-array name="data_defaultAutocompleteNames"/>
     <string name="data_defaultCurrency">$</string>
     <bool name="data_defaultCurrencyDisplayToLeft">true</bool>
