@@ -104,7 +104,7 @@ private fun AppTextFieldPreview() {
                     state = TextFieldState().apply {
                         showTextField(
                             text = TextFieldValue("Description"),
-                            label = TextData.Body.copy(text = UiText.FromString("Description")),
+                            label = TextData(text = UiText.FromString("Description")),
                             keyboardOptions = KeyboardOptions.Default
                         )
                     },
@@ -118,10 +118,10 @@ private fun AppTextFieldPreview() {
                     state = TextFieldState().apply {
                         showTextField(
                             text = TextFieldValue("Error"),
-                            label = TextData.Body.copy(text = UiText.FromString("Error")),
+                            label = TextData(text = UiText.FromString("Error")),
                             keyboardOptions = KeyboardOptions.Default
                         )
-                        showError(TextData.Body.copy(text = UiText.FromString("Enter text")))
+                        showError(TextData(text = UiText.FromString("Enter text")))
                     },
                     onValueChange = {}
                 )
@@ -133,7 +133,7 @@ private fun AppTextFieldPreview() {
                     state = TextFieldState().apply {
                         showTextField(
                             text = TextFieldValue("Outlined ".repeat(5)),
-                            label = TextData.Body.copy(text = UiText.FromString("Outlined")),
+                            label = TextData(text = UiText.FromString("Outlined")),
                             keyboardOptions = KeyboardOptions.Default
                         )
                     },

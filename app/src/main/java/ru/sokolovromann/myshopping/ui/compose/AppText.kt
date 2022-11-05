@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.ui.compose.state.TextData
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.ui.theme.AppTypography
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
 
 @Composable
@@ -41,19 +42,28 @@ private fun AppTextPreview() {
             Column {
                 AppText(
                     modifier = Modifier.padding(all = 8.dp),
-                    data = TextData.Header.copy(text = UiText.FromString("Header ".repeat(10)))
+                    data = TextData(
+                        text = UiText.FromString("Header ".repeat(10)),
+                        style = AppTypography.H5.textStyle
+                    )
                 )
                 AppText(
                     modifier = Modifier.padding(all = 8.dp),
-                    data = TextData.Title.copy(text = UiText.FromString("Title ".repeat(10)))
+                    data = TextData(
+                        text = UiText.FromString("Title ".repeat(10)),
+                        style = AppTypography.Subtitle1.textStyle
+                    )
                 )
                 AppText(
                     modifier = Modifier.padding(all = 8.dp),
-                    data = TextData.Body.copy(text = UiText.FromString("Body ".repeat(20)))
+                    data = TextData(
+                        text = UiText.FromString("Body ".repeat(20)),
+                        style = AppTypography.Body1.textStyle
+                    )
                 )
                 AppText(
                     modifier = Modifier.padding(all = 8.dp),
-                    data = TextData.Body.copy(text = UiText.Nothing)
+                    data = TextData(text = UiText.Nothing)
                 )
             }
         }

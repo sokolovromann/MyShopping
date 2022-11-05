@@ -31,6 +31,6 @@ class MenuButtonState<M> {
 }
 
 data class MenuButtonData<M>(
-    val text: TextData = TextData.Body,
+    val text: TextData = TextData(),
     val menu: M? = null
 )

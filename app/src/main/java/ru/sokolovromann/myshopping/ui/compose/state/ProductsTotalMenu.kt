@@ -1,13 +1,13 @@
 package ru.sokolovromann.myshopping.ui.compose.state
 
 data class ProductsTotalMenu(
-    val title: TextData = TextData.Title,
-    val allBody: TextData = TextData.Body,
-    val allSelected: RadioButtonData = RadioButtonData.OnSurface,
-    val completedBody: TextData = TextData.Body,
-    val completedSelected: RadioButtonData = RadioButtonData.OnSurface,
-    val activeBody: TextData = TextData.Body,
-    val activeSelected: RadioButtonData = RadioButtonData.OnSurface,
-    val hideBody: TextData = TextData.Body,
-    val hideSelected: RadioButtonData = RadioButtonData.OnSurface
+    val title: TextData = TextData(),
+    val allBody: TextData = TextData(),
+    val allSelected: RadioButtonData = RadioButtonData(),
+    val completedBody: TextData = TextData(),
+    val completedSelected: RadioButtonData = RadioButtonData(),
+    val activeBody: TextData = TextData(),
+    val activeSelected: RadioButtonData = RadioButtonData(),
+    val hideBody: TextData = TextData(),
+    val hideSelected: RadioButtonData = RadioButtonData()
 )

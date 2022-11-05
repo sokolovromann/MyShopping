@@ -40,9 +40,7 @@ private fun AppFloatingActionButtonPreview() {
             AppFloatingActionButton(
                 modifier = Modifier.padding(8.dp),
                 data = FloatingActionButtonData(
-                    icon = IconData.OnFloatingActionButton.copy(
-                        icon = UiIcon.FromVector(Icons.Default.Add)
-                    )
+                    icon = IconData(icon = UiIcon.FromVector(Icons.Default.Add))
                 ),
                 onClick = {}
             )

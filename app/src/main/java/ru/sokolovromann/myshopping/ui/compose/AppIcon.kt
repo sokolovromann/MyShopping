@@ -40,22 +40,22 @@ private fun AppIconPreview() {
             Column {
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnSurface.copy(icon = UiIcon.FromVector(Icons.Default.Settings), size = 36.dp)
+                    data = IconData(icon = UiIcon.FromVector(Icons.Default.Settings), size = 36.dp)
                 )
 
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnSurface.copy(icon = UiIcon.FromVector(Icons.Default.Add), size = 48.dp)
+                    data = IconData(icon = UiIcon.FromVector(Icons.Default.Add), size = 48.dp)
                 )
 
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnSurface.copy(icon = UiIcon.FromVector(Icons.Default.Delete))
+                    data = IconData(icon = UiIcon.FromVector(Icons.Default.Delete))
                 )
 
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnSurface.copy(icon = UiIcon.Nothing)
+                    data = IconData(icon = UiIcon.Nothing)
                 )
             }
         }

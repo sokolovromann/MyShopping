@@ -42,12 +42,12 @@ private fun AppRadioButtonPreview() {
             Column {
                 AppRadioButton(
                     modifier = Modifier.padding(8.dp),
-                    data = RadioButtonData.OnSurface.copy(selected = false)
+                    data = RadioButtonData(selected = false)
                 )
 
                 AppRadioButton(
                     modifier = Modifier.padding(8.dp),
-                    data = RadioButtonData.OnSurface.copy(selected = true)
+                    data = RadioButtonData(selected = true)
                 )
             }
         }

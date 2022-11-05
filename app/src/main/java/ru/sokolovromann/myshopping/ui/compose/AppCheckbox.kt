@@ -44,11 +44,11 @@ private fun AppCheckboxPreview() {
             Column {
                 AppCheckbox(
                     modifier = Modifier.padding(8.dp),
-                    data = CheckboxData.OnSurface.copy(checked = false)
+                    data = CheckboxData(checked = false)
                 )
                 AppCheckbox(
                     modifier = Modifier.padding(8.dp),
-                    data = CheckboxData.OnSurface.copy(checked = true)
+                    data = CheckboxData(checked = true)
                 )
             }
         }

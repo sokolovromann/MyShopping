@@ -45,7 +45,7 @@ class ListState<D> {
 
 data class ListData<D>(
     val items: List<D> = listOf(),
-    val notFoundText: TextData = TextData.Title,
+    val notFoundText: TextData = TextData(),
     val multiColumns: Boolean = false,
     val maxColumnWidth: Dp = 300.dp,
     val menuUid: String? = null,

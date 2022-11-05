@@ -31,6 +31,6 @@ class MenuIconButtonState<M> {
 }
 
 data class MenuIconButtonData<M>(
-    val icon: IconData = IconData.OnSurface,
+    val icon: IconData = IconData(),
     val menu: M? = null
 )

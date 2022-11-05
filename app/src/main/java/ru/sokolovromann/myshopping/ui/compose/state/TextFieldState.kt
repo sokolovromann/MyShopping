@@ -54,7 +54,7 @@ data class TextFieldData(
     val text: TextFieldValue = TextFieldValue(),
     val textFontSize: TextUnit = AppTypography.Body2.textStyle.fontSize,
     val textColor: ColorData = ColorData(appColor = AppColor.OnSurface),
-    val label: TextData = TextData.Body,
+    val label: TextData = TextData(),
     val error: TextData? = null,
     val keyboardOptions: KeyboardOptions = KeyboardOptions(),
     val maxLines: Int = 1,

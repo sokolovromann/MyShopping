@@ -49,19 +49,19 @@ private fun AppBottomBarPreview() {
             ) {
                 AppText(
                     modifier = Modifier.padding(8.dp),
-                    data = TextData.BottomAppBar.copy(text = UiText.FromString("My Shopping"))
+                    data = TextData(text = UiText.FromString("My Shopping"))
                 )
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnBottomAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Favorite))
+                    data = IconData(icon = UiIcon.FromVector(Icons.Default.Favorite))
                 )
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnBottomAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Share))
+                    data = IconData(icon = UiIcon.FromVector(Icons.Default.Share))
                 )
                 AppIcon(
                     modifier = Modifier.padding(8.dp),
-                    data = IconData.OnBottomAppBar.copy(icon = UiIcon.FromVector(Icons.Default.Send))
+                    data = IconData(icon = UiIcon.FromVector(Icons.Default.Send))
                 )
             }
         }

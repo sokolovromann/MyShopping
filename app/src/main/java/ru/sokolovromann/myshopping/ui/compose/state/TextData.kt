@@ -17,40 +17,6 @@ data class TextData(
     val maxLines: Int = Int.MAX_VALUE
 ) {
 
-    companion object {
-        val Header: TextData = TextData(
-            style = AppTypography.H5.textStyle
-        )
-
-        val Title: TextData = TextData(
-            style = AppTypography.Subtitle1.textStyle,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
-        )
-
-        val Body: TextData = TextData(
-            style = AppTypography.Body1.textStyle,
-            color = ColorData(appColor = AppColor.OnSurface, alpha = 0.7f),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2
-        )
-
-        val TopAppBar: TextData = TextData(
-            style = AppTypography.H5.textStyle,
-            fontWeight = FontWeight.Normal,
-            color = ColorData(light = AppColor.OnPrimary, dark = AppColor.OnSurface),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2
-        )
-
-        val BottomAppBar: TextData = TextData(
-            style = AppTypography.Body1.textStyle,
-            color = ColorData(appColor = AppColor.OnBackground, alpha = 0.7f),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2
-        )
-    }
-
     fun isTextShowing(): Boolean {
         return text != UiText.Nothing
     }
