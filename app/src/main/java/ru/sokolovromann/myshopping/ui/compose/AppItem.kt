@@ -12,9 +12,81 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
+fun AppMultiColumnsItem(
+    modifier: Modifier = Modifier,
+    multiColumns: Boolean,
+    title: @Composable (() -> Unit)? = null,
+    body: @Composable (() -> Unit)? = null,
+    before: @Composable (() -> Unit)? = null,
+    after: @Composable (() -> Unit)? = null,
+    dropdownMenu: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit
+) {
+    if (multiColumns) {
+        AppSurfaceItem(
+            modifier = modifier,
+            title = title,
+            body = body,
+            before = before,
+            after = after,
+            dropdownMenu = dropdownMenu,
+            onClick = onClick
+        )
+    } else {
+        AppItem(
+            modifier = modifier,
+            title = title,
+            body = body,
+            before = before,
+            after = after,
+            dropdownMenu = dropdownMenu,
+            onClick = onClick
+        )
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
+fun AppMultiColumnsItem(
+    modifier: Modifier = Modifier,
+    multiColumns: Boolean,
+    title: @Composable (() -> Unit)? = null,
+    body: @Composable (() -> Unit)? = null,
+    before: @Composable (() -> Unit)? = null,
+    after: @Composable (() -> Unit)? = null,
+    dropdownMenu: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
+    if (multiColumns) {
+        AppSurfaceItem(
+            modifier = modifier,
+            title = title,
+            body = body,
+            before = before,
+            after = after,
+            dropdownMenu = dropdownMenu,
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+    } else {
+        AppItem(
+            modifier = modifier,
+            title = title,
+            body = body,
+            before = before,
+            after = after,
+            dropdownMenu = dropdownMenu,
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+    }
+}
+
+@Composable
 fun AppItem(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
@@ -45,7 +117,7 @@ fun AppItem(
 @Composable
 fun AppItem(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
@@ -76,7 +148,7 @@ fun AppItem(
 @Composable
 fun AppSurfaceItem(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
@@ -115,7 +187,7 @@ fun AppSurfaceItem(
 @Composable
 fun AppSurfaceItem(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
@@ -154,7 +226,7 @@ fun AppSurfaceItem(
 @Composable
 private fun AppItemImpl(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
@@ -167,7 +239,7 @@ private fun AppItemImpl(
     ) {
         before?.let { it() }
         Column(modifier = Modifier.weight(1f)) {
-            title()
+            title?.let { it() }
             body?.let { it() }
             dropdownMenu?.let { it() }
         }
