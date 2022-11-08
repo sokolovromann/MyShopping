@@ -9,28 +9,30 @@ class MenuButtonState<M> {
     var currentData by mutableStateOf(MenuButtonData<M>())
         private set
 
-    fun showButton(text: TextData) {
-        currentData = MenuButtonData(text = text)
+    fun showButton(text: TextData, menu: M) {
+        currentData = MenuButtonData(
+            text = text,
+            menu = menu
+        )
     }
 
-    fun showMenu(menu: M) {
-        currentData = currentData.copy(menu = menu)
+    fun showMenu() {
+        currentData = currentData.copy(expandedMenu = true)
+    }
+
+    fun hideButton() {
+        currentData = currentData.copy(
+            text = TextData()
+        )
     }
 
     fun hideMenu() {
-        currentData = currentData.copy(menu = null)
-    }
-
-    fun isMenuShowing(): Boolean {
-        return currentData.menu != null
-    }
-
-    fun isMenuHiding(): Boolean {
-        return currentData.menu == null
+        currentData = currentData.copy(expandedMenu = false)
     }
 }
 
 data class MenuButtonData<M>(
     val text: TextData = TextData(),
-    val menu: M? = null
+    val menu: M? = null,
+    val expandedMenu: Boolean = false,
 )
