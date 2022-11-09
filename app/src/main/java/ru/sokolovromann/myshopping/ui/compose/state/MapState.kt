@@ -30,14 +30,6 @@ class MapState<K,D> {
         )
     }
 
-    fun showMenu(uid: String) {
-        currentData = currentData.copy(menuUid = uid)
-    }
-
-    fun hideMenu() {
-        currentData = currentData.copy(menuUid = null)
-    }
-
     fun hideAll() {
         currentData = MapData()
     }
@@ -48,7 +40,6 @@ data class MapData<K,D>(
     val notFoundText: TextData = TextData(),
     val multiColumns: Boolean = false,
     val maxColumnWidth: Dp = 300.dp,
-    val menuUid: String? = null,
     val result: MapResult = MapResult.Nothing
 )
 
