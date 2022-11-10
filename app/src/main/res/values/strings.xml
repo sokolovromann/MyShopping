@@ -21,13 +21,38 @@
     <string name="data_developerName">Roman Sokolov</string>
     <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
 
+    <string name="displayShoppingListsCompleted_firstCompleted">First</string>
+    <string name="displayShoppingListsCompleted_hideCompleted">Hide</string>
+    <string name="displayShoppingListsCompleted_lastCompleted">Last</string>
+    <string name="displayShoppingListsCompleted_title">Display completed products</string>
+
+    <string name="displayShoppingListsTotal_activeTotal">Active</string>
+    <string name="displayShoppingListsTotal_allTotal">All</string>
+    <string name="displayShoppingListsTotal_completedTotal">Completed</string>
+    <string name="displayShoppingListsTotal_title">Display total</string>
+
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
+
+    <string name="purchases_moveShoppingListToArchive">Archive</string>
+    <string name="purchases_moveShoppingListToTrash">Delete</string>
+    <string name="purchases_purchasesName">Purchases</string>
+    <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="route_archiveName">Archive</string>
     <string name="route_autocompletesName">Autocompletes</string>
     <string name="route_header">@string/all_appName</string>
-    <string name="route_purchasesName">Purchases</string>
+    <string name="route_purchasesName">@string/purchases_purchasesName</string>
     <string name="route_settingsName">Settings</string>
     <string name="route_trashName">Trash</string>
+
+    <string name="shoppingListsTotal_productsActiveTotal">Active: %s</string>
+    <string name="shoppingListsTotal_productsAllTotal">All: %s</string>
+    <string name="shoppingListsTotal_productsCompletedTotal">Completed: %s</string>
+
+    <string name="sortShoppingLists_byCreated">By created</string>
+    <string name="sortShoppingLists_byLastModified">By last modified</string>
+    <string name="sortShoppingLists_byName">By name</string>
+    <string name="sortShoppingLists_byTotal">By total</string>
+    <string name="sortShoppingLists_title">Sort</string>
 </resources>
