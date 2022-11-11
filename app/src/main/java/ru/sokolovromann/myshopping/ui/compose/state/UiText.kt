@@ -28,6 +28,6 @@ sealed class UiText {
         is FromFloat -> value.toString()
         is FromString -> value
         is FromResources -> stringResource(id)
-        is FromResourcesWithArgs -> stringResource(id, args)
+        is FromResourcesWithArgs -> stringResource(id, *args)
     }
 }
