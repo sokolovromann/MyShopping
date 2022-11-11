@@ -12,9 +12,9 @@ fun AppSystemUi(
     data: SystemUiData
 ) {
     val statusBarColor = data.statusBarColor.asCompose()
-    val statusBarDarkIcons = data.statusBarIconsColor.asCompose().luminance() > 0.5f
+    val statusBarDarkIcons = data.statusBarIconsColor.asCompose().luminance() < 0.5f
     val navigationBarColor = data.navigationBarColor.asCompose()
-    val navigationBarDarkIcons = data.navigationBarIconsColor.asCompose().luminance() > 0.5f
+    val navigationBarDarkIcons = data.navigationBarIconsColor.asCompose().luminance() < 0.5f
 
     SideEffect {
         systemUiController.setStatusBarColor(
