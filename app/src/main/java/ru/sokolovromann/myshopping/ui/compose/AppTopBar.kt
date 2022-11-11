@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,12 +12,16 @@ import ru.sokolovromann.myshopping.ui.compose.state.*
 fun AppTopBar(
     modifier: Modifier = Modifier,
     data: TopBarData,
+    onNavigationIconClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         modifier = modifier,
         title = { AppText(data = data.title) },
-        navigationIcon = navigationIcon(data = data.navigationIcon),
+        navigationIcon = navigationIcon(
+            data = data.navigationIcon,
+            onClick = onNavigationIconClick
+        ),
         backgroundColor = data.backgroundColor.asCompose(),
         contentColor = data.contentColor.asCompose(),
         actions = actions
@@ -24,14 +29,18 @@ fun AppTopBar(
 }
 
 @Composable
-private fun navigationIcon(data: IconData): @Composable (() -> Unit)? {
+private fun navigationIcon(
+    data: IconData,
+    onClick: () -> Unit
+): @Composable (() -> Unit)? {
     return if (data.icon == UiIcon.Nothing) {
         null
     } else {
         {
-            AppIcon(
+            IconButton(
                 modifier = Modifier.padding(start = 12.dp, end = 20.dp),
-                data = data
+                onClick = onClick,
+                content = { AppIcon(data = data) }
             )
         }
     }

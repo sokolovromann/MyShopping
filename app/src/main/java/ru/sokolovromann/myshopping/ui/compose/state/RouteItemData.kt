@@ -1,8 +1,10 @@
 package ru.sokolovromann.myshopping.ui.compose.state
 
+import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.theme.AppColor
 
 data class RouteItemData(
+    val route: UiRoute,
     val name: TextData = TextData(),
     val icon: IconData = IconData(),
     val checked: Boolean = false,

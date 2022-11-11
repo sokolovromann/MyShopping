@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.UiRoute
+
 sealed class PurchasesEvent {
 
     object AddShoppingList : PurchasesEvent()
@@ -13,6 +15,8 @@ sealed class PurchasesEvent {
     object SelectShoppingListsDisplayCompleted : PurchasesEvent()
 
     object SelectShoppingListsDisplayTotal : PurchasesEvent()
+
+    data class SelectNavigationItem(val route: UiRoute) : PurchasesEvent()
 
     object SortShoppingListsByCreated : PurchasesEvent()
 
