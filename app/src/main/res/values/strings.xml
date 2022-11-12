@@ -24,7 +24,7 @@
     <string name="displayShoppingListsCompleted_firstCompleted">First</string>
     <string name="displayShoppingListsCompleted_hideCompleted">Hide</string>
     <string name="displayShoppingListsCompleted_lastCompleted">Last</string>
-    <string name="displayShoppingListsCompleted_title">Display completed products</string>
+    <string name="displayShoppingListsCompleted_title">Display completed</string>
 
     <string name="displayShoppingListsTotal_activeTotal">Active</string>
     <string name="displayShoppingListsTotal_allTotal">All</string>
@@ -36,6 +36,7 @@
 
     <string name="purchases_moveShoppingListToArchive">Archive</string>
     <string name="purchases_moveShoppingListToTrash">Delete</string>
+    <string name="purchases_productsNotFound">Shopping list is empty</string>
     <string name="purchases_purchasesName">Purchases</string>
     <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
 

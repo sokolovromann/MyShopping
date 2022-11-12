@@ -33,24 +33,43 @@ class ViewModelMapping @Inject constructor() {
             UiText.Nothing
         } else {
             Calendar.getInstance()
-                .apply { shoppingList.reminder }
+                .apply { timeInMillis = shoppingList.reminder }
                 .getDisplayDateAndTime()
+        }
+
+        val products = if (shoppingList.productsEmpty) {
+            val pair = Pair(
+                IconData(),
+                toBody(
+                    text = toResourcesUiText(R.string.purchases_productsNotFound),
+                    fontSize = preferences.fontSize
+                )
+            )
+            listOf(pair)
+        } else {
+            shoppingList.products.map { product ->
+                toIconTextBody(product, preferences)
+            }
+        }
+
+        val totalText: UiText = if (preferences.displayMoney) {
+            toShoppingListsDisplayTotalText(
+                shoppingList.calculateTotal(),
+                preferences.displayTotal
+            )
+        } else {
+            UiText.Nothing
         }
 
         return ShoppingListItem(
             uid = shoppingList.uid,
             title = toTitle(
-                text = UiText.FromString(shoppingList.name),
+                text = toUiTextOrNothing(shoppingList.name),
                 fontSize = preferences.fontSize
             ),
-            productsBody = shoppingList.products.map { product ->
-                toIconTextBody(product, preferences)
-            },
+            productsBody = products,
             totalBody = toBody(
-                text = toShoppingListsDisplayTotalText(
-                    shoppingList.calculateTotal(),
-                    preferences.displayTotal
-                ),
+                text = totalText,
                 fontSize = preferences.fontSize
             ),
             reminderBody = toBody(
@@ -88,12 +107,12 @@ class ViewModelMapping @Inject constructor() {
 
         val productBody = if (displayPrice) {
             if (displayQuantity) {
-                "${product.quantity} • ${product.calculateTotal()}"
+                " • ${product.quantity} • ${product.calculateTotal()}"
             } else {
-                "${product.calculateTotal()}"
+                " • ${product.calculateTotal()}"
             }
         } else {
-            if (displayQuantity) "${product.quantity}" else ""
+            if (displayQuantity) " • ${product.quantity}" else ""
         }
 
         val shortText = preferences.multiColumns &&
@@ -102,7 +121,7 @@ class ViewModelMapping @Inject constructor() {
         val uiText: UiText = if (shortText) {
             UiText.FromString(product.name)
         } else {
-            val str = "${product.name} • $productBody"
+            val str = "${product.name}$productBody"
             UiText.FromString(str)
         }
 
@@ -124,37 +143,34 @@ class ViewModelMapping @Inject constructor() {
         return toBody(
             text = text,
             fontSize = fontSize,
-            appColor = AppColor.OnSecondary
+            appColor = AppColor.OnBackground
         )
     }
 
-    fun toShoppingListsTotalBody(
+    fun toShoppingListsTotalTitle(
         total: Money,
         displayTotal: DisplayTotal,
         fontSize: FontSize
     ): TextData {
-        return toBody(
+        return toTitle(
             text = toShoppingListsDisplayTotalText(total, displayTotal),
-            fontSize = fontSize
+            fontSize = fontSize,
+            appColor = AppColor.OnBackground
         )
     }
 
-    fun toSortAscendingIconBody(ascending: Boolean, fontSize: FontSize): IconData {
+    fun toSortAscendingIconBody(ascending: Boolean): IconData {
         val icon = if (ascending) {
             UiIcon.FromVector(Icons.Default.KeyboardArrowUp)
         } else {
             UiIcon.FromVector(Icons.Default.KeyboardArrowDown)
         }
-        return IconData(
-            icon = icon,
-            size = toDp(fontSize, FontSizeType.Body)
-        )
+        return IconData(icon = icon)
     }
 
-    fun toDisplayCompletedIconBody(fontSize: FontSize): IconData {
+    fun toDisplayCompletedIconBody(): IconData {
         return IconData(
             icon = UiIcon.FromResources(R.drawable.ic_all_display_completed),
-            size = toDp(fontSize, FontSizeType.Body)
         )
     }
 
@@ -405,6 +421,14 @@ class ViewModelMapping @Inject constructor() {
         return UiText.FromString(formatValue)
     }
 
+    fun toUiTextOrNothing(value: String): UiText {
+        return if (value.isEmpty()) {
+             UiText.Nothing
+        } else {
+            UiText.FromString(value)
+        }
+    }
+
     fun toUiTextOrNothing(value: String, firstLetterUppercase: Boolean): UiText {
         if (value.isEmpty()) {
             return UiText.Nothing
@@ -556,7 +580,8 @@ class ViewModelMapping @Inject constructor() {
         tint = ColorData(appColor = AppColor.OnSecondary)
     )
 
-    fun toRouteItem(text: UiText, icon: UiIcon, checked: Boolean) = RouteItemData(
+    fun toRouteItem(route: UiRoute, text: UiText, icon: UiIcon, checked: Boolean) = RouteItemData(
+        route = route,
         name = toBody(
             text = text,
             fontSize = FontSize.MEDIUM,
@@ -578,26 +603,31 @@ class ViewModelMapping @Inject constructor() {
 
     fun toNavigationDrawerItems(checked: UiRoute): List<RouteItemData> = listOf(
         toRouteItem(
+            route = UiRoute.Purchases,
             text = toResourcesUiText(R.string.route_purchasesName),
             icon = toUiIcon(R.drawable.ic_all_purchases),
             checked = checked == UiRoute.Purchases
         ),
         toRouteItem(
+            route = UiRoute.Archive,
             text = toResourcesUiText(R.string.route_archiveName),
             icon = toUiIcon(R.drawable.ic_all_archive),
             checked = checked == UiRoute.Archive
         ),
         toRouteItem(
+            route = UiRoute.Trash,
             text = toResourcesUiText(R.string.route_trashName),
             icon = toUiIcon(Icons.Default.Delete),
             checked = checked == UiRoute.Trash
         ),
         toRouteItem(
+            route = UiRoute.Autocompletes,
             text = toResourcesUiText(R.string.route_autocompletesName),
             icon = toUiIcon(Icons.Default.List),
             checked = checked == UiRoute.Autocompletes
         ),
         toRouteItem(
+            route = UiRoute.Settings,
             text = toResourcesUiText(R.string.route_settingsName),
             icon = toUiIcon(Icons.Default.Settings),
             checked = checked == UiRoute.Settings

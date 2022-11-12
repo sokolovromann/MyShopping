@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.viewmodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +60,9 @@ class PurchasesViewModel @Inject constructor(
     private val _bottomBarState: MutableState<BottomBarData> = mutableStateOf(BottomBarData())
     val bottomBarState: State<BottomBarData> = _bottomBarState
 
+    private val _systemUiState: MutableState<SystemUiData> = mutableStateOf(SystemUiData())
+    val systemUiState: State<SystemUiData> = _systemUiState
+
     private val _screenEventFlow: MutableSharedFlow<PurchasesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<PurchasesScreenEvent> = _screenEventFlow
 
@@ -83,6 +87,8 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.SelectShoppingListsDisplayCompleted -> selectShoppingListsDisplayCompleted()
 
             PurchasesEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
+
+            is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
             PurchasesEvent.SortShoppingListsByCreated -> sortShoppingListsByCreated()
 
@@ -181,6 +187,18 @@ class PurchasesViewModel @Inject constructor(
         totalState.showMenu()
     }
 
+    private fun selectNavigationItem(
+        event: PurchasesEvent.SelectNavigationItem
+    ) = viewModelScope.launch(dispatchers.main) {
+        when (event.route) {
+            UiRoute.Archive -> _screenEventFlow.emit(PurchasesScreenEvent.ShowArchive)
+            UiRoute.Trash -> _screenEventFlow.emit(PurchasesScreenEvent.ShowTrash)
+            UiRoute.Autocompletes -> _screenEventFlow.emit(PurchasesScreenEvent.ShowAutocompletes)
+            UiRoute.Settings -> _screenEventFlow.emit(PurchasesScreenEvent.ShowSettings)
+            else -> return@launch
+        }
+    }
+
     private fun sortShoppingListsByCreated() = viewModelScope.launch(dispatchers.io) {
         repository.sortShoppingListsByCreated()
 
@@ -257,7 +275,7 @@ class PurchasesViewModel @Inject constructor(
         repository.invertShoppingListsSort()
     }
 
-    private suspend fun showShoppingListsLoading() = withContext(dispatchers.io) {
+    private suspend fun showShoppingListsLoading() = withContext(dispatchers.main) {
         purchasesState.showLoading()
     }
 
@@ -268,7 +286,8 @@ class PurchasesViewModel @Inject constructor(
         if (items.isEmpty()) {
             showShoppingListNotFound(preferences)
         } else {
-            items.map { mapping.toShoppingListItem(it, preferences) }
+            val list = items.map { mapping.toShoppingListItem(it, preferences) }
+            purchasesState.showList(list, preferences.multiColumns)
         }
 
         showSort(preferences)
@@ -303,7 +322,6 @@ class PurchasesViewModel @Inject constructor(
     private fun showSortAscending(preferences: ShoppingListPreferences) {
         _sortAscendingState.value = mapping.toSortAscendingIconBody(
             ascending = preferences.sort.ascending,
-            fontSize = preferences.fontSize
         )
     }
 
@@ -318,7 +336,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun showCompleted(preferences: ShoppingListPreferences) {
         completedState.showButton(
-            icon = mapping.toDisplayCompletedIconBody(preferences.fontSize),
+            icon = mapping.toDisplayCompletedIconBody(),
             menu = mapping.toShoppingListsCompletedMenu(
                 displayCompleted = preferences.displayCompleted,
                 fontSize = preferences.fontSize
@@ -328,7 +346,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun showTotal(total: Money, preferences: ShoppingListPreferences) {
         totalState.showButton(
-            text = mapping.toShoppingListsTotalBody(
+            text = mapping.toShoppingListsTotalTitle(
                 total = total,
                 displayTotal = preferences.displayTotal,
                 fontSize = preferences.fontSize
@@ -355,7 +373,7 @@ class PurchasesViewModel @Inject constructor(
     private fun showNavigationDrawerData(preferences: ShoppingListPreferences) {
         val data = NavigationDrawerData(
             header = mapping.toOnNavigationDrawerHeader(
-                text = UiText.FromResources(R.string.purchases_purchasesName),
+                text = mapping.toResourcesUiText(R.string.route_header),
                 fontSize = preferences.fontSize
             ),
             items = mapping.toNavigationDrawerItems(
@@ -368,8 +386,11 @@ class PurchasesViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = UiText.FromResources(R.string.purchases_purchasesName),
+                text = mapping.toResourcesUiText(R.string.purchases_purchasesName),
                 fontSize = FontSize.MEDIUM
+            ),
+            navigationIcon = mapping.toOnTopAppBar(
+                icon = UiIcon.FromVector(Icons.Default.Menu)
             )
         )
         _topBarState.value = data
