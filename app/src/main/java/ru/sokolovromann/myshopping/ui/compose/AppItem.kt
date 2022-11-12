@@ -165,21 +165,16 @@ fun AppSurfaceItem(
         shape = MaterialTheme.shapes.medium,
         elevation = 1.dp
     ) {
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
-        ) {
-            AppItemImpl(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp),
-                before = before,
-                title = title,
-                body = body,
-                after = after,
-                dropdownMenu = dropdownMenu
-            )
-        }
+        AppItemImpl(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 8.dp),
+            before = before,
+            title = title,
+            body = body,
+            after = after,
+            dropdownMenu = dropdownMenu
+        )
     }
 }
 
@@ -205,21 +200,16 @@ fun AppSurfaceItem(
         shape = MaterialTheme.shapes.medium,
         elevation = 1.dp
     ) {
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
-        ) {
-            AppItemImpl(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp),
-                before = before,
-                title = title,
-                body = body,
-                after = after,
-                dropdownMenu = dropdownMenu
-            )
-        }
+        AppItemImpl(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 8.dp),
+            before = before,
+            title = title,
+            body = body,
+            after = after,
+            dropdownMenu = dropdownMenu
+        )
     }
 }
 
