@@ -5,7 +5,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.ui.compose.state.*
 
 @Composable
@@ -38,7 +37,6 @@ private fun navigationIcon(
     } else {
         {
             IconButton(
-                modifier = Modifier.padding(start = 12.dp, end = 20.dp),
                 onClick = onClick,
                 content = { AppIcon(data = data) }
             )
