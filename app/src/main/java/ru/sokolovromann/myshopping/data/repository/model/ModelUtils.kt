@@ -12,7 +12,7 @@ fun String.formatFirst(uppercase: Boolean): String {
 }
 
 fun List<ShoppingList>.sortShoppingLists(sort: Sort, displayCompleted: DisplayCompleted): List<ShoppingList> {
-    val partition = this.partition { it.isCompleted() }
+    val partition = this.partition { it.completed }
     var sortedCompleted: List<ShoppingList> = mutableListOf()
     var sortedActive: List<ShoppingList> = mutableListOf()
 

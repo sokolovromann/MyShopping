@@ -27,10 +27,13 @@ class RepositoryMapping @Inject constructor() {
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
+            name = entity.name,
             reminder = toReminder(entity.reminder),
             archived = entity.archived,
             deleted = entity.deleted,
+            completed = toCompleted(shoppingListEntity.productEntities),
             products = shoppingListEntity.productEntities.map { toProduct(it, preferencesEntity) },
+            productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
         )
@@ -43,10 +46,13 @@ class RepositoryMapping @Inject constructor() {
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
+            name = entity.name,
             reminder = toReminder(entity.reminder),
             archived = entity.archived,
             deleted = entity.deleted,
+            completed = toCompleted(shoppingListEntity.productEntities),
             products = shoppingListEntity.productEntities.map { toProduct(it, preferencesEntity) },
+            productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
         )
@@ -521,5 +527,17 @@ class RepositoryMapping @Inject constructor() {
 
     fun toReminderEntity(reminder: Long?): Long {
         return reminder ?: 0L
+    }
+
+    fun toCompleted(entities: List<ProductEntity>): Boolean {
+        return if (entities.isEmpty()) {
+            false
+        } else {
+            entities.find { !it.completed } == null
+        }
+    }
+
+    fun toProductsEmpty(entities: List<ProductEntity>): Boolean {
+        return entities.isEmpty()
     }
 }

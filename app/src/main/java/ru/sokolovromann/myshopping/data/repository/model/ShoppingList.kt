@@ -11,7 +11,9 @@ data class ShoppingList(
     val reminder: Long? = null,
     val archived: Boolean = false,
     val deleted: Boolean = false,
+    val completed: Boolean = false,
     val products: List<Product> = listOf(),
+    val productsEmpty: Boolean = products.isEmpty(),
     val currency: Currency = Currency(),
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue
 ) {
@@ -39,17 +41,5 @@ data class ShoppingList(
         }
 
         return Money(total, currency)
-    }
-
-    fun isCompleted(): Boolean {
-        return if (products.isEmpty()) {
-            false
-        } else {
-            products.find { !it.completed } == null
-        }
-    }
-
-    fun isActive(): Boolean {
-        return !isCompleted()
     }
 }

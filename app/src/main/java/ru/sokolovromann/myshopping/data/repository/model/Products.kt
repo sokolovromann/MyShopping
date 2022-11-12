@@ -41,10 +41,10 @@ data class Products(
     }
 
     fun isCompleted(): Boolean {
-        return shoppingList.isCompleted()
+        return shoppingList.completed
     }
 
     fun isActive(): Boolean {
-        return shoppingList.isActive()
+        return !shoppingList.completed
     }
 }
