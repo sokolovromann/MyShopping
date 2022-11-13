@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.compose.foundation.ExperimentalFoundationApi
 import javax.inject.Inject
 
 class PurchasesAlarmManager @Inject constructor(
@@ -14,12 +15,14 @@ class PurchasesAlarmManager @Inject constructor(
     private val alarmManager: AlarmManager = context
         .getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+    @ExperimentalFoundationApi
     fun createReminder(uid: String, reminder: Long) {
         val pendingIntent = toPendingIntent(uid)
         alarmManager.cancel(pendingIntent)
         alarmManager.set(AlarmManager.RTC_WAKEUP, reminder, pendingIntent)
     }
 
+    @ExperimentalFoundationApi
     fun deleteReminder(uid: String) {
         val pendingIntent = toPendingIntent(uid)
         alarmManager.cancel(pendingIntent)
@@ -31,6 +34,7 @@ class PurchasesAlarmManager @Inject constructor(
         alarmManager.cancel(pendingIntent)
     }
 
+    @ExperimentalFoundationApi
     private fun toPendingIntent(uid: String): PendingIntent {
         val requestCode = 0
         val intent: Intent = Intent(context, PurchasesBroadcastReceiver::class.java).apply {

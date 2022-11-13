@@ -3,9 +3,11 @@ package ru.sokolovromann.myshopping.notification.purchases
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 
+@ExperimentalFoundationApi
 class BootPurchasesBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
