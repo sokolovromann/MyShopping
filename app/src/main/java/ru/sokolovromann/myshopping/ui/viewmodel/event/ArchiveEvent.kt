@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.UiRoute
+
 sealed class ArchiveEvent {
 
     data class MoveShoppingListToPurchases(val uid: String) : ArchiveEvent()
@@ -11,6 +13,8 @@ sealed class ArchiveEvent {
     object SelectShoppingListsDisplayCompleted : ArchiveEvent()
 
     object SelectShoppingListsDisplayTotal : ArchiveEvent()
+
+    data class SelectNavigationItem(val route: UiRoute) : ArchiveEvent()
 
     object SortShoppingListsByCreated : ArchiveEvent()
 

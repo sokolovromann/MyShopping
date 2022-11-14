@@ -92,6 +92,19 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
+    fun toArchiveItemMenu(fontSize: FontSize): ArchiveItemMenu {
+        return ArchiveItemMenu(
+            moveToPurchasesBody = toBody(
+                text = UiText.FromResources(R.string.archive_moveShoppingListToPurchases),
+                fontSize = fontSize
+            ),
+            moveToTrashBody = toBody(
+                text = UiText.FromResources(R.string.archive_moveShoppingListToTrash),
+                fontSize = fontSize
+            )
+        )
+    }
+
     fun toIconTextBody(product: Product, preferences: ShoppingListPreferences): Pair<IconData, TextData> {
         val icon = IconData(
             icon = if (product.completed) {

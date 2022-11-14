@@ -2,6 +2,12 @@
 <resources>
     <string name="all_appName">My Shopping List</string>
 
+    <string name="archive_archiveName">Archive</string>
+    <string name="archive_moveShoppingListToPurchases">Unarchive</string>
+    <string name="archive_moveShoppingListToTrash">Delete</string>
+    <string name="archive_productsNotFound">Shopping list is empty</string>
+    <string name="archive_shoppingListsNotFound">Archive is empty</string>
+
     <string name="calendar_currentYear">%ta, %tb %td</string>
     <string name="calendar_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
     <string name="calendar_other">%tb %td, %tY</string>

@@ -6,6 +6,14 @@ sealed class ArchiveScreenEvent {
 
     data class ShowProducts(val uid: String) : ArchiveScreenEvent()
 
+    object ShowPurchases : ArchiveScreenEvent()
+
+    object ShowTrash : ArchiveScreenEvent()
+
+    object ShowAutocompletes : ArchiveScreenEvent()
+
+    object ShowSettings : ArchiveScreenEvent()
+
     object ShowNavigationDrawer : ArchiveScreenEvent()
 
     object HideNavigationDrawer : ArchiveScreenEvent()
