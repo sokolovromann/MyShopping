@@ -6,6 +6,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import ru.sokolovromann.myshopping.ui.compose.ArchiveScreen
 import ru.sokolovromann.myshopping.ui.compose.PurchasesScreen
 
 sealed class UiRoute(val graph: String) {
@@ -52,6 +53,18 @@ fun NavGraphBuilder.purchasesGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Purchases.purchasesScreen) {
             PurchasesScreen(navController)
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+fun NavGraphBuilder.archiveGraph(navController: NavController) {
+    navigation(
+        startDestination = UiRoute.Archive.archiveScreen,
+        route = UiRoute.Archive.graph
+    ) {
+        composable(route = UiRoute.Archive.archiveScreen) {
+            ArchiveScreen(navController)
         }
     }
 }

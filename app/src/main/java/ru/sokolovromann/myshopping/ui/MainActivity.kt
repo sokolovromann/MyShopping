@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = UiRoute.Purchases.graph,
                     builder = {
                         purchasesGraph(navController)
+                        archiveGraph(navController)
                     }
                 )
             }
