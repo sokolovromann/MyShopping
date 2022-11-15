@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
                     builder = {
                         purchasesGraph(navController)
                         archiveGraph(navController)
+                        trashGraph(navController)
                     }
                 )
             }

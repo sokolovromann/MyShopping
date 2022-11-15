@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import ru.sokolovromann.myshopping.ui.compose.ArchiveScreen
 import ru.sokolovromann.myshopping.ui.compose.PurchasesScreen
+import ru.sokolovromann.myshopping.ui.compose.TrashScreen
 
 sealed class UiRoute(val graph: String) {
 
@@ -65,6 +66,18 @@ fun NavGraphBuilder.archiveGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Archive.archiveScreen) {
             ArchiveScreen(navController)
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+fun NavGraphBuilder.trashGraph(navController: NavController) {
+    navigation(
+        startDestination = UiRoute.Trash.trashScreen,
+        route = UiRoute.Trash.graph
+    ) {
+        composable(route = UiRoute.Trash.trashScreen) {
+            TrashScreen(navController)
         }
     }
 }
