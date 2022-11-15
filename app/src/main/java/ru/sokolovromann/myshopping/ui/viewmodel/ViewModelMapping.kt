@@ -105,6 +105,23 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
+    fun toTrashItemMenu(fontSize: FontSize): TrashItemMenu {
+        return TrashItemMenu(
+            moveToPurchasesBody = toBody(
+                text = UiText.FromResources(R.string.trash_moveShoppingListToPurchases),
+                fontSize = fontSize
+            ),
+            moveToArchiveBody = toBody(
+                text = UiText.FromResources(R.string.trash_moveShoppingListToArchive),
+                fontSize = fontSize
+            ),
+            deleteBody = toBody(
+                text = UiText.FromResources(R.string.trash_deleteShoppingList),
+                fontSize = fontSize
+            )
+        )
+    }
+
     fun toIconTextBody(product: Product, preferences: ShoppingListPreferences): Pair<IconData, TextData> {
         val icon = IconData(
             icon = if (product.completed) {

@@ -6,6 +6,14 @@ sealed class TrashScreenEvent {
 
     data class ShowProducts(val uid: String) : TrashScreenEvent()
 
+    object ShowPurchases : TrashScreenEvent()
+
+    object ShowArchive : TrashScreenEvent()
+
+    object ShowAutocompletes : TrashScreenEvent()
+
+    object ShowSettings  : TrashScreenEvent()
+
     object ShowNavigationDrawer : TrashScreenEvent()
 
     object HideNavigationDrawer : TrashScreenEvent()

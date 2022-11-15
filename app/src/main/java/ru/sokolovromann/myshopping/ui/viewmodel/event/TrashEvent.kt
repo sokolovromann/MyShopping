@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.UiRoute
+
 sealed class TrashEvent {
 
     data class MoveShoppingListToPurchases(val uid: String) : TrashEvent()
@@ -15,6 +17,8 @@ sealed class TrashEvent {
     object SelectShoppingListsDisplayCompleted : TrashEvent()
 
     object SelectShoppingListsDisplayTotal : TrashEvent()
+
+    data class SelectNavigationItem(val route: UiRoute) : TrashEvent()
 
     object SortShoppingListsByCreated : TrashEvent()
 
