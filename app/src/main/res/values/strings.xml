@@ -27,6 +27,16 @@
     <string name="data_developerName">Roman Sokolov</string>
     <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
 
+    <string name="displayProductsCompleted_firstCompleted">First</string>
+    <string name="displayProductsCompleted_hideCompleted">Hide</string>
+    <string name="displayProductsCompleted_lastCompleted">Last</string>
+    <string name="displayProductsCompleted_title">Display completed</string>
+
+    <string name="displayProductsTotal_activeTotal">Active</string>
+    <string name="displayProductsTotal_allTotal">All</string>
+    <string name="displayProductsTotal_completedTotal">Completed</string>
+    <string name="displayProductsTotal_title">Display total</string>
+
     <string name="displayShoppingListsCompleted_firstCompleted">First</string>
     <string name="displayShoppingListsCompleted_hideCompleted">Hide</string>
     <string name="displayShoppingListsCompleted_lastCompleted">Last</string>
@@ -39,6 +49,22 @@
 
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
+
+    <string name="productsTotal_productsActiveTotal">Active: %s</string>
+    <string name="productsTotal_productsAllTotal">All: %s</string>
+    <string name="productsTotal_productsCompletedTotal">Completed: %s</string>
+
+    <string name="products_calculateChange">Calculate change</string>
+    <string name="products_copyProductToShoppingList">Copy to</string>
+    <string name="products_deleteProduct">Delete</string>
+    <string name="products_deleteProducts">Clear</string>
+    <string name="products_editProduct">Edit</string>
+    <string name="products_editShoppingListName">Name</string>
+    <string name="products_editShoppingListReminder">Reminder</string>
+    <string name="products_moveProductToShoppingList">Move to</string>
+    <string name="products_productsNotFound">You have no products</string>
+    <string name="products_reminder">Reminder</string>
+    <string name="products_shareProducts">Share</string>
 
     <string name="purchases_moveShoppingListToArchive">Archive</string>
     <string name="purchases_moveShoppingListToTrash">Delete</string>
@@ -56,6 +82,12 @@
     <string name="shoppingListsTotal_productsActiveTotal">Active: %s</string>
     <string name="shoppingListsTotal_productsAllTotal">All: %s</string>
     <string name="shoppingListsTotal_productsCompletedTotal">Completed: %s</string>
+
+    <string name="sortProducts_byCreated">By created</string>
+    <string name="sortProducts_byLastModified">By last modified</string>
+    <string name="sortProducts_byName">By name</string>
+    <string name="sortProducts_byTotal">By total</string>
+    <string name="sortProducts_title">Sort</string>
 
     <string name="sortShoppingLists_byCreated">By created</string>
     <string name="sortShoppingLists_byLastModified">By last modified</string>

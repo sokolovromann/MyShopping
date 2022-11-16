@@ -17,4 +17,6 @@ sealed class ProductsScreenEvent {
     object ShowBackScreen : ProductsScreenEvent()
 
     data class CalculateChange(val uid: String) : ProductsScreenEvent()
+
+    data class ShareProducts(val products: String) : ProductsScreenEvent()
 }
