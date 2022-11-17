@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
                         purchasesGraph(navController)
                         archiveGraph(navController)
                         trashGraph(navController)
+                        productsGraph(navController)
                     }
                 )
             }
