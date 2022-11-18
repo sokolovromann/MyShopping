@@ -2,6 +2,11 @@
 <resources>
     <string name="all_appName">My Shopping List</string>
 
+    <string name="autocompletes_autocompletesName">Personal dictionary</string>
+    <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
+    <string name="autocompletes_editAutocomplete">Edit</string>
+    <string name="autocompletes_deleteAutocomplete">Delete</string>
+
     <string name="archive_archiveName">Archive</string>
     <string name="archive_moveShoppingListToPurchases">Unarchive</string>
     <string name="archive_moveShoppingListToTrash">Delete</string>
@@ -73,7 +78,7 @@
     <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="route_archiveName">Archive</string>
-    <string name="route_autocompletesName">Autocompletes</string>
+    <string name="route_autocompletesName">Dictionary</string>
     <string name="route_header">@string/all_appName</string>
     <string name="route_purchasesName">@string/purchases_purchasesName</string>
     <string name="route_settingsName">Settings</string>
@@ -94,6 +99,10 @@
     <string name="sortShoppingLists_byName">By name</string>
     <string name="sortShoppingLists_byTotal">By total</string>
     <string name="sortShoppingLists_title">Sort</string>
+
+    <string name="sortAutocompletes_title">Sort</string>
+    <string name="sortAutocompletes_byCreated">By created</string>
+    <string name="sortAutocompletes_byName">By name</string>
 
     <string name="trash_deleteShoppingList">Delete</string>
     <string name="trash_deleteShoppingLists">Clear</string>

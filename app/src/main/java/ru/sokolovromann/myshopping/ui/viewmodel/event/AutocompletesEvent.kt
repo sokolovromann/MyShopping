@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.UiRoute
+
 sealed class AutocompletesEvent {
 
     object AddAutocomplete : AutocompletesEvent()
@@ -9,6 +11,8 @@ sealed class AutocompletesEvent {
     data class DeleteAutocomplete(val uid: String) : AutocompletesEvent()
 
     object SelectAutocompletesSort : AutocompletesEvent()
+
+    data class SelectNavigationItem(val route: UiRoute) : AutocompletesEvent()
 
     object SortAutocompletesByCreated : AutocompletesEvent()
 

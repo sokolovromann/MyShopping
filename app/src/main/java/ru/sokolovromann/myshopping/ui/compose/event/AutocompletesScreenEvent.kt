@@ -8,6 +8,14 @@ sealed class AutocompletesScreenEvent {
 
     object ShowBackScreen : AutocompletesScreenEvent()
 
+    object ShowPurchases : AutocompletesScreenEvent()
+
+    object ShowArchive : AutocompletesScreenEvent()
+
+    object ShowTrash : AutocompletesScreenEvent()
+
+    object ShowSettings : AutocompletesScreenEvent()
+
     object ShowNavigationDrawer : AutocompletesScreenEvent()
 
     object HideNavigationDrawer : AutocompletesScreenEvent()
