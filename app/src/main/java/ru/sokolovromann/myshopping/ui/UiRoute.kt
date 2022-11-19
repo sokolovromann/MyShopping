@@ -7,10 +7,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import ru.sokolovromann.myshopping.ui.compose.ArchiveScreen
-import ru.sokolovromann.myshopping.ui.compose.ProductsScreen
-import ru.sokolovromann.myshopping.ui.compose.PurchasesScreen
-import ru.sokolovromann.myshopping.ui.compose.TrashScreen
+import ru.sokolovromann.myshopping.ui.compose.*
 
 sealed class UiRoute(val graph: String) {
 
@@ -62,6 +59,11 @@ sealed class UiRoute(val graph: String) {
 
     object Autocompletes : UiRoute(graph = "Autocompletes") {
         const val autocompletesScreen = "autocompletes"
+        const val addAutocompletesScreen = "add-autocomplete"
+
+        fun editAutocompleteScreen(uid: String): String {
+            return "edit-autocomplete/$uid"
+        }
     }
 
     object Settings : UiRoute(graph = "Settings") {
@@ -120,6 +122,18 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Products.productsScreen(UiRouteKey.ShoppingUid.placeholder)) {
             ProductsScreen(navController)
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+fun NavGraphBuilder.autocompletesGraph(navController: NavController) {
+    navigation(
+        startDestination = UiRoute.Autocompletes.autocompletesScreen,
+        route = UiRoute.Autocompletes.graph
+    ) {
+        composable(route = UiRoute.Autocompletes.autocompletesScreen) {
+            AutocompletesScreen(navController)
         }
     }
 }
