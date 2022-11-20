@@ -1,14 +1,13 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.UiRoute
+import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
+
 sealed class SettingsEvent {
 
-    object EditCurrencySymbol : SettingsEvent()
+    data class SelectSettingsItem(val uid: SettingsUid) : SettingsEvent()
 
-    object EditTaxRate : SettingsEvent()
-
-    object SelectFontSize : SettingsEvent()
-
-    object SelectProductsDisplayAutocomplete : SettingsEvent()
+    data class SelectNavigationItem(val route: UiRoute) : SettingsEvent()
 
     object DisplayProductsAllAutocomplete : SettingsEvent()
 
@@ -24,29 +23,9 @@ sealed class SettingsEvent {
 
     object HugeFontSizeSelected : SettingsEvent()
 
-    object InvertNightTheme : SettingsEvent()
-
-    object InvertDisplayMoney : SettingsEvent()
-
-    object InvertDisplayCurrencyToLeft : SettingsEvent()
-
-    object InvertFirstLetterUppercase : SettingsEvent()
-
-    object InvertShoppingListsMultiColumns : SettingsEvent()
-
-    object InvertProductsMultiColumns : SettingsEvent()
-
-    object InvertProductsEditCompleted : SettingsEvent()
-
-    object InvertProductsAddLastProducts : SettingsEvent()
-
-    object SendEmailToDeveloper : SettingsEvent()
-
     object ShowBackScreen : SettingsEvent()
 
     object ShowNavigationDrawer : SettingsEvent()
-
-    object ShowAppGithub : SettingsEvent()
 
     object HideFontSize : SettingsEvent()
 

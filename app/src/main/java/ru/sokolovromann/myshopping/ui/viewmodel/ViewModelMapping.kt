@@ -123,6 +123,235 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
+    fun toSettingsHeader(
+        @StringRes header: Int,
+        preferences: SettingsPreferences
+    ) : TextData {
+        return TextData(
+            text = toResourcesUiText(header),
+            style = AppTypography.Subtitle2.textStyle,
+            color = ColorData(appColor = AppColor.OnSurface),
+            fontSize = toTextUnit(preferences.fontSize, FontSizeType.Body),
+            fontWeight = FontWeight.Bold,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
+    }
+
+    fun toGeneralSettingsItems(settings: Settings): List<SettingsItem> {
+        val values = settings.settingsValues
+        val preferences = settings.preferences
+
+        return listOf(
+            SettingsItem(
+                uid = SettingsUid.NightTheme,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_nightTheme),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.nightTheme)
+            ),
+            SettingsItem(
+                uid = SettingsUid.FontSize,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_fontSize),
+                    fontSize =  preferences.fontSize
+                ),
+                body = toBody(
+                    text = toFontSizeText(values.fontSize),
+                    fontSize =  preferences.fontSize
+                )
+            ),
+            SettingsItem(
+                uid = SettingsUid.FirstLetterUppercase,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_firstLetterUppercaseTitle),
+                    fontSize =  preferences.fontSize
+                ),
+                body = toBody(
+                    text = toResourcesUiText(R.string.settings_firstLetterUppercaseBody),
+                    fontSize =  preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.firstLetterUppercase)
+            ),
+        )
+    }
+
+    fun toMoneySettingsItems(settings: Settings): List<SettingsItem> {
+        val values = settings.settingsValues
+        val preferences = settings.preferences
+
+        return listOf(
+            SettingsItem(
+                uid = SettingsUid.DisplayMoney,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_displayMoney),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.displayMoney)
+            ),
+            SettingsItem(
+                uid = SettingsUid.Currency,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_currencySymbol),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toUiTextOrNothing(values.currency.symbol),
+                    fontSize = preferences.fontSize
+                )
+            ),
+            SettingsItem(
+                uid = SettingsUid.DisplayCurrencyToLeft,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_displayCurrencySymbolToLeft),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.currency.displayToLeft)
+            ),
+            SettingsItem(
+                uid = SettingsUid.TaxRate,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_taxRate),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toUiText(values.taxRate.toString()),
+                    fontSize = preferences.fontSize
+                )
+            )
+        )
+    }
+
+    fun toPurchasesSettingsItems(settings: Settings): List<SettingsItem> {
+        val values = settings.settingsValues
+        val preferences = settings.preferences
+
+        return listOf(
+            SettingsItem(
+                uid = SettingsUid.ShoppingsMultiColumns,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_shoppingsMultiColumns),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.shoppingsMultiColumns)
+            ),
+            SettingsItem(
+                uid = SettingsUid.ProductsMultiColumns,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_productsMultiColumns),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.productsMultiColumns)
+            ),
+            SettingsItem(
+                uid = SettingsUid.DisplayAutocomplete,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_displayAutocomplete),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toDisplayAutocompleteText(values.productsDisplayAutocomplete),
+                    fontSize = preferences.fontSize
+                )
+            ),
+            SettingsItem(
+                uid = SettingsUid.EditCompleted,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_editCompletedProductTitle),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toResourcesUiText(R.string.settings_editCompletedProductBody),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.productsEditCompleted)
+            ),
+            SettingsItem(
+                uid = SettingsUid.AddProduct,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_addLastProductTitle),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toResourcesUiText(R.string.settings_addLastProductBody),
+                    fontSize = preferences.fontSize
+                ),
+                checked = toOnSurfaceSwitch(values.productsAddLastProduct)
+            )
+        )
+    }
+
+    fun toAboutSettingsItems(settings: Settings): List<SettingsItem> {
+        val values = settings.settingsValues
+        val preferences = settings.preferences
+
+        return listOf(
+            SettingsItem(
+                uid = SettingsUid.NoUId,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_developer),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toUiText(values.developerName),
+                    fontSize = preferences.fontSize
+                )
+            ),
+            SettingsItem(
+                uid = SettingsUid.Email,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_emailTitle),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toResourcesUiText(R.string.settings_emailBody),
+                    fontSize = preferences.fontSize
+                )
+            ),
+            SettingsItem(
+                uid = SettingsUid.NoUId,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_appVersion),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toUiText(values.appVersion),
+                    fontSize = preferences.fontSize
+                )
+            ),
+            SettingsItem(
+                uid = SettingsUid.Github,
+                title = toTitle(
+                    text = toResourcesUiText(R.string.settings_githubTitle),
+                    fontSize = preferences.fontSize
+                ),
+                body = toBody(
+                    text = toResourcesUiText(R.string.settings_githubBody),
+                    fontSize = preferences.fontSize
+                )
+            )
+        )
+    }
+
+    fun toFontSizeText(fontSize: FontSize): UiText {
+        return when (fontSize) {
+            FontSize.TINY -> toResourcesUiText(R.string.settings_tinyFontSize)
+            FontSize.SMALL -> toResourcesUiText(R.string.settings_smallFontSize)
+            FontSize.MEDIUM -> toResourcesUiText(R.string.settings_mediumFontSize)
+            FontSize.LARGE -> toResourcesUiText(R.string.settings_largeFontSize)
+            FontSize.HUGE -> toResourcesUiText(R.string.settings_hugeFontSize)
+        }
+    }
+
+    fun toDisplayAutocompleteText(displayAutocomplete: DisplayAutocomplete): UiText {
+        return when (displayAutocomplete) {
+            DisplayAutocomplete.ALL -> toResourcesUiText(R.string.settings_displayAllAutocomplete)
+            DisplayAutocomplete.NAME -> toResourcesUiText(R.string.settings_displayNameAutocomplete)
+            DisplayAutocomplete.HIDE -> toResourcesUiText(R.string.settings_hideAutocomplete)
+        }
+    }
+
     fun toPurchasesItemMenu(fontSize: FontSize): PurchasesItemMenu {
         return PurchasesItemMenu(
             moveToArchiveBody = toBody(
@@ -564,6 +793,59 @@ class ViewModelMapping @Inject constructor() {
             activeSelected = toRadioButton(
                 selected = displayTotal == DisplayTotal.ACTIVE
             )
+        )
+    }
+
+    fun toFontSizeMenu(fontSize: FontSize): FontSizeMenu {
+        return FontSizeMenu(
+            tinyBody = toBody(
+                text = toResourcesUiText(R.string.settings_tinyFontSize),
+                fontSize = fontSize
+            ),
+            tinySelected = toRadioButton(selected = fontSize == FontSize.TINY),
+            smallBody = toBody(
+                text = toResourcesUiText(R.string.settings_smallFontSize),
+                fontSize = fontSize
+            ),
+            smallSelected = toRadioButton(selected = fontSize == FontSize.SMALL),
+            mediumBody = toBody(
+                text = toResourcesUiText(R.string.settings_mediumFontSize),
+                fontSize = fontSize
+            ),
+            mediumSelected = toRadioButton(selected = fontSize == FontSize.MEDIUM),
+            largeBody = toBody(
+                text = toResourcesUiText(R.string.settings_largeFontSize),
+                fontSize = fontSize
+            ),
+            largeSelected = toRadioButton(selected = fontSize == FontSize.LARGE),
+            hugeBody = toBody(
+                text = toResourcesUiText(R.string.settings_hugeFontSize),
+                fontSize = fontSize
+            ),
+            hugeSelected = toRadioButton(selected = fontSize == FontSize.HUGE)
+        )
+    }
+
+    fun toDisplayAutocompleteMenu(
+        displayAutocomplete: DisplayAutocomplete,
+        fontSize: FontSize
+    ): DisplayAutocompleteMenu {
+        return DisplayAutocompleteMenu(
+            allBody = toBody(
+                text = toResourcesUiText(R.string.settings_displayAllAutocomplete),
+                fontSize = fontSize
+            ),
+            allSelected = toRadioButton(selected = displayAutocomplete == DisplayAutocomplete.ALL),
+            nameBody = toBody(
+                text = toResourcesUiText(R.string.settings_displayNameAutocomplete),
+                fontSize = fontSize
+            ),
+            nameSelected = toRadioButton(selected = displayAutocomplete == DisplayAutocomplete.NAME),
+            hideBody = toBody(
+                text = toResourcesUiText(R.string.settings_hideAutocomplete),
+                fontSize = fontSize
+            ),
+            hideSelected = toRadioButton(selected = displayAutocomplete == DisplayAutocomplete.HIDE)
         )
     }
 

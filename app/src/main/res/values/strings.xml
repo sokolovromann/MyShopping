@@ -2,16 +2,16 @@
 <resources>
     <string name="all_appName">My Shopping List</string>
 
-    <string name="autocompletes_autocompletesName">Personal dictionary</string>
-    <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
-    <string name="autocompletes_editAutocomplete">Edit</string>
-    <string name="autocompletes_deleteAutocomplete">Delete</string>
-
     <string name="archive_archiveName">Archive</string>
     <string name="archive_moveShoppingListToPurchases">Unarchive</string>
     <string name="archive_moveShoppingListToTrash">Delete</string>
     <string name="archive_productsNotFound">Shopping list is empty</string>
     <string name="archive_shoppingListsNotFound">Archive is empty</string>
+
+    <string name="autocompletes_autocompletesName">Personal dictionary</string>
+    <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
+    <string name="autocompletes_deleteAutocomplete">Delete</string>
+    <string name="autocompletes_editAutocomplete">Edit</string>
 
     <string name="calendar_currentYear">%ta, %tb %td</string>
     <string name="calendar_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
@@ -84,9 +84,48 @@
     <string name="route_settingsName">Settings</string>
     <string name="route_trashName">@string/trash_trashName</string>
 
+    <string name="settings_aboutHeader">About</string>
+    <string name="settings_addLastProductBody">Any product will be add in dictionary</string>
+    <string name="settings_addLastProductTitle">Add unknown product</string>
+    <string name="settings_appVersion">App version</string>
+    <string name="settings_currencySymbol">Currency</string>
+    <string name="settings_developer">Developer</string>
+    <string name="settings_displayAllAutocomplete">All</string>
+    <string name="settings_displayAutocomplete">Display autocompletes</string>
+    <string name="settings_displayCurrencySymbolToLeft">Display currency to the left</string>
+    <string name="settings_displayMoney">Display money</string>
+    <string name="settings_displayNameAutocomplete">Only names</string>
+    <string name="settings_editCompletedProductBody">Will be open screen for edit</string>
+    <string name="settings_editCompletedProductTitle">Edit product after completed</string>
+    <string name="settings_emailBody">Tap to write email</string>
+    <string name="settings_emailTitle">Email</string>
+    <string name="settings_firstLetterUppercaseBody">Names of shopping lists and products</string>
+    <string name="settings_firstLetterUppercaseTitle">First letter uppercase</string>
+    <string name="settings_fontSize">Font size</string>
+    <string name="settings_generalHeader">General</string>
+    <string name="settings_githubBody">Tap to open</string>
+    <string name="settings_githubTitle">GutHub</string>
+    <string name="settings_hideAutocomplete">Hide</string>
+    <string name="settings_hugeFontSize">Huge</string>
+    <string name="settings_largeFontSize">Large</string>
+    <string name="settings_mediumFontSize">Medium</string>
+    <string name="settings_moneyHeader">Money</string>
+    <string name="settings_nightTheme">Night theme</string>
+    <string name="settings_productsMultiColumns">Multi columns in products</string>
+    <string name="settings_purchasesHeader">Purchases</string>
+    <string name="settings_settingsName">Settings</string>
+    <string name="settings_shoppingsMultiColumns">Multi columns in shopping lists</string>
+    <string name="settings_smallFontSize">Small</string>
+    <string name="settings_taxRate">Tax rate</string>
+    <string name="settings_tinyFontSize">Tiny</string>
+
     <string name="shoppingListsTotal_productsActiveTotal">Active: %s</string>
     <string name="shoppingListsTotal_productsAllTotal">All: %s</string>
     <string name="shoppingListsTotal_productsCompletedTotal">Completed: %s</string>
+
+    <string name="sortAutocompletes_byCreated">By created</string>
+    <string name="sortAutocompletes_byName">By name</string>
+    <string name="sortAutocompletes_title">Sort</string>
 
     <string name="sortProducts_byCreated">By created</string>
     <string name="sortProducts_byLastModified">By last modified</string>
@@ -99,10 +138,6 @@
     <string name="sortShoppingLists_byName">By name</string>
     <string name="sortShoppingLists_byTotal">By total</string>
     <string name="sortShoppingLists_title">Sort</string>
-
-    <string name="sortAutocompletes_title">Sort</string>
-    <string name="sortAutocompletes_byCreated">By created</string>
-    <string name="sortAutocompletes_byName">By name</string>
 
     <string name="trash_deleteShoppingList">Delete</string>
     <string name="trash_deleteShoppingLists">Clear</string>
