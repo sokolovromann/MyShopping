@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
                         trashGraph(navController)
                         productsGraph(navController)
                         autocompletesGraph(navController)
+                        settingsGraph(navController)
                     }
                 )
             }

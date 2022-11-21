@@ -68,6 +68,8 @@ sealed class UiRoute(val graph: String) {
 
     object Settings : UiRoute(graph = "Settings") {
         const val settingsScreen = "settings"
+        const val editCurrencyScreen = "edit-currency"
+        const val editTaxRateScreen = "edit-tax-rate"
     }
 }
 
@@ -134,6 +136,17 @@ fun NavGraphBuilder.autocompletesGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Autocompletes.autocompletesScreen) {
             AutocompletesScreen(navController)
+        }
+    }
+}
+
+fun NavGraphBuilder.settingsGraph(navController: NavController) {
+    navigation(
+        startDestination = UiRoute.Settings.settingsScreen,
+        route = UiRoute.Settings.graph
+    ) {
+        composable(route = UiRoute.Settings.settingsScreen) {
+            SettingsScreen(navController)
         }
     }
 }
