@@ -18,13 +18,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getMainPreferences(): Flow<MainPreferences> = withContext(dispatchers.io) {
         return@withContext preferencesDao.getMainPreferences().transform {
-            mapping.toMainPreferences(it)
+            val value = mapping.toMainPreferences(it)
+            emit(value)
         }
     }
 
     override suspend fun getDefaultCurrency(): Flow<Currency> = withContext(dispatchers.io) {
         return@withContext resources.getCurrencyResources().transform {
-            mapping.toCurrency(it.defaultCurrency, it.defaultCurrencyDisplayToLeft)
+            val value = mapping.toCurrency(it.defaultCurrency, it.defaultCurrencyDisplayToLeft)
+            emit(value)
         }
     }
 
