@@ -28,9 +28,9 @@ class PurchasesAlarmManager @Inject constructor(
         alarmManager.cancel(pendingIntent)
     }
 
-    fun deleteAppVersion14Reminder(id: Long) {
+    fun deleteAppVersion14Reminder(id: Int) {
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        val pendingIntent = PendingIntent.getBroadcast(context, id.toInt(), Intent(), flags)
+        val pendingIntent = PendingIntent.getBroadcast(context, id, Intent(), flags)
         alarmManager.cancel(pendingIntent)
     }
 

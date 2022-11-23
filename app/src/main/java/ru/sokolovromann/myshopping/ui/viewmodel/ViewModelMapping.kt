@@ -1250,4 +1250,20 @@ class ViewModelMapping @Inject constructor() {
             )
         }
     }
+
+    fun toShoppingsMultiColumns(screenWidth: Int): Boolean {
+        return screenWidth >= 600
+    }
+
+    fun toProductsMultiColumns(screenWidth: Int): Boolean {
+        return screenWidth >= 720
+    }
+
+    fun toScreenSize(screenWidth: Int): ScreenSize {
+        return if (screenWidth >= 720) {
+            ScreenSize.TABLET
+        } else {
+            ScreenSize.SMARTPHONE
+        }
+    }
 }

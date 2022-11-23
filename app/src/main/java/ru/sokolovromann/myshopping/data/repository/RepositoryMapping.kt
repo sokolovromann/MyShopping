@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository
 
+import android.database.Cursor
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.local.entity.*
 import ru.sokolovromann.myshopping.data.repository.model.*
@@ -55,6 +56,19 @@ class RepositoryMapping @Inject constructor() {
             productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
+        )
+    }
+
+    fun toShoppingList(cursor: Cursor): ShoppingList {
+        val id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"))
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("listname"))
+        val alarm = cursor.getLong(cursor.getColumnIndexOrThrow("alarm"))
+
+        return ShoppingList(
+            id = id.toInt(),
+            uid = toAppVersion14ShoppingUid(id),
+            name = name,
+            reminder = toReminder(alarm)
         )
     }
 
@@ -156,6 +170,29 @@ class RepositoryMapping @Inject constructor() {
             discount = toDiscount(entity.discount, entity.discountAsPercent),
             taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
             completed = entity.completed
+        )
+    }
+
+    fun toProduct(cursor: Cursor): Product {
+        val listId = cursor.getLong(cursor.getColumnIndexOrThrow("listid"))
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("goodsname"))
+        val number = cursor.getString(cursor.getColumnIndexOrThrow("number"))
+        val numberMeasure = cursor.getString(cursor.getColumnIndexOrThrow("numbermeasure"))
+        val priceMeasure = cursor.getFloat(cursor.getColumnIndexOrThrow("pricemeasure"))
+        val buy = cursor.getInt(cursor.getColumnIndexOrThrow("goodsbuy"))
+
+        val quantity = Quantity(
+            value = number.toFloatOrNull() ?: 0f,
+            symbol = numberMeasure
+        )
+        val price = Money(value = priceMeasure)
+
+        return Product(
+            shoppingUid = toAppVersion14ShoppingUid(listId),
+            name = name,
+            quantity = quantity,
+            price = price,
+            completed = toAppVersion14Completed(buy)
         )
     }
 
@@ -262,6 +299,11 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toAutocomplete(cursor: Cursor): Autocomplete {
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("completename"))
+        return Autocomplete(name = name)
+    }
+
     fun toAutocompletePreferences(entity: AutocompletePreferencesEntity): AutocompletePreferences {
         return AutocompletePreferences(
             currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
@@ -332,10 +374,64 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toMainPreferences(entity: MainPreferencesEntity): MainPreferences {
+    fun toMainPreferences(
+        entity: MainPreferencesEntity,
+        appVersion14FirstOpened: Boolean
+    ): MainPreferences {
         return MainPreferences(
-            appOpenedAction = toAppOpenedAction(entity.appOpenedAction),
+            appOpenedAction = toAppOpenedAction(entity.appOpenedAction, appVersion14FirstOpened),
             nightTheme = entity.nightTheme
+        )
+    }
+
+    fun toAppVersion14Preferences(entity: AppVersion14PreferencesEntity): AppVersion14Preferences {
+        return AppVersion14Preferences(
+            firstOpened = entity.firstOpened,
+            currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
+            taxRate = toTaxRate(entity.taxRate, true),
+            fontSize = toFontSize(entity.titleFontSize),
+            firstLetterUppercase = entity.firstLetterUppercase,
+            multiColumns = toMultiColumns(entity.columnCount),
+            sort = toSort(entity.sort),
+            displayMoney = entity.displayMoney,
+            displayTotal = toDisplayTotal(entity.displayTotal),
+            editCompleted = entity.editCompleted,
+            addLastProduct = entity.addLastProduct
+        )
+    }
+
+    fun toAppVersion14(
+        shoppingListsCursor: Cursor,
+        productsCursor: Cursor,
+        autocompletesCursor: Cursor,
+        preferences: AppVersion14PreferencesEntity
+    ): AppVersion14 {
+        val shoppingLists = mutableListOf<ShoppingList>()
+        while (shoppingListsCursor.moveToNext()) {
+            val shoppingList = toShoppingList(shoppingListsCursor)
+
+            val products = mutableListOf<Product>()
+            while (productsCursor.moveToNext()) {
+                val product = toProduct(productsCursor)
+                if (product.shoppingUid == shoppingList.uid) {
+                    products.add(product)
+                }
+            }
+            shoppingLists.add(shoppingList.copy(products = products))
+
+            productsCursor.moveToFirst()
+        }
+
+        val autocompletes = mutableListOf<Autocomplete>()
+        while (autocompletesCursor.moveToNext()) {
+            val autocomplete = toAutocomplete(autocompletesCursor)
+            autocompletes.add(autocomplete)
+        }
+
+        return AppVersion14(
+            shoppingLists = shoppingLists.toList(),
+            autocompletes = autocompletes.toList(),
+            preferences = toAppVersion14Preferences(preferences)
         )
     }
 
@@ -401,7 +497,10 @@ class RepositoryMapping @Inject constructor() {
         return entity.appGithubLink
     }
 
-    fun toAppOpenedAction(name: String): AppOpenedAction {
+    fun toAppOpenedAction(name: String, appVersion14FirstOpened: Boolean): AppOpenedAction {
+        if (appVersion14FirstOpened) {
+            return AppOpenedAction.MIGRATE_FROM_APP_VERSION_14
+        }
         return AppOpenedAction.valueOfOrDefault(name)
     }
 
@@ -469,12 +568,42 @@ class RepositoryMapping @Inject constructor() {
         return FontSize.valueOfOrDefault(name)
     }
 
+    fun toFontSize(value: Int): FontSize {
+        return if (value <= 14) {
+            FontSize.TINY
+        } else if (value == 16) {
+            FontSize.SMALL
+        } else if (value <= 18) {
+            FontSize.MEDIUM
+        } else if (value <= 20) {
+            FontSize.LARGE
+        } else if (value <= 22) {
+            FontSize.HUGE
+        } else {
+            FontSize.MEDIUM
+        }
+    }
+
     fun toFontSizeName(fontSize: FontSize): String {
         return fontSize.name
     }
 
+    fun toMultiColumns(columnCount: Int): Boolean {
+        return columnCount > 1
+    }
+
     fun toSort(sortByName: String, ascending: Boolean): Sort {
         return Sort(SortBy.valueOfOrDefault(sortByName), ascending)
+    }
+
+    fun toSort(value: Int): Sort {
+        val toSortBy: SortBy = when (value) {
+            0 -> SortBy.CREATED
+            1, 3 -> SortBy.NAME
+            2, 4 -> SortBy.TOTAL
+            else -> SortBy.CREATED
+        }
+        return Sort(sortBy = toSortBy)
     }
 
     fun toSortByName(sort: Sort): String {
@@ -499,6 +628,15 @@ class RepositoryMapping @Inject constructor() {
 
     fun toDisplayTotal(name: String): DisplayTotal {
         return DisplayTotal.valueOfOrDefault(name)
+    }
+
+    fun toDisplayTotal(value: Int): DisplayTotal {
+        return when (value) {
+            0 -> DisplayTotal.ALL
+            1 -> DisplayTotal.ACTIVE
+            2 -> DisplayTotal.COMPLETED
+            else -> DisplayTotal.ALL
+        }
     }
 
     fun toDisplayTotalName(displayTotal: DisplayTotal): String {
@@ -539,5 +677,14 @@ class RepositoryMapping @Inject constructor() {
 
     fun toProductsEmpty(entities: List<ProductEntity>): Boolean {
         return entities.isEmpty()
+    }
+
+    private fun toAppVersion14ShoppingUid(listId: Long): String {
+        return listId.toString()
+    }
+
+    private fun toAppVersion14Completed(buy: Int): Boolean {
+        val completed = 2130837592
+        return buy == completed
     }
 }

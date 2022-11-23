@@ -67,6 +67,8 @@ class MainActivity : ComponentActivity() {
                     is MainScreenEvent.ShowProducts -> navController.navigate(
                         route = UiRoute.Products.productsScreen(it.uid)
                     )
+
+                    MainScreenEvent.GetScreenSize -> migrateFromAppVersion14()
                 }
             }
         }
@@ -74,6 +76,14 @@ class MainActivity : ComponentActivity() {
 
     private fun addDefaultPreferences() {
         val event = MainEvent.AddDefaultPreferences(
+            screenWidth = resources.configuration.screenWidthDp,
+            screenHeight = resources.configuration.screenHeightDp
+        )
+        viewModel.onEvent(event)
+    }
+
+    private fun migrateFromAppVersion14() {
+        val event = MainEvent.MigrateFromAppVersion14(
             screenWidth = resources.configuration.screenWidthDp,
             screenHeight = resources.configuration.screenHeightDp
         )

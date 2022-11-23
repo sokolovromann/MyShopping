@@ -347,12 +347,16 @@ object AppModule {
 
     @Provides
     fun providesMainRepositoryImpl(
+        localDatabase: LocalDatabase,
         preferencesDao: MainPreferencesDao,
         resources: MainResources,
+        appVersion14LocalDatabase: AppVersion14LocalDatabase,
+        appVersion14Preferences: AppVersion14LocalPreferences,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): MainRepositoryImpl {
-        return MainRepositoryImpl(preferencesDao, resources, mapping, dispatchers)
+        return MainRepositoryImpl(localDatabase.mainDao(), preferencesDao, resources,
+            appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
     }
 
     @Provides

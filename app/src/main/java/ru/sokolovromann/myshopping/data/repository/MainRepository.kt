@@ -9,6 +9,14 @@ interface MainRepository {
 
     suspend fun getDefaultCurrency(): Flow<Currency>
 
+    suspend fun getAppVersion14(): Flow<AppVersion14>
+
+    suspend fun addShoppingList(shoppingList: ShoppingList)
+
+    suspend fun addProduct(product: Product)
+
+    suspend fun addAutocomplete(autocomplete: Autocomplete)
+
     suspend fun addAppOpenedAction(appOpenedAction: AppOpenedAction)
 
     suspend fun addCurrency(currency: Currency)
