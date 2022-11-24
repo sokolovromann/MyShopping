@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AddEditAutocompleteDao
@@ -18,18 +19,21 @@ class AddEditAutocompleteRepositoryImpl @Inject constructor(
 ) : AddEditAutocompleteRepository {
 
     override suspend fun getAddEditAutocomplete(
-        uid: String
-    ): Flow<AddEditAutocomplete?> = withContext(dispatchers.io) {
-        return@withContext autocompleteDao.getAutocomplete(uid).combine(
-            flow = preferencesDao.getAutocompletePreferences(),
-            transform = { entity, preferencesEntity ->
-                if (entity == null) {
-                    return@combine null
-                }
-
-                mapping.toAddEditAutocomplete(entity, preferencesEntity)
+        uid: String?
+    ): Flow<AddEditAutocomplete> = withContext(dispatchers.io) {
+        return@withContext if (uid == null) {
+            preferencesDao.getAutocompletePreferences().transform {
+                val value = mapping.toAddEditAutocomplete(null, it)
+                emit(value)
             }
-        )
+        } else {
+            autocompleteDao.getAutocomplete(uid).combine(
+                flow = preferencesDao.getAutocompletePreferences(),
+                transform = { entity, preferencesEntity ->
+                    mapping.toAddEditAutocomplete(entity, preferencesEntity)
+                }
+            )
+        }
     }
 
     override suspend fun addAutocomplete(

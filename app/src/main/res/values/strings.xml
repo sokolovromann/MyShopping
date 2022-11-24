@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="addEditAutocomplete_addAutocompleteName">Add</string>
+    <string name="addEditAutocomplete_cancel">Cancel</string>
+    <string name="addEditAutocomplete_editAutocompleteName">Edit</string>
+    <string name="addEditAutocomplete_nameError">Add name</string>
+    <string name="addEditAutocomplete_nameLabel">Name</string>
+    <string name="addEditAutocomplete_save">Save</string>
+
     <string name="all_appName">My Shopping List</string>
 
     <string name="archive_archiveName">Archive</string>

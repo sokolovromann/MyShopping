@@ -6,7 +6,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 
 interface AddEditAutocompleteRepository {
 
-    suspend fun getAddEditAutocomplete(uid: String): Flow<AddEditAutocomplete?>
+    suspend fun getAddEditAutocomplete(uid: String?): Flow<AddEditAutocomplete>
 
     suspend fun addAutocomplete(autocomplete: Autocomplete)
 

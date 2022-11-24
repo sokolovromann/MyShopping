@@ -325,11 +325,11 @@ class RepositoryMapping @Inject constructor() {
     }
 
     fun toAddEditAutocomplete(
-        entity: AutocompleteEntity,
+        entity: AutocompleteEntity?,
         preferencesEntity: AutocompletePreferencesEntity
     ): AddEditAutocomplete {
         return AddEditAutocomplete(
-            autocomplete = toAutocomplete(entity, preferencesEntity),
+            autocomplete = if (entity == null) null else toAutocomplete(entity, preferencesEntity),
             preferences = toAutocompletePreferences(preferencesEntity)
         )
     }
