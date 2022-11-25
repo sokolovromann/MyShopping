@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
 import ru.sokolovromann.myshopping.ui.compose.*
 
@@ -77,6 +78,10 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
     ShoppingUid(
         key = "shopping-uid",
         placeholder = "{shopping-uid}"
+    ),
+    AutocompleteUid(
+        key = "autocomplete-uid",
+        placeholder = "{autocomplete-uid}"
     )
 }
 
@@ -136,6 +141,12 @@ fun NavGraphBuilder.autocompletesGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Autocompletes.autocompletesScreen) {
             AutocompletesScreen(navController)
+        }
+        dialog(route = UiRoute.Autocompletes.addAutocompletesScreen) {
+            AddEditAutocompleteScreen(navController)
+        }
+        dialog(route = UiRoute.Autocompletes.editAutocompleteScreen(UiRouteKey.AutocompleteUid.placeholder)) {
+            AddEditAutocompleteScreen(navController)
         }
     }
 }
