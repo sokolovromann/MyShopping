@@ -17,10 +17,6 @@ import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
 
 @Composable
 fun AppText(modifier: Modifier = Modifier, data: TextData) {
-    if (data.isTextHiding()) {
-        return
-    }
-
     Text(
         modifier = modifier,
         text = data.text.asCompose(),
