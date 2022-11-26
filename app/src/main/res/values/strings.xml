@@ -59,6 +59,12 @@
     <string name="displayShoppingListsTotal_completedTotal">Completed</string>
     <string name="displayShoppingListsTotal_title">Display total</string>
 
+    <string name="editCurrencySymbol_cancel">Cancel</string>
+    <string name="editCurrencySymbol_editCurrencySymbolName">Edit currency</string>
+    <string name="editCurrencySymbol_save">Save</string>
+    <string name="editCurrencySymbol_symbolError">Add currency</string>
+    <string name="editCurrencySymbol_symbolLabel">Currency</string>
+
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
 
