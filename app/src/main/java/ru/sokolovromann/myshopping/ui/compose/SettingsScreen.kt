@@ -39,7 +39,7 @@ fun SettingsScreen(
         viewModel.screenEventFlow.collect {
             when (it) {
                 SettingsScreenEvent.EditCurrency -> navController.navigate(
-                    route = UiRoute.Settings.editCurrencyScreen
+                    route = UiRoute.Settings.editCurrencySymbolScreen
                 )
 
                 SettingsScreenEvent.EditTaxRate -> navController.navigate(

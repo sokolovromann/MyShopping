@@ -69,7 +69,7 @@ sealed class UiRoute(val graph: String) {
 
     object Settings : UiRoute(graph = "Settings") {
         const val settingsScreen = "settings"
-        const val editCurrencyScreen = "edit-currency"
+        const val editCurrencySymbolScreen = "edit-currency-symbol"
         const val editTaxRateScreen = "edit-tax-rate"
     }
 }
@@ -158,6 +158,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Settings.settingsScreen) {
             SettingsScreen(navController)
+        }
+        dialog(route = UiRoute.Settings.editCurrencySymbolScreen) {
+            EditCurrencySymbolScreen(navController)
         }
     }
 }
