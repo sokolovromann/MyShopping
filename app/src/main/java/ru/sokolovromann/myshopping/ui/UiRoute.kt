@@ -162,6 +162,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         dialog(route = UiRoute.Settings.editCurrencySymbolScreen) {
             EditCurrencySymbolScreen(navController)
         }
+        dialog(route = UiRoute.Settings.editTaxRateScreen) {
+            EditTaxRateScreen(navController)
+        }
     }
 }
 
