@@ -341,6 +341,7 @@ class RepositoryMapping @Inject constructor() {
         return SettingsValues(
             nightTheme = entity.nightTheme,
             currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
+            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
             fontSize = toFontSize(entity.fontSize),
             firstLetterUppercase = entity.firstLetterUppercase,
             displayMoney = entity.displayMoney,

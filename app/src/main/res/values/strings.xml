@@ -65,6 +65,12 @@
     <string name="editCurrencySymbol_symbolError">Add currency</string>
     <string name="editCurrencySymbol_symbolLabel">Currency</string>
 
+    <string name="editTaxRate_cancel">Cancel</string>
+    <string name="editTaxRate_editTaxRateName">Edit tax rate</string>
+    <string name="editTaxRate_save">Save</string>
+    <string name="editTaxRate_taxRateError">Add tax rate</string>
+    <string name="editTaxRate_taxRateLabel">Tax rate</string>
+
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
 
