@@ -130,6 +130,9 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         composable(route = UiRoute.Products.productsScreen(UiRouteKey.ShoppingUid.placeholder)) {
             ProductsScreen(navController)
         }
+        dialog(route = UiRoute.Products.editShoppingListNameScreen(UiRouteKey.ShoppingUid.placeholder)) {
+            EditShoppingListNameScreen(navController)
+        }
     }
 }
 
