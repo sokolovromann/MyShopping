@@ -65,6 +65,12 @@
     <string name="editCurrencySymbol_symbolError">Add currency</string>
     <string name="editCurrencySymbol_symbolLabel">Currency</string>
 
+    <string name="editShoppingListName_addShoppingListNameName">Add</string>
+    <string name="editShoppingListName_cancel">Cancel</string>
+    <string name="editShoppingListName_editShoppingListNameName">Edit</string>
+    <string name="editShoppingListName_nameLabel">Name</string>
+    <string name="editShoppingListName_save">Save</string>
+
     <string name="editTaxRate_cancel">Cancel</string>
     <string name="editTaxRate_editTaxRateName">Edit tax rate</string>
     <string name="editTaxRate_save">Save</string>

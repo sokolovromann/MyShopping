@@ -467,11 +467,11 @@ class RepositoryMapping @Inject constructor() {
     }
 
     fun toEditShoppingListName(
-        entity: ShoppingListEntity,
+        entity: ShoppingListEntity?,
         preferencesEntity: ProductPreferencesEntity
     ): EditShoppingListName {
         return EditShoppingListName(
-            shoppingList = toShoppingList(entity, preferencesEntity),
+            shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
             preferences = toProductPreferences(preferencesEntity)
         )
     }
