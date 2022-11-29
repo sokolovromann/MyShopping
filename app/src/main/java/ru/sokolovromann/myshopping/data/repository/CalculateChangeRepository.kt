@@ -5,5 +5,5 @@ import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 
 interface CalculateChangeRepository {
 
-    suspend fun getCalculateChange(uid: String): Flow<CalculateChange?>
+    suspend fun getCalculateChange(uid: String?): Flow<CalculateChange>
 }

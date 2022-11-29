@@ -20,6 +20,13 @@
     <string name="autocompletes_deleteAutocomplete">Delete</string>
     <string name="autocompletes_editAutocomplete">Edit</string>
 
+    <string name="calculateChange_back">Back</string>
+    <string name="calculateChange_calculateChangeName">Calculate change</string>
+    <string name="calculateChange_change">Change: %s</string>
+    <string name="calculateChange_noChange">Change: no change</string>
+    <string name="calculateChange_total">Total: %s</string>
+    <string name="calculateChange_userMoneyLabel">Money</string>
+
     <string name="calendar_currentYear">%ta, %tb %td</string>
     <string name="calendar_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
     <string name="calendar_other">%tb %td, %tY</string>

@@ -477,11 +477,11 @@ class RepositoryMapping @Inject constructor() {
     }
 
     fun toCalculateChange(
-        entity: ShoppingListEntity,
+        entity: ShoppingListEntity?,
         preferencesEntity: ProductPreferencesEntity
     ): CalculateChange {
         return CalculateChange(
-            shoppingList = toShoppingList(entity, preferencesEntity),
+            shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
             preferences = toProductPreferences(preferencesEntity)
         )
     }
