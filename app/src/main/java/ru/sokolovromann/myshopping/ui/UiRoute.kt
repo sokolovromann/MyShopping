@@ -133,6 +133,9 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         dialog(route = UiRoute.Products.editShoppingListNameScreen(UiRouteKey.ShoppingUid.placeholder)) {
             EditShoppingListNameScreen(navController)
         }
+        dialog(route = UiRoute.Products.calculateChange(UiRouteKey.ShoppingUid.placeholder)) {
+            CalculateChangeScreen(navController)
+        }
     }
 }
 
