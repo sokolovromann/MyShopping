@@ -457,11 +457,11 @@ class RepositoryMapping @Inject constructor() {
     }
 
     fun toEditReminder(
-        entity: ShoppingListEntity,
+        entity: ShoppingListEntity?,
         preferencesEntity: ProductPreferencesEntity
     ): EditReminder {
         return EditReminder(
-            shoppingList = toShoppingList(entity, preferencesEntity),
+            shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
             preferences = toProductPreferences(preferencesEntity)
         )
     }

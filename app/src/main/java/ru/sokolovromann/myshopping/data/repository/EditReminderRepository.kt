@@ -5,7 +5,7 @@ import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 
 interface EditReminderRepository {
 
-    suspend fun getEditReminder(uid: String): Flow<EditReminder?>
+    suspend fun getEditReminder(uid: String?): Flow<EditReminder>
 
     suspend fun saveReminder(uid: String, reminder: Long, lastModified: Long)
 

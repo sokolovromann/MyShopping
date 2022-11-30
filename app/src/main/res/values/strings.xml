@@ -72,6 +72,12 @@
     <string name="editCurrencySymbol_symbolError">Add currency</string>
     <string name="editCurrencySymbol_symbolLabel">Currency</string>
 
+    <string name="editReminder_addReminderName">Add</string>
+    <string name="editReminder_cancel">Cancel</string>
+    <string name="editReminder_delete">Delete</string>
+    <string name="editReminder_editReminderName">Edit</string>
+    <string name="editReminder_save">Save</string>
+
     <string name="editShoppingListName_addShoppingListNameName">Add</string>
     <string name="editShoppingListName_cancel">Cancel</string>
     <string name="editShoppingListName_editShoppingListNameName">Edit</string>

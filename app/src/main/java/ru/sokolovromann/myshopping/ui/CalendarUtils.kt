@@ -5,6 +5,14 @@ import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import java.util.*
 import java.util.Calendar.getInstance
 
+fun Calendar.getDefaultReminder(): Calendar {
+    timeInMillis += 3600000L // plus 1 hour
+    set(Calendar.SECOND, 0)
+    set(Calendar.MILLISECOND, 0)
+
+    return this
+}
+
 fun Calendar.getDisplayDateAndTime(): UiText = when {
     isYesterday() -> UiText.FromResourcesWithArgs(
         id = R.string.calendar_yesterdayAt,
