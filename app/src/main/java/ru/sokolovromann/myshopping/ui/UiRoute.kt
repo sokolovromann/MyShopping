@@ -136,6 +136,9 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         dialog(route = UiRoute.Products.calculateChange(UiRouteKey.ShoppingUid.placeholder)) {
             CalculateChangeScreen(navController)
         }
+        dialog(route = UiRoute.Products.editShoppingListReminderScreen(UiRouteKey.ShoppingUid.placeholder)) {
+            EditReminderScreen(navController)
+        }
     }
 }
 
