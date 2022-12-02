@@ -43,7 +43,8 @@ fun AppTextField(
             textStyle = TextStyle.Default.copy(
                 fontSize = data.textFontSize,
                 color = data.textColor.asCompose()
-            )
+            ),
+            enabled = data.enabled
         )
 
         data.error?.let {
@@ -78,7 +79,8 @@ fun OutlinedAppTextField(
             textStyle = TextStyle.Default.copy(
                 fontSize = data.textFontSize,
                 color = data.textColor.asCompose()
-            )
+            ),
+            enabled = data.enabled
         )
 
         data.error?.let {

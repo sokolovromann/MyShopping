@@ -14,11 +14,17 @@ class TextFieldState {
     var currentData by mutableStateOf(TextFieldData())
         private set
 
-    fun showTextField(text: TextFieldValue, label: TextData, keyboardOptions: KeyboardOptions) {
+    fun showTextField(
+        text: TextFieldValue,
+        label: TextData,
+        keyboardOptions: KeyboardOptions,
+        enabled: Boolean = true,
+    ) {
         currentData = TextFieldData(
             text = text,
             label = label,
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
+            enabled = enabled
         )
     }
 
@@ -35,6 +41,14 @@ class TextFieldState {
             text = text,
             error = null
         )
+    }
+
+    fun enable() {
+        currentData = currentData.copy(enabled = true)
+    }
+
+    fun disable() {
+        currentData = currentData.copy(enabled = false)
     }
 
     fun isTextEmpty(): Boolean {
@@ -58,5 +72,6 @@ data class TextFieldData(
     val error: TextData? = null,
     val keyboardOptions: KeyboardOptions = KeyboardOptions(),
     val maxLines: Int = 1,
-    val hideTextField: Boolean = false
+    val hideTextField: Boolean = false,
+    val enabled: Boolean = true,
 )
