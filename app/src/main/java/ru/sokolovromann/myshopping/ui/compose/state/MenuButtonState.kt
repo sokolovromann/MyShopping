@@ -20,6 +20,12 @@ class MenuButtonState<M> {
         currentData = currentData.copy(expandedMenu = true)
     }
 
+    fun changeText(text: TextData) {
+        currentData = currentData.copy(
+            text = text
+        )
+    }
+
     fun hideButton() {
         currentData = currentData.copy(
             text = TextData()
