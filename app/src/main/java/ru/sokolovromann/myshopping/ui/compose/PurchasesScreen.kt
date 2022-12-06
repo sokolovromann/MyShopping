@@ -440,14 +440,20 @@ private fun itemBodyOrNull(item: ShoppingListItem): @Composable (() -> Unit)? {
                     AppText(data = it.second)
                 }
             }
-            AppText(
-                modifier = Modifier.padding(top = 8.dp),
-                data = item.totalBody
-            )
-            AppText(
-                modifier = Modifier.padding(top = 8.dp),
-                data = item.reminderBody
-            )
+
+            if (item.totalBody.isTextShowing()) {
+                AppText(
+                    modifier = Modifier.padding(top = 8.dp),
+                    data = item.totalBody
+                )
+            }
+
+            if (item.reminderBody.isTextShowing()) {
+                AppText(
+                    modifier = Modifier.padding(top = 8.dp),
+                    data = item.reminderBody
+                )
+            }
         }
     }
 }
