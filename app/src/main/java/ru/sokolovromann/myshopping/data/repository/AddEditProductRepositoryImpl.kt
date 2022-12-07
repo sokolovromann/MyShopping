@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AddEditProductDao
@@ -21,17 +22,20 @@ class AddEditProductRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : AddEditProductRepository {
 
-    override suspend fun getAddEditProduct(uid: String): Flow<AddEditProduct?> = withContext(dispatchers.io) {
-        return@withContext productDao.getProduct(uid).combine(
-            flow = preferencesDao.getProductPreferences(),
-            transform = { entity, preferencesEntity ->
-                if (entity == null) {
-                    return@combine null
-                }
-
-                mapping.toAddEditProduct(entity, preferencesEntity)
+    override suspend fun getAddEditProduct(uid: String?): Flow<AddEditProduct> = withContext(dispatchers.io) {
+        return@withContext if (uid == null) {
+            preferencesDao.getProductPreferences().transform {
+                val value = mapping.toAddEditProduct(null, it)
+                emit(value)
             }
-        )
+        } else {
+            productDao.getProduct(uid).combine(
+                flow = preferencesDao.getProductPreferences(),
+                transform = { entity, preferencesEntity ->
+                    mapping.toAddEditProduct(entity, preferencesEntity)
+                }
+            )
+        }
     }
 
     override suspend fun getAutocompletes(

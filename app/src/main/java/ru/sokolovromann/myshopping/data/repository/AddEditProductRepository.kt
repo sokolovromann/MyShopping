@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Product
 
 interface AddEditProductRepository {
 
-    suspend fun getAddEditProduct(uid: String): Flow<AddEditProduct?>
+    suspend fun getAddEditProduct(uid: String?): Flow<AddEditProduct>
 
     suspend fun getAutocompletes(search: String): Flow<AddEditProductAutocomplete>
 

@@ -221,9 +221,9 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toAddEditProduct(entity: ProductEntity, preferencesEntity: ProductPreferencesEntity): AddEditProduct {
+    fun toAddEditProduct(entity: ProductEntity?, preferencesEntity: ProductPreferencesEntity): AddEditProduct {
         return AddEditProduct(
-            product = toProduct(entity, preferencesEntity),
+            product = if (entity == null) null else toProduct(entity, preferencesEntity),
             preferences = toProductPreferences(preferencesEntity)
         )
     }

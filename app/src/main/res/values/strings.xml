@@ -7,6 +7,16 @@
     <string name="addEditAutocomplete_nameLabel">Name</string>
     <string name="addEditAutocomplete_save">Save</string>
 
+    <string name="addEditProduct_discountAsMoney">Money</string>
+    <string name="addEditProduct_discountAsPercents">Percents</string>
+    <string name="addEditProduct_discountLabel">Discount</string>
+    <string name="addEditProduct_nameError">Add name</string>
+    <string name="addEditProduct_nameLabel">Name</string>
+    <string name="addEditProduct_priceLabel">Price per unit</string>
+    <string name="addEditProduct_quantityLabel">Quantity</string>
+    <string name="addEditProduct_quantitySymbolLabel">Symbol</string>
+    <string name="addEditProduct_save">Save</string>
+
     <string name="all_appName">My Shopping List</string>
 
     <string name="archive_archiveName">Archive</string>

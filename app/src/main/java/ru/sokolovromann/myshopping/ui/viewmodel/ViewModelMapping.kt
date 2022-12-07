@@ -546,6 +546,19 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
+    fun toDiscountAsPercentBody(asPercent: Boolean, fontSize: FontSize): TextData {
+        val text: UiText = if (asPercent) {
+            UiText.FromResources(R.string.addEditProduct_discountAsPercents)
+        } else {
+            UiText.FromResources(R.string.addEditProduct_discountAsMoney)
+        }
+        return toBody(
+            text = text,
+            fontSize = fontSize,
+            appColor = AppColor.OnBackground
+        )
+    }
+
     fun toSortAscendingIconBody(ascending: Boolean): IconData {
         val icon = if (ascending) {
             UiIcon.FromVector(Icons.Default.KeyboardArrowUp)
@@ -661,6 +674,25 @@ class ViewModelMapping @Inject constructor() {
             byNameSelected = toRadioButton(
                 selected = sortBy == SortBy.NAME
             )
+        )
+    }
+
+    fun toDiscountAsPercentMenuMenu(asPercent: Boolean, fontSize: FontSize): DiscountAsPercentMenu {
+        return DiscountAsPercentMenu(
+            asPercentBody = toBody(
+                text = UiText.FromResources(R.string.addEditProduct_discountAsPercents),
+                fontSize = fontSize
+            ),
+            asPercentSelected = toRadioButton(
+                selected = asPercent
+            ),
+            asMoneyBody = toBody(
+                text = UiText.FromResources(R.string.addEditProduct_discountAsMoney),
+                fontSize = fontSize
+            ),
+            asMoneySelected = toRadioButton(
+                selected = !asPercent
+            ),
         )
     }
 

@@ -188,7 +188,7 @@ object AppModule {
     }
 
     @Provides
-    fun providesAddEditProductRepository(repository: AddEditProductRepository): AddEditProductRepository {
+    fun providesAddEditProductRepository(repository: AddEditProductRepositoryImpl): AddEditProductRepository {
         return repository
     }
 
