@@ -18,10 +18,11 @@ data class Product(
 
     fun calculateTotal(): Money {
         val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
-        val discountValue = discount.calculate(price).value
-        val taxRateValue = taxRate.calculate(price).value
+        val total = quantityValue * price.value
+        val discountValue = discount.calculate(total)
+        val taxRateValue = taxRate.calculate(total)
 
-        val total = quantityValue * price.value - discountValue + taxRateValue
-        return Money(total, price.currency)
+        val totalWithDiscountAndTaxRate = total - discountValue + taxRateValue
+        return Money(totalWithDiscountAndTaxRate, price.currency)
     }
 }

@@ -48,12 +48,11 @@ data class TaxRate(
             return Money(0f, money.currency)
         }
 
-        val taxRate = if (asPercent) {
-            money.value * (value / 100)
-        } else {
-            value
-        }
-        return Money(taxRate, money.currency)
+        return Money(calculate(money.value), money.currency)
+    }
+
+    fun calculate(money: Float): Float {
+        return if (asPercent) money * (value / 100) else value
     }
 
     fun isEmpty(): Boolean {
