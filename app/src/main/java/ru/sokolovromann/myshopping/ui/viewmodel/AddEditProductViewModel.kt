@@ -46,6 +46,12 @@ class AddEditProductViewModel @Inject constructor(
 
     val quantitySymbolState: TextFieldState = TextFieldState()
 
+    private val _quantityMinusOneState: MutableState<TextData> = mutableStateOf(TextData())
+    val quantityMinusOneState: State<TextData> = _quantityMinusOneState
+
+    private val _quantityPlusOneState: MutableState<TextData> = mutableStateOf(TextData())
+    val quantityPlusOneState: State<TextData> = _quantityPlusOneState
+
     val priceState: TextFieldState = TextFieldState()
 
     val discountState: TextFieldState = TextFieldState()
@@ -74,6 +80,8 @@ class AddEditProductViewModel @Inject constructor(
     init {
         showTopBar()
         showSaveButton()
+        showQuantityMinusOneButton()
+        showQuantityPlusOneButton()
         getAddEditProduct()
     }
 
@@ -96,6 +104,10 @@ class AddEditProductViewModel @Inject constructor(
             AddEditProductEvent.ProductDiscountAsPercentSelected -> productDiscountAsPercentSelected()
 
             AddEditProductEvent.ProductDiscountAsMoneySelected -> productDiscountAsMoneySelected()
+
+            AddEditProductEvent.AutocompleteMinusOneQuantitySelected -> autocompleteMinusOneQuantitySelected()
+
+            AddEditProductEvent.AutocompletePlusOneQuantitySelected -> autocompletePlusOneQuantitySelected()
 
             AddEditProductEvent.ShowProductDiscountAsPercentMenu -> showProductDiscountAsPercentMenu()
 
@@ -176,6 +188,23 @@ class AddEditProductViewModel @Inject constructor(
         quantityState.changeText(event.value)
     }
 
+    private fun productQuantityChanged(change: Float, minus: Boolean) {
+        val quantity = mapping.toFloat(quantityState.currentData.text) ?: 0f
+        val newValue = if (minus) {
+            if (quantity <= 1) 0f else quantity - change
+        } else {
+            quantity + change
+        }
+
+        val changeQuantity = Quantity(
+            value = newValue,
+            symbol = mapping.toString(quantitySymbolState.currentData.text)
+        )
+
+        val text: String = changeQuantity.valueToString()
+        quantityState.changeText(mapping.toTextFieldValue(text))
+    }
+
     private fun productQuantitySymbolChanged(event: AddEditProductEvent.ProductQuantitySymbolChanged) {
         quantitySymbolState.changeText(event.value)
     }
@@ -214,6 +243,14 @@ class AddEditProductViewModel @Inject constructor(
         )
 
         hideProductDiscountAsPercentMenu()
+    }
+
+    private fun autocompleteMinusOneQuantitySelected() {
+        productQuantityChanged(change = 1f, minus = true)
+    }
+
+    private fun autocompletePlusOneQuantitySelected() {
+        productQuantityChanged(change = 1f, minus = false)
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -297,6 +334,22 @@ class AddEditProductViewModel @Inject constructor(
                 capitalization = KeyboardCapitalization.None
             ),
             enabled = !preferences.lockQuantity
+        )
+    }
+
+    private fun showQuantityMinusOneButton() {
+        _quantityMinusOneState.value = mapping.toBody(
+            text = mapping.toResourcesUiText(R.string.addEditProduct_quantityMinusOne),
+            fontSize = FontSize.MEDIUM,
+            appColor = AppColor.OnBackground
+        )
+    }
+
+    private fun showQuantityPlusOneButton() {
+        _quantityPlusOneState.value = mapping.toBody(
+            text = mapping.toResourcesUiText(R.string.addEditProduct_quantityPlusOne),
+            fontSize = FontSize.MEDIUM,
+            appColor = AppColor.OnBackground
         )
     }
 

@@ -2,8 +2,10 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.TextData
 import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
@@ -130,6 +133,28 @@ private fun Content(
             )
         }
 
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 2.dp)
+        ) {
+            AutocompleteQuantityChip(
+                text = viewModel.quantityMinusOneState.value,
+                onClick = {
+                    viewModel.onEvent(AddEditProductEvent.AutocompleteMinusOneQuantitySelected)
+                }
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            AutocompleteQuantityChip(
+                text = viewModel.quantityPlusOneState.value,
+                onClick = {
+                    viewModel.onEvent(AddEditProductEvent.AutocompletePlusOneQuantitySelected)
+                }
+            )
+        }
+
         OutlinedAppTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -210,6 +235,26 @@ private fun DiscountAsPercentMenu(viewModel: AddEditProductViewModel) {
                 )
             },
             onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
+        )
+    }
+}
+
+@Composable
+private fun AutocompleteQuantityChip(
+    text: TextData,
+    onClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .defaultMinSize(32.dp)
+            .background(color = AppColor.Background.asCompose(), shape = CircleShape)
+            .clickable { onClick() }
+    ) {
+        AppText(
+            modifier = Modifier.padding(8.dp),
+            data = text
         )
     }
 }

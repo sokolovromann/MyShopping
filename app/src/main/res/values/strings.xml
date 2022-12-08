@@ -14,6 +14,8 @@
     <string name="addEditProduct_nameLabel">Name</string>
     <string name="addEditProduct_priceLabel">Price per unit</string>
     <string name="addEditProduct_quantityLabel">Quantity</string>
+    <string name="addEditProduct_quantityMinusOne">-</string>
+    <string name="addEditProduct_quantityPlusOne">+</string>
     <string name="addEditProduct_quantitySymbolLabel">Symbol</string>
     <string name="addEditProduct_save">Save</string>
 
