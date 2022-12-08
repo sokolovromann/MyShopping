@@ -79,6 +79,10 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
         key = "shopping-uid",
         placeholder = "{shopping-uid}"
     ),
+    ProductUid(
+        key = "product-uid",
+        placeholder = "{product-uid}"
+    ),
     AutocompleteUid(
         key = "autocomplete-uid",
         placeholder = "{autocomplete-uid}"
@@ -129,6 +133,12 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
     ) {
         composable(route = UiRoute.Products.productsScreen(UiRouteKey.ShoppingUid.placeholder)) {
             ProductsScreen(navController)
+        }
+        composable(route = UiRoute.Products.addProductScreen(UiRouteKey.ShoppingUid.placeholder)) {
+            AddEditProductScreen(navController)
+        }
+        composable(route = UiRoute.Products.editProductScreen(UiRouteKey.ProductUid.placeholder)) {
+            AddEditProductScreen(navController)
         }
         dialog(route = UiRoute.Products.editShoppingListNameScreen(UiRouteKey.ShoppingUid.placeholder)) {
             EditShoppingListNameScreen(navController)
