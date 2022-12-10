@@ -6,44 +6,80 @@ data class AddEditProductAutocomplete(
 ) {
 
     private val defaultNamesLimit: Int = 10
+    private val defaultQuantitiesLimit: Int = 5
+    private val defaultPricesLimit: Int = 3
+    private val defaultDiscountsLimit: Int = 3
+    private val defaultTotalsLimit: Int = 3
+
+    private fun filterAutocompletesByNameOrNot(name: String): List<Autocomplete> {
+        return if (name.isEmpty()) {
+            autocompletes
+        } else {
+            if (autocompletes.find { it.name == name } == null) {
+                autocompletes.filter { it.name.contains(name, true) }
+            } else {
+                autocompletes.filter { it.name == name }
+            }
+        }
+    }
 
     fun names(): List<String> {
         return autocompletes
             .map { it.name.formatFirst(preferences.firstLetterUppercase) }
             .distinct()
             .sorted()
-            .filterIndexed { index, _ -> index < defaultNamesLimit }
+            .filterIndexed { index, name ->
+                name.isNotEmpty() && index < defaultNamesLimit
+            }
     }
 
-    fun quantities(): List<Quantity> {
-        return autocompletes
+    fun quantities(name: String = ""): List<Quantity> {
+        return filterAutocompletesByNameOrNot(name)
+            .sortedByDescending { it.lastModified }
             .map { it.quantity }
             .distinctBy { it.value }
-            .filter { it.isNotEmpty() }
-            .sortedBy { it.value }
+            .filterIndexed { index, quantity ->
+                quantity.isNotEmpty() && index < defaultQuantitiesLimit
+            }
     }
 
-    fun prices(): List<Money> {
-        return autocompletes
+    fun quantitySymbols(name: String = ""): List<Quantity> {
+        return filterAutocompletesByNameOrNot(name)
+            .sortedByDescending { it.lastModified }
+            .map { it.quantity }
+            .distinctBy { it.symbol }
+            .filterIndexed { index, quantity ->
+                quantity.isNotEmpty() && index < defaultQuantitiesLimit
+            }
+    }
+
+    fun prices(name: String = ""): List<Money> {
+        return filterAutocompletesByNameOrNot(name)
+            .sortedByDescending { it.lastModified }
             .map { it.price }
             .distinctBy { it.value }
-            .filter { it.isNotEmpty() }
-            .sortedBy { it.value }
+            .filterIndexed { index, price ->
+                price.isNotEmpty() && index < defaultPricesLimit
+            }
     }
 
-    fun discounts(): List<Discount> {
-        return autocompletes
+    fun discounts(name: String = ""): List<Discount> {
+        return filterAutocompletesByNameOrNot(name)
+            .sortedByDescending { it.lastModified }
             .map { it.discount }
             .distinctBy { it.value }
-            .filter { it.isNotEmpty() }
-            .sortedBy { it.value }
+            .filterIndexed { index, discount ->
+                discount.isNotEmpty() && index < defaultDiscountsLimit
+            }
     }
 
-    fun totals(): List<Money> {
-        return autocompletes
+    fun totals(name: String = ""): List<Money> {
+        return filterAutocompletesByNameOrNot(name)
+            .sortedByDescending { it.lastModified }
             .map { it.calculateTotal() }
             .distinctBy { it.value }
-            .filter { it.isNotEmpty() }
-            .sortedBy { it.value }
+            .filterIndexed { index, total ->
+                total.isNotEmpty() && index < defaultTotalsLimit
+            }
     }
 }

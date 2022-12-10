@@ -1,12 +1,9 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.TextData
+import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
@@ -87,13 +84,19 @@ private fun Content(
     viewModel: AddEditProductViewModel,
     focusRequester: FocusRequester
 ) {
-    val scrollState = rememberScrollState()
+    val columnScrollState = rememberScrollState()
+
+    val autocompleteQuantitiesScrollState = rememberScrollState()
+    val autocompleteQuantitySymbolsScrollState = rememberScrollState()
+    val autocompletePricesScrollState = rememberScrollState()
+    val autocompleteDiscountsScrollState = rememberScrollState()
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(color = AppColor.Surface.asCompose())
         .padding(paddingValues)
         .padding(vertical = 4.dp, horizontal = 8.dp)
-        .verticalScroll(scrollState)
+        .verticalScroll(columnScrollState)
     ) {
         OutlinedAppTextField(
             modifier = Modifier
@@ -106,6 +109,12 @@ private fun Content(
                 viewModel.onEvent(event)
             }
         )
+
+        val namesData = viewModel.autocompleteNamesState.currentData
+        when (namesData.result) {
+            ListResult.Showing -> AutocompleteNamesShowing(namesData, viewModel)
+            else -> {}
+        }
 
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -136,7 +145,9 @@ private fun Content(
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = 2.dp)
+            modifier = Modifier
+                .padding(vertical = 2.dp)
+                .horizontalScroll(autocompleteQuantitySymbolsScrollState)
         ) {
             AutocompleteQuantityChip(
                 text = viewModel.quantityMinusOneState.value,
@@ -153,6 +164,28 @@ private fun Content(
                     viewModel.onEvent(AddEditProductEvent.AutocompletePlusOneQuantitySelected)
                 }
             )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            val symbolsData = viewModel.autocompleteQuantitySymbolsState.currentData
+            when (symbolsData.result) {
+                ListResult.Showing -> AutocompleteQuantitiesShowing(symbolsData, viewModel)
+                else -> {}
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(vertical = 2.dp)
+                .horizontalScroll(autocompleteQuantitiesScrollState)
+        ) {
+            val quantitiesData = viewModel.autocompleteQuantitiesState.currentData
+            when (quantitiesData.result) {
+                ListResult.Showing -> AutocompleteQuantitiesShowing(quantitiesData, viewModel)
+                else -> {}
+            }
         }
 
         OutlinedAppTextField(
@@ -165,6 +198,20 @@ private fun Content(
                 viewModel.onEvent(event)
             }
         )
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(vertical = 2.dp)
+                .horizontalScroll(autocompletePricesScrollState)
+        ) {
+            val pricesData = viewModel.autocompletePricesState.currentData
+            when (pricesData.result) {
+                ListResult.Showing -> AutocompletePricesShowing(pricesData, viewModel)
+                else -> {}
+            }
+        }
 
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -202,6 +249,20 @@ private fun Content(
                 }
 
                 DiscountAsPercentMenu(viewModel)
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(vertical = 2.dp)
+                .horizontalScroll(autocompleteDiscountsScrollState)
+        ) {
+            val discountsData = viewModel.autocompleteDiscountsState.currentData
+            when (discountsData.result) {
+                ListResult.Showing -> AutocompleteDiscountsShowing(discountsData, viewModel)
+                else -> {}
             }
         }
     }
@@ -256,5 +317,83 @@ private fun AutocompleteQuantityChip(
             modifier = Modifier.padding(8.dp),
             data = text
         )
+    }
+}
+
+@Composable
+private fun AutocompleteNamesShowing(
+    data: ListData<TextData>,
+    viewModel: AddEditProductViewModel
+) {
+    AppGrid(
+        modifier = Modifier.background(color = AppColor.Background.asCompose()),
+        data = data
+    ) {
+        data.items.forEach { item ->
+            val text = item.text.asCompose()
+
+            AppItem(
+                modifier = Modifier.padding(8.dp),
+                title = { AppText(data = item) },
+                onClick = {
+                    val event = AddEditProductEvent.AutocompleteNameSelected(text)
+                    viewModel.onEvent(event)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun AutocompleteQuantitiesShowing(
+    data: ListData<QuantityItem>,
+    viewModel: AddEditProductViewModel
+) {
+    data.items.forEach { item ->
+        AutocompleteQuantityChip(
+            text = item.text,
+            onClick = {
+                val event = AddEditProductEvent.AutocompleteQuantitySelected(item.quantity)
+                viewModel.onEvent(event)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+    }
+}
+
+@Composable
+private fun AutocompletePricesShowing(
+    data: ListData<MoneyItem>,
+    viewModel: AddEditProductViewModel
+) {
+    data.items.forEach { item ->
+        AutocompleteQuantityChip(
+            text = item.text,
+            onClick = {
+                val event = AddEditProductEvent.AutocompletePriceSelected(item.money)
+                viewModel.onEvent(event)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+    }
+}
+
+@Composable
+private fun AutocompleteDiscountsShowing(
+    data: ListData<DiscountItem>,
+    viewModel: AddEditProductViewModel
+) {
+    data.items.forEach { item ->
+        AutocompleteQuantityChip(
+            text = item.text,
+            onClick = {
+                val event = AddEditProductEvent.AutocompleteDiscountSelected(item.discount)
+                viewModel.onEvent(event)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
     }
 }

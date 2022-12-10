@@ -123,6 +123,73 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
+    fun toAutocompleteItem(
+        text: String,
+        preferences: ProductPreferences
+    ): TextData {
+        return toBody(
+            text = toUiTextOrNothing(text),
+            fontSize = preferences.fontSize,
+            appColor = AppColor.OnBackground
+        )
+    }
+
+    fun toQuantityItem(
+        quantity: Quantity,
+        preferences: ProductPreferences
+    ): QuantityItem {
+        return QuantityItem(
+            quantity = quantity,
+            text = toBody(
+                text = toUiTextOrNothing(quantity.toString()),
+                fontSize = preferences.fontSize,
+                appColor = AppColor.OnBackground
+            )
+        )
+    }
+
+    fun toQuantitySymbolItem(
+        quantity: Quantity,
+        preferences: ProductPreferences
+    ): QuantityItem {
+        return QuantityItem(
+            quantity = quantity.copy(value = 0f),
+            text = toBody(
+                text = toUiTextOrNothing(quantity.symbol),
+                fontSize = preferences.fontSize,
+                appColor = AppColor.OnBackground
+            )
+        )
+    }
+
+    fun toMoneyItem(
+        money: Money,
+        preferences: ProductPreferences
+    ): MoneyItem {
+        return MoneyItem(
+            money = money,
+            text = toBody(
+                text = toUiTextOrNothing(money.toString()),
+                fontSize = preferences.fontSize,
+                appColor = AppColor.OnBackground
+            )
+        )
+    }
+
+    fun toDiscountItem(
+        discount: Discount,
+        preferences: ProductPreferences
+    ): DiscountItem {
+        return DiscountItem(
+            discount = discount,
+            text = toBody(
+                text = toUiTextOrNothing(discount.toString()),
+                fontSize = preferences.fontSize,
+                appColor = AppColor.OnBackground
+            )
+        )
+    }
+
     fun toSettingsHeader(
         @StringRes header: Int,
         preferences: SettingsPreferences

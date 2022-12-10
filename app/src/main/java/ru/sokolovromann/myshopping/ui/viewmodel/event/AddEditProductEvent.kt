@@ -30,7 +30,7 @@ sealed class AddEditProductEvent {
 
     object InvertProductsLockQuantity : AddEditProductEvent()
 
-    data class AutocompleteNameSelected(val text: UiText) : AddEditProductEvent()
+    data class AutocompleteNameSelected(val text: String) : AddEditProductEvent()
 
     object AutocompleteMinusOneQuantitySelected : AddEditProductEvent()
 
