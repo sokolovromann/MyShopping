@@ -51,6 +51,9 @@
     <string name="calendar_yesterday">Yesterday</string>
     <string name="calendar_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
 
+    <string name="copyProduct_copyProductName">Select a list</string>
+    <string name="copyProduct_shoppingListsNotFound">You have no shopping lists</string>
+
     <string-array name="data_defaultAutocompleteNames"/>
     <string name="data_defaultCurrency">$</string>
     <bool name="data_defaultCurrencyDisplayToLeft">true</bool>
@@ -168,6 +171,11 @@
     <string name="settings_smallFontSize">Small</string>
     <string name="settings_taxRate">Tax rate</string>
     <string name="settings_tinyFontSize">Tiny</string>
+
+    <string name="shoppingListsLocation_archive">Archive</string>
+    <string name="shoppingListsLocation_purchases">Purchases</string>
+    <string name="shoppingListsLocation_title">Display</string>
+    <string name="shoppingListsLocation_trash">Trash</string>
 
     <string name="shoppingListsTotal_productsActiveTotal">Active: %s</string>
     <string name="shoppingListsTotal_productsAllTotal">All: %s</string>

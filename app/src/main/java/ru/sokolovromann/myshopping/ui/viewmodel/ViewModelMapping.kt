@@ -576,6 +576,25 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
+    fun toShoppingListsLocationBody(
+        archived: Boolean,
+        deleted: Boolean,
+        fontSize: FontSize
+    ): TextData {
+        val text: UiText = if (archived && !deleted) {
+            UiText.FromResources(R.string.shoppingListsLocation_archive)
+        } else if (!archived && deleted) {
+            UiText.FromResources(R.string.shoppingListsLocation_trash)
+        } else {
+            UiText.FromResources(R.string.shoppingListsLocation_purchases)
+        }
+        return toBody(
+            text = text,
+            fontSize = fontSize,
+            appColor = AppColor.OnBackground
+        )
+    }
+
     fun toAutocompletesSortBody(sortBy: SortBy, fontSize: FontSize): TextData {
         val text: UiText = when (sortBy) {
             SortBy.CREATED -> UiText.FromResources(R.string.sortAutocompletes_byCreated)
@@ -681,6 +700,40 @@ class ViewModelMapping @Inject constructor() {
             byTotalSelected = toRadioButton(
                 selected = sortBy == SortBy.TOTAL
             )
+        )
+    }
+
+    fun toShoppingListsLocationMenu(
+        archived: Boolean,
+        deleted: Boolean,
+        fontSize: FontSize
+    ): ShoppingListsLocationMenu {
+        return ShoppingListsLocationMenu(
+            title = toTitle(
+                text = UiText.FromResources(R.string.shoppingListsLocation_title),
+                fontSize = fontSize
+            ),
+            purchasesBody = toBody(
+                text = UiText.FromResources(R.string.shoppingListsLocation_purchases),
+                fontSize = fontSize
+            ),
+            purchasesSelected = toRadioButton(
+                selected = !archived && !deleted
+            ),
+            archiveBody = toBody(
+                text = UiText.FromResources(R.string.shoppingListsLocation_archive),
+                fontSize = fontSize
+            ),
+            archiveSelected = toRadioButton(
+                selected = archived && !deleted
+            ),
+            trashBody = toBody(
+                text = UiText.FromResources(R.string.shoppingListsLocation_trash),
+                fontSize = fontSize
+            ),
+            trashSelected = toRadioButton(
+                selected = !archived && deleted
+            ),
         )
     }
 
