@@ -16,8 +16,26 @@ class MoveProductRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : MoveProductRepository {
 
-    override suspend fun getShoppingLists(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext productDao.getShoppingLists().combine(
+    override suspend fun getPurchases(): Flow<ShoppingLists> = withContext(dispatchers.io) {
+        return@withContext productDao.getPurchases().combine(
+            flow = preferencesDao.getShoppingPreferences(),
+            transform = { entity, preferencesEntity ->
+                mapping.toShoppingLists(entity, preferencesEntity)
+            }
+        )
+    }
+
+    override suspend fun getArchive(): Flow<ShoppingLists> = withContext(dispatchers.io) {
+        return@withContext productDao.getArchive().combine(
+            flow = preferencesDao.getShoppingPreferences(),
+            transform = { entity, preferencesEntity ->
+                mapping.toShoppingLists(entity, preferencesEntity)
+            }
+        )
+    }
+
+    override suspend fun getTrash(): Flow<ShoppingLists> = withContext(dispatchers.io) {
+        return@withContext productDao.getTrash().combine(
             flow = preferencesDao.getShoppingPreferences(),
             transform = { entity, preferencesEntity ->
                 mapping.toShoppingLists(entity, preferencesEntity)

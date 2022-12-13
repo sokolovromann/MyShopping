@@ -105,6 +105,9 @@
     <string name="editTaxRate_taxRateError">Add tax rate</string>
     <string name="editTaxRate_taxRateLabel">Tax rate</string>
 
+    <string name="moveProduct_copyProductName">Select a list</string>
+    <string name="moveProduct_shoppingListsNotFound">You have no shopping lists</string>
+
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
 
