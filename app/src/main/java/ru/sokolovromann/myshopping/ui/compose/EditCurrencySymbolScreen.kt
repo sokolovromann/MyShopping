@@ -6,7 +6,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -45,42 +44,41 @@ fun EditCurrencySymbolScreen(
     }
 
     AppDialog(
-        onDismissRequest = {
-            viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol)
-        }
-    ) {
-        AppDialogHeader(header = viewModel.headerState.value)
+        onDismissRequest = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
+        title = { Title(viewModel) },
+        actionButtons = { ActionButtons(viewModel) },
+        content = { Content(viewModel, focusRequester) }
+    )
+}
 
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            OutlinedAppTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester),
-                state = viewModel.symbolState,
-                onValueChange = {
-                    val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
-                    viewModel.onEvent(event)
-                }
-            )
-        }
+@Composable
+private fun Title(viewModel: EditCurrencySymbolViewModel) {
+    AppText(data = viewModel.headerState.value)
+}
 
-        Row(
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
-        ) {
-            TextButton(
-                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) }
-            ) {
-                AppText(data = viewModel.cancelState.value)
-            }
-            OutlinedButton(
-                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) }
-            ) {
-                AppText(data = viewModel.saveState.value)
-            }
+@Composable
+private fun ActionButtons(viewModel: EditCurrencySymbolViewModel) {
+    TextButton(
+        onClick = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
+        content = { AppText(data = viewModel.cancelState.value) }
+    )
+    Spacer(modifier = Modifier.size(4.dp))
+    OutlinedButton(
+        onClick = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) },
+        content = { AppText(data = viewModel.saveState.value) }
+    )
+}
+
+@Composable
+private fun Content(viewModel: EditCurrencySymbolViewModel, focusRequester: FocusRequester) {
+    OutlinedAppTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
+        state = viewModel.symbolState,
+        onValueChange = {
+            val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
+            viewModel.onEvent(event)
         }
-    }
+    )
 }

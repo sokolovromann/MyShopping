@@ -6,7 +6,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -47,40 +46,41 @@ fun EditShoppingListNameScreen(
     AppDialog(
         onDismissRequest = {
             viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName)
-        }
-    ) {
-        AppDialogHeader(header = viewModel.headerState.value)
+        },
+        title = { Title(viewModel) },
+        actionButtons = { ActionButtons(viewModel) },
+        content = { Content(viewModel, focusRequester) }
+    )
+}
 
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            OutlinedAppTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester),
-                state = viewModel.nameState,
-                onValueChange = {
-                    val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
-                    viewModel.onEvent(event)
-                }
-            )
-        }
+@Composable
+private fun Title(viewModel: EditShoppingListNameViewModel) {
+    AppText(data = viewModel.headerState.value)
+}
 
-        Row(
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
-        ) {
-            TextButton(
-                onClick = { viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName) }
-            ) {
-                AppText(data = viewModel.cancelState.value)
-            }
-            OutlinedButton(
-                onClick = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) }
-            ) {
-                AppText(data = viewModel.saveState.value)
-            }
+@Composable
+private fun ActionButtons(viewModel: EditShoppingListNameViewModel) {
+    TextButton(
+        onClick = { viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName) },
+        content = { AppText(data = viewModel.cancelState.value) }
+    )
+    Spacer(modifier = Modifier.size(4.dp))
+    OutlinedButton(
+        onClick = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) },
+        content = { AppText(data = viewModel.saveState.value) }
+    )
+}
+
+@Composable
+private fun Content(viewModel: EditShoppingListNameViewModel, focusRequester: FocusRequester) {
+    OutlinedAppTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
+        state = viewModel.nameState,
+        onValueChange = {
+            val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
+            viewModel.onEvent(event)
         }
-    }
+    )
 }

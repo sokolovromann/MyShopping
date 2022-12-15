@@ -39,60 +39,66 @@ fun EditReminderScreen(
     }
 
     AppDialog(
-        onDismissRequest = {
-            viewModel.onEvent(EditReminderEvent.CancelSavingReminder)
-        }
+        onDismissRequest = { viewModel.onEvent(EditReminderEvent.CancelSavingReminder) },
+        title = { Title(viewModel) },
+        actionButtons = { ActionButtons(viewModel) },
+        content = { Content(viewModel) }
+    )
+}
+
+@ExperimentalFoundationApi
+@Composable
+private fun Title(viewModel: EditReminderViewModel) {
+    AppText(data = viewModel.headerState.value)
+}
+
+@ExperimentalFoundationApi
+@Composable
+private fun ActionButtons(viewModel: EditReminderViewModel) {
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Center
     ) {
-        AppDialogHeader(header = viewModel.headerState.value)
-
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            OutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp),
-                onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderDate) }
-            ) {
-                AppText(data = viewModel.dateState.value)
-            }
-            OutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderTime) }
-            ) {
-                AppText(data = viewModel.timeState.value)
-            }
-
-            DateDialog(viewModel)
-            TimeDialog(viewModel)
-        }
-
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
-        ) {
-            viewModel.deleteState.value?.let {
-                TextButton(
-                    onClick = { viewModel.onEvent(EditReminderEvent.DeleteReminder) }
-                ) {
-                    AppText(data = it)
-                }
-            }
+        viewModel.deleteState.value?.let {
             TextButton(
-                onClick = { viewModel.onEvent(EditReminderEvent.CancelSavingReminder) }
-            ) {
-                AppText(data = viewModel.cancelState.value)
-            }
+                onClick = { viewModel.onEvent(EditReminderEvent.DeleteReminder) },
+                content = { AppText(data = it) }
+            )
+        }
+        Row {
+            TextButton(
+                onClick = { viewModel.onEvent(EditReminderEvent.CancelSavingReminder) },
+                content = { AppText(data = viewModel.cancelState.value) }
+            )
+            Spacer(modifier = Modifier.size(4.dp))
             OutlinedButton(
-                onClick = { viewModel.onEvent(EditReminderEvent.SaveReminder) }
-            ) {
-                AppText(data = viewModel.saveState.value)
-            }
+                onClick = { viewModel.onEvent(EditReminderEvent.SaveReminder) },
+                content = { AppText(data = viewModel.saveState.value) }
+            )
         }
     }
+}
+
+@ExperimentalFoundationApi
+@Composable
+private fun Content(viewModel: EditReminderViewModel) {
+    OutlinedButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 4.dp),
+        onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderDate) },
+        content = { AppText(data = viewModel.dateState.value) }
+    )
+    OutlinedButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderTime) },
+        content = { AppText(data = viewModel.timeState.value) }
+    )
+
+    DateDialog(viewModel)
+    TimeDialog(viewModel)
 }
 
 @ExperimentalFoundationApi
