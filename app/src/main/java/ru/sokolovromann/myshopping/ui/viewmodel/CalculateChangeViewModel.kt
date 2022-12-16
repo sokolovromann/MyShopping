@@ -147,7 +147,7 @@ class CalculateChangeViewModel @Inject constructor(
 
     private fun showHeader(preferences: ProductPreferences) {
         _headerState.value = mapping.toOnDialogHeader(
-            text = mapping.toResourcesUiText(R.string.calculateChange_calculateChangeName),
+            text = mapping.toResourcesUiText(R.string.calculateChange_header),
             fontSize = preferences.fontSize
         )
     }

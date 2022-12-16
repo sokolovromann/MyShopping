@@ -123,9 +123,9 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private fun showHeader(preferences: AutocompletePreferences) {
         val text: UiText = if (uid == null) {
-            mapping.toResourcesUiText(R.string.addEditAutocomplete_addAutocompleteName)
+            mapping.toResourcesUiText(R.string.addEditAutocomplete_header_addAutocomplete)
         } else {
-            mapping.toResourcesUiText(R.string.addEditAutocomplete_editAutocompleteName)
+            mapping.toResourcesUiText(R.string.addEditAutocomplete_header_editAutocomplete)
         }
 
         _headerState.value = mapping.toOnDialogHeader(

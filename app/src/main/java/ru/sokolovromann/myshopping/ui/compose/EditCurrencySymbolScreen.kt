@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,15 +46,10 @@ fun EditCurrencySymbolScreen(
 
     AppDialog(
         onDismissRequest = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
-        title = { Title(viewModel) },
+        header = { Text(text = viewModel.headerState.value.text.asCompose()) },
         actionButtons = { ActionButtons(viewModel) },
         content = { Content(viewModel, focusRequester) }
     )
-}
-
-@Composable
-private fun Title(viewModel: EditCurrencySymbolViewModel) {
-    AppText(data = viewModel.headerState.value)
 }
 
 @Composable

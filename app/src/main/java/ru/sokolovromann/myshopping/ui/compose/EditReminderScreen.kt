@@ -9,6 +9,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,16 +41,10 @@ fun EditReminderScreen(
 
     AppDialog(
         onDismissRequest = { viewModel.onEvent(EditReminderEvent.CancelSavingReminder) },
-        title = { Title(viewModel) },
+        header = { Text(text = viewModel.headerState.value.text.asCompose()) },
         actionButtons = { ActionButtons(viewModel) },
         content = { Content(viewModel) }
     )
-}
-
-@ExperimentalFoundationApi
-@Composable
-private fun Title(viewModel: EditReminderViewModel) {
-    AppText(data = viewModel.headerState.value)
 }
 
 @ExperimentalFoundationApi

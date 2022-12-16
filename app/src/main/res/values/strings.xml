@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="addEditAutocomplete_addAutocompleteName">Add</string>
     <string name="addEditAutocomplete_cancel">Cancel</string>
-    <string name="addEditAutocomplete_editAutocompleteName">Edit</string>
+    <string name="addEditAutocomplete_header_addAutocomplete">Add</string>
+    <string name="addEditAutocomplete_header_editAutocomplete">Edit</string>
     <string name="addEditAutocomplete_nameError">Add name</string>
     <string name="addEditAutocomplete_nameLabel">Name</string>
     <string name="addEditAutocomplete_save">Save</string>
@@ -33,8 +33,8 @@
     <string name="autocompletes_editAutocomplete">Edit</string>
 
     <string name="calculateChange_back">Back</string>
-    <string name="calculateChange_calculateChangeName">Calculate change</string>
     <string name="calculateChange_change">Change: %s</string>
+    <string name="calculateChange_header">Calculate change</string>
     <string name="calculateChange_noChange">Change: no change</string>
     <string name="calculateChange_total">Total: %s</string>
     <string name="calculateChange_userMoneyLabel">Money</string>
@@ -82,25 +82,25 @@
     <string name="displayShoppingListsTotal_title">Display total</string>
 
     <string name="editCurrencySymbol_cancel">Cancel</string>
-    <string name="editCurrencySymbol_editCurrencySymbolName">Edit currency</string>
+    <string name="editCurrencySymbol_header">Edit currency</string>
     <string name="editCurrencySymbol_save">Save</string>
     <string name="editCurrencySymbol_symbolError">Add currency</string>
     <string name="editCurrencySymbol_symbolLabel">Currency</string>
 
-    <string name="editReminder_addReminderName">Add</string>
     <string name="editReminder_cancel">Cancel</string>
     <string name="editReminder_delete">Delete</string>
-    <string name="editReminder_editReminderName">Edit</string>
+    <string name="editReminder_header_addReminder">Add</string>
+    <string name="editReminder_header_editReminder">Edit</string>
     <string name="editReminder_save">Save</string>
 
-    <string name="editShoppingListName_addShoppingListNameName">Add</string>
     <string name="editShoppingListName_cancel">Cancel</string>
-    <string name="editShoppingListName_editShoppingListNameName">Edit</string>
+    <string name="editShoppingListName_header_addShoppingListName">Add</string>
+    <string name="editShoppingListName_header_editShoppingListName">Edit</string>
     <string name="editShoppingListName_nameLabel">Name</string>
     <string name="editShoppingListName_save">Save</string>
 
     <string name="editTaxRate_cancel">Cancel</string>
-    <string name="editTaxRate_editTaxRateName">Edit tax rate</string>
+    <string name="editTaxRate_header">Edit tax rate</string>
     <string name="editTaxRate_save">Save</string>
     <string name="editTaxRate_taxRateError">Add tax rate</string>
     <string name="editTaxRate_taxRateLabel">Tax rate</string>

@@ -210,9 +210,9 @@ class EditReminderViewModel @Inject constructor(
 
     private fun showHeader(isAdd: Boolean, preferences: ProductPreferences) {
         val text: UiText = if (isAdd) {
-            mapping.toResourcesUiText(R.string.editReminder_addReminderName)
+            mapping.toResourcesUiText(R.string.editReminder_header_addReminder)
         } else {
-            mapping.toResourcesUiText(R.string.editReminder_editReminderName)
+            mapping.toResourcesUiText(R.string.editReminder_header_editReminder)
         }
 
         _headerState.value = mapping.toOnDialogHeader(

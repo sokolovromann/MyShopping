@@ -100,7 +100,7 @@ class EditTaxRateViewModel @Inject constructor(
 
     private fun showHeader(preferences: SettingsPreferences) {
         _headerState.value = mapping.toOnDialogHeader(
-            text = mapping.toResourcesUiText(R.string.editTaxRate_editTaxRateName),
+            text = mapping.toResourcesUiText(R.string.editTaxRate_header),
             fontSize = preferences.fontSize
         )
     }

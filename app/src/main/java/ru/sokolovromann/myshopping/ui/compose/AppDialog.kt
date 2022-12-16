@@ -15,7 +15,7 @@ import androidx.compose.ui.window.Dialog
 fun AppDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    title: @Composable (ColumnScope.() -> Unit)? = null,
+    header: @Composable (ColumnScope.() -> Unit)? = null,
     actionButtons: @Composable (RowScope.() -> Unit)? = null,
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = MaterialTheme.colors.onSurface,
@@ -24,7 +24,7 @@ fun AppDialog(
     AppDialogImpl(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-        title = title,
+        header = header,
         actionButtons = actionButtons,
         backgroundColor = backgroundColor,
         contentColor = contentColor
@@ -42,7 +42,7 @@ fun AppDialog(
 private fun AppDialogImpl(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    title: @Composable (ColumnScope.() -> Unit)? = null,
+    header: @Composable (ColumnScope.() -> Unit)? = null,
     actionButtons: @Composable (RowScope.() -> Unit)? = null,
     backgroundColor: Color,
     contentColor: Color,
@@ -53,14 +53,14 @@ private fun AppDialogImpl(
             .background(color = backgroundColor)
             .then(modifier)
         ) {
-            title?.let {
+            header?.let {
                 Column(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppDialogTitlePaddings),
-                    content = { ProvideAppDialogTitleTextStyle(contentColor) { it() } }
+                        .padding(AppDialogHeaderPaddings),
+                    content = { ProvideAppDialogHeaderTextStyle(contentColor) { it() } }
                 )
             }
 
@@ -81,14 +81,14 @@ private fun AppDialogImpl(
 }
 
 @Composable
-private fun ProvideAppDialogTitleTextStyle(contentColor: Color, content: @Composable () -> Unit) {
+private fun ProvideAppDialogHeaderTextStyle(contentColor: Color, content: @Composable () -> Unit) {
     ProvideTextStyle(
         value = MaterialTheme.typography.h5.copy(color = contentColor),
         content = content
     )
 }
 
-private val AppDialogTitlePaddings = PaddingValues(
+private val AppDialogHeaderPaddings = PaddingValues(
     start = 24.dp,
     top = 24.dp,
     end = 24.dp,

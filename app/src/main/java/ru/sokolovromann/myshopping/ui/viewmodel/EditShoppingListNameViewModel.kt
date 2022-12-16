@@ -103,9 +103,9 @@ class EditShoppingListNameViewModel @Inject constructor(
 
     private fun showHeader(isAdd: Boolean, preferences: ProductPreferences) {
         val text: UiText = if (isAdd) {
-            mapping.toResourcesUiText(R.string.editShoppingListName_addShoppingListNameName)
+            mapping.toResourcesUiText(R.string.editShoppingListName_header_addShoppingListName)
         } else {
-            mapping.toResourcesUiText(R.string.editShoppingListName_editShoppingListNameName)
+            mapping.toResourcesUiText(R.string.editShoppingListName_header_editShoppingListName)
         }
 
         _headerState.value = mapping.toOnDialogHeader(

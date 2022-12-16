@@ -104,7 +104,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
 
     private fun showHeader(preferences: SettingsPreferences) {
         _headerState.value = mapping.toOnDialogHeader(
-            text = mapping.toResourcesUiText(R.string.editCurrencySymbol_editCurrencySymbolName),
+            text = mapping.toResourcesUiText(R.string.editCurrencySymbol_header),
             fontSize = preferences.fontSize
         )
     }
