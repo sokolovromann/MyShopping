@@ -6,10 +6,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun AppDialog(
@@ -32,12 +36,14 @@ fun AppDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .wrapContentHeight()
                 .padding(AppDialogContentPaddings),
             content = { content() }
         )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun AppDialogImpl(
     modifier: Modifier = Modifier,
@@ -48,8 +54,12 @@ private fun AppDialogImpl(
     contentColor: Color,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
         Column(modifier = Modifier
+            .padding(calculateDialogPaddings())
             .background(color = backgroundColor)
             .then(modifier)
         ) {
@@ -85,6 +95,20 @@ private fun ProvideAppDialogHeaderTextStyle(contentColor: Color, content: @Compo
     ProvideTextStyle(
         value = MaterialTheme.typography.h5.copy(color = contentColor),
         content = content
+    )
+}
+
+@Composable
+private fun calculateDialogPaddings(): PaddingValues {
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val horizontal: Dp = (screenWidth - screenWidth * 0.93f).dp
+
+    val screenHeight = LocalConfiguration.current.screenHeightDp
+    val vertical: Dp = (screenHeight - screenHeight * 0.93f).dp
+
+    return PaddingValues(
+        horizontal = horizontal,
+        vertical = vertical
     )
 }
 
