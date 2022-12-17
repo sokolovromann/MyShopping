@@ -10,7 +10,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -55,20 +54,20 @@ private fun ActionButtons(viewModel: EditReminderViewModel) {
         verticalArrangement = Arrangement.Center
     ) {
         viewModel.deleteState.value?.let {
-            TextButton(
+            AppDialogActionButton(
                 onClick = { viewModel.onEvent(EditReminderEvent.DeleteReminder) },
-                content = { AppText(data = it) }
+                content = { Text(text = it.text.asCompose()) }
             )
         }
         Row {
-            TextButton(
+            AppDialogActionButton(
                 onClick = { viewModel.onEvent(EditReminderEvent.CancelSavingReminder) },
-                content = { AppText(data = viewModel.cancelState.value) }
+                content = { Text(text = viewModel.cancelState.value.text.asCompose()) }
             )
-            Spacer(modifier = Modifier.size(4.dp))
-            OutlinedButton(
+            AppDialogActionButton(
                 onClick = { viewModel.onEvent(EditReminderEvent.SaveReminder) },
-                content = { AppText(data = viewModel.saveState.value) }
+                primaryButton = true,
+                content = { Text(text = viewModel.saveState.value.text.asCompose()) }
             )
         }
     }

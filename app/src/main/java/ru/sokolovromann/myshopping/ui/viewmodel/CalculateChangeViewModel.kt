@@ -154,7 +154,7 @@ class CalculateChangeViewModel @Inject constructor(
 
     private fun showBackButton() {
         _backState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.calculateChange_back),
+            text = mapping.toResourcesUiText(R.string.calculateChange_action_closeCalculatingChange),
             fontSize = FontSize.MEDIUM
         )
     }

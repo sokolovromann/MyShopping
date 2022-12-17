@@ -111,14 +111,14 @@ class EditCurrencySymbolViewModel @Inject constructor(
 
     private fun showCancelButton() {
         _cancelState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editCurrencySymbol_cancel),
+            text = mapping.toResourcesUiText(R.string.editCurrencySymbol_action_cancelSavingCurrencySymbol),
             fontSize = FontSize.MEDIUM
         )
     }
 
     private fun showSaveButton() {
         _saveState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editCurrencySymbol_save),
+            text = mapping.toResourcesUiText(R.string.editCurrencySymbol_action_saveCurrencySymbol),
             fontSize = FontSize.MEDIUM
         )
     }

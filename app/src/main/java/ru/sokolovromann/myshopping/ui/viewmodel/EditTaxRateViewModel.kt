@@ -107,14 +107,14 @@ class EditTaxRateViewModel @Inject constructor(
 
     private fun showCancelButton() {
         _cancelState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editTaxRate_cancel),
+            text = mapping.toResourcesUiText(R.string.editTaxRate_action_cancelSavingTaxRate),
             fontSize = FontSize.MEDIUM
         )
     }
 
     private fun showSaveButton() {
         _saveState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editTaxRate_save),
+            text = mapping.toResourcesUiText(R.string.editTaxRate_action_saveTaxRate),
             fontSize = FontSize.MEDIUM
         )
     }

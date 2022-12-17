@@ -116,14 +116,14 @@ class EditShoppingListNameViewModel @Inject constructor(
 
     private fun showCancelButton() {
         _cancelState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editShoppingListName_cancel),
+            text = mapping.toResourcesUiText(R.string.editShoppingListName_action_cancelSavingShoppingListName),
             fontSize = FontSize.MEDIUM
         )
     }
 
     private fun showSaveButton() {
         _saveState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editShoppingListName_save),
+            text = mapping.toResourcesUiText(R.string.editShoppingListName_action_saveShoppingListName),
             fontSize = FontSize.MEDIUM
         )
     }

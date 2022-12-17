@@ -237,21 +237,21 @@ class EditReminderViewModel @Inject constructor(
 
     private fun showDeleteButton() {
         _deleteState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editReminder_delete),
+            text = mapping.toResourcesUiText(R.string.editReminder_action_deleteReminder),
             fontSize = FontSize.MEDIUM
         )
     }
 
     private fun showCancelButton() {
         _cancelState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editReminder_cancel),
+            text = mapping.toResourcesUiText(R.string.editReminder_action_cancelSavingReminder),
             fontSize = FontSize.MEDIUM
         )
     }
 
     private fun showSaveButton() {
         _saveState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editReminder_save),
+            text = mapping.toResourcesUiText(R.string.editReminder_action_saveReminder),
             fontSize = FontSize.MEDIUM
         )
     }

@@ -136,14 +136,14 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private fun showCancelButton() {
         _cancelState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditAutocomplete_cancel),
+            text = mapping.toResourcesUiText(R.string.addEditAutocomplete_action_cancelSavingAutocomplete),
             fontSize = FontSize.MEDIUM
         )
     }
 
     private fun showSaveButton() {
         _saveState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditAutocomplete_save),
+            text = mapping.toResourcesUiText(R.string.addEditAutocomplete_action_saveAutocomplete),
             fontSize = FontSize.MEDIUM
         )
     }

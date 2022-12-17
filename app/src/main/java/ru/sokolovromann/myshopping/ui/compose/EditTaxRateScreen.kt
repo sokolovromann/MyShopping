@@ -1,9 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -11,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
@@ -54,14 +51,14 @@ fun EditTaxRateScreen(
 
 @Composable
 private fun ActionButtons(viewModel: EditTaxRateViewModel) {
-    TextButton(
+    AppDialogActionButton(
         onClick = { viewModel.onEvent(EditTaxRateEvent.CancelSavingTaxRate) },
-        content = { AppText(data = viewModel.cancelState.value) }
+        content = { Text(text = viewModel.cancelState.value.text.asCompose()) }
     )
-    Spacer(modifier = Modifier.size(4.dp))
-    OutlinedButton(
+    AppDialogActionButton(
         onClick = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) },
-        content = { AppText(data = viewModel.saveState.value) }
+        primaryButton = true,
+        content = { Text(text = viewModel.saveState.value.text.asCompose()) }
     )
 }
 

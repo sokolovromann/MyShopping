@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -54,9 +53,9 @@ fun CalculateChangeScreen(
 
 @Composable
 private fun ActionButtons(viewModel: CalculateChangeViewModel) {
-    TextButton(
+    AppDialogActionButton(
         onClick = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) },
-        content = { AppText(data = viewModel.backState.value) }
+        content = { Text(text = viewModel.backState.value.text.asCompose()) }
     )
 }
 
