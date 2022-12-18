@@ -90,7 +90,7 @@ class CalculateChangeViewModel @Inject constructor(
         userMoneyState.showTextField(
             text = TextFieldValue(text = ""),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.calculateChange_userMoneyLabel),
+                text = mapping.toResourcesUiText(R.string.calculateChange_label_userMoney),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(

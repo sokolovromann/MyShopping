@@ -1,147 +1,157 @@
 package ru.sokolovromann.myshopping.ui.compose
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import ru.sokolovromann.myshopping.ui.compose.state.TextData
-import ru.sokolovromann.myshopping.ui.compose.state.TextFieldState
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
-import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
 
 @Composable
 fun AppTextField(
     modifier: Modifier = Modifier,
-    state: TextFieldState,
-    onValueChange: (TextFieldValue) -> Unit
+    value: TextFieldValue,
+    valueColor: Color = MaterialTheme.colors.onSurface,
+    valueFontSize: TextUnit = TextStyle.Default.fontSize,
+    onValueChange: (TextFieldValue) -> Unit,
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    error: @Composable (() -> Unit)? = null,
+    showError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE
 ) {
-    val data = state.currentData
-    if (data.hideTextField) {
-        return
-    }
+    val textStyle = createAppTextFieldTextStyle(valueColor, valueFontSize)
 
-    Column(modifier = modifier) {
+    AppTextFieldImpl(
+        modifier = modifier,
+        textStyle = textStyle,
+        error = error,
+        showError = showError
+    ) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            value = data.text,
-            onValueChange = { onValueChange(it) },
-            label = { AppText(data = data.label) },
-            isError = state.isError(),
-            keyboardOptions = data.keyboardOptions,
-            maxLines = data.maxLines,
-            textStyle = TextStyle.Default.copy(
-                fontSize = data.textFontSize,
-                color = data.textColor.asCompose()
-            ),
-            enabled = data.enabled
+            value = value,
+            onValueChange = onValueChange,
+            enabled = enabled,
+            textStyle = textStyle,
+            label = createAppTextLabelOrNot(textStyle, label),
+            isError = showError,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            singleLine = singleLine,
+            maxLines = maxLines
         )
-
-        data.error?.let {
-            AppText(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                data = it
-            )
-        }
     }
 }
 
 @Composable
 fun OutlinedAppTextField(
     modifier: Modifier = Modifier,
-    state: TextFieldState,
-    onValueChange: (TextFieldValue) -> Unit
+    value: TextFieldValue,
+    valueColor: Color = MaterialTheme.colors.onSurface,
+    valueFontSize: TextUnit = TextStyle.Default.fontSize,
+    onValueChange: (TextFieldValue) -> Unit,
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    error: @Composable (() -> Unit)? = null,
+    showError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE
 ) {
-    val data = state.currentData
-    if (data.hideTextField) {
-        return
-    }
+    val textStyle = createAppTextFieldTextStyle(valueColor, valueFontSize)
 
-    Column(modifier = modifier) {
+    AppTextFieldImpl(
+        modifier = modifier,
+        textStyle = textStyle,
+        error = error,
+        showError = showError
+    ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = data.text,
-            onValueChange = { onValueChange(it) },
-            label = { AppText(data = data.label) },
-            isError = state.isError(),
-            keyboardOptions = data.keyboardOptions,
-            maxLines = data.maxLines,
-            textStyle = TextStyle.Default.copy(
-                fontSize = data.textFontSize,
-                color = data.textColor.asCompose()
-            ),
-            enabled = data.enabled
+            value = value,
+            onValueChange = onValueChange,
+            enabled = enabled,
+            textStyle = textStyle,
+            label = createAppTextLabelOrNot(textStyle, label),
+            isError = showError,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            singleLine = singleLine,
+            maxLines = maxLines
         )
+    }
+}
 
-        data.error?.let {
-            AppText(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                data = it
+@Composable
+private fun AppTextFieldImpl(
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = TextStyle.Default,
+    error: @Composable (() -> Unit)? = null,
+    showError: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    Column(modifier = modifier) {
+        content()
+
+        if (error != null && showError) {
+            Column(
+                modifier = Modifier.padding(AppTextFieldErrorPaddings),
+                content = { ProvideAppTextFieldErrorTextStyle(textStyle, error) }
             )
         }
     }
 }
 
-@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun AppTextFieldPreview() {
-    MyShoppingTheme {
-        Surface {
-            Column {
-                AppTextField(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    state = TextFieldState().apply {
-                        showTextField(
-                            text = TextFieldValue("Description"),
-                            label = TextData(text = UiText.FromString("Description")),
-                            keyboardOptions = KeyboardOptions.Default
-                        )
-                    },
-                    onValueChange = {}
-                )
+private fun ProvideAppTextFieldLabelTextStyle(
+    textStyle: TextStyle,
+    content: @Composable () -> Unit
+) {
+    ProvideTextStyle(
+        value = textStyle,
+        content = content
+    )
+}
 
-                AppTextField(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    state = TextFieldState().apply {
-                        showTextField(
-                            text = TextFieldValue("Error"),
-                            label = TextData(text = UiText.FromString("Error")),
-                            keyboardOptions = KeyboardOptions.Default
-                        )
-                        showError(TextData(text = UiText.FromString("Enter text")))
-                    },
-                    onValueChange = {}
-                )
+@Composable
+private fun ProvideAppTextFieldErrorTextStyle(
+    textStyle: TextStyle,
+    content: @Composable () -> Unit
+) {
+    ProvideTextStyle(
+        value = textStyle.copy(color = MaterialTheme.colors.error),
+        content = content
+    )
+}
 
-                OutlinedAppTextField(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    state = TextFieldState().apply {
-                        showTextField(
-                            text = TextFieldValue("Outlined ".repeat(5)),
-                            label = TextData(text = UiText.FromString("Outlined")),
-                            keyboardOptions = KeyboardOptions.Default
-                        )
-                    },
-                    onValueChange = {}
-                )
-            }
-        }
+@Composable
+private fun createAppTextLabelOrNot(
+    textStyle: TextStyle,
+    content: @Composable (() -> Unit)?
+): @Composable (() -> Unit)? {
+    return if (content == null) {
+        null
+    } else {
+        { ProvideAppTextFieldLabelTextStyle(textStyle, content) }
     }
 }
+
+@Composable
+private fun createAppTextFieldTextStyle(color: Color, fontSize: TextUnit): TextStyle {
+    return TextStyle(color = color, fontSize = fontSize)
+}
+
+private val AppTextFieldErrorPaddings = PaddingValues(horizontal = 16.dp)

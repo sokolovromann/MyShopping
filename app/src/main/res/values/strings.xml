@@ -4,19 +4,19 @@
     <string name="addEditAutocomplete_action_saveAutocomplete">Save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">Add</string>
     <string name="addEditAutocomplete_header_editAutocomplete">Edit</string>
-    <string name="addEditAutocomplete_nameError">Add name</string>
-    <string name="addEditAutocomplete_nameLabel">Name</string>
+    <string name="addEditAutocomplete_label_name">Name</string>
+    <string name="addEditAutocomplete_message_nameError">Add name</string>
 
     <string name="addEditProduct_discountAsMoney">Money</string>
     <string name="addEditProduct_discountAsPercents">Percents</string>
-    <string name="addEditProduct_discountLabel">Discount</string>
-    <string name="addEditProduct_nameError">Add name</string>
-    <string name="addEditProduct_nameLabel">Name</string>
-    <string name="addEditProduct_priceLabel">Price per unit</string>
-    <string name="addEditProduct_quantityLabel">Quantity</string>
+    <string name="addEditProduct_label_discount">Discount</string>
+    <string name="addEditProduct_label_name">Name</string>
+    <string name="addEditProduct_label_price">Price per unit</string>
+    <string name="addEditProduct_label_quantity">Quantity</string>
+    <string name="addEditProduct_label_quantitySymbol">Symbol</string>
+    <string name="addEditProduct_message_nameError">Add name</string>
     <string name="addEditProduct_quantityMinusOne">- 1</string>
     <string name="addEditProduct_quantityPlusOne">+ 1</string>
-    <string name="addEditProduct_quantitySymbolLabel">Symbol</string>
     <string name="addEditProduct_save">Save</string>
 
     <string name="all_appName">My Shopping List</string>
@@ -35,9 +35,9 @@
     <string name="calculateChange_action_closeCalculatingChange">Back</string>
     <string name="calculateChange_change">Change: %s</string>
     <string name="calculateChange_header">Calculate change</string>
+    <string name="calculateChange_label_userMoney">Money</string>
     <string name="calculateChange_noChange">Change: no change</string>
     <string name="calculateChange_total">Total: %s</string>
-    <string name="calculateChange_userMoneyLabel">Money</string>
 
     <string name="calendar_currentYear">%ta, %tb %td</string>
     <string name="calendar_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
@@ -84,8 +84,8 @@
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">Save</string>
     <string name="editCurrencySymbol_header">Edit currency</string>
-    <string name="editCurrencySymbol_symbolError">Add currency</string>
-    <string name="editCurrencySymbol_symbolLabel">Currency</string>
+    <string name="editCurrencySymbol_label_symbol">Currency</string>
+    <string name="editCurrencySymbol_message_symbolError">Add currency</string>
 
     <string name="editReminder_action_cancelSavingReminder">Cancel</string>
     <string name="editReminder_action_deleteReminder">Delete reminder</string>
@@ -97,13 +97,13 @@
     <string name="editShoppingListName_action_saveShoppingListName">Save</string>
     <string name="editShoppingListName_header_addShoppingListName">Add</string>
     <string name="editShoppingListName_header_editShoppingListName">Edit</string>
-    <string name="editShoppingListName_nameLabel">Name</string>
+    <string name="editShoppingListName_label_name">Name</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Cancel</string>
     <string name="editTaxRate_action_saveTaxRate">Save</string>
     <string name="editTaxRate_header">Edit tax rate</string>
-    <string name="editTaxRate_taxRateError">Add tax rate</string>
-    <string name="editTaxRate_taxRateLabel">Tax rate</string>
+    <string name="editTaxRate_label_taxRate">Tax rate</string>
+    <string name="editTaxRate_message_taxRateError">Add tax rate</string>
 
     <string name="moveProduct_copyProductName">Select a list</string>
     <string name="moveProduct_shoppingListsNotFound">You have no shopping lists</string>

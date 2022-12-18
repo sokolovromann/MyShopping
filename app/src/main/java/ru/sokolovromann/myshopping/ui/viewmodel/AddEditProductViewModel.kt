@@ -197,7 +197,7 @@ class AddEditProductViewModel @Inject constructor(
         if (nameState.isTextEmpty()) {
             nameState.showError(
                 error = mapping.toBody(
-                    text = mapping.toResourcesUiText(R.string.addEditProduct_nameError),
+                    text = mapping.toResourcesUiText(R.string.addEditProduct_message_nameError),
                     fontSize = FontSize.MEDIUM,
                     appColor = AppColor.Error
                 )
@@ -422,7 +422,7 @@ class AddEditProductViewModel @Inject constructor(
                 composition = TextRange(name.length)
             ),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditProduct_nameLabel),
+                text = mapping.toResourcesUiText(R.string.addEditProduct_label_name),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(
@@ -442,7 +442,7 @@ class AddEditProductViewModel @Inject constructor(
         quantityState.showTextField(
             text = mapping.toTextFieldValue(text),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditProduct_quantityLabel),
+                text = mapping.toResourcesUiText(R.string.addEditProduct_label_quantity),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(
@@ -459,7 +459,7 @@ class AddEditProductViewModel @Inject constructor(
         quantitySymbolState.showTextField(
             text = mapping.toTextFieldValue(text),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditProduct_quantitySymbolLabel),
+                text = mapping.toResourcesUiText(R.string.addEditProduct_label_quantitySymbol),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(
@@ -492,7 +492,7 @@ class AddEditProductViewModel @Inject constructor(
         priceState.showTextField(
             text = mapping.toTextFieldValue(text),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditProduct_priceLabel),
+                text = mapping.toResourcesUiText(R.string.addEditProduct_label_price),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(
@@ -508,7 +508,7 @@ class AddEditProductViewModel @Inject constructor(
         discountState.showTextField(
             text = mapping.toTextFieldValue(text),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditProduct_discountLabel),
+                text = mapping.toResourcesUiText(R.string.addEditProduct_label_discount),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(

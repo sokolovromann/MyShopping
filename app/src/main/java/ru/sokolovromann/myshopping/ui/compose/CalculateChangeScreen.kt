@@ -1,6 +1,8 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -64,15 +68,25 @@ private fun Content(
     viewModel: CalculateChangeViewModel,
     focusRequester: FocusRequester
 ) {
+    val userMoneyField = viewModel.userMoneyState.currentData
     OutlinedAppTextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
-        state = viewModel.userMoneyState,
+        value = userMoneyField.text,
+        valueFontSize = userMoneyField.textFontSize,
         onValueChange = {
             val event = CalculateChangeEvent.UserMoneyChanged(it)
             viewModel.onEvent(event)
-        }
+        },
+        label = { Text(text = userMoneyField.label.text.asCompose()) },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = ImeAction.Previous
+        ),
+        keyboardActions = KeyboardActions(
+            onPrevious = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) }
+        )
     )
 
     AppText(

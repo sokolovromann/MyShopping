@@ -81,7 +81,7 @@ class EditTaxRateViewModel @Inject constructor(
         if (taxRateState.isTextEmpty()) {
             taxRateState.showError(
                 error = mapping.toBody(
-                    text = mapping.toResourcesUiText(R.string.editTaxRate_taxRateError),
+                    text = mapping.toResourcesUiText(R.string.editTaxRate_message_taxRateError),
                     fontSize = FontSize.MEDIUM,
                     appColor = AppColor.Error
                 )
@@ -146,7 +146,7 @@ class EditTaxRateViewModel @Inject constructor(
                 composition = TextRange(taxRate.length)
             ),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.editTaxRate_taxRateLabel),
+                text = mapping.toResourcesUiText(R.string.editTaxRate_label_taxRate),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(

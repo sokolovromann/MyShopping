@@ -142,7 +142,7 @@ class EditShoppingListNameViewModel @Inject constructor(
                 composition = TextRange(name.length)
             ),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.editShoppingListName_nameLabel),
+                text = mapping.toResourcesUiText(R.string.editShoppingListName_label_name),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(

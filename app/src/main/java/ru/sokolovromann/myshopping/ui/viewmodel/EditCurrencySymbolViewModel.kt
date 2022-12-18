@@ -79,7 +79,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
         if (symbolState.isTextEmpty()) {
             symbolState.showError(
                 error = mapping.toBody(
-                    text = mapping.toResourcesUiText(R.string.editCurrencySymbol_symbolError),
+                    text = mapping.toResourcesUiText(R.string.editCurrencySymbol_message_symbolError),
                     fontSize = FontSize.MEDIUM,
                     appColor = AppColor.Error
                 )
@@ -142,7 +142,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
                 composition = TextRange(currency.length)
             ),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.editCurrencySymbol_symbolLabel),
+                text = mapping.toResourcesUiText(R.string.editCurrencySymbol_label_symbol),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(

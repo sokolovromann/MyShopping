@@ -88,7 +88,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
         if (nameState.isTextEmpty()) {
             nameState.showError(
                 error = mapping.toBody(
-                    text = mapping.toResourcesUiText(R.string.addEditAutocomplete_nameError),
+                    text = mapping.toResourcesUiText(R.string.addEditAutocomplete_message_nameError),
                     fontSize = FontSize.MEDIUM,
                     appColor = AppColor.Error
                 )
@@ -162,7 +162,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
                 composition = TextRange(name.length)
             ),
             label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditAutocomplete_nameLabel),
+                text = mapping.toResourcesUiText(R.string.addEditAutocomplete_label_name),
                 fontSize = preferences.fontSize
             ),
             keyboardOptions = KeyboardOptions(

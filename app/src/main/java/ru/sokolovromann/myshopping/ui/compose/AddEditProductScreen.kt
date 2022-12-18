@@ -4,15 +4,22 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -61,7 +68,7 @@ fun AddEditProductScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { TopBar(viewModel) },
-        content = { paddingValues -> Content(paddingValues, viewModel, focusRequester) }
+        content = { paddingValues -> Content(paddingValues, viewModel, focusRequester, focusManager) }
     )
 }
 
@@ -82,7 +89,8 @@ private fun TopBar(viewModel: AddEditProductViewModel) {
 private fun Content(
     paddingValues: PaddingValues,
     viewModel: AddEditProductViewModel,
-    focusRequester: FocusRequester
+    focusRequester: FocusRequester,
+    focusManager: FocusManager
 ) {
     val columnScrollState = rememberScrollState()
 
@@ -98,16 +106,29 @@ private fun Content(
         .padding(vertical = 4.dp, horizontal = 8.dp)
         .verticalScroll(columnScrollState)
     ) {
+        val nameField = viewModel.nameState.currentData
         OutlinedAppTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 2.dp)
                 .focusRequester(focusRequester),
-            state = viewModel.nameState,
+            value = nameField.text,
+            valueFontSize = nameField.textFontSize,
             onValueChange = {
                 val event = AddEditProductEvent.ProductNameChanged(it)
                 viewModel.onEvent(event)
-            }
+            },
+            label = { Text(text = nameField.label.text.asCompose()) },
+            error = { Text(text = (nameField.error?.text ?: UiText.Nothing).asCompose()) },
+            showError = nameField.error?.text != null,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) }
+            )
         )
 
         val namesData = viewModel.autocompleteNamesState.currentData
@@ -121,24 +142,44 @@ private fun Content(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(vertical = 2.dp)
         ) {
+            val quantityField = viewModel.quantityState.currentData
             OutlinedAppTextField(
                 modifier = Modifier.weight(0.6f),
-                state = viewModel.quantityState,
+                value = quantityField.text,
+                valueFontSize = quantityField.textFontSize,
                 onValueChange = {
                     val event = AddEditProductEvent.ProductQuantityChanged(it)
                     viewModel.onEvent(event)
-                }
+                },
+                label = { Text(text = quantityField.label.text.asCompose()) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                )
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
+            val quantitySymbolField = viewModel.quantitySymbolState.currentData
             OutlinedAppTextField(
                 modifier = Modifier.weight(0.4f),
-                state = viewModel.quantitySymbolState,
+                value = quantitySymbolField.text,
+                valueFontSize = quantitySymbolField.textFontSize,
                 onValueChange = {
                     val event = AddEditProductEvent.ProductQuantitySymbolChanged(it)
                     viewModel.onEvent(event)
-                }
+                },
+                label = { Text(text = quantitySymbolField.label.text.asCompose()) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                )
             )
         }
 
@@ -188,15 +229,25 @@ private fun Content(
             }
         }
 
+        val priceField = viewModel.priceState.currentData
         OutlinedAppTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 2.dp),
-            state = viewModel.priceState,
+            value = priceField.text,
+            valueFontSize = priceField.textFontSize,
             onValueChange = {
                 val event = AddEditProductEvent.ProductPriceChanged(it)
                 viewModel.onEvent(event)
-            }
+            },
+            label = { Text(text = priceField.label.text.asCompose()) },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) }
+            )
         )
 
         Row(
@@ -218,13 +269,23 @@ private fun Content(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(vertical = 2.dp)
         ) {
+            val discountField = viewModel.discountState.currentData
             OutlinedAppTextField(
                 modifier = Modifier.weight(0.6f),
-                state = viewModel.discountState,
+                value = discountField.text,
+                valueFontSize = discountField.textFontSize,
                 onValueChange = {
                     val event = AddEditProductEvent.ProductDiscountChanged(it)
                     viewModel.onEvent(event)
-                }
+                },
+                label = { Text(text = discountField.label.text.asCompose()) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }
+                )
             )
 
             Spacer(modifier = Modifier.width(8.dp))
