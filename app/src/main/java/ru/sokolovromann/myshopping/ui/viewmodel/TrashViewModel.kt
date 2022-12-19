@@ -406,7 +406,7 @@ class TrashViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.trash_trashName),
+                text = mapping.toResourcesUiText(R.string.trash_header),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(

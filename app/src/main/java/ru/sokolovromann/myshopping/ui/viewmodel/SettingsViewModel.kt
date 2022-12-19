@@ -325,7 +325,7 @@ class SettingsViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.settings_settingsName),
+                text = mapping.toResourcesUiText(R.string.settings_header),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(

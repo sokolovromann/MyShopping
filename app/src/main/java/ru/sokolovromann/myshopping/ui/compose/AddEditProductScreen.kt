@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -17,6 +19,7 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
@@ -74,9 +78,17 @@ fun AddEditProductScreen(
 
 @Composable
 private fun TopBar(viewModel: AddEditProductViewModel) {
-    AppTopBar(
-        data = viewModel.topBarState.value,
-        onNavigationIconClick = { viewModel.onEvent(AddEditProductEvent.CancelSavingProduct) },
+    TopAppBar(
+        title = { Text(text = viewModel.topBarState.value.title.text.asCompose()) },
+        navigationIcon = {
+            IconButton(onClick = { viewModel.onEvent(AddEditProductEvent.CancelSavingProduct) }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.addEditProduct_contentDescription_navigationIcon),
+                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                )
+            }
+        },
         actions = {
             TextButton(onClick = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }) {
                 AppText(data = viewModel.saveState.value)

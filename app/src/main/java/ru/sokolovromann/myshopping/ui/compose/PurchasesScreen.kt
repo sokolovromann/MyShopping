@@ -6,16 +6,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -91,9 +95,17 @@ fun PurchasesScreen(
 
 @Composable
 private fun TopBar(viewModel: PurchasesViewModel) {
-    AppTopBar(
-        data = viewModel.topBarState.value,
-        onNavigationIconClick = { viewModel.onEvent(PurchasesEvent.ShowNavigationDrawer) }
+    TopAppBar(
+        title = { Text(text = viewModel.topBarState.value.title.text.asCompose()) },
+        navigationIcon = {
+            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowNavigationDrawer) }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon),
+                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                )
+            }
+        }
     )
 }
 

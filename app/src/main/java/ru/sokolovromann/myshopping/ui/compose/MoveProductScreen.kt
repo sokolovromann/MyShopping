@@ -5,14 +5,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ListData
 import ru.sokolovromann.myshopping.ui.compose.state.ListResult
@@ -56,9 +60,17 @@ fun MoveProductScreen(
 
 @Composable
 private fun TopBar(viewModel: MoveProductViewModel) {
-    AppTopBar(
-        data = viewModel.topBarState.value,
-        onNavigationIconClick = { viewModel.onEvent(MoveProductEvent.ShowBackScreen) }
+    TopAppBar(
+        title = { Text(text = viewModel.topBarState.value.title.text.asCompose()) },
+        navigationIcon = {
+            IconButton(onClick = { viewModel.onEvent(MoveProductEvent.ShowBackScreen) }) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(R.string.moveProduct_contentDescription_navigationIcon),
+                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                )
+            }
+        }
     )
 }
 

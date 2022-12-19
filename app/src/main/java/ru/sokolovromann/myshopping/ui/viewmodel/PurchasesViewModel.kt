@@ -386,7 +386,7 @@ class PurchasesViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.purchases_purchasesName),
+                text = mapping.toResourcesUiText(R.string.purchases_header),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(

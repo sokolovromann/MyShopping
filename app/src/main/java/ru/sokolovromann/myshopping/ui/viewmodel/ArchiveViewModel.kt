@@ -375,7 +375,7 @@ class ArchiveViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.archive_archiveName),
+                text = mapping.toResourcesUiText(R.string.archive_header),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(

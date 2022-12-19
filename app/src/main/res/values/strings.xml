@@ -7,6 +7,7 @@
     <string name="addEditAutocomplete_label_name">Name</string>
     <string name="addEditAutocomplete_message_nameError">Add name</string>
 
+    <string name="addEditProduct_contentDescription_navigationIcon">Back</string>
     <string name="addEditProduct_discountAsMoney">Money</string>
     <string name="addEditProduct_discountAsPercents">Percents</string>
     <string name="addEditProduct_label_discount">Discount</string>
@@ -21,16 +22,18 @@
 
     <string name="all_appName">My Shopping List</string>
 
-    <string name="archive_archiveName">Archive</string>
+    <string name="archive_contentDescription_navigationIcon">Show navigation</string>
+    <string name="archive_header">Archive</string>
     <string name="archive_moveShoppingListToPurchases">Unarchive</string>
     <string name="archive_moveShoppingListToTrash">Delete</string>
     <string name="archive_productsNotFound">Shopping list is empty</string>
     <string name="archive_shoppingListsNotFound">Archive is empty</string>
 
-    <string name="autocompletes_autocompletesName">Personal dictionary</string>
     <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
+    <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
     <string name="autocompletes_deleteAutocomplete">Delete</string>
     <string name="autocompletes_editAutocomplete">Edit</string>
+    <string name="autocompletes_header">Personal dictionary</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Back</string>
     <string name="calculateChange_change">Change: %s</string>
@@ -51,7 +54,8 @@
     <string name="calendar_yesterday">Yesterday</string>
     <string name="calendar_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
 
-    <string name="copyProduct_copyProductName">Select a list</string>
+    <string name="copyProduct_contentDescription_navigationIcon">Cancel</string>
+    <string name="copyProduct_header">Select a list</string>
     <string name="copyProduct_shoppingListsNotFound">You have no shopping lists</string>
 
     <string-array name="data_defaultAutocompleteNames"/>
@@ -105,7 +109,8 @@
     <string name="editTaxRate_label_taxRate">Tax rate</string>
     <string name="editTaxRate_message_taxRateError">Add tax rate</string>
 
-    <string name="moveProduct_copyProductName">Select a list</string>
+    <string name="moveProduct_contentDescription_navigationIcon">Cancel</string>
+    <string name="moveProduct_header">Select a list</string>
     <string name="moveProduct_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
@@ -116,6 +121,7 @@
     <string name="productsTotal_productsCompletedTotal">Completed: %s</string>
 
     <string name="products_calculateChange">Calculate change</string>
+    <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_copyProductToShoppingList">Copy to</string>
     <string name="products_deleteProduct">Delete</string>
     <string name="products_deleteProducts">Clear</string>
@@ -127,23 +133,25 @@
     <string name="products_reminder">Reminder</string>
     <string name="products_shareProducts">Share</string>
 
+    <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
+    <string name="purchases_header">Purchases</string>
     <string name="purchases_moveShoppingListToArchive">Archive</string>
     <string name="purchases_moveShoppingListToTrash">Delete</string>
     <string name="purchases_productsNotFound">Shopping list is empty</string>
-    <string name="purchases_purchasesName">Purchases</string>
     <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="route_archiveName">Archive</string>
-    <string name="route_autocompletesName">Dictionary</string>
+    <string name="route_autocompletesName">@string/autocompletes_header</string>
     <string name="route_header">@string/all_appName</string>
-    <string name="route_purchasesName">@string/purchases_purchasesName</string>
-    <string name="route_settingsName">Settings</string>
-    <string name="route_trashName">@string/trash_trashName</string>
+    <string name="route_purchasesName">@string/purchases_header</string>
+    <string name="route_settingsName">@string/settings_header</string>
+    <string name="route_trashName">@string/trash_header</string>
 
     <string name="settings_aboutHeader">About</string>
     <string name="settings_addLastProductBody">Any product will be add in dictionary</string>
     <string name="settings_addLastProductTitle">Add unknown product</string>
     <string name="settings_appVersion">App version</string>
+    <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_currencySymbol">Currency</string>
     <string name="settings_developer">Developer</string>
     <string name="settings_displayAllAutocomplete">All</string>
@@ -161,6 +169,7 @@
     <string name="settings_generalHeader">General</string>
     <string name="settings_githubBody">Tap to open</string>
     <string name="settings_githubTitle">GutHub</string>
+    <string name="settings_header">Settings</string>
     <string name="settings_hideAutocomplete">Hide</string>
     <string name="settings_hugeFontSize">Huge</string>
     <string name="settings_largeFontSize">Large</string>
@@ -169,7 +178,6 @@
     <string name="settings_nightTheme">Night theme</string>
     <string name="settings_productsMultiColumns">Multi columns in products</string>
     <string name="settings_purchasesHeader">Purchases</string>
-    <string name="settings_settingsName">Settings</string>
     <string name="settings_shoppingsMultiColumns">Multi columns in shopping lists</string>
     <string name="settings_smallFontSize">Small</string>
     <string name="settings_taxRate">Tax rate</string>
@@ -200,11 +208,12 @@
     <string name="sortShoppingLists_byTotal">By total</string>
     <string name="sortShoppingLists_title">Sort</string>
 
+    <string name="trash_contentDescription_navigationIcon">Open navigation</string>
     <string name="trash_deleteShoppingList">Delete</string>
     <string name="trash_deleteShoppingLists">Clear</string>
+    <string name="trash_header">Trash</string>
     <string name="trash_moveShoppingListToArchive">Archive</string>
     <string name="trash_moveShoppingListToPurchases">Restore</string>
     <string name="trash_productsNotFound">Shopping list is empty</string>
     <string name="trash_shoppingListsNotFound">Trash is empty</string>
-    <string name="trash_trashName">Trash</string>
 </resources>

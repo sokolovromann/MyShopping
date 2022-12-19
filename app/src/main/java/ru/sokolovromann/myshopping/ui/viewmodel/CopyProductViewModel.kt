@@ -217,7 +217,7 @@ class CopyProductViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.copyProduct_copyProductName),
+                text = mapping.toResourcesUiText(R.string.copyProduct_header),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(

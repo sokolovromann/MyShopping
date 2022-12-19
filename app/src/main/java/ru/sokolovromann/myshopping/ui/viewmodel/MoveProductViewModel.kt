@@ -200,7 +200,7 @@ class MoveProductViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.moveProduct_copyProductName),
+                text = mapping.toResourcesUiText(R.string.moveProduct_header),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(
