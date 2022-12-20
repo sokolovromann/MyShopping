@@ -57,9 +57,6 @@ class ArchiveViewModel @Inject constructor(
     private val _bottomBarState: MutableState<BottomBarData> = mutableStateOf(BottomBarData())
     val bottomBarState: State<BottomBarData> = _bottomBarState
 
-    private val _systemUiState: MutableState<SystemUiData> = mutableStateOf(SystemUiData())
-    val systemUiState: State<SystemUiData> = _systemUiState
-
     private val _screenEventFlow: MutableSharedFlow<ArchiveScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ArchiveScreenEvent> = _screenEventFlow
 

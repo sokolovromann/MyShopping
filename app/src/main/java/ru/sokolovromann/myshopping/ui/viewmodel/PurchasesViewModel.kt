@@ -60,9 +60,6 @@ class PurchasesViewModel @Inject constructor(
     private val _bottomBarState: MutableState<BottomBarData> = mutableStateOf(BottomBarData())
     val bottomBarState: State<BottomBarData> = _bottomBarState
 
-    private val _systemUiState: MutableState<SystemUiData> = mutableStateOf(SystemUiData())
-    val systemUiState: State<SystemUiData> = _systemUiState
-
     private val _screenEventFlow: MutableSharedFlow<PurchasesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<PurchasesScreenEvent> = _screenEventFlow
 

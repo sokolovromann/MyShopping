@@ -81,10 +81,7 @@ fun TrashScreen(
         viewModel.onEvent(TrashEvent.HideNavigationDrawer)
     }
 
-    AppSystemUi(
-        systemUiController = systemUiController,
-        data = viewModel.systemUiState.value
-    )
+    AppSystemUi(systemUiController = systemUiController)
 
     Scaffold(
         scaffoldState = scaffoldState,

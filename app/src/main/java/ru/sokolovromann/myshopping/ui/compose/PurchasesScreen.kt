@@ -79,10 +79,7 @@ fun PurchasesScreen(
         viewModel.onEvent(PurchasesEvent.HideNavigationDrawer)
     }
     
-    AppSystemUi(
-        systemUiController = systemUiController,
-        data = viewModel.systemUiState.value
-    )
+    AppSystemUi(systemUiController = systemUiController)
 
     Scaffold(
         scaffoldState = scaffoldState,

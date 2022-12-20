@@ -48,9 +48,6 @@ class MoveProductViewModel @Inject constructor(
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
 
-    private val _systemUiState: MutableState<SystemUiData> = mutableStateOf(SystemUiData())
-    val systemUiState: State<SystemUiData> = _systemUiState
-
     private val _screenEventFlow: MutableSharedFlow<MoveProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<MoveProductScreenEvent> = _screenEventFlow
 

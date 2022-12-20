@@ -46,10 +46,7 @@ fun CopyProductScreen(
         viewModel.onEvent(CopyProductEvent.ShowBackScreen)
     }
 
-    AppSystemUi(
-        systemUiController = systemUiController,
-        data = viewModel.systemUiState.value
-    )
+    AppSystemUi(systemUiController = systemUiController)
 
     Scaffold(
         scaffoldState = scaffoldState,

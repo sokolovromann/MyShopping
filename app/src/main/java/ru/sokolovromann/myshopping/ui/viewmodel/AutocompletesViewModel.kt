@@ -53,9 +53,6 @@ class AutocompletesViewModel @Inject constructor(
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
 
-    private val _systemUiState: MutableState<SystemUiData> = mutableStateOf(SystemUiData())
-    val systemUiState: State<SystemUiData> = _systemUiState
-
     private val _screenEventFlow: MutableSharedFlow<AutocompletesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AutocompletesScreenEvent> = _screenEventFlow
 

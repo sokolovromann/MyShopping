@@ -46,10 +46,7 @@ fun MoveProductScreen(
         viewModel.onEvent(MoveProductEvent.ShowBackScreen)
     }
 
-    AppSystemUi(
-        systemUiController = systemUiController,
-        data = viewModel.systemUiState.value
-    )
+    AppSystemUi(systemUiController = systemUiController)
 
     Scaffold(
         scaffoldState = scaffoldState,
