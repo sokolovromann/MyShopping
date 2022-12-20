@@ -1372,15 +1372,15 @@ class ViewModelMapping @Inject constructor() {
     fun toShoppingListsDisplayTotalText(total: Money, displayTotal: DisplayTotal): UiText {
         return when (displayTotal) {
             DisplayTotal.ALL -> UiText.FromResourcesWithArgs(
-                R.string.shoppingListsTotal_productsAllTotal,
+                R.string.shoppingListsTotal_text_allTotal,
                 total.toString()
             )
             DisplayTotal.COMPLETED -> UiText.FromResourcesWithArgs(
-                R.string.shoppingListsTotal_productsCompletedTotal,
+                R.string.shoppingListsTotal_text_completedTotal,
                 total.toString()
             )
             DisplayTotal.ACTIVE -> UiText.FromResourcesWithArgs(
-                R.string.shoppingListsTotal_productsActiveTotal,
+                R.string.shoppingListsTotal_text_activeTotal,
                 total.toString()
             )
         }

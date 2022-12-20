@@ -9,7 +9,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -115,27 +117,39 @@ private fun TopBar(viewModel: ProductsViewModel) {
 
 @Composable
 private fun BottomBar(viewModel: ProductsViewModel) {
-    AppBottomBar(data = viewModel.bottomBarState.value) {
-        TextButton(
-            onClick = { viewModel.onEvent(ProductsEvent.SelectProductsDisplayTotal)}
-        ) {
-            AppText(data = viewModel.totalState.currentData.text)
-            TotalMenu(viewModel)
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        IconButton(onClick = { viewModel.onEvent(ProductsEvent.AddProduct) }) {
-            AppIcon(data = viewModel.addIconState.value)
-        }
-
-        Box {
-            IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowProductsMenu) }) {
-                AppIcon(data = viewModel.productsMenu.currentData.icon)
+    AppBottomAppBar(
+        content = {
+            TextButton(
+                onClick = { viewModel.onEvent(ProductsEvent.SelectProductsDisplayTotal)}
+            ) {
+                val total = viewModel.totalState.currentData.text
+                Text(
+                    text = total.text.asCompose(),
+                    fontSize = total.fontSize,
+                    color = MaterialTheme.colors.onBackground,
+                    style = total.style
+                )
+                TotalMenu(viewModel)
             }
-            ProductsMenu(viewModel)
+        },
+        actionButtons = {
+            IconButton(onClick = { viewModel.onEvent(ProductsEvent.AddProduct) }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.products_contentDescription_addProductIcon),
+                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                )
+            }
+            IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowProductsMenu) }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon),
+                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                )
+                ProductsMenu(viewModel)
+            }
         }
-    }
+    )
 }
 
 @ExperimentalFoundationApi

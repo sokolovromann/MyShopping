@@ -121,7 +121,9 @@
     <string name="productsTotal_productsCompletedTotal">Completed: %s</string>
 
     <string name="products_calculateChange">Calculate change</string>
+    <string name="products_contentDescription_addProductIcon">Add product</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
+    <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_copyProductToShoppingList">Copy to</string>
     <string name="products_deleteProduct">Delete</string>
     <string name="products_deleteProducts">Clear</string>
@@ -188,9 +190,9 @@
     <string name="shoppingListsLocation_title">Display</string>
     <string name="shoppingListsLocation_trash">Trash</string>
 
-    <string name="shoppingListsTotal_productsActiveTotal">Active: %s</string>
-    <string name="shoppingListsTotal_productsAllTotal">All: %s</string>
-    <string name="shoppingListsTotal_productsCompletedTotal">Completed: %s</string>
+    <string name="shoppingListsTotal_text_activeTotal">Active: %s</string>
+    <string name="shoppingListsTotal_text_allTotal">All: %s</string>
+    <string name="shoppingListsTotal_text_completedTotal">Completed: %s</string>
 
     <string name="sortAutocompletes_byCreated">By created</string>
     <string name="sortAutocompletes_byName">By name</string>

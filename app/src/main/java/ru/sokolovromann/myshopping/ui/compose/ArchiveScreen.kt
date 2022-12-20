@@ -113,11 +113,17 @@ private fun TopBar(viewModel: ArchiveViewModel) {
 
 @Composable
 private fun BottomBar(viewModel: ArchiveViewModel) {
-    AppBottomBar(data = viewModel.bottomBarState.value) {
+    AppBottomAppBar {
         TextButton(
             onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsDisplayTotal)}
         ) {
-            AppText(data = viewModel.totalState.currentData.text)
+            val total = viewModel.totalState.currentData.text
+            Text(
+                text = total.text.asCompose(),
+                fontSize = total.fontSize,
+                color = MaterialTheme.colors.onBackground,
+                style = total.style
+            )
             TotalMenu(viewModel)
         }
     }

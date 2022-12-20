@@ -111,11 +111,17 @@ private fun TopBar(viewModel: PurchasesViewModel) {
 
 @Composable
 private fun BottomBar(viewModel: PurchasesViewModel) {
-    AppBottomBar(data = viewModel.bottomBarState.value) {
+    AppBottomAppBar {
         TextButton(
             onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsDisplayTotal) }
         ) {
-            AppText(data = viewModel.totalState.currentData.text)
+            val total = viewModel.totalState.currentData.text
+            Text(
+                text = total.text.asCompose(),
+                fontSize = total.fontSize,
+                color = MaterialTheme.colors.onBackground,
+                style = total.style
+            )
             TotalMenu(viewModel)
         }
     }

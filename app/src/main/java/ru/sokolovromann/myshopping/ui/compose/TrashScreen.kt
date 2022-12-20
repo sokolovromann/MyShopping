@@ -118,11 +118,17 @@ private fun TopBar(viewModel: TrashViewModel) {
 
 @Composable
 private fun BottomBar(viewModel: TrashViewModel) {
-    AppBottomBar(data = viewModel.bottomBarState.value) {
+    AppBottomAppBar {
         TextButton(
             onClick = { viewModel.onEvent(TrashEvent.SelectShoppingListsDisplayTotal)}
         ) {
-            AppText(data = viewModel.totalState.currentData.text)
+            val total = viewModel.totalState.currentData.text
+            Text(
+                text = total.text.asCompose(),
+                fontSize = total.fontSize,
+                color = MaterialTheme.colors.onBackground,
+                style = total.style
+            )
             TotalMenu(viewModel)
         }
     }
