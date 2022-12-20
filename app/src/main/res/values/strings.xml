@@ -30,6 +30,7 @@
     <string name="archive_shoppingListsNotFound">Archive is empty</string>
 
     <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
+    <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
     <string name="autocompletes_deleteAutocomplete">Delete</string>
     <string name="autocompletes_editAutocomplete">Edit</string>
@@ -135,6 +136,7 @@
     <string name="products_reminder">Reminder</string>
     <string name="products_shareProducts">Share</string>
 
+    <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_header">Purchases</string>
     <string name="purchases_moveShoppingListToArchive">Archive</string>

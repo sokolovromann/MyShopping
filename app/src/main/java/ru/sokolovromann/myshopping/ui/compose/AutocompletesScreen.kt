@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +25,7 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
+import ru.sokolovromann.myshopping.ui.theme.Shapes
 import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
 
@@ -125,10 +127,13 @@ private fun DrawerContent(viewModel: AutocompletesViewModel) {
 
 @Composable
 private fun FloatingActionButton(viewModel: AutocompletesViewModel) {
-    AppFloatingActionButton(
-        data = viewModel.floatingActionButtonState.value,
-        onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }
-    )
+    FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
+            tint = MaterialTheme.colors.onSecondary
+        )
+    }
 }
 
 @ExperimentalFoundationApi

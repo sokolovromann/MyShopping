@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -140,11 +141,16 @@ private fun DrawerContent(viewModel: PurchasesViewModel) {
 
 @Composable
 private fun FloatingActionButton(viewModel: PurchasesViewModel) {
-    AppFloatingActionButton(
+    FloatingActionButton(
         modifier = Modifier.offset(y = 42.dp),
-        data = viewModel.floatingActionButtonState.value,
         onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }
-    )
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
+            tint = MaterialTheme.colors.onSecondary
+        )
+    }
 }
 
 @ExperimentalFoundationApi
