@@ -587,7 +587,12 @@ private fun itemBodyOrNull(item: ProductItem): @Composable (() -> Unit)? {
 private fun itemBefore(item: ProductItem): @Composable (() -> Unit) {
     return {
         Spacer(modifier = Modifier.width(8.dp))
-        AppCheckbox(data = item.completed)
+        AppCheckbox(
+            checked = item.completed.checked,
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+            )
+        )
         Spacer(modifier = Modifier.width(16.dp))
     }
 }
