@@ -256,33 +256,33 @@ private fun TotalMenu(viewModel: TrashViewModel) {
             data = menu.title
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.allSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.allBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.allSelected.selected)
             },
+            text = { AppText(data = menu.allBody) },
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsAllTotal) }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.completedSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.completedBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.completedSelected.selected)
             },
+            text = { AppText(data = menu.completedBody) },
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompletedTotal) }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.activeSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.activeBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.activeSelected.selected)
             },
+            text = { AppText(data = menu.activeBody) },
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsActiveTotal) }
         )
     }
@@ -302,43 +302,43 @@ private fun SortMenu(viewModel: TrashViewModel) {
             data = menu.title
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.byCreatedSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.byCreatedBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected)
             },
+            text = { AppText(data = menu.byCreatedBody) },
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByCreated) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.byLastModifiedSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.byLastModifiedBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.byLastModifiedSelected.selected)
             },
+            text = { AppText(data = menu.byLastModifiedBody) },
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByLastModified) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.byNameSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.byNameBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.byNameSelected.selected)
             },
+            text = { AppText(data = menu.byNameBody) },
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByName) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.byTotalSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.byTotalBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.byTotalSelected.selected)
             },
+            text = { AppText(data = menu.byTotalBody) },
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByTotal) },
         )
     }
@@ -358,33 +358,33 @@ private fun CompletedMenu(viewModel: TrashViewModel) {
             data = menu.title
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.firstSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.firstBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.firstSelected.selected)
             },
+            text = { AppText(data = menu.firstBody) },
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompletedFirst) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.lastSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.lastBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.lastSelected.selected)
             },
+            text = { AppText(data = menu.lastBody) },
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompletedLast) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.hideSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.hideBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.hideSelected.selected)
             },
+            text = { AppText(data = menu.hideBody) },
             onClick = { viewModel.onEvent(TrashEvent.HideShoppingListsCompleted) },
         )
     }

@@ -163,33 +163,33 @@ private fun LocationMenu(viewModel: CopyProductViewModel) {
             data = menu.title
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.purchasesSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.purchasesBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp))
+                CheckmarkAppCheckbox(checked = menu.purchasesSelected.selected)
             },
+            text = { AppText(data = menu.purchasesBody) },
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsPurchases) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.archiveSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.archiveBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp))
+                CheckmarkAppCheckbox(checked = menu.archiveSelected.selected)
             },
+            text = { AppText(data = menu.archiveBody) },
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsArchive) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.trashSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.trashBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp))
+                CheckmarkAppCheckbox(checked = menu.trashSelected.selected)
             },
+            text = { AppText(data = menu.trashBody) },
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsTrash) },
         )
     }

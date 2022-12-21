@@ -225,65 +225,65 @@ private fun FontSizeMenu(settingsUid: SettingsUid, viewModel: SettingsViewModel)
         onDismissRequest = { viewModel.onEvent(SettingsEvent.HideFontSize) }
     ) {
         AppMenuItem(
-            before = { AppRadioButton(data = menu.tinySelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.tinyBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.tinySelected.selected)
             },
+            text = { AppText(data = menu.tinyBody) },
             onClick = {
                 val event = SettingsEvent.TinyFontSizeSelected
                 viewModel.onEvent(event)
             }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.smallSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.smallBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.smallSelected.selected)
             },
+            text = { AppText(data = menu.smallBody) },
             onClick = {
                 val event = SettingsEvent.SmallFontSizeSelected
                 viewModel.onEvent(event)
             }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.mediumSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.mediumBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.mediumSelected.selected)
             },
+            text = { AppText(data = menu.mediumBody) },
             onClick = {
                 val event = SettingsEvent.MediumFontSizeSelected
                 viewModel.onEvent(event)
             }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.largeSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.largeBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.largeSelected.selected)
             },
+            text = { AppText(data = menu.largeBody) },
             onClick = {
                 val event = SettingsEvent.LargeFontSizeSelected
                 viewModel.onEvent(event)
             }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.hugeSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.hugeBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.hugeSelected.selected)
             },
+            text = { AppText(data = menu.hugeBody) },
             onClick = {
                 val event = SettingsEvent.HugeFontSizeSelected
                 viewModel.onEvent(event)
@@ -302,39 +302,39 @@ private fun DisplayAutocompleteMenu(settingsUid: SettingsUid, viewModel: Setting
         onDismissRequest = { viewModel.onEvent(SettingsEvent.HideProductsDisplayAutocomplete) }
     ) {
         AppMenuItem(
-            before = { AppRadioButton(data = menu.allSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.allBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.allSelected.selected)
             },
+            text = { AppText(data = menu.allBody) },
             onClick = {
                 val event = SettingsEvent.DisplayProductsAllAutocomplete
                 viewModel.onEvent(event)
             }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.nameSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.nameBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.nameSelected.selected)
             },
+            text = { AppText(data = menu.nameBody) },
             onClick = {
                 val event = SettingsEvent.DisplayProductsNameAutocomplete
                 viewModel.onEvent(event)
             }
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.hideSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.hideBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp))
+                CheckmarkAppCheckbox(checked = menu.hideSelected.selected)
             },
+            text = { AppText(data = menu.hideBody) },
             onClick = {
                 val event = SettingsEvent.HideProductsAutocomplete
                 viewModel.onEvent(event)

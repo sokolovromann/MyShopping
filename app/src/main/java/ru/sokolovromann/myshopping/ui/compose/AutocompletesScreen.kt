@@ -25,7 +25,6 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
-import ru.sokolovromann.myshopping.ui.theme.Shapes
 import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
 
@@ -225,23 +224,23 @@ private fun SortMenu(viewModel: AutocompletesViewModel) {
             data = menu.title
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.byCreatedSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.byCreatedBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp))
+                CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected)
             },
+            text = { AppText(data = menu.byCreatedBody) },
             onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByCreated) },
         )
         AppMenuItem(
-            before = { AppRadioButton(data = menu.byNameSelected)},
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    data = menu.byNameBody
-                )
+            after = {
+                Spacer(modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp))
+                CheckmarkAppCheckbox(checked = menu.byNameSelected.selected)
             },
+            text = { AppText(data = menu.byNameBody) },
             onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByName) },
         )
     }
