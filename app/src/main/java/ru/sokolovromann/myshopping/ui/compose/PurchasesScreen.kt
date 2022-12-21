@@ -255,46 +255,25 @@ private fun TotalMenu(viewModel: PurchasesViewModel) {
     val totalData = viewModel.totalState.currentData
     val menu = totalData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = totalData.expandedMenu,
-        onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayTotal) }
+        onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayTotal) },
+        header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppText(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            data = menu.title
-        )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-                )
-                CheckmarkAppCheckbox(checked = menu.allSelected.selected)
-            },
-            text = { AppText(data = menu.allBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsAllTotal) },
+            text = { Text(text = menu.allBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.allSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-                )
-                CheckmarkAppCheckbox(checked = menu.completedSelected.selected)
-            },
-            text = { AppText(data = menu.completedBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompletedTotal) },
+            text = { Text(text = menu.completedBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.completedSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-                )
-                CheckmarkAppCheckbox(checked = menu.activeSelected.selected)
-            },
-            text = { AppText(data = menu.activeBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsActiveTotal) },
+            text = { Text(text = menu.activeBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.activeSelected.selected) }
         )
     }
 }
@@ -304,53 +283,30 @@ private fun SortMenu(viewModel: PurchasesViewModel) {
     val sortData = viewModel.sortState.currentData
     val menu = sortData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = sortData.expandedMenu,
-        onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) }
+        onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
+        header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppText(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            data = menu.title
-        )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected)
-            },
-            text = { AppText(data = menu.byCreatedBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByCreated) },
+            text = { Text(text = menu.byCreatedBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.byLastModifiedSelected.selected)
-            },
-            text = { AppText(data = menu.byLastModifiedBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByLastModified) },
+            text = { Text(text = menu.byLastModifiedBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.byLastModifiedSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.byNameSelected.selected)
-            },
-            text = { AppText(data = menu.byNameBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByName) },
+            text = { Text(text = menu.byNameBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.byNameSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.byTotalSelected.selected)
-            },
-            text = { AppText(data = menu.byTotalBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByTotal) },
+            text = { Text(text = menu.byTotalBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.byTotalSelected.selected) }
         )
     }
 }
@@ -360,43 +316,25 @@ private fun CompletedMenu(viewModel: PurchasesViewModel) {
     val completedData = viewModel.completedState.currentData
     val menu = completedData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = completedData.expandedMenu,
-        onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayCompleted) }
+        onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayCompleted) },
+        header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppText(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            data = menu.title
-        )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.firstSelected.selected)
-            },
-            text = { AppText(data = menu.firstBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompletedFirst) },
+            text = { Text(text = menu.firstBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.firstSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.lastSelected.selected)
-            },
-            text = { AppText(data = menu.lastBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompletedLast) },
+            text = { Text(text = menu.lastBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.lastSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.hideSelected.selected)
-            },
-            text = { AppText(data = menu.hideBody) },
             onClick = { viewModel.onEvent(PurchasesEvent.HideShoppingListsCompleted) },
+            text = { Text(text = menu.hideBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.hideSelected.selected) }
         )
     }
 }
@@ -406,33 +344,23 @@ private fun ItemMenu(itemUid: String, viewModel: PurchasesViewModel) {
     val itemMenuData = viewModel.itemMenuState.currentData
     val menu = itemMenuData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = itemMenuData.itemUid == itemUid,
         onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListMenu) }
     ) {
         AppMenuItem(
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    data = menu.moveToArchiveBody
-                )
-            },
             onClick = {
                 val event = PurchasesEvent.MoveShoppingListToArchive(itemUid)
                 viewModel.onEvent(event)
-            }
+            },
+            text = { Text(text = menu.moveToArchiveBody.text.asCompose()) }
         )
         AppMenuItem(
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    data = menu.moveToTrashBody
-                )
-            },
             onClick = {
                 val event = PurchasesEvent.MoveShoppingListToTrash(itemUid)
                 viewModel.onEvent(event)
-            }
+            },
+            text = { Text(text = menu.moveToTrashBody.text.asCompose()) }
         )
     }
 }

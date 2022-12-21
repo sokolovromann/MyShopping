@@ -343,29 +343,19 @@ private fun DiscountAsPercentMenu(viewModel: AddEditProductViewModel) {
     val menuData = viewModel.discountAsPercentState.currentData
     val menu = menuData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = menuData.expandedMenu,
         onDismissRequest = { viewModel.onEvent(AddEditProductEvent.HideProductDiscountAsPercentMenu) }
     ) {
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.asPercentSelected.selected)
-            },
-            text = { AppText(data = menu.asPercentBody) },
             onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsPercentSelected) },
+            text = { Text(text = menu.asPercentBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.asPercentSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.asMoneySelected.selected)
-            },
-            text = { AppText(data = menu.asMoneyBody) },
             onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
+            text = { Text(text = menu.asMoneyBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.asMoneySelected.selected) }
         )
     }
 }

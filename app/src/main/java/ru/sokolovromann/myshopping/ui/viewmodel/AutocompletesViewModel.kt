@@ -240,7 +240,7 @@ class AutocompletesViewModel @Inject constructor(
     private fun showTopBar() {
         val data = TopBarData(
             title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.autocompletes_header),
+                text = mapping.toResourcesUiText(R.string.autocompletes_header_autocompletes),
                 fontSize = FontSize.MEDIUM
             ),
             navigationIcon = mapping.toOnTopAppBar(

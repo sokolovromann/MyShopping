@@ -7,9 +7,9 @@
     <string name="addEditAutocomplete_label_name">Name</string>
     <string name="addEditAutocomplete_message_nameError">Add name</string>
 
+    <string name="addEditProduct_action_selectDiscountAsMoney">Money</string>
+    <string name="addEditProduct_action_selectDiscountAsPercents">Percents</string>
     <string name="addEditProduct_contentDescription_navigationIcon">Back</string>
-    <string name="addEditProduct_discountAsMoney">Money</string>
-    <string name="addEditProduct_discountAsPercents">Percents</string>
     <string name="addEditProduct_label_discount">Discount</string>
     <string name="addEditProduct_label_name">Name</string>
     <string name="addEditProduct_label_price">Price per unit</string>
@@ -22,19 +22,22 @@
 
     <string name="all_appName">My Shopping List</string>
 
+    <string name="archive_action_moveShoppingListToPurchases">Unarchive</string>
+    <string name="archive_action_moveShoppingListToTrash">Delete</string>
     <string name="archive_contentDescription_navigationIcon">Show navigation</string>
     <string name="archive_header">Archive</string>
-    <string name="archive_moveShoppingListToPurchases">Unarchive</string>
-    <string name="archive_moveShoppingListToTrash">Delete</string>
     <string name="archive_productsNotFound">Shopping list is empty</string>
     <string name="archive_shoppingListsNotFound">Archive is empty</string>
 
+    <string name="autocompletes_action_deleteAutocomplete">Delete</string>
+    <string name="autocompletes_action_editAutocomplete">Edit</string>
+    <string name="autocompletes_action_sortByCreated">By created</string>
+    <string name="autocompletes_action_sortByName">By name</string>
     <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
-    <string name="autocompletes_deleteAutocomplete">Delete</string>
-    <string name="autocompletes_editAutocomplete">Edit</string>
-    <string name="autocompletes_header">Personal dictionary</string>
+    <string name="autocompletes_header_autocompletes">Personal dictionary</string>
+    <string name="autocompletes_header_sort">Sort</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Back</string>
     <string name="calculateChange_change">Change: %s</string>
@@ -65,26 +68,6 @@
     <string name="data_developerEmail">sokolovromann@gmail.com</string>
     <string name="data_developerName">Roman Sokolov</string>
     <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
-
-    <string name="displayProductsCompleted_firstCompleted">First</string>
-    <string name="displayProductsCompleted_hideCompleted">Hide</string>
-    <string name="displayProductsCompleted_lastCompleted">Last</string>
-    <string name="displayProductsCompleted_title">Display completed</string>
-
-    <string name="displayProductsTotal_activeTotal">Active</string>
-    <string name="displayProductsTotal_allTotal">All</string>
-    <string name="displayProductsTotal_completedTotal">Completed</string>
-    <string name="displayProductsTotal_title">Display total</string>
-
-    <string name="displayShoppingListsCompleted_firstCompleted">First</string>
-    <string name="displayShoppingListsCompleted_hideCompleted">Hide</string>
-    <string name="displayShoppingListsCompleted_lastCompleted">Last</string>
-    <string name="displayShoppingListsCompleted_title">Display completed</string>
-
-    <string name="displayShoppingListsTotal_activeTotal">Active</string>
-    <string name="displayShoppingListsTotal_allTotal">All</string>
-    <string name="displayShoppingListsTotal_completedTotal">Completed</string>
-    <string name="displayShoppingListsTotal_title">Display total</string>
 
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">Save</string>
@@ -117,107 +100,115 @@
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
 
-    <string name="productsTotal_productsActiveTotal">Active: %s</string>
-    <string name="productsTotal_productsAllTotal">All: %s</string>
-    <string name="productsTotal_productsCompletedTotal">Completed: %s</string>
-
-    <string name="products_calculateChange">Calculate change</string>
+    <string name="products_action_calculateChange">Calculate change</string>
+    <string name="products_action_copyProductToShoppingList">Copy to</string>
+    <string name="products_action_deleteProduct">Delete</string>
+    <string name="products_action_deleteProducts">Clear</string>
+    <string name="products_action_displayActiveTotal">Active</string>
+    <string name="products_action_displayAllTotal">All</string>
+    <string name="products_action_displayCompletedFirst">First</string>
+    <string name="products_action_displayCompletedLast">Last</string>
+    <string name="products_action_displayCompletedTotal">Completed</string>
+    <string name="products_action_editProduct">Edit</string>
+    <string name="products_action_editShoppingListName">Name</string>
+    <string name="products_action_editShoppingListReminder">Reminder</string>
+    <string name="products_action_hideCompleted">Hide</string>
+    <string name="products_action_moveProductToShoppingList">Move to</string>
+    <string name="products_action_shareProducts">Share</string>
+    <string name="products_action_sortByCreated">By created</string>
+    <string name="products_action_sortByLastModified">By last modified</string>
+    <string name="products_action_sortByName">By name</string>
+    <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
-    <string name="products_copyProductToShoppingList">Copy to</string>
-    <string name="products_deleteProduct">Delete</string>
-    <string name="products_deleteProducts">Clear</string>
-    <string name="products_editProduct">Edit</string>
-    <string name="products_editShoppingListName">Name</string>
-    <string name="products_editShoppingListReminder">Reminder</string>
-    <string name="products_moveProductToShoppingList">Move to</string>
+    <string name="products_header_displayCompleted">Display completed</string>
+    <string name="products_header_displayTotal">Display total</string>
+    <string name="products_header_sort">Sort</string>
     <string name="products_productsNotFound">You have no products</string>
     <string name="products_reminder">Reminder</string>
-    <string name="products_shareProducts">Share</string>
+    <string name="products_text_activeTotal">Active: %s</string>
+    <string name="products_text_allTotal">All: %s</string>
+    <string name="products_text_completedTotal">Completed: %s</string>
 
+    <string name="purchases_action_moveShoppingListToArchive">Archive</string>
+    <string name="purchases_action_moveShoppingListToTrash">Delete</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_header">Purchases</string>
-    <string name="purchases_moveShoppingListToArchive">Archive</string>
-    <string name="purchases_moveShoppingListToTrash">Delete</string>
     <string name="purchases_productsNotFound">Shopping list is empty</string>
     <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="route_archiveName">Archive</string>
-    <string name="route_autocompletesName">@string/autocompletes_header</string>
+    <string name="route_autocompletesName">@string/autocompletes_header_autocompletes</string>
     <string name="route_header">@string/all_appName</string>
     <string name="route_purchasesName">@string/purchases_header</string>
-    <string name="route_settingsName">@string/settings_header</string>
+    <string name="route_settingsName">@string/settings_header_settings</string>
     <string name="route_trashName">@string/trash_header</string>
 
     <string name="settings_aboutHeader">About</string>
+    <string name="settings_action_displayAllAutocomplete">All</string>
+    <string name="settings_action_displayNameAutocomplete">Only names</string>
+    <string name="settings_action_selectHideAutocomplete">Hide</string>
+    <string name="settings_action_selectHugeFontSize">Huge</string>
+    <string name="settings_action_selectLargeFontSize">Large</string>
+    <string name="settings_action_selectMediumFontSize">Medium</string>
+    <string name="settings_action_selectSmallFontSize">Small</string>
+    <string name="settings_action_selectTinyFontSize">Tiny</string>
     <string name="settings_addLastProductBody">Any product will be add in dictionary</string>
     <string name="settings_addLastProductTitle">Add unknown product</string>
     <string name="settings_appVersion">App version</string>
     <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_currencySymbol">Currency</string>
     <string name="settings_developer">Developer</string>
-    <string name="settings_displayAllAutocomplete">All</string>
-    <string name="settings_displayAutocomplete">Display autocompletes</string>
     <string name="settings_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_displayMoney">Display money</string>
-    <string name="settings_displayNameAutocomplete">Only names</string>
     <string name="settings_editCompletedProductBody">Will be open screen for edit</string>
     <string name="settings_editCompletedProductTitle">Edit product after completed</string>
     <string name="settings_emailBody">Tap to write email</string>
     <string name="settings_emailTitle">Email</string>
     <string name="settings_firstLetterUppercaseBody">Names of shopping lists and products</string>
     <string name="settings_firstLetterUppercaseTitle">First letter uppercase</string>
-    <string name="settings_fontSize">Font size</string>
     <string name="settings_generalHeader">General</string>
     <string name="settings_githubBody">Tap to open</string>
     <string name="settings_githubTitle">GutHub</string>
-    <string name="settings_header">Settings</string>
-    <string name="settings_hideAutocomplete">Hide</string>
-    <string name="settings_hugeFontSize">Huge</string>
-    <string name="settings_largeFontSize">Large</string>
-    <string name="settings_mediumFontSize">Medium</string>
+    <string name="settings_header_displayAutocomplete">Display autocompletes</string>
+    <string name="settings_header_fontSize">Font size</string>
+    <string name="settings_header_settings">Settings</string>
     <string name="settings_moneyHeader">Money</string>
     <string name="settings_nightTheme">Night theme</string>
     <string name="settings_productsMultiColumns">Multi columns in products</string>
     <string name="settings_purchasesHeader">Purchases</string>
     <string name="settings_shoppingsMultiColumns">Multi columns in shopping lists</string>
-    <string name="settings_smallFontSize">Small</string>
     <string name="settings_taxRate">Tax rate</string>
-    <string name="settings_tinyFontSize">Tiny</string>
 
-    <string name="shoppingListsLocation_archive">Archive</string>
-    <string name="shoppingListsLocation_purchases">Purchases</string>
-    <string name="shoppingListsLocation_title">Display</string>
-    <string name="shoppingListsLocation_trash">Trash</string>
+    <string name="shoppingLists_action_displayActiveTotal">Active</string>
+    <string name="shoppingLists_action_displayAllTotal">All</string>
+    <string name="shoppingLists_action_displayCompletedFirst">First</string>
+    <string name="shoppingLists_action_displayCompletedHide">Hide</string>
+    <string name="shoppingLists_action_displayCompletedLast">Last</string>
+    <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
+    <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
+    <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>
+    <string name="shoppingLists_action_selectTrashLocation">Trash</string>
+    <string name="shoppingLists_action_sortByCreated">By created</string>
+    <string name="shoppingLists_action_sortByLastModified">By last modified</string>
+    <string name="shoppingLists_action_sortByName">By name</string>
+    <string name="shoppingLists_action_sortByTotal">By total</string>
+    <string name="shoppingLists_header_displayCompleted">Display completed</string>
+    <string name="shoppingLists_header_displayTotal">Display total</string>
+    <string name="shoppingLists_header_location">Display</string>
+    <string name="shoppingLists_header_sort">Sort</string>
+    <string name="shoppingLists_text_activeTotal">Active: %s</string>
+    <string name="shoppingLists_text_allTotal">All: %s</string>
+    <string name="shoppingLists_text_completedTotal">Completed: %s</string>
 
-    <string name="shoppingListsTotal_text_activeTotal">Active: %s</string>
-    <string name="shoppingListsTotal_text_allTotal">All: %s</string>
-    <string name="shoppingListsTotal_text_completedTotal">Completed: %s</string>
-
-    <string name="sortAutocompletes_byCreated">By created</string>
-    <string name="sortAutocompletes_byName">By name</string>
-    <string name="sortAutocompletes_title">Sort</string>
-
-    <string name="sortProducts_byCreated">By created</string>
-    <string name="sortProducts_byLastModified">By last modified</string>
-    <string name="sortProducts_byName">By name</string>
-    <string name="sortProducts_byTotal">By total</string>
-    <string name="sortProducts_title">Sort</string>
-
-    <string name="sortShoppingLists_byCreated">By created</string>
-    <string name="sortShoppingLists_byLastModified">By last modified</string>
-    <string name="sortShoppingLists_byName">By name</string>
-    <string name="sortShoppingLists_byTotal">By total</string>
-    <string name="sortShoppingLists_title">Sort</string>
-
+    <string name="trash_action_deleteShoppingList">Delete</string>
+    <string name="trash_action_moveShoppingListToArchive">Archive</string>
+    <string name="trash_action_moveShoppingListToPurchases">Restore</string>
     <string name="trash_contentDescription_navigationIcon">Open navigation</string>
-    <string name="trash_deleteShoppingList">Delete</string>
     <string name="trash_deleteShoppingLists">Clear</string>
     <string name="trash_header">Trash</string>
-    <string name="trash_moveShoppingListToArchive">Archive</string>
-    <string name="trash_moveShoppingListToPurchases">Restore</string>
     <string name="trash_productsNotFound">Shopping list is empty</string>
     <string name="trash_shoppingListsNotFound">Trash is empty</string>
 </resources>

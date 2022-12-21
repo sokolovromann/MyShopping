@@ -221,7 +221,7 @@ class ViewModelMapping @Inject constructor() {
             SettingsItem(
                 uid = SettingsUid.FontSize,
                 title = toTitle(
-                    text = toResourcesUiText(R.string.settings_fontSize),
+                    text = toResourcesUiText(R.string.settings_header_fontSize),
                     fontSize =  preferences.fontSize
                 ),
                 body = toBody(
@@ -314,7 +314,7 @@ class ViewModelMapping @Inject constructor() {
             SettingsItem(
                 uid = SettingsUid.DisplayAutocomplete,
                 title = toTitle(
-                    text = toResourcesUiText(R.string.settings_displayAutocomplete),
+                    text = toResourcesUiText(R.string.settings_header_displayAutocomplete),
                     fontSize = preferences.fontSize
                 ),
                 body = toBody(
@@ -403,30 +403,30 @@ class ViewModelMapping @Inject constructor() {
 
     fun toFontSizeText(fontSize: FontSize): UiText {
         return when (fontSize) {
-            FontSize.TINY -> toResourcesUiText(R.string.settings_tinyFontSize)
-            FontSize.SMALL -> toResourcesUiText(R.string.settings_smallFontSize)
-            FontSize.MEDIUM -> toResourcesUiText(R.string.settings_mediumFontSize)
-            FontSize.LARGE -> toResourcesUiText(R.string.settings_largeFontSize)
-            FontSize.HUGE -> toResourcesUiText(R.string.settings_hugeFontSize)
+            FontSize.TINY -> toResourcesUiText(R.string.settings_action_selectTinyFontSize)
+            FontSize.SMALL -> toResourcesUiText(R.string.settings_action_selectSmallFontSize)
+            FontSize.MEDIUM -> toResourcesUiText(R.string.settings_action_selectMediumFontSize)
+            FontSize.LARGE -> toResourcesUiText(R.string.settings_action_selectLargeFontSize)
+            FontSize.HUGE -> toResourcesUiText(R.string.settings_action_selectHugeFontSize)
         }
     }
 
     fun toDisplayAutocompleteText(displayAutocomplete: DisplayAutocomplete): UiText {
         return when (displayAutocomplete) {
-            DisplayAutocomplete.ALL -> toResourcesUiText(R.string.settings_displayAllAutocomplete)
-            DisplayAutocomplete.NAME -> toResourcesUiText(R.string.settings_displayNameAutocomplete)
-            DisplayAutocomplete.HIDE -> toResourcesUiText(R.string.settings_hideAutocomplete)
+            DisplayAutocomplete.ALL -> toResourcesUiText(R.string.settings_action_displayAllAutocomplete)
+            DisplayAutocomplete.NAME -> toResourcesUiText(R.string.settings_action_displayNameAutocomplete)
+            DisplayAutocomplete.HIDE -> toResourcesUiText(R.string.settings_action_selectHideAutocomplete)
         }
     }
 
     fun toPurchasesItemMenu(fontSize: FontSize): PurchasesItemMenu {
         return PurchasesItemMenu(
             moveToArchiveBody = toBody(
-                text = UiText.FromResources(R.string.purchases_moveShoppingListToArchive),
+                text = UiText.FromResources(R.string.purchases_action_moveShoppingListToArchive),
                 fontSize = fontSize
             ),
             moveToTrashBody = toBody(
-                text = UiText.FromResources(R.string.purchases_moveShoppingListToTrash),
+                text = UiText.FromResources(R.string.purchases_action_moveShoppingListToTrash),
                 fontSize = fontSize
             )
         )
@@ -435,11 +435,11 @@ class ViewModelMapping @Inject constructor() {
     fun toArchiveItemMenu(fontSize: FontSize): ArchiveItemMenu {
         return ArchiveItemMenu(
             moveToPurchasesBody = toBody(
-                text = UiText.FromResources(R.string.archive_moveShoppingListToPurchases),
+                text = UiText.FromResources(R.string.archive_action_moveShoppingListToPurchases),
                 fontSize = fontSize
             ),
             moveToTrashBody = toBody(
-                text = UiText.FromResources(R.string.archive_moveShoppingListToTrash),
+                text = UiText.FromResources(R.string.archive_action_moveShoppingListToTrash),
                 fontSize = fontSize
             )
         )
@@ -448,15 +448,15 @@ class ViewModelMapping @Inject constructor() {
     fun toTrashItemMenu(fontSize: FontSize): TrashItemMenu {
         return TrashItemMenu(
             moveToPurchasesBody = toBody(
-                text = UiText.FromResources(R.string.trash_moveShoppingListToPurchases),
+                text = UiText.FromResources(R.string.trash_action_moveShoppingListToPurchases),
                 fontSize = fontSize
             ),
             moveToArchiveBody = toBody(
-                text = UiText.FromResources(R.string.trash_moveShoppingListToArchive),
+                text = UiText.FromResources(R.string.trash_action_moveShoppingListToArchive),
                 fontSize = fontSize
             ),
             deleteBody = toBody(
-                text = UiText.FromResources(R.string.trash_deleteShoppingList),
+                text = UiText.FromResources(R.string.trash_action_deleteShoppingList),
                 fontSize = fontSize
             )
         )
@@ -465,19 +465,19 @@ class ViewModelMapping @Inject constructor() {
     fun toProductsItemMenu(fontSize: FontSize): ProductsItemMenu {
         return ProductsItemMenu(
             editBody = toBody(
-                text = UiText.FromResources(R.string.products_editProduct),
+                text = UiText.FromResources(R.string.products_action_editProduct),
                 fontSize = fontSize
             ),
             deleteBody = toBody(
-                text = UiText.FromResources(R.string.products_deleteProduct),
+                text = UiText.FromResources(R.string.products_action_deleteProduct),
                 fontSize = fontSize
             ),
             copyToShoppingListBody = toBody(
-                text = UiText.FromResources(R.string.products_copyProductToShoppingList),
+                text = UiText.FromResources(R.string.products_action_copyProductToShoppingList),
                 fontSize = fontSize
             ),
             moveToShoppingListBody = toBody(
-                text = UiText.FromResources(R.string.products_moveProductToShoppingList),
+                text = UiText.FromResources(R.string.products_action_moveProductToShoppingList),
                 fontSize = fontSize
             )
         )
@@ -486,23 +486,23 @@ class ViewModelMapping @Inject constructor() {
     fun toProductsMenu(fontSize: FontSize): ProductsMenu {
         return ProductsMenu(
             editNameBody = toBody(
-                text = UiText.FromResources(R.string.products_editShoppingListName),
+                text = UiText.FromResources(R.string.products_action_editShoppingListName),
                 fontSize = fontSize
             ),
             editReminderBody = toBody(
-                text = UiText.FromResources(R.string.products_editShoppingListReminder),
+                text = UiText.FromResources(R.string.products_action_editShoppingListReminder),
                 fontSize = fontSize
             ),
             calculateChangeBody = toBody(
-                text = UiText.FromResources(R.string.products_calculateChange),
+                text = UiText.FromResources(R.string.products_action_calculateChange),
                 fontSize = fontSize
             ),
             deleteProductsBody = toBody(
-                text = UiText.FromResources(R.string.products_deleteProducts),
+                text = UiText.FromResources(R.string.products_action_deleteProducts),
                 fontSize = fontSize
             ),
             shareBody = toBody(
-                text = UiText.FromResources(R.string.products_shareProducts),
+                text = UiText.FromResources(R.string.products_action_shareProducts),
                 fontSize = fontSize
             )
         )
@@ -511,11 +511,11 @@ class ViewModelMapping @Inject constructor() {
     fun toAutocompleteItemMenu(fontSize: FontSize): AutocompleteItemMenu {
         return AutocompleteItemMenu(
             editBody = toBody(
-                text = UiText.FromResources(R.string.autocompletes_editAutocomplete),
+                text = UiText.FromResources(R.string.autocompletes_action_editAutocomplete),
                 fontSize = fontSize
             ),
             deleteBody = toBody(
-                text = UiText.FromResources(R.string.autocompletes_deleteAutocomplete),
+                text = UiText.FromResources(R.string.autocompletes_action_deleteAutocomplete),
                 fontSize = fontSize
             )
         )
@@ -564,10 +564,10 @@ class ViewModelMapping @Inject constructor() {
 
     fun toShoppingListsSortBody(sortBy: SortBy, fontSize: FontSize): TextData {
         val text: UiText = when (sortBy) {
-            SortBy.CREATED -> UiText.FromResources(R.string.sortShoppingLists_byCreated)
-            SortBy.LAST_MODIFIED -> UiText.FromResources(R.string.sortShoppingLists_byLastModified)
-            SortBy.NAME -> UiText.FromResources(R.string.sortShoppingLists_byName)
-            SortBy.TOTAL -> UiText.FromResources(R.string.sortShoppingLists_byTotal)
+            SortBy.CREATED -> UiText.FromResources(R.string.shoppingLists_action_sortByCreated)
+            SortBy.LAST_MODIFIED -> UiText.FromResources(R.string.shoppingLists_action_sortByLastModified)
+            SortBy.NAME -> UiText.FromResources(R.string.shoppingLists_action_sortByName)
+            SortBy.TOTAL -> UiText.FromResources(R.string.shoppingLists_action_sortByTotal)
         }
         return toBody(
             text = text,
@@ -582,11 +582,11 @@ class ViewModelMapping @Inject constructor() {
         fontSize: FontSize
     ): TextData {
         val text: UiText = if (archived && !deleted) {
-            UiText.FromResources(R.string.shoppingListsLocation_archive)
+            UiText.FromResources(R.string.shoppingLists_action_selectArchiveLocation)
         } else if (!archived && deleted) {
-            UiText.FromResources(R.string.shoppingListsLocation_trash)
+            UiText.FromResources(R.string.shoppingLists_action_selectTrashLocation)
         } else {
-            UiText.FromResources(R.string.shoppingListsLocation_purchases)
+            UiText.FromResources(R.string.shoppingLists_action_selectPurchasesLocation)
         }
         return toBody(
             text = text,
@@ -597,8 +597,8 @@ class ViewModelMapping @Inject constructor() {
 
     fun toAutocompletesSortBody(sortBy: SortBy, fontSize: FontSize): TextData {
         val text: UiText = when (sortBy) {
-            SortBy.CREATED -> UiText.FromResources(R.string.sortAutocompletes_byCreated)
-            SortBy.NAME -> UiText.FromResources(R.string.sortAutocompletes_byName)
+            SortBy.CREATED -> UiText.FromResources(R.string.autocompletes_action_sortByCreated)
+            SortBy.NAME -> UiText.FromResources(R.string.autocompletes_action_sortByName)
             else -> UiText.Nothing
         }
         return toBody(
@@ -634,9 +634,9 @@ class ViewModelMapping @Inject constructor() {
 
     fun toDiscountAsPercentBody(asPercent: Boolean, fontSize: FontSize): TextData {
         val text: UiText = if (asPercent) {
-            UiText.FromResources(R.string.addEditProduct_discountAsPercents)
+            UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)
         } else {
-            UiText.FromResources(R.string.addEditProduct_discountAsMoney)
+            UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)
         }
         return toBody(
             text = text,
@@ -669,32 +669,32 @@ class ViewModelMapping @Inject constructor() {
     fun toShoppingListsSortMenu(sortBy: SortBy, fontSize: FontSize): ShoppingListsSortMenu {
         return ShoppingListsSortMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.sortShoppingLists_title),
+                text = UiText.FromResources(R.string.shoppingLists_header_sort),
                 fontSize = fontSize
             ),
             byCreatedBody = toBody(
-                text = UiText.FromResources(R.string.sortShoppingLists_byCreated),
+                text = UiText.FromResources(R.string.shoppingLists_action_sortByCreated),
                 fontSize = fontSize
             ),
             byCreatedSelected = toRadioButton(
                 selected = sortBy == SortBy.CREATED
             ),
             byLastModifiedBody = toBody(
-                text = UiText.FromResources(R.string.sortShoppingLists_byLastModified),
+                text = UiText.FromResources(R.string.shoppingLists_action_sortByLastModified),
                 fontSize = fontSize
             ),
             byLastModifiedSelected = toRadioButton(
                 selected = sortBy == SortBy.LAST_MODIFIED
             ),
             byNameBody = toBody(
-                text = UiText.FromResources(R.string.sortShoppingLists_byName),
+                text = UiText.FromResources(R.string.shoppingLists_action_sortByName),
                 fontSize = fontSize
             ),
             byNameSelected = toRadioButton(
                 selected = sortBy == SortBy.NAME
             ),
             byTotalBody = toBody(
-                text = UiText.FromResources(R.string.sortShoppingLists_byTotal),
+                text = UiText.FromResources(R.string.shoppingLists_action_sortByTotal),
                 fontSize = fontSize
             ),
             byTotalSelected = toRadioButton(
@@ -710,25 +710,25 @@ class ViewModelMapping @Inject constructor() {
     ): ShoppingListsLocationMenu {
         return ShoppingListsLocationMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.shoppingListsLocation_title),
+                text = UiText.FromResources(R.string.shoppingLists_header_location),
                 fontSize = fontSize
             ),
             purchasesBody = toBody(
-                text = UiText.FromResources(R.string.shoppingListsLocation_purchases),
+                text = UiText.FromResources(R.string.shoppingLists_action_selectPurchasesLocation),
                 fontSize = fontSize
             ),
             purchasesSelected = toRadioButton(
                 selected = !archived && !deleted
             ),
             archiveBody = toBody(
-                text = UiText.FromResources(R.string.shoppingListsLocation_archive),
+                text = UiText.FromResources(R.string.shoppingLists_action_selectArchiveLocation),
                 fontSize = fontSize
             ),
             archiveSelected = toRadioButton(
                 selected = archived && !deleted
             ),
             trashBody = toBody(
-                text = UiText.FromResources(R.string.shoppingListsLocation_trash),
+                text = UiText.FromResources(R.string.shoppingLists_action_selectTrashLocation),
                 fontSize = fontSize
             ),
             trashSelected = toRadioButton(
@@ -740,32 +740,32 @@ class ViewModelMapping @Inject constructor() {
     fun toProductsSortMenu(sortBy: SortBy, fontSize: FontSize): ProductsSortMenu {
         return ProductsSortMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.sortProducts_title),
+                text = UiText.FromResources(R.string.products_header_sort),
                 fontSize = fontSize
             ),
             byCreatedBody = toBody(
-                text = UiText.FromResources(R.string.sortProducts_byCreated),
+                text = UiText.FromResources(R.string.products_action_sortByCreated),
                 fontSize = fontSize
             ),
             byCreatedSelected = toRadioButton(
                 selected = sortBy == SortBy.CREATED
             ),
             byLastModifiedBody = toBody(
-                text = UiText.FromResources(R.string.sortProducts_byLastModified),
+                text = UiText.FromResources(R.string.products_action_sortByLastModified),
                 fontSize = fontSize
             ),
             byLastModifiedSelected = toRadioButton(
                 selected = sortBy == SortBy.LAST_MODIFIED
             ),
             byNameBody = toBody(
-                text = UiText.FromResources(R.string.sortProducts_byName),
+                text = UiText.FromResources(R.string.products_action_sortByName),
                 fontSize = fontSize
             ),
             byNameSelected = toRadioButton(
                 selected = sortBy == SortBy.NAME
             ),
             byTotalBody = toBody(
-                text = UiText.FromResources(R.string.sortProducts_byTotal),
+                text = UiText.FromResources(R.string.products_action_sortByTotal),
                 fontSize = fontSize
             ),
             byTotalSelected = toRadioButton(
@@ -777,18 +777,18 @@ class ViewModelMapping @Inject constructor() {
     fun toAutocompletesSortMenu(sortBy: SortBy, fontSize: FontSize): AutocompletesSortMenu {
         return AutocompletesSortMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.sortAutocompletes_title),
+                text = UiText.FromResources(R.string.autocompletes_header_sort),
                 fontSize = fontSize
             ),
             byCreatedBody = toBody(
-                text = UiText.FromResources(R.string.sortAutocompletes_byCreated),
+                text = UiText.FromResources(R.string.autocompletes_action_sortByCreated),
                 fontSize = fontSize
             ),
             byCreatedSelected = toRadioButton(
                 selected = sortBy == SortBy.CREATED
             ),
             byNameBody = toBody(
-                text = UiText.FromResources(R.string.sortAutocompletes_byName),
+                text = UiText.FromResources(R.string.autocompletes_action_sortByName),
                 fontSize = fontSize
             ),
             byNameSelected = toRadioButton(
@@ -800,14 +800,14 @@ class ViewModelMapping @Inject constructor() {
     fun toDiscountAsPercentMenuMenu(asPercent: Boolean, fontSize: FontSize): DiscountAsPercentMenu {
         return DiscountAsPercentMenu(
             asPercentBody = toBody(
-                text = UiText.FromResources(R.string.addEditProduct_discountAsPercents),
+                text = UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents),
                 fontSize = fontSize
             ),
             asPercentSelected = toRadioButton(
                 selected = asPercent
             ),
             asMoneyBody = toBody(
-                text = UiText.FromResources(R.string.addEditProduct_discountAsMoney),
+                text = UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney),
                 fontSize = fontSize
             ),
             asMoneySelected = toRadioButton(
@@ -822,25 +822,25 @@ class ViewModelMapping @Inject constructor() {
     ): ShoppingListsCompletedMenu {
         return ShoppingListsCompletedMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.displayShoppingListsCompleted_title),
+                text = UiText.FromResources(R.string.shoppingLists_header_displayCompleted),
                 fontSize = fontSize
             ),
             firstBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsCompleted_firstCompleted),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayCompletedFirst),
                 fontSize = fontSize
             ),
             firstSelected = toRadioButton(
                 selected = displayCompleted == DisplayCompleted.FIRST
             ),
             lastBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsCompleted_lastCompleted),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayCompletedLast),
                 fontSize = fontSize
             ),
             lastSelected = toRadioButton(
                 selected = displayCompleted == DisplayCompleted.LAST
             ),
             hideBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsCompleted_hideCompleted),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayCompletedHide),
                 fontSize = fontSize
             ),
             hideSelected = toRadioButton(
@@ -855,25 +855,25 @@ class ViewModelMapping @Inject constructor() {
     ): ProductsCompletedMenu {
         return ProductsCompletedMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.displayProductsCompleted_title),
+                text = UiText.FromResources(R.string.products_header_displayCompleted),
                 fontSize = fontSize
             ),
             firstBody = toBody(
-                text = UiText.FromResources(R.string.displayProductsCompleted_firstCompleted),
+                text = UiText.FromResources(R.string.products_action_displayCompletedFirst),
                 fontSize = fontSize
             ),
             firstSelected = toRadioButton(
                 selected = displayCompleted == DisplayCompleted.FIRST
             ),
             lastBody = toBody(
-                text = UiText.FromResources(R.string.displayProductsCompleted_lastCompleted),
+                text = UiText.FromResources(R.string.products_action_displayCompletedLast),
                 fontSize = fontSize
             ),
             lastSelected = toRadioButton(
                 selected = displayCompleted == DisplayCompleted.LAST
             ),
             hideBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsCompleted_hideCompleted),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayCompletedHide),
                 fontSize = fontSize
             ),
             hideSelected = toRadioButton(
@@ -888,25 +888,25 @@ class ViewModelMapping @Inject constructor() {
     ): ShoppingListsTotalMenu {
         return ShoppingListsTotalMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.displayShoppingListsTotal_title),
+                text = UiText.FromResources(R.string.shoppingLists_header_displayTotal),
                 fontSize = fontSize
             ),
             allBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsTotal_allTotal),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayAllTotal),
                 fontSize = fontSize
             ),
             allSelected = toRadioButton(
                 selected = displayTotal == DisplayTotal.ALL
             ),
             completedBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsTotal_completedTotal),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayCompletedTotal),
                 fontSize = fontSize
             ),
             completedSelected = toRadioButton(
                 selected = displayTotal == DisplayTotal.COMPLETED
             ),
             activeBody = toBody(
-                text = UiText.FromResources(R.string.displayShoppingListsTotal_activeTotal),
+                text = UiText.FromResources(R.string.shoppingLists_action_displayActiveTotal),
                 fontSize = fontSize
             ),
             activeSelected = toRadioButton(
@@ -921,25 +921,25 @@ class ViewModelMapping @Inject constructor() {
     ): ProductsTotalMenu {
         return ProductsTotalMenu(
             title = toTitle(
-                text = UiText.FromResources(R.string.displayProductsTotal_title),
+                text = UiText.FromResources(R.string.products_header_displayTotal),
                 fontSize = fontSize
             ),
             allBody = toBody(
-                text = UiText.FromResources(R.string.displayProductsTotal_allTotal),
+                text = UiText.FromResources(R.string.products_action_displayAllTotal),
                 fontSize = fontSize
             ),
             allSelected = toRadioButton(
                 selected = displayTotal == DisplayTotal.ALL
             ),
             completedBody = toBody(
-                text = UiText.FromResources(R.string.displayProductsTotal_completedTotal),
+                text = UiText.FromResources(R.string.products_action_displayCompletedTotal),
                 fontSize = fontSize
             ),
             completedSelected = toRadioButton(
                 selected = displayTotal == DisplayTotal.COMPLETED
             ),
             activeBody = toBody(
-                text = UiText.FromResources(R.string.displayProductsTotal_activeTotal),
+                text = UiText.FromResources(R.string.products_action_displayActiveTotal),
                 fontSize = fontSize
             ),
             activeSelected = toRadioButton(
@@ -951,27 +951,27 @@ class ViewModelMapping @Inject constructor() {
     fun toFontSizeMenu(fontSize: FontSize): FontSizeMenu {
         return FontSizeMenu(
             tinyBody = toBody(
-                text = toResourcesUiText(R.string.settings_tinyFontSize),
+                text = toResourcesUiText(R.string.settings_action_selectTinyFontSize),
                 fontSize = fontSize
             ),
             tinySelected = toRadioButton(selected = fontSize == FontSize.TINY),
             smallBody = toBody(
-                text = toResourcesUiText(R.string.settings_smallFontSize),
+                text = toResourcesUiText(R.string.settings_action_selectSmallFontSize),
                 fontSize = fontSize
             ),
             smallSelected = toRadioButton(selected = fontSize == FontSize.SMALL),
             mediumBody = toBody(
-                text = toResourcesUiText(R.string.settings_mediumFontSize),
+                text = toResourcesUiText(R.string.settings_action_selectMediumFontSize),
                 fontSize = fontSize
             ),
             mediumSelected = toRadioButton(selected = fontSize == FontSize.MEDIUM),
             largeBody = toBody(
-                text = toResourcesUiText(R.string.settings_largeFontSize),
+                text = toResourcesUiText(R.string.settings_action_selectLargeFontSize),
                 fontSize = fontSize
             ),
             largeSelected = toRadioButton(selected = fontSize == FontSize.LARGE),
             hugeBody = toBody(
-                text = toResourcesUiText(R.string.settings_hugeFontSize),
+                text = toResourcesUiText(R.string.settings_action_selectHugeFontSize),
                 fontSize = fontSize
             ),
             hugeSelected = toRadioButton(selected = fontSize == FontSize.HUGE)
@@ -984,17 +984,17 @@ class ViewModelMapping @Inject constructor() {
     ): DisplayAutocompleteMenu {
         return DisplayAutocompleteMenu(
             allBody = toBody(
-                text = toResourcesUiText(R.string.settings_displayAllAutocomplete),
+                text = toResourcesUiText(R.string.settings_action_displayAllAutocomplete),
                 fontSize = fontSize
             ),
             allSelected = toRadioButton(selected = displayAutocomplete == DisplayAutocomplete.ALL),
             nameBody = toBody(
-                text = toResourcesUiText(R.string.settings_displayNameAutocomplete),
+                text = toResourcesUiText(R.string.settings_action_displayNameAutocomplete),
                 fontSize = fontSize
             ),
             nameSelected = toRadioButton(selected = displayAutocomplete == DisplayAutocomplete.NAME),
             hideBody = toBody(
-                text = toResourcesUiText(R.string.settings_hideAutocomplete),
+                text = toResourcesUiText(R.string.settings_action_selectHideAutocomplete),
                 fontSize = fontSize
             ),
             hideSelected = toRadioButton(selected = displayAutocomplete == DisplayAutocomplete.HIDE)
@@ -1372,15 +1372,15 @@ class ViewModelMapping @Inject constructor() {
     fun toShoppingListsDisplayTotalText(total: Money, displayTotal: DisplayTotal): UiText {
         return when (displayTotal) {
             DisplayTotal.ALL -> UiText.FromResourcesWithArgs(
-                R.string.shoppingListsTotal_text_allTotal,
+                R.string.shoppingLists_text_allTotal,
                 total.toString()
             )
             DisplayTotal.COMPLETED -> UiText.FromResourcesWithArgs(
-                R.string.shoppingListsTotal_text_completedTotal,
+                R.string.shoppingLists_text_completedTotal,
                 total.toString()
             )
             DisplayTotal.ACTIVE -> UiText.FromResourcesWithArgs(
-                R.string.shoppingListsTotal_text_activeTotal,
+                R.string.shoppingLists_text_activeTotal,
                 total.toString()
             )
         }
@@ -1389,15 +1389,15 @@ class ViewModelMapping @Inject constructor() {
     fun toProductsDisplayTotalText(total: Money, displayTotal: DisplayTotal): UiText {
         return when (displayTotal) {
             DisplayTotal.ALL -> UiText.FromResourcesWithArgs(
-                R.string.productsTotal_productsAllTotal,
+                R.string.products_text_allTotal,
                 total.toString()
             )
             DisplayTotal.COMPLETED -> UiText.FromResourcesWithArgs(
-                R.string.productsTotal_productsCompletedTotal,
+                R.string.products_text_completedTotal,
                 total.toString()
             )
             DisplayTotal.ACTIVE -> UiText.FromResourcesWithArgs(
-                R.string.productsTotal_productsActiveTotal,
+                R.string.products_text_activeTotal,
                 total.toString()
             )
         }

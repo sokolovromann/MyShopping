@@ -215,33 +215,20 @@ private fun SortMenu(viewModel: AutocompletesViewModel) {
     val sortData = viewModel.sortState.currentData
     val menu = sortData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = sortData.expandedMenu,
-        onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompletesSort) }
+        onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompletesSort) },
+        header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppText(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            data = menu.title
-        )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected)
-            },
-            text = { AppText(data = menu.byCreatedBody) },
             onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByCreated) },
+            text = { Text(text = menu.byCreatedBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected) }
         )
         AppMenuItem(
-            after = {
-                Spacer(modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp))
-                CheckmarkAppCheckbox(checked = menu.byNameSelected.selected)
-            },
-            text = { AppText(data = menu.byNameBody) },
             onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByName) },
+            text = { Text(text = menu.byNameBody.text.asCompose()) },
+            after = { CheckmarkAppCheckbox(checked = menu.byNameSelected.selected) }
         )
     }
 }
@@ -266,33 +253,23 @@ private fun ItemMenu(itemUid: String, viewModel: AutocompletesViewModel) {
     val itemMenuData = viewModel.itemMenuState.currentData
     val menu = itemMenuData.menu ?: return
 
-    DropdownMenu(
+    AppDropdownMenu(
         expanded = itemMenuData.itemUid == itemUid,
         onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
     ) {
         AppMenuItem(
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    data = menu.editBody
-                )
-            },
             onClick = {
                 val event = AutocompletesEvent.EditAutocomplete(itemUid)
                 viewModel.onEvent(event)
-            }
+            },
+            text = { Text(text = menu.editBody.text.asCompose()) }
         )
         AppMenuItem(
-            text = {
-                AppText(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    data = menu.deleteBody
-                )
-            },
             onClick = {
                 val event = AutocompletesEvent.DeleteAutocomplete(itemUid)
                 viewModel.onEvent(event)
-            }
+            },
+            text = { Text(text = menu.deleteBody.text.asCompose()) }
         )
     }
 }

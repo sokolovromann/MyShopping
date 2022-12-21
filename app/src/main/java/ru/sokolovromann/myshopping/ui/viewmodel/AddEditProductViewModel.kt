@@ -313,7 +313,7 @@ class AddEditProductViewModel @Inject constructor(
         val text = discountAsPercentState.currentData.text
 
         discountAsPercentState.showButton(
-            text = text.copy(text = UiText.FromResources(R.string.addEditProduct_discountAsPercents)),
+            text = text.copy(text = UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)),
             menu = mapping.toDiscountAsPercentMenuMenu(
                 asPercent = true,
                 fontSize = addEditProductState.value.preferences.fontSize
@@ -327,7 +327,7 @@ class AddEditProductViewModel @Inject constructor(
         val text = discountAsPercentState.currentData.text
 
         discountAsPercentState.showButton(
-            text = text.copy(text = UiText.FromResources(R.string.addEditProduct_discountAsMoney)),
+            text = text.copy(text = UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)),
             menu = mapping.toDiscountAsPercentMenuMenu(
                 asPercent = false,
                 fontSize = addEditProductState.value.preferences.fontSize
