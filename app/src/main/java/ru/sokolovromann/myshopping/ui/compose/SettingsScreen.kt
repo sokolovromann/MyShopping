@@ -374,6 +374,6 @@ private fun itemAfterOrNull(item: SettingsItem): @Composable (() -> Unit)? {
 
     return {
         Spacer(modifier = Modifier.width(8.dp))
-        AppSwitch(data = item.checked)
+        AppSwitch(checked = item.checked.checked)
     }
 }
