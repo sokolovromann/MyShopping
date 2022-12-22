@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -181,7 +182,7 @@ private fun LocationMenu(viewModel: CopyProductViewModel) {
 private fun PurchasesItem(item: ShoppingListItem, viewModel: CopyProductViewModel) {
     AppSurfaceItem(
         title = itemTitleOrNull(item),
-        body = itemBodyOrNull(item),
+        body = itemBody(item),
         onClick = {
             val event = CopyProductEvent.CopyProduct(item.uid)
             viewModel.onEvent(event)
@@ -191,45 +192,57 @@ private fun PurchasesItem(item: ShoppingListItem, viewModel: CopyProductViewMode
 
 @Composable
 private fun itemTitleOrNull(item: ShoppingListItem): @Composable (() -> Unit)? {
-    if (item.title.isTextHiding()) {
-        return null
-    }
-
-    return {
-        AppText(data = item.title)
-        Spacer(modifier = Modifier.padding(4.dp))
+    val title = item.title
+    return itemOrNull(enabled = title.isTextShowing()) {
+        Text(
+            modifier = Modifier.padding(vertical = 4.dp),
+            text = title.text.asCompose(),
+            fontSize = title.fontSize
+        )
     }
 }
 
 @Composable
-private fun itemBodyOrNull(item: ShoppingListItem): @Composable (() -> Unit)? {
-    return {
-        Column {
-            item.productsBody.forEach {
-                Row(
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 2.dp)
-                ) {
-                    AppIcon(data = it.first)
-                    Spacer(modifier = Modifier.size(4.dp))
-                    AppText(data = it.second)
-                }
-            }
+private fun itemBody(item: ShoppingListItem): @Composable (() -> Unit) = {
+    Column {
+        item.productsBody.forEach {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = 2.dp)
+            ) {
+                val painter = it.first.icon.asPainter() ?: painterResource(R.drawable.ic_all_check_box_outline)
+                Icon(
+                    modifier = Modifier.size(it.first.size),
+                    painter = painter,
+                    contentDescription = "",
+                    tint = contentColorFor(MaterialTheme.colors.onSurface).copy(ContentAlpha.medium)
+                )
 
-            if (item.totalBody.isTextShowing()) {
-                AppText(
-                    modifier = Modifier.padding(top = 8.dp),
-                    data = item.totalBody
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(
+                    text = it.second.text.asCompose(),
+                    fontSize = it.second.fontSize
                 )
             }
+        }
 
-            if (item.reminderBody.isTextShowing()) {
-                AppText(
-                    modifier = Modifier.padding(top = 8.dp),
-                    data = item.reminderBody
-                )
-            }
+        val totalBody = item.totalBody
+        if (totalBody.isTextShowing()) {
+            Text(
+                modifier = Modifier.padding(top = 8.dp),
+                text = totalBody.text.asCompose(),
+                fontSize = totalBody.fontSize
+            )
+        }
+
+        val reminderBody = item.reminderBody
+        if (reminderBody.isTextShowing()) {
+            Text(
+                modifier = Modifier.padding(top = 8.dp),
+                text = reminderBody.text.asCompose(),
+                fontSize = reminderBody.fontSize
+            )
         }
     }
 }

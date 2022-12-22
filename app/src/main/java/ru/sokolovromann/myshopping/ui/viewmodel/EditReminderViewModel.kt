@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +28,6 @@ import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
 import java.util.Calendar
 import javax.inject.Inject
 
-@ExperimentalFoundationApi
 @HiltViewModel
 class EditReminderViewModel @Inject constructor(
     private val repository: EditReminderRepository,

@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,22 +70,9 @@ private fun AppNavigationItem(
     onClick: () -> Unit
 ) {
     AppItem(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp)
-            .background(
-                color = data
-                    .backgroundColor()
-                    .asCompose()
-            )
-            .padding(start = 16.dp),
         onClick = onClick,
         before = { AppIcon(data = data.icon) },
-        title = {
-            AppText(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                data = data.name
-            )
-        }
+        title = { Text(text = data.name.text.asCompose()) },
+        backgroundColor = data.backgroundColor().asCompose()
     )
 }

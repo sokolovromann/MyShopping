@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ru.sokolovromann.myshopping.R
@@ -37,7 +36,6 @@ class PurchasesNotificationManager @Inject constructor(
         }
     }
 
-    @ExperimentalFoundationApi
     fun showNotification(notification: ShoppingListNotification) {
         val pendingIntent: PendingIntent = toPendingIntent(notification.shoppingList.uid)
 
@@ -56,7 +54,6 @@ class PurchasesNotificationManager @Inject constructor(
         }
     }
 
-    @ExperimentalFoundationApi
     private fun toPendingIntent(uid: String): PendingIntent {
         val requestCode = 0
         val intent: Intent = Intent(context, MainActivity::class.java).apply {

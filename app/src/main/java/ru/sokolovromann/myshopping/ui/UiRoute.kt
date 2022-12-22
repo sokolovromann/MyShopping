@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui
 
 import android.content.Intent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -89,7 +88,6 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
     )
 }
 
-@ExperimentalFoundationApi
 fun NavGraphBuilder.purchasesGraph(navController: NavController) {
     navigation(
         startDestination = UiRoute.Purchases.purchasesScreen,
@@ -101,7 +99,6 @@ fun NavGraphBuilder.purchasesGraph(navController: NavController) {
     }
 }
 
-@ExperimentalFoundationApi
 fun NavGraphBuilder.archiveGraph(navController: NavController) {
     navigation(
         startDestination = UiRoute.Archive.archiveScreen,
@@ -113,7 +110,6 @@ fun NavGraphBuilder.archiveGraph(navController: NavController) {
     }
 }
 
-@ExperimentalFoundationApi
 fun NavGraphBuilder.trashGraph(navController: NavController) {
     navigation(
         startDestination = UiRoute.Trash.trashScreen,
@@ -125,7 +121,6 @@ fun NavGraphBuilder.trashGraph(navController: NavController) {
     }
 }
 
-@ExperimentalFoundationApi
 fun NavGraphBuilder.productsGraph(navController: NavController) {
     navigation(
         startDestination = UiRoute.Products.productsScreen(UiRouteKey.ShoppingUid.placeholder),
@@ -158,7 +153,6 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
     }
 }
 
-@ExperimentalFoundationApi
 fun NavGraphBuilder.autocompletesGraph(navController: NavController) {
     navigation(
         startDestination = UiRoute.Autocompletes.autocompletesScreen,

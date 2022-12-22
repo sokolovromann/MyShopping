@@ -393,12 +393,13 @@ private fun AutocompleteNamesShowing(
             val text = item.text.asCompose()
 
             AppItem(
-                modifier = Modifier.padding(8.dp),
-                title = { AppText(data = item) },
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                body = { Text(text = item.text.asCompose()) },
                 onClick = {
                     val event = AddEditProductEvent.AutocompleteNameSelected(text)
                     viewModel.onEvent(event)
-                }
+                },
+                backgroundColor = MaterialTheme.colors.background
             )
         }
     }

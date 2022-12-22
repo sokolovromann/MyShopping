@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,7 +27,6 @@ import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
 
-@ExperimentalFoundationApi
 @Composable
 fun AutocompletesScreen(
     navController: NavController,
@@ -132,7 +130,6 @@ private fun FloatingActionButton(viewModel: AutocompletesViewModel) {
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun Content(paddingValues: PaddingValues, viewModel: AutocompletesViewModel) {
     Box(modifier = Modifier.padding(paddingValues)) {
@@ -146,7 +143,6 @@ private fun Content(paddingValues: PaddingValues, viewModel: AutocompletesViewMo
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun AutocompletesShowing(data: ListData<AutocompleteItem>, viewModel: AutocompletesViewModel) {
     val scrollState = rememberScrollState()
@@ -233,12 +229,10 @@ private fun SortMenu(viewModel: AutocompletesViewModel) {
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun AutocompletesItem(item: AutocompleteItem, viewModel: AutocompletesViewModel) {
     AppSurfaceItem(
         title = itemTitleOrNull(item),
-        body = itemBodyOrNull(item),
         dropdownMenu = { ItemMenu(item.uid, viewModel) },
         onClick = {},
         onLongClick = {
@@ -276,16 +270,11 @@ private fun ItemMenu(itemUid: String, viewModel: AutocompletesViewModel) {
 
 @Composable
 private fun itemTitleOrNull(item: AutocompleteItem): @Composable (() -> Unit)? {
-    if (item.title.isTextHiding()) {
-        return null
+    val title = item.title
+    return itemOrNull(enabled = title.isTextShowing()) {
+        Text(
+            text = title.text.asCompose(),
+            fontSize = title.fontSize
+        )
     }
-
-    return {
-        AppText(data = item.title)
-    }
-}
-
-@Composable
-private fun itemBodyOrNull(item: AutocompleteItem): @Composable (() -> Unit)? {
-    return null
 }

@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -30,7 +29,6 @@ import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsEvent
 
-@ExperimentalFoundationApi
 @Composable
 fun ProductsScreen(
     navController: NavController,
@@ -149,7 +147,6 @@ private fun BottomBar(viewModel: ProductsViewModel) {
     )
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun Content(paddingValues: PaddingValues, viewModel: ProductsViewModel) {
     Box(modifier = Modifier.padding(paddingValues)) {
@@ -163,7 +160,6 @@ private fun Content(paddingValues: PaddingValues, viewModel: ProductsViewModel) 
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun ProductsShowing(data: ListData<ProductItem>, viewModel: ProductsViewModel) {
     val scrollState = rememberScrollState()
@@ -255,7 +251,6 @@ private fun ProductsLoading() {
     )
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun ProductItem(item: ProductItem, multiColumns: Boolean, viewModel: ProductsViewModel) {
     AppMultiColumnsItem(
@@ -443,54 +438,54 @@ private fun ItemMenu(itemUid: String, viewModel: ProductsViewModel) {
 
 @Composable
 private fun itemTitleOrNull(item: ProductItem): @Composable (() -> Unit)? {
-    if (item.title.isTextHiding()) {
-        return null
+    val title = item.title
+    return itemOrNull(enabled = title.isTextShowing()) {
+        Text(
+            text = title.text.asCompose(),
+            fontSize = title.fontSize
+        )
     }
-
-    return { AppText(data = item.title) }
 }
 
 @Composable
 private fun itemBodyOrNull(item: ProductItem): @Composable (() -> Unit)? {
-    if (item.body.isTextHiding()) {
-        return null
-    }
-
-    return {
-        Column { AppText(data = item.body) }
+    val body = item.body
+    return itemOrNull(enabled = body.isTextShowing()) {
+        Text(
+            text = body.text.asCompose(),
+            fontSize = body.fontSize
+        )
     }
 }
 
 @Composable
-private fun itemBefore(item: ProductItem): @Composable (() -> Unit) {
-    return {
-        Spacer(modifier = Modifier.width(8.dp))
-        AppCheckbox(
-            checked = item.completed.checked,
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-            )
+private fun itemBefore(item: ProductItem): @Composable (() -> Unit) = {
+    AppCheckbox(
+        checked = item.completed.checked,
+        colors = CheckboxDefaults.colors(
+            checkedColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
         )
-        Spacer(modifier = Modifier.width(16.dp))
-    }
+    )
 }
 
 @Composable
 private fun reminderTitleOrNull(data: ItemReminderData): @Composable (() -> Unit)? {
-    if (data.body.isTextHiding()) {
-        return null
+    val title = data.title
+    return itemOrNull(enabled = data.body.isTextShowing()) {
+        Text(
+            text = title.text.asCompose(),
+            fontSize = title.fontSize
+        )
     }
-
-    return { AppText(data = data.title) }
 }
 
 @Composable
 private fun reminderBodyOrNull(data: ItemReminderData): @Composable (() -> Unit)? {
-    if (data.body.isTextHiding()) {
-        return null
-    }
-
-    return {
-        Column { AppText(data = data.body) }
+    val body = data.body
+    return itemOrNull(enabled = body.isTextShowing()) {
+        Text(
+            text = body.text.asCompose(),
+            fontSize = body.fontSize
+        )
     }
 }

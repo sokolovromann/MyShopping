@@ -265,13 +265,13 @@ class SettingsViewModel @Inject constructor(
         val preferences = settings.preferences
 
         val items = mapOf(
-            mapping.toSettingsHeader(R.string.settings_generalHeader, preferences)
+            mapping.toSettingsHeader(R.string.settings_header_generalSettings, preferences)
                     to mapping.toGeneralSettingsItems(settings),
-            mapping.toSettingsHeader(R.string.settings_moneyHeader, preferences)
+            mapping.toSettingsHeader(R.string.settings_header_money, preferences)
                     to mapping.toMoneySettingsItems(settings),
-            mapping.toSettingsHeader(R.string.settings_purchasesHeader, preferences)
+            mapping.toSettingsHeader(R.string.settings_header_purchases, preferences)
                     to mapping.toPurchasesSettingsItems(settings),
-            mapping.toSettingsHeader(R.string.settings_aboutHeader, preferences)
+            mapping.toSettingsHeader(R.string.settings_header_aboutApp, preferences)
                     to mapping.toAboutSettingsItems(settings)
         )
 

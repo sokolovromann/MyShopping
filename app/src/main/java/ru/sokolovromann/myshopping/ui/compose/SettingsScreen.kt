@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -192,19 +194,25 @@ private fun SettingsItems(
             .defaultMinSize(minHeight = 56.dp)
             .padding(all = 4.dp),
         shape = MaterialTheme.shapes.medium,
-        elevation = 1.dp
+        elevation = 1.dp,
     ) {
-        Column {
-            AppText(
-                modifier = Modifier.padding(8.dp),
-                data = header
+        Column(modifier = Modifier.background(color = MaterialTheme.colors.surface)) {
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+                text = header.text.asCompose(),
+                fontSize = header.fontSize,
+                fontWeight = FontWeight.Medium
             )
 
             items.forEach {
                 AppItem(
-                    title = itemTitle(it, viewModel),
+                    title = itemTitle(it),
                     body = itemBodyOrNull(it),
                     after = itemAfterOrNull(it),
+                    dropdownMenu = {
+                        FontSizeMenu(it.uid, viewModel)
+                        DisplayAutocompleteMenu(it.uid, viewModel)
+                    },
                     onClick = {
                         val event = SettingsEvent.SelectSettingsItem(it.uid)
                         viewModel.onEvent(event)
@@ -280,36 +288,29 @@ private fun DisplayAutocompleteMenu(settingsUid: SettingsUid, viewModel: Setting
 }
 
 @Composable
-private fun itemTitle(
-    item: SettingsItem,
-    viewModel: SettingsViewModel
-): @Composable (() -> Unit) {
-    return {
-        AppText(data = item.title)
-        FontSizeMenu(item.uid, viewModel)
-        DisplayAutocompleteMenu(item.uid, viewModel)
-    }
+private fun itemTitle(item: SettingsItem): @Composable (() -> Unit) = {
+    val title = item.title
+    Text(
+        text = title.text.asCompose(),
+        fontSize = title.fontSize
+    )
 }
 
 @Composable
 private fun itemBodyOrNull(item: SettingsItem): @Composable (() -> Unit)? {
-    if (item.body.isTextHiding()) {
-        return null
-    }
-
-    return {
-        Column { AppText(data = item.body) }
+    val body = item.body
+    return itemOrNull(enabled = body.isTextShowing()) {
+        Text(
+            text = body.text.asCompose(),
+            fontSize = body.fontSize
+        )
     }
 }
 
 @Composable
 private fun itemAfterOrNull(item: SettingsItem): @Composable (() -> Unit)? {
-    if (item.checked == null) {
-        return null
-    }
-
-    return {
-        Spacer(modifier = Modifier.width(8.dp))
-        AppSwitch(checked = item.checked.checked)
+    val checked = item.checked
+    return itemOrNull(enabled = checked != null) {
+        AppSwitch(checked = checked?.checked ?: false)
     }
 }

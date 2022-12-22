@@ -5,7 +5,6 @@ import android.app.TimePickerDialog
 import android.text.format.DateFormat
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
@@ -23,7 +22,6 @@ import ru.sokolovromann.myshopping.ui.viewmodel.EditReminderViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
 import java.util.*
 
-@ExperimentalFoundationApi
 @Composable
 fun EditReminderScreen(
     navController: NavController,
@@ -46,7 +44,6 @@ fun EditReminderScreen(
     )
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun ActionButtons(viewModel: EditReminderViewModel) {
     Column(
@@ -73,7 +70,6 @@ private fun ActionButtons(viewModel: EditReminderViewModel) {
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun Content(viewModel: EditReminderViewModel) {
     OutlinedButton(
@@ -95,7 +91,6 @@ private fun Content(viewModel: EditReminderViewModel) {
     TimeDialog(viewModel)
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun DateDialog(viewModel: EditReminderViewModel) {
     if (!viewModel.dateDialogState.value) {
@@ -128,7 +123,6 @@ private fun DateDialog(viewModel: EditReminderViewModel) {
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 private fun TimeDialog(viewModel: EditReminderViewModel) {
     if (!viewModel.timeDialogState.value) {

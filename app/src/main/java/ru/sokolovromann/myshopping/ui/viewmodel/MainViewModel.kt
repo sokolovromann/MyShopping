@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +22,6 @@ import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
 import javax.inject.Inject
 
-@ExperimentalFoundationApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: MainRepository,
