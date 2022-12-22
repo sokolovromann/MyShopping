@@ -160,17 +160,17 @@ private fun LocationMenu(viewModel: CopyProductViewModel) {
         onDismissRequest = { viewModel.onEvent(CopyProductEvent.HideShoppingListsLocation) },
         header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsPurchases) },
             text = { Text(text = menu.purchasesBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.purchasesSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsArchive) },
             text = { Text(text = menu.archiveBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.archiveSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsTrash) },
             text = { Text(text = menu.trashBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.trashSelected.selected) }

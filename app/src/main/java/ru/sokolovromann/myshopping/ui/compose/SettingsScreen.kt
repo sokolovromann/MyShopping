@@ -232,27 +232,27 @@ private fun FontSizeMenu(settingsUid: SettingsUid, viewModel: SettingsViewModel)
         expanded = menuData.itemUid == settingsUid.name,
         onDismissRequest = { viewModel.onEvent(SettingsEvent.HideFontSize) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.TinyFontSizeSelected) },
             text = { Text(text = menu.tinyBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.tinySelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.SmallFontSizeSelected) },
             text = { Text(text = menu.smallBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.smallSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.MediumFontSizeSelected) },
             text = { Text(text = menu.mediumBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.mediumSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.LargeFontSizeSelected) },
             text = { Text(text = menu.largeBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.largeSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.HugeFontSizeSelected) },
             text = { Text(text = menu.hugeBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.hugeSelected.selected) }
@@ -269,17 +269,17 @@ private fun DisplayAutocompleteMenu(settingsUid: SettingsUid, viewModel: Setting
         expanded = menuData.itemUid == settingsUid.name,
         onDismissRequest = { viewModel.onEvent(SettingsEvent.HideProductsDisplayAutocomplete) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.DisplayProductsAllAutocomplete) },
             text = { Text(text = menu.allBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.allSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.DisplayProductsNameAutocomplete) },
             text = { Text(text = menu.nameBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.nameSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(SettingsEvent.HideProductsAutocomplete) },
             text = { Text(text = menu.hideBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.hideSelected.selected) }

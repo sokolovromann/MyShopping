@@ -248,17 +248,17 @@ private fun TotalMenu(viewModel: TrashViewModel) {
         onDismissRequest = { viewModel.onEvent(TrashEvent.HideShoppingListsDisplayTotal) },
         header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsAllTotal) },
             text = { Text(text = menu.allBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.allSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompletedTotal) },
             text = { Text(text = menu.completedBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.completedSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsActiveTotal) },
             text = { Text(text = menu.activeBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.activeSelected.selected) }
@@ -276,22 +276,22 @@ private fun SortMenu(viewModel: TrashViewModel) {
         onDismissRequest = { viewModel.onEvent(TrashEvent.HideShoppingListsSort) },
         header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByCreated) },
             text = { Text(text = menu.byCreatedBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByLastModified) },
             text = { Text(text = menu.byLastModifiedBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.byLastModifiedSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByName) },
             text = { Text(text = menu.byNameBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.byNameSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.SortShoppingListsByTotal) },
             text = { Text(text = menu.byTotalBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.byTotalSelected.selected) }
@@ -309,17 +309,17 @@ private fun CompletedMenu(viewModel: TrashViewModel) {
         onDismissRequest = { viewModel.onEvent(TrashEvent.HideShoppingListsDisplayCompleted) },
         header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompletedFirst) },
             text = { Text(text = menu.firstBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.firstSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompletedLast) },
             text = { Text(text = menu.lastBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.lastSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(TrashEvent.HideShoppingListsCompleted) },
             text = { Text(text = menu.hideBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.hideSelected.selected) }
@@ -336,21 +336,21 @@ private fun ItemMenu(itemUid: String, viewModel: TrashViewModel) {
         expanded = itemMenuData.itemUid == itemUid,
         onDismissRequest = { viewModel.onEvent(TrashEvent.HideShoppingListMenu) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = {
                 val event = TrashEvent.MoveShoppingListToPurchases(itemUid)
                 viewModel.onEvent(event)
             },
             text = { Text(text = menu.moveToPurchasesBody.text.asCompose()) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = {
                 val event = TrashEvent.MoveShoppingListToArchive(itemUid)
                 viewModel.onEvent(event)
             },
             text = { Text(text = menu.moveToArchiveBody.text.asCompose()) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = {
                 val event = TrashEvent.DeleteShoppingList(itemUid)
                 viewModel.onEvent(event)

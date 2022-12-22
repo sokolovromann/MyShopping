@@ -347,12 +347,12 @@ private fun DiscountAsPercentMenu(viewModel: AddEditProductViewModel) {
         expanded = menuData.expandedMenu,
         onDismissRequest = { viewModel.onEvent(AddEditProductEvent.HideProductDiscountAsPercentMenu) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsPercentSelected) },
             text = { Text(text = menu.asPercentBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.asPercentSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
             text = { Text(text = menu.asMoneyBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.asMoneySelected.selected) }

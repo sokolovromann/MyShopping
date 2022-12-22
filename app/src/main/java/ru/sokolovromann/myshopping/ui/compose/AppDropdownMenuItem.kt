@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AppMenuItem(
+fun AppDropdownMenuItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     contentPadding: PaddingValues = MenuDefaults.DropdownMenuItemContentPadding,
@@ -29,12 +29,12 @@ fun AppMenuItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .defaultMinSize(minHeight = AppMenuItemMinHeight)
+                .defaultMinSize(minHeight = AppDropdownMenuItemMinHeight)
                 .background(color = backgroundColor),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
         ) {
-            AppMenuItemImpl(
+            AppDropdownMenuItemImpl(
                 contentColor = contentColor,
                 before = before,
                 after = after,
@@ -45,7 +45,7 @@ fun AppMenuItem(
 }
 
 @Composable
-private fun AppMenuItemImpl(
+private fun AppDropdownMenuItemImpl(
     contentColor: Color,
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
@@ -57,10 +57,10 @@ private fun AppMenuItemImpl(
     ) {
         before?.let {
             it()
-            Spacer(modifier = Modifier.padding(AppMenuItemBeforePaddings))
+            Spacer(modifier = Modifier.padding(AppDropdownMenuItemBeforePaddings))
         }
 
-        ProvideAppMenuItemTextStyle(
+        ProvideAppDropdownMenuItemTextStyle(
             contentColor = contentColor,
             content = text
         )
@@ -68,7 +68,7 @@ private fun AppMenuItemImpl(
         after?.let {
             Spacer(modifier = Modifier
                 .weight(1f)
-                .padding(AppMenuItemAfterPaddings)
+                .padding(AppDropdownMenuItemAfterPaddings)
             )
             it()
         }
@@ -76,7 +76,7 @@ private fun AppMenuItemImpl(
 }
 
 @Composable
-private fun ProvideAppMenuItemTextStyle(
+private fun ProvideAppDropdownMenuItemTextStyle(
     contentColor: Color,
     content: @Composable () -> Unit
 ) {
@@ -86,10 +86,10 @@ private fun ProvideAppMenuItemTextStyle(
     )
 }
 
-private val AppMenuItemMinHeight: Dp = 48.dp
-private val AppMenuItemBeforePaddings = PaddingValues(
+private val AppDropdownMenuItemMinHeight: Dp = 48.dp
+private val AppDropdownMenuItemBeforePaddings = PaddingValues(
     horizontal = 8.dp
 )
-private val AppMenuItemAfterPaddings = PaddingValues(
+private val AppDropdownMenuItemAfterPaddings = PaddingValues(
     horizontal = 8.dp
 )

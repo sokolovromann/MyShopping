@@ -160,17 +160,17 @@ private fun LocationMenu(viewModel: MoveProductViewModel) {
         onDismissRequest = { viewModel.onEvent(MoveProductEvent.HideShoppingListsLocation) },
         header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(MoveProductEvent.DisplayShoppingListsPurchases) },
             text = { Text(text = menu.purchasesBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.purchasesSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(MoveProductEvent.DisplayShoppingListsArchive) },
             text = { Text(text = menu.archiveBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.archiveSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(MoveProductEvent.DisplayShoppingListsTrash) },
             text = { Text(text = menu.trashBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.trashSelected.selected) }

@@ -216,12 +216,12 @@ private fun SortMenu(viewModel: AutocompletesViewModel) {
         onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompletesSort) },
         header = { Text(text = menu.title.text.asCompose()) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByCreated) },
             text = { Text(text = menu.byCreatedBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByName) },
             text = { Text(text = menu.byNameBody.text.asCompose()) },
             after = { CheckmarkAppCheckbox(checked = menu.byNameSelected.selected) }
@@ -251,14 +251,14 @@ private fun ItemMenu(itemUid: String, viewModel: AutocompletesViewModel) {
         expanded = itemMenuData.itemUid == itemUid,
         onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
     ) {
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = {
                 val event = AutocompletesEvent.EditAutocomplete(itemUid)
                 viewModel.onEvent(event)
             },
             text = { Text(text = menu.editBody.text.asCompose()) }
         )
-        AppMenuItem(
+        AppDropdownMenuItem(
             onClick = {
                 val event = AutocompletesEvent.DeleteAutocomplete(itemUid)
                 viewModel.onEvent(event)
