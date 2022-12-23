@@ -152,7 +152,7 @@ private fun AutocompletesShowing(data: ListData<AutocompleteItem>, viewModel: Au
         .verticalScroll(scrollState)
     ) {
         AutocompletesBar(viewModel)
-        AppGrid(data = data) {
+        AppGrid(multiColumns = data.multiColumns) {
             data.items.forEach { item -> AutocompletesItem(item, viewModel)}
         }
         Spacer(modifier = Modifier.height(128.dp))

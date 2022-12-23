@@ -163,7 +163,7 @@ private fun SettingsShowing(
         .padding(4.dp)
         .verticalScroll(scrollState)
     ) {
-        AppGrid(data = data) {
+        AppGrid(multiColumns = data.multiColumns) {
             data.items.forEach { SettingsItems(it.key, it.value, viewModel) }
         }
         Spacer(modifier = Modifier.height(128.dp))

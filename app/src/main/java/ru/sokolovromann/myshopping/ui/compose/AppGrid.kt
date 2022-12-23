@@ -4,43 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
-import ru.sokolovromann.myshopping.ui.compose.state.ListData
-import ru.sokolovromann.myshopping.ui.compose.state.MapData
+import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
 @Composable
-fun<D> AppGrid(
+fun AppGrid(
     modifier: Modifier = Modifier,
-    data: ListData<D>,
-    content: @Composable () -> Unit
-) {
-    AppGrid(
-        modifier = modifier,
-        multiColumns = data.multiColumns,
-        maxColumnWidth = data.maxColumnWidth,
-        content = content
-    )
-}
-
-@Composable
-fun<K,D> AppGrid(
-    modifier: Modifier = Modifier,
-    data: MapData<K,D>,
-    content: @Composable () -> Unit
-) {
-    AppGrid(
-        modifier = modifier,
-        multiColumns = data.multiColumns,
-        maxColumnWidth = data.maxColumnWidth,
-        content = content
-    )
-}
-
-@Composable
-private fun AppGrid(
-    modifier: Modifier,
-    multiColumns: Boolean,
-    maxColumnWidth: Dp,
+    multiColumns: Boolean = false,
+    maxColumnWidth: Dp = appGridDefaultMaxColumnWidth,
     content: @Composable () -> Unit
 ) {
     Layout(
@@ -96,3 +67,5 @@ private fun shortestColumn(colHeights: IntArray): Int {
     }
     return column
 }
+
+private val appGridDefaultMaxColumnWidth = 300.dp

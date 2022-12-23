@@ -158,7 +158,7 @@ private fun ArchiveShowing(data: ListData<ShoppingListItem>, viewModel: ArchiveV
         .verticalScroll(scrollState)
     ) {
         ArchiveBar(viewModel)
-        AppGrid(data = data) {
+        AppGrid(multiColumns = data.multiColumns) {
             data.items.forEach { item -> ArchiveItem(item, viewModel)}
         }
         Spacer(modifier = Modifier.height(128.dp))

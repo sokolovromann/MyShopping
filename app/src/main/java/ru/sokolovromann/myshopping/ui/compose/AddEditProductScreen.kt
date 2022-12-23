@@ -385,10 +385,7 @@ private fun AutocompleteNamesShowing(
     data: ListData<TextData>,
     viewModel: AddEditProductViewModel
 ) {
-    AppGrid(
-        modifier = Modifier.background(color = AppColor.Background.asCompose()),
-        data = data
-    ) {
+    AppGrid {
         data.items.forEach { item ->
             val text = item.text.asCompose()
 

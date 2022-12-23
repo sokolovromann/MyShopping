@@ -94,7 +94,7 @@ private fun PurchasesShowing(data: ListData<ShoppingListItem>, viewModel: MovePr
         .verticalScroll(scrollState)
     ) {
         ShoppingListsBar(viewModel)
-        AppGrid(data = data) {
+        AppGrid(multiColumns = data.multiColumns) {
             data.items.forEach { item -> PurchasesItem(item, viewModel)}
         }
         Spacer(modifier = Modifier.height(128.dp))

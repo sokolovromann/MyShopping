@@ -163,7 +163,7 @@ private fun TrashShowing(data: ListData<ShoppingListItem>, viewModel: TrashViewM
         .verticalScroll(scrollState)
     ) {
         TrashBar(viewModel)
-        AppGrid(data = data) {
+        AppGrid(multiColumns = data.multiColumns) {
             data.items.forEach { item -> TrashItem(item, viewModel)}
         }
         Spacer(modifier = Modifier.height(128.dp))

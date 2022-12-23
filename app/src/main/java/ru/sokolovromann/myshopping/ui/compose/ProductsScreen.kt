@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,7 +24,6 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsEvent
 
@@ -164,7 +162,6 @@ private fun Content(paddingValues: PaddingValues, viewModel: ProductsViewModel) 
 private fun ProductsShowing(data: ListData<ProductItem>, viewModel: ProductsViewModel) {
     val scrollState = rememberScrollState()
     val horizontalPadding = if (data.multiColumns) 4.dp else 0.dp
-    val backgroundColor = if (data.multiColumns) AppColor.Transparent else AppColor.Surface
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -173,10 +170,7 @@ private fun ProductsShowing(data: ListData<ProductItem>, viewModel: ProductsView
     ) {
         ProductsBar(viewModel)
         ProductsReminder(data.multiColumns, viewModel)
-        AppGrid(
-            modifier = Modifier.background(color = backgroundColor.asCompose()),
-            data = data
-        ) {
+        AppGrid(multiColumns = data.multiColumns) {
             data.items.forEach { item -> ProductItem(item, data.multiColumns, viewModel) }
         }
         Spacer(modifier = Modifier.height(128.dp))
