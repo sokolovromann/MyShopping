@@ -546,7 +546,7 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun showSaveButton() {
         val data = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditProduct_save),
+            text = mapping.toResourcesUiText(R.string.addEditProduct_action_saveProduct),
             fontSize = FontSize.MEDIUM,
             appColor = AppColor.OnPrimary
         )

@@ -120,9 +120,7 @@ private fun BottomBar(viewModel: ArchiveViewModel) {
             val total = viewModel.totalState.currentData.text
             Text(
                 text = total.text.asCompose(),
-                fontSize = total.fontSize,
-                color = MaterialTheme.colors.onBackground,
-                style = total.style
+                fontSize = total.fontSize
             )
             TotalMenu(viewModel)
         }
@@ -179,18 +177,28 @@ private fun ArchiveBar(viewModel: ArchiveViewModel) {
             .padding(horizontal = 8.dp)
     ) {
         Row(modifier = Modifier.weight(1f)) {
-            TextButton(
-                onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsSort) }
-            ) {
-                AppText(data = viewModel.sortState.currentData.text)
+            TextButton(onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsSort) }) {
+                val sortState = viewModel.sortState.currentData.text
+                Text(
+                    text = sortState.text.asCompose(),
+                    fontSize = sortState.fontSize
+                )
                 SortMenu(viewModel)
             }
             IconButton(onClick = { viewModel.onEvent(ArchiveEvent.InvertShoppingListsSort) }) {
-                AppIcon(data = viewModel.sortAscendingState.value)
+                Icon(
+                    painter = viewModel.sortAscendingState.value.icon.asPainter() ?: return@IconButton,
+                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_sortAscendingIcon),
+                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                )
             }
         }
         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsDisplayCompleted) }) {
-            AppIcon(data = viewModel.completedState.currentData.icon)
+            Icon(
+                painter = viewModel.completedState.currentData.icon.icon.asPainter() ?: return@IconButton,
+                contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedIcon),
+                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+            )
             CompletedMenu(viewModel)
         }
     }

@@ -15,52 +15,52 @@ fun Calendar.getDefaultReminder(): Calendar {
 
 fun Calendar.getDisplayDateAndTime(): UiText = when {
     isYesterday() -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_yesterdayAt,
+        id = R.string.calendar_text_yesterdayAt,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis)
     )
 
     isToday() -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_todayAt,
+        id = R.string.calendar_text_todayAt,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis)
     )
 
     isTomorrow() -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_tomorrowAt,
+        id = R.string.calendar_text_tomorrowAt,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis)
     )
 
     isCurrentYear() -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_currentYearAt,
+        id = R.string.calendar_text_currentYearAt,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis, timeInMillis, timeInMillis, timeInMillis)
     )
 
     else -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_otherAt,
+        id = R.string.calendar_text_otherAt,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis, timeInMillis, timeInMillis, timeInMillis)
     )
 }
 
 fun Calendar.getDisplayDate(): UiText = when {
-    isYesterday() -> UiText.FromResources(id = R.string.calendar_yesterday)
+    isYesterday() -> UiText.FromResources(id = R.string.calendar_text_yesterday)
 
-    isToday() -> UiText.FromResources(id = R.string.calendar_today)
+    isToday() -> UiText.FromResources(id = R.string.calendar_text_today)
 
-    isTomorrow() -> UiText.FromResources(id = R.string.calendar_tomorrow)
+    isTomorrow() -> UiText.FromResources(id = R.string.calendar_text_tomorrow)
 
     isCurrentYear() -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_currentYear,
+        id = R.string.calendar_text_currentYear,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis)
     )
 
     else -> UiText.FromResourcesWithArgs(
-        id = R.string.calendar_other,
+        id = R.string.calendar_text_other,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis)
     )
 }
 
 fun Calendar.getDisplayTime(): UiText {
     return UiText.FromResourcesWithArgs(
-        id = R.string.calendar_time,
+        id = R.string.calendar_text_time,
         args = arrayOf(timeInMillis, timeInMillis, timeInMillis)
     )
 }

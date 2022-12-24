@@ -1,8 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.Button
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -26,4 +25,21 @@ fun AppDialogActionButton(
             content = content
         )
     }
+}
+
+@Composable
+fun AppTopAppBarButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    colors: ButtonColors = ButtonDefaults.textButtonColors(
+        contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
+    ),
+    content: @Composable RowScope.() -> Unit
+) {
+    TextButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = colors,
+        content = content
+    )
 }

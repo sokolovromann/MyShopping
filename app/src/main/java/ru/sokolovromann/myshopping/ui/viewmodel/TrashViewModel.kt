@@ -374,7 +374,7 @@ class TrashViewModel @Inject constructor(
 
     private fun showClear(preferences: ShoppingListPreferences) {
         val data = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.trash_deleteShoppingLists),
+            text = mapping.toResourcesUiText(R.string.trash_action_deleteShoppingLists),
             fontSize = preferences.fontSize,
             appColor = AppColor.OnPrimary
         )

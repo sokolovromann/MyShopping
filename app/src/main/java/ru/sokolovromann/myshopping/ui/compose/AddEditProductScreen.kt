@@ -87,8 +87,8 @@ private fun TopBar(viewModel: AddEditProductViewModel) {
             }
         },
         actions = {
-            TextButton(onClick = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }) {
-                AppText(data = viewModel.saveState.value)
+            AppTopAppBarButton(onClick = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }) {
+                Text(text = viewModel.saveState.value.text.asCompose().uppercase())
             }
         }
     )
@@ -313,9 +313,13 @@ private fun Content(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
-                    AppText(data = viewModel.discountAsPercentState.currentData.text)
+                    Text(
+                        text = viewModel.discountAsPercentState.currentData.text.text.asCompose(),
+                        color = MaterialTheme.colors.onSurface
+                    )
                 }
 
                 DiscountAsPercentMenu(viewModel)

@@ -176,11 +176,19 @@ private fun AutocompletesBar(viewModel: AutocompletesViewModel) {
             TextButton(
                 onClick = { viewModel.onEvent(AutocompletesEvent.SelectAutocompletesSort) }
             ) {
-                AppText(data = viewModel.sortState.currentData.text)
+                val sortState = viewModel.sortState.currentData.text
+                Text(
+                    text = sortState.text.asCompose(),
+                    fontSize = sortState.fontSize
+                )
                 SortMenu(viewModel)
             }
             IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.InvertAutocompletesSort) }) {
-                AppIcon(data = viewModel.sortAscendingState.value)
+                Icon(
+                    painter = viewModel.sortAscendingState.value.icon.asPainter() ?: return@IconButton,
+                    contentDescription = stringResource(R.string.autocompletes_contentDescription_sortAscendingIcon),
+                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                )
             }
         }
     }

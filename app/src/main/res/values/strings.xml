@@ -7,6 +7,7 @@
     <string name="addEditAutocomplete_label_name">Name</string>
     <string name="addEditAutocomplete_message_nameError">Add name</string>
 
+    <string name="addEditProduct_action_saveProduct">Save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Money</string>
     <string name="addEditProduct_action_selectDiscountAsPercents">Percents</string>
     <string name="addEditProduct_contentDescription_navigationIcon">Back</string>
@@ -18,7 +19,6 @@
     <string name="addEditProduct_message_nameError">Add name</string>
     <string name="addEditProduct_quantityMinusOne">- 1</string>
     <string name="addEditProduct_quantityPlusOne">+ 1</string>
-    <string name="addEditProduct_save">Save</string>
 
     <string name="all_appName">My Shopping List</string>
 
@@ -36,6 +36,7 @@
     <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
+    <string name="autocompletes_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
     <string name="autocompletes_header_autocompletes">Personal dictionary</string>
     <string name="autocompletes_header_sort">Sort</string>
 
@@ -46,17 +47,17 @@
     <string name="calculateChange_noChange">Change: no change</string>
     <string name="calculateChange_total">Total: %s</string>
 
-    <string name="calendar_currentYear">%ta, %tb %td</string>
-    <string name="calendar_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
-    <string name="calendar_other">%tb %td, %tY</string>
-    <string name="calendar_otherAt">%tb %td, %tY at %tl:%tM %Tp</string>
-    <string name="calendar_time">%tl:%tM %Tp</string>
-    <string name="calendar_today">Today</string>
-    <string name="calendar_todayAt">Today at %tl:%tM %Tp</string>
-    <string name="calendar_tomorrow">Tomorrow</string>
-    <string name="calendar_tomorrowAt">Tomorrow at %tl:%tM %Tp</string>
-    <string name="calendar_yesterday">Yesterday</string>
-    <string name="calendar_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
+    <string name="calendar_text_currentYear">%ta, %tb %td</string>
+    <string name="calendar_text_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
+    <string name="calendar_text_other">%tb %td, %tY</string>
+    <string name="calendar_text_otherAt">%tb %td, %tY at %tl:%tM %Tp</string>
+    <string name="calendar_text_time">%tl:%tM %Tp</string>
+    <string name="calendar_text_today">Today</string>
+    <string name="calendar_text_todayAt">Today at %tl:%tM %Tp</string>
+    <string name="calendar_text_tomorrow">Tomorrow</string>
+    <string name="calendar_text_tomorrowAt">Tomorrow at %tl:%tM %Tp</string>
+    <string name="calendar_text_yesterday">Yesterday</string>
+    <string name="calendar_text_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
 
     <string name="copyProduct_contentDescription_navigationIcon">Cancel</string>
     <string name="copyProduct_header">Select a list</string>
@@ -127,8 +128,10 @@
     <string name="products_action_sortByName">By name</string>
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
+    <string name="products_contentDescription_displayCompletedIcon">Display completed products</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
+    <string name="products_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
     <string name="products_header_displayCompleted">Display completed</string>
     <string name="products_header_displayTotal">Display total</string>
     <string name="products_header_sort">Sort</string>
@@ -195,6 +198,8 @@
     <string name="shoppingLists_action_sortByLastModified">By last modified</string>
     <string name="shoppingLists_action_sortByName">By name</string>
     <string name="shoppingLists_action_sortByTotal">By total</string>
+    <string name="shoppingLists_contentDescription_displayCompletedIcon">Display completed products</string>
+    <string name="shoppingLists_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
     <string name="shoppingLists_header_displayCompleted">Display completed</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
@@ -204,10 +209,10 @@
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
 
     <string name="trash_action_deleteShoppingList">Delete</string>
+    <string name="trash_action_deleteShoppingLists">Clear</string>
     <string name="trash_action_moveShoppingListToArchive">Archive</string>
     <string name="trash_action_moveShoppingListToPurchases">Restore</string>
     <string name="trash_contentDescription_navigationIcon">Open navigation</string>
-    <string name="trash_deleteShoppingLists">Clear</string>
     <string name="trash_header">Trash</string>
     <string name="trash_productsNotFound">Shopping list is empty</string>
     <string name="trash_shoppingListsNotFound">Trash is empty</string>

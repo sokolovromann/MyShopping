@@ -141,10 +141,12 @@ private fun ShoppingListsBar(viewModel: MoveProductViewModel) {
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
     ) {
-        TextButton(
-            onClick = { viewModel.onEvent(MoveProductEvent.SelectShoppingListsLocation) }
-        ) {
-            AppText(data = viewModel.locationButtonState.currentData.text)
+        TextButton(onClick = { viewModel.onEvent(MoveProductEvent.SelectShoppingListsLocation) }) {
+            val locationButtonState = viewModel.locationButtonState.currentData.text
+            Text(
+                text = locationButtonState.text.asCompose(),
+                fontSize = locationButtonState.fontSize
+            )
             LocationMenu(viewModel)
         }
     }

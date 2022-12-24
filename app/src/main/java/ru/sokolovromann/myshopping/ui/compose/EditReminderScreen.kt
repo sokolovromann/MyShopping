@@ -72,20 +72,35 @@ private fun ActionButtons(viewModel: EditReminderViewModel) {
 
 @Composable
 private fun Content(viewModel: EditReminderViewModel) {
-    OutlinedButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 4.dp),
-        onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderDate) },
-        content = { AppText(data = viewModel.dateState.value) }
-    )
-    OutlinedButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderTime) },
-        content = { AppText(data = viewModel.timeState.value) }
-    )
+    Row {
+        OutlinedButton(
+            modifier = Modifier.weight(0.5f),
+            onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderDate) },
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+                content = { Text(text = viewModel.dateState.value.text.asCompose()) }
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        OutlinedButton(
+            modifier = Modifier.weight(0.5f),
+            onClick = { viewModel.onEvent(EditReminderEvent.SelectReminderTime) },
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+                content = { Text(text = viewModel.timeState.value.text.asCompose()) }
+            )
+        }
+    }
 
     DateDialog(viewModel)
     TimeDialog(viewModel)
