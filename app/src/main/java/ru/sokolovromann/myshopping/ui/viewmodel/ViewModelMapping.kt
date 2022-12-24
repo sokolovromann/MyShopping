@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.theme.AppColor
@@ -1224,16 +1223,6 @@ class ViewModelMapping @Inject constructor() {
         maxLines = 2
     )
 
-    fun toOnNavigationDrawerHeader(
-        text: UiText = UiText.FromResources(R.string.route_header),
-        fontSize: FontSize = FontSize.MEDIUM
-    ) = TextData(
-        text = text,
-        style = AppTypography.H5.textStyle,
-        color = ColorData(appColor = AppColor.OnBackground),
-        fontSize = toTextUnit(fontSize, FontSizeType.Header)
-    )
-
     fun toOnDialogHeader(
         text: UiText,
         fontSize: FontSize,
@@ -1313,60 +1302,6 @@ class ViewModelMapping @Inject constructor() {
         icon = icon,
         size = size,
         tint = ColorData(appColor = AppColor.OnSecondary)
-    )
-
-    fun toRouteItem(route: UiRoute, text: UiText, icon: UiIcon, checked: Boolean) = RouteItemData(
-        route = route,
-        name = toBody(
-            text = text,
-            fontSize = FontSize.MEDIUM,
-            appColor = if (checked) AppColor.Secondary else AppColor.OnSurface
-        ),
-        icon = IconData(
-            icon = icon,
-            tint = if (checked) {
-                ColorData(appColor = AppColor.Secondary)
-            } else {
-                ColorData(
-                    appColor = AppColor.OnSurface,
-                    alpha = 0.7f
-                )
-            }
-        ),
-        checked = checked
-    )
-
-    fun toNavigationDrawerItems(checked: UiRoute): List<RouteItemData> = listOf(
-        toRouteItem(
-            route = UiRoute.Purchases,
-            text = toResourcesUiText(R.string.route_purchasesName),
-            icon = toUiIcon(R.drawable.ic_all_purchases),
-            checked = checked == UiRoute.Purchases
-        ),
-        toRouteItem(
-            route = UiRoute.Archive,
-            text = toResourcesUiText(R.string.route_archiveName),
-            icon = toUiIcon(R.drawable.ic_all_archive),
-            checked = checked == UiRoute.Archive
-        ),
-        toRouteItem(
-            route = UiRoute.Trash,
-            text = toResourcesUiText(R.string.route_trashName),
-            icon = toUiIcon(Icons.Default.Delete),
-            checked = checked == UiRoute.Trash
-        ),
-        toRouteItem(
-            route = UiRoute.Autocompletes,
-            text = toResourcesUiText(R.string.route_autocompletesName),
-            icon = toUiIcon(Icons.Default.List),
-            checked = checked == UiRoute.Autocompletes
-        ),
-        toRouteItem(
-            route = UiRoute.Settings,
-            text = toResourcesUiText(R.string.route_settingsName),
-            icon = toUiIcon(Icons.Default.Settings),
-            checked = checked == UiRoute.Settings
-        )
     )
 
     fun toShoppingListsDisplayTotalText(total: Money, displayTotal: DisplayTotal): UiText {

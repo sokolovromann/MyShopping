@@ -45,21 +45,25 @@ fun PurchasesScreen(
                     route = UiRoute.Products.productsScreen(it.uid)
                 )
 
-                PurchasesScreenEvent.ShowArchive -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Archive.archiveScreen
-                )
+                PurchasesScreenEvent.ShowArchive -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                PurchasesScreenEvent.ShowTrash -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Trash.trashScreen
-                )
+                PurchasesScreenEvent.ShowTrash -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Trash.trashScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                PurchasesScreenEvent.ShowAutocompletes -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Autocompletes.autocompletesScreen
-                )
+                PurchasesScreenEvent.ShowAutocompletes -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                PurchasesScreenEvent.ShowSettings -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Settings.settingsScreen
-                )
+                PurchasesScreenEvent.ShowSettings -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Settings.settingsScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
                 PurchasesScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
                     scaffoldState.drawerState.open()
@@ -126,10 +130,10 @@ private fun BottomBar(viewModel: PurchasesViewModel) {
 
 @Composable
 private fun DrawerContent(viewModel: PurchasesViewModel) {
-    AppNavigationDrawer(
-        data = viewModel.navigationDrawerState.value,
-        onClick = {
-            val event = PurchasesEvent.SelectNavigationItem(it.route)
+    AppDrawerContent(
+        selected = UiRoute.Purchases,
+        onItemClick = {
+            val event = PurchasesEvent.SelectNavigationItem(it)
             viewModel.onEvent(event)
         }
     )

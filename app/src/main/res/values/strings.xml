@@ -69,6 +69,13 @@
     <string name="data_developerName">Roman Sokolov</string>
     <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
 
+    <string name="drawer_action_openArchive">@string/archive_header</string>
+    <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
+    <string name="drawer_action_openPurchases">@string/purchases_header</string>
+    <string name="drawer_action_openSettings">@string/settings_header_settings</string>
+    <string name="drawer_action_openTrash">@string/trash_header</string>
+    <string name="drawer_header">@string/all_appName</string>
+
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">Save</string>
     <string name="editCurrencySymbol_header">Edit currency</string>
@@ -138,13 +145,6 @@
     <string name="purchases_header">Purchases</string>
     <string name="purchases_productsNotFound">Shopping list is empty</string>
     <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
-
-    <string name="route_archiveName">Archive</string>
-    <string name="route_autocompletesName">@string/autocompletes_header_autocompletes</string>
-    <string name="route_header">@string/all_appName</string>
-    <string name="route_purchasesName">@string/purchases_header</string>
-    <string name="route_settingsName">@string/settings_header_settings</string>
-    <string name="route_trashName">@string/trash_header</string>
 
     <string name="settings_action_displayAllAutocomplete">All</string>
     <string name="settings_action_displayNameAutocomplete">Only names</string>

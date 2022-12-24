@@ -49,21 +49,25 @@ fun TrashScreen(
                     route = UiRoute.Products.productsScreen(it.uid)
                 )
 
-                TrashScreenEvent.ShowPurchases -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Purchases.purchasesScreen
-                )
+                TrashScreenEvent.ShowPurchases -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Purchases.purchasesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                TrashScreenEvent.ShowArchive -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Archive.archiveScreen
-                )
+                TrashScreenEvent.ShowArchive -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                TrashScreenEvent.ShowAutocompletes -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Autocompletes.autocompletesScreen
-                )
+                TrashScreenEvent.ShowAutocompletes -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                TrashScreenEvent.ShowSettings -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Settings.settingsScreen
-                )
+                TrashScreenEvent.ShowSettings -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Settings.settingsScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
                 TrashScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
                     scaffoldState.drawerState.open()
@@ -132,10 +136,10 @@ private fun BottomBar(viewModel: TrashViewModel) {
 
 @Composable
 private fun DrawerContent(viewModel: TrashViewModel) {
-    AppNavigationDrawer(
-        data = viewModel.navigationDrawerState.value,
-        onClick = {
-            val event = TrashEvent.SelectNavigationItem(it.route)
+    AppDrawerContent(
+        selected = UiRoute.Trash,
+        onItemClick = {
+            val event = TrashEvent.SelectNavigationItem(it)
             viewModel.onEvent(event)
         }
     )

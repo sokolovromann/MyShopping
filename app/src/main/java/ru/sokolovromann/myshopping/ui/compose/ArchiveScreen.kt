@@ -49,21 +49,25 @@ fun ArchiveScreen(
                     route = UiRoute.Products.productsScreen(it.uid)
                 )
 
-                ArchiveScreenEvent.ShowPurchases -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Purchases.purchasesScreen
-                )
+                ArchiveScreenEvent.ShowPurchases -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Purchases.purchasesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                ArchiveScreenEvent.ShowTrash -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Trash.trashScreen
-                )
+                ArchiveScreenEvent.ShowTrash -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Trash.trashScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                ArchiveScreenEvent.ShowAutocompletes -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Autocompletes.autocompletesScreen
-                )
+                ArchiveScreenEvent.ShowAutocompletes -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                ArchiveScreenEvent.ShowSettings -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Settings.settingsScreen
-                )
+                ArchiveScreenEvent.ShowSettings -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Settings.settingsScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
                 ArchiveScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
                     scaffoldState.drawerState.open()
@@ -127,10 +131,10 @@ private fun BottomBar(viewModel: ArchiveViewModel) {
 
 @Composable
 private fun DrawerContent(viewModel: ArchiveViewModel) {
-    AppNavigationDrawer(
-        data = viewModel.navigationDrawerState.value,
-        onClick = {
-            val event = ArchiveEvent.SelectNavigationItem(it.route)
+    AppDrawerContent(
+        selected = UiRoute.Archive,
+        onItemClick = {
+            val event = ArchiveEvent.SelectNavigationItem(it)
             viewModel.onEvent(event)
         }
     )

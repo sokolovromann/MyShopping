@@ -64,21 +64,25 @@ fun SettingsScreen(
 
                 SettingsScreenEvent.ShowBackScreen -> navController.popBackStack()
 
-                SettingsScreenEvent.ShowPurchases -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Purchases.purchasesScreen
-                )
+                SettingsScreenEvent.ShowPurchases -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Purchases.purchasesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                SettingsScreenEvent.ShowArchive -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Archive.archiveScreen
-                )
+                SettingsScreenEvent.ShowArchive -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                SettingsScreenEvent.ShowTrash -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Trash.trashScreen
-                )
+                SettingsScreenEvent.ShowTrash -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Trash.trashScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                SettingsScreenEvent.ShowAutocompletes -> navController.navigateWithDrawerOption(
-                    route = UiRoute.Autocompletes.autocompletesScreen
-                )
+                SettingsScreenEvent.ShowAutocompletes -> {
+                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
                 SettingsScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
                     scaffoldState.drawerState.open()
@@ -130,10 +134,10 @@ private fun TopBar(viewModel: SettingsViewModel) {
 
 @Composable
 private fun DrawerContent(viewModel: SettingsViewModel) {
-    AppNavigationDrawer(
-        data = viewModel.navigationDrawerState.value,
-        onClick = {
-            val event = SettingsEvent.SelectNavigationItem(it.route)
+    AppDrawerContent(
+        selected = UiRoute.Settings,
+        onItemClick = {
+            val event = SettingsEvent.SelectNavigationItem(it)
             viewModel.onEvent(event)
         }
     )

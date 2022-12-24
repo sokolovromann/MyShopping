@@ -19,7 +19,6 @@ import ru.sokolovromann.myshopping.data.repository.SettingsRepository
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ScreenSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
-import ru.sokolovromann.myshopping.data.repository.model.SettingsPreferences
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -38,11 +37,6 @@ class SettingsViewModel @Inject constructor(
     val fontSizeState: ItemMenuState<FontSizeMenu> = ItemMenuState()
 
     val displayAutocompleteState: ItemMenuState<DisplayAutocompleteMenu> = ItemMenuState()
-
-    private val _navigationDrawerState: MutableState<NavigationDrawerData> = mutableStateOf(
-        NavigationDrawerData()
-    )
-    val navigationDrawerState: State<NavigationDrawerData> = _navigationDrawerState
 
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
@@ -280,8 +274,6 @@ class SettingsViewModel @Inject constructor(
             multiColumns = preferences.screenSize == ScreenSize.TABLET
         )
 
-        showNavigationDrawerData(preferences)
-
         fontSizeState.setMenu(mapping.toFontSizeMenu(preferences.fontSize))
         displayAutocompleteState.setMenu(mapping.toDisplayAutocompleteMenu(
             settings.settingsValues.productsDisplayAutocomplete,
@@ -304,19 +296,6 @@ class SettingsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             _screenEventFlow.emit(SettingsScreenEvent.ShowAppGithub(githubLink))
         }
-    }
-
-    private fun showNavigationDrawerData(preferences: SettingsPreferences) {
-        val data = NavigationDrawerData(
-            header = mapping.toOnNavigationDrawerHeader(
-                text = mapping.toResourcesUiText(R.string.route_header),
-                fontSize = preferences.fontSize
-            ),
-            items = mapping.toNavigationDrawerItems(
-                checked = UiRoute.Settings
-            )
-        )
-        _navigationDrawerState.value = data
     }
 
     private fun showTopBar() {

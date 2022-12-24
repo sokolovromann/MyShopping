@@ -49,11 +49,6 @@ class TrashViewModel @Inject constructor(
     private val _clearState: MutableState<TextData> = mutableStateOf(TextData())
     val clearState: State<TextData> = _clearState
 
-    private val _navigationDrawerState: MutableState<NavigationDrawerData> = mutableStateOf(
-        NavigationDrawerData()
-    )
-    val navigationDrawerState: State<NavigationDrawerData> = _navigationDrawerState
-
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
 
@@ -304,7 +299,6 @@ class TrashViewModel @Inject constructor(
             hideTotal()
         }
 
-        showNavigationDrawerData(preferences)
         showClear(preferences)
 
         itemMenuState.setMenu(mapping.toTrashItemMenu(preferences.fontSize))
@@ -376,19 +370,6 @@ class TrashViewModel @Inject constructor(
 
     private fun showShoppingListMenu(event: TrashEvent.ShowShoppingListMenu) {
         itemMenuState.showMenu(itemUid = event.uid)
-    }
-
-    private fun showNavigationDrawerData(preferences: ShoppingListPreferences) {
-        val data = NavigationDrawerData(
-            header = mapping.toOnNavigationDrawerHeader(
-                text = mapping.toResourcesUiText(R.string.route_header),
-                fontSize = preferences.fontSize
-            ),
-            items = mapping.toNavigationDrawerItems(
-                checked = UiRoute.Trash
-            )
-        )
-        _navigationDrawerState.value = data
     }
 
     private fun showClear(preferences: ShoppingListPreferences) {

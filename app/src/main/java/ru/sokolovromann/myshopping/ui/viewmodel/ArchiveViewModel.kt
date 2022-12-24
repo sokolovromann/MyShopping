@@ -46,11 +46,6 @@ class ArchiveViewModel @Inject constructor(
 
     val completedState: MenuIconButtonState<ShoppingListsCompletedMenu> = MenuIconButtonState()
 
-    private val _navigationDrawerState: MutableState<NavigationDrawerData> = mutableStateOf(
-        NavigationDrawerData()
-    )
-    val navigationDrawerState: State<NavigationDrawerData> = _navigationDrawerState
-
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
 
@@ -283,8 +278,6 @@ class ArchiveViewModel @Inject constructor(
             hideTotal()
         }
 
-        showNavigationDrawerData(preferences)
-
         itemMenuState.setMenu(mapping.toArchiveItemMenu(preferences.fontSize))
     }
 
@@ -354,19 +347,6 @@ class ArchiveViewModel @Inject constructor(
 
     private fun showShoppingListMenu(event: ArchiveEvent.ShowShoppingListMenu) {
         itemMenuState.showMenu(itemUid = event.uid)
-    }
-
-    private fun showNavigationDrawerData(preferences: ShoppingListPreferences) {
-        val data = NavigationDrawerData(
-            header = mapping.toOnNavigationDrawerHeader(
-                text = mapping.toResourcesUiText(R.string.route_header),
-                fontSize = preferences.fontSize
-            ),
-            items = mapping.toNavigationDrawerItems(
-                checked = UiRoute.Archive
-            )
-        )
-        _navigationDrawerState.value = data
     }
 
     private fun showTopBar() {
