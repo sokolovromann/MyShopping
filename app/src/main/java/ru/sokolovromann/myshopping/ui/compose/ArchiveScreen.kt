@@ -211,9 +211,15 @@ private fun ArchiveNotFound(data: TextData) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        content = { AppText(data = data) }
-    )
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = data.text.asCompose(),
+            fontSize = data.fontSize,
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.onBackground
+        )
+    }
 }
 
 @Composable

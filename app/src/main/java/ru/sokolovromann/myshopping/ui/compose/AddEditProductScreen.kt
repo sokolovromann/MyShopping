@@ -374,12 +374,13 @@ private fun AutocompleteQuantityChip(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .defaultMinSize(32.dp)
-            .background(color = AppColor.Background.asCompose(), shape = CircleShape)
+            .background(color = MaterialTheme.colors.background, shape = CircleShape)
             .clickable { onClick() }
     ) {
-        AppText(
+        Text(
             modifier = Modifier.padding(8.dp),
-            data = text
+            text = text.text.asCompose(),
+            color = MaterialTheme.colors.onBackground
         )
     }
 }

@@ -114,9 +114,15 @@ private fun PurchasesNotFound(data: TextData, viewModel: CopyProductViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(horizontal = 16.dp),
-            content = { AppText(data = data) }
-        )
+                .padding(horizontal = 16.dp)
+        ) {
+            Text(
+                text = data.text.asCompose(),
+                fontSize = data.fontSize,
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }
 

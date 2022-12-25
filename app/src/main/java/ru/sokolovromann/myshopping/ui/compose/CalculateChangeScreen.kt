@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -89,13 +90,17 @@ private fun Content(
         )
     )
 
-    AppText(
+    Text(
         modifier = Modifier.padding(vertical = 4.dp),
-        data = viewModel.totalState.value
+        text = viewModel.totalState.value.text.asCompose(),
+        style = MaterialTheme.typography.body1,
+        color = MaterialTheme.colors.onSurface
     )
 
-    AppText(
+    Text(
         modifier = Modifier.padding(vertical = 4.dp),
-        data = viewModel.changeState.value
+        text = viewModel.changeState.value.text.asCompose(),
+        style = MaterialTheme.typography.body1,
+        color = MaterialTheme.colors.onSurface
     )
 }
