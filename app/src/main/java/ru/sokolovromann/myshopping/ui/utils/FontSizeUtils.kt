@@ -23,3 +23,10 @@ fun FontSize.toButton(): Int = when (this) {
     FontSize.LARGE -> 16
     FontSize.HUGE -> 18
 }
+
+fun FontSize.toTextField(): Int = when (this) {
+    FontSize.TINY, FontSize.SMALL -> 14
+    FontSize.MEDIUM -> 16
+    FontSize.LARGE -> 18
+    FontSize.HUGE -> 20
+}
