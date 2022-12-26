@@ -1,13 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,41 +10,22 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.AddEditAutocompleteRepository
 import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
-import ru.sokolovromann.myshopping.data.repository.model.AutocompletePreferences
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.TextData
-import ru.sokolovromann.myshopping.ui.compose.state.TextFieldState
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
-import ru.sokolovromann.myshopping.ui.theme.AppColor
+import ru.sokolovromann.myshopping.ui.compose.state.AddEditAutocompleteState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditAutocompleteEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditAutocompleteViewModel @Inject constructor(
     private val repository: AddEditAutocompleteRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditAutocompleteEvent> {
 
-    private val addEditAutocompleteState: MutableState<AddEditAutocomplete> = mutableStateOf(AddEditAutocomplete())
-
-    private val _headerState: MutableState<TextData> = mutableStateOf(TextData())
-    val headerState: State<TextData> = _headerState
-
-    val nameState: TextFieldState = TextFieldState()
-
-    private val _cancelState: MutableState<TextData> = mutableStateOf(TextData())
-    val cancelState: State<TextData> = _cancelState
-
-    private val _saveState: MutableState<TextData> = mutableStateOf(TextData())
-    val saveState: State<TextData> = _saveState
+    val addEditAutocompleteState: AddEditAutocompleteState = AddEditAutocompleteState()
 
     private val _keyboardFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
     val keyboardFlow: SharedFlow<Boolean> = _keyboardFlow
@@ -63,8 +36,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
     private val uid: String? = savedStateHandle.get<String>(UiRouteKey.AutocompleteUid.key)
 
     init {
-        showCancelButton()
-        showSaveButton()
         getAutocomplete()
     }
 
@@ -85,32 +56,18 @@ class AddEditAutocompleteViewModel @Inject constructor(
     }
 
     private fun saveAutocomplete() = viewModelScope.launch(dispatchers.io) {
-        if (nameState.isTextEmpty()) {
-            nameState.showError(
-                error = mapping.toBody(
-                    text = mapping.toResourcesUiText(R.string.addEditAutocomplete_message_nameError),
-                    fontSize = FontSize.MEDIUM,
-                    appColor = AppColor.Error
-                )
-            )
-            return@launch
-        }
+        addEditAutocompleteState.getAutocompleteResult()
+            .onSuccess {
+                if (uid == null) {
+                    repository.addAutocomplete(it)
+                } else {
+                    repository.editAutocomplete(it)
+                }
 
-        val autocomplete = addEditAutocompleteState.value.autocomplete?.copy(
-            name = nameState.currentData.text.text,
-            lastModified = System.currentTimeMillis()
-        ) ?: Autocomplete(
-            name = nameState.currentData.text.text
-        )
-
-        if (uid == null) {
-            repository.addAutocomplete(autocomplete)
-        } else {
-            repository.editAutocomplete(autocomplete)
-        }
-
-        hideKeyboard()
-        showBackScreen()
+                hideKeyboard()
+                showBackScreen()
+            }
+            .onFailure { return@launch }
     }
 
     private fun cancelSavingAutocomplete() = viewModelScope.launch(dispatchers.main) {
@@ -118,64 +75,13 @@ class AddEditAutocompleteViewModel @Inject constructor(
     }
 
     private fun nameChanged(event: AddEditAutocompleteEvent.NameChanged) {
-        nameState.changeText(event.value)
-    }
-
-    private fun showHeader(preferences: AutocompletePreferences) {
-        val text: UiText = if (uid == null) {
-            mapping.toResourcesUiText(R.string.addEditAutocomplete_header_addAutocomplete)
-        } else {
-            mapping.toResourcesUiText(R.string.addEditAutocomplete_header_editAutocomplete)
-        }
-
-        _headerState.value = mapping.toOnDialogHeader(
-            text = text,
-            fontSize = preferences.fontSize
-        )
-    }
-
-    private fun showCancelButton() {
-        _cancelState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditAutocomplete_action_cancelSavingAutocomplete),
-            fontSize = FontSize.MEDIUM
-        )
-    }
-
-    private fun showSaveButton() {
-        _saveState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditAutocomplete_action_saveAutocomplete),
-            fontSize = FontSize.MEDIUM
-        )
+        addEditAutocompleteState.changeNameValue(event.value)
     }
 
     private suspend fun showAutocomplete(
         addEditAutocomplete: AddEditAutocomplete
     ) = withContext(dispatchers.main) {
-        addEditAutocompleteState.value = addEditAutocomplete
-
-        val name = addEditAutocomplete.formatName()
-        val preferences = addEditAutocomplete.preferences
-        nameState.showTextField(
-            text = TextFieldValue(
-                text = name,
-                selection = TextRange(name.length),
-                composition = TextRange(name.length)
-            ),
-            label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.addEditAutocomplete_label_name),
-                fontSize = preferences.fontSize
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                capitalization = if (preferences.firstLetterUppercase) {
-                    KeyboardCapitalization.Sentences
-                } else {
-                    KeyboardCapitalization.None
-                }
-            )
-        )
-
-        showHeader(preferences)
+        addEditAutocompleteState.populate(addEditAutocomplete)
         showKeyboard()
     }
 
