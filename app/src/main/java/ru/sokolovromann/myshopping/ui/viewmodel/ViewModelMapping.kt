@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.getDisplayDateAndTime
+import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.theme.AppTypography
 import java.util.*

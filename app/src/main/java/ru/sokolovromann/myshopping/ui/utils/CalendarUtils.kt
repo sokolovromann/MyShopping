@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.ui
+package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.state.UiText

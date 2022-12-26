@@ -24,6 +24,9 @@ import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.TextData
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.ui.utils.getDefaultReminder
+import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
+import ru.sokolovromann.myshopping.ui.utils.getDisplayTime
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
 import java.util.Calendar
 import javax.inject.Inject
