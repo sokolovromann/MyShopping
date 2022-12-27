@@ -41,11 +41,11 @@
     <string name="autocompletes_header_sort">Sort</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Back</string>
-    <string name="calculateChange_change">Change: %s</string>
     <string name="calculateChange_header">Calculate change</string>
     <string name="calculateChange_label_userMoney">Money</string>
-    <string name="calculateChange_noChange">Change: no change</string>
-    <string name="calculateChange_total">Total: %s</string>
+    <string name="calculateChange_text_change">Change: %s</string>
+    <string name="calculateChange_text_noChange">Change: no change</string>
+    <string name="calculateChange_text_total">Total: %s</string>
 
     <string name="calendar_text_currentYear">%ta, %tb %td</string>
     <string name="calendar_text_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
