@@ -27,16 +27,13 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     val addEditAutocompleteState: AddEditAutocompleteState = AddEditAutocompleteState()
 
-    private val _keyboardFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
-    val keyboardFlow: SharedFlow<Boolean> = _keyboardFlow
-
     private val _screenEventFlow: MutableSharedFlow<AddEditAutocompleteScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AddEditAutocompleteScreenEvent> = _screenEventFlow
 
     private val uid: String? = savedStateHandle.get<String>(UiRouteKey.AutocompleteUid.key)
 
     init {
-        getAutocomplete()
+        getAddEditAutocomplete()
     }
 
     override fun onEvent(event: AddEditAutocompleteEvent) {
@@ -49,51 +46,39 @@ class AddEditAutocompleteViewModel @Inject constructor(
         }
     }
 
-    private fun getAutocomplete() = viewModelScope.launch(dispatchers.io) {
+    private fun getAddEditAutocomplete() = viewModelScope.launch {
         repository.getAddEditAutocomplete(uid).firstOrNull()?.let {
-            showAutocomplete(it)
+            addEditAutocompleteLoaded(it)
         }
     }
 
-    private fun saveAutocomplete() = viewModelScope.launch(dispatchers.io) {
-        addEditAutocompleteState.getAutocompleteResult()
-            .onSuccess {
-                if (uid == null) {
-                    repository.addAutocomplete(it)
-                } else {
-                    repository.editAutocomplete(it)
-                }
+    private suspend fun addEditAutocompleteLoaded(
+        addEditAutocomplete: AddEditAutocomplete
+    ) = withContext(dispatchers.main) {
+        addEditAutocompleteState.populate(addEditAutocomplete)
+        _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowKeyboard)
+    }
 
-                hideKeyboard()
-                showBackScreen()
-            }
-            .onFailure { return@launch }
+    private fun saveAutocomplete() = viewModelScope.launch {
+        val autocomplete = addEditAutocompleteState.getAutocompleteResult()
+            .getOrElse { return@launch }
+
+        if (uid == null) {
+            repository.addAutocomplete(autocomplete)
+        } else {
+            repository.editAutocomplete(autocomplete)
+        }
+
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
+        }
     }
 
     private fun cancelSavingAutocomplete() = viewModelScope.launch(dispatchers.main) {
-        showBackScreen()
+        _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
     }
 
     private fun nameChanged(event: AddEditAutocompleteEvent.NameChanged) {
         addEditAutocompleteState.changeNameValue(event.value)
-    }
-
-    private suspend fun showAutocomplete(
-        addEditAutocomplete: AddEditAutocomplete
-    ) = withContext(dispatchers.main) {
-        addEditAutocompleteState.populate(addEditAutocomplete)
-        showKeyboard()
-    }
-
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
-    }
-
-    private fun showKeyboard() = viewModelScope.launch(dispatchers.main) {
-        _keyboardFlow.emit(true)
-    }
-
-    private fun hideKeyboard() = viewModelScope.launch(dispatchers.main) {
-        _keyboardFlow.emit(false)
     }
 }
