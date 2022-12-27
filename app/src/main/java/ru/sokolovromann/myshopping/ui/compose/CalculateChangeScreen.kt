@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,24 +31,21 @@ fun CalculateChangeScreen(
     navController: NavController,
     viewModel: CalculateChangeViewModel = hiltViewModel()
 ) {
-
+    val screenData = viewModel.calculateChangeState.screenData
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                CalculateChangeScreenEvent.ShowBackScreen -> navController.popBackStack()
-            }
-        }
-    }
+                CalculateChangeScreenEvent.ShowBackScreen -> {
+                    navController.popBackStack()
+                    focusManager.clearFocus(force = true)
+                }
 
-    LaunchedEffect(Unit) {
-        viewModel.keyboardFlow.collect {
-            if (it) {
-                focusRequester.requestFocus()
-            } else {
-                focusManager.clearFocus(force = true)
+                CalculateChangeScreenEvent.ShowKeyboard -> {
+                    focusRequester.requestFocus()
+                }
             }
         }
     }
@@ -55,56 +53,54 @@ fun CalculateChangeScreen(
     AppDialog(
         onDismissRequest = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) },
         header = { Text(text = stringResource(R.string.calculateChange_header)) },
-        actionButtons = { ActionButtons(viewModel) },
-        content = { Content(viewModel, focusRequester) }
-    )
-}
-
-@Composable
-private fun ActionButtons(viewModel: CalculateChangeViewModel) {
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) },
-        content = { Text(text = stringResource(R.string.calculateChange_action_closeCalculatingChange)) }
-    )
-}
-
-@Composable
-private fun Content(
-    viewModel: CalculateChangeViewModel,
-    focusRequester: FocusRequester
-) {
-    val screenData = viewModel.calculateChangeState.screenData
-    OutlinedAppTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester),
-        value = screenData.userMoneyValue,
-        valueFontSize = screenData.fontSize.toTextField().sp,
-        onValueChange = {
-            val event = CalculateChangeEvent.UserMoneyChanged(it)
-            viewModel.onEvent(event)
-        },
-        label = { Text(text = stringResource(R.string.calculateChange_label_userMoney)) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal,
-            imeAction = ImeAction.Previous
-        ),
-        keyboardActions = KeyboardActions(
-            onPrevious = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) }
+        actionButtons = {
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) },
+                content = {
+                    Text(text = stringResource(R.string.calculateChange_action_closeCalculatingChange))
+                }
+            )
+        }
+    ) {
+        OutlinedAppTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
+            value = screenData.userMoneyValue,
+            valueFontSize = screenData.fontSize.toTextField().sp,
+            onValueChange = {
+                val event = CalculateChangeEvent.UserMoneyChanged(it)
+                viewModel.onEvent(event)
+            },
+            label = { Text(text = stringResource(R.string.calculateChange_label_userMoney)) },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Previous
+            ),
+            keyboardActions = KeyboardActions(
+                onPrevious = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) }
+            )
         )
-    )
 
-    Text(
-        modifier = Modifier.padding(vertical = 4.dp),
-        text = screenData.totalText.asCompose(),
-        style = MaterialTheme.typography.body1,
-        color = MaterialTheme.colors.onSurface
-    )
+        Spacer(modifier = Modifier.size(CalculateChangeSpacerSmallSize))
 
-    Text(
-        modifier = Modifier.padding(vertical = 4.dp),
-        text = screenData.changeText.asCompose(),
-        style = MaterialTheme.typography.body1,
-        color = MaterialTheme.colors.onSurface
+        ProvideCalculateChangeTextStyle {
+            Text(text = screenData.totalText.asCompose())
+            Spacer(modifier = Modifier.size(CalculateChangeSpacerMediumSize))
+            Text(text = screenData.changeText.asCompose())
+        }
+    }
+}
+
+@Composable
+private fun ProvideCalculateChangeTextStyle(content: @Composable () -> Unit) {
+    ProvideTextStyle(
+        value = MaterialTheme.typography.body1.copy(
+            color = MaterialTheme.colors.onSurface
+        ),
+        content = content
     )
 }
+
+private val CalculateChangeSpacerSmallSize = 4.dp
+private val CalculateChangeSpacerMediumSize = 8.dp

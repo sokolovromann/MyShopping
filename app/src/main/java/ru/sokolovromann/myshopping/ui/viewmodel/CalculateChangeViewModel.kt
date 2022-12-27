@@ -21,20 +21,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CalculateChangeViewModel @Inject constructor(
     private val repository: CalculateChangeRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<CalculateChangeEvent> {
 
     val calculateChangeState: CalculateChangeState = CalculateChangeState()
 
-    private val _keyboardFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
-    val keyboardFlow: SharedFlow<Boolean> = _keyboardFlow
-
     private val _screenEventFlow: MutableSharedFlow<CalculateChangeScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<CalculateChangeScreenEvent> = _screenEventFlow
-
-    private val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
 
     init {
         getCalculateChange()
@@ -48,17 +42,18 @@ class CalculateChangeViewModel @Inject constructor(
         }
     }
 
-    private fun getCalculateChange() = viewModelScope.launch(dispatchers.io) {
+    private fun getCalculateChange() = viewModelScope.launch {
+        val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         repository.getCalculateChange(uid).firstOrNull()?.let {
-            showCalculateChange(it)
+            calculateChangeLoaded(it)
         }
     }
 
-    private suspend fun showCalculateChange(
+    private suspend fun calculateChangeLoaded(
         calculateChange: CalculateChange
     ) = withContext(dispatchers.main) {
         calculateChangeState.populate(calculateChange)
-        showKeyboard()
+        _screenEventFlow.emit(CalculateChangeScreenEvent.ShowKeyboard)
     }
 
     private fun userMoneyChange(event: CalculateChangeEvent.UserMoneyChanged) {
@@ -67,14 +62,5 @@ class CalculateChangeViewModel @Inject constructor(
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(CalculateChangeScreenEvent.ShowBackScreen)
-        hideKeyboard()
-    }
-
-    private fun showKeyboard() = viewModelScope.launch(dispatchers.main) {
-        _keyboardFlow.emit(true)
-    }
-
-    private fun hideKeyboard() = viewModelScope.launch(dispatchers.main) {
-        _keyboardFlow.emit(false)
     }
 }
