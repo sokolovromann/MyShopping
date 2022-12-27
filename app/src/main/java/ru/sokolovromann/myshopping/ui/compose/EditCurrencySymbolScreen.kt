@@ -11,12 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.viewmodel.EditCurrencySymbolViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditCurrencySymbolEvent
 
@@ -69,20 +72,20 @@ private fun ActionButtons(viewModel: EditCurrencySymbolViewModel) {
 
 @Composable
 private fun Content(viewModel: EditCurrencySymbolViewModel, focusRequester: FocusRequester) {
-    val symbolField = viewModel.symbolState.currentData
+    val screenData = viewModel.editCurrencySymbolState.screenData
     OutlinedAppTextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
-        value = symbolField.text,
-        valueFontSize = symbolField.textFontSize,
+        value = screenData.symbolValue,
+        valueFontSize = screenData.fontSize.toTextField().sp,
         onValueChange = {
             val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
             viewModel.onEvent(event)
         },
-        label = { Text(text = symbolField.label.text.asCompose()) },
-        error = { Text(text = (symbolField.error?.text ?: UiText.Nothing).asCompose()) },
-        showError = symbolField.error?.text != null,
+        label = { Text(text = stringResource(R.string.editCurrencySymbol_label_symbol)) },
+        error = { Text(text = stringResource(R.string.editCurrencySymbol_message_symbolError)) },
+        showError = screenData.showSymbolError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done
