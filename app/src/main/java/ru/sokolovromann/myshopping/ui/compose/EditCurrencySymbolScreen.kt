@@ -28,70 +28,64 @@ fun EditCurrencySymbolScreen(
     navController: NavController,
     viewModel: EditCurrencySymbolViewModel = hiltViewModel()
 ) {
+    val screenData = viewModel.editCurrencySymbolState.screenData
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditCurrencySymbolScreenEvent.ShowBackScreen -> navController.popBackStack()
-            }
-        }
-    }
+                EditCurrencySymbolScreenEvent.ShowBackScreen -> {
+                    focusManager.clearFocus(force = true)
+                    navController.popBackStack()
+                }
 
-    LaunchedEffect(Unit) {
-        viewModel.keyboardFlow.collect {
-            if (it) {
-                focusRequester.requestFocus()
-            } else {
-                focusManager.clearFocus(force = true)
+                EditCurrencySymbolScreenEvent.ShowKeyboard -> {
+                    focusRequester.requestFocus()
+                }
             }
         }
     }
 
     AppDialog(
         onDismissRequest = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
-        header = { Text(text = viewModel.headerState.value.text.asCompose()) },
-        actionButtons = { ActionButtons(viewModel) },
-        content = { Content(viewModel, focusRequester) }
-    )
-}
-
-@Composable
-private fun ActionButtons(viewModel: EditCurrencySymbolViewModel) {
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
-        content = { Text(text = viewModel.cancelState.value.text.asCompose()) }
-    )
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) },
-        primaryButton = true,
-        content = { Text(text = viewModel.saveState.value.text.asCompose()) }
-    )
-}
-
-@Composable
-private fun Content(viewModel: EditCurrencySymbolViewModel, focusRequester: FocusRequester) {
-    val screenData = viewModel.editCurrencySymbolState.screenData
-    OutlinedAppTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester),
-        value = screenData.symbolValue,
-        valueFontSize = screenData.fontSize.toTextField().sp,
-        onValueChange = {
-            val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
-            viewModel.onEvent(event)
-        },
-        label = { Text(text = stringResource(R.string.editCurrencySymbol_label_symbol)) },
-        error = { Text(text = stringResource(R.string.editCurrencySymbol_message_symbolError)) },
-        showError = screenData.showSymbolError,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) }
+        header = { Text(text = stringResource(R.string.editCurrencySymbol_header)) },
+        actionButtons = {
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
+                content = {
+                    Text(text = stringResource(R.string.editCurrencySymbol_action_cancelSavingCurrencySymbol))
+                }
+            )
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) },
+                primaryButton = true,
+                content = {
+                    Text(text = stringResource(R.string.editCurrencySymbol_action_saveCurrencySymbol))
+                }
+            )
+        }
+    ) {
+        OutlinedAppTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
+            value = screenData.symbolValue,
+            valueFontSize = screenData.fontSize.toTextField().sp,
+            onValueChange = {
+                val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
+                viewModel.onEvent(event)
+            },
+            label = { Text(text = stringResource(R.string.editCurrencySymbol_label_symbol)) },
+            error = { Text(text = stringResource(R.string.editCurrencySymbol_message_symbolError)) },
+            showError = screenData.showSymbolError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) }
+            )
         )
-    )
+    }
 }
