@@ -11,12 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.viewmodel.EditTaxRateViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
 
@@ -69,20 +72,20 @@ private fun ActionButtons(viewModel: EditTaxRateViewModel) {
 
 @Composable
 private fun Content(viewModel: EditTaxRateViewModel, focusRequester: FocusRequester) {
-    val taxRateField = viewModel.taxRateState.currentData
+    val screenData = viewModel.editTaxRateState.screenData
     OutlinedAppTextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
-        value = taxRateField.text,
-        valueFontSize = taxRateField.textFontSize,
+        value = screenData.taxRateValue,
+        valueFontSize = screenData.fontSize.toTextField().sp,
         onValueChange = {
             val event = EditTaxRateEvent.TaxRateChanged(it)
             viewModel.onEvent(event)
         },
-        label = { Text(text = taxRateField.label.text.asCompose()) },
-        error = { Text(text = (taxRateField.error?.text ?: UiText.Nothing).asCompose()) },
-        showError = taxRateField.error?.text != null,
+        label = { Text(text = stringResource(R.string.editTaxRate_label_taxRate)) },
+        error = { Text(text = stringResource(R.string.editTaxRate_message_taxRateError)) },
+        showError = screenData.showTaxRateError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Done

@@ -1,13 +1,8 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +18,8 @@ import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.SettingsPreferences
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.EditTaxRateState
 import ru.sokolovromann.myshopping.ui.compose.state.TextData
-import ru.sokolovromann.myshopping.ui.compose.state.TextFieldState
-import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
 import javax.inject.Inject
 
@@ -36,12 +30,10 @@ class EditTaxRateViewModel @Inject constructor(
     private val dispatchers: AppDispatchers,
 ) : ViewModel(), ViewModelEvent<EditTaxRateEvent> {
 
-    private val editTaxRateState: MutableState<EditTaxRate> = mutableStateOf(EditTaxRate())
+    val editTaxRateState: EditTaxRateState = EditTaxRateState()
 
     private val _headerState: MutableState<TextData> = mutableStateOf(TextData())
     val headerState: State<TextData> = _headerState
-
-    val taxRateState: TextFieldState = TextFieldState()
 
     private val _cancelState: MutableState<TextData> = mutableStateOf(TextData())
     val cancelState: State<TextData> = _cancelState
@@ -78,20 +70,9 @@ class EditTaxRateViewModel @Inject constructor(
     }
 
     private fun saveTaxRate() = viewModelScope.launch(dispatchers.io) {
-        if (taxRateState.isTextEmpty()) {
-            taxRateState.showError(
-                error = mapping.toBody(
-                    text = mapping.toResourcesUiText(R.string.editTaxRate_message_taxRateError),
-                    fontSize = FontSize.MEDIUM,
-                    appColor = AppColor.Error
-                )
-            )
-            return@launch
-        }
+        val taxRate = editTaxRateState.getTaxRateResult()
+            .getOrElse { return@launch }
 
-        val taxRate = editTaxRateState.value.taxRate.copy(
-            value = mapping.toFloat(taxRateState.currentData.text) ?: 0f
-        )
         repository.editTaxRate(taxRate)
 
         hideKeyboard()
@@ -120,7 +101,7 @@ class EditTaxRateViewModel @Inject constructor(
     }
 
     private fun taxRateChanged(event: EditTaxRateEvent.TaxRateChanged) {
-        taxRateState.changeText(event.value)
+        editTaxRateState.changeTaxRateValue(event.value)
     }
 
     private fun cancelSavingTaxRate() = viewModelScope.launch(dispatchers.main) {
@@ -134,26 +115,9 @@ class EditTaxRateViewModel @Inject constructor(
     private suspend fun showTaxRate(
         editTaxRate: EditTaxRate
     ) = withContext(dispatchers.main) {
-        editTaxRateState.value = editTaxRate
+        editTaxRateState.populate(editTaxRate)
 
-        val taxRate = editTaxRate.taxRate.valueToString()
         val preferences = editTaxRate.preferences
-
-        taxRateState.showTextField(
-            text = TextFieldValue(
-                text = taxRate,
-                selection = TextRange(taxRate.length),
-                composition = TextRange(taxRate.length)
-            ),
-            label = mapping.toBody(
-                text = mapping.toResourcesUiText(R.string.editTaxRate_label_taxRate),
-                fontSize = preferences.fontSize
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal,
-                capitalization = KeyboardCapitalization.None
-            )
-        )
 
         showHeader(preferences)
         showKeyboard()
