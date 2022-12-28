@@ -11,12 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
+import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.viewmodel.EditShoppingListNameViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListNameEvent
 
@@ -50,7 +54,7 @@ fun EditShoppingListNameScreen(
         onDismissRequest = {
             viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName)
         },
-        header = { Text(text = viewModel.headerState.value.text.asCompose()) },
+        header = { Text(text = viewModel.editShoppingListNameState.screenData.headerText.asCompose()) },
         actionButtons = { ActionButtons(viewModel) },
         content = { Content(viewModel, focusRequester) }
     )
@@ -71,18 +75,18 @@ private fun ActionButtons(viewModel: EditShoppingListNameViewModel) {
 
 @Composable
 private fun Content(viewModel: EditShoppingListNameViewModel, focusRequester: FocusRequester) {
-    val nameField = viewModel.nameState.currentData
+    val screenData = viewModel.editShoppingListNameState.screenData
     OutlinedAppTextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
-        value = nameField.text,
-        valueFontSize = nameField.textFontSize,
+        value = screenData.nameValue,
+        valueFontSize = screenData.fontSize.toTextField().sp,
         onValueChange = {
             val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
             viewModel.onEvent(event)
         },
-        label = { Text(text = nameField.label.text.asCompose()) },
+        label = { Text(text = stringResource(R.string.editShoppingListName_label_name)) },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
             keyboardType = KeyboardType.Text,
