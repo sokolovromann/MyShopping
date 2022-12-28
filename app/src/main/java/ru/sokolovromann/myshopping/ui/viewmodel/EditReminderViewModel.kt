@@ -17,18 +17,12 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.EditReminderRepository
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.ProductPreferences
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.EditReminderState
 import ru.sokolovromann.myshopping.ui.compose.state.TextData
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
-import ru.sokolovromann.myshopping.ui.utils.getDefaultReminder
-import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
-import ru.sokolovromann.myshopping.ui.utils.getDisplayTime
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,19 +34,7 @@ class EditReminderViewModel @Inject constructor(
     private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<EditReminderEvent> {
 
-    private val editReminderState: MutableState<EditReminder> = mutableStateOf(EditReminder())
-
-    private val _headerState: MutableState<TextData> = mutableStateOf(TextData())
-    val headerState: State<TextData> = _headerState
-
-    private val _dateState: MutableState<TextData> = mutableStateOf(TextData())
-    val dateState: State<TextData> = _dateState
-
-    private val _timeState: MutableState<TextData> = mutableStateOf(TextData())
-    val timeState: State<TextData> = _timeState
-
-    private val _deleteState: MutableState<TextData?> = mutableStateOf(TextData())
-    val deleteState: State<TextData?> = _deleteState
+    val editReminderState: EditReminderState = EditReminderState()
 
     private val _cancelState: MutableState<TextData> = mutableStateOf(TextData())
     val cancelState: State<TextData> = _cancelState
@@ -60,25 +42,12 @@ class EditReminderViewModel @Inject constructor(
     private val _saveState: MutableState<TextData> = mutableStateOf(TextData())
     val saveState: State<TextData> = _saveState
 
-    private val _reminderState: MutableState<Calendar> = mutableStateOf(
-        Calendar.getInstance().getDefaultReminder()
-    )
-    val reminderState: State<Calendar> = _reminderState
-
-    private val _dateDialogState: MutableState<Boolean> = mutableStateOf(false)
-    val dateDialogState: State<Boolean> = _dateDialogState
-
-    private val _timeDialogState: MutableState<Boolean> = mutableStateOf(false)
-    val timeDialogState: State<Boolean> = _timeDialogState
-
     private val _screenEventFlow: MutableSharedFlow<EditReminderScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditReminderScreenEvent> = _screenEventFlow
 
     private val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
 
     init {
-        showDateButton()
-        showTimeButton()
         showCancelButton()
         showSaveButton()
         getReminder()
@@ -113,16 +82,21 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun saveReminder() = viewModelScope.launch(dispatchers.io) {
+        val shoppingList = editReminderState.getShoppingListResult()
+            .getOrElse { return@launch }
+
+        val reminder = shoppingList.reminder ?: return@launch
+
         repository.saveReminder(
-            uid = uid ?: "",
-            reminder = _reminderState.value.timeInMillis,
-            lastModified = System.currentTimeMillis()
+            uid = shoppingList.uid,
+            reminder = reminder,
+            lastModified = shoppingList.lastModified
         )
 
         withContext(dispatchers.main) {
             alarmManager.createReminder(
                 uid = uid ?: "",
-                reminder = _reminderState.value.timeInMillis
+                reminder = reminder
             )
         }
 
@@ -134,113 +108,47 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun cancelSelectingReminderDate() {
-        _dateDialogState.value = false
+        editReminderState.cancelSelectingReminderDate()
     }
 
     private fun cancelSelectingReminderTime() {
-        _timeDialogState.value = false
+        editReminderState.cancelSelectingReminderTime()
     }
 
     private fun selectReminderDate() {
-        _dateDialogState.value = true
+        editReminderState.selectReminderDate()
     }
 
     private fun selectReminderTime() {
-        _timeDialogState.value = true
+        editReminderState.selectReminderTime()
     }
 
     private fun deleteReminder() = viewModelScope.launch(dispatchers.io) {
+        val shoppingList = editReminderState.getShoppingListResult()
+            .getOrElse { return@launch }
+
         repository.deleteReminder(
-            uid = uid ?: "",
-            lastModified = System.currentTimeMillis()
+            uid = shoppingList.uid,
+            lastModified = shoppingList.lastModified
         )
 
         withContext(dispatchers.main) {
-            alarmManager.deleteReminder(uid ?: "")
+            alarmManager.deleteReminder(shoppingList.uid)
         }
 
         showBackScreen()
     }
 
     private fun reminderDateChanged(event: EditReminderEvent.ReminderDateChanged) {
-        _reminderState.value = _reminderState.value.apply {
-            set(Calendar.YEAR, event.year)
-            set(Calendar.MONTH, event.month)
-            set(Calendar.DAY_OF_MONTH, event.dayOfMonth)
-        }
-
-        _dateState.value = _dateState.value.copy(
-            text = _reminderState.value.getDisplayDate()
-        )
+        editReminderState.changeReminderDate(event.year, event.month, event.dayOfMonth)
     }
 
     private fun reminderTimeChanged(event: EditReminderEvent.ReminderTimeChanged) {
-        _reminderState.value = _reminderState.value.apply {
-            set(Calendar.HOUR_OF_DAY, event.hourOfDay)
-            set(Calendar.MINUTE, event.minute)
-        }
-
-        _timeState.value = _timeState.value.copy(
-            text = _reminderState.value.getDisplayTime()
-        )
+        editReminderState.changeReminderTime(event.hourOfDay, event.minute)
     }
 
     private suspend fun showReminder(editReminder: EditReminder) = withContext(dispatchers.main) {
-        editReminderState.value = editReminder
-
-        val value = editReminder.shoppingList ?: ShoppingList()
-        val preferences = editReminder.preferences
-
-        showHeader(
-            isAdd = value.reminder == null,
-            preferences = preferences
-        )
-
-        if (value.reminder == null) {
-            hideDeleteButton()
-        } else {
-            _reminderState.value = Calendar.getInstance().apply {
-                timeInMillis = value.reminder
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-            }
-
-            showDeleteButton()
-        }
-    }
-
-    private fun showHeader(isAdd: Boolean, preferences: ProductPreferences) {
-        val text: UiText = if (isAdd) {
-            mapping.toResourcesUiText(R.string.editReminder_header_addReminder)
-        } else {
-            mapping.toResourcesUiText(R.string.editReminder_header_editReminder)
-        }
-
-        _headerState.value = mapping.toOnDialogHeader(
-            text = text,
-            fontSize = preferences.fontSize
-        )
-    }
-
-    private fun showDateButton() {
-        _dateState.value = mapping.toBody(
-            text = _reminderState.value.getDisplayDate(),
-            fontSize = FontSize.MEDIUM
-        )
-    }
-
-    private fun showTimeButton() {
-        _timeState.value = mapping.toBody(
-            text = _reminderState.value.getDisplayTime(),
-            fontSize = FontSize.MEDIUM
-        )
-    }
-
-    private fun showDeleteButton() {
-        _deleteState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.editReminder_action_deleteReminder),
-            fontSize = FontSize.MEDIUM
-        )
+        editReminderState.populate(editReminder)
     }
 
     private fun showCancelButton() {
@@ -259,9 +167,5 @@ class EditReminderViewModel @Inject constructor(
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
-    }
-
-    private fun hideDeleteButton() {
-        _deleteState.value = null
     }
 }
