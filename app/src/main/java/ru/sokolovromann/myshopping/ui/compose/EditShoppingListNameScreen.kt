@@ -29,23 +29,21 @@ fun EditShoppingListNameScreen(
     navController: NavController,
     viewModel: EditShoppingListNameViewModel = hiltViewModel()
 ) {
+    val screenData = viewModel.editShoppingListNameState.screenData
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditShoppingListNameScreenEvent.ShowBackScreen -> navController.popBackStack()
-            }
-        }
-    }
+                EditShoppingListNameScreenEvent.ShowBackScreen -> {
+                    focusManager.clearFocus(force = true)
+                    navController.popBackStack()
+                }
 
-    LaunchedEffect(Unit) {
-        viewModel.keyboardFlow.collect {
-            if (it) {
-                focusRequester.requestFocus()
-            } else {
-                focusManager.clearFocus(force = true)
+                EditShoppingListNameScreenEvent.ShowKeyboard -> {
+                    focusRequester.requestFocus()
+                }
             }
         }
     }
@@ -54,46 +52,42 @@ fun EditShoppingListNameScreen(
         onDismissRequest = {
             viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName)
         },
-        header = { Text(text = viewModel.editShoppingListNameState.screenData.headerText.asCompose()) },
-        actionButtons = { ActionButtons(viewModel) },
-        content = { Content(viewModel, focusRequester) }
-    )
-}
-
-@Composable
-private fun ActionButtons(viewModel: EditShoppingListNameViewModel) {
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName) },
-        content = { Text(text = viewModel.cancelState.value.text.asCompose()) }
-    )
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) },
-        primaryButton = true,
-        content = { Text(text = viewModel.saveState.value.text.asCompose()) }
-    )
-}
-
-@Composable
-private fun Content(viewModel: EditShoppingListNameViewModel, focusRequester: FocusRequester) {
-    val screenData = viewModel.editShoppingListNameState.screenData
-    OutlinedAppTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester),
-        value = screenData.nameValue,
-        valueFontSize = screenData.fontSize.toTextField().sp,
-        onValueChange = {
-            val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
-            viewModel.onEvent(event)
-        },
-        label = { Text(text = stringResource(R.string.editShoppingListName_label_name)) },
-        keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Sentences,
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) }
+        header = { Text(text = screenData.headerText.asCompose()) },
+        actionButtons = {
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName) },
+                content = {
+                    Text(text = stringResource(R.string.editShoppingListName_action_cancelSavingShoppingListName))
+                }
+            )
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) },
+                primaryButton = true,
+                content = {
+                    Text(text = stringResource(R.string.editShoppingListName_action_saveShoppingListName))
+                }
+            )
+        }
+    ) {
+        OutlinedAppTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
+            value = screenData.nameValue,
+            valueFontSize = screenData.fontSize.toTextField().sp,
+            onValueChange = {
+                val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
+                viewModel.onEvent(event)
+            },
+            label = { Text(text = stringResource(R.string.editShoppingListName_label_name)) },
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) }
+            )
         )
-    )
+    }
 }
