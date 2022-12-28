@@ -28,70 +28,64 @@ fun EditTaxRateScreen(
     navController: NavController,
     viewModel: EditTaxRateViewModel = hiltViewModel()
 ) {
+    val screenData = viewModel.editTaxRateState.screenData
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditTaxRateScreenEvent.ShowBackScreen -> navController.popBackStack()
-            }
-        }
-    }
+                EditTaxRateScreenEvent.ShowBackScreen -> {
+                    focusManager.clearFocus(force = true)
+                    navController.popBackStack()
+                }
 
-    LaunchedEffect(Unit) {
-        viewModel.keyboardFlow.collect {
-            if (it) {
-                focusRequester.requestFocus()
-            } else {
-                focusManager.clearFocus(force = true)
+                EditTaxRateScreenEvent.ShowKeyboard -> {
+                    focusRequester.requestFocus()
+                }
             }
         }
     }
 
     AppDialog(
         onDismissRequest = { viewModel.onEvent(EditTaxRateEvent.CancelSavingTaxRate) },
-        header = { Text(text = viewModel.headerState.value.text.asCompose()) },
-        actionButtons = { ActionButtons(viewModel) },
-        content = { Content(viewModel, focusRequester) }
-    )
-}
-
-@Composable
-private fun ActionButtons(viewModel: EditTaxRateViewModel) {
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(EditTaxRateEvent.CancelSavingTaxRate) },
-        content = { Text(text = viewModel.cancelState.value.text.asCompose()) }
-    )
-    AppDialogActionButton(
-        onClick = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) },
-        primaryButton = true,
-        content = { Text(text = viewModel.saveState.value.text.asCompose()) }
-    )
-}
-
-@Composable
-private fun Content(viewModel: EditTaxRateViewModel, focusRequester: FocusRequester) {
-    val screenData = viewModel.editTaxRateState.screenData
-    OutlinedAppTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester),
-        value = screenData.taxRateValue,
-        valueFontSize = screenData.fontSize.toTextField().sp,
-        onValueChange = {
-            val event = EditTaxRateEvent.TaxRateChanged(it)
-            viewModel.onEvent(event)
-        },
-        label = { Text(text = stringResource(R.string.editTaxRate_label_taxRate)) },
-        error = { Text(text = stringResource(R.string.editTaxRate_message_taxRateError)) },
-        showError = screenData.showTaxRateError,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) }
+        header = { Text(text = stringResource(R.string.editTaxRate_header)) },
+        actionButtons = {
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(EditTaxRateEvent.CancelSavingTaxRate) },
+                content = {
+                    Text(text = stringResource(R.string.editTaxRate_action_cancelSavingTaxRate))
+                }
+            )
+            AppDialogActionButton(
+                onClick = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) },
+                primaryButton = true,
+                content = {
+                    Text(text = stringResource(R.string.editTaxRate_action_saveTaxRate))
+                }
+            )
+        }
+    ) {
+        OutlinedAppTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
+            value = screenData.taxRateValue,
+            valueFontSize = screenData.fontSize.toTextField().sp,
+            onValueChange = {
+                val event = EditTaxRateEvent.TaxRateChanged(it)
+                viewModel.onEvent(event)
+            },
+            label = { Text(text = stringResource(R.string.editTaxRate_label_taxRate)) },
+            error = { Text(text = stringResource(R.string.editTaxRate_message_taxRateError)) },
+            showError = screenData.showTaxRateError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) }
+            )
         )
-    )
+    }
 }
