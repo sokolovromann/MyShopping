@@ -11,9 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import ru.sokolovromann.myshopping.ui.utils.isEmpty
+import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
 
 @Composable
 fun AppTextField(
@@ -42,7 +45,14 @@ fun AppTextField(
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                val textFieldValue = checkTextFieldValue(
+                    oldValue = value,
+                    newValue = it,
+                    keyboardType = keyboardOptions.keyboardType
+                )
+                onValueChange(textFieldValue)
+            },
             enabled = enabled,
             textStyle = textStyle,
             label = createAppTextLabelOrNot(textStyle, label),
@@ -82,7 +92,14 @@ fun OutlinedAppTextField(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                val textFieldValue = checkTextFieldValue(
+                    oldValue = value,
+                    newValue = it,
+                    keyboardType = keyboardOptions.keyboardType
+                )
+                onValueChange(textFieldValue)
+            },
             enabled = enabled,
             textStyle = textStyle,
             label = createAppTextLabelOrNot(textStyle, label),
@@ -92,6 +109,23 @@ fun OutlinedAppTextField(
             singleLine = singleLine,
             maxLines = maxLines
         )
+    }
+}
+
+private fun checkTextFieldValue(
+    oldValue: TextFieldValue,
+    newValue: TextFieldValue,
+    keyboardType: KeyboardType
+): TextFieldValue {
+    return when (keyboardType) {
+        KeyboardType.Decimal, KeyboardType.Number -> {
+            if (newValue.toFloatOrNull() == null) {
+                if (newValue.isEmpty()) newValue else oldValue
+            } else {
+                newValue
+            }
+        }
+        else -> newValue
     }
 }
 
