@@ -38,6 +38,8 @@ sealed class AddEditProductEvent {
 
     data class AutocompleteQuantitySelected(val quantity: Quantity) : AddEditProductEvent()
 
+    data class AutocompleteQuantitySymbolSelected(val quantity: Quantity) : AddEditProductEvent()
+
     data class AutocompletePriceSelected(val price: Money) : AddEditProductEvent()
 
     data class AutocompleteTotalSelected(val total: Money) : AddEditProductEvent()
