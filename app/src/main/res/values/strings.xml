@@ -7,6 +7,8 @@
     <string name="addEditAutocomplete_label_name">Name</string>
     <string name="addEditAutocomplete_message_nameError">Add name</string>
 
+    <string name="addEditProduct_action_quantityMinusOne">- 1</string>
+    <string name="addEditProduct_action_quantityPlusOne">+ 1</string>
     <string name="addEditProduct_action_saveProduct">Save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Money</string>
     <string name="addEditProduct_action_selectDiscountAsPercents">Percents</string>
@@ -17,8 +19,6 @@
     <string name="addEditProduct_label_quantity">Quantity</string>
     <string name="addEditProduct_label_quantitySymbol">Symbol</string>
     <string name="addEditProduct_message_nameError">Add name</string>
-    <string name="addEditProduct_quantityMinusOne">- 1</string>
-    <string name="addEditProduct_quantityPlusOne">+ 1</string>
 
     <string name="all_appName">My Shopping List</string>
 

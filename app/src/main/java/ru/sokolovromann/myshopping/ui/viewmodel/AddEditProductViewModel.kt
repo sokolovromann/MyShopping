@@ -1,10 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,53 +10,29 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.AddEditProductRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditProductViewModel @Inject constructor(
     private val repository: AddEditProductRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditProductEvent> {
 
     val addEditProductState: AddEditProductState = AddEditProductState()
 
-    private val _quantityMinusOneState: MutableState<TextData> = mutableStateOf(TextData())
-    val quantityMinusOneState: State<TextData> = _quantityMinusOneState
-
-    private val _quantityPlusOneState: MutableState<TextData> = mutableStateOf(TextData())
-    val quantityPlusOneState: State<TextData> = _quantityPlusOneState
-
-    private val _saveState: MutableState<TextData> = mutableStateOf(TextData())
-    val saveState: State<TextData> = _saveState
-
-    private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
-    val topBarState: State<TopBarData> = _topBarState
-
-    private val _keyboardFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
-    val keyboardFlow: SharedFlow<Boolean> = _keyboardFlow
-
     private val _screenEventFlow: MutableSharedFlow<AddEditProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AddEditProductScreenEvent> = _screenEventFlow
-
-    private val shoppingUid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
 
     private val productUid: String? = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
 
     init {
-        showTopBar()
-        showSaveButton()
-        showQuantityMinusOneButton()
-        showQuantityPlusOneButton()
         getAddEditProduct()
     }
 
@@ -107,65 +78,82 @@ class AddEditProductViewModel @Inject constructor(
         }
     }
 
-    private fun getAddEditProduct() = viewModelScope.launch(dispatchers.io) {
+    private fun getAddEditProduct() = viewModelScope.launch {
         repository.getAddEditProduct(productUid).firstOrNull()?.let {
-            showAddEditProduct(it)
+            addEditProductLoaded(it)
         }
     }
 
-    private fun getAutocompletes(name: String) = viewModelScope.launch(dispatchers.io) {
+    private suspend fun addEditProductLoaded(
+        addEditProduct: AddEditProduct
+    ) = withContext(dispatchers.main) {
+        val shoppingUid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
+        val product = Product(shoppingUid = shoppingUid ?: "")
+
+        if (productUid == null) {
+            addEditProductState.populate(addEditProduct.copy(product = product))
+            showKeyboard()
+        } else {
+            addEditProductState.populate(addEditProduct)
+            getAutocompletes(product.name)
+        }
+    }
+
+    private fun getAutocompletes(name: String) = viewModelScope.launch {
         val search = name.trim()
         val addEditProductAutocomplete = repository.getAutocompletes(search).firstOrNull()
             ?: AddEditProductAutocomplete()
-        showAddEditProductAutocomplete(addEditProductAutocomplete)
+        addEditProductAutocompleteLoaded(addEditProductAutocomplete)
     }
 
-    private suspend fun showAddEditProductAutocomplete(
+    private suspend fun addEditProductAutocompleteLoaded(
         addEditProductAutocomplete: AddEditProductAutocomplete
     ) = withContext(dispatchers.main) {
-        val autocompletes = addEditProductAutocomplete.names()
+        val names = addEditProductAutocomplete.names()
+        if (names.isEmpty()) {
+            addEditProductState.hideAutocompletes()
+            return@withContext
+        }
 
-        if (autocompletes.isEmpty()) {
-            hideAutocompleteNames()
-            hideAutocompleteQuantities()
-            hideAutocompletePrices()
-            hideAutocompleteDiscounts()
-        } else {
-            val currentName = addEditProductState.screenData.nameValue.text
-            val containsName = autocompletes.contains(currentName)
+        val currentName = addEditProductState.screenData.nameValue.text
+        val containsName = names.contains(currentName)
 
-            when (addEditProductAutocomplete.preferences.displayAutocomplete) {
-                DisplayAutocomplete.ALL -> {
-                    if (containsName) {
-                        hideAutocompleteNames()
-                    } else {
-                        showAutocompleteNames(addEditProductAutocomplete)
-                    }
-
-                    showAutocompleteQuantities(addEditProductAutocomplete)
-                    showAutocompletePrices(addEditProductAutocomplete)
-                    showAutocompleteDiscounts(addEditProductAutocomplete)
+        when (addEditProductAutocomplete.preferences.displayAutocomplete) {
+            DisplayAutocomplete.ALL -> {
+                if (containsName) {
+                    addEditProductState.showAutocompletes(
+                        names = listOf(),
+                        quantities = addEditProductAutocomplete.quantities(currentName),
+                        quantitySymbols = addEditProductAutocomplete.quantitySymbols(currentName),
+                        prices = addEditProductAutocomplete.prices(currentName),
+                        discounts = addEditProductAutocomplete.discounts(currentName)
+                    )
+                } else {
+                    addEditProductState.showAutocompletes(
+                        names = names,
+                        quantities = addEditProductAutocomplete.quantities(currentName),
+                        quantitySymbols = addEditProductAutocomplete.quantitySymbols(currentName),
+                        prices = addEditProductAutocomplete.prices(currentName),
+                        discounts = addEditProductAutocomplete.discounts(currentName)
+                    )
                 }
+            }
 
-                DisplayAutocomplete.NAME -> {
-                    if (containsName) {
-                        hideAutocompleteNames()
-                    } else {
-                        showAutocompleteNames(addEditProductAutocomplete)
-                    }
+            DisplayAutocomplete.NAME -> {
+                if (containsName) {
+                    addEditProductState.hideAutocompleteNames()
+                } else {
+                    addEditProductState.showAutocompleteNames(addEditProductAutocomplete.names())
                 }
+            }
 
-                DisplayAutocomplete.HIDE -> {
-                    hideAutocompleteNames()
-                    hideAutocompleteQuantities()
-                    hideAutocompletePrices()
-                    hideAutocompleteDiscounts()
-                }
+            DisplayAutocomplete.HIDE -> {
+                addEditProductState.hideAutocompletes()
             }
         }
     }
 
-    private fun saveProduct() = viewModelScope.launch(dispatchers.io) {
+    private fun saveProduct() = viewModelScope.launch {
         val product = addEditProductState.getProductResult()
             .getOrElse { return@launch }
 
@@ -178,12 +166,13 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.getAutocompleteResult()
             .onSuccess { repository.addAutocomplete(it) }
 
-        hideKeyboard()
-        showBackScreen()
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
+        }
     }
 
     private fun cancelSavingProduct() = viewModelScope.launch(dispatchers.main) {
-        showBackScreen()
+        _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
     }
 
     private fun productNameChanged(event: AddEditProductEvent.ProductNameChanged) {
@@ -195,10 +184,7 @@ class AddEditProductViewModel @Inject constructor(
                 event.value.text.length < minLength
 
         if (hideAutocomplete) {
-            hideAutocompleteNames()
-            hideAutocompleteQuantities()
-            hideAutocompletePrices()
-            hideAutocompleteDiscounts()
+            addEditProductState.hideAutocompletes()
         } else {
             getAutocompletes(event.value.text)
         }
@@ -256,126 +242,15 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.plusOneQuantity()
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
-    }
-
-    private suspend fun showAddEditProduct(
-        addEditProduct: AddEditProduct
-    ) = withContext(dispatchers.main) {
-        if (productUid == null) {
-            val product = Product(shoppingUid = shoppingUid ?: "")
-            addEditProductState.populate(addEditProduct.copy(product = product))
-        } else {
-            addEditProductState.populate(addEditProduct)
-        }
-
-        val product = addEditProduct.product ?: Product()
-        val preferences = addEditProduct.preferences
-
-        val name = product.name.formatFirst(preferences.firstLetterUppercase)
-
-        if (productUid == null) {
-            showKeyboard()
-        } else {
-            hideKeyboard()
-            getAutocompletes(name)
-        }
-    }
-
-    private fun showQuantityMinusOneButton() {
-        _quantityMinusOneState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditProduct_quantityMinusOne),
-            fontSize = FontSize.MEDIUM,
-            appColor = AppColor.OnBackground
-        )
-    }
-
-    private fun showQuantityPlusOneButton() {
-        _quantityPlusOneState.value = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditProduct_quantityPlusOne),
-            fontSize = FontSize.MEDIUM,
-            appColor = AppColor.OnBackground
-        )
-    }
-
     private fun showProductDiscountAsPercentMenu() {
         addEditProductState.showDiscountAsPercent()
     }
 
-    private fun showTopBar() {
-        val data = TopBarData(
-            navigationIcon = mapping.toOnTopAppBar(
-                icon = UiIcon.FromVector(Icons.Default.ArrowBack)
-            )
-        )
-        _topBarState.value = data
-    }
-
-    private fun showSaveButton() {
-        val data = mapping.toBody(
-            text = mapping.toResourcesUiText(R.string.addEditProduct_action_saveProduct),
-            fontSize = FontSize.MEDIUM,
-            appColor = AppColor.OnPrimary
-        )
-        _saveState.value = data
-    }
-
     private fun showKeyboard() = viewModelScope.launch(dispatchers.main) {
-        _keyboardFlow.emit(true)
-    }
-
-    private suspend fun showAutocompleteNames(
-        addEditProductAutocomplete: AddEditProductAutocomplete
-    ) = withContext(dispatchers.main) {
-        addEditProductState.showAutocompleteNames(addEditProductAutocomplete.names())
-    }
-
-    private suspend fun showAutocompleteQuantities(
-        addEditProductAutocomplete: AddEditProductAutocomplete
-    ) = withContext(dispatchers.main) {
-        val currentName = addEditProductState.screenData.nameValue.text
-        addEditProductState.showAutocompleteQuantities(
-            autocompleteQuantities = addEditProductAutocomplete.quantities(currentName),
-            autocompleteQuantitySymbols = addEditProductAutocomplete.quantitySymbols(currentName)
-        )
-    }
-
-    private suspend fun showAutocompletePrices(
-        addEditProductAutocomplete: AddEditProductAutocomplete
-    ) = withContext(dispatchers.main) {
-        val currentName = addEditProductState.screenData.nameValue.text
-        addEditProductState.showAutocompletePrices(addEditProductAutocomplete.prices(currentName))
-    }
-
-    private suspend fun showAutocompleteDiscounts(
-        addEditProductAutocomplete: AddEditProductAutocomplete
-    ) = withContext(dispatchers.main) {
-        val currentName = addEditProductState.screenData.nameValue.text
-        addEditProductState.showAutocompleteDiscounts(addEditProductAutocomplete.discounts(currentName))
+        _screenEventFlow.emit(AddEditProductScreenEvent.ShowKeyboard)
     }
 
     private fun hideProductDiscountAsPercentMenu() {
         addEditProductState.hideDiscountAsPercent()
-    }
-
-    private fun hideKeyboard() = viewModelScope.launch(dispatchers.main) {
-        _keyboardFlow.emit(false)
-    }
-
-    private fun hideAutocompleteNames() {
-        addEditProductState.hideAutocompleteNames()
-    }
-
-    private fun hideAutocompleteQuantities() {
-        addEditProductState.hideAutocompleteQuantities()
-    }
-
-    private fun hideAutocompletePrices() {
-        addEditProductState.hideAutocompletePrices()
-    }
-
-    private fun hideAutocompleteDiscounts() {
-        addEditProductState.hideAutocompleteDiscounts()
     }
 }

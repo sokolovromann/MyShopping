@@ -223,22 +223,20 @@ class AddEditProductState {
         screenData = screenData.copy(autocompleteNames = autocompleteNames)
     }
 
-    fun showAutocompleteQuantities(
-        autocompleteQuantities: List<Quantity>,
-        autocompleteQuantitySymbols: List<Quantity>
+    fun showAutocompletes(
+        names: List<String>,
+        quantities: List<Quantity>,
+        quantitySymbols: List<Quantity>,
+        prices: List<Money>,
+        discounts: List<Discount>
     ) {
         screenData = screenData.copy(
-            autocompleteQuantities = autocompleteQuantities,
-            autocompleteQuantitySymbols = autocompleteQuantitySymbols,
+            autocompleteNames = names,
+            autocompleteQuantities = quantities,
+            autocompleteQuantitySymbols = quantitySymbols,
+            autocompletePrices = prices,
+            autocompleteDiscounts = discounts
         )
-    }
-
-    fun showAutocompletePrices(autocompletePrices: List<Money>) {
-        screenData = screenData.copy(autocompletePrices = autocompletePrices)
-    }
-
-    fun showAutocompleteDiscounts(autocompleteDiscounts: List<Discount>) {
-        screenData = screenData.copy(autocompleteDiscounts = autocompleteDiscounts)
     }
 
     fun showDiscountAsPercent() {
@@ -251,19 +249,14 @@ class AddEditProductState {
         )
     }
 
-    fun hideAutocompleteQuantities() {
+    fun hideAutocompletes() {
         screenData = screenData.copy(
+            autocompleteNames = listOf(),
             autocompleteQuantities = listOf(),
-            autocompleteQuantitySymbols = listOf()
+            autocompleteQuantitySymbols = listOf(),
+            autocompletePrices = listOf(),
+            autocompleteDiscounts = listOf()
         )
-    }
-
-    fun hideAutocompletePrices() {
-        screenData = screenData.copy(autocompletePrices = listOf())
-    }
-
-    fun hideAutocompleteDiscounts() {
-        screenData = screenData.copy(autocompleteDiscounts = listOf())
     }
 
     fun hideDiscountAsPercent() {
