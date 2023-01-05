@@ -35,6 +35,7 @@ class AddEditProductState {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)
         }
         screenData = AddEditProductScreenData(
+            screenState = ScreenState.Showing,
             nameValue = TextFieldValue(
                 text = name,
                 selection = TextRange(name.length),
@@ -268,10 +269,13 @@ class AddEditProductState {
     }
 
     fun getProductResult(): Result<Product> {
+        screenData = screenData.copy(screenState = ScreenState.Saving)
+
         return if (screenData.nameValue.isEmpty()) {
-            showSavingError()
+            screenData = screenData.copy(showNameError = true)
             Result.failure(Exception())
         } else {
+            screenData = screenData.copy(screenState = ScreenState.Saving)
             val success = product.copy(
                 name = screenData.nameValue.text,
                 quantity = Quantity(
@@ -316,13 +320,10 @@ class AddEditProductState {
             Result.failure(Exception())
         }
     }
-
-    private fun showSavingError() {
-        screenData = screenData.copy(showNameError = true)
-    }
 }
 
 data class AddEditProductScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val nameValue: TextFieldValue = TextFieldValue(),
     val showNameError: Boolean = false,
     val quantityValue: TextFieldValue = TextFieldValue(),

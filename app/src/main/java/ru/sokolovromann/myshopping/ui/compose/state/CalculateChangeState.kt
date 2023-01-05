@@ -29,6 +29,7 @@ class CalculateChangeState {
         val changeText: UiText = UiText.FromResources(R.string.calculateChange_text_noChange)
 
         screenData = CalculateChangeScreenData(
+            screenState = ScreenState.Showing,
             userMoneyValue = TextFieldValue(),
             totalText = totalText,
             changeText = changeText,
@@ -56,6 +57,7 @@ class CalculateChangeState {
 }
 
 data class CalculateChangeScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val userMoneyValue: TextFieldValue = TextFieldValue(),
     val totalText: UiText = UiText.Nothing,
     val changeText: UiText = UiText.Nothing,

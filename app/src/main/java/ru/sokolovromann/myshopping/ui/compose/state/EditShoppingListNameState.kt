@@ -28,6 +28,7 @@ class EditShoppingListNameState {
         val name = shoppingList.name
 
         screenData = EditShoppingListNameScreenData(
+            screenState = ScreenState.Showing,
             headerText = headerText,
             nameValue = TextFieldValue(
                 text = name,
@@ -43,6 +44,7 @@ class EditShoppingListNameState {
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
+        screenData = screenData.copy(screenState = ScreenState.Saving)
         val success = shoppingList.copy(
             name = screenData.nameValue.text,
             lastModified = System.currentTimeMillis()
@@ -53,6 +55,7 @@ class EditShoppingListNameState {
 }
 
 data class EditShoppingListNameScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val headerText: UiText = UiText.Nothing,
     val nameValue: TextFieldValue = TextFieldValue(),
     val fontSize: FontSize = FontSize.MEDIUM

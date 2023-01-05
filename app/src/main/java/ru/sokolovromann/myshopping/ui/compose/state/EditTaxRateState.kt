@@ -24,6 +24,7 @@ class EditTaxRateState {
         val taxRateText = taxRate.valueToString()
 
         screenData = EditTaxRateScreenData(
+            screenState = ScreenState.Showing,
             taxRateValue = TextFieldValue(
                 text = taxRateText,
                 selection = TextRange(taxRateText.length),
@@ -46,6 +47,7 @@ class EditTaxRateState {
             screenData = screenData.copy(showTaxRateError = true)
             Result.failure(Exception())
         } else {
+            screenData = screenData.copy(screenState = ScreenState.Saving)
             val success = taxRate.copy(
                 value = screenData.taxRateValue.toFloatOrZero()
             )
@@ -55,6 +57,7 @@ class EditTaxRateState {
 }
 
 data class EditTaxRateScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val taxRateValue: TextFieldValue = TextFieldValue(),
     val showTaxRateError: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM

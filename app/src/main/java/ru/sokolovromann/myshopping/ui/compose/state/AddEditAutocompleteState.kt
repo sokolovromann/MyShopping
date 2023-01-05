@@ -29,13 +29,13 @@ class AddEditAutocompleteState {
         val name = autocomplete.name
 
         screenData = AddEditAutocompleteScreenData(
+            screenState = ScreenState.Showing,
             headerText = headerText,
             nameValue = TextFieldValue(
                 text = name,
                 selection = TextRange(name.length),
                 composition = TextRange(name.length)
             ),
-            nameError = UiText.Nothing,
             showNameError = false,
             fontSize = addEditAutocomplete.preferences.fontSize
         )
@@ -44,16 +44,16 @@ class AddEditAutocompleteState {
     fun changeNameValue(nameValue: TextFieldValue) {
         screenData = screenData.copy(
             nameValue = nameValue,
-            nameError = UiText.Nothing,
             showNameError = false
         )
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
         return if (screenData.nameValue.isEmpty()) {
-            showSavingError()
+            screenData = screenData.copy(showNameError = true)
             Result.failure(Exception())
         } else {
+            screenData = screenData.copy(screenState = ScreenState.Saving)
             val success = autocomplete.copy(
                 name = screenData.nameValue.text,
                 lastModified = System.currentTimeMillis()
@@ -61,20 +61,12 @@ class AddEditAutocompleteState {
             Result.success(success)
         }
     }
-
-    private fun showSavingError() {
-        val nameError: UiText = UiText.FromResources(R.string.addEditAutocomplete_message_nameError)
-        screenData = screenData.copy(
-            nameError = nameError,
-            showNameError = true
-        )
-    }
 }
 
 data class AddEditAutocompleteScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val headerText: UiText = UiText.Nothing,
     val nameValue: TextFieldValue = TextFieldValue(),
-    val nameError: UiText = UiText.Nothing,
     val showNameError: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM
 )

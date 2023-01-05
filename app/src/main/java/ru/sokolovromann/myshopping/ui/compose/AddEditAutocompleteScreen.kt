@@ -79,7 +79,7 @@ fun AddEditAutocompleteScreen(
             label = {
                 Text(text = stringResource(R.string.addEditAutocomplete_label_name))
             },
-            error = { Text(text = screenData.nameError.asCompose()) },
+            error = { Text(text = stringResource(R.string.addEditAutocomplete_message_nameError)) },
             showError = screenData.showNameError,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,

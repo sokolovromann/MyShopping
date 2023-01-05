@@ -46,6 +46,7 @@ class EditReminderState {
         }
 
         screenData = EditReminderScreenData(
+            screenState = ScreenState.Showing,
             headerText = headerText,
             dateText = reminder.getDisplayDate(),
             dateYear = reminder.get(Calendar.YEAR),
@@ -122,6 +123,7 @@ class EditReminderState {
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
+        screenData = screenData.copy(screenState = ScreenState.Saving)
         val success = shoppingList.copy(
             reminder = reminder.timeInMillis,
             lastModified = System.currentTimeMillis()
@@ -131,6 +133,7 @@ class EditReminderState {
 }
 
 data class EditReminderScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val headerText: UiText = UiText.Nothing,
     val dateText: UiText = UiText.Nothing,
     val dateYear: Int = 0,

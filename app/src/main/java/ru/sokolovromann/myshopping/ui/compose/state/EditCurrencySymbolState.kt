@@ -18,6 +18,7 @@ class EditCurrencySymbolState {
         val symbol = editCurrencySymbol.currency
 
         screenData = EditCurrencySymbolScreenData(
+            screenState = ScreenState.Showing,
             symbolValue = TextFieldValue(
                 text = symbol,
                 selection = TextRange(symbol.length),
@@ -36,16 +37,20 @@ class EditCurrencySymbolState {
     }
 
     fun getSymbolResult(): Result<String> {
+        screenData = screenData.copy(screenState = ScreenState.Saving)
+
         return if (screenData.symbolValue.isEmpty()) {
             screenData = screenData.copy(showSymbolError = true)
             Result.failure(Exception())
         } else {
+            screenData = screenData.copy(screenState = ScreenState.Saving)
             Result.success(screenData.symbolValue.text)
         }
     }
 }
 
 data class EditCurrencySymbolScreenData(
+    val screenState: ScreenState = ScreenState.Nothing,
     val symbolValue: TextFieldValue = TextFieldValue(),
     val showSymbolError: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM
