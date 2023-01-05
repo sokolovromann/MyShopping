@@ -21,6 +21,7 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
+import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 import javax.inject.Inject
 
@@ -278,7 +279,7 @@ class PurchasesViewModel @Inject constructor(
         if (items.isEmpty()) {
             showShoppingListNotFound(preferences)
         } else {
-            val list = items.map { mapping.toShoppingListItem(it, preferences) }
+            val list = shoppingLists.getShoppingListItems()
             purchasesState.showList(list, preferences.multiColumns)
         }
 
@@ -317,7 +318,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun showShoppingListNotFound(preferences: ShoppingListPreferences) {
         val data = mapping.toTitle(
-            text = UiText.FromResources(R.string.purchases_shoppingListsNotFound),
+            text = UiText.FromResources(R.string.purchases_text_shoppingListsNotFound),
             fontSize = preferences.fontSize,
             appColor = AppColor.OnBackground
         )

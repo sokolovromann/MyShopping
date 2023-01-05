@@ -24,6 +24,7 @@ import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
+import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MoveProductEvent
 import javax.inject.Inject
 
@@ -174,7 +175,7 @@ class MoveProductViewModel @Inject constructor(
         if (items.isEmpty()) {
             showShoppingListNotFound(preferencesState.value)
         } else {
-            val list = items.map { mapping.toShoppingListItem(it, preferencesState.value) }
+            val list = shoppingLists.getShoppingListItems()
             shoppingListsState.showList(list, preferencesState.value.multiColumns)
         }
 

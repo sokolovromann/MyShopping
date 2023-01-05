@@ -16,10 +16,8 @@ import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.theme.AppTypography
-import java.util.*
 import javax.inject.Inject
 
 class ViewModelMapping @Inject constructor() {
@@ -28,54 +26,7 @@ class ViewModelMapping @Inject constructor() {
         shoppingList: ShoppingList,
         preferences: ShoppingListPreferences
     ): ShoppingListItem {
-        val reminderText: UiText = if (shoppingList.reminder == null) {
-            UiText.Nothing
-        } else {
-            Calendar.getInstance()
-                .apply { timeInMillis = shoppingList.reminder }
-                .getDisplayDateAndTime()
-        }
-
-        val products = if (shoppingList.productsEmpty) {
-            val pair = Pair(
-                IconData(),
-                toBody(
-                    text = toResourcesUiText(R.string.purchases_productsNotFound),
-                    fontSize = preferences.fontSize
-                )
-            )
-            listOf(pair)
-        } else {
-            shoppingList.products.map { product ->
-                toIconTextBody(product, preferences)
-            }
-        }
-
-        val totalText: UiText = if (preferences.displayMoney) {
-            toShoppingListsDisplayTotalText(
-                shoppingList.calculateTotal(),
-                preferences.displayTotal
-            )
-        } else {
-            UiText.Nothing
-        }
-
-        return ShoppingListItem(
-            uid = shoppingList.uid,
-            title = toTitle(
-                text = toUiTextOrNothing(shoppingList.name),
-                fontSize = preferences.fontSize
-            ),
-            productsBody = products,
-            totalBody = toBody(
-                text = totalText,
-                fontSize = preferences.fontSize
-            ),
-            reminderBody = toBody(
-                text = reminderText,
-                fontSize = preferences.fontSize
-            )
-        )
+        return ShoppingListItem()
     }
 
     fun toProductItem(
@@ -518,47 +469,6 @@ class ViewModelMapping @Inject constructor() {
                 fontSize = fontSize
             )
         )
-    }
-
-    fun toIconTextBody(product: Product, preferences: ShoppingListPreferences): Pair<IconData, TextData> {
-        val icon = IconData(
-            icon = if (product.completed) {
-                UiIcon.FromResources(R.drawable.ic_all_check_box)
-            } else {
-                UiIcon.FromResources(R.drawable.ic_all_check_box_outline)
-            },
-            size = toDp(preferences.fontSize, FontSizeType.Body)
-        )
-
-        val displayQuantity = product.quantity.isNotEmpty()
-        val displayPrice = product.price.isNotEmpty() && preferences.displayMoney
-
-        val productBody = if (displayPrice) {
-            if (displayQuantity) {
-                " • ${product.quantity} • ${product.calculateTotal()}"
-            } else {
-                " • ${product.calculateTotal()}"
-            }
-        } else {
-            if (displayQuantity) " • ${product.quantity}" else ""
-        }
-
-        val shortText = preferences.multiColumns &&
-                preferences.screenSize == ScreenSize.SMARTPHONE
-
-        val uiText: UiText = if (shortText) {
-            UiText.FromString(product.name)
-        } else {
-            val str = "${product.name}$productBody"
-            UiText.FromString(str)
-        }
-
-        val text = toBody(
-            text = uiText,
-            fontSize = preferences.fontSize
-        )
-
-        return Pair(icon, text)
     }
 
     fun toShoppingListsSortBody(sortBy: SortBy, fontSize: FontSize): TextData {

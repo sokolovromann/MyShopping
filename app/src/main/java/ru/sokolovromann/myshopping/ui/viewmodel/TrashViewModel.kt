@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
+import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
 import javax.inject.Inject
 
@@ -284,7 +285,7 @@ class TrashViewModel @Inject constructor(
         if (items.isEmpty()) {
             showShoppingListNotFound(preferences)
         } else {
-            val list = items.map { mapping.toShoppingListItem(it, preferences) }
+            val list = shoppingLists.getShoppingListItems()
             trashState.showList(list, preferences.multiColumns)
         }
 

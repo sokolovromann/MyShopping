@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
+import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
 import javax.inject.Inject
 
@@ -263,7 +264,7 @@ class ArchiveViewModel @Inject constructor(
         if (items.isEmpty()) {
             showShoppingListNotFound(preferences)
         } else {
-            val list = items.map { mapping.toShoppingListItem(it, preferences) }
+            val list = shoppingLists.getShoppingListItems()
             archiveState.showList(list, preferences.multiColumns)
         }
 

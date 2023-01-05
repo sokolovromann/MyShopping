@@ -146,8 +146,8 @@
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_header">Purchases</string>
-    <string name="purchases_productsNotFound">Shopping list is empty</string>
-    <string name="purchases_shoppingListsNotFound">You have no shopping lists</string>
+    <string name="purchases_text_productsNotFound">Shopping list is empty</string>
+    <string name="purchases_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="settings_action_displayAllAutocomplete">All</string>
     <string name="settings_action_displayNameAutocomplete">Only names</string>
