@@ -21,7 +21,6 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.theme.AppColor
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 import javax.inject.Inject
 
@@ -32,18 +31,7 @@ class PurchasesViewModel @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<PurchasesEvent> {
 
-    val purchasesState: ListState<ShoppingListItem> = ListState()
-
-    val itemMenuState: ItemMenuState<PurchasesItemMenu> = ItemMenuState()
-
-    val sortState: MenuButtonState<ShoppingListsSortMenu> = MenuButtonState()
-
-    private val _sortAscendingState: MutableState<IconData> = mutableStateOf(IconData())
-    val sortAscendingState: State<IconData> = _sortAscendingState
-
-    val totalState: MenuButtonState<ShoppingListsTotalMenu> = MenuButtonState()
-
-    val completedState: MenuIconButtonState<ShoppingListsCompletedMenu> = MenuIconButtonState()
+    val purchasesState: PurchasesState = PurchasesState()
 
     private val _floatingActionButtonState: MutableState<FloatingActionButtonData> = mutableStateOf(
         FloatingActionButtonData()
@@ -169,15 +157,15 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun selectShoppingListsSort() {
-        sortState.showMenu()
+        purchasesState.showSort()
     }
 
     private fun selectShoppingListsDisplayCompleted() {
-        completedState.showMenu()
+        purchasesState.showDisplayCompleted()
     }
 
     private fun selectShoppingListsDisplayTotal() {
-        totalState.showMenu()
+        purchasesState.showDisplayTotal()
     }
 
     private fun selectNavigationItem(
@@ -273,80 +261,11 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private suspend fun showShoppingLists(shoppingLists: ShoppingLists) = withContext(dispatchers.main) {
-        val items = shoppingLists.sortShoppingLists()
-        val preferences = shoppingLists.preferences
-
-        if (items.isEmpty()) {
-            showShoppingListNotFound(preferences)
+        if (shoppingLists.shoppingLists.isEmpty()) {
+            purchasesState.showNotFound(shoppingLists.preferences)
         } else {
-            val list = shoppingLists.getShoppingListItems()
-            purchasesState.showList(list, preferences.multiColumns)
+            purchasesState.showShoppingLists(shoppingLists)
         }
-
-        showSort(preferences)
-        showSortAscending(preferences)
-
-        showCompleted(preferences)
-
-        if (preferences.displayMoney) {
-            showTotal(shoppingLists.calculateTotal(), preferences)
-        } else {
-            hideTotal()
-        }
-
-        itemMenuState.setMenu(mapping.toPurchasesItemMenu(preferences.fontSize))
-    }
-
-    private fun showSort(preferences: ShoppingListPreferences) {
-        sortState.showButton(
-            text = mapping.toShoppingListsSortBody(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toShoppingListsSortMenu(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showSortAscending(preferences: ShoppingListPreferences) {
-        _sortAscendingState.value = mapping.toSortAscendingIconBody(
-            ascending = preferences.sort.ascending,
-        )
-    }
-
-    private fun showShoppingListNotFound(preferences: ShoppingListPreferences) {
-        val data = mapping.toTitle(
-            text = UiText.FromResources(R.string.purchases_text_shoppingListsNotFound),
-            fontSize = preferences.fontSize,
-            appColor = AppColor.OnBackground
-        )
-        purchasesState.showNotFound(data)
-    }
-
-    private fun showCompleted(preferences: ShoppingListPreferences) {
-        completedState.showButton(
-            icon = mapping.toDisplayCompletedIconBody(),
-            menu = mapping.toShoppingListsCompletedMenu(
-                displayCompleted = preferences.displayCompleted,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showTotal(total: Money, preferences: ShoppingListPreferences) {
-        totalState.showButton(
-            text = mapping.toShoppingListsTotalTitle(
-                total = total,
-                displayTotal = preferences.displayTotal,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toShoppingListsTotalMenu(
-                displayTotal = preferences.displayTotal,
-                fontSize = preferences.fontSize
-            )
-        )
     }
 
     private fun showProducts(event: PurchasesEvent.ShowProducts) = viewModelScope.launch(dispatchers.main) {
@@ -358,7 +277,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun showShoppingListMenu(event: PurchasesEvent.ShowShoppingListMenu) {
-        itemMenuState.showMenu(itemUid = event.uid)
+        purchasesState.showShoppingListMenu(event.uid)
     }
 
     private fun showTopBar() {
@@ -402,23 +321,19 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun hideShoppingListMenu() {
-        itemMenuState.hideMenu()
+        purchasesState.hideShoppingListMenu()
     }
 
     private fun hideShoppingListsSort() {
-        sortState.hideMenu()
+        purchasesState.hideSort()
     }
 
     private fun hideShoppingListsDisplayCompleted() {
-        completedState.hideMenu()
+        purchasesState.hideDisplayCompleted()
     }
 
     private fun hideShoppingListsDisplayTotal() {
-        totalState.hideMenu()
-    }
-
-    private fun hideTotal() {
-        totalState.hideButton()
+        purchasesState.hideDisplayTotal()
     }
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {

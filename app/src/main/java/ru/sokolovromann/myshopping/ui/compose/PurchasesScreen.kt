@@ -13,18 +13,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
+import ru.sokolovromann.myshopping.ui.utils.getAscendingIcon
+import ru.sokolovromann.myshopping.ui.utils.getShoppingListsText
+import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.viewmodel.PurchasesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 
@@ -112,14 +120,18 @@ private fun TopBar(viewModel: PurchasesViewModel) {
 
 @Composable
 private fun BottomBar(viewModel: PurchasesViewModel) {
+    val screenData = viewModel.purchasesState.screenData
+    if (!screenData.showBottomBar) {
+        return
+    }
+
     AppBottomAppBar {
         TextButton(
             onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsDisplayTotal) }
         ) {
-            val total = viewModel.totalState.currentData.text
             Text(
-                text = total.text.asCompose(),
-                fontSize = total.fontSize
+                text = screenData.totalText.asCompose(),
+                fontSize = screenData.fontSize.toButton().sp
             )
             TotalMenu(viewModel)
         }
@@ -139,8 +151,13 @@ private fun DrawerContent(viewModel: PurchasesViewModel) {
 
 @Composable
 private fun FloatingActionButton(viewModel: PurchasesViewModel) {
+    val modifier = if (viewModel.purchasesState.screenData.showBottomBar) {
+        Modifier.offset(y = 42.dp)
+    } else {
+        Modifier
+    }
     FloatingActionButton(
-        modifier = Modifier.offset(y = 42.dp),
+        modifier = modifier,
         onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }
     ) {
         Icon(
@@ -154,27 +171,26 @@ private fun FloatingActionButton(viewModel: PurchasesViewModel) {
 @Composable
 private fun Content(paddingValues: PaddingValues, viewModel: PurchasesViewModel) {
     Box(modifier = Modifier.padding(paddingValues)) {
-        val listData = viewModel.purchasesState.currentData
-        when (listData.result) {
-            ListResult.Showing -> PurchasesShowing(listData, viewModel)
-            ListResult.NotFound -> PurchasesNotFound(listData.notFoundText)
-            ListResult.Loading -> PurchasesLoading()
-            ListResult.Nothing -> {}
+        when (viewModel.purchasesState.screenData.screenState) {
+            ScreenState.Loading -> PurchasesLoading()
+            ScreenState.Showing -> PurchasesShowing(viewModel)
+            else -> {}
         }
     }
 }
 
 @Composable
-private fun PurchasesShowing(data: ListData<ShoppingListItem>, viewModel: PurchasesViewModel) {
+private fun PurchasesShowing(viewModel: PurchasesViewModel) {
     val scrollState = rememberScrollState()
+    val screenData = viewModel.purchasesState.screenData
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(horizontal = 4.dp)
         .verticalScroll(scrollState)
     ) {
         PurchasesBar(viewModel)
-        AppGrid(multiColumns = data.multiColumns) {
-            data.items.forEach { item -> PurchasesItem(item, viewModel)}
+        AppGrid(multiColumns = screenData.multiColumns) {
+            screenData.shoppingLists.forEach { item -> PurchasesItem(item, viewModel) }
         }
         Spacer(modifier = Modifier.height(128.dp))
     }
@@ -182,6 +198,7 @@ private fun PurchasesShowing(data: ListData<ShoppingListItem>, viewModel: Purcha
 
 @Composable
 private fun PurchasesBar(viewModel: PurchasesViewModel) {
+    val screenData = viewModel.purchasesState.screenData
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
@@ -191,16 +208,15 @@ private fun PurchasesBar(viewModel: PurchasesViewModel) {
     ) {
         Row(modifier = Modifier.weight(1f)) {
             TextButton(onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsSort) }) {
-                val sortState = viewModel.sortState.currentData.text
                 Text(
-                    text = sortState.text.asCompose(),
-                    fontSize = sortState.fontSize
+                    text = screenData.sort.getShoppingListsText().asCompose(),
+                    fontSize = screenData.fontSize.toButton().sp
                 )
                 SortMenu(viewModel)
             }
             IconButton(onClick = { viewModel.onEvent(PurchasesEvent.InvertShoppingListsSort) }) {
                 Icon(
-                    painter = viewModel.sortAscendingState.value.icon.asPainter() ?: return@IconButton,
+                    painter = screenData.sort.getAscendingIcon().asPainter() ?: return@IconButton,
                     contentDescription = stringResource(R.string.shoppingLists_contentDescription_sortAscendingIcon),
                     tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
                 )
@@ -208,7 +224,7 @@ private fun PurchasesBar(viewModel: PurchasesViewModel) {
         }
         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsDisplayCompleted) }) {
             Icon(
-                painter = viewModel.completedState.currentData.icon.icon.asPainter() ?: return@IconButton,
+                painter = painterResource(R.drawable.ic_all_display_completed),
                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedIcon),
                 tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
@@ -266,100 +282,96 @@ private fun PurchasesItem(item: ShoppingListItem, viewModel: PurchasesViewModel)
 
 @Composable
 private fun TotalMenu(viewModel: PurchasesViewModel) {
-    val totalData = viewModel.totalState.currentData
-    val menu = totalData.menu ?: return
+    val screenData = viewModel.purchasesState.screenData
 
     AppDropdownMenu(
-        expanded = totalData.expandedMenu,
+        expanded = screenData.showDisplayTotal,
         onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayTotal) },
-        header = { Text(text = menu.title.text.asCompose()) }
+        header = { Text(text = stringResource(R.string.shoppingLists_header_displayTotal)) }
     ) {
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsAllTotal) },
-            text = { Text(text = menu.allBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.allSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayAllTotal)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.displayTotal == DisplayTotal.ALL) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompletedTotal) },
-            text = { Text(text = menu.completedBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.completedSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedTotal)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.displayTotal == DisplayTotal.COMPLETED) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsActiveTotal) },
-            text = { Text(text = menu.activeBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.activeSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayActiveTotal)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.displayTotal == DisplayTotal.ACTIVE) }
         )
     }
 }
 
 @Composable
 private fun SortMenu(viewModel: PurchasesViewModel) {
-    val sortData = viewModel.sortState.currentData
-    val menu = sortData.menu ?: return
+    val screenData = viewModel.purchasesState.screenData
 
     AppDropdownMenu(
-        expanded = sortData.expandedMenu,
+        expanded = screenData.showSort,
         onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
-        header = { Text(text = menu.title.text.asCompose()) }
+        header = { Text(text = stringResource(R.string.shoppingLists_header_sort)) }
     ) {
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByCreated) },
-            text = { Text(text = menu.byCreatedBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.byCreatedSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.CREATED) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByLastModified) },
-            text = { Text(text = menu.byLastModifiedBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.byLastModifiedSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.LAST_MODIFIED) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByName) },
-            text = { Text(text = menu.byNameBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.byNameSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.NAME) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingListsByTotal) },
-            text = { Text(text = menu.byTotalBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.byTotalSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.TOTAL) }
         )
     }
 }
 
 @Composable
 private fun CompletedMenu(viewModel: PurchasesViewModel) {
-    val completedData = viewModel.completedState.currentData
-    val menu = completedData.menu ?: return
+    val screenData = viewModel.purchasesState.screenData
 
     AppDropdownMenu(
-        expanded = completedData.expandedMenu,
+        expanded = screenData.showDisplayCompleted,
         onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayCompleted) },
-        header = { Text(text = menu.title.text.asCompose()) }
+        header = { Text(text = stringResource(R.string.shoppingLists_header_displayCompleted)) }
     ) {
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompletedFirst) },
-            text = { Text(text = menu.firstBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.firstSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedFirst)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.displayCompleted == DisplayCompleted.FIRST) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompletedLast) },
-            text = { Text(text = menu.lastBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.lastSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedLast)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.displayCompleted == DisplayCompleted.LAST) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(PurchasesEvent.HideShoppingListsCompleted) },
-            text = { Text(text = menu.hideBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.hideSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedHide)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.displayCompleted == DisplayCompleted.HIDE) }
         )
     }
 }
 
 @Composable
 private fun ItemMenu(itemUid: String, viewModel: PurchasesViewModel) {
-    val itemMenuData = viewModel.itemMenuState.currentData
-    val menu = itemMenuData.menu ?: return
+    val screenData = viewModel.purchasesState.screenData
 
     AppDropdownMenu(
-        expanded = itemMenuData.itemUid == itemUid,
+        expanded = screenData.shoppingListMenuUid != null,
         onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListMenu) }
     ) {
         AppDropdownMenuItem(
@@ -367,14 +379,14 @@ private fun ItemMenu(itemUid: String, viewModel: PurchasesViewModel) {
                 val event = PurchasesEvent.MoveShoppingListToArchive(itemUid)
                 viewModel.onEvent(event)
             },
-            text = { Text(text = menu.moveToArchiveBody.text.asCompose()) }
+            text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToArchive)) }
         )
         AppDropdownMenuItem(
             onClick = {
                 val event = PurchasesEvent.MoveShoppingListToTrash(itemUid)
                 viewModel.onEvent(event)
             },
-            text = { Text(text = menu.moveToTrashBody.text.asCompose()) }
+            text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToTrash)) }
         )
     }
 }
