@@ -1,11 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,45 +8,27 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.PurchasesRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class PurchasesViewModel @Inject constructor(
     private val repository: PurchasesRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<PurchasesEvent> {
 
     val purchasesState: PurchasesState = PurchasesState()
 
-    private val _floatingActionButtonState: MutableState<FloatingActionButtonData> = mutableStateOf(
-        FloatingActionButtonData()
-    )
-    val floatingActionButtonState: State<FloatingActionButtonData> = _floatingActionButtonState
-
-    private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
-    val topBarState: State<TopBarData> = _topBarState
-
-    private val _bottomBarState: MutableState<BottomBarData> = mutableStateOf(BottomBarData())
-    val bottomBarState: State<BottomBarData> = _bottomBarState
-
     private val _screenEventFlow: MutableSharedFlow<PurchasesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<PurchasesScreenEvent> = _screenEventFlow
 
     init {
-        showFloatingActionButton()
-        showTopBar()
-        showBottomBar()
-
-        getShoppingList()
+        getShoppingLists()
     }
 
     override fun onEvent(event: PurchasesEvent) {
@@ -71,23 +47,11 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            PurchasesEvent.SortShoppingListsByCreated -> sortShoppingListsByCreated()
+            is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
 
-            PurchasesEvent.SortShoppingListsByLastModified -> sortShoppingListsByLastModified()
+            is PurchasesEvent.DisplayShoppingListsCompleted -> displayShoppingListsCompleted(event)
 
-            PurchasesEvent.SortShoppingListsByName -> sortShoppingListsByName()
-
-            PurchasesEvent.SortShoppingListsByTotal -> sortShoppingListsByTotal()
-
-            PurchasesEvent.DisplayShoppingListsCompletedFirst -> displayShoppingListsCompletedFirst()
-
-            PurchasesEvent.DisplayShoppingListsCompletedLast -> displayShoppingListsCompletedLast()
-
-            PurchasesEvent.DisplayShoppingListsAllTotal -> displayShoppingListsAllTotal()
-
-            PurchasesEvent.DisplayShoppingListsCompletedTotal -> displayShoppingListsCompletedTotal()
-
-            PurchasesEvent.DisplayShoppingListsActiveTotal -> displayShoppingListsActiveTotal()
+            is PurchasesEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
 
             PurchasesEvent.InvertShoppingListsSort -> invertShoppingListsSort()
 
@@ -96,8 +60,6 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.ShowNavigationDrawer -> showNavigationDrawer()
 
             is PurchasesEvent.ShowShoppingListMenu -> showShoppingListMenu(event)
-
-            PurchasesEvent.HideShoppingListsCompleted -> hideShoppingListsCompleted()
 
             PurchasesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
@@ -113,15 +75,27 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun getShoppingList() = viewModelScope.launch(dispatchers.io) {
-        showShoppingListsLoading()
+    private fun getShoppingLists() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            purchasesState.showLoading()
+        }
 
         repository.getShoppingLists().collect {
-            showShoppingLists(it)
+            shoppingListsLoaded(it)
         }
     }
 
-    private fun addShoppingList() = viewModelScope.launch(dispatchers.io) {
+    private suspend fun shoppingListsLoaded(
+        shoppingLists: ShoppingLists
+    ) = withContext(dispatchers.main) {
+        if (shoppingLists.shoppingLists.isEmpty()) {
+            purchasesState.showNotFound(shoppingLists.preferences)
+        } else {
+            purchasesState.showShoppingLists(shoppingLists)
+        }
+    }
+
+    private fun addShoppingList() = viewModelScope.launch {
         val shoppingList = ShoppingList()
         repository.addShoppingList(shoppingList)
 
@@ -132,7 +106,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun moveShoppingListToArchive(
         event: PurchasesEvent.MoveShoppingListToArchive
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.moveShoppingListToArchive(
             uid = event.uid,
             lastModified = System.currentTimeMillis()
@@ -180,95 +154,54 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun sortShoppingListsByCreated() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByCreated()
+    private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
+        when (event.sortBy) {
+            SortBy.CREATED -> repository.sortShoppingListsByCreated()
+            SortBy.LAST_MODIFIED -> repository.sortShoppingListsByLastModified()
+            SortBy.NAME -> repository.sortShoppingListsByName()
+            SortBy.TOTAL -> repository.sortShoppingListsByTotal()
+        }
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
         }
     }
 
-    private fun sortShoppingListsByLastModified() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByLastModified()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
+    private fun displayShoppingListsCompleted(
+        event: PurchasesEvent.DisplayShoppingListsCompleted
+    ) = viewModelScope.launch {
+        when (event.displayCompleted) {
+            DisplayCompleted.FIRST -> repository.displayShoppingListsCompletedFirst()
+            DisplayCompleted.LAST -> repository.displayShoppingListsCompletedLast()
+            DisplayCompleted.HIDE -> repository.hideShoppingListsCompleted()
         }
-    }
-
-    private fun sortShoppingListsByName() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByName()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
-    private fun sortShoppingListsByTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByTotal()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
-    private fun displayShoppingListsCompletedFirst() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsCompletedFirst()
 
         withContext(dispatchers.main) {
             hideShoppingListsDisplayCompleted()
         }
     }
 
-    private fun displayShoppingListsCompletedLast() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsCompletedLast()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
+    private fun displayShoppingListsTotal(
+        event: PurchasesEvent.DisplayShoppingListsTotal
+    ) = viewModelScope.launch {
+        when (event.displayTotal) {
+            DisplayTotal.ALL -> repository.displayShoppingListsAllTotal()
+            DisplayTotal.COMPLETED -> repository.displayShoppingListsCompletedTotal()
+            DisplayTotal.ACTIVE -> repository.displayShoppingListsActiveTotal()
         }
-    }
-
-    private fun displayShoppingListsAllTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsAllTotal()
 
         withContext(dispatchers.main) {
             hideShoppingListsDisplayTotal()
         }
     }
 
-    private fun displayShoppingListsCompletedTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsCompletedTotal()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
-        }
-    }
-
-    private fun displayShoppingListsActiveTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsActiveTotal()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
-        }
-    }
-
-    private fun invertShoppingListsSort() = viewModelScope.launch(dispatchers.io) {
+    private fun invertShoppingListsSort() = viewModelScope.launch {
         repository.invertShoppingListsSort()
     }
 
-    private suspend fun showShoppingListsLoading() = withContext(dispatchers.main) {
-        purchasesState.showLoading()
-    }
-
-    private suspend fun showShoppingLists(shoppingLists: ShoppingLists) = withContext(dispatchers.main) {
-        if (shoppingLists.shoppingLists.isEmpty()) {
-            purchasesState.showNotFound(shoppingLists.preferences)
-        } else {
-            purchasesState.showShoppingLists(shoppingLists)
-        }
-    }
-
-    private fun showProducts(event: PurchasesEvent.ShowProducts) = viewModelScope.launch(dispatchers.main) {
+    private fun showProducts(
+        event: PurchasesEvent.ShowProducts
+    ) = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(PurchasesScreenEvent.ShowProducts(event.uid))
     }
 
@@ -278,42 +211,6 @@ class PurchasesViewModel @Inject constructor(
 
     private fun showShoppingListMenu(event: PurchasesEvent.ShowShoppingListMenu) {
         purchasesState.showShoppingListMenu(event.uid)
-    }
-
-    private fun showTopBar() {
-        val data = TopBarData(
-            title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.purchases_header),
-                fontSize = FontSize.MEDIUM
-            ),
-            navigationIcon = mapping.toOnTopAppBar(
-                icon = UiIcon.FromVector(Icons.Default.Menu)
-            )
-        )
-        _topBarState.value = data
-    }
-
-    private fun showBottomBar() {
-        val data = BottomBarData()
-        _bottomBarState.value = data
-    }
-
-    private fun showFloatingActionButton() {
-        val data = FloatingActionButtonData(
-            icon = IconData(
-                icon = UiIcon.FromVector(Icons.Default.Add),
-                tint = ColorData(appColor = AppColor.OnSecondary)
-            )
-        )
-        _floatingActionButtonState.value = data
-    }
-
-    private fun hideShoppingListsCompleted() = viewModelScope.launch(dispatchers.io) {
-        repository.hideShoppingListsCompleted()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
-        }
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {

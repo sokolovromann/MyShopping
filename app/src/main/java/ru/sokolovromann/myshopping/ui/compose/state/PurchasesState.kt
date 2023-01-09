@@ -19,7 +19,7 @@ class PurchasesState {
     fun showNotFound(preferences: ShoppingListPreferences) {
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
-            showBottomBar = preferences.displayMoney,
+            showBottomBar = false,
             sort = preferences.sort,
             displayTotal = preferences.displayTotal,
             displayCompleted = preferences.displayCompleted,
