@@ -1,10 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,10 +8,11 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ArchiveRepository
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -26,26 +22,16 @@ import javax.inject.Inject
 @HiltViewModel
 class ArchiveViewModel @Inject constructor(
     private val repository: ArchiveRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<ArchiveEvent> {
 
     val archiveState: ArchiveState = ArchiveState()
 
-    private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
-    val topBarState: State<TopBarData> = _topBarState
-
-    private val _bottomBarState: MutableState<BottomBarData> = mutableStateOf(BottomBarData())
-    val bottomBarState: State<BottomBarData> = _bottomBarState
-
     private val _screenEventFlow: MutableSharedFlow<ArchiveScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ArchiveScreenEvent> = _screenEventFlow
 
     init {
-        showTopBar()
-        showBottomBar()
-
-        getShoppingList()
+        getShoppingLists()
     }
 
     override fun onEvent(event: ArchiveEvent) {
@@ -62,23 +48,11 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            ArchiveEvent.SortShoppingListsByCreated -> sortShoppingListsByCreated()
+            is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
 
-            ArchiveEvent.SortShoppingListsByLastModified -> sortShoppingListsByLastModified()
+            is ArchiveEvent.DisplayShoppingListsCompleted -> displayShoppingListsCompleted(event)
 
-            ArchiveEvent.SortShoppingListsByName -> sortShoppingListsByName()
-
-            ArchiveEvent.SortShoppingListsByTotal -> sortShoppingListsByTotal()
-
-            ArchiveEvent.DisplayShoppingListsCompletedFirst -> displayShoppingListsCompletedFirst()
-
-            ArchiveEvent.DisplayShoppingListsCompletedLast -> displayShoppingListsCompletedLast()
-
-            ArchiveEvent.DisplayShoppingListsAllTotal -> displayShoppingListsAllTotal()
-
-            ArchiveEvent.DisplayShoppingListsCompletedTotal -> displayShoppingListsCompletedTotal()
-
-            ArchiveEvent.DisplayShoppingListsActiveTotal -> displayShoppingListsActiveTotal()
+            is ArchiveEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
 
             ArchiveEvent.InvertShoppingListsSort -> invertShoppingListsSort()
 
@@ -89,8 +63,6 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.ShowNavigationDrawer -> showNavigationDrawer()
 
             is ArchiveEvent.ShowShoppingListMenu -> showShoppingListMenu(event)
-
-            ArchiveEvent.HideShoppingListsCompleted -> hideShoppingListsCompleted()
 
             ArchiveEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
@@ -104,17 +76,29 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun getShoppingList() = viewModelScope.launch(dispatchers.io) {
-        showShoppingListsLoading()
+    private fun getShoppingLists() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            archiveState.showLoading()
+        }
 
         repository.getShoppingLists().collect {
-            showShoppingLists(it)
+            shoppingListsLoaded(it)
+        }
+    }
+
+    private suspend fun shoppingListsLoaded(
+        shoppingLists: ShoppingLists
+    ) = withContext(dispatchers.main) {
+        if (shoppingLists.shoppingLists.isEmpty()) {
+            archiveState.showNotFound(shoppingLists.preferences)
+        } else {
+            archiveState.showShoppingLists(shoppingLists)
         }
     }
 
     private fun moveShoppingListToPurchases(
         event: ArchiveEvent.MoveShoppingListToPurchases
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.moveShoppingListToPurchases(
             uid = event.uid,
             lastModified = System.currentTimeMillis()
@@ -127,7 +111,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun moveShoppingListToTrash(
         event: ArchiveEvent.MoveShoppingListToTrash
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.moveShoppingListToTrash(
             uid = event.uid,
             lastModified = System.currentTimeMillis()
@@ -162,92 +146,49 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun sortShoppingListsByCreated() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByCreated()
+    private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
+        when (event.sortBy) {
+            SortBy.CREATED -> repository.sortShoppingListsByCreated()
+            SortBy.LAST_MODIFIED -> repository.sortShoppingListsByLastModified()
+            SortBy.NAME -> repository.sortShoppingListsByName()
+            SortBy.TOTAL -> repository.sortShoppingListsByTotal()
+        }
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
         }
     }
 
-    private fun sortShoppingListsByLastModified() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByLastModified()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
+    private fun displayShoppingListsCompleted(
+        event: ArchiveEvent.DisplayShoppingListsCompleted
+    ) = viewModelScope.launch {
+        when (event.displayCompleted) {
+            DisplayCompleted.FIRST -> repository.displayShoppingListsCompletedFirst()
+            DisplayCompleted.LAST -> repository.displayShoppingListsCompletedLast()
+            DisplayCompleted.HIDE -> repository.hideShoppingListsCompleted()
         }
-    }
-
-    private fun sortShoppingListsByName() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByName()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
-    private fun sortShoppingListsByTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.sortShoppingListsByTotal()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
-    private fun displayShoppingListsCompletedFirst() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsCompletedFirst()
 
         withContext(dispatchers.main) {
             hideShoppingListsDisplayCompleted()
         }
     }
 
-    private fun displayShoppingListsCompletedLast() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsCompletedLast()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
+    private fun displayShoppingListsTotal(
+        event: ArchiveEvent.DisplayShoppingListsTotal
+    ) = viewModelScope.launch {
+        when (event.displayTotal) {
+            DisplayTotal.ALL -> repository.displayShoppingListsAllTotal()
+            DisplayTotal.COMPLETED -> repository.displayShoppingListsCompletedTotal()
+            DisplayTotal.ACTIVE -> repository.displayShoppingListsActiveTotal()
         }
-    }
-
-    private fun displayShoppingListsAllTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsAllTotal()
 
         withContext(dispatchers.main) {
             hideShoppingListsDisplayTotal()
         }
     }
 
-    private fun displayShoppingListsCompletedTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsCompletedTotal()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
-        }
-    }
-
-    private fun displayShoppingListsActiveTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayShoppingListsActiveTotal()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
-        }
-    }
-
-    private fun invertShoppingListsSort() = viewModelScope.launch(dispatchers.io) {
+    private fun invertShoppingListsSort() = viewModelScope.launch {
         repository.invertShoppingListsSort()
-    }
-
-    private suspend fun showShoppingListsLoading() = withContext(dispatchers.main) {
-        archiveState.showLoading()
-    }
-
-    private suspend fun showShoppingLists(shoppingLists: ShoppingLists) = withContext(dispatchers.main) {
-        if (shoppingLists.shoppingLists.isEmpty()) {
-            archiveState.showNotFound(shoppingLists.preferences)
-        } else {
-            archiveState.showShoppingLists(shoppingLists)
-        }
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -264,32 +205,6 @@ class ArchiveViewModel @Inject constructor(
 
     private fun showShoppingListMenu(event: ArchiveEvent.ShowShoppingListMenu) {
         archiveState.showShoppingListMenu(event.uid)
-    }
-
-    private fun showTopBar() {
-        val data = TopBarData(
-            title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.archive_header),
-                fontSize = FontSize.MEDIUM
-            ),
-            navigationIcon = mapping.toOnTopAppBar(
-                icon = UiIcon.FromVector(Icons.Default.Menu)
-            )
-        )
-        _topBarState.value = data
-    }
-
-    private fun showBottomBar() {
-        val data = BottomBarData()
-        _bottomBarState.value = data
-    }
-
-    private fun hideShoppingListsCompleted() = viewModelScope.launch(dispatchers.io) {
-        repository.hideShoppingListsCompleted()
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
-        }
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
