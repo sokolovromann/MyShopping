@@ -16,14 +16,10 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ArchiveRepository
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListPreferences
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.theme.AppColor
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
 import javax.inject.Inject
 
@@ -34,18 +30,7 @@ class ArchiveViewModel @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<ArchiveEvent> {
 
-    val archiveState: ListState<ShoppingListItem> = ListState()
-
-    val itemMenuState: ItemMenuState<ArchiveItemMenu> = ItemMenuState()
-
-    val sortState: MenuButtonState<ShoppingListsSortMenu> = MenuButtonState()
-
-    private val _sortAscendingState: MutableState<IconData> = mutableStateOf(IconData())
-    val sortAscendingState: State<IconData> = _sortAscendingState
-
-    val totalState: MenuButtonState<ShoppingListsTotalMenu> = MenuButtonState()
-
-    val completedState: MenuIconButtonState<ShoppingListsCompletedMenu> = MenuIconButtonState()
+    val archiveState: ArchiveState = ArchiveState()
 
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
@@ -154,15 +139,15 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun selectShoppingListsSort() {
-        sortState.showMenu()
+        archiveState.showSort()
     }
 
     private fun selectShoppingListsDisplayCompleted() {
-        completedState.showMenu()
+        archiveState.showDisplayCompleted()
     }
 
     private fun selectShoppingListsDisplayTotal() {
-        totalState.showMenu()
+        archiveState.showDisplayTotal()
     }
 
     private fun selectNavigationItem(
@@ -258,80 +243,11 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private suspend fun showShoppingLists(shoppingLists: ShoppingLists) = withContext(dispatchers.main) {
-        val items = shoppingLists.sortShoppingLists()
-        val preferences = shoppingLists.preferences
-
-        if (items.isEmpty()) {
-            showShoppingListNotFound(preferences)
+        if (shoppingLists.shoppingLists.isEmpty()) {
+            archiveState.showNotFound(shoppingLists.preferences)
         } else {
-            val list = shoppingLists.getShoppingListItems()
-            archiveState.showList(list, preferences.multiColumns)
+            archiveState.showShoppingLists(shoppingLists)
         }
-
-        showSort(preferences)
-        showSortAscending(preferences)
-
-        showCompleted(preferences)
-
-        if (preferences.displayMoney) {
-            showTotal(shoppingLists.calculateTotal(), preferences)
-        } else {
-            hideTotal()
-        }
-
-        itemMenuState.setMenu(mapping.toArchiveItemMenu(preferences.fontSize))
-    }
-
-    private fun showSort(preferences: ShoppingListPreferences) {
-        sortState.showButton(
-            text = mapping.toShoppingListsSortBody(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toShoppingListsSortMenu(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showSortAscending(preferences: ShoppingListPreferences) {
-        _sortAscendingState.value = mapping.toSortAscendingIconBody(
-            ascending = preferences.sort.ascending,
-        )
-    }
-
-    private fun showShoppingListNotFound(preferences: ShoppingListPreferences) {
-        val data = mapping.toTitle(
-            text = UiText.FromResources(R.string.archive_shoppingListsNotFound),
-            fontSize = preferences.fontSize,
-            appColor = AppColor.OnBackground
-        )
-        archiveState.showNotFound(data)
-    }
-
-    private fun showCompleted(preferences: ShoppingListPreferences) {
-        completedState.showButton(
-            icon = mapping.toDisplayCompletedIconBody(),
-            menu = mapping.toShoppingListsCompletedMenu(
-                displayCompleted = preferences.displayCompleted,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showTotal(total: Money, preferences: ShoppingListPreferences) {
-        totalState.showButton(
-            text = mapping.toShoppingListsTotalTitle(
-                total = total,
-                displayTotal = preferences.displayTotal,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toShoppingListsTotalMenu(
-                displayTotal = preferences.displayTotal,
-                fontSize = preferences.fontSize
-            )
-        )
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -347,7 +263,7 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun showShoppingListMenu(event: ArchiveEvent.ShowShoppingListMenu) {
-        itemMenuState.showMenu(itemUid = event.uid)
+        archiveState.showShoppingListMenu(event.uid)
     }
 
     private fun showTopBar() {
@@ -381,22 +297,18 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun hideShoppingListMenu() {
-        itemMenuState.hideMenu()
+        archiveState.hideShoppingListMenu()
     }
 
     private fun hideShoppingListsSort() {
-        sortState.hideMenu()
+        archiveState.hideSort()
     }
 
     private fun hideShoppingListsDisplayCompleted() {
-        completedState.hideMenu()
+        archiveState.hideDisplayCompleted()
     }
 
     private fun hideShoppingListsDisplayTotal() {
-        totalState.hideMenu()
-    }
-
-    private fun hideTotal() {
-        totalState.hideButton()
+        archiveState.hideDisplayTotal()
     }
 }

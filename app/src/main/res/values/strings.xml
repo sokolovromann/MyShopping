@@ -26,8 +26,8 @@
     <string name="archive_action_moveShoppingListToTrash">Delete</string>
     <string name="archive_contentDescription_navigationIcon">Show navigation</string>
     <string name="archive_header">Archive</string>
-    <string name="archive_productsNotFound">Shopping list is empty</string>
-    <string name="archive_shoppingListsNotFound">Archive is empty</string>
+    <string name="archive_text_productsNotFound">Shopping list is empty</string>
+    <string name="archive_text_shoppingListsNotFound">Archive is empty</string>
 
     <string name="autocompletes_action_deleteAutocomplete">Delete</string>
     <string name="autocompletes_action_editAutocomplete">Edit</string>
