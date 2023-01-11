@@ -1,5 +1,8 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class TrashEvent {
@@ -20,23 +23,11 @@ sealed class TrashEvent {
 
     data class SelectNavigationItem(val route: UiRoute) : TrashEvent()
 
-    object SortShoppingListsByCreated : TrashEvent()
+    data class SortShoppingLists(val sortBy: SortBy) : TrashEvent()
 
-    object SortShoppingListsByLastModified : TrashEvent()
+    data class DisplayShoppingListsCompleted(val displayCompleted: DisplayCompleted) : TrashEvent()
 
-    object SortShoppingListsByName : TrashEvent()
-
-    object SortShoppingListsByTotal : TrashEvent()
-
-    object DisplayShoppingListsCompletedFirst : TrashEvent()
-
-    object DisplayShoppingListsCompletedLast : TrashEvent()
-
-    object DisplayShoppingListsAllTotal : TrashEvent()
-
-    object DisplayShoppingListsCompletedTotal : TrashEvent()
-
-    object DisplayShoppingListsActiveTotal : TrashEvent()
+    data class DisplayShoppingListsTotal(val displayTotal: DisplayTotal) : TrashEvent()
 
     object InvertShoppingListsSort : TrashEvent()
 
@@ -47,8 +38,6 @@ sealed class TrashEvent {
     object ShowNavigationDrawer : TrashEvent()
 
     data class ShowShoppingListMenu(val uid: String) : TrashEvent()
-
-    object HideShoppingListsCompleted : TrashEvent()
 
     object HideNavigationDrawer : TrashEvent()
 
