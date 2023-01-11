@@ -215,6 +215,6 @@
     <string name="trash_action_moveShoppingListToPurchases">Restore</string>
     <string name="trash_contentDescription_navigationIcon">Open navigation</string>
     <string name="trash_header">Trash</string>
-    <string name="trash_productsNotFound">Shopping list is empty</string>
-    <string name="trash_shoppingListsNotFound">Trash is empty</string>
+    <string name="trash_text_productsNotFound">Shopping list is empty</string>
+    <string name="trash_text_shoppingListsNotFound">Trash is empty</string>
 </resources>
