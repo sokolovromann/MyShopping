@@ -61,7 +61,7 @@
 
     <string name="copyProduct_contentDescription_navigationIcon">Cancel</string>
     <string name="copyProduct_header">Select a list</string>
-    <string name="copyProduct_shoppingListsNotFound">You have no shopping lists</string>
+    <string name="copyProduct_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string-array name="data_defaultAutocompleteNames"/>
     <string name="data_defaultCurrency">$</string>

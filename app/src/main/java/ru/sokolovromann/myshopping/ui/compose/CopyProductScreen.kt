@@ -13,16 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.ui.compose.event.CopyProductScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ListData
-import ru.sokolovromann.myshopping.ui.compose.state.ListResult
-import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
-import ru.sokolovromann.myshopping.ui.compose.state.TextData
+import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.utils.toButton
+import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.viewmodel.CopyProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyProductEvent
 
@@ -74,19 +74,20 @@ private fun TopBar(viewModel: CopyProductViewModel) {
 
 @Composable
 private fun Content(paddingValues: PaddingValues, viewModel: CopyProductViewModel) {
+    val screenData = viewModel.copyProductState.screenData
     Box(modifier = Modifier.padding(paddingValues)) {
-        val listData = viewModel.shoppingListsState.currentData
-        when (listData.result) {
-            ListResult.Showing -> PurchasesShowing(listData, viewModel)
-            ListResult.NotFound -> PurchasesNotFound(listData.notFoundText, viewModel)
-            ListResult.Loading -> PurchasesLoading()
-            ListResult.Nothing -> {}
+        when (screenData.screenState) {
+            ScreenState.Nothing -> PurchasesNotFound(viewModel)
+            ScreenState.Loading -> PurchasesLoading()
+            ScreenState.Showing -> PurchasesShowing(viewModel)
+            ScreenState.Saving -> {}
         }
     }
 }
 
 @Composable
-private fun PurchasesShowing(data: ListData<ShoppingListItem>, viewModel: CopyProductViewModel) {
+private fun PurchasesShowing(viewModel: CopyProductViewModel) {
+    val screenData = viewModel.copyProductState.screenData
     val scrollState = rememberScrollState()
     Column(modifier = Modifier
         .fillMaxSize()
@@ -94,15 +95,16 @@ private fun PurchasesShowing(data: ListData<ShoppingListItem>, viewModel: CopyPr
         .verticalScroll(scrollState)
     ) {
         ShoppingListsBar(viewModel)
-        AppGrid(multiColumns = data.multiColumns) {
-            data.items.forEach { item -> PurchasesItem(item, viewModel)}
+        AppGrid(multiColumns = screenData.multiColumns) {
+            screenData.shoppingLists.forEach { item -> PurchasesItem(item, viewModel)}
         }
         Spacer(modifier = Modifier.height(128.dp))
     }
 }
 
 @Composable
-private fun PurchasesNotFound(data: TextData, viewModel: CopyProductViewModel) {
+private fun PurchasesNotFound(viewModel: CopyProductViewModel) {
+    val screenData = viewModel.copyProductState.screenData
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.padding(horizontal = 4.dp),
@@ -117,8 +119,8 @@ private fun PurchasesNotFound(data: TextData, viewModel: CopyProductViewModel) {
                 .padding(horizontal = 16.dp)
         ) {
             Text(
-                text = data.text.asCompose(),
-                fontSize = data.fontSize,
+                text = stringResource(R.string.copyProduct_text_shoppingListsNotFound),
+                fontSize = screenData.fontSize.toItemTitle().sp,
                 style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.onBackground
             )
@@ -140,6 +142,7 @@ private fun PurchasesLoading() {
 
 @Composable
 private fun ShoppingListsBar(viewModel: CopyProductViewModel) {
+    val screenData = viewModel.copyProductState.screenData
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
@@ -148,10 +151,9 @@ private fun ShoppingListsBar(viewModel: CopyProductViewModel) {
             .padding(horizontal = 8.dp)
     ) {
         TextButton(onClick = { viewModel.onEvent(CopyProductEvent.SelectShoppingListsLocation) }) {
-            val locationButtonState = viewModel.locationButtonState.currentData.text
             Text(
-                text = locationButtonState.text.asCompose(),
-                fontSize = locationButtonState.fontSize
+                text = screenData.location.toText().asCompose(),
+                fontSize = screenData.fontSize.toButton().sp
             )
             LocationMenu(viewModel)
         }
@@ -160,28 +162,27 @@ private fun ShoppingListsBar(viewModel: CopyProductViewModel) {
 
 @Composable
 private fun LocationMenu(viewModel: CopyProductViewModel) {
-    val locationData = viewModel.locationButtonState.currentData
-    val menu = locationData.menu ?: return
+    val screenData = viewModel.copyProductState.screenData
 
     AppDropdownMenu(
-        expanded = locationData.expandedMenu,
+        expanded = screenData.showLocation,
         onDismissRequest = { viewModel.onEvent(CopyProductEvent.HideShoppingListsLocation) },
-        header = { Text(text = menu.title.text.asCompose()) }
+        header = { Text(text = stringResource(R.string.shoppingLists_header_location)) }
     ) {
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsPurchases) },
-            text = { Text(text = menu.purchasesBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.purchasesSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectPurchasesLocation)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.location == ShoppingListLocation.PURCHASES) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsArchive) },
-            text = { Text(text = menu.archiveBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.archiveSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectArchiveLocation)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.location == ShoppingListLocation.ARCHIVE) }
         )
         AppDropdownMenuItem(
             onClick = { viewModel.onEvent(CopyProductEvent.DisplayShoppingListsTrash) },
-            text = { Text(text = menu.trashBody.text.asCompose()) },
-            after = { CheckmarkAppCheckbox(checked = menu.trashSelected.selected) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectTrashLocation)) },
+            after = { CheckmarkAppCheckbox(checked = screenData.location == ShoppingListLocation.TRASH) }
         )
     }
 }
