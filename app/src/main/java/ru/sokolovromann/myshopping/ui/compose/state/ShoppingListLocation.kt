@@ -10,7 +10,7 @@ enum class ShoppingListLocation {
         val DefaultValue: ShoppingListLocation = PURCHASES
     }
 
-    fun toText(): UiText = when (this) {
+    fun getText(): UiText = when (this) {
         PURCHASES -> UiText.FromResources(R.string.shoppingLists_action_selectPurchasesLocation)
         ARCHIVE -> UiText.FromResources(R.string.shoppingLists_action_selectArchiveLocation)
         TRASH -> UiText.FromResources(R.string.shoppingLists_action_selectTrashLocation)

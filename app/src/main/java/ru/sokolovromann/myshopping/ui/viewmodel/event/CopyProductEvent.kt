@@ -1,18 +1,16 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
+
 sealed class CopyProductEvent {
 
     data class CopyProduct(val uid: String) : CopyProductEvent()
 
     object SelectShoppingListsLocation : CopyProductEvent()
 
-    object DisplayShoppingListsPurchases : CopyProductEvent()
+    data class ShowShoppingLists(val location: ShoppingListLocation) : CopyProductEvent()
 
-    object DisplayShoppingListsArchive : CopyProductEvent()
-
-    object DisplayShoppingListsTrash : CopyProductEvent()
-
-    object ShowBackScreen : CopyProductEvent()
+    object CancelCopingProduct : CopyProductEvent()
 
     object HideShoppingListsLocation : CopyProductEvent()
 }

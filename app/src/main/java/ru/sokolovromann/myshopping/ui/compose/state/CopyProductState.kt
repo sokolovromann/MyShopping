@@ -48,10 +48,6 @@ class CopyProductState {
         screenData = screenData.copy(shoppingListSelectedUid = uid)
     }
 
-    fun unselectShoppingList() {
-        screenData = screenData.copy(shoppingListSelectedUid = null)
-    }
-
     fun showLocation() {
         screenData = screenData.copy(showLocation = true)
     }
