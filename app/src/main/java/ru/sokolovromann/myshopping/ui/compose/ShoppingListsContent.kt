@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
+import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.utils.*
 
@@ -182,6 +183,47 @@ fun ShoppingListsDisplayCompletedContent(
                 onClick = {onSelected(DisplayCompleted.HIDE) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedHide)) },
                 after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
+            )
+        }
+    }
+}
+
+@Composable
+fun ShoppingListsLocationContent(
+    modifier: Modifier = Modifier,
+    location: ShoppingListLocation,
+    fontSize: TextUnit,
+    expanded: Boolean,
+    onExpanded: (Boolean) -> Unit,
+    onSelected: (ShoppingListLocation) -> Unit
+) {
+    TextButton(
+        modifier = modifier,
+        onClick = { onExpanded(true) }
+    ) {
+        Text(
+            text = location.getText().asCompose(),
+            fontSize = fontSize
+        )
+        AppDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { onExpanded(false) },
+            header = { Text(text = stringResource(R.string.shoppingLists_header_location)) }
+        ) {
+            AppDropdownMenuItem(
+                onClick = { onSelected(ShoppingListLocation.PURCHASES) },
+                text = { Text(text = stringResource(R.string.shoppingLists_action_selectPurchasesLocation)) },
+                after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.PURCHASES) }
+            )
+            AppDropdownMenuItem(
+                onClick = { onSelected(ShoppingListLocation.ARCHIVE) },
+                text = { Text(text = stringResource(R.string.shoppingLists_action_selectArchiveLocation)) },
+                after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.ARCHIVE) }
+            )
+            AppDropdownMenuItem(
+                onClick = { onSelected(ShoppingListLocation.TRASH) },
+                text = { Text(text = stringResource(R.string.shoppingLists_action_selectTrashLocation)) },
+                after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.TRASH) }
             )
         }
     }

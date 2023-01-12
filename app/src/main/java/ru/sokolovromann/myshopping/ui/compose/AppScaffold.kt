@@ -62,7 +62,7 @@ fun AppGridScaffold(
     navigationBarColor: Color = backgroundColor,
     contentColor: Color = contentColorFor(backgroundColor),
     loadingContent: @Composable (BoxScope.() -> Unit)? = null,
-    notFoundContent: @Composable (BoxScope.() -> Unit)? = null,
+    notFoundContent: @Composable (ColumnScope.() -> Unit)? = null,
     gridBar: @Composable (RowScope.() -> Unit)? = null,
     spaceAfterGrid: Boolean = true,
     gridContent: @Composable ColumnScope.() -> Unit
@@ -82,7 +82,7 @@ fun AppGridScaffold(
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             when (screenState) {
-                ScreenState.Nothing -> notFoundContent?.let { it() }
+                ScreenState.Nothing -> AppNothingGridContent(gridBar, notFoundContent)
 
                 ScreenState.Loading -> loadingContent?.let { it() }
 
@@ -91,6 +91,31 @@ fun AppGridScaffold(
                 ScreenState.Saving -> {}
             }
         }
+    }
+}
+
+@Composable
+private fun AppNothingGridContent(
+    gridBar: @Composable (RowScope.() -> Unit)?,
+    notFoundContent: @Composable (ColumnScope.() -> Unit)?
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(AppGridScaffoldShowingPaddings)
+    ) {
+        gridBar?.let {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppGridScaffoldBarPaddings),
+                content = it
+            )
+        }
+
+        notFoundContent?.let { it() }
     }
 }
 
