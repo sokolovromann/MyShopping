@@ -103,7 +103,7 @@
 
     <string name="moveProduct_contentDescription_navigationIcon">Cancel</string>
     <string name="moveProduct_header">Select a list</string>
-    <string name="moveProduct_shoppingListsNotFound">You have no shopping lists</string>
+    <string name="moveProduct_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
     <string name="notificationChannel_purchasesName">Purchases</string>
