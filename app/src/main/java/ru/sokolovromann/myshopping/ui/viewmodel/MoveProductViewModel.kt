@@ -1,10 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,9 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.MoveProductRepository
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
@@ -27,23 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class MoveProductViewModel @Inject constructor(
     private val repository: MoveProductRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<MoveProductEvent> {
 
     val moveProductState: MoveProductState = MoveProductState()
 
-    private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
-    val topBarState: State<TopBarData> = _topBarState
-
     private val _screenEventFlow: MutableSharedFlow<MoveProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<MoveProductScreenEvent> = _screenEventFlow
 
-    private val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
-
     init {
-        showTopBar()
         getPurchases()
     }
 
@@ -53,85 +39,54 @@ class MoveProductViewModel @Inject constructor(
 
             MoveProductEvent.SelectShoppingListsLocation -> selectShoppingListsLocation()
 
-            MoveProductEvent.DisplayShoppingListsPurchases -> displayShoppingListsPurchases()
+            is MoveProductEvent.ShowShoppingLists -> showShoppingLists(event)
 
-            MoveProductEvent.DisplayShoppingListsArchive -> displayShoppingListsArchive()
-
-            MoveProductEvent.DisplayShoppingListsTrash -> displayShoppingListsTrash()
-
-            MoveProductEvent.ShowBackScreen -> showBackScreen()
+            MoveProductEvent.CancelMovingProduct -> cancelMovingProduct()
 
             MoveProductEvent.HideShoppingListsLocation -> hideShoppingListsLocation()
         }
     }
 
-    private fun getPurchases() = viewModelScope.launch(dispatchers.io) {
-        showShoppingListsLoading()
+    private fun getPurchases() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            moveProductState.showLoading()
+        }
 
         repository.getPurchases().collect {
-            showShoppingLists(
+            shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.PURCHASES
             )
         }
     }
 
-    private fun getArchive() = viewModelScope.launch(dispatchers.io) {
-        showShoppingListsLoading()
+    private fun getArchive() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            moveProductState.showLoading()
+        }
 
         repository.getArchive().collect {
-            showShoppingLists(
+            shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.ARCHIVE
             )
         }
     }
 
-    private fun getTrash() = viewModelScope.launch(dispatchers.io) {
-        showShoppingListsLoading()
+    private fun getTrash() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            moveProductState.showLoading()
+        }
 
         repository.getTrash().collect {
-            showShoppingLists(
+            shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.TRASH
             )
         }
     }
 
-    private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch(dispatchers.io) {
-        repository.moveProduct(
-            productUid = productUid,
-            shoppingUid = event.uid,
-            lastModified = System.currentTimeMillis()
-        )
-
-        showBackScreen()
-    }
-
-    private fun selectShoppingListsLocation() {
-        moveProductState.showLocation()
-    }
-
-    private fun displayShoppingListsPurchases() {
-        hideShoppingListsLocation()
-        getPurchases()
-    }
-
-    private fun displayShoppingListsArchive() {
-        hideShoppingListsLocation()
-        getArchive()
-    }
-
-    private fun displayShoppingListsTrash() {
-        hideShoppingListsLocation()
-        getTrash()
-    }
-
-    private suspend fun showShoppingListsLoading() = withContext(dispatchers.main) {
-        moveProductState.showLoading()
-    }
-
-    private suspend fun showShoppingLists(
+    private suspend fun shoppingListsLoaded(
         shoppingLists: ShoppingLists,
         location: ShoppingListLocation
     ) = withContext(dispatchers.main) {
@@ -142,20 +97,37 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun showTopBar() {
-        val data = TopBarData(
-            title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.moveProduct_header),
-                fontSize = FontSize.MEDIUM
-            ),
-            navigationIcon = mapping.toOnTopAppBar(
-                icon = UiIcon.FromVector(Icons.Default.Close)
+    private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
+        val productUid: String? = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
+        if (productUid == null) {
+            cancelMovingProduct()
+        } else {
+            repository.moveProduct(
+                productUid = productUid,
+                shoppingUid = event.uid,
+                lastModified = System.currentTimeMillis()
             )
-        )
-        _topBarState.value = data
+            withContext(dispatchers.main) {
+                _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
+            }
+        }
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun selectShoppingListsLocation() {
+        moveProductState.showLocation()
+    }
+
+    private fun showShoppingLists(event: MoveProductEvent.ShowShoppingLists) {
+        hideShoppingListsLocation()
+
+        when (event.location) {
+            ShoppingListLocation.PURCHASES -> getPurchases()
+            ShoppingListLocation.ARCHIVE -> getArchive()
+            ShoppingListLocation.TRASH -> getTrash()
+        }
+    }
+
+    private fun cancelMovingProduct() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
     }
 

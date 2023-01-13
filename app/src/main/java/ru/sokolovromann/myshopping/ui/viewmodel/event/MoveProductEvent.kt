@@ -1,18 +1,16 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
+
 sealed class MoveProductEvent {
 
     data class MoveProduct(val uid: String) : MoveProductEvent()
 
     object SelectShoppingListsLocation : MoveProductEvent()
 
-    object DisplayShoppingListsPurchases : MoveProductEvent()
+    data class ShowShoppingLists(val location: ShoppingListLocation) : MoveProductEvent()
 
-    object DisplayShoppingListsArchive : MoveProductEvent()
-
-    object DisplayShoppingListsTrash : MoveProductEvent()
-
-    object ShowBackScreen : MoveProductEvent()
+    object CancelMovingProduct : MoveProductEvent()
 
     object HideShoppingListsLocation : MoveProductEvent()
 }
