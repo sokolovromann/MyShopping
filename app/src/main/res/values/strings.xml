@@ -33,12 +33,12 @@
     <string name="autocompletes_action_editAutocomplete">Edit</string>
     <string name="autocompletes_action_sortByCreated">By created</string>
     <string name="autocompletes_action_sortByName">By name</string>
-    <string name="autocompletes_autocompletesNotFound">You have no autocompletes</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
     <string name="autocompletes_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
     <string name="autocompletes_header_autocompletes">Personal dictionary</string>
     <string name="autocompletes_header_sort">Sort</string>
+    <string name="autocompletes_text_autocompletesNotFound">You have no autocompletes</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Back</string>
     <string name="calculateChange_header">Calculate change</string>

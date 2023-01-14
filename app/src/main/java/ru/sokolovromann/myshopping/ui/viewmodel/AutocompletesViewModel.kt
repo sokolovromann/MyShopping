@@ -31,14 +31,7 @@ class AutocompletesViewModel @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<AutocompletesEvent> {
 
-    val autocompletesState: ListState<AutocompleteItem> = ListState()
-
-    val itemMenuState: ItemMenuState<AutocompleteItemMenu> = ItemMenuState()
-
-    val sortState: MenuButtonState<AutocompletesSortMenu> = MenuButtonState()
-
-    private val _sortAscendingState: MutableState<IconData> = mutableStateOf(IconData())
-    val sortAscendingState: State<IconData> = _sortAscendingState
+    val autocompletesState: AutocompletesState = AutocompletesState()
 
     private val _floatingActionButtonState: MutableState<FloatingActionButtonData> = mutableStateOf(
         FloatingActionButtonData()
@@ -119,7 +112,7 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun selectAutocompletesSort() {
-        sortState.showMenu()
+        autocompletesState.showSort()
     }
 
     private fun selectNavigationItem(
@@ -159,51 +152,11 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private suspend fun showAutocompletes(autocompletes: Autocompletes) = withContext(dispatchers.main) {
-        val items = autocompletes.sortAutocompletes()
-        val preferences = autocompletes.preferences
-
-        if (items.isEmpty()) {
-            showAutocompleteNotFound(preferences)
+        if (autocompletes.autocompletes.isEmpty()) {
+            autocompletesState.showNotFound(autocompletes.preferences)
         } else {
-            val list = items.map { mapping.toAutocompleteItem(it, preferences) }
-            autocompletesState.showList(
-                items = list,
-                multiColumns = preferences.screenSize == ScreenSize.TABLET
-            )
+            autocompletesState.showAutocompletes(autocompletes)
         }
-
-        showSort(preferences)
-        showSortAscending(preferences)
-
-        itemMenuState.setMenu(mapping.toAutocompleteItemMenu(preferences.fontSize))
-    }
-
-    private fun showSort(preferences: AutocompletePreferences) {
-        sortState.showButton(
-            text = mapping.toAutocompletesSortBody(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toAutocompletesSortMenu(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showSortAscending(preferences: AutocompletePreferences) {
-        _sortAscendingState.value = mapping.toSortAscendingIconBody(
-            ascending = preferences.sort.ascending,
-        )
-    }
-
-    private fun showAutocompleteNotFound(preferences: AutocompletePreferences) {
-        val data = mapping.toTitle(
-            text = UiText.FromResources(R.string.autocompletes_autocompletesNotFound),
-            fontSize = preferences.fontSize,
-            appColor = AppColor.OnBackground
-        )
-        autocompletesState.showNotFound(data)
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -215,7 +168,7 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun showAutocompleteMenu(event: AutocompletesEvent.ShowAutocompleteMenu) {
-        itemMenuState.showMenu(itemUid = event.uid)
+        autocompletesState.showAutocompleteMenu(event.uid)
     }
 
     private fun showTopBar() {
@@ -246,10 +199,10 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun hideAutocompleteMenu() {
-        itemMenuState.hideMenu()
+        autocompletesState.hideAutocompleteMenu()
     }
 
     private fun hideAutocompletesSort() {
-        sortState.hideMenu()
+        autocompletesState.hideSort()
     }
 }

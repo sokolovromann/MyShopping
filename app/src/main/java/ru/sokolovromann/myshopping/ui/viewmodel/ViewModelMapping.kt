@@ -54,19 +54,6 @@ class ViewModelMapping @Inject constructor() {
     }
 
     fun toAutocompleteItem(
-        autocomplete: Autocomplete,
-        preferences: AutocompletePreferences
-    ): AutocompleteItem {
-        return AutocompleteItem(
-            uid = autocomplete.uid,
-            title = toTitle(
-                text = toUiTextOrNothing(autocomplete.name),
-                fontSize = preferences.fontSize,
-            )
-        )
-    }
-
-    fun toAutocompleteItem(
         text: String,
         preferences: ProductPreferences
     ): TextData {
@@ -408,38 +395,12 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
-    fun toAutocompleteItemMenu(fontSize: FontSize): AutocompleteItemMenu {
-        return AutocompleteItemMenu(
-            editBody = toBody(
-                text = UiText.FromResources(R.string.autocompletes_action_editAutocomplete),
-                fontSize = fontSize
-            ),
-            deleteBody = toBody(
-                text = UiText.FromResources(R.string.autocompletes_action_deleteAutocomplete),
-                fontSize = fontSize
-            )
-        )
-    }
-
     fun toShoppingListsSortBody(sortBy: SortBy, fontSize: FontSize): TextData {
         val text: UiText = when (sortBy) {
             SortBy.CREATED -> UiText.FromResources(R.string.shoppingLists_action_sortByCreated)
             SortBy.LAST_MODIFIED -> UiText.FromResources(R.string.shoppingLists_action_sortByLastModified)
             SortBy.NAME -> UiText.FromResources(R.string.shoppingLists_action_sortByName)
             SortBy.TOTAL -> UiText.FromResources(R.string.shoppingLists_action_sortByTotal)
-        }
-        return toBody(
-            text = text,
-            fontSize = fontSize,
-            appColor = AppColor.OnBackground
-        )
-    }
-
-    fun toAutocompletesSortBody(sortBy: SortBy, fontSize: FontSize): TextData {
-        val text: UiText = when (sortBy) {
-            SortBy.CREATED -> UiText.FromResources(R.string.autocompletes_action_sortByCreated)
-            SortBy.NAME -> UiText.FromResources(R.string.autocompletes_action_sortByName)
-            else -> UiText.Nothing
         }
         return toBody(
             text = text,
@@ -527,29 +488,6 @@ class ViewModelMapping @Inject constructor() {
             ),
             byTotalSelected = toRadioButton(
                 selected = sortBy == SortBy.TOTAL
-            )
-        )
-    }
-
-    fun toAutocompletesSortMenu(sortBy: SortBy, fontSize: FontSize): AutocompletesSortMenu {
-        return AutocompletesSortMenu(
-            title = toTitle(
-                text = UiText.FromResources(R.string.autocompletes_header_sort),
-                fontSize = fontSize
-            ),
-            byCreatedBody = toBody(
-                text = UiText.FromResources(R.string.autocompletes_action_sortByCreated),
-                fontSize = fontSize
-            ),
-            byCreatedSelected = toRadioButton(
-                selected = sortBy == SortBy.CREATED
-            ),
-            byNameBody = toBody(
-                text = UiText.FromResources(R.string.autocompletes_action_sortByName),
-                fontSize = fontSize
-            ),
-            byNameSelected = toRadioButton(
-                selected = sortBy == SortBy.NAME
             )
         )
     }
