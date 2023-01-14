@@ -2,8 +2,6 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,16 +9,17 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
@@ -35,10 +34,9 @@ fun AutocompletesScreen(
     navController: NavController,
     viewModel: AutocompletesViewModel = hiltViewModel()
 ) {
-
+    val screenData = viewModel.autocompletesState.screenData
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    val systemUiController = rememberSystemUiController()
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -88,215 +86,183 @@ fun AutocompletesScreen(
         viewModel.onEvent(AutocompletesEvent.HideNavigationDrawer)
     }
 
-    AppSystemUi(systemUiController = systemUiController)
-
-    Scaffold(
+    AppGridScaffold(
         scaffoldState = scaffoldState,
-        topBar = { TopBar(viewModel) },
-        drawerContent = { DrawerContent(viewModel) },
-        floatingActionButton = { FloatingActionButton(viewModel) },
-        content = { paddingValues -> Content(paddingValues, viewModel) }
-    )
-}
-
-@Composable
-private fun TopBar(viewModel: AutocompletesViewModel) {
-    TopAppBar(
-        title = { Text(text = viewModel.topBarState.value.title.text.asCompose()) },
-        navigationIcon = {
-            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ShowNavigationDrawer) }) {
+        screenState = screenData.screenState,
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
+                navigationIcon = {
+                    IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ShowNavigationDrawer) }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon),
+                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                        )
+                    }
+                }
+            )
+        },
+        drawerContent = {
+            AppDrawerContent(
+                selected = UiRoute.Autocompletes,
+                onItemClick = {
+                    val event = AutocompletesEvent.SelectNavigationItem(it)
+                    viewModel.onEvent(event)
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon),
-                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
+                    tint = MaterialTheme.colors.onSecondary
                 )
             }
-        }
-    )
-}
-
-@Composable
-private fun DrawerContent(viewModel: AutocompletesViewModel) {
-    AppDrawerContent(
-        selected = UiRoute.Autocompletes,
-        onItemClick = {
-            val event = AutocompletesEvent.SelectNavigationItem(it)
-            viewModel.onEvent(event)
-        }
-    )
-}
-
-@Composable
-private fun FloatingActionButton(viewModel: AutocompletesViewModel) {
-    FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }) {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
-            tint = MaterialTheme.colors.onSecondary
-        )
-    }
-}
-
-@Composable
-private fun Content(paddingValues: PaddingValues, viewModel: AutocompletesViewModel) {
-    Box(modifier = Modifier.padding(paddingValues)) {
-        val screenData = viewModel.autocompletesState.screenData
-        when (screenData.screenState) {
-            ScreenState.Nothing -> AutocompletesNotFound(viewModel)
-            ScreenState.Loading -> AutocompletesLoading()
-            ScreenState.Showing -> AutocompletesShowing(viewModel)
-            ScreenState.Saving -> {}
-        }
-    }
-}
-
-@Composable
-private fun AutocompletesShowing(viewModel: AutocompletesViewModel) {
-    val screenData = viewModel.autocompletesState.screenData
-    val scrollState = rememberScrollState()
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 4.dp)
-        .verticalScroll(scrollState)
-    ) {
-        AutocompletesBar(viewModel)
-        AppGrid(multiColumns = screenData.multiColumns) {
-            screenData.autocompletes.forEach { item -> AutocompletesItem(item, viewModel)}
-        }
-        Spacer(modifier = Modifier.height(128.dp))
-    }
-}
-
-@Composable
-private fun AutocompletesBar(viewModel: AutocompletesViewModel) {
-    val screenData = viewModel.autocompletesState.screenData
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Row(modifier = Modifier.weight(1f)) {
-            TextButton(
-                onClick = { viewModel.onEvent(AutocompletesEvent.SelectAutocompletesSort) }
-            ) {
+        },
+        loadingContent = {
+            AppLoadingContent(indicator = { CircularProgressIndicator() })
+        },
+        notFoundContent = {
+            AppNotFoundContent {
                 Text(
-                    text = screenData.sort.getAutocompletesText().asCompose(),
-                    fontSize = screenData.fontSize.toButton().sp
-                )
-                SortMenu(viewModel)
-            }
-            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.InvertAutocompletesSort) }) {
-                Icon(
-                    painter = screenData.sort.getAscendingIcon().asPainter() ?: return@IconButton,
-                    contentDescription = stringResource(R.string.autocompletes_contentDescription_sortAscendingIcon),
-                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                    text = stringResource(R.string.autocompletes_text_autocompletesNotFound),
+                    fontSize = screenData.fontSize.toItemTitle().sp
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun AutocompletesNotFound(viewModel: AutocompletesViewModel) {
-    val screenData = viewModel.autocompletesState.screenData
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.autocompletes_text_autocompletesNotFound),
-            fontSize = screenData.fontSize.toItemTitle().sp,
-            style = MaterialTheme.typography.subtitle1,
-            color = MaterialTheme.colors.onBackground
-        )
-    }
-}
-
-@Composable
-private fun AutocompletesLoading() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        content = { CircularProgressIndicator() }
-    )
-}
-
-@Composable
-private fun SortMenu(viewModel: AutocompletesViewModel) {
-    val screenData = viewModel.autocompletesState.screenData
-
-    AppDropdownMenu(
-        expanded = screenData.showSort,
-        onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompletesSort) },
-        header = { Text(text = stringResource(R.string.autocompletes_header_sort)) }
-    ) {
-        AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByCreated) },
-            text = { Text(text = stringResource(R.string.autocompletes_action_sortByCreated)) },
-            after = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.CREATED) }
-        )
-        AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(AutocompletesEvent.SortAutocompletesByName) },
-            text = { Text(text = stringResource(R.string.autocompletes_action_sortByName)) },
-            after = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.NAME) }
-        )
-    }
-}
-
-@Composable
-private fun AutocompletesItem(item: AutocompleteItem, viewModel: AutocompletesViewModel) {
-    AppSurfaceItem(
-        title = itemTitleOrNull(item,viewModel),
-        dropdownMenu = { ItemMenu(item.uid, viewModel) },
-        onClick = {},
-        onLongClick = {
-            val event = AutocompletesEvent.ShowAutocompleteMenu(item.uid)
-            viewModel.onEvent(event)
+        },
+        gridBar = {
+            AutocompletesSortContent(
+                sort = screenData.sort,
+                fontSize = screenData.fontSize.toButton().sp,
+                expanded = screenData.showSort,
+                onExpanded = {
+                    if (it) {
+                        viewModel.onEvent(AutocompletesEvent.SelectAutocompletesSort)
+                    } else {
+                        viewModel.onEvent(AutocompletesEvent.HideAutocompletesSort)
+                    }
+                },
+                onSelected = { viewModel.onEvent(AutocompletesEvent.SortAutocompletes(it)) },
+                onInverted = { viewModel.onEvent(AutocompletesEvent.InvertAutocompletesSort) }
+            )
+        },
+        gridContent = {
+            AutocompletesGrid(
+                multiColumns = screenData.multiColumns,
+                items = screenData.autocompletes,
+                fontSize = screenData.fontSize,
+                dropdownMenu = {
+                    AppDropdownMenu(
+                        expanded = it == screenData.autocompleteMenuUid,
+                        onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
+                    ) {
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = AutocompletesEvent.EditAutocomplete(it)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.autocompletes_action_editAutocomplete)) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = AutocompletesEvent.DeleteAutocomplete(it)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
+                        )
+                    }
+                },
+                onClick = {},
+                onLongClick = {
+                    val event = AutocompletesEvent.ShowAutocompleteMenu(it)
+                    viewModel.onEvent(event)
+                }
+            )
         }
     )
 }
 
 @Composable
-private fun ItemMenu(itemUid: String, viewModel: AutocompletesViewModel) {
-    val screenData = viewModel.autocompletesState.screenData
-
-    AppDropdownMenu(
-        expanded = itemUid == screenData.autocompleteMenuUid,
-        onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
+private fun AutocompletesGrid(
+    modifier: Modifier = Modifier,
+    multiColumns: Boolean,
+    items: List<AutocompleteItem>,
+    fontSize: FontSize,
+    dropdownMenu: @Composable ((String) -> Unit)? = null,
+    onClick: (String) -> Unit,
+    onLongClick: (String) -> Unit
+) {
+    AppGrid(
+        modifier = modifier,
+        multiColumns = multiColumns
     ) {
-        AppDropdownMenuItem(
-            onClick = {
-                val event = AutocompletesEvent.EditAutocomplete(itemUid)
-                viewModel.onEvent(event)
-            },
-            text = { Text(text = stringResource(R.string.autocompletes_action_editAutocomplete)) }
-        )
-        AppDropdownMenuItem(
-            onClick = {
-                val event = AutocompletesEvent.DeleteAutocomplete(itemUid)
-                viewModel.onEvent(event)
-            },
-            text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
-        )
+        items.forEach { item ->
+            AppSurfaceItem(
+                modifier = modifier,
+                title = getAutocompleteItemTitleOrNull(item.nameText, fontSize),
+                dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                onClick = { onClick(item.uid) },
+                onLongClick = { onLongClick(item.uid) }
+            )
+        }
     }
 }
 
 @Composable
-private fun itemTitleOrNull(item: AutocompleteItem, viewModel: AutocompletesViewModel): @Composable (() -> Unit)? {
-    val screenData = viewModel.autocompletesState.screenData
-    val title = item.nameText
-    return itemOrNull(enabled = title != UiText.Nothing) {
-        Text(
-            text = title.asCompose(),
-            fontSize = screenData.fontSize.toItemTitle().sp
-        )
+private fun getAutocompleteItemTitleOrNull(
+    name: UiText,
+    fontSize: FontSize
+) = itemOrNull(enabled = name.asCompose().isNotEmpty()) {
+    Text(
+        modifier = Modifier.padding(AutocompleteItemTextPaddings),
+        text = name.asCompose(),
+        fontSize = fontSize.toItemTitle().sp
+    )
+}
+
+@Composable
+private fun AutocompletesSortContent(
+    modifier: Modifier = Modifier,
+    sort: Sort,
+    fontSize: TextUnit,
+    expanded: Boolean,
+    onExpanded: (Boolean) -> Unit,
+    onSelected: (SortBy) -> Unit,
+    onInverted: () -> Unit
+) {
+    Row(modifier = modifier) {
+        TextButton(onClick = { onExpanded(true) }) {
+            Text(
+                text = sort.getShoppingListsText().asCompose(),
+                fontSize = fontSize
+            )
+            AppDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { onExpanded(false) },
+                header = { Text(text = stringResource(R.string.autocompletes_header_sort)) }
+            ) {
+                AppDropdownMenuItem(
+                    onClick = { onSelected(SortBy.CREATED) },
+                    text = { Text(text = stringResource(R.string.autocompletes_action_sortByCreated)) },
+                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.CREATED) }
+                )
+                AppDropdownMenuItem(
+                    onClick = { onSelected(SortBy.NAME) },
+                    text = { Text(text = stringResource(R.string.autocompletes_action_sortByName)) },
+                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.NAME) }
+                )
+            }
+        }
+        IconButton(onClick = onInverted) {
+            Icon(
+                painter = sort.getAscendingIcon().asPainter() ?: return@IconButton,
+                contentDescription = stringResource(R.string.autocompletes_contentDescription_sortAscendingIcon),
+                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+            )
+        }
     }
 }
+
+private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)

@@ -53,17 +53,6 @@ class ViewModelMapping @Inject constructor() {
         )
     }
 
-    fun toAutocompleteItem(
-        text: String,
-        preferences: ProductPreferences
-    ): TextData {
-        return toBody(
-            text = toUiTextOrNothing(text),
-            fontSize = preferences.fontSize,
-            appColor = AppColor.OnBackground
-        )
-    }
-
     fun toQuantityItem(
         quantity: Quantity,
         preferences: ProductPreferences
@@ -926,12 +915,6 @@ class ViewModelMapping @Inject constructor() {
             appColor = AppColor.OnBackground,
             alpha = 0.7f
         )
-    )
-
-    fun toOnFloatingActionButton(icon: UiIcon, size: Dp = Dp.Unspecified) = IconData(
-        icon = icon,
-        size = size,
-        tint = ColorData(appColor = AppColor.OnSecondary)
     )
 
     fun toProductsDisplayTotalText(total: Money, displayTotal: DisplayTotal): UiText {

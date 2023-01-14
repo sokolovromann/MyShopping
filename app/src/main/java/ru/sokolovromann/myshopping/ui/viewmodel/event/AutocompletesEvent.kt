@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class AutocompletesEvent {
@@ -14,9 +15,7 @@ sealed class AutocompletesEvent {
 
     data class SelectNavigationItem(val route: UiRoute) : AutocompletesEvent()
 
-    object SortAutocompletesByCreated : AutocompletesEvent()
-
-    object SortAutocompletesByName : AutocompletesEvent()
+    data class SortAutocompletes(val sortBy: SortBy) : AutocompletesEvent()
 
     object InvertAutocompletesSort : AutocompletesEvent()
 
