@@ -23,19 +23,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val mainState = viewModel.mainState
+
         val shoppingUid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
         val event = MainEvent.OnCreate(shoppingUid)
         viewModel.onEvent(event)
 
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                viewModel.loadingState.value
-            }
+            setKeepOnScreenCondition { mainState.loading }
         }
 
         setContent {
             MyShoppingTheme(
-                darkTheme = viewModel.nightThemeState.value,
+                darkTheme = mainState.nightTheme,
                 content = { MainContent() }
             )
         }

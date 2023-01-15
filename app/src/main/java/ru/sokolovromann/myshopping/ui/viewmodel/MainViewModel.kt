@@ -1,8 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +16,7 @@ import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.MainState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
 import javax.inject.Inject
 
@@ -31,11 +29,7 @@ class MainViewModel @Inject constructor(
     private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<MainEvent> {
 
-    private val _nightThemeState: MutableState<Boolean> = mutableStateOf(false)
-    val nightThemeState: State<Boolean> = _nightThemeState
-
-    private val _loadingState: MutableState<Boolean> = mutableStateOf(true)
-    val loadingState: State<Boolean> = _loadingState
+    val mainState = MainState()
 
     private val _screenEventFlow: MutableSharedFlow<MainScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<MainScreenEvent> = _screenEventFlow
@@ -54,7 +48,7 @@ class MainViewModel @Inject constructor(
         showLoading()
 
         repository.getMainPreferences().collect {
-            applyNightTheme(it.nightTheme)
+            applyMainPreferences(it)
             onOpened(it.appOpenedAction, event)
         }
     }
@@ -155,12 +149,14 @@ class MainViewModel @Inject constructor(
         notificationManager.createNotificationChannel()
     }
 
-    private suspend fun applyNightTheme(nightTheme: Boolean) = withContext(dispatchers.main) {
-        _nightThemeState.value = nightTheme
+    private suspend fun applyMainPreferences(
+        mainPreferences: MainPreferences
+    ) = withContext(dispatchers.main) {
+        mainState.applyPreferences(mainPreferences)
     }
 
     private suspend fun showLoading() = withContext(dispatchers.main) {
-        _loadingState.value = true
+        mainState.showLoading()
     }
 
     private suspend fun showPurchases() = withContext(dispatchers.main) {
@@ -175,6 +171,6 @@ class MainViewModel @Inject constructor(
     }
 
     private fun hideLoading() {
-        _loadingState.value = false
+        mainState.showContent()
     }
 }
