@@ -23,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: MainRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers,
     private val notificationManager: PurchasesNotificationManager,
     private val alarmManager: PurchasesAlarmManager
@@ -44,25 +43,24 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch(dispatchers.io) {
-        showLoading()
+    private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            mainState.showLoading()
+        }
 
         repository.getMainPreferences().collect {
-            applyMainPreferences(it)
-            onOpened(it.appOpenedAction, event)
+            applyMainPreferences(it, event)
         }
     }
 
-    private suspend fun onOpened(
-        firstOpenedAction: AppOpenedAction,
+    private suspend fun applyMainPreferences(
+        mainPreferences: MainPreferences,
         event: MainEvent.OnCreate
     ) = withContext(dispatchers.main) {
-        when (firstOpenedAction) {
-            AppOpenedAction.NOTHING -> if (event.shoppingUid == null) {
-                showPurchases()
-            } else {
-                showProducts(event.shoppingUid)
-            }
+        mainState.applyPreferences(mainPreferences)
+
+        when (mainPreferences.appOpenedAction) {
+            AppOpenedAction.NOTHING -> showPurchasesOrProducts(event.shoppingUid)
 
             AppOpenedAction.ADD_DEFAULT_DATA -> getDefaultPreferences()
 
@@ -80,7 +78,7 @@ class MainViewModel @Inject constructor(
 
     private fun migrateFromAppVersion14(
         event: MainEvent.MigrateFromAppVersion14
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         notificationManager.createNotificationChannel()
 
         val appVersion14 = repository.getAppVersion14().firstOrNull() ?: AppVersion14()
@@ -91,13 +89,13 @@ class MainViewModel @Inject constructor(
             viewModelScope.async {
                 migrateSettings(
                     appVersion14.preferences,
-                    mapping.toScreenSize(event.screenWidth)
+                    toScreenSize(event.screenWidth)
                 )
             }
         )
         migrates.awaitAll()
 
-        showPurchases()
+        showPurchasesOrProducts(null)
     }
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
@@ -141,36 +139,34 @@ class MainViewModel @Inject constructor(
         val defaultCurrency = repository.getDefaultCurrency().firstOrNull() ?: Currency()
         repository.addCurrency(defaultCurrency)
 
-        repository.addShoppingListsMultiColumns(mapping.toShoppingsMultiColumns(event.screenWidth))
-        repository.addProductsMultiColumns(mapping.toProductsMultiColumns(event.screenWidth))
-        repository.addScreenSize(mapping.toScreenSize(event.screenWidth))
+        val shoppingsMultiColumns = event.screenWidth >= 600
+        repository.addShoppingListsMultiColumns(shoppingsMultiColumns)
+
+        val productsMultiColumns = event.screenWidth >= 720
+        repository.addProductsMultiColumns(productsMultiColumns)
+
+        repository.addScreenSize(toScreenSize(event.screenWidth))
         repository.addAppOpenedAction(AppOpenedAction.NOTHING)
 
         notificationManager.createNotificationChannel()
     }
 
-    private suspend fun applyMainPreferences(
-        mainPreferences: MainPreferences
-    ) = withContext(dispatchers.main) {
-        mainState.applyPreferences(mainPreferences)
-    }
-
-    private suspend fun showLoading() = withContext(dispatchers.main) {
-        mainState.showLoading()
-    }
-
-    private suspend fun showPurchases() = withContext(dispatchers.main) {
-        hideLoading()
-    }
-
-    private fun showProducts(shoppingUid: String) = viewModelScope.launch(dispatchers.main) {
-        hideLoading()
-
-        val event = MainScreenEvent.ShowProducts(shoppingUid)
-        _screenEventFlow.emit(event)
-    }
-
-    private fun hideLoading() {
+    private suspend fun showPurchasesOrProducts(
+        shoppingUid: String?
+    ) = viewModelScope.launch(dispatchers.main) {
         mainState.showContent()
+
+        if (shoppingUid != null) {
+            val event = MainScreenEvent.ShowProducts(shoppingUid)
+            _screenEventFlow.emit(event)
+        }
+    }
+
+    private fun toScreenSize(screenWidth: Int): ScreenSize {
+        return if (screenWidth >= 720) {
+            ScreenSize.TABLET
+        } else {
+            ScreenSize.SMARTPHONE
+        }
     }
 }
