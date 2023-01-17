@@ -15,16 +15,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ProductsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
-import ru.sokolovromann.myshopping.ui.theme.AppColor
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsEvent
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,26 +31,10 @@ class ProductsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<ProductsEvent> {
 
-    val productsState: ListState<ProductItem> = ListState()
-
-    val itemMenuState: ItemMenuState<ProductsItemMenu> = ItemMenuState()
-
-    val productsMenu: MenuIconButtonState<ProductsMenu> = MenuIconButtonState()
-
-    val sortState: MenuButtonState<ProductsSortMenu> = MenuButtonState()
-
-    private val _sortAscendingState: MutableState<IconData> = mutableStateOf(IconData())
-    val sortAscendingState: State<IconData> = _sortAscendingState
-
-    val totalState: MenuButtonState<ProductsTotalMenu> = MenuButtonState()
-
-    val completedState: MenuIconButtonState<ProductsCompletedMenu> = MenuIconButtonState()
+    val productsState: ProductsState = ProductsState()
 
     private val _addIconState: MutableState<IconData> = mutableStateOf(IconData())
     val addIconState: State<IconData> = _addIconState
-
-    private val _reminderState: MutableState<ItemReminderData> = mutableStateOf(ItemReminderData())
-    val reminderState: State<ItemReminderData> = _reminderState
 
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
@@ -64,10 +44,6 @@ class ProductsViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<ProductsScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ProductsScreenEvent> = _screenEventFlow
-
-    private var editCompletedProduct: Boolean
-        get() { return savedStateHandle.get<Boolean>("editCompletedProduct") ?: false }
-        set(value) { savedStateHandle["editCompletedProduct"] = value }
 
     private val shoppingUid: String = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
 
@@ -204,30 +180,8 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun shareProducts() = viewModelScope.launch(dispatchers.main) {
-        val products = productsState.currentData.items
-
-        val shoppingName = topBarState.value.title.text
-        var shareText: String = if (shoppingName == UiText.Nothing) {
-            ""
-        } else {
-            "${mapping.toString(shoppingName)}:\n"
-        }
-
-        products.forEach { product ->
-            if (!product.completed.checked) {
-                shareText += "- ${mapping.toString(product.title.text)} • " +
-                        "${mapping.toString(product.body.text)}\n"
-            }
-        }
-
-        val total = mapping.toString(totalState.currentData.text.text)
-        if (total.isEmpty()) {
-            if (shareText.isNotEmpty()) {
-                shareText = shareText.dropLast(1)
-            }
-        } else {
-            shareText += "\n$total"
-        }
+        val shareText = productsState.getShareProductsResult()
+            .getOrElse { return@launch }
 
         _screenEventFlow.emit(ProductsScreenEvent.ShareProducts(shareText))
         hideProductsMenu()
@@ -258,7 +212,7 @@ class ProductsViewModel @Inject constructor(
             lastModified = System.currentTimeMillis()
         )
 
-        if (editCompletedProduct) {
+        if (productsState.editCompleted) {
             withContext(dispatchers.main) {
                 _screenEventFlow.emit(ProductsScreenEvent.EditProduct(event.uid))
             }
@@ -280,15 +234,15 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun selectProductsSort() {
-        sortState.showMenu()
+        productsState.showSort()
     }
 
     private fun selectProductsDisplayCompleted() {
-        completedState.showMenu()
+        productsState.showDisplayCompleted()
     }
 
     private fun selectProductsDisplayTotal() {
-        totalState.showMenu()
+        productsState.showDisplayTotal()
     }
 
     private fun sortProductsByCreated() = viewModelScope.launch(dispatchers.io) {
@@ -376,123 +330,29 @@ class ProductsViewModel @Inject constructor(
             return@withContext
         }
 
-        val items = products.sortProducts()
-        val preferences = products.preferences
-
-        if (items.isEmpty()) {
-            showProductNotFound(preferences)
+        if (products.shoppingList.productsEmpty) {
+            productsState.showNotFound(
+                preferences = products.preferences,
+                shoppingListName = products.formatName(),
+                reminder = products.shoppingList.reminder
+            )
         } else {
-            val list = items.map { mapping.toProductItem(it, preferences) }
-            productsState.showList(list, preferences.multiColumns)
-        }
-
-        showReminder(
-            reminder = products.shoppingList.reminder,
-            preferences = preferences
-        )
-        showSort(preferences)
-        showSortAscending(preferences)
-
-        showCompleted(preferences)
-
-        if (preferences.displayMoney) {
-            showTotal(products.calculateTotal(), preferences)
-        } else {
-            hideTotal()
+            productsState.showProducts(products)
         }
 
         showTopBar(products.formatName())
-
-        itemMenuState.setMenu(mapping.toProductsItemMenu(preferences.fontSize))
-        productsMenu.showButton(
-            icon = mapping.toMenuIconBody(),
-            menu = mapping.toProductsMenu(preferences.fontSize)
-        )
-    }
-
-    private fun showReminder(reminder: Long?, preferences: ProductPreferences) {
-        if (reminder == null) {
-            return
-        }
-
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = reminder
-        }
-
-        _reminderState.value = ItemReminderData(
-            title = mapping.toTitle(
-                text = mapping.toResourcesUiText(R.string.products_reminder),
-                fontSize = preferences.fontSize
-            ),
-            body = mapping.toBody(
-                text = calendar.getDisplayDateAndTime(),
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showSort(preferences: ProductPreferences) {
-        sortState.showButton(
-            text = mapping.toShoppingListsSortBody(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toProductsSortMenu(
-                sortBy = preferences.sort.sortBy,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showSortAscending(preferences: ProductPreferences) {
-        _sortAscendingState.value = mapping.toSortAscendingIconBody(
-            ascending = preferences.sort.ascending,
-        )
-    }
-
-    private fun showProductNotFound(preferences: ProductPreferences) {
-        val data = mapping.toTitle(
-            text = UiText.FromResources(R.string.products_productsNotFound),
-            fontSize = preferences.fontSize,
-            appColor = AppColor.OnBackground
-        )
-        productsState.showNotFound(data)
     }
 
     private fun showProductMenu(event: ProductsEvent.ShowProductMenu) {
-        itemMenuState.showMenu(itemUid = event.uid)
+        productsState.showProductMenu(event.uid)
     }
 
     private fun showProductsMenu() {
-        productsMenu.showMenu()
+        productsState.showProductsMenu()
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-    }
-
-    private fun showCompleted(preferences: ProductPreferences) {
-        completedState.showButton(
-            icon = mapping.toDisplayCompletedIconBody(),
-            menu = mapping.toProductsCompletedMenu(
-                displayCompleted = preferences.displayCompleted,
-                fontSize = preferences.fontSize
-            )
-        )
-    }
-
-    private fun showTotal(total: Money, preferences: ProductPreferences) {
-        totalState.showButton(
-            text = mapping.toProductsTotalTitle(
-                total = total,
-                displayTotal = preferences.displayTotal,
-                fontSize = preferences.fontSize
-            ),
-            menu = mapping.toProductsTotalMenu(
-                displayTotal = preferences.displayTotal,
-                fontSize = preferences.fontSize
-            )
-        )
     }
 
     private fun showTopBar(shoppingListName: String) {
@@ -529,26 +389,22 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun hideProductMenu() {
-        itemMenuState.hideMenu()
+        productsState.hideProductMenu()
     }
 
     private fun hideProductsMenu() {
-        productsMenu.hideMenu()
+        productsState.hideProductsMenu()
     }
 
     private fun hideProductsSort() {
-        sortState.hideMenu()
+        productsState.hideSort()
     }
 
     private fun hideProductsDisplayCompleted() {
-        completedState.hideMenu()
+        productsState.hideDisplayCompleted()
     }
 
     private fun hideProductsDisplayTotal() {
-        totalState.hideMenu()
-    }
-
-    private fun hideTotal() {
-        totalState.hideButton()
+        productsState.hideDisplayTotal()
     }
 }

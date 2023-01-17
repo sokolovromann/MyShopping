@@ -135,11 +135,11 @@
     <string name="products_header_displayCompleted">Display completed</string>
     <string name="products_header_displayTotal">Display total</string>
     <string name="products_header_sort">Sort</string>
-    <string name="products_productsNotFound">You have no products</string>
-    <string name="products_reminder">Reminder</string>
     <string name="products_text_activeTotal">Active: %s</string>
     <string name="products_text_allTotal">All: %s</string>
     <string name="products_text_completedTotal">Completed: %s</string>
+    <string name="products_text_productsNotFound">You have no products</string>
+    <string name="products_text_reminder">Reminder</string>
 
     <string name="purchases_action_moveShoppingListToArchive">Archive</string>
     <string name="purchases_action_moveShoppingListToTrash">Delete</string>
