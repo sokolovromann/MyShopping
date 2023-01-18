@@ -15,10 +15,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppChip(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable RowScope.() -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -27,8 +28,13 @@ fun AppChip(
             .defaultMinSize(AppChipDefaultMinSize)
             .background(color = backgroundColor, shape = CircleShape)
             .clickable { onClick() }
+            .then(modifier)
     ) {
-        Column(modifier = Modifier.padding(AppChipPaddings)) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(AppChipPaddings)
+        ) {
             ProvideTextStyle(
                 value = MaterialTheme.typography.body2.copy(
                     color = contentColor
