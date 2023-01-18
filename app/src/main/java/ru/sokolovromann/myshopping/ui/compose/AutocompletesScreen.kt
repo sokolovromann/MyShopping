@@ -235,7 +235,7 @@ private fun AutocompletesSortContent(
     Row(modifier = modifier) {
         TextButton(onClick = { onExpanded(true) }) {
             Text(
-                text = sort.getShoppingListsText().asCompose(),
+                text = sort.getAutocompletesText().asCompose(),
                 fontSize = fontSize
             )
             AppDropdownMenu(
