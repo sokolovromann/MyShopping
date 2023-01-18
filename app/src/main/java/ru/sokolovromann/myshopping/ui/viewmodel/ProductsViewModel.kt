@@ -1,11 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,21 +20,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val repository: ProductsRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<ProductsEvent> {
 
     val productsState: ProductsState = ProductsState()
-
-    private val _addIconState: MutableState<IconData> = mutableStateOf(IconData())
-    val addIconState: State<IconData> = _addIconState
-
-    private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
-    val topBarState: State<TopBarData> = _topBarState
-
-    private val _bottomBarState: MutableState<BottomBarData> = mutableStateOf(BottomBarData())
-    val bottomBarState: State<BottomBarData> = _bottomBarState
 
     private val _screenEventFlow: MutableSharedFlow<ProductsScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ProductsScreenEvent> = _screenEventFlow
@@ -48,8 +32,6 @@ class ProductsViewModel @Inject constructor(
     private val shoppingUid: String = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
 
     init {
-        showBottomBar()
-        showAddIcon()
         getProducts()
     }
 
@@ -79,23 +61,11 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.SelectProductsDisplayTotal -> selectProductsDisplayTotal()
 
-            ProductsEvent.SortProductsByCreated -> sortProductsByCreated()
+            is ProductsEvent.SortProducts -> sortProducts(event)
 
-            ProductsEvent.SortProductsByLastModified -> sortProductsByLastModified()
+            is ProductsEvent.DisplayProductsCompleted -> displayProductsCompleted(event)
 
-            ProductsEvent.SortProductsByName -> sortProductsByName()
-
-            ProductsEvent.SortProductsByTotal -> sortProductsByTotal()
-
-            ProductsEvent.DisplayProductsCompletedFirst -> displayProductsCompletedFirst()
-
-            ProductsEvent.DisplayProductsCompletedLast -> displayProductsCompletedLast()
-
-            ProductsEvent.DisplayProductsAllTotal -> displayProductsAllTotal()
-
-            ProductsEvent.DisplayProductsCompletedTotal -> displayProductsCompletedTotal()
-
-            ProductsEvent.DisplayProductsActiveTotal -> displayProductsActiveTotal()
+            is ProductsEvent.DisplayProductsTotal -> displayProductsTotal(event)
 
             ProductsEvent.InvertProductsSort -> invertProductsSort()
 
@@ -108,8 +78,6 @@ class ProductsViewModel @Inject constructor(
             is ProductsEvent.ShowProductMenu -> showProductMenu(event)
 
             ProductsEvent.ShowProductsMenu -> showProductsMenu()
-
-            ProductsEvent.HideProductsCompleted -> hideProductsCompleted()
 
             ProductsEvent.HideProductMenu -> hideProductMenu()
 
@@ -125,11 +93,29 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts() = viewModelScope.launch(dispatchers.io) {
-        showProductsLoading()
+    private fun getProducts() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            productsState.showLoading()
+        }
 
         repository.getProducts(shoppingUid).collect {
-            showProducts(it)
+            productsLoaded(it)
+        }
+    }
+
+    private suspend fun productsLoaded(products: Products?) = withContext(dispatchers.main) {
+        if (products == null) {
+            return@withContext
+        }
+
+        if (products.shoppingList.productsEmpty) {
+            productsState.showNotFound(
+                preferences = products.preferences,
+                shoppingListName = products.formatName(),
+                reminder = products.shoppingList.reminder
+            )
+        } else {
+            productsState.showProducts(products)
         }
     }
 
@@ -154,7 +140,7 @@ class ProductsViewModel @Inject constructor(
         hideProductsMenu()
     }
 
-    private fun deleteProducts() = viewModelScope.launch(dispatchers.io) {
+    private fun deleteProducts() = viewModelScope.launch {
         repository.deleteProducts(
             shoppingUid = shoppingUid,
             lastModified = System.currentTimeMillis()
@@ -167,7 +153,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun deleteProduct(
         event: ProductsEvent.DeleteProduct
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.deleteProduct(
             shoppingUid = shoppingUid,
             productUid = event.uid,
@@ -206,7 +192,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun completeProduct(
         event: ProductsEvent.CompleteProduct
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.completeProduct(
             uid = event.uid,
             lastModified = System.currentTimeMillis()
@@ -221,7 +207,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun activeProduct(
         event: ProductsEvent.ActiveProduct
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.activeProduct(
             uid = event.uid,
             lastModified = System.currentTimeMillis()
@@ -245,102 +231,49 @@ class ProductsViewModel @Inject constructor(
         productsState.showDisplayTotal()
     }
 
-    private fun sortProductsByCreated() = viewModelScope.launch(dispatchers.io) {
-        repository.sortProductsByCreated()
+    private fun sortProducts(event: ProductsEvent.SortProducts) = viewModelScope.launch {
+        when (event.sortBy) {
+            SortBy.CREATED -> repository.sortProductsByCreated()
+            SortBy.LAST_MODIFIED -> repository.sortProductsByLastModified()
+            SortBy.NAME -> repository.sortProductsByName()
+            SortBy.TOTAL -> repository.sortProductsByTotal()
+        }
 
         withContext(dispatchers.main) {
             hideProductsSort()
         }
     }
 
-    private fun sortProductsByLastModified() = viewModelScope.launch(dispatchers.io) {
-        repository.sortProductsByLastModified()
-
-        withContext(dispatchers.main) {
-            hideProductsSort()
+    private fun displayProductsCompleted(
+        event: ProductsEvent.DisplayProductsCompleted
+    ) = viewModelScope.launch {
+        when (event.displayCompleted) {
+            DisplayCompleted.FIRST -> repository.displayProductsCompletedFirst()
+            DisplayCompleted.LAST -> repository.displayProductsCompletedLast()
+            DisplayCompleted.HIDE -> repository.hideProductsCompleted()
         }
-    }
-
-    private fun sortProductsByName() = viewModelScope.launch(dispatchers.io) {
-        repository.sortProductsByName()
-
-        withContext(dispatchers.main) {
-            hideProductsSort()
-        }
-    }
-
-    private fun sortProductsByTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.sortProductsByTotal()
-
-        withContext(dispatchers.main) {
-            hideProductsSort()
-        }
-    }
-
-    private fun displayProductsCompletedFirst() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductsCompletedFirst()
 
         withContext(dispatchers.main) {
             hideProductsDisplayCompleted()
         }
     }
 
-    private fun displayProductsCompletedLast() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductsCompletedLast()
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayCompleted()
+    private fun displayProductsTotal(
+        event: ProductsEvent.DisplayProductsTotal
+    ) = viewModelScope.launch {
+        when (event.displayTotal) {
+            DisplayTotal.ALL -> repository.displayProductsAllTotal()
+            DisplayTotal.COMPLETED -> repository.displayProductsCompletedTotal()
+            DisplayTotal.ACTIVE -> repository.displayProductsActiveTotal()
         }
-    }
-
-    private fun displayProductsAllTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductsAllTotal()
 
         withContext(dispatchers.main) {
             hideProductsDisplayTotal()
         }
     }
 
-    private fun displayProductsCompletedTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductsCompletedTotal()
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayTotal()
-        }
-    }
-
-    private fun displayProductsActiveTotal() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductsActiveTotal()
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayTotal()
-        }
-    }
-
-    private fun invertProductsSort() = viewModelScope.launch(dispatchers.io) {
+    private fun invertProductsSort() = viewModelScope.launch {
         repository.invertProductsSort()
-    }
-
-    private suspend fun showProductsLoading() = withContext(dispatchers.main) {
-        productsState.showLoading()
-    }
-
-    private suspend fun showProducts(products: Products?) = withContext(dispatchers.main) {
-        if (products == null) {
-            return@withContext
-        }
-
-        if (products.shoppingList.productsEmpty) {
-            productsState.showNotFound(
-                preferences = products.preferences,
-                shoppingListName = products.formatName(),
-                reminder = products.shoppingList.reminder
-            )
-        } else {
-            productsState.showProducts(products)
-        }
-
-        showTopBar(products.formatName())
     }
 
     private fun showProductMenu(event: ProductsEvent.ShowProductMenu) {
@@ -353,39 +286,6 @@ class ProductsViewModel @Inject constructor(
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-    }
-
-    private fun showTopBar(shoppingListName: String) {
-        val data = TopBarData(
-            title = mapping.toOnTopAppBarHeader(
-                text = mapping.toUiText(shoppingListName),
-                fontSize = FontSize.MEDIUM
-            ),
-            navigationIcon = mapping.toOnTopAppBar(
-                icon = UiIcon.FromVector(Icons.Default.ArrowBack)
-            )
-        )
-        _topBarState.value = data
-    }
-
-    private fun showBottomBar() {
-        val data = BottomBarData()
-        _bottomBarState.value = data
-    }
-
-    private fun showAddIcon() {
-        val data = IconData(
-            icon = mapping.toUiIcon(Icons.Default.Add)
-        )
-        _addIconState.value = data
-    }
-
-    private fun hideProductsCompleted() = viewModelScope.launch(dispatchers.io) {
-        repository.hideProductsCompleted()
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayCompleted()
-        }
     }
 
     private fun hideProductMenu() {

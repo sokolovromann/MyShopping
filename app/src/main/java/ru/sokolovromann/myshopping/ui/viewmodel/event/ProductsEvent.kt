@@ -1,5 +1,9 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
+
 sealed class ProductsEvent {
 
     object AddProduct : ProductsEvent()
@@ -26,23 +30,11 @@ sealed class ProductsEvent {
 
     object SelectProductsDisplayTotal : ProductsEvent()
 
-    object SortProductsByCreated : ProductsEvent()
+    data class SortProducts(val sortBy: SortBy) : ProductsEvent()
 
-    object SortProductsByLastModified : ProductsEvent()
+    data class DisplayProductsCompleted(val displayCompleted: DisplayCompleted) : ProductsEvent()
 
-    object SortProductsByName : ProductsEvent()
-
-    object SortProductsByTotal : ProductsEvent()
-
-    object DisplayProductsCompletedFirst : ProductsEvent()
-
-    object DisplayProductsCompletedLast : ProductsEvent()
-
-    object DisplayProductsAllTotal : ProductsEvent()
-
-    object DisplayProductsCompletedTotal : ProductsEvent()
-
-    object DisplayProductsActiveTotal : ProductsEvent()
+    data class DisplayProductsTotal(val displayTotal: DisplayTotal) : ProductsEvent()
 
     object InvertProductsSort : ProductsEvent()
 
@@ -55,8 +47,6 @@ sealed class ProductsEvent {
     data class ShowProductMenu(val uid: String) : ProductsEvent()
 
     object ShowProductsMenu : ProductsEvent()
-
-    object HideProductsCompleted : ProductsEvent()
 
     object HideProductMenu : ProductsEvent()
 
