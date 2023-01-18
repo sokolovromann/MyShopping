@@ -65,6 +65,7 @@ fun AppGridScaffold(
     notFoundContent: @Composable (ColumnScope.() -> Unit)? = null,
     gridBar: @Composable (RowScope.() -> Unit)? = null,
     spaceAfterGrid: Boolean = true,
+    horizontalSpaceGrid: Boolean = true,
     gridContent: @Composable ColumnScope.() -> Unit
 ) {
     AppScaffold(
@@ -86,7 +87,12 @@ fun AppGridScaffold(
 
                 ScreenState.Loading -> loadingContent?.let { it() }
 
-                ScreenState.Showing -> AppShowingGridContent(gridBar, gridContent, spaceAfterGrid)
+                ScreenState.Showing -> AppShowingGridContent(
+                    gridBar,
+                    gridContent,
+                    spaceAfterGrid,
+                    horizontalSpaceGrid
+                )
 
                 ScreenState.Saving -> {}
             }
@@ -123,14 +129,16 @@ private fun AppNothingGridContent(
 private fun AppShowingGridContent(
     gridBar: @Composable (RowScope.() -> Unit)?,
     gridContent: @Composable ColumnScope.() -> Unit,
-    spaceAfterGrid: Boolean
+    spaceAfterGrid: Boolean,
+    horizontalSpaceGrid: Boolean
 ) {
     val scrollState = rememberScrollState()
+    val padding = if (horizontalSpaceGrid) AppGridScaffoldShowingPaddings else PaddingValues()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AppGridScaffoldShowingPaddings)
+            .padding(padding)
             .verticalScroll(scrollState)
     ) {
         gridBar?.let {
