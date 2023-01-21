@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.ui.compose.state
 
 data class SettingsItem(
     val uid: SettingsUid = SettingsUid.NoUId,
-    val title: TextData = TextData(),
-    val body: TextData = TextData(),
-    val checked: SwitchData? = null
+    val titleText: UiText = UiText.Nothing,
+    val bodyText: UiText = UiText.Nothing,
+    val checked: Boolean? = null
 )
 
 enum class SettingsUid {

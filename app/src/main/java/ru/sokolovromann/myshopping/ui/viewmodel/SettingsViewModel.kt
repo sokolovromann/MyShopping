@@ -17,7 +17,6 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.SettingsRepository
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.ScreenSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
@@ -32,11 +31,7 @@ class SettingsViewModel @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<SettingsEvent> {
 
-    val settingsState: MapState<TextData, List<SettingsItem>> = MapState()
-
-    val fontSizeState: ItemMenuState<FontSizeMenu> = ItemMenuState()
-
-    val displayAutocompleteState: ItemMenuState<DisplayAutocompleteMenu> = ItemMenuState()
+    val settingsState: SettingsState = SettingsState()
 
     private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
     val topBarState: State<TopBarData> = _topBarState
@@ -134,11 +129,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun selectFontSize() {
-        fontSizeState.showMenu(SettingsUid.FontSize.name)
+        settingsState.showFontSize()
     }
 
     private fun selectProductsDisplayAutocomplete() {
-        displayAutocompleteState.showMenu(SettingsUid.DisplayAutocomplete.name)
+        settingsState.showDisplayAutocomplete()
     }
 
     private fun selectNavigationItem(
@@ -256,29 +251,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun showSettings(settings: Settings) = withContext(dispatchers.main) {
-        val preferences = settings.preferences
-
-        val items = mapOf(
-            mapping.toSettingsHeader(R.string.settings_header_generalSettings, preferences)
-                    to mapping.toGeneralSettingsItems(settings),
-            mapping.toSettingsHeader(R.string.settings_header_money, preferences)
-                    to mapping.toMoneySettingsItems(settings),
-            mapping.toSettingsHeader(R.string.settings_header_purchases, preferences)
-                    to mapping.toPurchasesSettingsItems(settings),
-            mapping.toSettingsHeader(R.string.settings_header_aboutApp, preferences)
-                    to mapping.toAboutSettingsItems(settings)
-        )
-
-        settingsState.showMap(
-            items = items,
-            multiColumns = preferences.screenSize == ScreenSize.TABLET
-        )
-
-        fontSizeState.setMenu(mapping.toFontSizeMenu(preferences.fontSize))
-        displayAutocompleteState.setMenu(mapping.toDisplayAutocompleteMenu(
-            settings.settingsValues.productsDisplayAutocomplete,
-            preferences.fontSize
-        ))
+        settingsState.showSetting(settings)
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -312,7 +285,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun hideFontSize() {
-        fontSizeState.hideMenu()
+        settingsState.hideFontSize()
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
@@ -328,6 +301,6 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun hideProductsDisplayAutocomplete() {
-        displayAutocompleteState.hideMenu()
+        settingsState.hideDisplayAutocomplete()
     }
 }
