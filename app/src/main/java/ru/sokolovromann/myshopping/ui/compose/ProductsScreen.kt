@@ -215,7 +215,7 @@ fun ProductsScreen(
                 }
             }
         },
-        horizontalSpaceGrid = screenData.multiColumns
+        gridMultiColumnsSpace = screenData.multiColumns
     ) {
         ProductsGrid(
             multiColumns = screenData.multiColumns,
