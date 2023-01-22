@@ -1,10 +1,5 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +9,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.SettingsRepository
+import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -27,20 +22,15 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val repository: SettingsRepository,
-    private val mapping: ViewModelMapping,
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<SettingsEvent> {
 
     val settingsState: SettingsState = SettingsState()
 
-    private val _topBarState: MutableState<TopBarData> = mutableStateOf(TopBarData())
-    val topBarState: State<TopBarData> = _topBarState
-
     private val _screenEventFlow: MutableSharedFlow<SettingsScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<SettingsScreenEvent> = _screenEventFlow
 
     init {
-        showTopBar()
         getSettings()
     }
 
@@ -50,19 +40,9 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            SettingsEvent.DisplayProductsAllAutocomplete -> displayProductsAllAutocomplete()
+            is SettingsEvent.FontSizeSelected -> fontSizeSelected(event)
 
-            SettingsEvent.DisplayProductsNameAutocomplete -> displayProductsNameAutocomplete()
-
-            SettingsEvent.TinyFontSizeSelected -> tinyFontSizeSelected()
-
-            SettingsEvent.SmallFontSizeSelected -> smallFontSizeSelected()
-
-            SettingsEvent.MediumFontSizeSelected -> mediumFontSizeSelected()
-
-            SettingsEvent.LargeFontSizeSelected -> largeFontSizeSelected()
-
-            SettingsEvent.HugeFontSizeSelected -> hugeFontSizeSelected()
+            is SettingsEvent.DisplayAutocompleteSelected -> displayAutocompleteSelected(event)
 
             SettingsEvent.ShowBackScreen -> showBackScreen()
 
@@ -72,18 +52,22 @@ class SettingsViewModel @Inject constructor(
 
             SettingsEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
-            SettingsEvent.HideProductsAutocomplete -> hideProductsAutocomplete()
-
             SettingsEvent.HideProductsDisplayAutocomplete -> hideProductsDisplayAutocomplete()
         }
     }
 
-    private fun getSettings() = viewModelScope.launch(dispatchers.io) {
-        showSettingsLoading()
+    private fun getSettings() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            settingsState.showLoading()
+        }
 
         repository.getSettings().collect {
-            showSettings(it)
+            settingsLoaded(it)
         }
+    }
+
+    private suspend fun settingsLoaded(settings: Settings) = withContext(dispatchers.main) {
+        settingsState.showSetting(settings)
     }
 
     private fun editCurrencySymbol() = viewModelScope.launch(dispatchers.main) {
@@ -148,95 +132,69 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun displayProductsAllAutocomplete() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductsAutocompleteAll()
+    private fun fontSizeSelected(
+        event: SettingsEvent.FontSizeSelected
+    ) = viewModelScope.launch {
+        when (event.fontSize) {
+            FontSize.TINY -> repository.tinyFontSizeSelected()
+            FontSize.SMALL -> repository.smallFontSizeSelected()
+            FontSize.MEDIUM -> repository.mediumFontSizeSelected()
+            FontSize.LARGE -> repository.largeFontSizeSelected()
+            FontSize.HUGE -> repository.hugeFontSizeSelected()
+        }
+
+        withContext(dispatchers.main) {
+            hideFontSize()
+        }
+    }
+
+    private fun displayAutocompleteSelected(
+        event: SettingsEvent.DisplayAutocompleteSelected
+    ) = viewModelScope.launch {
+        when (event.displayAutocomplete) {
+            DisplayAutocomplete.ALL -> repository.displayProductsAutocompleteAll()
+            DisplayAutocomplete.NAME -> repository.displayProductAutocompleteName()
+            DisplayAutocomplete.HIDE -> repository.hideProductsAutocomplete()
+        }
 
         withContext(dispatchers.main) {
             hideProductsDisplayAutocomplete()
         }
     }
 
-    private fun displayProductsNameAutocomplete() = viewModelScope.launch(dispatchers.io) {
-        repository.displayProductAutocompleteName()
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayAutocomplete()
-        }
-    }
-
-    private fun tinyFontSizeSelected() = viewModelScope.launch(dispatchers.io) {
-        repository.tinyFontSizeSelected()
-
-        withContext(dispatchers.main) {
-            hideFontSize()
-        }
-    }
-
-    private fun smallFontSizeSelected() = viewModelScope.launch(dispatchers.io) {
-        repository.smallFontSizeSelected()
-
-        withContext(dispatchers.main) {
-            hideFontSize()
-        }
-    }
-
-    private fun mediumFontSizeSelected() = viewModelScope.launch(dispatchers.io) {
-        repository.mediumFontSizeSelected()
-
-        withContext(dispatchers.main) {
-            hideFontSize()
-        }
-    }
-
-    private fun largeFontSizeSelected() = viewModelScope.launch(dispatchers.io) {
-        repository.largeFontSizeSelected()
-
-        withContext(dispatchers.main) {
-            hideFontSize()
-        }
-    }
-
-    private fun hugeFontSizeSelected() = viewModelScope.launch(dispatchers.io) {
-        repository.hugeFontSizeSelected()
-
-        withContext(dispatchers.main) {
-            hideFontSize()
-        }
-    }
-
-    private fun invertNightTheme() = viewModelScope.launch(dispatchers.io) {
+    private fun invertNightTheme() = viewModelScope.launch {
         repository.invertNightTheme()
     }
 
-    private fun invertDisplayMoney() = viewModelScope.launch(dispatchers.io) {
+    private fun invertDisplayMoney() = viewModelScope.launch {
         repository.invertDisplayMoney()
     }
 
-    private fun invertDisplayCurrencyToLeft() = viewModelScope.launch(dispatchers.io) {
+    private fun invertDisplayCurrencyToLeft() = viewModelScope.launch {
         repository.invertDisplayCurrencyToLeft()
     }
 
-    private fun invertFirstLetterUppercase() = viewModelScope.launch(dispatchers.io) {
+    private fun invertFirstLetterUppercase() = viewModelScope.launch {
         repository.invertFirstLetterUppercase()
     }
 
-    private fun invertShoppingListsMultiColumns() = viewModelScope.launch(dispatchers.io) {
+    private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
         repository.invertShoppingListsMultiColumns()
     }
 
-    private fun invertProductsMultiColumns() = viewModelScope.launch(dispatchers.io) {
+    private fun invertProductsMultiColumns() = viewModelScope.launch {
         repository.invertProductsMultiColumns()
     }
 
-    private fun invertProductsEditCompleted() = viewModelScope.launch(dispatchers.io) {
+    private fun invertProductsEditCompleted() = viewModelScope.launch {
         repository.invertProductsEditCompleted()
     }
 
-    private fun invertProductsAddLastProducts() = viewModelScope.launch(dispatchers.io) {
+    private fun invertProductsAddLastProducts() = viewModelScope.launch {
         repository.invertProductsAddLastProduct()
     }
 
-    private fun sendEmailToDeveloper() = viewModelScope.launch(dispatchers.io) {
+    private fun sendEmailToDeveloper() = viewModelScope.launch {
         val email = repository.getSettings().firstOrNull()
             ?.settingsValues?.developerEmail ?: return@launch
         val subject = "MyShopping"
@@ -244,14 +202,6 @@ class SettingsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             _screenEventFlow.emit(SettingsScreenEvent.SendEmailToDeveloper(email, subject))
         }
-    }
-
-    private suspend fun showSettingsLoading() = withContext(dispatchers.main) {
-        settingsState.showLoading()
-    }
-
-    private suspend fun showSettings(settings: Settings) = withContext(dispatchers.main) {
-        settingsState.showSetting(settings)
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -262,7 +212,7 @@ class SettingsViewModel @Inject constructor(
         _screenEventFlow.emit(SettingsScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showAppGithub() = viewModelScope.launch(dispatchers.io) {
+    private fun showAppGithub() = viewModelScope.launch {
         val githubLink = repository.getSettings().firstOrNull()
             ?.settingsValues?.appGithubLink ?: return@launch
 
@@ -271,33 +221,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun showTopBar() {
-        val data = TopBarData(
-            title = mapping.toOnTopAppBarHeader(
-                text = mapping.toResourcesUiText(R.string.settings_header_settings),
-                fontSize = FontSize.MEDIUM
-            ),
-            navigationIcon = mapping.toOnTopAppBar(
-                icon = UiIcon.FromVector(Icons.Default.Menu)
-            )
-        )
-        _topBarState.value = data
-    }
-
     private fun hideFontSize() {
         settingsState.hideFontSize()
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(SettingsScreenEvent.HideNavigationDrawer)
-    }
-
-    private fun hideProductsAutocomplete() = viewModelScope.launch(dispatchers.io) {
-        repository.hideProductsAutocomplete()
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayAutocomplete()
-        }
     }
 
     private fun hideProductsDisplayAutocomplete() {

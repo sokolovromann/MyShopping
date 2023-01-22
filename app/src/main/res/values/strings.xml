@@ -162,6 +162,8 @@
     <string name="settings_body_email">Tap to write email</string>
     <string name="settings_body_firstLetterUppercase">Names of shopping lists and products</string>
     <string name="settings_body_github">Tap to open</string>
+    <string name="settings_body_productsMultiColumns">Multiple cards in one row</string>
+    <string name="settings_body_shoppingsMultiColumns">Multiple cards in one row</string>
     <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_header_aboutApp">About</string>
     <string name="settings_header_generalSettings">General</string>
@@ -182,9 +184,7 @@
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_productsMultiColumns">Multi-column in products</string>
-    <string name="settings_body_productsMultiColumns">Multiple cards in one row</string>
     <string name="settings_title_shoppingsMultiColumns">Multi-column in shopping lists</string>
-    <string name="settings_body_shoppingsMultiColumns">Multiple cards in one row</string>
     <string name="settings_title_taxRate">Tax rate</string>
 
     <string name="shoppingLists_action_displayActiveTotal">Active</string>

@@ -5,15 +5,12 @@ import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
@@ -41,10 +37,9 @@ fun SettingsScreen(
     navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-
+    val screenData = viewModel.settingsState.screenData
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    val systemUiController = rememberSystemUiController()
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -111,161 +106,173 @@ fun SettingsScreen(
         viewModel.onEvent(SettingsEvent.HideNavigationDrawer)
     }
 
-    AppSystemUi(systemUiController = systemUiController)
-
-    Scaffold(
+    AppGridScaffold(
+        screenState = screenData.screenState,
         scaffoldState = scaffoldState,
-        topBar = { TopBar(viewModel) },
-        drawerContent = { DrawerContent(viewModel) },
-        content = { paddingValues -> Content(paddingValues, viewModel) }
-    )
-}
-
-@Composable
-private fun TopBar(viewModel: SettingsViewModel) {
-    TopAppBar(
-        title = { Text(text = viewModel.topBarState.value.title.text.asCompose()) },
-        navigationIcon = {
-            IconButton(onClick = { viewModel.onEvent(SettingsEvent.ShowNavigationDrawer) }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = stringResource(R.string.settings_contentDescription_navigationIcon),
-                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                )
-            }
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(R.string.settings_header_settings)) },
+                navigationIcon = {
+                    IconButton(onClick = { viewModel.onEvent(SettingsEvent.ShowNavigationDrawer) }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = stringResource(R.string.settings_contentDescription_navigationIcon),
+                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                        )
+                    }
+                }
+            )
+        },
+        drawerContent = {
+            AppDrawerContent(
+                selected = UiRoute.Settings,
+                onItemClick = {
+                    val event = SettingsEvent.SelectNavigationItem(it)
+                    viewModel.onEvent(event)
+                }
+            )
+        },
+        loadingContent = {
+            AppLoadingContent(indicator = { CircularProgressIndicator() })
         }
-    )
-}
-
-@Composable
-private fun DrawerContent(viewModel: SettingsViewModel) {
-    AppDrawerContent(
-        selected = UiRoute.Settings,
-        onItemClick = {
-            val event = SettingsEvent.SelectNavigationItem(it)
-            viewModel.onEvent(event)
-        }
-    )
-}
-
-@Composable
-private fun Content(paddingValues: PaddingValues, viewModel: SettingsViewModel) {
-    Box(modifier = Modifier.padding(paddingValues)) {
-        val screenData = viewModel.settingsState.screenData
-        when (screenData.screenState) {
-            ScreenState.Nothing -> {}
-            ScreenState.Loading -> SettingsLoading()
-            ScreenState.Showing -> SettingsShowing(viewModel)
-            ScreenState.Saving -> {}
-        }
-    }
-}
-
-@Composable
-private fun SettingsShowing(viewModel: SettingsViewModel) {
-    val screenData = viewModel.settingsState.screenData
-    val scrollState = rememberScrollState()
-
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(4.dp)
-        .verticalScroll(scrollState)
     ) {
-        AppGrid(multiColumns = screenData.multiColumns) {
-            screenData.settings.forEach { SettingsItems(it.key, it.value, viewModel) }
-        }
-        Spacer(modifier = Modifier.height(128.dp))
+        SettingsGrid(
+            multiColumns = screenData.multiColumns,
+            map = screenData.settings,
+            fontSize = screenData.fontSize,
+            dropdownMenu = {
+                when (it) {
+                    SettingsUid.FontSize -> {
+                        SettingsFontSizeMenu(
+                            expanded = it == screenData.settingsItemUid,
+                            fontSize = screenData.fontSize,
+                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideFontSize) },
+                            onSelected = { fontSize ->
+                                viewModel.onEvent(SettingsEvent.FontSizeSelected(fontSize))
+                            }
+                        )
+                    }
+
+                    SettingsUid.DisplayAutocomplete -> {
+                        SettingsDisplayAutocompleteMenu(
+                            expanded = it == screenData.settingsItemUid,
+                            displayAutocomplete = screenData.displayAutocomplete,
+                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideProductsDisplayAutocomplete) },
+                            onSelected = { displayAutocomplete ->
+                                viewModel.onEvent(SettingsEvent.DisplayAutocompleteSelected(displayAutocomplete))
+                            }
+                        )
+                    }
+
+                    else -> {}
+                }
+            },
+            onClick = {
+                val event = SettingsEvent.SelectSettingsItem(it)
+                viewModel.onEvent(event)
+            }
+        )
     }
 }
 
 @Composable
-private fun SettingsLoading() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        content = { CircularProgressIndicator() }
-    )
+private fun SettingsGrid(
+    modifier: Modifier = Modifier,
+    multiColumns: Boolean,
+    map: Map<UiText, List<SettingsItem>>,
+    fontSize: FontSize,
+    dropdownMenu: @Composable (SettingsUid) -> Unit,
+    onClick: (SettingsUid) -> Unit
+) {
+    AppGrid(
+        modifier = modifier,
+        multiColumns = multiColumns
+    ) {
+        map.forEach {
+            SettingsSurface(
+                header = {
+                    Text(
+                        modifier = Modifier.padding(SettingsSurfaceHeaderPaddings),
+                        text = it.key.asCompose(),
+                        fontSize = fontSize.toItemTitle().sp
+                    )
+                },
+                items = {
+                    it.value.forEach { item ->
+                        AppItem(
+                            title = getSettingsItemTitle(item.titleText, fontSize),
+                            body = getSettingsItemBodyOrNull(item.bodyText, fontSize),
+                            after = getSettingsItemAfterOrNull(item.checked),
+                            dropdownMenu = { dropdownMenu(item.uid) },
+                            onClick = { onClick(item.uid) }
+                        )
+                    }
+                }
+            )
+        }
+    }
 }
 
 @Composable
-private fun SettingsItems(
-    header: UiText,
-    items: List<SettingsItem>,
-    viewModel: SettingsViewModel
+private fun SettingsSurface(
+    header: @Composable () -> Unit,
+    items: @Composable () -> Unit
 ) {
-    val fontSize = viewModel.settingsState.screenData.fontSize
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 56.dp)
-            .padding(all = 4.dp),
+            .defaultMinSize(minHeight = SettingsSurfaceMinHeight)
+            .padding(SettingsSurfacePaddings),
         shape = MaterialTheme.shapes.medium,
-        elevation = 1.dp,
+        elevation = SettingsSurfaceElevation
     ) {
-        Column(modifier = Modifier.background(color = MaterialTheme.colors.surface)) {
-            Text(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
-                text = header.asCompose(),
-                fontSize = fontSize.toItemTitle().sp,
-                fontWeight = FontWeight.Medium
+        Column(modifier = Modifier
+            .background(color = MaterialTheme.colors.surface)
+        ) {
+            ProvideTextStyle(
+                value = MaterialTheme.typography.subtitle1.copy(
+                    fontWeight = FontWeight.Medium
+                ),
+                content = { header() }
             )
-
-            items.forEach {
-                AppItem(
-                    title = itemTitle(it, fontSize),
-                    body = itemBodyOrNull(it, fontSize),
-                    after = itemAfterOrNull(it),
-                    dropdownMenu = {
-                        when (it.uid) {
-                            SettingsUid.FontSize -> FontSizeMenu(it.uid, viewModel)
-                            SettingsUid.DisplayAutocomplete -> DisplayAutocompleteMenu(it.uid, viewModel)
-                            else -> {}
-                        }
-                    },
-                    onClick = {
-                        val event = SettingsEvent.SelectSettingsItem(it.uid)
-                        viewModel.onEvent(event)
-                    }
-                )
-            }
+            items()
         }
     }
 }
 
 @Composable
-private fun FontSizeMenu(settingsUid: SettingsUid, viewModel: SettingsViewModel) {
-    val screenData = viewModel.settingsState.screenData
-    val fontSize = screenData.fontSize
-
+private fun SettingsFontSizeMenu(
+    expanded: Boolean,
+    fontSize: FontSize,
+    onDismissRequest: () -> Unit,
+    onSelected: (FontSize) -> Unit,
+) {
     AppDropdownMenu(
-        expanded = settingsUid == screenData.settingsItemUid,
-        onDismissRequest = { viewModel.onEvent(SettingsEvent.HideFontSize) }
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
     ) {
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.TinyFontSizeSelected) },
+            onClick = { onSelected(FontSize.TINY) },
             text = { Text(text = stringResource(R.string.settings_action_selectTinyFontSize)) },
             after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.TINY) }
         )
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.SmallFontSizeSelected) },
+            onClick = { onSelected(FontSize.SMALL) },
             text = { Text(text = stringResource(R.string.settings_action_selectSmallFontSize)) },
             after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.SMALL) }
         )
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.MediumFontSizeSelected) },
+            onClick = { onSelected(FontSize.MEDIUM) },
             text = { Text(text = stringResource(R.string.settings_action_selectMediumFontSize)) },
             after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.MEDIUM) }
         )
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.LargeFontSizeSelected) },
+            onClick = { onSelected(FontSize.LARGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectLargeFontSize)) },
             after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.LARGE) }
         )
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.HugeFontSizeSelected) },
+            onClick = { onSelected(FontSize.HUGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
             after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
         )
@@ -273,26 +280,28 @@ private fun FontSizeMenu(settingsUid: SettingsUid, viewModel: SettingsViewModel)
 }
 
 @Composable
-private fun DisplayAutocompleteMenu(settingsUid: SettingsUid, viewModel: SettingsViewModel) {
-    val screenData = viewModel.settingsState.screenData
-    val displayAutocomplete = screenData.displayAutocomplete
-
+private fun SettingsDisplayAutocompleteMenu(
+    expanded: Boolean,
+    displayAutocomplete: DisplayAutocomplete,
+    onDismissRequest: () -> Unit,
+    onSelected: (DisplayAutocomplete) -> Unit
+) {
     AppDropdownMenu(
-        expanded = settingsUid == screenData.settingsItemUid,
-        onDismissRequest = { viewModel.onEvent(SettingsEvent.HideProductsDisplayAutocomplete) }
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
     ) {
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.DisplayProductsAllAutocomplete) },
+            onClick = { onSelected(DisplayAutocomplete.ALL) },
             text = { Text(text = stringResource(R.string.settings_action_displayAllAutocomplete)) },
             after = { CheckmarkAppCheckbox(checked = displayAutocomplete == DisplayAutocomplete.ALL) }
         )
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.DisplayProductsNameAutocomplete) },
+            onClick = { onSelected(DisplayAutocomplete.NAME) },
             text = { Text(text = stringResource(R.string.settings_action_displayNameAutocomplete)) },
             after = { CheckmarkAppCheckbox(checked = displayAutocomplete == DisplayAutocomplete.NAME) }
         )
         AppDropdownMenuItem(
-            onClick = { viewModel.onEvent(SettingsEvent.HideProductsAutocomplete) },
+            onClick = { onSelected(DisplayAutocomplete.HIDE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHideAutocomplete)) },
             after = { CheckmarkAppCheckbox(checked = displayAutocomplete == DisplayAutocomplete.HIDE) }
         )
@@ -300,29 +309,38 @@ private fun DisplayAutocompleteMenu(settingsUid: SettingsUid, viewModel: Setting
 }
 
 @Composable
-private fun itemTitle(item: SettingsItem, fontSize: FontSize): @Composable (() -> Unit) = {
-    val title = item.titleText
+private fun getSettingsItemTitle(
+    text: UiText,
+    fontSize: FontSize
+): @Composable () -> Unit = {
     Text(
-        text = title.asCompose(),
+        text = text.asCompose(),
         fontSize = fontSize.toItemTitle().sp
     )
 }
 
 @Composable
-private fun itemBodyOrNull(item: SettingsItem, fontSize: FontSize): @Composable (() -> Unit)? {
-    val body = item.bodyText
-    return itemOrNull(enabled = body != UiText.Nothing) {
-        Text(
-            text = body.asCompose(),
-            fontSize = fontSize.toItemBody().sp
-        )
-    }
+private fun getSettingsItemBodyOrNull(
+    text: UiText,
+    fontSize: FontSize
+) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
+    Text(
+        text = text.asCompose(),
+        fontSize = fontSize.toItemBody().sp
+    )
 }
 
 @Composable
-private fun itemAfterOrNull(item: SettingsItem): @Composable (() -> Unit)? {
-    val checked = item.checked
-    return itemOrNull(enabled = checked != null) {
-        AppSwitch(checked = checked ?: false)
-    }
+private fun getSettingsItemAfterOrNull(
+    checked: Boolean?
+) = itemOrNull(enabled = checked != null) {
+    AppSwitch(checked = checked ?: false)
 }
+
+private val SettingsSurfaceMinHeight = 56.dp
+private val SettingsSurfacePaddings = PaddingValues(all = 4.dp)
+private val SettingsSurfaceElevation = 1.dp
+private val SettingsSurfaceHeaderPaddings = PaddingValues(
+    horizontal = 8.dp,
+    vertical = 16.dp
+)

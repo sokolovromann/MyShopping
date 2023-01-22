@@ -153,7 +153,7 @@ class RepositoryMapping @Inject constructor() {
                 entity.discountAsPercent,
                 toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
             ),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
+            taxRate = toTaxRate(preferencesEntity.taxRate, preferencesEntity.taxRateAsPercent),
             completed = entity.completed
         )
     }
@@ -176,7 +176,7 @@ class RepositoryMapping @Inject constructor() {
                 entity.discountAsPercent,
                 toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
             ),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
+            taxRate = toTaxRate(preferencesEntity.taxRate, preferencesEntity.taxRateAsPercent),
             completed = entity.completed
         )
     }

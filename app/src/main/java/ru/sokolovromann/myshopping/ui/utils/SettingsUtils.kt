@@ -59,10 +59,7 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.TaxRate,
             titleText = UiText.FromResources(R.string.settings_title_taxRate),
-            bodyText = UiText.FromResourcesWithArgs(
-                R.string.settings_title_taxRate,
-                settingsValues.taxRate.toString()
-            )
+            bodyText = UiText.FromString(settingsValues.taxRate.toString())
         )
     )
 }
@@ -111,7 +108,7 @@ private fun Settings.getAboutSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.Email,
             titleText = UiText.FromResources(R.string.settings_title_email),
-            bodyText = UiText.FromString(settingsValues.developerEmail)
+            bodyText = UiText.FromResources(R.string.settings_body_email)
         ),
         SettingsItem(
             uid = SettingsUid.NoUId,
