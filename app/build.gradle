@@ -58,11 +58,11 @@ dependencies {
     implementation "androidx.core:core:$core_version"
     implementation "androidx.core:core-splashscreen:$core_splashscreen_version"
 
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_tooling_version"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_tooling_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_tooling_version"
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.material:material:$compose_material_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:$system_ui_controller_version"
 
