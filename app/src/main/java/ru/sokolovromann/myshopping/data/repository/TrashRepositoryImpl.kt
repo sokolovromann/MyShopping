@@ -42,13 +42,16 @@ class TrashRepositoryImpl @Inject constructor(
         trashDao.moveShoppingToArchive(uid, lastModified)
     }
 
-    override suspend fun deleteShoppingLists(): Unit = withContext(dispatchers.io) {
-        trashDao.deleteShoppingLists()
+    override suspend fun deleteShoppingLists(uids: List<String>): Unit = withContext(dispatchers.io) {
+        uids.forEach {
+            trashDao.deleteShoppingList(it)
+            trashDao.hideProducts(it)
+        }
     }
 
     override suspend fun deleteShoppingList(uid: String): Unit = withContext(dispatchers.io) {
         trashDao.deleteShoppingList(uid)
-        trashDao.deleteProducts(uid)
+        trashDao.hideProducts(uid)
     }
 
     override suspend fun sortShoppingListsByCreated(): Unit = withContext(dispatchers.io) {

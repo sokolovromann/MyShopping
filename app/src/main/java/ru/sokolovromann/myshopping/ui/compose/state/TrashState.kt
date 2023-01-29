@@ -74,6 +74,15 @@ class TrashState {
     fun hideDisplayCompleted() {
         screenData = screenData.copy(showDisplayCompleted = false)
     }
+
+    fun getUidsResult(): Result<List<String>> {
+        val uids = screenData.shoppingLists.map { it.uid }
+        return if (uids.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            Result.success(uids)
+        }
+    }
 }
 
 data class TrashScreenData(

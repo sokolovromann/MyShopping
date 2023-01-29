@@ -46,20 +46,20 @@ class ProductsRepositoryImpl @Inject constructor(
         productsDao.activeProduct(uid, lastModified)
     }
 
-    override suspend fun deleteProducts(
+    override suspend fun hideProducts(
         shoppingUid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.deleteProducts(shoppingUid)
+        productsDao.hideProducts(shoppingUid)
         productsDao.updateShoppingLastModified(shoppingUid, lastModified)
     }
 
-    override suspend fun deleteProduct(
+    override suspend fun hideProduct(
         shoppingUid: String,
         productUid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.deleteProduct(productUid)
+        productsDao.hideProduct(productUid)
         productsDao.updateShoppingLastModified(shoppingUid, lastModified)
     }
 

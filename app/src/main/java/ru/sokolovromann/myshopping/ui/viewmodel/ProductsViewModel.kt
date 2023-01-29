@@ -49,9 +49,9 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.MoveProductToShoppingList -> moveProductToShoppingList(event)
 
-            ProductsEvent.DeleteProducts -> deleteProducts()
+            ProductsEvent.HideProducts -> hideProducts()
 
-            is ProductsEvent.DeleteProduct -> deleteProduct(event)
+            is ProductsEvent.HideProduct -> hideProduct(event)
 
             ProductsEvent.ShareProducts -> shareProducts()
 
@@ -140,8 +140,8 @@ class ProductsViewModel @Inject constructor(
         hideProductsMenu()
     }
 
-    private fun deleteProducts() = viewModelScope.launch {
-        repository.deleteProducts(
+    private fun hideProducts() = viewModelScope.launch {
+        repository.hideProducts(
             shoppingUid = shoppingUid,
             lastModified = System.currentTimeMillis()
         )
@@ -151,10 +151,10 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun deleteProduct(
-        event: ProductsEvent.DeleteProduct
+    private fun hideProduct(
+        event: ProductsEvent.HideProduct
     ) = viewModelScope.launch {
-        repository.deleteProduct(
+        repository.hideProduct(
             shoppingUid = shoppingUid,
             productUid = event.uid,
             lastModified = System.currentTimeMillis()

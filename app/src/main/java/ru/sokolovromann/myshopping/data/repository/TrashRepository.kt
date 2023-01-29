@@ -11,7 +11,7 @@ interface TrashRepository {
 
     suspend fun moveShoppingListToArchive(uid: String, lastModified: Long)
 
-    suspend fun deleteShoppingLists()
+    suspend fun deleteShoppingLists(uids: List<String>)
 
     suspend fun deleteShoppingList(uid: String)
 

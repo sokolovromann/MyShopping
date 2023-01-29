@@ -22,9 +22,9 @@ interface ProductsDao {
     @Query("UPDATE products SET completed = 0, last_modified = :lastModified WHERE product_uid = :uid")
     fun activeProduct(uid: String, lastModified: Long)
 
-    @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid")
-    fun deleteProducts(shoppingUid: String)
+    @Query("UPDATE products SET display = 0 WHERE shopping_uid = :shoppingUid")
+    fun hideProducts(shoppingUid: String)
 
-    @Query("DELETE FROM products WHERE product_uid = :uid")
-    fun deleteProduct(uid: String)
+    @Query("UPDATE products SET display = 0 WHERE product_uid = :uid")
+    fun hideProduct(uid: String)
 }

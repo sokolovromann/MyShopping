@@ -101,7 +101,9 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun deleteShoppingLists() = viewModelScope.launch {
-        repository.deleteShoppingLists()
+        val uids = trashState.getUidsResult()
+            .getOrElse { return@launch }
+        repository.deleteShoppingLists(uids)
     }
 
     private fun deleteShoppingList(

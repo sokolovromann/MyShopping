@@ -33,7 +33,9 @@ class RepositoryMapping @Inject constructor() {
             archived = entity.archived,
             deleted = entity.deleted,
             completed = toCompleted(shoppingListEntity.productEntities),
-            products = shoppingListEntity.productEntities.map { toProduct(it, preferencesEntity) },
+            products = shoppingListEntity.productEntities
+                .filter { it.display }
+                .map { toProduct(it, preferencesEntity) },
             productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
@@ -52,7 +54,9 @@ class RepositoryMapping @Inject constructor() {
             archived = entity.archived,
             deleted = entity.deleted,
             completed = toCompleted(shoppingListEntity.productEntities),
-            products = shoppingListEntity.productEntities.map { toProduct(it, preferencesEntity) },
+            products = shoppingListEntity.productEntities
+                .filter { it.display }
+                .map { toProduct(it, preferencesEntity) },
             productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
