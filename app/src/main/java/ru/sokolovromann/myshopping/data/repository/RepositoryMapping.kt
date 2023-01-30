@@ -240,11 +240,21 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toAddEditProductAutocomplete(
+    fun toAddEditProductProducts(
+        entities: List<ProductEntity>,
+        preferencesEntity: ProductPreferencesEntity
+    ): AddEditProductProducts {
+        return AddEditProductProducts(
+            products = entities.map { toProduct(it, preferencesEntity) },
+            preferences = toProductPreferences(preferencesEntity)
+        )
+    }
+
+    fun toAddEditProductAutocompletes(
         entities: List<AutocompleteEntity>,
         resources: List<String>,
         preferencesEntity: ProductPreferencesEntity
-    ): AddEditProductAutocomplete {
+    ): AddEditProductAutocompletes {
         val autocompletes: MutableList<Autocomplete> = entities
             .map { toAutocomplete(it, preferencesEntity) }
             .toMutableList()
@@ -254,7 +264,7 @@ class RepositoryMapping @Inject constructor() {
             autocompletes.add(autocomplete)
         }
 
-        return AddEditProductAutocomplete(
+        return AddEditProductAutocompletes(
             autocompletes = autocompletes,
             preferences = toProductPreferences(preferencesEntity)
         )
@@ -266,14 +276,7 @@ class RepositoryMapping @Inject constructor() {
             uid = autocomplete.uid,
             created = autocomplete.created,
             lastModified = autocomplete.lastModified,
-            name = autocomplete.name,
-            quantity = toQuantityValue(autocomplete.quantity),
-            quantitySymbol = toQuantitySymbol(autocomplete.quantity),
-            price = toMoneyValue(autocomplete.price),
-            discount = toDiscountValue(autocomplete.discount),
-            discountAsPercent = toDiscountAsPercent(autocomplete.discount),
-            taxRate = toTaxRateValue(autocomplete.taxRate),
-            taxRateAsPercent = toTaxRateAsPercent(autocomplete.taxRate)
+            name = autocomplete.name
         )
     }
 
@@ -283,18 +286,7 @@ class RepositoryMapping @Inject constructor() {
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
-            name = entity.name,
-            quantity = toQuantity(entity.quantity, entity.quantitySymbol),
-            price = toMoney(
-                entity.price,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            discount = toDiscount(
-                entity.discount,
-                entity.discountAsPercent,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent)
+            name = entity.name
         )
     }
 
@@ -304,18 +296,7 @@ class RepositoryMapping @Inject constructor() {
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
-            name = entity.name,
-            quantity = toQuantity(entity.quantity, entity.quantitySymbol),
-            price = toMoney(
-                entity.price,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            discount = toDiscount(
-                entity.discount,
-                entity.discountAsPercent,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent)
+            name = entity.name
         )
     }
 

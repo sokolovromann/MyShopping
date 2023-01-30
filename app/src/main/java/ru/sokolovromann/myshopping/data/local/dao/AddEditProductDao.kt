@@ -11,6 +11,9 @@ import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
 @Dao
 interface AddEditProductDao {
 
+    @Query("SELECT * FROM products WHERE name LIKE '%' || :search || '%'")
+    fun getProducts(search: String): Flow<List<ProductEntity>>
+
     @Query("SELECT * FROM products WHERE product_uid = :uid")
     fun getProduct(uid: String): Flow<ProductEntity?>
 

@@ -1,40 +1,16 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
-data class AddEditProductAutocomplete(
-    val autocompletes: List<Autocomplete> = listOf(),
+data class AddEditProductProducts(
+    val products: List<Product> = listOf(),
     val preferences: ProductPreferences = ProductPreferences()
 ) {
-
-    private val defaultNamesLimit: Int = 10
     private val defaultQuantitiesLimit: Int = 5
     private val defaultPricesLimit: Int = 3
     private val defaultDiscountsLimit: Int = 3
     private val defaultTotalsLimit: Int = 3
 
-    private fun filterAutocompletesByNameOrNot(name: String): List<Autocomplete> {
-        return if (name.isEmpty()) {
-            autocompletes
-        } else {
-            if (autocompletes.find { it.name == name } == null) {
-                autocompletes.filter { it.name.contains(name, true) }
-            } else {
-                autocompletes.filter { it.name == name }
-            }
-        }
-    }
-
-    fun names(): List<String> {
-        return autocompletes
-            .map { it.name.formatFirst(preferences.firstLetterUppercase) }
-            .distinct()
-            .sorted()
-            .filterIndexed { index, name ->
-                name.isNotEmpty() && index < defaultNamesLimit
-            }
-    }
-
-    fun quantities(name: String = ""): List<Quantity> {
-        return filterAutocompletesByNameOrNot(name)
+    fun quantities(): List<Quantity> {
+        return products
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
             .distinctBy { it.value }
@@ -43,8 +19,8 @@ data class AddEditProductAutocomplete(
             }
     }
 
-    fun quantitySymbols(name: String = ""): List<Quantity> {
-        return filterAutocompletesByNameOrNot(name)
+    fun quantitySymbols(): List<Quantity> {
+        return products
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
             .distinctBy { it.symbol }
@@ -53,8 +29,8 @@ data class AddEditProductAutocomplete(
             }
     }
 
-    fun prices(name: String = ""): List<Money> {
-        return filterAutocompletesByNameOrNot(name)
+    fun prices(): List<Money> {
+        return products
             .sortedByDescending { it.lastModified }
             .map { it.price }
             .distinctBy { it.value }
@@ -63,8 +39,8 @@ data class AddEditProductAutocomplete(
             }
     }
 
-    fun discounts(name: String = ""): List<Discount> {
-        return filterAutocompletesByNameOrNot(name)
+    fun discounts(): List<Discount> {
+        return products
             .sortedByDescending { it.lastModified }
             .map { it.discount }
             .distinctBy { it.value }
@@ -73,8 +49,8 @@ data class AddEditProductAutocomplete(
             }
     }
 
-    fun totals(name: String = ""): List<Money> {
-        return filterAutocompletesByNameOrNot(name)
+    fun totals(): List<Money> {
+        return products
             .sortedByDescending { it.lastModified }
             .map { it.calculateTotal() }
             .distinctBy { it.value }

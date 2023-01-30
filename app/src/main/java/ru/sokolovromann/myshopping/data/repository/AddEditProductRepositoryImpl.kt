@@ -8,10 +8,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AddEditProductDao
 import ru.sokolovromann.myshopping.data.local.dao.AddEditProductPreferencesDao
 import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProductAutocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Product
+import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class AddEditProductRepositoryImpl @Inject constructor(
@@ -21,6 +18,17 @@ class AddEditProductRepositoryImpl @Inject constructor(
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : AddEditProductRepository {
+
+    override suspend fun getProducts(
+        search: String
+    ): Flow<AddEditProductProducts> = withContext(dispatchers.io) {
+        return@withContext productDao.getProducts(search).combine(
+            flow = preferencesDao.getProductPreferences(),
+            transform = { entities, preferencesEntity ->
+                mapping.toAddEditProductProducts(entities, preferencesEntity)
+            }
+        )
+    }
 
     override suspend fun getAddEditProduct(uid: String?): Flow<AddEditProduct> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
@@ -40,13 +48,13 @@ class AddEditProductRepositoryImpl @Inject constructor(
 
     override suspend fun getAutocompletes(
         search: String
-    ): Flow<AddEditProductAutocomplete> = withContext(dispatchers.io) {
+    ): Flow<AddEditProductAutocompletes> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = productDao.getAutocompletes(search),
             flow2 = resources.getDefaultAutocompleteNames(search),
             flow3 = preferencesDao.getProductPreferences(),
             transform = { entities, resources, preferencesEntity ->
-                mapping.toAddEditProductAutocomplete(entities, resources, preferencesEntity)
+                mapping.toAddEditProductAutocompletes(entities, resources, preferencesEntity)
             }
         )
     }

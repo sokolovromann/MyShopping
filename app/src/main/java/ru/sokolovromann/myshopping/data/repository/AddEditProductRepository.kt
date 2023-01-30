@@ -1,16 +1,15 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProductAutocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Product
+import ru.sokolovromann.myshopping.data.repository.model.*
 
 interface AddEditProductRepository {
 
+    suspend fun getProducts(search: String): Flow<AddEditProductProducts>
+
     suspend fun getAddEditProduct(uid: String?): Flow<AddEditProduct>
 
-    suspend fun getAutocompletes(search: String): Flow<AddEditProductAutocomplete>
+    suspend fun getAutocompletes(search: String): Flow<AddEditProductAutocompletes>
 
     suspend fun addProduct(product: Product)
 

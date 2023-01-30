@@ -164,11 +164,11 @@ fun List<Autocomplete>.sortAutocompletes(sort: Sort): List<Autocomplete> {
             }
         }
 
-        SortBy.TOTAL -> {
+        else -> {
             if (sort.ascending) {
-                this.sortedBy { it.calculateTotal().value }
+                this.sortedBy { it.name }
             } else {
-                this.sortedByDescending { it.calculateTotal().value }
+                this.sortedByDescending { it.name }
             }
         }
     }
