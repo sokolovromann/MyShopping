@@ -16,6 +16,8 @@ class AddEditProductState {
 
     private var preferences by mutableStateOf(ProductPreferences())
 
+    private var productNameFromAutocompletes by mutableStateOf(false)
+
     var screenData by mutableStateOf(AddEditProductScreenData())
         private set
 
@@ -73,6 +75,8 @@ class AddEditProductState {
             autocompleteDiscounts = listOf(),
             fontSize = preferences.fontSize
         )
+
+        productNameFromAutocompletes = false
     }
 
     fun changeNameValue(nameValue: TextFieldValue) {
@@ -107,6 +111,8 @@ class AddEditProductState {
             ),
             autocompleteNames = listOf()
         )
+
+        productNameFromAutocompletes = true
     }
 
     fun selectAutocompleteQuantity(quantity: Quantity) {
@@ -224,15 +230,13 @@ class AddEditProductState {
         screenData = screenData.copy(autocompleteNames = autocompleteNames)
     }
 
-    fun showAutocompletes(
-        names: List<String>,
+    fun showProducts(
         quantities: List<Quantity>,
         quantitySymbols: List<Quantity>,
         prices: List<Money>,
         discounts: List<Discount>
     ) {
         screenData = screenData.copy(
-            autocompleteNames = names,
             autocompleteQuantities = quantities,
             autocompleteQuantitySymbols = quantitySymbols,
             autocompletePrices = prices,
@@ -248,11 +252,21 @@ class AddEditProductState {
         screenData = screenData.copy(
             autocompleteNames = listOf(),
         )
+        productNameFromAutocompletes = true
     }
 
     fun hideAutocompletes() {
         screenData = screenData.copy(
             autocompleteNames = listOf(),
+            autocompleteQuantities = listOf(),
+            autocompleteQuantitySymbols = listOf(),
+            autocompletePrices = listOf(),
+            autocompleteDiscounts = listOf()
+        )
+    }
+
+    fun hideProducts() {
+        screenData = screenData.copy(
             autocompleteQuantities = listOf(),
             autocompleteQuantitySymbols = listOf(),
             autocompletePrices = listOf(),
@@ -298,23 +312,8 @@ class AddEditProductState {
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
-        return if (preferences.addLastProduct) {
-            val success = Autocomplete(
-                name = screenData.nameValue.text,
-                quantity = Quantity(
-                    value = screenData.quantityValue.toFloatOrZero(),
-                    symbol = screenData.quantitySymbolValue.text
-                ),
-                price = Money(
-                    value = screenData.priceValue.toFloatOrZero(),
-                    currency = preferences.currency,
-                ),
-                discount = Discount(
-                    value = screenData.discountValue.toFloatOrZero(),
-                    asPercent = screenData.discountAsPercent
-                ),
-                taxRate = preferences.taxRate
-            )
+        return if (!productNameFromAutocompletes && preferences.addLastProduct) {
+            val success = Autocomplete(name = screenData.nameValue.text)
             Result.success(success)
         } else {
             Result.failure(Exception())
