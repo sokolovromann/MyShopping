@@ -198,9 +198,16 @@ private fun AutocompletesGrid(
         modifier = modifier,
         multiColumns = multiColumns
     ) {
+        val itemModifier = if (multiColumns) {
+            Modifier
+        } else {
+            Modifier.padding(AutocompleteItemNotMultiColumnsPaddings)
+        }
+
         items.forEach { item ->
-            AppSurfaceItem(
-                modifier = modifier,
+            AppMultiColumnsItem(
+                modifier = itemModifier,
+                multiColumns = multiColumns,
                 title = getAutocompleteItemTitleOrNull(item.nameText, fontSize),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid) },
@@ -266,3 +273,4 @@ private fun AutocompletesSortContent(
 }
 
 private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)
+private val AutocompleteItemNotMultiColumnsPaddings = PaddingValues(horizontal = 8.dp)
