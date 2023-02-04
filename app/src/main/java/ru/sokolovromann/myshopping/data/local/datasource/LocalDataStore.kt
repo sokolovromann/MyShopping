@@ -31,6 +31,7 @@ class LocalDataStore @Inject constructor(
     private val shoppingsSortAscendingKey = booleanPreferencesKey("shoppings_sort_ascending")
     private val shoppingsDisplayCompletedKey = stringPreferencesKey("shoppings_display_completed")
     private val shoppingsDisplayTotalKey = stringPreferencesKey("shoppings_display_total")
+    private val shoppingsMaxProductsKey = intPreferencesKey("shoppings_max_products")
     private val productsMultiColumnsKey = booleanPreferencesKey("products_multi_columns")
     private val productsSortByKey = stringPreferencesKey("products_sort_by")
     private val productsSortAscendingKey = booleanPreferencesKey("products_sort_ascending")
@@ -60,7 +61,8 @@ class LocalDataStore @Inject constructor(
                 displayMoney = it[displayMoneyKey] ?: true,
                 displayCompleted = it[shoppingsDisplayCompletedKey] ?: "",
                 displayTotal = it[shoppingsDisplayTotalKey] ?: "",
-                screenSize = it[screenSizeKey] ?: ""
+                screenSize = it[screenSizeKey] ?: "",
+                maxProducts = it[shoppingsMaxProductsKey] ?: 10
             )
         }
     }
@@ -206,6 +208,10 @@ class LocalDataStore @Inject constructor(
 
     suspend fun saveShoppingsDisplayTotal(displayTotal: String) = withContext(dispatchers.io) {
         dataStore.edit { it[shoppingsDisplayTotalKey] = displayTotal }
+    }
+
+    suspend fun saveShoppingsMaxProducts(maxProducts: Int) = withContext(dispatchers.io) {
+        dataStore.edit { it[shoppingsMaxProductsKey] = maxProducts }
     }
 
     suspend fun saveProductsMultiColumns(multiColumns: Boolean) = withContext(dispatchers.io) {

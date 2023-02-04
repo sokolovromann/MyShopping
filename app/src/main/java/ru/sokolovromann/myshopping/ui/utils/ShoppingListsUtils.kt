@@ -12,7 +12,16 @@ fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
             val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)
         } else {
-            it.products.map { product -> productsToPair(product, preferences) }
+            val products: MutableList<Pair<Boolean?, UiText>> = it.products
+                .filterIndexed { index, _ -> index < preferences.maxProducts}
+                .map { product -> productsToPair(product, preferences) }
+                .toMutableList()
+
+            if (it.products.size > preferences.maxProducts) {
+                products.add(Pair(null, UiText.FromResources(R.string.purchases_text_moreProducts)))
+            }
+
+            products.toList()
         }
 
         val totalText: UiText = if (preferences.displayMoney) {

@@ -10,5 +10,6 @@ data class ShoppingListPreferences(
     val displayMoney: Boolean = true,
     val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
-    val screenSize: ScreenSize = ScreenSize.DefaultValue
+    val screenSize: ScreenSize = ScreenSize.DefaultValue,
+    val maxProducts: Int = 0
 )

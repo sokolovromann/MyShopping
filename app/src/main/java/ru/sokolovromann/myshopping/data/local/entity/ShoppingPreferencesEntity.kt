@@ -13,5 +13,6 @@ data class ShoppingPreferencesEntity(
     val displayMoney: Boolean = false,
     val displayCompleted: String = "",
     val displayTotal: String = "",
-    val screenSize: String = ""
+    val screenSize: String = "",
+    val maxProducts: Int = 0
 )

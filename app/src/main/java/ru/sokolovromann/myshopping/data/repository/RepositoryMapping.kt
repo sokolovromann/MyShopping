@@ -87,7 +87,8 @@ class RepositoryMapping @Inject constructor() {
             displayMoney = entity.displayMoney,
             displayCompleted = toDisplayCompleted(entity.displayCompleted),
             displayTotal = toDisplayTotal(entity.displayTotal),
-            screenSize = toScreenSize(entity.screenSize)
+            screenSize = toScreenSize(entity.screenSize),
+            maxProducts = entity.maxProducts
         )
     }
 
