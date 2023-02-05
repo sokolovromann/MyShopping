@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
@@ -30,6 +31,7 @@ class MoveProductViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<MoveProductScreenEvent> = _screenEventFlow
 
     init {
+        getProduct()
         getPurchases()
     }
 
@@ -97,19 +99,28 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
-        val productUid: String? = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
-        if (productUid == null) {
+    private fun getProduct() = viewModelScope.launch {
+        val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
+        val product = repository.getProduct(productUid).firstOrNull()
+
+        if (product == null) {
             cancelMovingProduct()
         } else {
-            repository.moveProduct(
-                productUid = productUid,
-                shoppingUid = event.uid,
-                lastModified = System.currentTimeMillis()
-            )
             withContext(dispatchers.main) {
-                _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
+                moveProductState.saveProduct(product)
             }
+        }
+    }
+
+    private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
+        moveProductState.selectShoppingList(event.uid)
+        val product = moveProductState.getProductResult()
+            .getOrElse { return@launch }
+
+        repository.editProduct(product)
+
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
         }
     }
 
