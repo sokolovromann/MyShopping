@@ -235,6 +235,29 @@ fun ProductsScreen(
                     )
                     AppDropdownMenuItem(
                         onClick = {
+                            val event = ProductsEvent.HideProduct(it)
+                            viewModel.onEvent(event)
+                        },
+                        text = { Text(text = stringResource(R.string.products_action_deleteProduct)) }
+                    )
+                    Divider()
+                    AppDropdownMenuItem(
+                        onClick = {
+                            val event = ProductsEvent.MoveProductToUp(it)
+                            viewModel.onEvent(event)
+                        },
+                        text = { Text(text = stringResource(R.string.products_action_moveProductToUp)) }
+                    )
+                    AppDropdownMenuItem(
+                        onClick = {
+                            val event = ProductsEvent.MoveProductToDown(it)
+                            viewModel.onEvent(event)
+                        },
+                        text = { Text(text = stringResource(R.string.products_action_moveProductToDown)) }
+                    )
+                    Divider()
+                    AppDropdownMenuItem(
+                        onClick = {
                             val event = ProductsEvent.CopyProductToShoppingList(it)
                             viewModel.onEvent(event)
                         },
@@ -246,13 +269,6 @@ fun ProductsScreen(
                             viewModel.onEvent(event)
                         },
                         text = { Text(text = stringResource(R.string.products_action_moveProductToShoppingList)) }
-                    )
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = ProductsEvent.HideProduct(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.products_action_deleteProduct)) }
                     )
                 }
             },

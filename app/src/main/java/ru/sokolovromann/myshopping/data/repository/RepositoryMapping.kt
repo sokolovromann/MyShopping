@@ -36,7 +36,6 @@ class RepositoryMapping @Inject constructor() {
             products = shoppingListEntity.productEntities
                 .filter { it.display }
                 .map { toProduct(it, preferencesEntity) },
-            productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
         )
@@ -57,7 +56,6 @@ class RepositoryMapping @Inject constructor() {
             products = shoppingListEntity.productEntities
                 .filter { it.display }
                 .map { toProduct(it, preferencesEntity) },
-            productsEmpty = toProductsEmpty(shoppingListEntity.productEntities),
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
         )
@@ -124,6 +122,7 @@ class RepositoryMapping @Inject constructor() {
     fun toProductEntity(product: Product): ProductEntity {
         return ProductEntity(
             id = product.id,
+            position = product.position,
             productUid = product.productUid,
             shoppingUid = product.shoppingUid,
             created = product.created,
@@ -143,6 +142,7 @@ class RepositoryMapping @Inject constructor() {
     fun toProduct(entity: ProductEntity, preferencesEntity: ShoppingPreferencesEntity): Product {
         return Product(
             id = entity.id,
+            position = entity.position,
             productUid = entity.productUid,
             shoppingUid = entity.shoppingUid,
             created = entity.created,
@@ -166,6 +166,7 @@ class RepositoryMapping @Inject constructor() {
     fun toProduct(entity: ProductEntity, preferencesEntity: ProductPreferencesEntity): Product {
         return Product(
             id = entity.id,
+            position = entity.position,
             productUid = entity.productUid,
             shoppingUid = entity.shoppingUid,
             created = entity.created,
@@ -201,6 +202,7 @@ class RepositoryMapping @Inject constructor() {
         val price = Money(value = priceMeasure)
 
         return Product(
+            position = cursor.position,
             shoppingUid = toAppVersion14ShoppingUid(listId),
             name = name,
             quantity = quantity,
@@ -234,9 +236,14 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toAddEditProduct(entity: ProductEntity?, preferencesEntity: ProductPreferencesEntity): AddEditProduct {
+    fun toAddEditProduct(
+        entity: ProductEntity?,
+        lastPosition: Int?,
+        preferencesEntity: ProductPreferencesEntity
+    ): AddEditProduct {
         return AddEditProduct(
             product = if (entity == null) null else toProduct(entity, preferencesEntity),
+            productsLastPosition = lastPosition,
             preferences = toProductPreferences(preferencesEntity)
         )
     }
@@ -680,10 +687,6 @@ class RepositoryMapping @Inject constructor() {
         } else {
             entities.find { !it.completed } == null
         }
-    }
-
-    fun toProductsEmpty(entities: List<ProductEntity>): Boolean {
-        return entities.isEmpty()
     }
 
     private fun toAppVersion14ShoppingUid(listId: Long): String {

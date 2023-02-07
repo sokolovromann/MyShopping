@@ -75,50 +75,8 @@ fun List<ShoppingList>.sortShoppingLists(sort: Sort, displayCompleted: DisplayCo
 
 fun List<Product>.sortProducts(sort: Sort, displayCompleted: DisplayCompleted): List<Product> {
     val partition = this.partition { it.completed }
-    var sortedCompleted: List<Product> = mutableListOf()
-    var sortedActive: List<Product> = mutableListOf()
-
-    when (sort.sortBy) {
-        SortBy.CREATED -> {
-            if (sort.ascending) {
-                sortedCompleted = partition.first.sortedBy { it.created }
-                sortedActive = partition.second.sortedBy { it.created }
-            } else {
-                sortedCompleted = partition.first.sortedByDescending { it.created }
-                sortedActive = partition.second.sortedByDescending { it.created }
-            }
-        }
-
-        SortBy.LAST_MODIFIED -> {
-            if (sort.ascending) {
-                sortedCompleted = partition.first.sortedBy { it.lastModified }
-                sortedActive = partition.second.sortedBy { it.lastModified }
-            } else {
-                sortedCompleted = partition.first.sortedByDescending { it.lastModified }
-                sortedActive = partition.second.sortedByDescending { it.lastModified }
-            }
-        }
-
-        SortBy.NAME -> {
-            if (sort.ascending) {
-                sortedCompleted = partition.first.sortedBy { it.name }
-                sortedActive = partition.second.sortedBy { it.name }
-            } else {
-                sortedCompleted = partition.first.sortedByDescending { it.name }
-                sortedActive = partition.second.sortedByDescending { it.name }
-            }
-        }
-
-        SortBy.TOTAL -> {
-            if (sort.ascending) {
-                sortedCompleted = partition.first.sortedBy { it.calculateTotal().value }
-                sortedActive = partition.second.sortedBy { it.calculateTotal().value }
-            } else {
-                sortedCompleted = partition.first.sortedByDescending { it.calculateTotal().value }
-                sortedActive = partition.second.sortedByDescending { it.calculateTotal().value }
-            }
-        }
-    }
+    val sortedCompleted: List<Product> = partition.first.sortedBy { it.position }
+    val sortedActive: List<Product> = partition.second.sortedBy { it.position }
 
     val allProducts: MutableList<Product> = mutableListOf()
     when (displayCompleted) {

@@ -3,15 +3,14 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Product
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListPreferences
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class CopyProductState {
 
     private var product by mutableStateOf(Product())
+
+    private var shoppingLists: List<ShoppingList> by mutableStateOf(listOf())
 
     var screenData by mutableStateOf(CopyProductScreenData())
         private set
@@ -21,6 +20,7 @@ class CopyProductState {
     }
 
     fun showNotFound(preferences: ShoppingListPreferences, location: ShoppingListLocation) {
+        shoppingLists = listOf()
         screenData = CopyProductScreenData(
             screenState = ScreenState.Nothing,
             location = location,
@@ -29,6 +29,7 @@ class CopyProductState {
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
+        this.shoppingLists = shoppingLists.sortShoppingLists()
         val preferences = shoppingLists.preferences
 
         screenData = CopyProductScreenData(
@@ -63,8 +64,11 @@ class CopyProductState {
             screenData = screenData.copy(screenState = ScreenState.Showing)
             Result.failure(Exception())
         } else {
+            val shoppingUid = screenData.shoppingListSelectedUid!!
+            val position = shoppingLists.find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
             val success = Product(
-                shoppingUid = screenData.shoppingListSelectedUid!!,
+                position = position,
+                shoppingUid = shoppingUid,
                 name = product.name,
                 quantity = product.quantity,
                 price = product.price,

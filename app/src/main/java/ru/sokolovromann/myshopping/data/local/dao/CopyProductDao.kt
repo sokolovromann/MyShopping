@@ -27,6 +27,9 @@ interface CopyProductDao {
     @Query("SELECT * FROM products WHERE product_uid = :uid")
     fun getProduct(uid: String): Flow<ProductEntity?>
 
+    @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
+    fun getProductsLastPosition(shoppingUid: String): Flow<Int?>
+
     @Insert(onConflict = REPLACE)
     fun insertProduct(productEntity: ProductEntity)
 

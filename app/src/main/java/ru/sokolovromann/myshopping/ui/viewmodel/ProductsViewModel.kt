@@ -49,6 +49,10 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.MoveProductToShoppingList -> moveProductToShoppingList(event)
 
+            is ProductsEvent.MoveProductToUp -> moveProductToUp(event)
+
+            is ProductsEvent.MoveProductToDown -> moveProductToDown(event)
+
             ProductsEvent.HideProducts -> hideProducts()
 
             is ProductsEvent.HideProduct -> hideProduct(event)
@@ -108,7 +112,7 @@ class ProductsViewModel @Inject constructor(
             return@withContext
         }
 
-        if (products.shoppingList.productsEmpty) {
+        if (products.shoppingList.products.isEmpty()) {
             productsState.showNotFound(
                 preferences = products.preferences,
                 shoppingListName = products.formatName(),
@@ -188,6 +192,28 @@ class ProductsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideProductMenu()
         }
+    }
+
+    private fun moveProductToUp(
+        event: ProductsEvent.MoveProductToUp
+    ) = viewModelScope.launch(dispatchers.main) {
+        val products = productsState.getProductsToUpResult(event.uid).getOrElse {
+            productsState.hideProductMenu()
+            return@launch
+        }
+
+        repository.swapProducts(products.first, products.second)
+    }
+
+    private fun moveProductToDown(
+        event: ProductsEvent.MoveProductToDown
+    ) = viewModelScope.launch(dispatchers.main) {
+        val products = productsState.getProductsToDownResult(event.uid).getOrElse {
+            productsState.hideProductMenu()
+            return@launch
+        }
+
+        repository.swapProducts(products.first, products.second)
     }
 
     private fun completeProduct(

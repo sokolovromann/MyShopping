@@ -6,10 +6,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.ProductsDao
 import ru.sokolovromann.myshopping.data.local.dao.ProductsPreferencesDao
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.repository.model.Products
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(
@@ -44,6 +41,15 @@ class ProductsRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         productsDao.activeProduct(uid, lastModified)
+    }
+
+    override suspend fun swapProducts(
+        first: Product,
+        second: Product
+    ): Unit = withContext(dispatchers.io) {
+        productsDao.updateProductPosition(first.productUid, first.position, first.lastModified)
+        productsDao.updateProductPosition(second.productUid, second.position, second.lastModified)
+        productsDao.updateShoppingLastModified(first.shoppingUid, first.lastModified)
     }
 
     override suspend fun hideProducts(

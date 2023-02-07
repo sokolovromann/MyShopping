@@ -22,6 +22,9 @@ interface ProductsDao {
     @Query("UPDATE products SET completed = 0, last_modified = :lastModified WHERE product_uid = :uid")
     fun activeProduct(uid: String, lastModified: Long)
 
+    @Query("UPDATE products SET position = :position, last_modified = :lastModified WHERE product_uid = :uid")
+    fun updateProductPosition(uid: String, position: Int, lastModified: Long)
+
     @Query("UPDATE products SET display = 0 WHERE shopping_uid = :shoppingUid")
     fun hideProducts(shoppingUid: String)
 

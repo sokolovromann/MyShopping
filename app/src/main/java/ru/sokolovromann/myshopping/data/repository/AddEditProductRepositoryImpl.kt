@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AddEditProductDao
@@ -30,17 +29,24 @@ class AddEditProductRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getAddEditProduct(uid: String?): Flow<AddEditProduct> = withContext(dispatchers.io) {
-        return@withContext if (uid == null) {
-            preferencesDao.getProductPreferences().transform {
-                val value = mapping.toAddEditProduct(null, it)
-                emit(value)
-            }
-        } else {
-            productDao.getProduct(uid).combine(
+    override suspend fun getAddEditProduct(
+        shoppingUid: String,
+        productUid: String?
+    ): Flow<AddEditProduct> = withContext(dispatchers.io) {
+        return@withContext if (productUid == null) {
+            productDao.getProductsLastPosition(shoppingUid).combine(
                 flow = preferencesDao.getProductPreferences(),
-                transform = { entity, preferencesEntity ->
-                    mapping.toAddEditProduct(entity, preferencesEntity)
+                transform = { lastPosition, preferencesEntity ->
+                    mapping.toAddEditProduct(null, lastPosition, preferencesEntity)
+                }
+            )
+        } else {
+            combine(
+                flow = productDao.getProduct(productUid),
+                flow2 = productDao.getProductsLastPosition(shoppingUid),
+                flow3 = preferencesDao.getProductPreferences(),
+                transform = { entity, lastPosition, preferencesEntity ->
+                    mapping.toAddEditProduct(entity, lastPosition, preferencesEntity)
                 }
             )
         }

@@ -19,6 +19,8 @@ class ProductsState {
 
     private var shareTotal by mutableStateOf("")
 
+    private var products: List<Product> by mutableStateOf(listOf())
+
     fun showLoading() {
         screenData = ProductsScreenData(screenState = ScreenState.Loading)
     }
@@ -35,6 +37,7 @@ class ProductsState {
         )
 
         editCompleted = preferences.editCompleted
+        products = listOf()
     }
 
     fun showProducts(products: Products) {
@@ -77,6 +80,8 @@ class ProductsState {
         } else {
             ""
         }
+
+        this.products = products.sortProducts()
     }
 
     fun showProductMenu(uid: String) {
@@ -143,6 +148,73 @@ class ProductsState {
         }
 
         return Result.success(shareText)
+    }
+
+    fun getProductsToUpResult(uid: String): Result<Pair<Product, Product>> {
+        return if (products.size < 2) {
+            Result.failure(Exception())
+        } else {
+            var previousIndex = 0
+            var currentIndex = 0
+            for (index in products.indices) {
+                val product = products[index]
+                if (currentIndex > 0) {
+                    previousIndex = index - 1
+                }
+                currentIndex = index
+
+                if (product.productUid == uid) {
+                    break
+                }
+            }
+
+            val lastModified = System.currentTimeMillis()
+            val currentProduct = products[currentIndex].copy(
+                position = products[previousIndex].position,
+                lastModified = lastModified
+            )
+            val previousProduct = products[previousIndex].copy(
+                position = products[currentIndex].position,
+                lastModified = lastModified
+            )
+
+            val success = Pair(currentProduct, previousProduct)
+            Result.success(success)
+        }
+    }
+
+    fun getProductsToDownResult(uid: String): Result<Pair<Product, Product>> {
+        return if (products.size < 2) {
+            Result.failure(Exception())
+        } else {
+            var currentIndex = 0
+            var nextIndex = 0
+            for (index in products.indices) {
+                val product = products[index]
+
+                currentIndex = index
+                if (index < products.lastIndex) {
+                    nextIndex = index + 1
+                }
+
+                if (product.productUid == uid) {
+                    break
+                }
+            }
+
+            val lastModified = System.currentTimeMillis()
+            val currentProduct = products[currentIndex].copy(
+                position = products[nextIndex].position,
+                lastModified = lastModified
+            )
+            val nextProduct = products[nextIndex].copy(
+                position = products[currentIndex].position,
+                lastModified = lastModified
+            )
+
+            val success = Pair(currentProduct, nextProduct)
+            Result.success(success)
+        }
     }
 
     private fun toReminderText(reminder: Long?): UiText {

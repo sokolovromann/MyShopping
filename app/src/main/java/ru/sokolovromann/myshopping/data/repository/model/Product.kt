@@ -4,6 +4,7 @@ import java.util.UUID
 
 data class Product(
     val id: Int = 0,
+    val position: Int = 0,
     val productUid: String = UUID.randomUUID().toString(),
     val shoppingUid: String = "",
     val created: Long = System.currentTimeMillis(),

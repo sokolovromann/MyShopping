@@ -3,15 +3,14 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Product
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListPreferences
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class MoveProductState {
 
     private var product by mutableStateOf(Product())
+
+    private var shoppingLists: List<ShoppingList> by mutableStateOf(listOf())
 
     var screenData by mutableStateOf(MoveProductScreenData())
         private set
@@ -21,6 +20,7 @@ class MoveProductState {
     }
 
     fun showNotFound(preferences: ShoppingListPreferences, location: ShoppingListLocation) {
+        shoppingLists = listOf()
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
             location = location,
@@ -29,6 +29,7 @@ class MoveProductState {
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
+        this.shoppingLists = shoppingLists.sortShoppingLists()
         val preferences = shoppingLists.preferences
 
         screenData = MoveProductScreenData(
@@ -63,7 +64,10 @@ class MoveProductState {
             screenData = screenData.copy(screenState = ScreenState.Showing)
             Result.failure(Exception())
         } else {
+            val shoppingUid = screenData.shoppingListSelectedUid!!
+            val position = shoppingLists.find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
             val success = product.copy(
+                position = position,
                 shoppingUid = screenData.shoppingListSelectedUid!!,
                 lastModified = System.currentTimeMillis()
             )

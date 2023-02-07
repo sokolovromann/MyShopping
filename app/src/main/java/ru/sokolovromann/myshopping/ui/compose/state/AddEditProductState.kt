@@ -14,6 +14,8 @@ class AddEditProductState {
 
     private var product by mutableStateOf(Product())
 
+    private var productsLastPosition: Int? by mutableStateOf(null)
+
     private var preferences by mutableStateOf(ProductPreferences())
 
     private var productNameFromAutocompletes by mutableStateOf(false)
@@ -23,6 +25,7 @@ class AddEditProductState {
 
     fun populate(addEditProduct: AddEditProduct) {
         product = addEditProduct.product ?: Product()
+        productsLastPosition = addEditProduct.productsLastPosition
         preferences = addEditProduct.preferences
 
         val name = product.name
@@ -290,7 +293,10 @@ class AddEditProductState {
             Result.failure(Exception())
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
+
+            val position = productsLastPosition?.plus(1) ?: 0
             val success = product.copy(
+                position = position,
                 name = screenData.nameValue.text,
                 quantity = Quantity(
                     value = screenData.quantityValue.toFloatOrZero(),

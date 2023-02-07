@@ -264,7 +264,7 @@
     <string name="notificationChannel_purchasesName">Purchases</string>
 
     <string name="products_action_calculateChange">Calculate change</string>
-    <string name="products_action_copyProductToShoppingList">Copy to</string>
+    <string name="products_action_copyProductToShoppingList">Copy to…</string>
     <string name="products_action_deleteProduct">Delete</string>
     <string name="products_action_deleteProducts">Clear</string>
     <string name="products_action_displayActiveTotal">Active</string>
@@ -276,7 +276,9 @@
     <string name="products_action_editShoppingListName">Name</string>
     <string name="products_action_editShoppingListReminder">Reminder</string>
     <string name="products_action_hideCompleted">Hide</string>
-    <string name="products_action_moveProductToShoppingList">Move to</string>
+    <string name="products_action_moveProductToDown">Move to down</string>
+    <string name="products_action_moveProductToShoppingList">Move to…</string>
+    <string name="products_action_moveProductToUp">Move to up</string>
     <string name="products_action_shareProducts">Share</string>
     <string name="products_action_sortByCreated">By created</string>
     <string name="products_action_sortByLastModified">By last modified</string>

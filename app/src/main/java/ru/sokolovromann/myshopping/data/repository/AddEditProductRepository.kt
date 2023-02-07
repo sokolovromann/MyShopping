@@ -7,7 +7,7 @@ interface AddEditProductRepository {
 
     suspend fun getProducts(search: String): Flow<AddEditProductProducts>
 
-    suspend fun getAddEditProduct(uid: String?): Flow<AddEditProduct>
+    suspend fun getAddEditProduct(shoppingUid: String, productUid: String?): Flow<AddEditProduct>
 
     suspend fun getAutocompletes(search: String): Flow<AddEditProductAutocompletes>
 

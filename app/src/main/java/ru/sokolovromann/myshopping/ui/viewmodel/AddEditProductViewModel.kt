@@ -30,6 +30,8 @@ class AddEditProductViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<AddEditProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AddEditProductScreenEvent> = _screenEventFlow
 
+    private val shoppingUid: String = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
+
     private val productUid: String? = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
 
     init {
@@ -79,7 +81,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun getAddEditProduct() = viewModelScope.launch {
-        repository.getAddEditProduct(productUid).firstOrNull()?.let {
+        repository.getAddEditProduct(shoppingUid, productUid).firstOrNull()?.let {
             addEditProductLoaded(it)
         }
     }
@@ -87,10 +89,8 @@ class AddEditProductViewModel @Inject constructor(
     private suspend fun addEditProductLoaded(
         addEditProduct: AddEditProduct
     ) = withContext(dispatchers.main) {
-        val shoppingUid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        val product = Product(shoppingUid = shoppingUid ?: "")
-
         if (productUid == null) {
+            val product = Product(shoppingUid = shoppingUid)
             addEditProductState.populate(addEditProduct.copy(product = product))
             showKeyboard()
         } else {

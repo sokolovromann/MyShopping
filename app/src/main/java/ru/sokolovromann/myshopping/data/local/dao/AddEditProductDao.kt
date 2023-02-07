@@ -20,6 +20,9 @@ interface AddEditProductDao {
     @Query("SELECT * FROM autocompletes WHERE name LIKE '%' || :search || '%'")
     fun getAutocompletes(search: String): Flow<List<AutocompleteEntity>>
 
+    @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
+    fun getProductsLastPosition(shoppingUid: String): Flow<Int?>
+
     @Insert(onConflict = REPLACE)
     fun insertProduct(productEntity: ProductEntity)
 

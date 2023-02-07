@@ -8,7 +8,7 @@ import java.util.*
 
 fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
     return sortShoppingLists().map {
-        val productsList = if (it.productsEmpty) {
+        val productsList = if (it.products.isEmpty()) {
             val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)
         } else {
