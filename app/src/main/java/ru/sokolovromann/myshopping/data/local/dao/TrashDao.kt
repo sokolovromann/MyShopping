@@ -13,6 +13,9 @@ interface TrashDao {
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 1")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
+    @Query("SELECT position FROM shoppings")
+    fun getShoppingsLastPosition(): Flow<Int?>
+
     @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToPurchases(uid: String, lastModified: Long)
 

@@ -9,6 +9,10 @@ import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class PurchasesState {
 
+    private var shoppingLists: List<ShoppingList> by mutableStateOf(listOf())
+
+    private var shoppingListsLastPosition: Int? by mutableStateOf(null)
+
     var screenData by mutableStateOf(PurchasesScreenData())
         private set
 
@@ -25,6 +29,8 @@ class PurchasesState {
             displayCompleted = preferences.displayCompleted,
             fontSize = preferences.fontSize
         )
+        shoppingLists = listOf()
+        shoppingListsLastPosition = null
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
@@ -41,6 +47,9 @@ class PurchasesState {
             displayCompleted = preferences.displayCompleted,
             fontSize = preferences.fontSize
         )
+
+        this.shoppingLists = shoppingLists.sortShoppingLists()
+        shoppingListsLastPosition = shoppingLists.shoppingListsLastPosition
     }
 
     fun showShoppingListMenu(uid: String) {
@@ -73,6 +82,79 @@ class PurchasesState {
 
     fun hideDisplayCompleted() {
         screenData = screenData.copy(showDisplayCompleted = false)
+    }
+
+    fun getShoppingListResult(): Result<ShoppingList> {
+        val position = if (shoppingListsLastPosition == null) 0 else shoppingListsLastPosition!! + 1
+        val success = ShoppingList(position = position)
+        return Result.success(success)
+    }
+
+    fun getShoppingListsToUpResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
+        return if (shoppingLists.size < 2) {
+            Result.failure(Exception())
+        } else {
+            var previousIndex = 0
+            var currentIndex = 0
+            for (index in shoppingLists.indices) {
+                val shoppingList = shoppingLists[index]
+                if (currentIndex > 0) {
+                    previousIndex = index - 1
+                }
+                currentIndex = index
+
+                if (shoppingList.uid == uid) {
+                    break
+                }
+            }
+
+            val lastModified = System.currentTimeMillis()
+            val currentShoppingList = shoppingLists[currentIndex].copy(
+                position = shoppingLists[previousIndex].position,
+                lastModified = lastModified
+            )
+            val previousShoppingList = shoppingLists[previousIndex].copy(
+                position = shoppingLists[currentIndex].position,
+                lastModified = lastModified
+            )
+
+            val success = Pair(currentShoppingList, previousShoppingList)
+            Result.success(success)
+        }
+    }
+
+    fun getShoppingListsToDownResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
+        return if (shoppingLists.size < 2) {
+            Result.failure(Exception())
+        } else {
+            var currentIndex = 0
+            var nextIndex = 0
+            for (index in shoppingLists.indices) {
+                val shoppingList = shoppingLists[index]
+
+                currentIndex = index
+                if (index < shoppingLists.lastIndex) {
+                    nextIndex = index + 1
+                }
+
+                if (shoppingList.uid == uid) {
+                    break
+                }
+            }
+
+            val lastModified = System.currentTimeMillis()
+            val currentShoppingList = shoppingLists[currentIndex].copy(
+                position = shoppingLists[nextIndex].position,
+                lastModified = lastModified
+            )
+            val nextShoppingList = shoppingLists[nextIndex].copy(
+                position = shoppingLists[currentIndex].position,
+                lastModified = lastModified
+            )
+
+            val success = Pair(currentShoppingList, nextShoppingList)
+            Result.success(success)
+        }
     }
 }
 

@@ -20,10 +20,12 @@ class TrashRepositoryImpl @Inject constructor(
 ) : TrashRepository {
 
     override suspend fun getShoppingLists(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext trashDao.getShoppingLists().combine(
-            flow = preferencesDao.getShoppingPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, preferencesEntity)
+        return@withContext combine(
+            flow = trashDao.getShoppingLists(),
+            flow2 = trashDao.getShoppingsLastPosition(),
+            flow3 = preferencesDao.getShoppingPreferences(),
+            transform = { entity, lastPosition, preferencesEntity ->
+                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
             }
         )
     }

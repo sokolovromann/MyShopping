@@ -39,6 +39,10 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.MoveShoppingListToTrash -> moveShoppingListToTrash(event)
 
+            is PurchasesEvent.MoveShoppingListToUp -> moveShoppingListToUp(event)
+
+            is PurchasesEvent.MoveShoppingListToDown -> moveShoppingListToDown(event)
+
             PurchasesEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
             PurchasesEvent.SelectShoppingListsDisplayCompleted -> selectShoppingListsDisplayCompleted()
@@ -96,7 +100,9 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun addShoppingList() = viewModelScope.launch {
-        val shoppingList = ShoppingList()
+        val shoppingList = purchasesState.getShoppingListResult().getOrElse {
+            return@launch
+        }
         repository.addShoppingList(shoppingList)
 
         withContext(dispatchers.main) {
@@ -119,7 +125,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun moveShoppingListToTrash(
         event: PurchasesEvent.MoveShoppingListToTrash
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         repository.moveShoppingListToTrash(
             uid = event.uid,
             lastModified = System.currentTimeMillis()
@@ -128,6 +134,28 @@ class PurchasesViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideShoppingListMenu()
         }
+    }
+
+    private fun moveShoppingListToUp(
+        event: PurchasesEvent.MoveShoppingListToUp
+    ) = viewModelScope.launch {
+        val shoppingList = purchasesState.getShoppingListsToUpResult(event.uid).getOrElse {
+            purchasesState.hideShoppingListMenu()
+            return@launch
+        }
+
+        repository.swapShoppingLists(shoppingList.first, shoppingList.second)
+    }
+
+    private fun moveShoppingListToDown(
+        event: PurchasesEvent.MoveShoppingListToDown
+    ) = viewModelScope.launch {
+        val shoppingList = purchasesState.getShoppingListsToDownResult(event.uid).getOrElse {
+            purchasesState.hideShoppingListMenu()
+            return@launch
+        }
+
+        repository.swapShoppingLists(shoppingList.first, shoppingList.second)
     }
 
     private fun selectShoppingListsSort() {

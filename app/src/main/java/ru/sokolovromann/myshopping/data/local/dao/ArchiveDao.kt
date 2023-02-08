@@ -13,6 +13,9 @@ interface ArchiveDao {
     @Query("SELECT * FROM shoppings WHERE archived = 1 AND deleted = 0")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
+    @Query("SELECT position FROM shoppings")
+    fun getShoppingsLastPosition(): Flow<Int?>
+
     @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToPurchases(uid: String, lastModified: Long)
 

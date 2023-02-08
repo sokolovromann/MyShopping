@@ -17,10 +17,12 @@ class PurchasesRepositoryImpl @Inject constructor(
 ) : PurchasesRepository {
 
     override suspend fun getShoppingLists(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext purchasesDao.getShoppingLists().combine(
-            flow = preferencesDao.getShoppingPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, preferencesEntity)
+        return@withContext combine(
+            flow = purchasesDao.getShoppingLists(),
+            flow2 = purchasesDao.getShoppingsLastPosition(),
+            flow3 = preferencesDao.getShoppingPreferences(),
+            transform = { entity, lastPosition, preferencesEntity ->
+                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
             }
         )
     }
@@ -44,6 +46,14 @@ class PurchasesRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         purchasesDao.moveShoppingToTrash(uid, lastModified)
+    }
+
+    override suspend fun swapShoppingLists(
+        first: ShoppingList,
+        second: ShoppingList
+    ): Unit = withContext(dispatchers.io) {
+        purchasesDao.updateShoppingPosition(first.uid, first.position, first.lastModified)
+        purchasesDao.updateShoppingPosition(second.uid, second.position, second.lastModified)
     }
 
     override suspend fun sortShoppingListsByCreated(): Unit = withContext(dispatchers.io) {

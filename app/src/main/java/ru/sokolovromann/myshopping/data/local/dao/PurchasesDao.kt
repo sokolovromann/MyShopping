@@ -16,8 +16,14 @@ interface PurchasesDao {
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 0")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>
 
+    @Query("SELECT position FROM shoppings ORDER BY position DESC LIMIT 1")
+    fun getShoppingsLastPosition(): Flow<Int?>
+
     @Insert(onConflict = REPLACE)
     fun insertShopping(shoppingEntity: ShoppingEntity)
+
+    @Query("UPDATE shoppings SET position = :position, last_modified = :lastModified WHERE uid = :uid")
+    fun updateShoppingPosition(uid: String, position: Int, lastModified: Long)
 
     @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToArchive(uid: String, lastModified: Long)

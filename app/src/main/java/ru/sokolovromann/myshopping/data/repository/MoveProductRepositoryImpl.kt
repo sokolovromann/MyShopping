@@ -21,7 +21,7 @@ class MoveProductRepositoryImpl @Inject constructor(
         return@withContext productDao.getPurchases().combine(
             flow = preferencesDao.getShoppingPreferences(),
             transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, preferencesEntity)
+                mapping.toShoppingLists(entity, null, preferencesEntity)
             }
         )
     }
@@ -30,7 +30,7 @@ class MoveProductRepositoryImpl @Inject constructor(
         return@withContext productDao.getArchive().combine(
             flow = preferencesDao.getShoppingPreferences(),
             transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, preferencesEntity)
+                mapping.toShoppingLists(entity, null, preferencesEntity)
             }
         )
     }
@@ -39,7 +39,7 @@ class MoveProductRepositoryImpl @Inject constructor(
         return@withContext productDao.getTrash().combine(
             flow = preferencesDao.getShoppingPreferences(),
             transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, preferencesEntity)
+                mapping.toShoppingLists(entity, null, preferencesEntity)
             }
         )
     }

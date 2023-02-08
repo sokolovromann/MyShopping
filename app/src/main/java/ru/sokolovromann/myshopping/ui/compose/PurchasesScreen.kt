@@ -197,6 +197,21 @@ fun PurchasesScreen(
                         },
                         text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToTrash)) }
                     )
+                    Divider()
+                    AppDropdownMenuItem(
+                        onClick = {
+                            val event = PurchasesEvent.MoveShoppingListToUp(it)
+                            viewModel.onEvent(event)
+                        },
+                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToUp)) }
+                    )
+                    AppDropdownMenuItem(
+                        onClick = {
+                            val event = PurchasesEvent.MoveShoppingListToDown(it)
+                            viewModel.onEvent(event)
+                        },
+                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToDown)) }
+                    )
                 }
             },
             onClick = {

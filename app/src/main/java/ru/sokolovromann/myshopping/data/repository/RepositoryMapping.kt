@@ -11,6 +11,7 @@ class RepositoryMapping @Inject constructor() {
     fun toShoppingEntity(shoppingList: ShoppingList): ShoppingEntity {
         return ShoppingEntity(
             id = shoppingList.id,
+            position = shoppingList.position,
             uid = shoppingList.uid,
             created = shoppingList.created,
             lastModified = shoppingList.lastModified,
@@ -25,6 +26,7 @@ class RepositoryMapping @Inject constructor() {
         val entity = shoppingListEntity.shoppingEntity
         return ShoppingList(
             id = entity.id,
+            position = entity.position,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
@@ -45,6 +47,7 @@ class RepositoryMapping @Inject constructor() {
         val entity = shoppingListEntity.shoppingEntity
         return ShoppingList(
             id = entity.id,
+            position = entity.position,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
@@ -68,6 +71,7 @@ class RepositoryMapping @Inject constructor() {
 
         return ShoppingList(
             id = id.toInt(),
+            position = cursor.position,
             uid = toAppVersion14ShoppingUid(id),
             name = name,
             reminder = toReminder(alarm)
@@ -92,10 +96,12 @@ class RepositoryMapping @Inject constructor() {
 
     fun toShoppingLists(
         entities: List<ShoppingListEntity>,
+        lastPosition: Int?,
         preferencesEntity: ShoppingPreferencesEntity
     ): ShoppingLists {
         return ShoppingLists(
             shoppingLists = entities.map { toShoppingList(it, preferencesEntity) },
+            shoppingListsLastPosition = lastPosition,
             preferences = toShoppingListPreferences(preferencesEntity)
         )
     }

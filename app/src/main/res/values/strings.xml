@@ -298,7 +298,9 @@
     <string name="products_text_productsNotFound">Click "+" to add new product</string>
 
     <string name="purchases_action_moveShoppingListToArchive">Archive</string>
+    <string name="purchases_action_moveShoppingListToDown">Move to down</string>
     <string name="purchases_action_moveShoppingListToTrash">Delete</string>
+    <string name="purchases_action_moveShoppingListToUp">Move to up</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_header">Purchases</string>

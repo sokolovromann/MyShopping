@@ -10,6 +10,9 @@ data class ShoppingEntity(
     @ColumnInfo(name = "id")
     val id: Int = 0,
 
+    @ColumnInfo(name = "position")
+    val position: Int = 0,
+
     @ColumnInfo(name = "uid")
     val uid: String = "",
 

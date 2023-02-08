@@ -20,10 +20,12 @@ class ArchiveRepositoryImpl @Inject constructor(
 ) : ArchiveRepository {
 
     override suspend fun getShoppingLists(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext archiveDao.getShoppingLists().combine(
-            flow = preferencesDao.getShoppingPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, preferencesEntity)
+        return@withContext combine(
+            flow = archiveDao.getShoppingLists(),
+            flow2 = archiveDao.getShoppingsLastPosition(),
+            flow3 = preferencesDao.getShoppingPreferences(),
+            transform = { entity, lastPosition, preferencesEntity ->
+                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
             }
         )
     }
