@@ -32,7 +32,6 @@ class ProductsState {
             reminderText = toReminderText(reminder),
             sort = preferences.sort,
             displayTotal = preferences.displayTotal,
-            displayCompleted = preferences.displayCompleted,
             fontSize = preferences.fontSize
         )
 
@@ -63,7 +62,6 @@ class ProductsState {
             multiColumns = preferences.multiColumns,
             sort = preferences.sort,
             displayTotal = preferences.displayTotal,
-            displayCompleted = preferences.displayCompleted,
             fontSize = preferences.fontSize
         )
 
@@ -100,10 +98,6 @@ class ProductsState {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
-    fun showDisplayCompleted() {
-        screenData = screenData.copy(showDisplayCompleted = true)
-    }
-
     fun hideProductMenu() {
         screenData = screenData.copy(productMenuUid = null)
     }
@@ -118,10 +112,6 @@ class ProductsState {
 
     fun hideDisplayTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
-    }
-
-    fun hideDisplayCompleted() {
-        screenData = screenData.copy(showDisplayCompleted = false)
     }
 
     fun getShareProductsResult(): Result<String> {
@@ -241,7 +231,5 @@ data class ProductsScreenData(
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
-    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
-    val showDisplayCompleted: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM
 )

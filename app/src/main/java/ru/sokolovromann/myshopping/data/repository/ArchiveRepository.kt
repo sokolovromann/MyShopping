@@ -19,10 +19,6 @@ interface ArchiveRepository {
 
     suspend fun sortShoppingListsByTotal()
 
-    suspend fun displayShoppingListsCompletedFirst()
-
-    suspend fun displayShoppingListsCompletedLast()
-
     suspend fun displayShoppingListsAllTotal()
 
     suspend fun displayShoppingListsCompletedTotal()
@@ -30,6 +26,4 @@ interface ArchiveRepository {
     suspend fun displayShoppingListsActiveTotal()
 
     suspend fun invertShoppingListsSort()
-
-    suspend fun hideShoppingListsCompleted()
 }

@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
@@ -160,6 +161,17 @@ fun SettingsScreen(
                             onDismissRequest = { viewModel.onEvent(SettingsEvent.HideProductsDisplayAutocomplete) },
                             onSelected = { displayAutocomplete ->
                                 viewModel.onEvent(SettingsEvent.DisplayAutocompleteSelected(displayAutocomplete))
+                            }
+                        )
+                    }
+
+                    SettingsUid.DisplayCompleted -> {
+                        SettingsDisplayCompletedMenu(
+                            expanded = it == screenData.settingsItemUid,
+                            displayCompleted = screenData.displayCompleted,
+                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideDisplayCompleted) },
+                            onSelected = { displayCompleted ->
+                                viewModel.onEvent(SettingsEvent.DisplayCompletedSelected(displayCompleted))
                             }
                         )
                     }
@@ -304,6 +316,35 @@ private fun SettingsDisplayAutocompleteMenu(
             onClick = { onSelected(DisplayAutocomplete.HIDE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHideAutocomplete)) },
             after = { CheckmarkAppCheckbox(checked = displayAutocomplete == DisplayAutocomplete.HIDE) }
+        )
+    }
+}
+
+@Composable
+private fun SettingsDisplayCompletedMenu(
+    expanded: Boolean,
+    displayCompleted: DisplayCompleted,
+    onDismissRequest: () -> Unit,
+    onSelected: (DisplayCompleted) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayCompleted.FIRST) },
+            text = { Text(text = stringResource(R.string.settings_action_displayCompletedFirst)) },
+            after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.FIRST) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayCompleted.LAST) },
+            text = { Text(text = stringResource(R.string.settings_action_displayCompletedLast)) },
+            after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.LAST) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayCompleted.HIDE) },
+            text = { Text(text = stringResource(R.string.settings_action_selectHideCompleted)) },
+            after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
         )
     }
 }

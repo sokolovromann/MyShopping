@@ -160,18 +160,6 @@ fun PurchasesScreen(
                 onSelected = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(it)) },
                 onInverted = { viewModel.onEvent(PurchasesEvent.InvertShoppingListsSort) }
             )
-            ShoppingListsDisplayCompletedContent(
-                displayCompleted = screenData.displayCompleted,
-                expanded = screenData.showDisplayCompleted,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(PurchasesEvent.SelectShoppingListsDisplayCompleted)
-                    } else {
-                        viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayCompleted)
-                    }
-                },
-                onSelected = { viewModel.onEvent(PurchasesEvent.DisplayShoppingListsCompleted(it)) }
-            )
         }
     ) {
         ShoppingListsGrid(

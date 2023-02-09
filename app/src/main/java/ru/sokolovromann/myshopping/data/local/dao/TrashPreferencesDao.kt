@@ -21,10 +21,6 @@ class TrashPreferencesDao @Inject constructor(
         localDataStore.invertShoppingSortAscending()
     }
 
-    suspend fun displayShoppingsCompleted(displayCompleted: String) {
-        localDataStore.saveShoppingsDisplayCompleted(displayCompleted)
-    }
-
     suspend fun displayShoppingsTotal(displayTotal: String) {
         localDataStore.saveShoppingsDisplayTotal(displayTotal)
     }

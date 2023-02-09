@@ -89,16 +89,6 @@ class ProductsRepositoryImpl @Inject constructor(
         preferencesDao.sortProductsBy(sortBy)
     }
 
-    override suspend fun displayProductsCompletedFirst(): Unit = withContext(dispatchers.io) {
-        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.FIRST)
-        preferencesDao.displayProductsCompleted(displayCompleted)
-    }
-
-    override suspend fun displayProductsCompletedLast(): Unit = withContext(dispatchers.io) {
-        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.LAST)
-        preferencesDao.displayProductsCompleted(displayCompleted)
-    }
-
     override suspend fun displayProductsAllTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayProductsTotal(displayTotal)
@@ -116,10 +106,5 @@ class ProductsRepositoryImpl @Inject constructor(
 
     override suspend fun invertProductsSort(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertProductsSort()
-    }
-
-    override suspend fun hideProductsCompleted(): Unit = withContext(dispatchers.io) {
-        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
-        preferencesDao.displayProductsCompleted(displayCompleted)
     }
 }

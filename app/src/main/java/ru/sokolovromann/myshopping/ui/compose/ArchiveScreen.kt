@@ -151,18 +151,6 @@ fun ArchiveScreen(
                 onSelected = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(it)) },
                 onInverted = { viewModel.onEvent(ArchiveEvent.InvertShoppingListsSort) }
             )
-            ShoppingListsDisplayCompletedContent(
-                displayCompleted = screenData.displayCompleted,
-                expanded = screenData.showDisplayCompleted,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(ArchiveEvent.SelectShoppingListsDisplayCompleted)
-                    } else {
-                        viewModel.onEvent(ArchiveEvent.HideShoppingListsDisplayCompleted)
-                    }
-                },
-                onSelected = { viewModel.onEvent(ArchiveEvent.DisplayShoppingListsCompleted(it)) }
-            )
         }
     ) {
         ShoppingListsGrid(

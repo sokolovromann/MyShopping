@@ -117,11 +117,11 @@ class MainRepositoryImpl @Inject constructor(
         preferencesDao.addShoppingsSortAscending(ascending)
     }
 
-    override suspend fun addShoppingListsDisplayCompleted(
+    override suspend fun addDisplayCompleted(
         displayCompleted: DisplayCompleted
     ): Unit = withContext(dispatchers.io) {
         val name = mapping.toDisplayCompletedName(displayCompleted)
-        preferencesDao.addShoppingsDisplayCompleted(name)
+        preferencesDao.addDisplayCompleted(name)
     }
 
     override suspend fun addShoppingListsDisplayTotal(
@@ -143,13 +143,6 @@ class MainRepositoryImpl @Inject constructor(
 
         val ascending = mapping.toSortAscending(sort)
         preferencesDao.addProductsSortAscending(ascending)
-    }
-
-    override suspend fun addProductsDisplayCompleted(
-        displayCompleted: DisplayCompleted
-    ): Unit = withContext(dispatchers.io) {
-        val name = mapping.toDisplayCompletedName(displayCompleted)
-        preferencesDao.addProductsDisplayCompleted(name)
     }
 
     override suspend fun addProductsDisplayTotal(

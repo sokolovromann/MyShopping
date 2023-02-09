@@ -61,13 +61,9 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.SelectProductsSort -> selectProductsSort()
 
-            ProductsEvent.SelectProductsDisplayCompleted -> selectProductsDisplayCompleted()
-
             ProductsEvent.SelectProductsDisplayTotal -> selectProductsDisplayTotal()
 
             is ProductsEvent.SortProducts -> sortProducts(event)
-
-            is ProductsEvent.DisplayProductsCompleted -> displayProductsCompleted(event)
 
             is ProductsEvent.DisplayProductsTotal -> displayProductsTotal(event)
 
@@ -88,8 +84,6 @@ class ProductsViewModel @Inject constructor(
             ProductsEvent.HideProductsMenu -> hideProductsMenu()
 
             ProductsEvent.HideProductsSort -> hideProductsSort()
-
-            ProductsEvent.HideProductsDisplayCompleted -> hideProductsDisplayCompleted()
 
             ProductsEvent.HideProductsDisplayTotal -> hideProductsDisplayTotal()
 
@@ -249,10 +243,6 @@ class ProductsViewModel @Inject constructor(
         productsState.showSort()
     }
 
-    private fun selectProductsDisplayCompleted() {
-        productsState.showDisplayCompleted()
-    }
-
     private fun selectProductsDisplayTotal() {
         productsState.showDisplayTotal()
     }
@@ -267,20 +257,6 @@ class ProductsViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideProductsSort()
-        }
-    }
-
-    private fun displayProductsCompleted(
-        event: ProductsEvent.DisplayProductsCompleted
-    ) = viewModelScope.launch {
-        when (event.displayCompleted) {
-            DisplayCompleted.FIRST -> repository.displayProductsCompletedFirst()
-            DisplayCompleted.LAST -> repository.displayProductsCompletedLast()
-            DisplayCompleted.HIDE -> repository.hideProductsCompleted()
-        }
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayCompleted()
         }
     }
 
@@ -324,10 +300,6 @@ class ProductsViewModel @Inject constructor(
 
     private fun hideProductsSort() {
         productsState.hideSort()
-    }
-
-    private fun hideProductsDisplayCompleted() {
-        productsState.hideDisplayCompleted()
     }
 
     private fun hideProductsDisplayTotal() {

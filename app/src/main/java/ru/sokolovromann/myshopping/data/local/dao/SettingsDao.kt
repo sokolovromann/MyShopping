@@ -22,6 +22,10 @@ class SettingsDao @Inject constructor(
         localDataStore.saveProductsDisplayAutocomplete(displayAutocomplete)
     }
 
+    suspend fun displayCompleted(displayCompleted: String) {
+        localDataStore.saveDisplayCompleted(displayCompleted)
+    }
+
     suspend fun fontSizeSelected(fontSize: String) {
         localDataStore.saveFontSize(fontSize)
     }

@@ -156,18 +156,6 @@ fun TrashScreen(
                 onSelected = { viewModel.onEvent(TrashEvent.SortShoppingLists(it)) },
                 onInverted = { viewModel.onEvent(TrashEvent.InvertShoppingListsSort) }
             )
-            ShoppingListsDisplayCompletedContent(
-                displayCompleted = screenData.displayCompleted,
-                expanded = screenData.showDisplayCompleted,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(TrashEvent.SelectShoppingListsDisplayCompleted)
-                    } else {
-                        viewModel.onEvent(TrashEvent.HideShoppingListsDisplayCompleted)
-                    }
-                },
-                onSelected = { viewModel.onEvent(TrashEvent.DisplayShoppingListsCompleted(it)) }
-            )
         }
     ) {
         ShoppingListsGrid(

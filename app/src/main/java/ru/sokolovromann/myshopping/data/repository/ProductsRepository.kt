@@ -26,10 +26,6 @@ interface ProductsRepository {
 
     suspend fun sortProductsByName()
 
-    suspend fun displayProductsCompletedFirst()
-
-    suspend fun displayProductsCompletedLast()
-
     suspend fun displayProductsAllTotal()
 
     suspend fun displayProductsCompletedTotal()
@@ -37,6 +33,4 @@ interface ProductsRepository {
     suspend fun displayProductsActiveTotal()
 
     suspend fun invertProductsSort()
-
-    suspend fun hideProductsCompleted()
 }

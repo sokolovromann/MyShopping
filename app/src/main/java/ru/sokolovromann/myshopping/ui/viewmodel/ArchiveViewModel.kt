@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.ArchiveRepository
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
@@ -42,15 +41,11 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
-            ArchiveEvent.SelectShoppingListsDisplayCompleted -> selectShoppingListsDisplayCompleted()
-
             ArchiveEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
             is ArchiveEvent.SelectNavigationItem -> selectNavigationItem(event)
 
             is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
-
-            is ArchiveEvent.DisplayShoppingListsCompleted -> displayShoppingListsCompleted(event)
 
             is ArchiveEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
 
@@ -69,8 +64,6 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
-
-            ArchiveEvent.HideShoppingListsDisplayCompleted -> hideShoppingListsDisplayCompleted()
 
             ArchiveEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
         }
@@ -126,10 +119,6 @@ class ArchiveViewModel @Inject constructor(
         archiveState.showSort()
     }
 
-    private fun selectShoppingListsDisplayCompleted() {
-        archiveState.showDisplayCompleted()
-    }
-
     private fun selectShoppingListsDisplayTotal() {
         archiveState.showDisplayTotal()
     }
@@ -156,20 +145,6 @@ class ArchiveViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
-        }
-    }
-
-    private fun displayShoppingListsCompleted(
-        event: ArchiveEvent.DisplayShoppingListsCompleted
-    ) = viewModelScope.launch {
-        when (event.displayCompleted) {
-            DisplayCompleted.FIRST -> repository.displayShoppingListsCompletedFirst()
-            DisplayCompleted.LAST -> repository.displayShoppingListsCompletedLast()
-            DisplayCompleted.HIDE -> repository.hideShoppingListsCompleted()
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
         }
     }
 
@@ -217,10 +192,6 @@ class ArchiveViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         archiveState.hideSort()
-    }
-
-    private fun hideShoppingListsDisplayCompleted() {
-        archiveState.hideDisplayCompleted()
     }
 
     private fun hideShoppingListsDisplayTotal() {

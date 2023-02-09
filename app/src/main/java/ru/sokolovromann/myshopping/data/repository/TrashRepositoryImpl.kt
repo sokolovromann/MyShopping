@@ -6,7 +6,6 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.TrashDao
 import ru.sokolovromann.myshopping.data.local.dao.TrashPreferencesDao
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
@@ -76,16 +75,6 @@ class TrashRepositoryImpl @Inject constructor(
         preferencesDao.sortShoppingsBy(sortBy)
     }
 
-    override suspend fun displayShoppingListsCompletedFirst(): Unit = withContext(dispatchers.io) {
-        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.FIRST)
-        preferencesDao.displayShoppingsCompleted(displayCompleted)
-    }
-
-    override suspend fun displayShoppingListsCompletedLast(): Unit = withContext(dispatchers.io) {
-        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.LAST)
-        preferencesDao.displayShoppingsCompleted(displayCompleted)
-    }
-
     override suspend fun displayShoppingListsAllTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayShoppingsTotal(displayTotal)
@@ -103,10 +92,5 @@ class TrashRepositoryImpl @Inject constructor(
 
     override suspend fun invertShoppingListsSort(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertShoppingsSort()
-    }
-
-    override suspend fun hideShoppingListsCompleted(): Unit = withContext(dispatchers.io) {
-        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
-        preferencesDao.displayShoppingsCompleted(displayCompleted)
     }
 }

@@ -21,10 +21,6 @@ class ProductsPreferencesDao @Inject constructor(
         localDataStore.invertProductsSortAscending()
     }
 
-    suspend fun displayProductsCompleted(displayCompleted: String) {
-        localDataStore.saveProductsDisplayCompleted(displayCompleted)
-    }
-
     suspend fun displayProductsTotal(displayTotal: String) {
         localDataStore.saveProductsDisplayTotal(displayTotal)
     }

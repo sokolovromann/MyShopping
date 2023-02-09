@@ -265,13 +265,10 @@
     <string name="products_action_deleteProducts">Clear</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
-    <string name="products_action_displayCompletedFirst">First</string>
-    <string name="products_action_displayCompletedLast">Last</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
     <string name="products_action_editProduct">Edit</string>
     <string name="products_action_editShoppingListName">Name</string>
     <string name="products_action_editShoppingListReminder">Reminder</string>
-    <string name="products_action_hideCompleted">Hide</string>
     <string name="products_action_moveProductToDown">Move to down</string>
     <string name="products_action_moveProductToShoppingList">Move to…</string>
     <string name="products_action_moveProductToUp">Move to up</string>
@@ -281,11 +278,9 @@
     <string name="products_action_sortByName">By name</string>
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
-    <string name="products_contentDescription_displayCompletedIcon">Display completed products</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
-    <string name="products_header_displayCompleted">Display completed</string>
     <string name="products_header_displayTotal">Display total</string>
     <string name="products_header_sort">Sort</string>
     <string name="products_text_activeTotal">Active: %s</string>
@@ -305,8 +300,11 @@
     <string name="purchases_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="settings_action_displayAllAutocomplete">All</string>
+    <string name="settings_action_displayCompletedFirst">First</string>
+    <string name="settings_action_displayCompletedLast">Last</string>
     <string name="settings_action_displayNameAutocomplete">Only names</string>
     <string name="settings_action_selectHideAutocomplete">Hide</string>
+    <string name="settings_action_selectHideCompleted">Hide</string>
     <string name="settings_action_selectHugeFontSize">Huge</string>
     <string name="settings_action_selectLargeFontSize">Large</string>
     <string name="settings_action_selectMediumFontSize">Medium</string>
@@ -331,6 +329,7 @@
     <string name="settings_title_currencySymbol">Currency</string>
     <string name="settings_title_developer">Developer</string>
     <string name="settings_title_displayAutocomplete">Display autocompletes</string>
+    <string name="settings_title_displayCompleted">Display completed</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_title_displayMoney">Display money</string>
     <string name="settings_title_editCompletedProduct">Edit product after completed</string>
@@ -345,9 +344,6 @@
 
     <string name="shoppingLists_action_displayActiveTotal">Active</string>
     <string name="shoppingLists_action_displayAllTotal">All</string>
-    <string name="shoppingLists_action_displayCompletedFirst">First</string>
-    <string name="shoppingLists_action_displayCompletedHide">Hide</string>
-    <string name="shoppingLists_action_displayCompletedLast">Last</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
     <string name="shoppingLists_action_hideCompleted">Hide</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
@@ -357,9 +353,7 @@
     <string name="shoppingLists_action_sortByLastModified">By last modified</string>
     <string name="shoppingLists_action_sortByName">By name</string>
     <string name="shoppingLists_action_sortByTotal">By total</string>
-    <string name="shoppingLists_contentDescription_displayCompletedIcon">Display completed products</string>
     <string name="shoppingLists_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
-    <string name="shoppingLists_header_displayCompleted">Display completed</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_header_sort">Sort</string>

@@ -45,15 +45,11 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
-            PurchasesEvent.SelectShoppingListsDisplayCompleted -> selectShoppingListsDisplayCompleted()
-
             PurchasesEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
             is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
             is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
-
-            is PurchasesEvent.DisplayShoppingListsCompleted -> displayShoppingListsCompleted(event)
 
             is PurchasesEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
 
@@ -70,8 +66,6 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
-
-            PurchasesEvent.HideShoppingListsDisplayCompleted -> hideShoppingListsDisplayCompleted()
 
             PurchasesEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
 
@@ -162,10 +156,6 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.showSort()
     }
 
-    private fun selectShoppingListsDisplayCompleted() {
-        purchasesState.showDisplayCompleted()
-    }
-
     private fun selectShoppingListsDisplayTotal() {
         purchasesState.showDisplayTotal()
     }
@@ -192,20 +182,6 @@ class PurchasesViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
-        }
-    }
-
-    private fun displayShoppingListsCompleted(
-        event: PurchasesEvent.DisplayShoppingListsCompleted
-    ) = viewModelScope.launch {
-        when (event.displayCompleted) {
-            DisplayCompleted.FIRST -> repository.displayShoppingListsCompletedFirst()
-            DisplayCompleted.LAST -> repository.displayShoppingListsCompletedLast()
-            DisplayCompleted.HIDE -> repository.hideShoppingListsCompleted()
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
         }
     }
 
@@ -251,10 +227,6 @@ class PurchasesViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         purchasesState.hideSort()
-    }
-
-    private fun hideShoppingListsDisplayCompleted() {
-        purchasesState.hideDisplayCompleted()
     }
 
     private fun hideShoppingListsDisplayTotal() {

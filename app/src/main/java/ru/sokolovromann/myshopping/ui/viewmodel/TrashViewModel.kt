@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.TrashRepository
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
@@ -46,15 +45,11 @@ class TrashViewModel @Inject constructor(
 
             TrashEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
-            TrashEvent.SelectShoppingListsDisplayCompleted -> selectShoppingListsDisplayCompleted()
-
             TrashEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
             is TrashEvent.SelectNavigationItem -> selectNavigationItem(event)
 
             is TrashEvent.SortShoppingLists -> sortShoppingLists(event)
-
-            is TrashEvent.DisplayShoppingListsCompleted -> displayShoppingListsCompleted(event)
 
             is TrashEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
 
@@ -73,8 +68,6 @@ class TrashViewModel @Inject constructor(
             TrashEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             TrashEvent.HideShoppingListsSort -> hideShoppingListsSort()
-
-            TrashEvent.HideShoppingListsDisplayCompleted -> hideShoppingListsDisplayCompleted()
 
             TrashEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
         }
@@ -146,10 +139,6 @@ class TrashViewModel @Inject constructor(
         trashState.showSort()
     }
 
-    private fun selectShoppingListsDisplayCompleted() {
-        trashState.showDisplayCompleted()
-    }
-
     private fun selectShoppingListsDisplayTotal() {
         trashState.showDisplayTotal()
     }
@@ -176,20 +165,6 @@ class TrashViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
-        }
-    }
-
-    private fun displayShoppingListsCompleted(
-        event: TrashEvent.DisplayShoppingListsCompleted
-    ) = viewModelScope.launch {
-        when (event.displayCompleted) {
-            DisplayCompleted.FIRST -> repository.displayShoppingListsCompletedFirst()
-            DisplayCompleted.LAST -> repository.displayShoppingListsCompletedLast()
-            DisplayCompleted.HIDE -> repository.hideShoppingListsCompleted()
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsDisplayCompleted()
         }
     }
 
@@ -237,10 +212,6 @@ class TrashViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         trashState.hideSort()
-    }
-
-    private fun hideShoppingListsDisplayCompleted() {
-        trashState.hideDisplayCompleted()
     }
 
     private fun hideShoppingListsDisplayTotal() {

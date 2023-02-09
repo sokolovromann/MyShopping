@@ -53,8 +53,8 @@ class MainPreferencesDao @Inject constructor(
         localDataStore.saveShoppingsSortAscending(ascending)
     }
 
-    suspend fun addShoppingsDisplayCompleted(displayCompleted: String) {
-        localDataStore.saveShoppingsDisplayCompleted(displayCompleted)
+    suspend fun addDisplayCompleted(displayCompleted: String) {
+        localDataStore.saveDisplayCompleted(displayCompleted)
     }
 
     suspend fun addShoppingsDisplayTotal(displayTotal: String) {
@@ -71,10 +71,6 @@ class MainPreferencesDao @Inject constructor(
 
     suspend fun addProductsSortAscending(ascending: Boolean) {
         localDataStore.saveProductsSortAscending(ascending)
-    }
-
-    suspend fun addProductsDisplayCompleted(displayCompleted: String) {
-        localDataStore.saveProductsDisplayCompleted(displayCompleted)
     }
 
     suspend fun addProductsDisplayTotal(displayTotal: String) {

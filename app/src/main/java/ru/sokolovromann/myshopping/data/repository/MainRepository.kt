@@ -31,15 +31,13 @@ interface MainRepository {
 
     suspend fun addShoppingListsSort(sort: Sort)
 
-    suspend fun addShoppingListsDisplayCompleted(displayCompleted: DisplayCompleted)
+    suspend fun addDisplayCompleted(displayCompleted: DisplayCompleted)
 
     suspend fun addShoppingListsDisplayTotal(displayTotal: DisplayTotal)
 
     suspend fun addProductsMultiColumns(multiColumns: Boolean)
 
     suspend fun addProductsSort(sort: Sort)
-
-    suspend fun addProductsDisplayCompleted(displayCompleted: DisplayCompleted)
 
     suspend fun addProductsDisplayTotal(displayTotal: DisplayTotal)
 

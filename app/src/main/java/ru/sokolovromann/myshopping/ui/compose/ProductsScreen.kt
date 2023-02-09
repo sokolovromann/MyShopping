@@ -193,18 +193,6 @@ fun ProductsScreen(
                         onSelected = { viewModel.onEvent(ProductsEvent.SortProducts(it)) },
                         onInverted = { viewModel.onEvent(ProductsEvent.InvertProductsSort) }
                     )
-                    ProductsDisplayCompletedContent(
-                        displayCompleted = screenData.displayCompleted,
-                        expanded = screenData.showDisplayCompleted,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(ProductsEvent.SelectProductsDisplayCompleted)
-                            } else {
-                                viewModel.onEvent(ProductsEvent.HideProductsDisplayCompleted)
-                            }
-                        },
-                        onSelected = { viewModel.onEvent(ProductsEvent.DisplayProductsCompleted(it)) }
-                    )
                 }
                 if (screenData.reminderText != UiText.Nothing) {
                     ProductsReminderContent(
@@ -404,47 +392,6 @@ private fun ProductsSortContent(
                 painter = sort.getAscendingIcon().asPainter() ?: return@IconButton,
                 contentDescription = stringResource(R.string.products_contentDescription_sortAscendingIcon),
                 tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-            )
-        }
-    }
-}
-
-@Composable
-private fun ProductsDisplayCompletedContent(
-    modifier: Modifier = Modifier,
-    displayCompleted: DisplayCompleted,
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    onSelected: (DisplayCompleted) -> Unit
-) {
-    IconButton(
-        modifier = modifier,
-        onClick = { onExpanded(true) }
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_all_display_completed),
-            contentDescription = stringResource(R.string.products_contentDescription_displayCompletedIcon),
-            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-        )
-        AppDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { onExpanded(false) },
-            header = { Text(text = stringResource(R.string.products_header_displayCompleted)) }
-        ) {
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayCompleted.FIRST) },
-                text = { Text(text = stringResource(R.string.products_action_displayCompletedFirst)) },
-                after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.FIRST) }
-            )
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayCompleted.LAST) },
-                text = { Text(text = stringResource(R.string.products_action_displayCompletedLast)) },
-                after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.LAST) }
-            )
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayCompleted.HIDE) },
-                text = { Text(text = stringResource(R.string.products_action_hideCompleted)) },
-                after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
             )
         }
     }

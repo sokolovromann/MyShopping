@@ -29,19 +29,18 @@ class LocalDataStore @Inject constructor(
     private val shoppingsMultiColumnsKey = booleanPreferencesKey("shoppings_multi_columns")
     private val shoppingsSortByKey = stringPreferencesKey("shoppings_sort_by")
     private val shoppingsSortAscendingKey = booleanPreferencesKey("shoppings_sort_ascending")
-    private val shoppingsDisplayCompletedKey = stringPreferencesKey("shoppings_display_completed")
     private val shoppingsDisplayTotalKey = stringPreferencesKey("shoppings_display_total")
     private val shoppingsMaxProductsKey = intPreferencesKey("shoppings_max_products")
     private val productsMultiColumnsKey = booleanPreferencesKey("products_multi_columns")
     private val productsSortByKey = stringPreferencesKey("products_sort_by")
     private val productsSortAscendingKey = booleanPreferencesKey("products_sort_ascending")
-    private val productsDisplayCompletedKey = stringPreferencesKey("products_display_completed")
     private val productsDisplayTotalKey = stringPreferencesKey("products_display_total")
     private val productsDisplayAutocompleteKey = stringPreferencesKey("products_display_autocomplete")
     private val productsLockQuantityKey = booleanPreferencesKey("products_lock_quantity")
     private val productsEditCompletedKey = booleanPreferencesKey("products_edit_completed")
     private val productsAddLastProductKey = booleanPreferencesKey("products_add_last_product")
     private val displayMoneyKey = booleanPreferencesKey("display_money")
+    private val displayCompletedKey = stringPreferencesKey("display_completed")
     private val screenSizeKey = stringPreferencesKey("screen_size")
 
     suspend fun getShoppingPreferences(): Flow<ShoppingPreferencesEntity> = withContext(dispatchers.io) {
@@ -57,7 +56,7 @@ class LocalDataStore @Inject constructor(
                 sortBy = it[shoppingsSortByKey] ?: "",
                 sortAscending = it[shoppingsSortAscendingKey] ?: false,
                 displayMoney = it[displayMoneyKey] ?: true,
-                displayCompleted = it[shoppingsDisplayCompletedKey] ?: "",
+                displayCompleted = it[displayCompletedKey] ?: "",
                 displayTotal = it[shoppingsDisplayTotalKey] ?: "",
                 screenSize = it[screenSizeKey] ?: "",
                 maxProducts = it[shoppingsMaxProductsKey] ?: 10
@@ -78,7 +77,7 @@ class LocalDataStore @Inject constructor(
                 sortBy = it[productsSortByKey] ?: "",
                 sortAscending = it[productsSortAscendingKey] ?: false,
                 displayMoney = it[displayMoneyKey] ?: true,
-                displayCompleted = it[productsDisplayCompletedKey] ?: "",
+                displayCompleted = it[displayCompletedKey] ?: "",
                 displayTotal = it[productsDisplayTotalKey] ?: "",
                 displayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
                 lockQuantity = it[productsLockQuantityKey] ?: false,
@@ -112,6 +111,7 @@ class LocalDataStore @Inject constructor(
                 fontSize = it[fontSizeKey] ?: "",
                 firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
                 displayMoney = it[displayMoneyKey] ?: true,
+                displayCompleted = it[displayCompletedKey] ?: "",
                 shoppingsMultiColumns = it[shoppingsMultiColumnsKey] ?: false,
                 productsMultiColumns = it[productsMultiColumnsKey] ?: false,
                 productsDisplayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
@@ -198,10 +198,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[shoppingsSortAscendingKey] = ascending }
     }
 
-    suspend fun saveShoppingsDisplayCompleted(displayCompleted: String) = withContext(dispatchers.io) {
-        dataStore.edit { it[shoppingsDisplayCompletedKey] = displayCompleted }
-    }
-
     suspend fun saveShoppingsDisplayTotal(displayTotal: String) = withContext(dispatchers.io) {
         dataStore.edit { it[shoppingsDisplayTotalKey] = displayTotal }
     }
@@ -220,10 +216,6 @@ class LocalDataStore @Inject constructor(
 
     suspend fun saveProductsSortAscending(ascending: Boolean) = withContext(dispatchers.io) {
         dataStore.edit { it[productsSortAscendingKey] = ascending }
-    }
-
-    suspend fun saveProductsDisplayCompleted(displayCompleted: String) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsDisplayCompletedKey] = displayCompleted }
     }
 
     suspend fun saveProductsDisplayTotal(displayTotal: String) = withContext(dispatchers.io) {
@@ -248,6 +240,10 @@ class LocalDataStore @Inject constructor(
 
     suspend fun saveDisplayMoney(displayMoney: Boolean) = withContext(dispatchers.io) {
         dataStore.edit { it[displayMoneyKey] = displayMoney }
+    }
+
+    suspend fun saveDisplayCompleted(displayCompleted: String) = withContext(dispatchers.io) {
+        dataStore.edit { it[displayCompletedKey] = displayCompleted }
     }
 
     suspend fun saveScreenSize(screenSize: String) = withContext(dispatchers.io) {

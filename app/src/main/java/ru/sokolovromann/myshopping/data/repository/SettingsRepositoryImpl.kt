@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.SettingsDao
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
 import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import javax.inject.Inject
@@ -37,6 +38,16 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun displayProductAutocompleteName(): Unit = withContext(dispatchers.io) {
         val displayAutocomplete = mapping.toDisplayAutocompleteName(DisplayAutocomplete.NAME)
         settingsDao.displayProductAutocomplete(displayAutocomplete)
+    }
+
+    override suspend fun displayCompletedFirst(): Unit = withContext(dispatchers.io) {
+        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.FIRST)
+        settingsDao.displayCompleted(displayCompleted)
+    }
+
+    override suspend fun displayCompletedLast(): Unit = withContext(dispatchers.io) {
+        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.LAST)
+        settingsDao.displayCompleted(displayCompleted)
     }
 
     override suspend fun tinyFontSizeSelected(): Unit = withContext(dispatchers.io) {
@@ -99,5 +110,10 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun hideProductsAutocomplete(): Unit = withContext(dispatchers.io) {
         val displayAutocomplete = mapping.toDisplayAutocompleteName(DisplayAutocomplete.HIDE)
         settingsDao.displayProductAutocomplete(displayAutocomplete)
+    }
+
+    override suspend fun hideCompleted(): Unit = withContext(dispatchers.io) {
+        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
+        settingsDao.displayCompleted(displayCompleted)
     }
 }

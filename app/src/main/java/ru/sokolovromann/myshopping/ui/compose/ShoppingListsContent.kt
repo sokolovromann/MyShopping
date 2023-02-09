@@ -148,47 +148,6 @@ fun ShoppingListsSortContent(
 }
 
 @Composable
-fun ShoppingListsDisplayCompletedContent(
-    modifier: Modifier = Modifier,
-    displayCompleted: DisplayCompleted,
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    onSelected: (DisplayCompleted) -> Unit
-) {
-    IconButton(
-        modifier = modifier,
-        onClick = { onExpanded(true) }
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_all_display_completed),
-            contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedIcon),
-            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-        )
-        AppDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { onExpanded(false) },
-            header = { Text(text = stringResource(R.string.shoppingLists_header_displayCompleted)) }
-        ) {
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayCompleted.FIRST) },
-                text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedFirst)) },
-                after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.FIRST) }
-            )
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayCompleted.LAST) },
-                text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedLast)) },
-                after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.LAST) }
-            )
-            AppDropdownMenuItem(
-                onClick = {onSelected(DisplayCompleted.HIDE) },
-                text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedHide)) },
-                after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
-            )
-        }
-    }
-}
-
-@Composable
 fun ShoppingListsLocationContent(
     modifier: Modifier = Modifier,
     location: ShoppingListLocation,

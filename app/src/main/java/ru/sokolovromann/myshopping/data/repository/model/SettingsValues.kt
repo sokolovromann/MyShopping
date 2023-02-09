@@ -12,6 +12,7 @@ data class SettingsValues(
     val productsDisplayAutocomplete: DisplayAutocomplete = DisplayAutocomplete.DefaultValue,
     val productsEditCompleted: Boolean = false,
     val productsAddLastProduct: Boolean = true,
+    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val developerName: String = "",
     val developerEmail: String = "",
     val appVersion: String = "",

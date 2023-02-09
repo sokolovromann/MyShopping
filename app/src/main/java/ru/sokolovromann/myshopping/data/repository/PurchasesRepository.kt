@@ -24,10 +24,6 @@ interface PurchasesRepository {
 
     suspend fun sortShoppingListsByTotal()
 
-    suspend fun displayShoppingListsCompletedFirst()
-
-    suspend fun displayShoppingListsCompletedLast()
-
     suspend fun displayShoppingListsAllTotal()
 
     suspend fun displayShoppingListsCompletedTotal()
@@ -35,6 +31,4 @@ interface PurchasesRepository {
     suspend fun displayShoppingListsActiveTotal()
 
     suspend fun invertShoppingListsSort()
-
-    suspend fun hideShoppingListsCompleted()
 }

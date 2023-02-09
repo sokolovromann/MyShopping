@@ -9,6 +9,7 @@ data class SettingsEntity(
     val fontSize: String = "",
     val firstLetterUppercase: Boolean = false,
     val displayMoney: Boolean = false,
+    val displayCompleted: String,
     val shoppingsMultiColumns: Boolean = false,
     val productsMultiColumns: Boolean = false,
     val productsDisplayAutocomplete: String = "",

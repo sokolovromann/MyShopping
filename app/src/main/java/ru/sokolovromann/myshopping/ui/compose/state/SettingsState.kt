@@ -23,6 +23,7 @@ class SettingsState {
             settings = settings.getSettingsItems(),
             fontSize = preferences.fontSize,
             displayAutocomplete = settings.settingsValues.productsDisplayAutocomplete,
+            displayCompleted = settings.settingsValues.displayCompleted,
             multiColumns = preferences.screenSize == ScreenSize.TABLET
         )
     }
@@ -35,11 +36,19 @@ class SettingsState {
         screenData = screenData.copy(settingsItemUid = SettingsUid.DisplayAutocomplete)
     }
 
+    fun showDisplayCompleted() {
+        screenData = screenData.copy(settingsItemUid = SettingsUid.DisplayCompleted)
+    }
+
     fun hideFontSize() {
         screenData = screenData.copy(settingsItemUid = null)
     }
 
     fun hideDisplayAutocomplete() {
+        screenData = screenData.copy(settingsItemUid = null)
+    }
+
+    fun hideDisplayCompleted() {
         screenData = screenData.copy(settingsItemUid = null)
     }
 }
@@ -50,5 +59,6 @@ data class SettingsScreenData(
     val settingsItemUid: SettingsUid? = null,
     val fontSize: FontSize = FontSize.DefaultValue,
     val displayAutocomplete: DisplayAutocomplete = DisplayAutocomplete.DefaultValue,
+    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val multiColumns: Boolean = false
 )

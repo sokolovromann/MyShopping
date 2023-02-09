@@ -11,6 +11,10 @@ interface SettingsRepository {
 
     suspend fun displayProductAutocompleteName()
 
+    suspend fun displayCompletedFirst()
+
+    suspend fun displayCompletedLast()
+
     suspend fun tinyFontSizeSelected()
 
     suspend fun smallFontSizeSelected()
@@ -38,4 +42,6 @@ interface SettingsRepository {
     suspend fun invertProductsAddLastProduct()
 
     suspend fun hideProductsAutocomplete()
+
+    suspend fun hideCompleted()
 }

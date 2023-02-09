@@ -19,6 +19,7 @@ enum class SettingsUid {
     ShoppingsMultiColumns,
     ProductsMultiColumns,
     DisplayAutocomplete,
+    DisplayCompleted,
     EditCompleted,
     AddProduct,
     Email,

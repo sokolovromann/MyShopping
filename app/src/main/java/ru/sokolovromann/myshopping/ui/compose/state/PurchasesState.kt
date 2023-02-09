@@ -26,7 +26,6 @@ class PurchasesState {
             showBottomBar = false,
             sort = preferences.sort,
             displayTotal = preferences.displayTotal,
-            displayCompleted = preferences.displayCompleted,
             fontSize = preferences.fontSize
         )
         shoppingLists = listOf()
@@ -44,7 +43,6 @@ class PurchasesState {
             multiColumns = preferences.multiColumns,
             sort = preferences.sort,
             displayTotal = preferences.displayTotal,
-            displayCompleted = preferences.displayCompleted,
             fontSize = preferences.fontSize
         )
 
@@ -64,10 +62,6 @@ class PurchasesState {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
-    fun showDisplayCompleted() {
-        screenData = screenData.copy(showDisplayCompleted = true)
-    }
-
     fun hideShoppingListMenu() {
         screenData = screenData.copy(shoppingListMenuUid = null)
     }
@@ -78,10 +72,6 @@ class PurchasesState {
 
     fun hideDisplayTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
-    }
-
-    fun hideDisplayCompleted() {
-        screenData = screenData.copy(showDisplayCompleted = false)
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
@@ -168,8 +158,6 @@ data class PurchasesScreenData(
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
-    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
-    val showDisplayCompleted: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showBottomBar: Boolean = true
 )

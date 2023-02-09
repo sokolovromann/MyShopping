@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.SettingsRepository
 import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -40,9 +41,13 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.SelectNavigationItem -> selectNavigationItem(event)
 
+            SettingsEvent.SelectDisplayCompleted -> selectDisplayCompleted()
+
             is SettingsEvent.FontSizeSelected -> fontSizeSelected(event)
 
             is SettingsEvent.DisplayAutocompleteSelected -> displayAutocompleteSelected(event)
+
+            is SettingsEvent.DisplayCompletedSelected -> displayCompletedSelected(event)
 
             SettingsEvent.ShowBackScreen -> showBackScreen()
 
@@ -53,6 +58,8 @@ class SettingsViewModel @Inject constructor(
             SettingsEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             SettingsEvent.HideProductsDisplayAutocomplete -> hideProductsDisplayAutocomplete()
+
+            SettingsEvent.HideDisplayCompleted -> hideDisplayCompleted()
         }
     }
 
@@ -102,6 +109,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.DisplayAutocomplete -> selectProductsDisplayAutocomplete()
 
+            SettingsUid.DisplayCompleted -> selectDisplayCompleted()
+
             SettingsUid.EditCompleted -> invertProductsEditCompleted()
 
             SettingsUid.AddProduct -> invertProductsAddLastProducts()
@@ -132,6 +141,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun selectDisplayCompleted() {
+        settingsState.showDisplayCompleted()
+    }
+
     private fun fontSizeSelected(
         event: SettingsEvent.FontSizeSelected
     ) = viewModelScope.launch {
@@ -159,6 +172,20 @@ class SettingsViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideProductsDisplayAutocomplete()
+        }
+    }
+
+    private fun displayCompletedSelected(
+        event: SettingsEvent.DisplayCompletedSelected
+    ) = viewModelScope.launch {
+        when (event.displayCompleted) {
+            DisplayCompleted.FIRST -> repository.displayCompletedFirst()
+            DisplayCompleted.LAST -> repository.displayCompletedLast()
+            DisplayCompleted.HIDE -> repository.hideCompleted()
+        }
+
+        withContext(dispatchers.main) {
+            hideDisplayCompleted()
         }
     }
 
@@ -231,5 +258,9 @@ class SettingsViewModel @Inject constructor(
 
     private fun hideProductsDisplayAutocomplete() {
         settingsState.hideDisplayAutocomplete()
+    }
+
+    private fun hideDisplayCompleted() {
+        settingsState.hideDisplayCompleted()
     }
 }

@@ -359,6 +359,7 @@ class RepositoryMapping @Inject constructor() {
             fontSize = toFontSize(entity.fontSize),
             firstLetterUppercase = entity.firstLetterUppercase,
             displayMoney = entity.displayMoney,
+            displayCompleted = toDisplayCompleted(entity.displayCompleted),
             shoppingsMultiColumns = entity.shoppingsMultiColumns,
             productsMultiColumns = entity.productsMultiColumns,
             productsDisplayAutocomplete = toDisplayAutocomplete(entity.productsDisplayAutocomplete),
