@@ -41,8 +41,6 @@ class LocalDataStore @Inject constructor(
     private val productsLockQuantityKey = booleanPreferencesKey("products_lock_quantity")
     private val productsEditCompletedKey = booleanPreferencesKey("products_edit_completed")
     private val productsAddLastProductKey = booleanPreferencesKey("products_add_last_product")
-    private val autocompletesSortByKey = stringPreferencesKey("autocompletes_sort_by")
-    private val autocompletesSortAscendingKey = booleanPreferencesKey("autocompletes_sort_ascending")
     private val displayMoneyKey = booleanPreferencesKey("display_money")
     private val screenSizeKey = stringPreferencesKey("screen_size")
 
@@ -98,8 +96,6 @@ class LocalDataStore @Inject constructor(
                 currencyDisplayToLeft = it[currencyDisplayToLeftKey] ?: false,
                 fontSize = it[fontSizeKey] ?: "",
                 firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
-                sortBy = it[autocompletesSortByKey] ?: "",
-                sortAscending = it[autocompletesSortAscendingKey] ?: false,
                 screenSize = it[screenSizeKey] ?: ""
             )
         }
@@ -250,14 +246,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[productsAddLastProductKey] = addLastProduct }
     }
 
-    suspend fun saveAutocompletesSortBy(sortBy: String) = withContext(dispatchers.io) {
-        dataStore.edit { it[autocompletesSortByKey] = sortBy }
-    }
-
-    suspend fun saveAutocompletesSortAscending(ascending: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[autocompletesSortAscendingKey] = ascending }
-    }
-
     suspend fun saveDisplayMoney(displayMoney: Boolean) = withContext(dispatchers.io) {
         dataStore.edit { it[displayMoneyKey] = displayMoney }
     }
@@ -340,13 +328,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val addLastProduct = it[productsAddLastProductKey] ?: false
             it[productsAddLastProductKey] = !addLastProduct
-        }
-    }
-
-    suspend fun invertAutocompletesSortAscending() = withContext(dispatchers.io) {
-        dataStore.edit {
-            val ascending = it[autocompletesSortAscendingKey] ?: false
-            it[autocompletesSortAscendingKey] = !ascending
         }
     }
 

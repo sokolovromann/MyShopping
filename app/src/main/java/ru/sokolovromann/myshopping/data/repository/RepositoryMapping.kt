@@ -324,7 +324,6 @@ class RepositoryMapping @Inject constructor() {
             currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
             fontSize = toFontSize(entity.fontSize),
             firstLetterUppercase = entity.firstLetterUppercase,
-            sort = toSort(entity.sortBy, entity.sortAscending),
             screenSize = toScreenSize(entity.screenSize)
         )
     }

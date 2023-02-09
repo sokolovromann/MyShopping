@@ -39,13 +39,7 @@ class AutocompletesViewModel @Inject constructor(
 
             is AutocompletesEvent.DeleteAutocomplete -> deleteAutocomplete(event)
 
-            AutocompletesEvent.SelectAutocompletesSort -> selectAutocompletesSort()
-
             is AutocompletesEvent.SelectNavigationItem -> selectNavigationItem(event)
-
-            is AutocompletesEvent.SortAutocompletes -> sortAutocompletes(event)
-
-            AutocompletesEvent.InvertAutocompletesSort -> invertAutocompletesSort()
 
             AutocompletesEvent.ShowBackScreen -> showBackScreen()
 
@@ -56,8 +50,6 @@ class AutocompletesViewModel @Inject constructor(
             AutocompletesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             AutocompletesEvent.HideAutocompleteMenu -> hideAutocompleteMenu()
-
-            AutocompletesEvent.HideAutocompletesSort -> hideAutocompletesSort()
         }
     }
 
@@ -102,10 +94,6 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun selectAutocompletesSort() {
-        autocompletesState.showSort()
-    }
-
     private fun selectNavigationItem(
         event: AutocompletesEvent.SelectNavigationItem
     ) = viewModelScope.launch(dispatchers.main) {
@@ -116,24 +104,6 @@ class AutocompletesViewModel @Inject constructor(
             UiRoute.Settings -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowSettings)
             else -> return@launch
         }
-    }
-
-    private fun sortAutocompletes(
-        event: AutocompletesEvent.SortAutocompletes
-    ) = viewModelScope.launch {
-        when (event.sortBy) {
-            SortBy.CREATED -> repository.sortAutocompletesByCreated()
-            SortBy.NAME -> repository.sortAutocompletesByName()
-            else -> {}
-        }
-
-        withContext(dispatchers.main) {
-            hideAutocompletesSort()
-        }
-    }
-
-    private fun invertAutocompletesSort() = viewModelScope.launch {
-        repository.invertAutocompleteSort()
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -154,9 +124,5 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun hideAutocompleteMenu() {
         autocompletesState.hideAutocompleteMenu()
-    }
-
-    private fun hideAutocompletesSort() {
-        autocompletesState.hideSort()
     }
 }

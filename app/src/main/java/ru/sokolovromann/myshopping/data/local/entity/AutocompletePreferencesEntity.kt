@@ -5,7 +5,5 @@ data class AutocompletePreferencesEntity(
     val currencyDisplayToLeft: Boolean = false,
     val fontSize: String = "",
     val firstLetterUppercase: Boolean = false,
-    val sortBy: String = "",
-    val sortAscending: Boolean = false,
     val screenSize: String = ""
 )

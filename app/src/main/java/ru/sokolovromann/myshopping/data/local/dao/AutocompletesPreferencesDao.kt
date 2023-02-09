@@ -12,12 +12,4 @@ class AutocompletesPreferencesDao @Inject constructor(
     suspend fun getAutocompletePreferences(): Flow<AutocompletePreferencesEntity> {
         return localDataStore.getAutocompletePreferences()
     }
-
-    suspend fun sortAutocompletesBy(sortBy: String) {
-        localDataStore.saveAutocompletesSortBy(sortBy)
-    }
-
-    suspend fun invertAutocompletesSort() {
-        localDataStore.invertAutocompletesSortAscending()
-    }
 }

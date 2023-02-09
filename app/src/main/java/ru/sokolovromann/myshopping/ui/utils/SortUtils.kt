@@ -23,12 +23,6 @@ fun Sort.getProductsText(): UiText = when (sortBy) {
     SortBy.TOTAL -> UiText.FromResources(R.string.products_action_sortByTotal)
 }
 
-fun Sort.getAutocompletesText(): UiText = when (sortBy) {
-    SortBy.CREATED -> UiText.FromResources(R.string.autocompletes_action_sortByCreated)
-    SortBy.NAME -> UiText.FromResources(R.string.autocompletes_action_sortByName)
-    else -> UiText.Nothing
-}
-
 fun Sort.getAscendingIcon(): UiIcon {
     return if (ascending) {
         UiIcon.FromVector(Icons.Default.KeyboardArrowUp)

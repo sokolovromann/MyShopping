@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AutocompletesDao
 import ru.sokolovromann.myshopping.data.local.dao.AutocompletesPreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import javax.inject.Inject
 
 class AutocompletesRepositoryImpl @Inject constructor(
@@ -28,19 +27,5 @@ class AutocompletesRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAutocomplete(uid: String): Unit = withContext(dispatchers.io) {
         autocompletesDao.deleteAutocomplete(uid)
-    }
-
-    override suspend fun sortAutocompletesByCreated(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.CREATED)
-        preferencesDao.sortAutocompletesBy(sortBy)
-    }
-
-    override suspend fun sortAutocompletesByName(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.NAME)
-        preferencesDao.sortAutocompletesBy(sortBy)
-    }
-
-    override suspend fun invertAutocompleteSort(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertAutocompletesSort()
     }
 }

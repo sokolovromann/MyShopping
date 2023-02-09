@@ -9,6 +9,6 @@ data class Autocompletes(
         return autocompletes
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
             .distinctBy { it.name }
-            .sortAutocompletes(preferences.sort)
+            .sortedBy { it.name }
     }
 }

@@ -18,7 +18,6 @@ class AutocompletesState {
     fun showNotFound(preferences: AutocompletePreferences) {
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
-            sort = preferences.sort,
             fontSize = preferences.fontSize
         )
     }
@@ -30,7 +29,6 @@ class AutocompletesState {
             screenState = ScreenState.Showing,
             autocompletes = autocompletes.getAutocompleteItems(),
             multiColumns = preferences.screenSize == ScreenSize.TABLET,
-            sort = preferences.sort,
             fontSize = preferences.fontSize
         )
     }
@@ -39,16 +37,8 @@ class AutocompletesState {
         screenData = screenData.copy(autocompleteMenuUid = uid)
     }
 
-    fun showSort() {
-        screenData = screenData.copy(showSort = true)
-    }
-
     fun hideAutocompleteMenu() {
         screenData = screenData.copy(autocompleteMenuUid = null)
-    }
-
-    fun hideSort() {
-        screenData = screenData.copy(showSort = false)
     }
 }
 
@@ -57,7 +47,5 @@ data class AutocompletesScreenData(
     val autocompletes: List<AutocompleteItem> = listOf(),
     val autocompleteMenuUid: String? = null,
     val multiColumns: Boolean = false,
-    val sort: Sort = Sort(),
-    val showSort: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM
 )

@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,8 +18,6 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Sort
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -132,22 +129,6 @@ fun AutocompletesScreen(
                 )
             }
         },
-        gridBar = {
-            AutocompletesSortContent(
-                sort = screenData.sort,
-                fontSize = screenData.fontSize.toButton().sp,
-                expanded = screenData.showSort,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(AutocompletesEvent.SelectAutocompletesSort)
-                    } else {
-                        viewModel.onEvent(AutocompletesEvent.HideAutocompletesSort)
-                    }
-                },
-                onSelected = { viewModel.onEvent(AutocompletesEvent.SortAutocompletes(it)) },
-                onInverted = { viewModel.onEvent(AutocompletesEvent.InvertAutocompletesSort) }
-            )
-        },
         gridContent = {
             AutocompletesGrid(
                 multiColumns = screenData.multiColumns,
@@ -180,7 +161,8 @@ fun AutocompletesScreen(
                     viewModel.onEvent(event)
                 }
             )
-        }
+        },
+        gridMultiColumnsSpace = screenData.multiColumns
     )
 }
 
@@ -227,49 +209,6 @@ private fun getAutocompleteItemTitleOrNull(
         text = name.asCompose(),
         fontSize = fontSize.toItemTitle().sp
     )
-}
-
-@Composable
-private fun AutocompletesSortContent(
-    modifier: Modifier = Modifier,
-    sort: Sort,
-    fontSize: TextUnit,
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    onSelected: (SortBy) -> Unit,
-    onInverted: () -> Unit
-) {
-    Row(modifier = modifier) {
-        TextButton(onClick = { onExpanded(true) }) {
-            Text(
-                text = sort.getAutocompletesText().asCompose(),
-                fontSize = fontSize
-            )
-            AppDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { onExpanded(false) },
-                header = { Text(text = stringResource(R.string.autocompletes_header_sort)) }
-            ) {
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.CREATED) },
-                    text = { Text(text = stringResource(R.string.autocompletes_action_sortByCreated)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.CREATED) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.NAME) },
-                    text = { Text(text = stringResource(R.string.autocompletes_action_sortByName)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.NAME) }
-                )
-            }
-        }
-        IconButton(onClick = onInverted) {
-            Icon(
-                painter = sort.getAscendingIcon().asPainter() ?: return@IconButton,
-                contentDescription = stringResource(R.string.autocompletes_contentDescription_sortAscendingIcon),
-                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-            )
-        }
-    }
 }
 
 private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)

@@ -56,39 +56,3 @@ fun List<Product>.sortProducts(sort: Sort, displayCompleted: DisplayCompleted): 
 
     return allProducts.toList()
 }
-
-fun List<Autocomplete>.sortAutocompletes(sort: Sort): List<Autocomplete> {
-    return when (sort.sortBy) {
-        SortBy.CREATED -> {
-            if (sort.ascending) {
-                this.sortedBy { it.created }
-            } else {
-                this.sortedByDescending { it.created }
-            }
-        }
-
-        SortBy.LAST_MODIFIED -> {
-            if (sort.ascending) {
-                this.sortedBy { it.lastModified }
-            } else {
-                this.sortedByDescending { it.lastModified }
-            }
-        }
-
-        SortBy.NAME -> {
-            if (sort.ascending) {
-                this.sortedBy { it.name }
-            } else {
-                this.sortedByDescending { it.name }
-            }
-        }
-
-        else -> {
-            if (sort.ascending) {
-                this.sortedBy { it.name }
-            } else {
-                this.sortedByDescending { it.name }
-            }
-        }
-    }
-}

@@ -8,10 +8,4 @@ interface AutocompletesRepository {
     suspend fun getAutocompletes(): Flow<Autocompletes>
 
     suspend fun deleteAutocomplete(uid: String)
-
-    suspend fun sortAutocompletesByCreated()
-
-    suspend fun sortAutocompletesByName()
-
-    suspend fun invertAutocompleteSort()
 }
