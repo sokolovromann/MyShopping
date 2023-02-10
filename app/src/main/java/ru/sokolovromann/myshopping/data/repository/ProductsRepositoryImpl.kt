@@ -52,6 +52,17 @@ class ProductsRepositoryImpl @Inject constructor(
         productsDao.updateShoppingLastModified(first.shoppingUid, first.lastModified)
     }
 
+    override suspend fun swapProducts(products: List<Product>): Unit = withContext(dispatchers.io) {
+        val entities = mapping.toProductEntities(products)
+        productsDao.updateProducts(entities)
+
+        val firstProduct = products.first()
+        productsDao.updateShoppingLastModified(
+            uid = firstProduct.shoppingUid,
+            lastModified = firstProduct.lastModified
+        )
+    }
+
     override suspend fun hideProducts(
         shoppingUid: String,
         lastModified: Long
@@ -69,26 +80,6 @@ class ProductsRepositoryImpl @Inject constructor(
         productsDao.updateShoppingLastModified(shoppingUid, lastModified)
     }
 
-    override suspend fun sortProductsByCreated(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.CREATED)
-        preferencesDao.sortProductsBy(sortBy)
-    }
-
-    override suspend fun sortProductsByLastModified(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.LAST_MODIFIED)
-        preferencesDao.sortProductsBy(sortBy)
-    }
-
-    override suspend fun sortProductsByTotal(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.TOTAL)
-        preferencesDao.sortProductsBy(sortBy)
-    }
-
-    override suspend fun sortProductsByName(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.NAME)
-        preferencesDao.sortProductsBy(sortBy)
-    }
-
     override suspend fun displayProductsAllTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayProductsTotal(displayTotal)
@@ -102,9 +93,5 @@ class ProductsRepositoryImpl @Inject constructor(
     override suspend fun displayProductsActiveTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ACTIVE)
         preferencesDao.displayProductsTotal(displayTotal)
-    }
-
-    override suspend fun invertProductsSort(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertProductsSort()
     }
 }

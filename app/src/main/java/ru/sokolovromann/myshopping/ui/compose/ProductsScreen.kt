@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -148,6 +149,17 @@ fun ProductsScreen(
                             )
                             Divider()
                             AppDropdownMenuItem(
+                                text = { Text(text = stringResource(R.string.products_action_sort)) },
+                                after = {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                    )
+                                },
+                                onClick = { viewModel.onEvent(ProductsEvent.SelectProductsSort) }
+                            )
+                            AppDropdownMenuItem(
                                 text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
                                 onClick = { viewModel.onEvent(ProductsEvent.CalculateChange) }
                             )
@@ -158,6 +170,29 @@ fun ProductsScreen(
                             AppDropdownMenuItem(
                                 onClick = { viewModel.onEvent(ProductsEvent.ShareProducts) },
                                 text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
+                            )
+                        }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showSort,
+                            onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsSort) },
+                            header = { Text(text = stringResource(id = R.string.products_action_sort)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.CREATED)) },
+                                text = { Text(text = stringResource(R.string.products_action_sortByCreated)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.LAST_MODIFIED)) },
+                                text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.NAME)) },
+                                text = { Text(text = stringResource(R.string.products_action_sortByName)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.TOTAL)) },
+                                text = { Text(text = stringResource(R.string.products_action_sortByTotal)) }
                             )
                         }
                     }
@@ -176,31 +211,12 @@ fun ProductsScreen(
             }
         },
         gridBar = {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Row {
-                    ProductsSortContent(
-                        modifier = Modifier.weight(1f),
-                        sort = screenData.sort,
-                        fontSize = screenData.fontSize.toButton().sp,
-                        expanded = screenData.showSort,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(ProductsEvent.SelectProductsSort)
-                            } else {
-                                viewModel.onEvent(ProductsEvent.HideProductsSort)
-                            }
-                        },
-                        onSelected = { viewModel.onEvent(ProductsEvent.SortProducts(it)) },
-                        onInverted = { viewModel.onEvent(ProductsEvent.InvertProductsSort) }
-                    )
-                }
-                if (screenData.reminderText != UiText.Nothing) {
-                    ProductsReminderContent(
-                        reminderText = screenData.reminderText,
-                        fontSize = screenData.fontSize,
-                        onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
-                    )
-                }
+            if (screenData.reminderText != UiText.Nothing) {
+                ProductsReminderContent(
+                    reminderText = screenData.reminderText,
+                    fontSize = screenData.fontSize,
+                    onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
+                )
             }
         },
         gridMultiColumnsSpace = screenData.multiColumns
@@ -339,59 +355,6 @@ private fun ProductsTotalContent(
                 onClick = { onSelected(DisplayTotal.ACTIVE) },
                 text = { Text(text = stringResource(R.string.products_action_displayActiveTotal)) },
                 after = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ACTIVE) }
-            )
-        }
-    }
-}
-
-@Composable
-private fun ProductsSortContent(
-    modifier: Modifier = Modifier,
-    sort: Sort,
-    fontSize: TextUnit,
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    onSelected: (SortBy) -> Unit,
-    onInverted: () -> Unit
-) {
-    Row(modifier = modifier) {
-        TextButton(onClick = { onExpanded(true) }) {
-            Text(
-                text = sort.getShoppingListsText().asCompose(),
-                fontSize = fontSize
-            )
-            AppDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { onExpanded(false) },
-                header = { Text(text = stringResource(R.string.products_header_sort)) }
-            ) {
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.CREATED) },
-                    text = { Text(text = stringResource(R.string.products_action_sortByCreated)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.CREATED) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.LAST_MODIFIED) },
-                    text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.LAST_MODIFIED) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.NAME) },
-                    text = { Text(text = stringResource(R.string.products_action_sortByName)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.NAME) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.TOTAL) },
-                    text = { Text(text = stringResource(R.string.products_action_sortByTotal)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.TOTAL) }
-                )
-            }
-        }
-        IconButton(onClick = onInverted) {
-            Icon(
-                painter = sort.getAscendingIcon().asPainter() ?: return@IconButton,
-                contentDescription = stringResource(R.string.products_contentDescription_sortAscendingIcon),
-                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
         }
     }

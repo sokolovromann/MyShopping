@@ -34,7 +34,7 @@ fun List<ShoppingList>.sortShoppingLists(sort: Sort, displayCompleted: DisplayCo
     return allShoppingLists.toList()
 }
 
-fun List<Product>.sortProducts(sort: Sort, displayCompleted: DisplayCompleted): List<Product> {
+fun List<Product>.sortProducts(displayCompleted: DisplayCompleted): List<Product> {
     val partition = this.partition { it.completed }
     val sortedCompleted: List<Product> = partition.first.sortedBy { it.position }
     val sortedActive: List<Product> = partition.second.sortedBy { it.position }

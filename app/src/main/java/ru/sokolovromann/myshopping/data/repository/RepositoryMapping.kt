@@ -145,6 +145,10 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toProductEntities(products: List<Product>): List<ProductEntity> {
+        return products.map { toProductEntity(it) }
+    }
+
     fun toProduct(entity: ProductEntity, preferencesEntity: ShoppingPreferencesEntity): Product {
         return Product(
             id = entity.id,
@@ -224,7 +228,6 @@ class RepositoryMapping @Inject constructor() {
             fontSize = toFontSize(entity.fontSize),
             firstLetterUppercase = entity.firstLetterUppercase,
             multiColumns = entity.multiColumns,
-            sort = toSort(entity.sortBy, entity.sortAscending),
             displayMoney = entity.displayMoney,
             displayCompleted = toDisplayCompleted(entity.displayCompleted),
             displayTotal = toDisplayTotal(entity.displayTotal),
@@ -408,7 +411,6 @@ class RepositoryMapping @Inject constructor() {
             fontSize = toFontSize(entity.titleFontSize),
             firstLetterUppercase = entity.firstLetterUppercase,
             multiColumns = toMultiColumns(entity.columnCount),
-            sort = toSort(entity.sort),
             displayMoney = entity.displayMoney,
             displayTotal = toDisplayTotal(entity.displayTotal),
             editCompleted = entity.editCompleted,
@@ -433,7 +435,9 @@ class RepositoryMapping @Inject constructor() {
                     products.add(product)
                 }
             }
-            shoppingLists.add(shoppingList.copy(products = products))
+            shoppingLists.add(
+                shoppingList.copy(products = products.sortAppVersion14Products(preferences.sort))
+            )
 
             productsCursor.moveToFirst()
         }
@@ -702,5 +706,13 @@ class RepositoryMapping @Inject constructor() {
     private fun toAppVersion14Completed(buy: Int): Boolean {
         val completed = 2130837592
         return buy == completed
+    }
+
+    private fun List<Product>.sortAppVersion14Products(sort: Int): List<Product> {
+        return when (sort) {
+            1, 3 -> this.sortedBy { it.name }
+            2, 4 -> this.sortedBy { it.calculateTotal().value }
+            else -> this.sortedBy { it.id }
+        }.withIndex().map { it.value.copy(position = it.index) }
     }
 }

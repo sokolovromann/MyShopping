@@ -37,8 +37,6 @@ interface MainRepository {
 
     suspend fun addProductsMultiColumns(multiColumns: Boolean)
 
-    suspend fun addProductsSort(sort: Sort)
-
     suspend fun addProductsDisplayTotal(displayTotal: DisplayTotal)
 
     suspend fun addProductsEditCompleted(editCompleted: Boolean)

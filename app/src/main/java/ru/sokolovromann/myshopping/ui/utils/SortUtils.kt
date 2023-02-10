@@ -16,13 +16,6 @@ fun Sort.getShoppingListsText(): UiText = when (sortBy) {
     SortBy.TOTAL -> UiText.FromResources(R.string.shoppingLists_action_sortByTotal)
 }
 
-fun Sort.getProductsText(): UiText = when (sortBy) {
-    SortBy.CREATED -> UiText.FromResources(R.string.products_action_sortByCreated)
-    SortBy.LAST_MODIFIED -> UiText.FromResources(R.string.products_action_sortByLastModified)
-    SortBy.NAME -> UiText.FromResources(R.string.products_action_sortByName)
-    SortBy.TOTAL -> UiText.FromResources(R.string.products_action_sortByTotal)
-}
-
 fun Sort.getAscendingIcon(): UiIcon {
     return if (ascending) {
         UiIcon.FromVector(Icons.Default.KeyboardArrowUp)

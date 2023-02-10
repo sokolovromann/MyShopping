@@ -12,7 +12,7 @@ data class Products(
     fun sortProducts(): List<Product> {
         return shoppingList.products
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
-            .sortProducts(preferences.sort, preferences.displayCompleted)
+            .sortProducts(preferences.displayCompleted)
     }
 
     fun calculateTotal(): Money {

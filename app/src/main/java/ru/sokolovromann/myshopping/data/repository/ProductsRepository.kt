@@ -14,23 +14,15 @@ interface ProductsRepository {
 
     suspend fun swapProducts(first: Product, second: Product)
 
+    suspend fun swapProducts(products: List<Product>)
+
     suspend fun hideProducts(shoppingUid: String, lastModified: Long)
 
     suspend fun hideProduct(shoppingUid: String, productUid: String, lastModified: Long)
-
-    suspend fun sortProductsByCreated()
-
-    suspend fun sortProductsByLastModified()
-
-    suspend fun sortProductsByTotal()
-
-    suspend fun sortProductsByName()
 
     suspend fun displayProductsAllTotal()
 
     suspend fun displayProductsCompletedTotal()
 
     suspend fun displayProductsActiveTotal()
-
-    suspend fun invertProductsSort()
 }

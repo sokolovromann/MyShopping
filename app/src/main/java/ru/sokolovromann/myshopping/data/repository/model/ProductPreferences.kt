@@ -6,7 +6,6 @@ data class ProductPreferences(
     val fontSize: FontSize = FontSize.DefaultValue,
     val firstLetterUppercase: Boolean = true,
     val multiColumns: Boolean = false,
-    val sort: Sort = Sort(),
     val displayMoney: Boolean = true,
     val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,

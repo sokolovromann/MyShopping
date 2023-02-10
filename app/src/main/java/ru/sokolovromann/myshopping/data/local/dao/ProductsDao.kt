@@ -3,7 +3,9 @@ package ru.sokolovromann.myshopping.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
 
 @Dao
@@ -24,6 +26,9 @@ interface ProductsDao {
 
     @Query("UPDATE products SET position = :position, last_modified = :lastModified WHERE product_uid = :uid")
     fun updateProductPosition(uid: String, position: Int, lastModified: Long)
+
+    @Update
+    fun updateProducts(products: List<ProductEntity>)
 
     @Query("UPDATE products SET display = 0 WHERE shopping_uid = :shoppingUid")
     fun hideProducts(shoppingUid: String)

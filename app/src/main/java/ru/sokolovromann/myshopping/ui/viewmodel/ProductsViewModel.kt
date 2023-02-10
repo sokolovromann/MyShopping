@@ -67,8 +67,6 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.DisplayProductsTotal -> displayProductsTotal(event)
 
-            ProductsEvent.InvertProductsSort -> invertProductsSort()
-
             is ProductsEvent.CompleteProduct -> completeProduct(event)
 
             is ProductsEvent.ActiveProduct -> activeProduct(event)
@@ -248,12 +246,12 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun sortProducts(event: ProductsEvent.SortProducts) = viewModelScope.launch {
-        when (event.sortBy) {
-            SortBy.CREATED -> repository.sortProductsByCreated()
-            SortBy.LAST_MODIFIED -> repository.sortProductsByLastModified()
-            SortBy.NAME -> repository.sortProductsByName()
-            SortBy.TOTAL -> repository.sortProductsByTotal()
+        val products = productsState.sortProductsResult(event.sortBy).getOrElse {
+            withContext(dispatchers.main) { hideProductsSort() }
+            return@launch
         }
+
+        repository.swapProducts(products)
 
         withContext(dispatchers.main) {
             hideProductsSort()
@@ -272,10 +270,6 @@ class ProductsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideProductsDisplayTotal()
         }
-    }
-
-    private fun invertProductsSort() = viewModelScope.launch {
-        repository.invertProductsSort()
     }
 
     private fun showProductMenu(event: ProductsEvent.ShowProductMenu) {

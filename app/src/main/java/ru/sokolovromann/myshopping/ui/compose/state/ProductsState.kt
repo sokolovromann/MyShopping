@@ -19,7 +19,7 @@ class ProductsState {
 
     private var shareTotal by mutableStateOf("")
 
-    private var products: List<Product> by mutableStateOf(listOf())
+    private var products by mutableStateOf(Products())
 
     fun showLoading() {
         screenData = ProductsScreenData(screenState = ScreenState.Loading)
@@ -30,13 +30,12 @@ class ProductsState {
             screenState = ScreenState.Nothing,
             shoppingListName = UiText.FromString(shoppingListName),
             reminderText = toReminderText(reminder),
-            sort = preferences.sort,
             displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
 
         editCompleted = preferences.editCompleted
-        products = listOf()
+        products = Products(preferences = preferences)
     }
 
     fun showProducts(products: Products) {
@@ -60,7 +59,6 @@ class ProductsState {
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
             multiColumns = preferences.multiColumns,
-            sort = preferences.sort,
             displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
@@ -79,7 +77,7 @@ class ProductsState {
             ""
         }
 
-        this.products = products.sortProducts()
+        this.products = products
     }
 
     fun showProductMenu(uid: String) {
@@ -91,7 +89,10 @@ class ProductsState {
     }
 
     fun showSort() {
-        screenData = screenData.copy(showSort = true)
+        screenData = screenData.copy(
+            showSort = true,
+            showProductsMenu = false
+        )
     }
 
     fun showDisplayTotal() {
@@ -141,13 +142,14 @@ class ProductsState {
     }
 
     fun getProductsToUpResult(uid: String): Result<Pair<Product, Product>> {
-        return if (products.size < 2) {
+        val sortProducts = products.sortProducts()
+        return if (sortProducts.size < 2) {
             Result.failure(Exception())
         } else {
             var previousIndex = 0
             var currentIndex = 0
-            for (index in products.indices) {
-                val product = products[index]
+            for (index in sortProducts.indices) {
+                val product = sortProducts[index]
                 if (currentIndex > 0) {
                     previousIndex = index - 1
                 }
@@ -159,12 +161,12 @@ class ProductsState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentProduct = products[currentIndex].copy(
-                position = products[previousIndex].position,
+            val currentProduct = sortProducts[currentIndex].copy(
+                position = sortProducts[previousIndex].position,
                 lastModified = lastModified
             )
-            val previousProduct = products[previousIndex].copy(
-                position = products[currentIndex].position,
+            val previousProduct = sortProducts[previousIndex].copy(
+                position = sortProducts[currentIndex].position,
                 lastModified = lastModified
             )
 
@@ -174,16 +176,17 @@ class ProductsState {
     }
 
     fun getProductsToDownResult(uid: String): Result<Pair<Product, Product>> {
-        return if (products.size < 2) {
+        val sortProducts = products.sortProducts()
+        return if (sortProducts.size < 2) {
             Result.failure(Exception())
         } else {
             var currentIndex = 0
             var nextIndex = 0
-            for (index in products.indices) {
-                val product = products[index]
+            for (index in sortProducts.indices) {
+                val product = sortProducts[index]
 
                 currentIndex = index
-                if (index < products.lastIndex) {
+                if (index < sortProducts.lastIndex) {
                     nextIndex = index + 1
                 }
 
@@ -193,16 +196,36 @@ class ProductsState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentProduct = products[currentIndex].copy(
-                position = products[nextIndex].position,
+            val currentProduct = sortProducts[currentIndex].copy(
+                position = sortProducts[nextIndex].position,
                 lastModified = lastModified
             )
-            val nextProduct = products[nextIndex].copy(
-                position = products[currentIndex].position,
+            val nextProduct = sortProducts[nextIndex].copy(
+                position = sortProducts[currentIndex].position,
                 lastModified = lastModified
             )
 
             val success = Pair(currentProduct, nextProduct)
+            Result.success(success)
+        }
+    }
+
+    fun sortProductsResult(sortBy: SortBy): Result<List<Product>> {
+        val productsList = products.shoppingList.products
+        return if (productsList.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            val success = when (sortBy) {
+                SortBy.CREATED -> productsList.sortedBy { it.created }
+                SortBy.LAST_MODIFIED -> productsList.sortedBy { it.lastModified }
+                SortBy.NAME -> productsList.sortedBy { it.name }
+                SortBy.TOTAL -> productsList.sortedBy { it.calculateTotal().value }
+            }.mapIndexed { index, product ->
+                product.copy(
+                    position = index,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
             Result.success(success)
         }
     }
@@ -227,7 +250,6 @@ data class ProductsScreenData(
     val totalText: UiText = UiText.Nothing,
     val reminderText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
-    val sort: Sort = Sort(),
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,

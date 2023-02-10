@@ -7,7 +7,6 @@ data class AppVersion14Preferences(
     val fontSize: FontSize = FontSize.DefaultValue,
     val firstLetterUppercase: Boolean = false,
     val multiColumns: Boolean = false,
-    val sort: Sort = Sort(),
     val displayMoney: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val editCompleted: Boolean = false,

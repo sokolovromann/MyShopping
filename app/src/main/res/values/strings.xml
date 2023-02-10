@@ -273,6 +273,7 @@
     <string name="products_action_moveProductToShoppingList">Move to…</string>
     <string name="products_action_moveProductToUp">Move to up</string>
     <string name="products_action_shareProducts">Share</string>
+    <string name="products_action_sort">Sort</string>
     <string name="products_action_sortByCreated">By created</string>
     <string name="products_action_sortByLastModified">By last modified</string>
     <string name="products_action_sortByName">By name</string>
@@ -280,9 +281,7 @@
     <string name="products_contentDescription_addProductIcon">Add product</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
-    <string name="products_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
     <string name="products_header_displayTotal">Display total</string>
-    <string name="products_header_sort">Sort</string>
     <string name="products_text_activeTotal">Active: %s</string>
     <string name="products_text_allTotal">All: %s</string>
     <string name="products_text_completedTotal">Completed: %s</string>

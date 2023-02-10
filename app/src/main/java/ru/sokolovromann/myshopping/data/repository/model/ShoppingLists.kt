@@ -28,6 +28,6 @@ data class ShoppingLists(
     private fun sortProduct(product: List<Product>): List<Product> {
         return product
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
-            .sortProducts(preferences.sort, preferences.displayCompleted)
+            .sortProducts(preferences.displayCompleted)
     }
 }

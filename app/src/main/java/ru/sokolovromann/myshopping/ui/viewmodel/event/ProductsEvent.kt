@@ -35,8 +35,6 @@ sealed class ProductsEvent {
 
     data class DisplayProductsTotal(val displayTotal: DisplayTotal) : ProductsEvent()
 
-    object InvertProductsSort : ProductsEvent()
-
     data class CompleteProduct(val uid: String) : ProductsEvent()
 
     data class ActiveProduct(val uid: String) : ProductsEvent()

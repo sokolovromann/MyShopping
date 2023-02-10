@@ -32,8 +32,6 @@ class LocalDataStore @Inject constructor(
     private val shoppingsDisplayTotalKey = stringPreferencesKey("shoppings_display_total")
     private val shoppingsMaxProductsKey = intPreferencesKey("shoppings_max_products")
     private val productsMultiColumnsKey = booleanPreferencesKey("products_multi_columns")
-    private val productsSortByKey = stringPreferencesKey("products_sort_by")
-    private val productsSortAscendingKey = booleanPreferencesKey("products_sort_ascending")
     private val productsDisplayTotalKey = stringPreferencesKey("products_display_total")
     private val productsDisplayAutocompleteKey = stringPreferencesKey("products_display_autocomplete")
     private val productsLockQuantityKey = booleanPreferencesKey("products_lock_quantity")
@@ -74,8 +72,6 @@ class LocalDataStore @Inject constructor(
                 fontSize = it[fontSizeKey] ?: "",
                 firstLetterUppercase = it[firstLetterUppercaseKey] ?: true,
                 multiColumns = it[productsMultiColumnsKey] ?: false,
-                sortBy = it[productsSortByKey] ?: "",
-                sortAscending = it[productsSortAscendingKey] ?: false,
                 displayMoney = it[displayMoneyKey] ?: true,
                 displayCompleted = it[displayCompletedKey] ?: "",
                 displayTotal = it[productsDisplayTotalKey] ?: "",
@@ -210,14 +206,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[productsMultiColumnsKey] = multiColumns }
     }
 
-    suspend fun saveProductsSortBy(sortBy: String) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsSortByKey] = sortBy }
-    }
-
-    suspend fun saveProductsSortAscending(ascending: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsSortAscendingKey] = ascending }
-    }
-
     suspend fun saveProductsDisplayTotal(displayTotal: String) = withContext(dispatchers.io) {
         dataStore.edit { it[productsDisplayTotalKey] = displayTotal }
     }
@@ -296,13 +284,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val ascending = it[shoppingsSortAscendingKey] ?: false
             it[shoppingsSortAscendingKey] = !ascending
-        }
-    }
-
-    suspend fun invertProductsSortAscending() = withContext(dispatchers.io) {
-        dataStore.edit {
-            val ascending = it[productsSortAscendingKey] ?: false
-            it[productsSortAscendingKey] = !ascending
         }
     }
 
