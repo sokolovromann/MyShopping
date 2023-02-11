@@ -122,7 +122,7 @@ class ProductsViewModel @Inject constructor(
     private fun editProduct(
         event: ProductsEvent.EditProduct
     ) = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(ProductsScreenEvent.EditProduct(event.uid))
+        _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
         hideProductMenu()
     }
 
@@ -218,7 +218,7 @@ class ProductsViewModel @Inject constructor(
 
         if (productsState.editCompleted) {
             withContext(dispatchers.main) {
-                _screenEventFlow.emit(ProductsScreenEvent.EditProduct(event.uid))
+                _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
             }
         }
     }

@@ -158,7 +158,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun saveProduct() = viewModelScope.launch {
-        val product = addEditProductState.getProductResult()
+        val product = addEditProductState.getProductResult(productUid == null)
             .getOrElse { return@launch }
 
         if (productUid == null) {

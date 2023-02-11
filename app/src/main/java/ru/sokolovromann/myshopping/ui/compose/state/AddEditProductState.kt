@@ -285,7 +285,7 @@ class AddEditProductState {
         return preferences.displayAutocomplete
     }
 
-    fun getProductResult(): Result<Product> {
+    fun getProductResult(newProduct: Boolean): Result<Product> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
 
         return if (screenData.nameValue.isEmpty()) {
@@ -294,7 +294,11 @@ class AddEditProductState {
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
 
-            val position = productsLastPosition?.plus(1) ?: 0
+            val position = if (newProduct) {
+                productsLastPosition?.plus(1) ?: 0
+            } else {
+                product.position
+            }
             val success = product.copy(
                 position = position,
                 name = screenData.nameValue.text,

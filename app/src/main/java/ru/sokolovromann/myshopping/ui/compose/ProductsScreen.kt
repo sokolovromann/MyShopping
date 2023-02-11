@@ -44,7 +44,7 @@ fun ProductsScreen(
                 )
 
                 is ProductsScreenEvent.EditProduct -> navController.navigate(
-                    route = UiRoute.Products.editProductScreen(it.uid)
+                    route = UiRoute.Products.editProductScreen(it.shoppingUid, it.productUid)
                 )
 
                 is ProductsScreenEvent.EditShoppingListName -> navController.navigate(

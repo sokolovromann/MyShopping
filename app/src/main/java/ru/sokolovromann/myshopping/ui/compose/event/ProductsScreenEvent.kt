@@ -4,7 +4,7 @@ sealed class ProductsScreenEvent {
 
     data class AddProduct(val uid: String) : ProductsScreenEvent()
 
-    data class EditProduct(val uid: String) : ProductsScreenEvent()
+    data class EditProduct(val shoppingUid: String, val productUid: String) : ProductsScreenEvent()
 
     data class EditShoppingListName(val uid: String) : ProductsScreenEvent()
 

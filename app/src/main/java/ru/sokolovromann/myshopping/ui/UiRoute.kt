@@ -6,6 +6,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import ru.sokolovromann.myshopping.ui.compose.*
 
@@ -32,8 +33,8 @@ sealed class UiRoute(val graph: String) {
             return "add-product/$shoppingUid"
         }
 
-        fun editProductScreen(productUid: String): String {
-            return "edit-product/$productUid"
+        fun editProductScreen(shoppingUid: String, productUid: String): String {
+            return "edit-product/$productUid?${UiRouteKey.ShoppingUid.key}=$shoppingUid"
         }
 
         fun editShoppingListNameScreen(shoppingUid: String): String {
@@ -132,7 +133,10 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         composable(route = UiRoute.Products.addProductScreen(UiRouteKey.ShoppingUid.placeholder)) {
             AddEditProductScreen(navController)
         }
-        composable(route = UiRoute.Products.editProductScreen(UiRouteKey.ProductUid.placeholder)) {
+        composable(
+            route = UiRoute.Products.editProductScreen(UiRouteKey.ShoppingUid.placeholder, UiRouteKey.ProductUid.placeholder),
+            arguments = listOf(navArgument(UiRouteKey.ShoppingUid.key) { defaultValue = "default" })
+        ) {
             AddEditProductScreen(navController)
         }
         composable(route = UiRoute.Products.copyProductToShoppingList(UiRouteKey.ProductUid.placeholder)) {
