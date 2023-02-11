@@ -95,59 +95,6 @@ fun ShoppingListsTotalContent(
 }
 
 @Composable
-fun ShoppingListsSortContent(
-    modifier: Modifier = Modifier,
-    sort: Sort,
-    fontSize: TextUnit,
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    onSelected: (SortBy) -> Unit,
-    onInverted: () -> Unit
-) {
-    Row(modifier = modifier) {
-        TextButton(onClick = { onExpanded(true) }) {
-            Text(
-                text = sort.getShoppingListsText().asCompose(),
-                fontSize = fontSize
-            )
-            AppDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { onExpanded(false) },
-                header = { Text(text = stringResource(R.string.shoppingLists_header_sort)) }
-            ) {
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.CREATED) },
-                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.CREATED) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.LAST_MODIFIED) },
-                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.LAST_MODIFIED) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.NAME) },
-                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.NAME) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(SortBy.TOTAL) },
-                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) },
-                    after = { CheckmarkAppCheckbox(checked = sort.sortBy == SortBy.TOTAL) }
-                )
-            }
-        }
-        IconButton(onClick = onInverted) {
-            Icon(
-                painter = sort.getAscendingIcon().asPainter() ?: return@IconButton,
-                contentDescription = stringResource(R.string.shoppingLists_contentDescription_sortAscendingIcon),
-                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-            )
-        }
-    }
-}
-
-@Composable
 fun ShoppingListsLocationContent(
     modifier: Modifier = Modifier,
     location: ShoppingListLocation,

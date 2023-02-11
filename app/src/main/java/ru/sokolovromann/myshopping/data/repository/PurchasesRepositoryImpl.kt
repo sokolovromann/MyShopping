@@ -56,26 +56,6 @@ class PurchasesRepositoryImpl @Inject constructor(
         purchasesDao.updateShoppingPosition(second.uid, second.position, second.lastModified)
     }
 
-    override suspend fun sortShoppingListsByCreated(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.CREATED)
-        preferencesDao.sortShoppingsBy(sortBy)
-    }
-
-    override suspend fun sortShoppingListsByLastModified(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.LAST_MODIFIED)
-        preferencesDao.sortShoppingsBy(sortBy)
-    }
-
-    override suspend fun sortShoppingListsByName(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.NAME)
-        preferencesDao.sortShoppingsBy(sortBy)
-    }
-
-    override suspend fun sortShoppingListsByTotal(): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(SortBy.TOTAL)
-        preferencesDao.sortShoppingsBy(sortBy)
-    }
-
     override suspend fun displayShoppingListsAllTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayShoppingsTotal(displayTotal)
@@ -89,9 +69,5 @@ class PurchasesRepositoryImpl @Inject constructor(
     override suspend fun displayShoppingListsActiveTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ACTIVE)
         preferencesDao.displayShoppingsTotal(displayTotal)
-    }
-
-    override suspend fun invertShoppingListsSort(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertShoppingsSort()
     }
 }

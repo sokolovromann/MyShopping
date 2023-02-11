@@ -85,7 +85,6 @@ class RepositoryMapping @Inject constructor() {
             fontSize = toFontSize(entity.fontSize),
             firstLetterUppercase = entity.firstLetterUppercase,
             multiColumns = entity.multiColumns,
-            sort = toSort(entity.sortBy, entity.sortAscending),
             displayMoney = entity.displayMoney,
             displayCompleted = toDisplayCompleted(entity.displayCompleted),
             displayTotal = toDisplayTotal(entity.displayTotal),
@@ -449,7 +448,7 @@ class RepositoryMapping @Inject constructor() {
         }
 
         return AppVersion14(
-            shoppingLists = shoppingLists.toList(),
+            shoppingLists = shoppingLists.sortAppVersion14ShoppingLists(preferences.sort).toList(),
             autocompletes = autocompletes.toList(),
             preferences = toAppVersion14Preferences(preferences)
         )
@@ -616,32 +615,6 @@ class RepositoryMapping @Inject constructor() {
         return columnCount > 1
     }
 
-    fun toSort(sortByName: String, ascending: Boolean): Sort {
-        return Sort(SortBy.valueOfOrDefault(sortByName), ascending)
-    }
-
-    fun toSort(value: Int): Sort {
-        val toSortBy: SortBy = when (value) {
-            0 -> SortBy.CREATED
-            1, 3 -> SortBy.NAME
-            2, 4 -> SortBy.TOTAL
-            else -> SortBy.CREATED
-        }
-        return Sort(sortBy = toSortBy)
-    }
-
-    fun toSortByName(sort: Sort): String {
-        return sort.sortBy.name
-    }
-
-    fun toSortByName(sortBy: SortBy): String {
-        return sortBy.name
-    }
-
-    fun toSortAscending(sort: Sort): Boolean {
-        return sort.ascending
-    }
-
     fun toDisplayCompleted(name: String): DisplayCompleted {
         return DisplayCompleted.valueOfOrDefault(name)
     }
@@ -706,6 +679,14 @@ class RepositoryMapping @Inject constructor() {
     private fun toAppVersion14Completed(buy: Int): Boolean {
         val completed = 2130837592
         return buy == completed
+    }
+
+    private fun List<ShoppingList>.sortAppVersion14ShoppingLists(sort: Int): List<ShoppingList> {
+        return when (sort) {
+            1, 3 -> this.sortedBy { it.name }
+            2, 4 -> this.sortedBy { it.calculateTotal().value }
+            else -> this.sortedBy { it.id }
+        }.withIndex().map { it.value.copy(position = it.index) }
     }
 
     private fun List<Product>.sortAppVersion14Products(sort: Int): List<Product> {

@@ -348,14 +348,8 @@
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>
     <string name="shoppingLists_action_selectTrashLocation">Trash</string>
-    <string name="shoppingLists_action_sortByCreated">By created</string>
-    <string name="shoppingLists_action_sortByLastModified">By last modified</string>
-    <string name="shoppingLists_action_sortByName">By name</string>
-    <string name="shoppingLists_action_sortByTotal">By total</string>
-    <string name="shoppingLists_contentDescription_sortAscendingIcon">Sort ascending or descending</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
-    <string name="shoppingLists_header_sort">Sort</string>
     <string name="shoppingLists_text_activeTotal">Active: %s</string>
     <string name="shoppingLists_text_allTotal">All: %s</string>
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>

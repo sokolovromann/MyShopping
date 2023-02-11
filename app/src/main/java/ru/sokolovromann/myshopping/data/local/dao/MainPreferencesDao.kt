@@ -45,14 +45,6 @@ class MainPreferencesDao @Inject constructor(
         localDataStore.saveShoppingsMultiColumns(multiColumns)
     }
 
-    suspend fun addShoppingsBySort(sortBy: String) {
-        localDataStore.saveShoppingsSortBy(sortBy)
-    }
-
-    suspend fun addShoppingsSortAscending(ascending: Boolean) {
-        localDataStore.saveShoppingsSortAscending(ascending)
-    }
-
     suspend fun addDisplayCompleted(displayCompleted: String) {
         localDataStore.saveDisplayCompleted(displayCompleted)
     }

@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -134,23 +133,6 @@ fun ArchiveScreen(
                     fontSize = screenData.fontSize.toItemTitle().sp
                 )
             }
-        },
-        gridBar = {
-            ShoppingListsSortContent(
-                modifier = Modifier.weight(1f),
-                sort = screenData.sort,
-                fontSize = screenData.fontSize.toButton().sp,
-                expanded = screenData.showSort,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(ArchiveEvent.SelectShoppingListsSort)
-                    } else {
-                        viewModel.onEvent(ArchiveEvent.HideShoppingListsSort)
-                    }
-                },
-                onSelected = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(it)) },
-                onInverted = { viewModel.onEvent(ArchiveEvent.InvertShoppingListsSort) }
-            )
         }
     ) {
         ShoppingListsGrid(

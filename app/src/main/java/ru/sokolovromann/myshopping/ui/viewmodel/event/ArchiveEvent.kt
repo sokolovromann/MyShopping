@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class ArchiveEvent {
@@ -10,17 +9,11 @@ sealed class ArchiveEvent {
 
     data class MoveShoppingListToTrash(val uid: String) : ArchiveEvent()
 
-    object SelectShoppingListsSort : ArchiveEvent()
-
     object SelectShoppingListsDisplayTotal : ArchiveEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : ArchiveEvent()
 
-    data class SortShoppingLists(val sortBy: SortBy) : ArchiveEvent()
-
     data class DisplayShoppingListsTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
-
-    object InvertShoppingListsSort : ArchiveEvent()
 
     object ShowBackScreen : ArchiveEvent()
 
@@ -33,8 +26,6 @@ sealed class ArchiveEvent {
     object HideNavigationDrawer : ArchiveEvent()
 
     object HideShoppingListMenu : ArchiveEvent()
-
-    object HideShoppingListsSort : ArchiveEvent()
 
     object HideShoppingListsDisplayTotal : ArchiveEvent()
 }

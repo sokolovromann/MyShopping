@@ -14,7 +14,7 @@ data class ShoppingLists(
                     products = sortProduct(it.products)
                 )
             }
-            .sortShoppingLists(preferences.sort, preferences.displayCompleted)
+            .sortShoppingLists(preferences.displayCompleted)
     }
 
     fun calculateTotal(): Money {

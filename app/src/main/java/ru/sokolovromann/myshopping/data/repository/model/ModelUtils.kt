@@ -11,7 +11,7 @@ fun String.formatFirst(uppercase: Boolean): String {
     }
 }
 
-fun List<ShoppingList>.sortShoppingLists(sort: Sort, displayCompleted: DisplayCompleted): List<ShoppingList> {
+fun List<ShoppingList>.sortShoppingLists(displayCompleted: DisplayCompleted): List<ShoppingList> {
     val partition = this.partition { it.completed }
     val sortedCompleted: List<ShoppingList> = partition.first.sortedBy { it.position }
     val sortedActive: List<ShoppingList> = partition.second.sortedBy { it.position }

@@ -8,8 +8,6 @@ data class ShoppingPreferencesEntity(
     val fontSize: String = "",
     val firstLetterUppercase: Boolean = false,
     val multiColumns: Boolean = false,
-    val sortBy: String = "",
-    val sortAscending: Boolean = false,
     val displayMoney: Boolean = false,
     val displayCompleted: String = "",
     val displayTotal: String = "",

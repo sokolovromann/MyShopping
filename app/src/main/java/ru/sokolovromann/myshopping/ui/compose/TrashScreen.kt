@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -139,23 +138,6 @@ fun TrashScreen(
                     fontSize = screenData.fontSize.toItemTitle().sp
                 )
             }
-        },
-        gridBar = {
-            ShoppingListsSortContent(
-                modifier = Modifier.weight(1f),
-                sort = screenData.sort,
-                fontSize = screenData.fontSize.toButton().sp,
-                expanded = screenData.showSort,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(TrashEvent.SelectShoppingListsSort)
-                    } else {
-                        viewModel.onEvent(TrashEvent.HideShoppingListsSort)
-                    }
-                },
-                onSelected = { viewModel.onEvent(TrashEvent.SortShoppingLists(it)) },
-                onInverted = { viewModel.onEvent(TrashEvent.InvertShoppingListsSort) }
-            )
         }
     ) {
         ShoppingListsGrid(

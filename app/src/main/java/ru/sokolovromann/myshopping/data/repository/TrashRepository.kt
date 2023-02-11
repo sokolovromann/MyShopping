@@ -15,19 +15,9 @@ interface TrashRepository {
 
     suspend fun deleteShoppingList(uid: String)
 
-    suspend fun sortShoppingListsByCreated()
-
-    suspend fun sortShoppingListsByLastModified()
-
-    suspend fun sortShoppingListsByName()
-
-    suspend fun sortShoppingListsByTotal()
-
     suspend fun displayShoppingListsAllTotal()
 
     suspend fun displayShoppingListsCompletedTotal()
 
     suspend fun displayShoppingListsActiveTotal()
-
-    suspend fun invertShoppingListsSort()
 }

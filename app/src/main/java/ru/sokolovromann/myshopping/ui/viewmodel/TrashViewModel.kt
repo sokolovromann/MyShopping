@@ -11,7 +11,6 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.TrashRepository
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -43,17 +42,11 @@ class TrashViewModel @Inject constructor(
 
             is TrashEvent.DeleteShoppingList -> deleteShoppingList(event)
 
-            TrashEvent.SelectShoppingListsSort -> selectShoppingListsSort()
-
             TrashEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
             is TrashEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            is TrashEvent.SortShoppingLists -> sortShoppingLists(event)
-
             is TrashEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
-
-            TrashEvent.InvertShoppingListsSort -> invertShoppingListsSort()
 
             TrashEvent.ShowBackScreen -> showBackScreen()
 
@@ -66,8 +59,6 @@ class TrashViewModel @Inject constructor(
             TrashEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             TrashEvent.HideShoppingListMenu -> hideShoppingListMenu()
-
-            TrashEvent.HideShoppingListsSort -> hideShoppingListsSort()
 
             TrashEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
         }
@@ -135,10 +126,6 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun selectShoppingListsSort() {
-        trashState.showSort()
-    }
-
     private fun selectShoppingListsDisplayTotal() {
         trashState.showDisplayTotal()
     }
@@ -155,19 +142,6 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun sortShoppingLists(event: TrashEvent.SortShoppingLists) = viewModelScope.launch {
-        when (event.sortBy) {
-            SortBy.CREATED -> repository.sortShoppingListsByCreated()
-            SortBy.LAST_MODIFIED -> repository.sortShoppingListsByLastModified()
-            SortBy.NAME -> repository.sortShoppingListsByName()
-            SortBy.TOTAL -> repository.sortShoppingListsByTotal()
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
     private fun displayShoppingListsTotal(
         event: TrashEvent.DisplayShoppingListsTotal
     ) = viewModelScope.launch {
@@ -180,10 +154,6 @@ class TrashViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideShoppingListsDisplayTotal()
         }
-    }
-
-    private fun invertShoppingListsSort() = viewModelScope.launch {
-        repository.invertShoppingListsSort()
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -208,10 +178,6 @@ class TrashViewModel @Inject constructor(
 
     private fun hideShoppingListMenu() {
         trashState.hideShoppingListMenu()
-    }
-
-    private fun hideShoppingListsSort() {
-        trashState.hideSort()
     }
 
     private fun hideShoppingListsDisplayTotal() {

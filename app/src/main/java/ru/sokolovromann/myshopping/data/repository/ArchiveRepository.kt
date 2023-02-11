@@ -11,19 +11,9 @@ interface ArchiveRepository {
 
     suspend fun moveShoppingListToTrash(uid: String, lastModified: Long)
 
-    suspend fun sortShoppingListsByCreated()
-
-    suspend fun sortShoppingListsByLastModified()
-
-    suspend fun sortShoppingListsByName()
-
-    suspend fun sortShoppingListsByTotal()
-
     suspend fun displayShoppingListsAllTotal()
 
     suspend fun displayShoppingListsCompletedTotal()
 
     suspend fun displayShoppingListsActiveTotal()
-
-    suspend fun invertShoppingListsSort()
 }

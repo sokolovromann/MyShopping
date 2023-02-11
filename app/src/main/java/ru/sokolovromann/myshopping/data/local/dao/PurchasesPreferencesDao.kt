@@ -13,14 +13,6 @@ class PurchasesPreferencesDao @Inject constructor(
         return localDataStore.getShoppingPreferences()
     }
 
-    suspend fun sortShoppingsBy(sortBy: String) {
-        localDataStore.saveShoppingsSortBy(sortBy)
-    }
-
-    suspend fun invertShoppingsSort() {
-        localDataStore.invertShoppingSortAscending()
-    }
-
     suspend fun displayShoppingsTotal(displayTotal: String) {
         localDataStore.saveShoppingsDisplayTotal(displayTotal)
     }

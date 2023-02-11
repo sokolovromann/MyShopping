@@ -11,7 +11,6 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.ArchiveRepository
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -39,17 +38,11 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.MoveShoppingListToTrash -> moveShoppingListToTrash(event)
 
-            ArchiveEvent.SelectShoppingListsSort -> selectShoppingListsSort()
-
             ArchiveEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
             is ArchiveEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
-
             is ArchiveEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
-
-            ArchiveEvent.InvertShoppingListsSort -> invertShoppingListsSort()
 
             ArchiveEvent.ShowBackScreen -> showBackScreen()
 
@@ -62,8 +55,6 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             ArchiveEvent.HideShoppingListMenu -> hideShoppingListMenu()
-
-            ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
 
             ArchiveEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
         }
@@ -115,10 +106,6 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun selectShoppingListsSort() {
-        archiveState.showSort()
-    }
-
     private fun selectShoppingListsDisplayTotal() {
         archiveState.showDisplayTotal()
     }
@@ -135,19 +122,6 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
-        when (event.sortBy) {
-            SortBy.CREATED -> repository.sortShoppingListsByCreated()
-            SortBy.LAST_MODIFIED -> repository.sortShoppingListsByLastModified()
-            SortBy.NAME -> repository.sortShoppingListsByName()
-            SortBy.TOTAL -> repository.sortShoppingListsByTotal()
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
     private fun displayShoppingListsTotal(
         event: ArchiveEvent.DisplayShoppingListsTotal
     ) = viewModelScope.launch {
@@ -160,10 +134,6 @@ class ArchiveViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideShoppingListsDisplayTotal()
         }
-    }
-
-    private fun invertShoppingListsSort() = viewModelScope.launch {
-        repository.invertShoppingListsSort()
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
@@ -188,10 +158,6 @@ class ArchiveViewModel @Inject constructor(
 
     private fun hideShoppingListMenu() {
         archiveState.hideShoppingListMenu()
-    }
-
-    private fun hideShoppingListsSort() {
-        archiveState.hideSort()
     }
 
     private fun hideShoppingListsDisplayTotal() {

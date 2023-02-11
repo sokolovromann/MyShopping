@@ -16,19 +16,9 @@ interface PurchasesRepository {
 
     suspend fun swapShoppingLists(first: ShoppingList, second: ShoppingList)
 
-    suspend fun sortShoppingListsByCreated()
-
-    suspend fun sortShoppingListsByLastModified()
-
-    suspend fun sortShoppingListsByName()
-
-    suspend fun sortShoppingListsByTotal()
-
     suspend fun displayShoppingListsAllTotal()
 
     suspend fun displayShoppingListsCompletedTotal()
 
     suspend fun displayShoppingListsActiveTotal()
-
-    suspend fun invertShoppingListsSort()
 }

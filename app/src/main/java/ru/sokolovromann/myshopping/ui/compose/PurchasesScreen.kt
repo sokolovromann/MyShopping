@@ -143,23 +143,6 @@ fun PurchasesScreen(
                     fontSize = screenData.fontSize.toItemTitle().sp
                 )
             }
-        },
-        gridBar = {
-            ShoppingListsSortContent(
-                modifier = Modifier.weight(1f),
-                sort = screenData.sort,
-                fontSize = screenData.fontSize.toButton().sp,
-                expanded = screenData.showSort,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(PurchasesEvent.SelectShoppingListsSort)
-                    } else {
-                        viewModel.onEvent(PurchasesEvent.HideShoppingListsSort)
-                    }
-                },
-                onSelected = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(it)) },
-                onInverted = { viewModel.onEvent(PurchasesEvent.InvertShoppingListsSort) }
-            )
         }
     ) {
         ShoppingListsGrid(

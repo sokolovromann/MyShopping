@@ -109,14 +109,6 @@ class MainRepositoryImpl @Inject constructor(
         preferencesDao.addShoppingsMultiColumns(multiColumns)
     }
 
-    override suspend fun addShoppingListsSort(sort: Sort): Unit = withContext(dispatchers.io) {
-        val sortBy = mapping.toSortByName(sort)
-        preferencesDao.addShoppingsBySort(sortBy)
-
-        val ascending = mapping.toSortAscending(sort)
-        preferencesDao.addShoppingsSortAscending(ascending)
-    }
-
     override suspend fun addDisplayCompleted(
         displayCompleted: DisplayCompleted
     ): Unit = withContext(dispatchers.io) {

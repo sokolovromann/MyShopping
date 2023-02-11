@@ -43,17 +43,11 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.MoveShoppingListToDown -> moveShoppingListToDown(event)
 
-            PurchasesEvent.SelectShoppingListsSort -> selectShoppingListsSort()
-
             PurchasesEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
             is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
-
             is PurchasesEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
-
-            PurchasesEvent.InvertShoppingListsSort -> invertShoppingListsSort()
 
             is PurchasesEvent.ShowProducts -> showProducts(event)
 
@@ -64,8 +58,6 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             PurchasesEvent.HideShoppingListMenu -> hideShoppingListMenu()
-
-            PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
 
             PurchasesEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
 
@@ -152,10 +144,6 @@ class PurchasesViewModel @Inject constructor(
         repository.swapShoppingLists(shoppingList.first, shoppingList.second)
     }
 
-    private fun selectShoppingListsSort() {
-        purchasesState.showSort()
-    }
-
     private fun selectShoppingListsDisplayTotal() {
         purchasesState.showDisplayTotal()
     }
@@ -172,19 +160,6 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
-        when (event.sortBy) {
-            SortBy.CREATED -> repository.sortShoppingListsByCreated()
-            SortBy.LAST_MODIFIED -> repository.sortShoppingListsByLastModified()
-            SortBy.NAME -> repository.sortShoppingListsByName()
-            SortBy.TOTAL -> repository.sortShoppingListsByTotal()
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsSort()
-        }
-    }
-
     private fun displayShoppingListsTotal(
         event: PurchasesEvent.DisplayShoppingListsTotal
     ) = viewModelScope.launch {
@@ -197,10 +172,6 @@ class PurchasesViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideShoppingListsDisplayTotal()
         }
-    }
-
-    private fun invertShoppingListsSort() = viewModelScope.launch {
-        repository.invertShoppingListsSort()
     }
 
     private fun showProducts(
@@ -223,10 +194,6 @@ class PurchasesViewModel @Inject constructor(
 
     private fun hideShoppingListMenu() {
         purchasesState.hideShoppingListMenu()
-    }
-
-    private fun hideShoppingListsSort() {
-        purchasesState.hideSort()
     }
 
     private fun hideShoppingListsDisplayTotal() {

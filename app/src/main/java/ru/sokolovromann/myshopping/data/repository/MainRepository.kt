@@ -29,8 +29,6 @@ interface MainRepository {
 
     suspend fun addShoppingListsMultiColumns(multiColumns: Boolean)
 
-    suspend fun addShoppingListsSort(sort: Sort)
-
     suspend fun addDisplayCompleted(displayCompleted: DisplayCompleted)
 
     suspend fun addShoppingListsDisplayTotal(displayTotal: DisplayTotal)

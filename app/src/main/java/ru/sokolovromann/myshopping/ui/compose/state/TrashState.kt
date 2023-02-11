@@ -20,7 +20,6 @@ class TrashState {
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
-            sort = preferences.sort,
             displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
@@ -35,7 +34,6 @@ class TrashState {
             totalText = shoppingLists.calculateTotalToText(),
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.multiColumns,
-            sort = preferences.sort,
             displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
@@ -45,20 +43,12 @@ class TrashState {
         screenData = screenData.copy(shoppingListMenuUid = uid)
     }
 
-    fun showSort() {
-        screenData = screenData.copy(showSort = true)
-    }
-
     fun showDisplayTotal() {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
     fun hideShoppingListMenu() {
         screenData = screenData.copy(shoppingListMenuUid = null)
-    }
-
-    fun hideSort() {
-        screenData = screenData.copy(showSort = false)
     }
 
     fun hideDisplayTotal() {
@@ -81,8 +71,6 @@ data class TrashScreenData(
     val shoppingListMenuUid: String? = null,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
-    val sort: Sort = Sort(),
-    val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
