@@ -18,7 +18,7 @@ class AddEditProductState {
 
     private var preferences by mutableStateOf(ProductPreferences())
 
-    private var productNameFromAutocompletes by mutableStateOf(false)
+    private var selectedAutocomplete: Autocomplete? by mutableStateOf(null)
 
     var screenData by mutableStateOf(AddEditProductScreenData())
         private set
@@ -79,7 +79,7 @@ class AddEditProductState {
             fontSize = preferences.fontSize
         )
 
-        productNameFromAutocompletes = false
+        selectedAutocomplete = null
     }
 
     fun changeNameValue(nameValue: TextFieldValue) {
@@ -105,17 +105,17 @@ class AddEditProductState {
         screenData = screenData.copy(discountValue = discountValue)
     }
 
-    fun selectAutocompleteName(name: String) {
+    fun selectAutocompleteName(autocomplete: Autocomplete) {
         screenData = screenData.copy(
             nameValue = TextFieldValue(
-                text = name,
-                selection = TextRange(name.length),
-                composition = TextRange(name.length)
+                text = autocomplete.name,
+                selection = TextRange(autocomplete.name.length),
+                composition = TextRange(autocomplete.name.length)
             ),
             autocompleteNames = listOf()
         )
 
-        productNameFromAutocompletes = true
+        selectedAutocomplete = autocomplete
     }
 
     fun selectAutocompleteQuantity(quantity: Quantity) {
@@ -229,7 +229,7 @@ class AddEditProductState {
         screenData = screenData.copy(quantityValue = quantityValue)
     }
 
-    fun showAutocompleteNames(autocompleteNames: List<String>) {
+    fun showAutocompleteNames(autocompleteNames: List<Autocomplete>) {
         screenData = screenData.copy(autocompleteNames = autocompleteNames)
     }
 
@@ -251,11 +251,9 @@ class AddEditProductState {
         screenData = screenData.copy(showDiscountAsPercent = true)
     }
 
-    fun hideAutocompleteNames() {
-        screenData = screenData.copy(
-            autocompleteNames = listOf(),
-        )
-        productNameFromAutocompletes = true
+    fun hideAutocompleteNames(containsAutocomplete: Autocomplete) {
+        screenData = screenData.copy(autocompleteNames = listOf())
+        selectedAutocomplete = containsAutocomplete
     }
 
     fun hideAutocompletes() {
@@ -322,9 +320,13 @@ class AddEditProductState {
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
-        return if (!productNameFromAutocompletes && preferences.addLastProduct) {
-            val success = Autocomplete(name = screenData.nameValue.text)
-            Result.success(success)
+        return if (preferences.addLastProduct) {
+            if (selectedAutocomplete == null) {
+                val success = Autocomplete(name = screenData.nameValue.text)
+                Result.success(success)
+            } else {
+                Result.failure(Exception())
+            }
         } else {
             Result.failure(Exception())
         }
@@ -343,7 +345,7 @@ data class AddEditProductScreenData(
     val discountAsPercent: Boolean = true,
     val discountAsPercentText: UiText = UiText.Nothing,
     val showDiscountAsPercent: Boolean = false,
-    val autocompleteNames: List<String> = listOf(),
+    val autocompleteNames: List<Autocomplete> = listOf(),
     val autocompleteQuantities: List<Quantity> = listOf(),
     val autocompleteQuantitySymbols: List<Quantity> = listOf(),
     val autocompletePrices: List<Money> = listOf(),

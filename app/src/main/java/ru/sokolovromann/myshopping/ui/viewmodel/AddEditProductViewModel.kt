@@ -97,6 +97,7 @@ class AddEditProductViewModel @Inject constructor(
             addEditProductState.populate(addEditProduct)
             when (addEditProduct.preferences.displayAutocomplete) {
                 DisplayAutocomplete.ALL, DisplayAutocomplete.NAME -> {
+                    getAutocompletes(addEditProduct.formatName())
                     getProducts(addEditProduct.formatName())
                 }
 
@@ -117,19 +118,19 @@ class AddEditProductViewModel @Inject constructor(
     private suspend fun addEditProductAutocompleteLoaded(
         addEditProductAutocompletes: AddEditProductAutocompletes
     ) = withContext(dispatchers.main) {
-        val names = addEditProductAutocompletes.names()
-        if (names.isEmpty()) {
+        val autocompletes = addEditProductAutocompletes.formatAutocompletes()
+        if (autocompletes.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
         }
 
         val currentName = addEditProductState.screenData.nameValue.text
-        val containsName = names.contains(currentName)
+        val containsAutocomplete = autocompletes.find { it.name == currentName }
 
-        if (containsName) {
-            addEditProductState.hideAutocompleteNames()
+        if (containsAutocomplete == null) {
+            addEditProductState.showAutocompleteNames(autocompletes)
         } else {
-            addEditProductState.showAutocompleteNames(names)
+            addEditProductState.hideAutocompleteNames(containsAutocomplete)
         }
     }
 
@@ -228,7 +229,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun autocompleteNameSelected(event: AddEditProductEvent.AutocompleteNameSelected) {
-        addEditProductState.selectAutocompleteName(event.text)
+        addEditProductState.selectAutocompleteName(event.autocomplete)
     }
 
     private fun autocompleteQuantitySelected(event: AddEditProductEvent.AutocompleteQuantitySelected) {

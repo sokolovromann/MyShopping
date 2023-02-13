@@ -7,13 +7,13 @@ data class AddEditProductAutocompletes(
 
     private val defaultNamesLimit: Int = 10
 
-    fun names(): List<String> {
+    fun formatAutocompletes(): List<Autocomplete> {
         return autocompletes
-            .map { it.name.formatFirst(preferences.firstLetterUppercase) }
-            .distinct()
-            .sorted()
-            .filterIndexed { index, name ->
-                name.isNotEmpty() && index < defaultNamesLimit
+            .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
+            .distinctBy { it.name }
+            .sortedBy { it.name }
+            .filterIndexed { index, autocomplete ->
+                autocomplete.name.isNotEmpty() && index < defaultNamesLimit
             }
     }
 }

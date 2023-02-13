@@ -26,10 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.Discount
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.Quantity
+import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemBody
@@ -313,16 +310,16 @@ private fun AddEditProductContent(
 
 @Composable
 private fun AddEditProductAutocompleteNames(
-    names: List<String>,
+    names: List<Autocomplete>,
     fontSize: FontSize,
-    onClick: (String) -> Unit
+    onClick: (Autocomplete) -> Unit
 ) {
     names.forEach {
         AppItem(
             modifier = Modifier.padding(AddEditProductItemPaddings),
             body = {
                 Text(
-                    text = it,
+                    text = it.name,
                     fontSize = fontSize.toItemBody().sp
                 )
             },

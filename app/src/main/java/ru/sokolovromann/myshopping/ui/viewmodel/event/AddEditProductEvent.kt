@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import androidx.compose.ui.text.input.TextFieldValue
+import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Discount
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Quantity
@@ -30,7 +31,7 @@ sealed class AddEditProductEvent {
 
     object InvertProductsLockQuantity : AddEditProductEvent()
 
-    data class AutocompleteNameSelected(val text: String) : AddEditProductEvent()
+    data class AutocompleteNameSelected(val autocomplete: Autocomplete) : AddEditProductEvent()
 
     object AutocompleteMinusOneQuantitySelected : AddEditProductEvent()
 
