@@ -109,6 +109,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.DisplayAutocomplete -> selectProductsDisplayAutocomplete()
 
+            SettingsUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
+
             SettingsUid.DisplayCompleted -> selectDisplayCompleted()
 
             SettingsUid.EditCompleted -> invertProductsEditCompleted()
@@ -219,6 +221,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertProductsAddLastProducts() = viewModelScope.launch {
         repository.invertProductsAddLastProduct()
+    }
+
+    private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
+        repository.invertProductsDisplayDefaultAutocomplete()
     }
 
     private fun sendEmailToDeveloper() = viewModelScope.launch {

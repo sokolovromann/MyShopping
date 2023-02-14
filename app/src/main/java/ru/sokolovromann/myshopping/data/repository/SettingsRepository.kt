@@ -41,6 +41,8 @@ interface SettingsRepository {
 
     suspend fun invertProductsAddLastProduct()
 
+    suspend fun invertProductsDisplayDefaultAutocomplete()
+
     suspend fun hideProductsAutocomplete()
 
     suspend fun hideCompleted()

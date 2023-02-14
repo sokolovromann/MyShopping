@@ -7,5 +7,6 @@ data class Autocomplete(
     val uid: String = UUID.randomUUID().toString(),
     val created: Long = System.currentTimeMillis(),
     val lastModified: Long = created,
-    val name: String = ""
+    val name: String = "",
+    val default: Boolean = false
 )

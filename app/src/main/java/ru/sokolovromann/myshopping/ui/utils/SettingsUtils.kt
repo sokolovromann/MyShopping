@@ -84,6 +84,11 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
             bodyText = settingsValues.productsDisplayAutocomplete.toSettingsText()
         ),
         SettingsItem(
+            uid = SettingsUid.DisplayDefaultAutocomplete,
+            titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocomplete),
+            checked = settingsValues.productsDisplayDefaultAutocomplete
+        ),
+        SettingsItem(
             uid = SettingsUid.DisplayCompleted,
             titleText = UiText.FromResources(R.string.settings_title_displayCompleted),
             bodyText = settingsValues.displayCompleted.toSettingsText()

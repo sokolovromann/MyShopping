@@ -14,5 +14,6 @@ data class SettingsEntity(
     val productsMultiColumns: Boolean = false,
     val productsDisplayAutocomplete: String = "",
     val productsEditCompleted: Boolean = false,
-    val productsAddLastProduct: Boolean = false
+    val productsAddLastProduct: Boolean = false,
+    val productsDisplayDefaultAutocomplete: Boolean
 )

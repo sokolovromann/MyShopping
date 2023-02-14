@@ -61,4 +61,8 @@ class SettingsDao @Inject constructor(
     suspend fun invertProductsAddLastProduct() {
         localDataStore.invertProductsAddLastProduct()
     }
+
+    suspend fun invertProductsDisplayDefaultAutocomplete() {
+        localDataStore.invertProductsDisplayDefaultAutocomplete()
+    }
 }

@@ -35,6 +35,7 @@ class LocalDataStore @Inject constructor(
     private val productsLockQuantityKey = booleanPreferencesKey("products_lock_quantity")
     private val productsEditCompletedKey = booleanPreferencesKey("products_edit_completed")
     private val productsAddLastProductKey = booleanPreferencesKey("products_add_last_product")
+    private val productsDisplayDefaultAutocompleteKey = booleanPreferencesKey("products_display_default_autocomplete")
     private val displayMoneyKey = booleanPreferencesKey("display_money")
     private val displayCompletedKey = stringPreferencesKey("display_completed")
     private val screenSizeKey = stringPreferencesKey("screen_size")
@@ -72,6 +73,7 @@ class LocalDataStore @Inject constructor(
                 displayCompleted = it[displayCompletedKey] ?: "",
                 displayTotal = it[productsDisplayTotalKey] ?: "",
                 displayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
+                displayDefaultAutocomplete = it[productsDisplayDefaultAutocompleteKey] ?: true,
                 lockQuantity = it[productsLockQuantityKey] ?: false,
                 editCompleted = it[productsEditCompletedKey] ?: false,
                 addLastProduct = it[productsAddLastProductKey] ?: true,
@@ -108,7 +110,8 @@ class LocalDataStore @Inject constructor(
                 productsMultiColumns = it[productsMultiColumnsKey] ?: false,
                 productsDisplayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
                 productsEditCompleted = it[productsEditCompletedKey] ?: false,
-                productsAddLastProduct = it[productsAddLastProductKey] ?: true
+                productsAddLastProduct = it[productsAddLastProductKey] ?: true,
+                productsDisplayDefaultAutocomplete = it[productsDisplayDefaultAutocompleteKey] ?: true
             )
         }
     }
@@ -214,6 +217,10 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[productsAddLastProductKey] = addLastProduct }
     }
 
+    suspend fun saveProductsDisplayDefaultAutocomplete(displayAutocomplete: Boolean) = withContext(dispatchers.io) {
+        dataStore.edit { it[productsDisplayDefaultAutocompleteKey] = displayAutocomplete }
+    }
+
     suspend fun saveDisplayMoney(displayMoney: Boolean) = withContext(dispatchers.io) {
         dataStore.edit { it[displayMoneyKey] = displayMoney }
     }
@@ -286,6 +293,13 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val addLastProduct = it[productsAddLastProductKey] ?: false
             it[productsAddLastProductKey] = !addLastProduct
+        }
+    }
+
+    suspend fun invertProductsDisplayDefaultAutocomplete() = withContext(dispatchers.io) {
+        dataStore.edit {
+            val displayAutocomplete = it[productsDisplayDefaultAutocompleteKey] ?: true
+            it[productsDisplayDefaultAutocompleteKey] = !displayAutocomplete
         }
     }
 

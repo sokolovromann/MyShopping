@@ -231,6 +231,7 @@ class RepositoryMapping @Inject constructor() {
             displayCompleted = toDisplayCompleted(entity.displayCompleted),
             displayTotal = toDisplayTotal(entity.displayTotal),
             displayAutocomplete = toDisplayAutocomplete(entity.displayAutocomplete),
+            displayDefaultAutocomplete = entity.displayDefaultAutocomplete,
             lockQuantity = entity.lockQuantity,
             addLastProduct = entity.addLastProduct,
             screenSize = toScreenSize(entity.screenSize)
@@ -268,15 +269,15 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAddEditProductAutocompletes(
         entities: List<AutocompleteEntity>,
-        resources: List<String>,
+        resources: List<String>?,
         preferencesEntity: ProductPreferencesEntity
     ): AddEditProductAutocompletes {
         val autocompletes: MutableList<Autocomplete> = entities
             .map { toAutocomplete(it, preferencesEntity) }
             .toMutableList()
 
-        resources.forEach {
-            val autocomplete = Autocomplete(name = it)
+        resources?.forEach {
+            val autocomplete = Autocomplete(name = it, default = true)
             autocompletes.add(autocomplete)
         }
 
@@ -365,6 +366,7 @@ class RepositoryMapping @Inject constructor() {
             shoppingsMultiColumns = entity.shoppingsMultiColumns,
             productsMultiColumns = entity.productsMultiColumns,
             productsDisplayAutocomplete = toDisplayAutocomplete(entity.productsDisplayAutocomplete),
+            productsDisplayDefaultAutocomplete = entity.productsDisplayDefaultAutocomplete,
             productsEditCompleted = entity.productsEditCompleted,
             productsAddLastProduct = entity.productsAddLastProduct,
             developerName = toDeveloperName(resourcesEntity),

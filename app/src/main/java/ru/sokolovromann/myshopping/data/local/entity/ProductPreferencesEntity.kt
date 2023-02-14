@@ -12,6 +12,7 @@ data class ProductPreferencesEntity(
     val displayCompleted: String = "",
     val displayTotal: String = "",
     val displayAutocomplete: String = "",
+    val displayDefaultAutocomplete: Boolean = false,
     val lockQuantity: Boolean = false,
     val editCompleted: Boolean = false,
     val addLastProduct: Boolean = false,

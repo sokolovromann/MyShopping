@@ -298,7 +298,7 @@
     <string name="purchases_text_productsNotFound">Shopping list is empty</string>
     <string name="purchases_text_shoppingListsNotFound">You have no shopping lists</string>
 
-    <string name="settings_action_displayAllAutocomplete">All</string>
+    <string name="settings_action_displayAllAutocomplete">Names, quantities and money</string>
     <string name="settings_action_displayCompletedFirst">First</string>
     <string name="settings_action_displayCompletedLast">Last</string>
     <string name="settings_action_displayNameAutocomplete">Only names</string>
@@ -330,6 +330,7 @@
     <string name="settings_title_displayAutocomplete">Display autocompletes</string>
     <string name="settings_title_displayCompleted">Display completed</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
+    <string name="settings_title_displayDefaultAutocomplete">Display default autocompletes</string>
     <string name="settings_title_displayMoney">Display money</string>
     <string name="settings_title_editCompletedProduct">Edit product after completed</string>
     <string name="settings_title_email">Email</string>

@@ -230,7 +230,12 @@ class AddEditProductState {
     }
 
     fun showAutocompleteNames(autocompleteNames: List<Autocomplete>) {
-        screenData = screenData.copy(autocompleteNames = autocompleteNames)
+        val names = if (preferences.displayDefaultAutocomplete) {
+            autocompleteNames
+        } else {
+            autocompleteNames.filter { !it.default }
+        }
+        screenData = screenData.copy(autocompleteNames = names)
     }
 
     fun showProducts(

@@ -10,6 +10,7 @@ data class SettingsValues(
     val shoppingsMultiColumns: Boolean = false,
     val productsMultiColumns: Boolean = false,
     val productsDisplayAutocomplete: DisplayAutocomplete = DisplayAutocomplete.DefaultValue,
+    val productsDisplayDefaultAutocomplete: Boolean = true,
     val productsEditCompleted: Boolean = false,
     val productsAddLastProduct: Boolean = true,
     val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,

@@ -107,6 +107,10 @@ class SettingsRepositoryImpl @Inject constructor(
         settingsDao.invertProductsAddLastProduct()
     }
 
+    override suspend fun invertProductsDisplayDefaultAutocomplete(): Unit = withContext(dispatchers.io) {
+        settingsDao.invertProductsDisplayDefaultAutocomplete()
+    }
+
     override suspend fun hideProductsAutocomplete(): Unit = withContext(dispatchers.io) {
         val displayAutocomplete = mapping.toDisplayAutocompleteName(DisplayAutocomplete.HIDE)
         settingsDao.displayProductAutocomplete(displayAutocomplete)
