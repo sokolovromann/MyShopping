@@ -141,7 +141,7 @@ class ProductsState {
         return Result.success(shareText)
     }
 
-    fun getProductsToUpResult(uid: String): Result<Pair<Product, Product>> {
+    fun getProductsUpResult(uid: String): Result<Pair<Product, Product>> {
         val sortProducts = products.sortProducts()
         return if (sortProducts.size < 2) {
             Result.failure(Exception())
@@ -175,7 +175,7 @@ class ProductsState {
         }
     }
 
-    fun getProductsToDownResult(uid: String): Result<Pair<Product, Product>> {
+    fun getProductsDownResult(uid: String): Result<Pair<Product, Product>> {
         val sortProducts = products.sortProducts()
         return if (sortProducts.size < 2) {
             Result.failure(Exception())

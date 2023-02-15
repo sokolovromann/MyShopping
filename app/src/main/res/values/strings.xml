@@ -269,9 +269,9 @@
     <string name="products_action_editProduct">Edit</string>
     <string name="products_action_editShoppingListName">Name</string>
     <string name="products_action_editShoppingListReminder">Reminder</string>
-    <string name="products_action_moveProductToDown">Move to down</string>
+    <string name="products_action_moveProductDown">Move down</string>
     <string name="products_action_moveProductToShoppingList">Move to…</string>
-    <string name="products_action_moveProductToUp">Move to up</string>
+    <string name="products_action_moveProductUp">Move up</string>
     <string name="products_action_shareProducts">Share</string>
     <string name="products_action_sort">Sort</string>
     <string name="products_action_sortByCreated">By created</string>
@@ -287,10 +287,10 @@
     <string name="products_text_completedTotal">Completed: %s</string>
     <string name="products_text_productsNotFound">Click "+" to add new product</string>
 
+    <string name="purchases_action_moveShoppingListDown">Move down</string>
     <string name="purchases_action_moveShoppingListToArchive">Archive</string>
-    <string name="purchases_action_moveShoppingListToDown">Move to down</string>
     <string name="purchases_action_moveShoppingListToTrash">Delete</string>
-    <string name="purchases_action_moveShoppingListToUp">Move to up</string>
+    <string name="purchases_action_moveShoppingListUp">Move up</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_header">Purchases</string>

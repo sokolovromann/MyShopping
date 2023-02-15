@@ -39,9 +39,9 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.MoveShoppingListToTrash -> moveShoppingListToTrash(event)
 
-            is PurchasesEvent.MoveShoppingListToUp -> moveShoppingListToUp(event)
+            is PurchasesEvent.MoveShoppingListUp -> moveShoppingListUp(event)
 
-            is PurchasesEvent.MoveShoppingListToDown -> moveShoppingListToDown(event)
+            is PurchasesEvent.MoveShoppingListDown -> moveShoppingListDown(event)
 
             PurchasesEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
 
@@ -122,10 +122,10 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun moveShoppingListToUp(
-        event: PurchasesEvent.MoveShoppingListToUp
+    private fun moveShoppingListUp(
+        event: PurchasesEvent.MoveShoppingListUp
     ) = viewModelScope.launch {
-        val shoppingList = purchasesState.getShoppingListsToUpResult(event.uid).getOrElse {
+        val shoppingList = purchasesState.getShoppingListsUpResult(event.uid).getOrElse {
             purchasesState.hideShoppingListMenu()
             return@launch
         }
@@ -133,10 +133,10 @@ class PurchasesViewModel @Inject constructor(
         repository.swapShoppingLists(shoppingList.first, shoppingList.second)
     }
 
-    private fun moveShoppingListToDown(
-        event: PurchasesEvent.MoveShoppingListToDown
+    private fun moveShoppingListDown(
+        event: PurchasesEvent.MoveShoppingListDown
     ) = viewModelScope.launch {
-        val shoppingList = purchasesState.getShoppingListsToDownResult(event.uid).getOrElse {
+        val shoppingList = purchasesState.getShoppingListsDownResult(event.uid).getOrElse {
             purchasesState.hideShoppingListMenu()
             return@launch
         }

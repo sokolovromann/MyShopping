@@ -11,9 +11,9 @@ sealed class PurchasesEvent {
 
     data class MoveShoppingListToTrash(val uid: String) : PurchasesEvent()
 
-    data class MoveShoppingListToUp(val uid: String) : PurchasesEvent()
+    data class MoveShoppingListUp(val uid: String) : PurchasesEvent()
 
-    data class MoveShoppingListToDown(val uid: String) : PurchasesEvent()
+    data class MoveShoppingListDown(val uid: String) : PurchasesEvent()
 
     object SelectShoppingListsDisplayTotal : PurchasesEvent()
 

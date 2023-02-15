@@ -247,17 +247,17 @@ fun ProductsScreen(
                     Divider()
                     AppDropdownMenuItem(
                         onClick = {
-                            val event = ProductsEvent.MoveProductToUp(it)
+                            val event = ProductsEvent.MoveProductUp(it)
                             viewModel.onEvent(event)
                         },
-                        text = { Text(text = stringResource(R.string.products_action_moveProductToUp)) }
+                        text = { Text(text = stringResource(R.string.products_action_moveProductUp)) }
                     )
                     AppDropdownMenuItem(
                         onClick = {
-                            val event = ProductsEvent.MoveProductToDown(it)
+                            val event = ProductsEvent.MoveProductDown(it)
                             viewModel.onEvent(event)
                         },
-                        text = { Text(text = stringResource(R.string.products_action_moveProductToDown)) }
+                        text = { Text(text = stringResource(R.string.products_action_moveProductDown)) }
                     )
                     Divider()
                     AppDropdownMenuItem(

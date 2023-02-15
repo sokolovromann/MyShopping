@@ -17,9 +17,9 @@ sealed class ProductsEvent {
 
     data class MoveProductToShoppingList(val uid: String) : ProductsEvent()
 
-    data class MoveProductToUp(val uid: String) : ProductsEvent()
+    data class MoveProductUp(val uid: String) : ProductsEvent()
 
-    data class MoveProductToDown(val uid: String) : ProductsEvent()
+    data class MoveProductDown(val uid: String) : ProductsEvent()
 
     object HideProducts : ProductsEvent()
 

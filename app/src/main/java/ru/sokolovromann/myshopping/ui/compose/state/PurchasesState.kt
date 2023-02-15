@@ -70,7 +70,7 @@ class PurchasesState {
         return Result.success(success)
     }
 
-    fun getShoppingListsToUpResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
+    fun getShoppingListsUpResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
         return if (shoppingLists.size < 2) {
             Result.failure(Exception())
         } else {
@@ -103,7 +103,7 @@ class PurchasesState {
         }
     }
 
-    fun getShoppingListsToDownResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
+    fun getShoppingListsDownResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
         return if (shoppingLists.size < 2) {
             Result.failure(Exception())
         } else {

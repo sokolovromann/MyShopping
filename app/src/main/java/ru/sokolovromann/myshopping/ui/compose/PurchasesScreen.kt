@@ -171,17 +171,17 @@ fun PurchasesScreen(
                     Divider()
                     AppDropdownMenuItem(
                         onClick = {
-                            val event = PurchasesEvent.MoveShoppingListToUp(it)
+                            val event = PurchasesEvent.MoveShoppingListUp(it)
                             viewModel.onEvent(event)
                         },
-                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToUp)) }
+                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListUp)) }
                     )
                     AppDropdownMenuItem(
                         onClick = {
-                            val event = PurchasesEvent.MoveShoppingListToDown(it)
+                            val event = PurchasesEvent.MoveShoppingListDown(it)
                             viewModel.onEvent(event)
                         },
-                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToDown)) }
+                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListDown)) }
                     )
                 }
             },

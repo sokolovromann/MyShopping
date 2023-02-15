@@ -49,9 +49,9 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.MoveProductToShoppingList -> moveProductToShoppingList(event)
 
-            is ProductsEvent.MoveProductToUp -> moveProductToUp(event)
+            is ProductsEvent.MoveProductUp -> moveProductUp(event)
 
-            is ProductsEvent.MoveProductToDown -> moveProductToDown(event)
+            is ProductsEvent.MoveProductDown -> moveProductDown(event)
 
             ProductsEvent.HideProducts -> hideProducts()
 
@@ -186,10 +186,10 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun moveProductToUp(
-        event: ProductsEvent.MoveProductToUp
+    private fun moveProductUp(
+        event: ProductsEvent.MoveProductUp
     ) = viewModelScope.launch(dispatchers.main) {
-        val products = productsState.getProductsToUpResult(event.uid).getOrElse {
+        val products = productsState.getProductsUpResult(event.uid).getOrElse {
             productsState.hideProductMenu()
             return@launch
         }
@@ -197,10 +197,10 @@ class ProductsViewModel @Inject constructor(
         repository.swapProducts(products.first, products.second)
     }
 
-    private fun moveProductToDown(
-        event: ProductsEvent.MoveProductToDown
+    private fun moveProductDown(
+        event: ProductsEvent.MoveProductDown
     ) = viewModelScope.launch(dispatchers.main) {
-        val products = productsState.getProductsToDownResult(event.uid).getOrElse {
+        val products = productsState.getProductsDownResult(event.uid).getOrElse {
             productsState.hideProductMenu()
             return@launch
         }
