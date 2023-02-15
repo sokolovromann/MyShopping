@@ -304,10 +304,10 @@ class AddEditProductState {
             }
             val success = product.copy(
                 position = position,
-                name = screenData.nameValue.text,
+                name = screenData.nameValue.text.trim(),
                 quantity = Quantity(
                     value = screenData.quantityValue.toFloatOrZero(),
-                    symbol = screenData.quantitySymbolValue.text
+                    symbol = screenData.quantitySymbolValue.text.trim()
                 ),
                 price = Money(
                     value = screenData.priceValue.toFloatOrZero(),
@@ -327,7 +327,7 @@ class AddEditProductState {
     fun getAutocompleteResult(): Result<Autocomplete> {
         return if (preferences.addLastProduct) {
             if (selectedAutocomplete == null) {
-                val success = Autocomplete(name = screenData.nameValue.text)
+                val success = Autocomplete(name = screenData.nameValue.text.trim())
                 Result.success(success)
             } else {
                 Result.failure(Exception())

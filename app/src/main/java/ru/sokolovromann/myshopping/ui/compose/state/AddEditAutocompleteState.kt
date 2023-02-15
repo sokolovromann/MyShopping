@@ -55,7 +55,7 @@ class AddEditAutocompleteState {
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
             val success = autocomplete.copy(
-                name = screenData.nameValue.text,
+                name = screenData.nameValue.text.trim(),
                 lastModified = System.currentTimeMillis()
             )
             Result.success(success)

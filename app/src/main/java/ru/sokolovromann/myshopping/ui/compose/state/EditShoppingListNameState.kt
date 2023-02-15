@@ -46,7 +46,7 @@ class EditShoppingListNameState {
     fun getShoppingListResult(): Result<ShoppingList> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
         val success = shoppingList.copy(
-            name = screenData.nameValue.text,
+            name = screenData.nameValue.text.trim(),
             lastModified = System.currentTimeMillis()
         )
 
