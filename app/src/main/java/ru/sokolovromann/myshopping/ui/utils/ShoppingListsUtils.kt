@@ -43,7 +43,8 @@ fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
             nameText = UiText.FromString(it.name),
             productsList = productsList,
             totalText = totalText,
-            reminderText = reminderText
+            reminderText = reminderText,
+            completed = it.completed
         )
     }
 }

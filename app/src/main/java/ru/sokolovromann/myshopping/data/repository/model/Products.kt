@@ -48,4 +48,8 @@ data class Products(
     fun isActive(): Boolean {
         return !shoppingList.completed
     }
+
+    fun hasHiddenProducts(): Boolean {
+        return shoppingList.products.splitProducts(DisplayCompleted.FIRST).first().completed
+    }
 }

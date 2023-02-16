@@ -34,6 +34,9 @@ class PurchasesState {
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         val preferences = shoppingLists.preferences
 
+        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
+                && shoppingLists.hasHiddenShoppingLists()
+
         screenData = PurchasesScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
@@ -41,7 +44,8 @@ class PurchasesState {
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.multiColumns,
             displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize
+            fontSize = preferences.fontSize,
+            showHiddenShoppingLists = showHiddenShoppingLists
         )
 
         this.shoppingLists = shoppingLists.formatShoppingLists()
@@ -147,5 +151,6 @@ data class PurchasesScreenData(
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showBottomBar: Boolean = true
+    val showBottomBar: Boolean = true,
+    val showHiddenShoppingLists: Boolean = false
 )

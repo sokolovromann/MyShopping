@@ -285,6 +285,7 @@
     <string name="products_text_activeTotal">Active: %s</string>
     <string name="products_text_allTotal">All: %s</string>
     <string name="products_text_completedTotal">Completed: %s</string>
+    <string name="products_text_hiddenProducts">You have hidden products</string>
     <string name="products_text_productsNotFound">Click "+" to add new product</string>
 
     <string name="purchases_action_moveShoppingListDown">Move down</string>
@@ -354,6 +355,7 @@
     <string name="shoppingLists_text_activeTotal">Active: %s</string>
     <string name="shoppingLists_text_allTotal">All: %s</string>
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
+    <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
 
     <string name="trash_action_deleteShoppingList">Delete</string>
     <string name="trash_action_deleteShoppingLists">Clear</string>

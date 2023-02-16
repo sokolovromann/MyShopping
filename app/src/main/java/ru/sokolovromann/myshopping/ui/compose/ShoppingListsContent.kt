@@ -46,7 +46,12 @@ fun ShoppingListsGrid(
                 },
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid) },
-                onLongClick = { onLongClick(item.uid) }
+                onLongClick = { onLongClick(item.uid) },
+                backgroundColor = if (item.completed) {
+                    MaterialTheme.colors.background
+                } else {
+                    MaterialTheme.colors.surface
+                }
             )
         }
     }
@@ -223,6 +228,22 @@ private fun ShoppingListItemBody(
     }
 }
 
+@Composable
+fun ShoppingListsHiddenText(fontSize: FontSize) {
+    Text(
+        modifier = Modifier.padding(ShoppingListsHiddenProductsPaddings),
+        text = stringResource(R.string.shoppingLists_text_hiddenShoppingLists),
+        fontSize = fontSize.toItemBody().sp,
+        color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+        style = MaterialTheme.typography.body1
+    )
+}
+
 private val ShoppingListItemTextSmallPaddings = PaddingValues(vertical = 2.dp)
 private val ShoppingListItemTextMediumPaddings = PaddingValues(vertical = 4.dp)
 private val ShoppingListItemSpacerSize = 4.dp
+private val ShoppingListsHiddenProductsPaddings = PaddingValues(
+    start = 8.dp,
+    top = 16.dp,
+    end = 8.dp
+)

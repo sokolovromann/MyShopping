@@ -52,6 +52,9 @@ class ProductsState {
             UiText.FromString(products.formatName())
         }
 
+        val showHiddenProducts = preferences.displayCompleted == DisplayCompleted.HIDE
+                && products.hasHiddenProducts()
+
         screenData = ProductsScreenData(
             screenState = ScreenState.Showing,
             shoppingListName = shoppingListName,
@@ -60,6 +63,7 @@ class ProductsState {
             reminderText = toReminderText(products.shoppingList.reminder),
             multiColumns = preferences.multiColumns,
             displayTotal = preferences.displayTotal,
+            showHiddenProducts = showHiddenProducts,
             fontSize = preferences.fontSize
         )
 
@@ -248,5 +252,6 @@ data class ProductsScreenData(
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
+    val showHiddenProducts: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM
 )

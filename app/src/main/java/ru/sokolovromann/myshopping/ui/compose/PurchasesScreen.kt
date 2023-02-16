@@ -133,6 +133,11 @@ fun PurchasesScreen(
                 onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }
             )
         },
+        gridBottomBar = {
+            if (screenData.showHiddenShoppingLists) {
+                ShoppingListsHiddenText(fontSize = screenData.fontSize)
+            }
+        },
         loadingContent = {
             AppLoadingContent(indicator = { CircularProgressIndicator() })
         },

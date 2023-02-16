@@ -26,6 +26,10 @@ data class ShoppingLists(
         return Money(total, preferences.currency)
     }
 
+    fun hasHiddenShoppingLists(): Boolean {
+        return shoppingLists.splitShoppingLists(DisplayCompleted.FIRST).first().completed
+    }
+
     private fun formatProducts(product: List<Product>): List<Product> {
         return product
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }

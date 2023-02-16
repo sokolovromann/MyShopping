@@ -28,6 +28,9 @@ class ArchiveState {
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         val preferences = shoppingLists.preferences
 
+        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
+                && shoppingLists.hasHiddenShoppingLists()
+
         screenData = ArchiveScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
@@ -35,7 +38,8 @@ class ArchiveState {
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.multiColumns,
             displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize
+            fontSize = preferences.fontSize,
+            showHiddenShoppingLists = showHiddenShoppingLists
         )
     }
 
@@ -65,5 +69,6 @@ data class ArchiveScreenData(
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showBottomBar: Boolean = true
+    val showBottomBar: Boolean = true,
+    val showHiddenShoppingLists: Boolean = false
 )

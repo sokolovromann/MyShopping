@@ -32,12 +32,16 @@ class CopyProductState {
         this.shoppingLists = shoppingLists.formatShoppingLists()
         val preferences = shoppingLists.preferences
 
+        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
+                && shoppingLists.hasHiddenShoppingLists()
+
         screenData = CopyProductScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
             multiColumns = preferences.multiColumns,
             location = location,
-            fontSize = preferences.fontSize
+            fontSize = preferences.fontSize,
+            showHiddenShoppingLists = showHiddenShoppingLists
         )
     }
 
@@ -89,5 +93,6 @@ data class CopyProductScreenData(
     val multiColumns: Boolean = false,
     val location: ShoppingListLocation = ShoppingListLocation.DefaultValue,
     val showLocation: Boolean = false,
-    val fontSize: FontSize = FontSize.MEDIUM
+    val fontSize: FontSize = FontSize.MEDIUM,
+    val showHiddenShoppingLists: Boolean = false
 )

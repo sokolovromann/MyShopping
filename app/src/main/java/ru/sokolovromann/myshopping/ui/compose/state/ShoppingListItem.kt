@@ -5,5 +5,6 @@ data class ShoppingListItem(
     val nameText: UiText = UiText.Nothing,
     val productsList: List<Pair<Boolean?, UiText>> = listOf(),
     val totalText: UiText = UiText.Nothing,
-    val reminderText: UiText = UiText.Nothing
+    val reminderText: UiText = UiText.Nothing,
+    val completed: Boolean = false
 )

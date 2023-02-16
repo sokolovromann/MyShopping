@@ -81,6 +81,11 @@ fun MoveProductScreen(
                 }
             )
         },
+        gridBottomBar = {
+            if (screenData.showHiddenShoppingLists) {
+                ShoppingListsHiddenText(fontSize = screenData.fontSize)
+            }
+        },
         gridContent = {
             ShoppingListsGrid(
                 multiColumns = screenData.multiColumns,

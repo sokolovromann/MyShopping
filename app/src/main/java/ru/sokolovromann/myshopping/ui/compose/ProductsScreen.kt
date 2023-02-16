@@ -219,6 +219,17 @@ fun ProductsScreen(
                 )
             }
         },
+        gridBottomBar = {
+            if (screenData.showHiddenProducts) {
+                Text(
+                    modifier = Modifier.padding(ProductsHiddenProductsPaddings),
+                    text = stringResource(R.string.products_text_hiddenProducts),
+                    fontSize = screenData.fontSize.toItemBody().sp,
+                    color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+                    style = MaterialTheme.typography.body1
+                )
+            }
+        },
         gridMultiColumnsSpace = screenData.multiColumns
     ) {
         ProductsGrid(
@@ -382,7 +393,12 @@ private fun ProductsGrid(
                 body = getProductItemBodyOrNull(item.bodyText, fontSize),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid, item.completed) },
-                onLongClick = { onLongClick(item.uid) }
+                onLongClick = { onLongClick(item.uid) },
+                backgroundColor = if (item.completed) {
+                    MaterialTheme.colors.background
+                } else {
+                    MaterialTheme.colors.surface
+                }
             )
         }
     }
@@ -424,3 +440,8 @@ private fun getProductItemBodyOrNull(
 
 private val ProductsAppChipSpacerSmallSize = 4.dp
 private val ProductsAppChipSpacerMediumSize = 8.dp
+private val ProductsHiddenProductsPaddings = PaddingValues(
+    start = 8.dp,
+    top = 16.dp,
+    end = 8.dp
+)
