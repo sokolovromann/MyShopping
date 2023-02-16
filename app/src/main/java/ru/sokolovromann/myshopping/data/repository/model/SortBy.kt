@@ -2,10 +2,10 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 enum class SortBy {
 
-    CREATED, LAST_MODIFIED, NAME, TOTAL;
+    POSITION, CREATED, LAST_MODIFIED, NAME, TOTAL;
 
     companion object {
-        val DefaultValue: SortBy = CREATED
+        val DefaultValue: SortBy = POSITION
 
         fun valueOfOrDefault(value: String): SortBy = try {
             valueOf(value)

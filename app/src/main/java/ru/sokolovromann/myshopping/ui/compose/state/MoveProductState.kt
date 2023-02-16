@@ -29,7 +29,7 @@ class MoveProductState {
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
-        this.shoppingLists = shoppingLists.sortShoppingLists()
+        this.shoppingLists = shoppingLists.formatShoppingLists()
         val preferences = shoppingLists.preferences
 
         screenData = MoveProductScreenData(

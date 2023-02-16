@@ -5,10 +5,9 @@ data class Autocompletes(
     val preferences: AutocompletePreferences = AutocompletePreferences()
 ) {
 
-    fun sortAutocompletes(): List<Autocomplete> {
+    fun formatAutocompletes(): List<Autocomplete> {
         return autocompletes
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
-            .distinctBy { it.name }
-            .sortedBy { it.name }
+            .sortAutocompletes()
     }
 }

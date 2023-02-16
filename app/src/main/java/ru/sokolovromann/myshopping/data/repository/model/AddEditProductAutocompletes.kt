@@ -10,8 +10,7 @@ data class AddEditProductAutocompletes(
     fun formatAutocompletes(): List<Autocomplete> {
         return autocompletes
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
-            .distinctBy { it.name }
-            .sortedBy { it.name }
+            .sortAutocompletes()
             .filterIndexed { index, autocomplete ->
                 autocomplete.name.isNotEmpty() && index < defaultNamesLimit
             }

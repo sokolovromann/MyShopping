@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.ui.compose.state.ProductItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
 fun Products.getProductsItems(): List<ProductItem> {
-    return sortProducts().map {
+    return formatProducts().map {
         val displayQuantity = it.quantity.isNotEmpty()
         val displayPrice = it.price.isNotEmpty() && preferences.displayMoney
 

@@ -5,7 +5,7 @@ import ru.sokolovromann.myshopping.ui.compose.state.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
 fun Autocompletes.getAutocompleteItems(): List<AutocompleteItem> {
-    return sortAutocompletes().map {
+    return formatAutocompletes().map {
         AutocompleteItem(
             uid = it.uid,
             nameText = UiText.FromString(it.name)

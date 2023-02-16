@@ -142,14 +142,14 @@ class ProductsState {
     }
 
     fun getProductsUpResult(uid: String): Result<Pair<Product, Product>> {
-        val sortProducts = products.sortProducts()
-        return if (sortProducts.size < 2) {
+        val formatProducts = products.formatProducts()
+        return if (formatProducts.size < 2) {
             Result.failure(Exception())
         } else {
             var previousIndex = 0
             var currentIndex = 0
-            for (index in sortProducts.indices) {
-                val product = sortProducts[index]
+            for (index in formatProducts.indices) {
+                val product = formatProducts[index]
                 if (currentIndex > 0) {
                     previousIndex = index - 1
                 }
@@ -161,12 +161,12 @@ class ProductsState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentProduct = sortProducts[currentIndex].copy(
-                position = sortProducts[previousIndex].position,
+            val currentProduct = formatProducts[currentIndex].copy(
+                position = formatProducts[previousIndex].position,
                 lastModified = lastModified
             )
-            val previousProduct = sortProducts[previousIndex].copy(
-                position = sortProducts[currentIndex].position,
+            val previousProduct = formatProducts[previousIndex].copy(
+                position = formatProducts[currentIndex].position,
                 lastModified = lastModified
             )
 
@@ -176,17 +176,17 @@ class ProductsState {
     }
 
     fun getProductsDownResult(uid: String): Result<Pair<Product, Product>> {
-        val sortProducts = products.sortProducts()
-        return if (sortProducts.size < 2) {
+        val formatProducts = products.formatProducts()
+        return if (formatProducts.size < 2) {
             Result.failure(Exception())
         } else {
             var currentIndex = 0
             var nextIndex = 0
-            for (index in sortProducts.indices) {
-                val product = sortProducts[index]
+            for (index in formatProducts.indices) {
+                val product = formatProducts[index]
 
                 currentIndex = index
-                if (index < sortProducts.lastIndex) {
+                if (index < formatProducts.lastIndex) {
                     nextIndex = index + 1
                 }
 
@@ -196,12 +196,12 @@ class ProductsState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentProduct = sortProducts[currentIndex].copy(
-                position = sortProducts[nextIndex].position,
+            val currentProduct = formatProducts[currentIndex].copy(
+                position = formatProducts[nextIndex].position,
                 lastModified = lastModified
             )
-            val nextProduct = sortProducts[nextIndex].copy(
-                position = sortProducts[currentIndex].position,
+            val nextProduct = formatProducts[nextIndex].copy(
+                position = formatProducts[currentIndex].position,
                 lastModified = lastModified
             )
 
@@ -211,16 +211,11 @@ class ProductsState {
     }
 
     fun sortProductsResult(sortBy: SortBy): Result<List<Product>> {
-        val productsList = products.shoppingList.products
-        return if (productsList.isEmpty()) {
+        val sortProducts = products.shoppingList.products.sortProducts(sort = Sort(sortBy))
+        return if (sortProducts.isEmpty()) {
             Result.failure(Exception())
         } else {
-            val success = when (sortBy) {
-                SortBy.CREATED -> productsList.sortedBy { it.created }
-                SortBy.LAST_MODIFIED -> productsList.sortedBy { it.lastModified }
-                SortBy.NAME -> productsList.sortedBy { it.name }
-                SortBy.TOTAL -> productsList.sortedBy { it.calculateTotal().value }
-            }.mapIndexed { index, product ->
+            val success = sortProducts.mapIndexed { index, product ->
                 product.copy(
                     position = index,
                     lastModified = System.currentTimeMillis()

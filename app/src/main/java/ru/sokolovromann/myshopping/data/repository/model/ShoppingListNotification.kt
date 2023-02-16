@@ -16,7 +16,8 @@ data class ShoppingListNotification(
     fun body(): String {
         var body = ""
         shoppingList.products
-            .sortProducts(preferences.displayCompleted)
+            .sortProducts()
+            .splitProducts(preferences.displayCompleted)
             .forEach { body += "${it.name.formatFirst(preferences.firstLetterUppercase)}, " }
 
         return body.dropLast(2)

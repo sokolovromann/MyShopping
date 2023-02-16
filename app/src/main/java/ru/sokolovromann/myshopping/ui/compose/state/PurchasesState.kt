@@ -44,7 +44,7 @@ class PurchasesState {
             fontSize = preferences.fontSize
         )
 
-        this.shoppingLists = shoppingLists.sortShoppingLists()
+        this.shoppingLists = shoppingLists.formatShoppingLists()
         shoppingListsLastPosition = shoppingLists.shoppingListsLastPosition
     }
 

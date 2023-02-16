@@ -7,7 +7,7 @@ import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import java.util.*
 
 fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
-    return sortShoppingLists().map {
+    return formatShoppingLists().map {
         val productsList = if (it.products.isEmpty()) {
             val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)

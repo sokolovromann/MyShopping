@@ -9,10 +9,11 @@ data class Products(
         return shoppingList.name.formatFirst(preferences.firstLetterUppercase)
     }
 
-    fun sortProducts(): List<Product> {
+    fun formatProducts(): List<Product> {
         return shoppingList.products
             .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
-            .sortProducts(preferences.displayCompleted)
+            .sortProducts()
+            .splitProducts(preferences.displayCompleted)
     }
 
     fun calculateTotal(): Money {
