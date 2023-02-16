@@ -64,6 +64,7 @@ fun AppGridScaffold(
     loadingContent: @Composable (BoxScope.() -> Unit)? = null,
     notFoundContent: @Composable (ColumnScope.() -> Unit)? = null,
     gridBar: @Composable (RowScope.() -> Unit)? = null,
+    gridBottomBar: @Composable (RowScope.() -> Unit)? = null,
     spaceAfterGrid: Boolean = true,
     gridMultiColumnsSpace: Boolean = true,
     gridContent: @Composable ColumnScope.() -> Unit
@@ -89,6 +90,7 @@ fun AppGridScaffold(
 
                 ScreenState.Showing -> AppShowingGridContent(
                     gridBar,
+                    gridBottomBar,
                     gridContent,
                     spaceAfterGrid,
                     gridMultiColumnsSpace
@@ -128,6 +130,7 @@ private fun AppNothingGridContent(
 @Composable
 private fun AppShowingGridContent(
     gridBar: @Composable (RowScope.() -> Unit)?,
+    gridBottomBar: @Composable (RowScope.() -> Unit)?,
     gridContent: @Composable ColumnScope.() -> Unit,
     spaceAfterGrid: Boolean,
     gridMultiColumnsSpace: Boolean
@@ -161,6 +164,17 @@ private fun AppShowingGridContent(
         }
 
         gridContent()
+
+        if (gridBottomBar != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppGridScaffoldBarPaddings),
+                content = gridBottomBar
+            )
+        }
 
         if (spaceAfterGrid) {
             Spacer(modifier = Modifier.height(AppGridScaffoldSpacerHeight))
