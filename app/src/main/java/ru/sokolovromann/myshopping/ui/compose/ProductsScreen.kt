@@ -309,23 +309,21 @@ private fun ProductsReminderContent(
     fontSize: FontSize,
     onClick: () -> Unit
 ) {
-    AppChip(
-        backgroundColor = MaterialTheme.colors.surface,
-        onClick = onClick
-    ) {
-        Icon(
-            modifier = Modifier.size(fontSize.toButton().dp),
-            painter = painterResource(R.drawable.ic_all_reminder),
-            contentDescription = "",
-            tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
-        )
-        Spacer(modifier = Modifier.size(ProductsAppChipSpacerSmallSize))
-        Text(
-            text = reminderText.asCompose(),
-            fontSize = fontSize.toButton().sp
-        )
+    Column {
+        TextButton(onClick = onClick) {
+            Icon(
+                modifier = Modifier.size(fontSize.toButton().dp),
+                painter = painterResource(R.drawable.ic_all_reminder),
+                contentDescription = "",
+                tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
+            )
+            Spacer(modifier = Modifier.size(ProductsReminderSpacerSize))
+            Text(
+                text = reminderText.asCompose(),
+                fontSize = fontSize.toButton().sp
+            )
+        }
     }
-    Spacer(modifier = Modifier.size(ProductsAppChipSpacerMediumSize))
 }
 
 @Composable
@@ -438,8 +436,7 @@ private fun getProductItemBodyOrNull(
     )
 }
 
-private val ProductsAppChipSpacerSmallSize = 4.dp
-private val ProductsAppChipSpacerMediumSize = 8.dp
+private val ProductsReminderSpacerSize = 4.dp
 private val ProductsHiddenProductsPaddings = PaddingValues(
     start = 8.dp,
     top = 16.dp,
