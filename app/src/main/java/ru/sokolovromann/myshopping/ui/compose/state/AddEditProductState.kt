@@ -39,6 +39,7 @@ class AddEditProductState {
         } else {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)
         }
+        val note = product.note
         screenData = AddEditProductScreenData(
             screenState = ScreenState.Showing,
             nameValue = TextFieldValue(
@@ -67,6 +68,11 @@ class AddEditProductState {
                 text = discount,
                 selection = TextRange(discount.length),
                 composition = TextRange(discount.length)
+            ),
+            noteValue = TextFieldValue(
+                text = note,
+                selection = TextRange(note.length),
+                composition = TextRange(note.length)
             ),
             discountAsPercent = discountAsPercent,
             discountAsPercentText = discountAsPercentText,
@@ -103,6 +109,10 @@ class AddEditProductState {
 
     fun changeDiscountValue(discountValue: TextFieldValue) {
         screenData = screenData.copy(discountValue = discountValue)
+    }
+
+    fun changeProductNoteValue(noteValue: TextFieldValue) {
+        screenData = screenData.copy(noteValue = noteValue)
     }
 
     fun selectAutocompleteName(autocomplete: Autocomplete) {
@@ -318,6 +328,7 @@ class AddEditProductState {
                     asPercent = screenData.discountAsPercent
                 ),
                 taxRate = preferences.taxRate,
+                note = screenData.noteValue.text.trim(),
                 lastModified = System.currentTimeMillis()
             )
             Result.success(success)
@@ -350,6 +361,7 @@ data class AddEditProductScreenData(
     val discountAsPercent: Boolean = true,
     val discountAsPercentText: UiText = UiText.Nothing,
     val showDiscountAsPercent: Boolean = false,
+    val noteValue: TextFieldValue = TextFieldValue(),
     val autocompleteNames: List<Autocomplete> = listOf(),
     val autocompleteQuantities: List<Quantity> = listOf(),
     val autocompleteQuantitySymbols: List<Quantity> = listOf(),

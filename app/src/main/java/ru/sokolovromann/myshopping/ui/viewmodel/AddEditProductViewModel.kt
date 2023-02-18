@@ -72,6 +72,8 @@ class AddEditProductViewModel @Inject constructor(
 
             AddEditProductEvent.AutocompletePlusOneQuantitySelected -> autocompletePlusOneQuantitySelected()
 
+            is AddEditProductEvent.ProductNoteChanged -> productNoteChanged(event)
+
             AddEditProductEvent.ShowProductDiscountAsPercentMenu -> showProductDiscountAsPercentMenu()
 
             AddEditProductEvent.HideProductDiscountAsPercentMenu -> hideProductDiscountAsPercentMenu()
@@ -254,6 +256,10 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun autocompletePlusOneQuantitySelected() {
         addEditProductState.plusOneQuantity()
+    }
+
+    private fun productNoteChanged(event: AddEditProductEvent.ProductNoteChanged) {
+        addEditProductState.changeProductNoteValue(event.value)
     }
 
     private fun showProductDiscountAsPercentMenu() {

@@ -243,10 +243,10 @@ fun AddEditProductScreen(
                     label = { Text(text = stringResource(R.string.addEditProduct_label_discount)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal,
-                        imeAction = ImeAction.Done
+                        imeAction = ImeAction.Next
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }
+                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     )
                 )
 
@@ -287,6 +287,27 @@ fun AddEditProductScreen(
                     val event = AddEditProductEvent.AutocompleteDiscountSelected(it)
                     viewModel.onEvent(event)
                 }
+            )
+
+            OutlinedAppTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AddEditProductElementPaddings),
+                value = screenData.noteValue,
+                onValueChange = {
+                    val event = AddEditProductEvent.ProductNoteChanged(it)
+                    viewModel.onEvent(event)
+                },
+                valueFontSize = screenData.fontSize.toTextField().sp,
+                label = { Text(text = stringResource(R.string.addEditProduct_label_note)) },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }
+                )
             )
         }
     }

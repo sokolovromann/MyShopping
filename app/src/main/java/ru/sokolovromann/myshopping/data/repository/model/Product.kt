@@ -14,6 +14,7 @@ data class Product(
     val price: Money = Money(),
     val discount: Discount = Discount(),
     val taxRate: TaxRate = TaxRate(),
+    val note: String = "",
     val completed: Boolean = false
 ) {
 

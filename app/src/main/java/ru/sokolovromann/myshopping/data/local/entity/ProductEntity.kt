@@ -49,6 +49,9 @@ data class ProductEntity(
     @ColumnInfo(name = "tax_rate_as_percent")
     val taxRateAsPercent: Boolean = false,
 
+    @ColumnInfo(name = "note")
+    val note: String = "",
+
     @ColumnInfo(name = "completed")
     val completed: Boolean = false,
 

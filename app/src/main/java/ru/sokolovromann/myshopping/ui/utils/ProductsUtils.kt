@@ -12,7 +12,7 @@ fun Products.getProductsItems(): List<ProductItem> {
         val displayQuantity = it.quantity.isNotEmpty()
         val displayPrice = it.price.isNotEmpty() && preferences.displayMoney
 
-        val body = if (displayPrice) {
+        var body = if (displayPrice) {
             if (displayQuantity) {
                 "${it.quantity} • ${it.calculateTotal()}"
             } else {
@@ -20,6 +20,10 @@ fun Products.getProductsItems(): List<ProductItem> {
             }
         } else {
             if (displayQuantity) "${it.quantity}" else ""
+        }
+
+        if (it.note.isNotEmpty()) {
+            body += if (body.isEmpty()) it.note else "\n${it.note}"
         }
 
         val bodyText: UiText = if (body.isEmpty()) UiText.Nothing else UiText.FromString(body)

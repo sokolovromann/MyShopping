@@ -73,7 +73,7 @@ private fun productsToPair(
     val displayQuantity = product.quantity.isNotEmpty()
     val displayPrice = product.price.isNotEmpty() && preferences.displayMoney
 
-    val productsText = if (displayPrice) {
+    var productsText = if (displayPrice) {
         if (displayQuantity) {
             " • ${product.quantity} • ${product.calculateTotal()}"
         } else {
@@ -81,6 +81,10 @@ private fun productsToPair(
         }
     } else {
         if (displayQuantity) " • ${product.quantity}" else ""
+    }
+
+    if (product.note.isNotEmpty()) {
+        productsText += " • ${product.note}"
     }
 
     val shortText = preferences.multiColumns &&

@@ -47,6 +47,8 @@ sealed class AddEditProductEvent {
 
     data class AutocompleteDiscountSelected(val discount: Discount) : AddEditProductEvent()
 
+    data class ProductNoteChanged(val value: TextFieldValue) : AddEditProductEvent()
+
     object ShowProductDiscountAsPercentMenu : AddEditProductEvent()
 
     object HideProductDiscountAsPercentMenu : AddEditProductEvent()
