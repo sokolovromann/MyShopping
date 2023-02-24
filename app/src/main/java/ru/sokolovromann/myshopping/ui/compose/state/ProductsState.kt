@@ -72,7 +72,7 @@ class ProductsState {
         var total = 0f
         products.shoppingList.products.forEach {
             if (!it.completed) {
-                total += it.calculateTotal().value
+                total += it.total.value
             }
         }
         shareTotal = if (preferences.displayMoney && total > 0f) {

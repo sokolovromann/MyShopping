@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import java.text.DecimalFormat
+
 fun String.formatFirst(uppercase: Boolean): String {
     return if (this.isEmpty() || !uppercase) {
         this
@@ -9,6 +11,20 @@ fun String.formatFirst(uppercase: Boolean): String {
             newValue = this.first().uppercase()
         )
     }
+}
+
+fun DecimalFormat.valueToString(value: Float): String {
+    val spaceCode = 32
+    val periodCode = 46
+    val formatSymbols = decimalFormatSymbols.apply {
+        minusSign = Char(spaceCode)
+        groupingSeparator = Char(spaceCode)
+        decimalSeparator = Char(periodCode)
+        naN = ""
+    }
+    return apply { decimalFormatSymbols = formatSymbols }
+        .format(value)
+        .replace(" ", "")
 }
 
 fun List<ShoppingList>.sortShoppingLists(sort: Sort = Sort()): List<ShoppingList> {
@@ -38,7 +54,7 @@ fun List<Product>.sortProducts(sort: Sort = Sort()): List<Product> {
             SortBy.CREATED -> sortedBy { it.created }
             SortBy.LAST_MODIFIED -> sortedBy { it.lastModified }
             SortBy.NAME -> sortedBy { it.name }
-            SortBy.TOTAL -> sortedBy { it.calculateTotal().value }
+            SortBy.TOTAL -> sortedBy { it.total.value }
         }
     } else {
         when (sort.sortBy) {
@@ -46,7 +62,7 @@ fun List<Product>.sortProducts(sort: Sort = Sort()): List<Product> {
             SortBy.CREATED -> sortedByDescending { it.created }
             SortBy.LAST_MODIFIED -> sortedByDescending { it.lastModified }
             SortBy.NAME -> sortedByDescending { it.name }
-            SortBy.TOTAL -> sortedByDescending { it.calculateTotal().value }
+            SortBy.TOTAL -> sortedByDescending { it.total.value }
         }
     }
 }

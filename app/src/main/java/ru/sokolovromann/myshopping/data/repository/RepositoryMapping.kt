@@ -69,6 +69,8 @@ class RepositoryMapping @Inject constructor() {
             discountAsPercent = toDiscountAsPercent(product.discount),
             taxRate = toTaxRateValue(product.taxRate),
             taxRateAsPercent = toTaxRateAsPercent(product.taxRate),
+            total = toMoneyValue(product.total),
+            totalFormatted = product.totalFormatted,
             note = product.note,
             completed = product.completed
         )
@@ -98,6 +100,11 @@ class RepositoryMapping @Inject constructor() {
                 toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
             ),
             taxRate = toTaxRate(preferencesEntity.taxRate, preferencesEntity.taxRateAsPercent),
+            total = toMoney(
+                entity.total,
+                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
+            ),
+            totalFormatted = entity.totalFormatted,
             note = entity.note,
             completed = entity.completed
         )
@@ -334,6 +341,10 @@ class RepositoryMapping @Inject constructor() {
         return screenSize.name
     }
 
+    fun toProductLockName(productLock: ProductLock): String {
+        return productLock.name
+    }
+
     private fun toShoppingList(shoppingListEntity: ShoppingListEntity, preferencesEntity: ShoppingPreferencesEntity): ShoppingList {
         val entity = shoppingListEntity.shoppingEntity
         return ShoppingList(
@@ -425,6 +436,11 @@ class RepositoryMapping @Inject constructor() {
                 toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
             ),
             taxRate = toTaxRate(preferencesEntity.taxRate, preferencesEntity.taxRateAsPercent),
+            total = toMoney(
+                entity.total,
+                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
+            ),
+            totalFormatted = entity.totalFormatted,
             note = entity.note,
             completed = entity.completed
         )
@@ -444,6 +460,7 @@ class RepositoryMapping @Inject constructor() {
         )
         val price = Money(value = priceMeasure)
         val taxRate = toTaxRate(preferences.taxRate, true)
+        val total = Money(value = quantity.value * price.value)
 
         return Product(
             position = cursor.position,
@@ -452,6 +469,8 @@ class RepositoryMapping @Inject constructor() {
             quantity = quantity,
             price = price,
             taxRate = taxRate,
+            total = total,
+            totalFormatted = false,
             completed = toAppVersion14Completed(buy)
         )
     }
@@ -468,7 +487,7 @@ class RepositoryMapping @Inject constructor() {
             displayTotal = toDisplayTotal(entity.displayTotal),
             displayAutocomplete = toDisplayAutocomplete(entity.displayAutocomplete),
             displayDefaultAutocomplete = entity.displayDefaultAutocomplete,
-            lockQuantity = entity.lockQuantity,
+            productLock = toProductLock(entity.productLock),
             addLastProduct = entity.addLastProduct,
             screenSize = toScreenSize(entity.screenSize)
         )
@@ -661,6 +680,10 @@ class RepositoryMapping @Inject constructor() {
         return reminder ?: 0L
     }
 
+    private fun toProductLock(name: String): ProductLock {
+        return ProductLock.valueOfOrDefault(name)
+    }
+
     private fun toCompleted(entities: List<ProductEntity>): Boolean {
         return if (entities.isEmpty()) {
             false
@@ -689,7 +712,7 @@ class RepositoryMapping @Inject constructor() {
     private fun List<Product>.sortAppVersion14Products(sort: Int): List<Product> {
         return when (sort) {
             1, 3 -> this.sortedBy { it.name }
-            2, 4 -> this.sortedBy { it.calculateTotal().value }
+            2, 4 -> this.sortedBy { it.total.value }
             else -> this.sortedBy { it.id }
         }.withIndex().map { it.value.copy(position = it.index) }
     }

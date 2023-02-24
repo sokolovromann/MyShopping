@@ -11,7 +11,7 @@ data class ProductPreferences(
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val displayAutocomplete: DisplayAutocomplete = DisplayAutocomplete.DefaultValue,
     val displayDefaultAutocomplete: Boolean = true,
-    val lockQuantity: Boolean = false,
+    val productLock: ProductLock = ProductLock.DefaultValue,
     val editCompleted: Boolean = false,
     val addLastProduct: Boolean = false,
     val screenSize: ScreenSize = ScreenSize.DefaultValue

@@ -14,17 +14,37 @@ data class Product(
     val price: Money = Money(),
     val discount: Discount = Discount(),
     val taxRate: TaxRate = TaxRate(),
+    val total: Money = Money(),
+    val totalFormatted: Boolean = false,
     val note: String = "",
     val completed: Boolean = false
 ) {
 
-    fun calculateTotal(): Money {
-        val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
-        val total = quantityValue * price.value
-        val discountValue = discount.calculate(total)
-        val taxRateValue = taxRate.calculate(total)
+    fun formatTotal(): Money {
+        return if (totalFormatted) {
+            total
+        } else {
+            val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
+            val total = quantityValue * price.value
+            val discountValue = discount.calculate(total)
+            val taxRateValue = taxRate.calculate(total)
 
-        val totalWithDiscountAndTaxRate = total - discountValue + taxRateValue
-        return Money(totalWithDiscountAndTaxRate, price.currency)
+            val totalWithDiscountAndTaxRate = total - discountValue + taxRateValue
+            Money(totalWithDiscountAndTaxRate, price.currency)
+        }
+    }
+
+    fun discountToMoney(): Money {
+        val discountValue = discount.calculate(calculateTotalWithoutDiscountAndTaxRate())
+        return Money(discountValue, price.currency)
+    }
+
+    fun taxRateToMoney(): Money {
+        val taxRateValue = taxRate.calculate(calculateTotalWithoutDiscountAndTaxRate())
+        return Money(taxRateValue, price.currency)
+    }
+
+    private fun calculateTotalWithoutDiscountAndTaxRate(): Float {
+        return quantity.value * price.value
     }
 }

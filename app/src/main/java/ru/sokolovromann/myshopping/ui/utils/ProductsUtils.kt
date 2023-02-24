@@ -14,9 +14,9 @@ fun Products.getProductsItems(): List<ProductItem> {
 
         var body = if (displayPrice) {
             if (displayQuantity) {
-                "${it.quantity} • ${it.calculateTotal()}"
+                "${it.quantity} • ${it.formatTotal()}"
             } else {
-                "${it.calculateTotal()}"
+                "${it.formatTotal()}"
             }
         } else {
             if (displayQuantity) "${it.quantity}" else ""

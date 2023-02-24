@@ -82,7 +82,8 @@ class AddEditProductRepositoryImpl @Inject constructor(
         productDao.insertAutocomplete(entity)
     }
 
-    override suspend fun invertProductsLockQuantity(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertProductsLockQuantity()
+    override suspend fun saveProductLock(productLock: ProductLock): Unit = withContext(dispatchers.io) {
+        val value = mapping.toProductLockName(productLock)
+        preferencesDao.saveProductsProductLock(value)
     }
 }

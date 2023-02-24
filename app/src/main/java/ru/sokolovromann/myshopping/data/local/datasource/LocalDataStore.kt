@@ -32,7 +32,7 @@ class LocalDataStore @Inject constructor(
     private val productsMultiColumnsKey = booleanPreferencesKey("products_multi_columns")
     private val productsDisplayTotalKey = stringPreferencesKey("products_display_total")
     private val productsDisplayAutocompleteKey = stringPreferencesKey("products_display_autocomplete")
-    private val productsLockQuantityKey = booleanPreferencesKey("products_lock_quantity")
+    private val productsProductLockKey = stringPreferencesKey("products_product_lock")
     private val productsEditCompletedKey = booleanPreferencesKey("products_edit_completed")
     private val productsAddLastProductKey = booleanPreferencesKey("products_add_last_product")
     private val productsDisplayDefaultAutocompleteKey = booleanPreferencesKey("products_display_default_autocomplete")
@@ -74,7 +74,7 @@ class LocalDataStore @Inject constructor(
                 displayTotal = it[productsDisplayTotalKey] ?: "",
                 displayAutocomplete = it[productsDisplayAutocompleteKey] ?: "",
                 displayDefaultAutocomplete = it[productsDisplayDefaultAutocompleteKey] ?: true,
-                lockQuantity = it[productsLockQuantityKey] ?: false,
+                productLock = it[productsProductLockKey] ?: "",
                 editCompleted = it[productsEditCompletedKey] ?: false,
                 addLastProduct = it[productsAddLastProductKey] ?: true,
                 screenSize = it[screenSizeKey] ?: ""
@@ -205,8 +205,8 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[productsDisplayAutocompleteKey] = displayAutocomplete }
     }
 
-    suspend fun saveProductsLockQuantity(lockQuantity: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsLockQuantityKey] = lockQuantity }
+    suspend fun saveProductsProductLock(productLock: String) = withContext(dispatchers.io) {
+        dataStore.edit { it[productsProductLockKey] = productLock }
     }
 
     suspend fun saveProductsEditCompleted(editCompleted: Boolean) = withContext(dispatchers.io) {
@@ -272,13 +272,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val multiColumns = it[productsMultiColumnsKey] ?: false
             it[productsMultiColumnsKey] = !multiColumns
-        }
-    }
-
-    suspend fun invertProductsLockQuantity() = withContext(dispatchers.io) {
-        dataStore.edit {
-            val lockQuantity = it[productsLockQuantityKey] ?: false
-            it[productsLockQuantityKey] = !lockQuantity
         }
     }
 

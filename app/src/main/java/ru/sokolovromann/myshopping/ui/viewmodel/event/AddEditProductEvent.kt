@@ -1,11 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import androidx.compose.ui.text.input.TextFieldValue
-import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Discount
-import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.Quantity
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.data.repository.model.*
 
 sealed class AddEditProductEvent {
 
@@ -29,7 +25,7 @@ sealed class AddEditProductEvent {
 
     data class ProductTotalChanged(val value: TextFieldValue) : AddEditProductEvent()
 
-    object InvertProductsLockQuantity : AddEditProductEvent()
+    data class ProductLockSelected(val productLock: ProductLock) : AddEditProductEvent()
 
     data class AutocompleteNameSelected(val autocomplete: Autocomplete) : AddEditProductEvent()
 
@@ -51,5 +47,9 @@ sealed class AddEditProductEvent {
 
     object ShowProductDiscountAsPercentMenu : AddEditProductEvent()
 
+    object ShowProductLockMenu : AddEditProductEvent()
+
     object HideProductDiscountAsPercentMenu : AddEditProductEvent()
+
+    object HideProductLockMenu : AddEditProductEvent()
 }

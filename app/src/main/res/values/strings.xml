@@ -12,13 +12,18 @@
     <string name="addEditProduct_action_saveProduct">Save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Money</string>
     <string name="addEditProduct_action_selectDiscountAsPercents">Percents</string>
+    <string name="addEditProduct_action_selectProductLockPrice">Price</string>
+    <string name="addEditProduct_action_selectProductLockQuantity">Quantity</string>
+    <string name="addEditProduct_action_selectProductLockTotal">Total</string>
     <string name="addEditProduct_contentDescription_navigationIcon">Back</string>
+    <string name="addEditProduct_header_productLock">Lock</string>
     <string name="addEditProduct_label_discount">Discount</string>
     <string name="addEditProduct_label_name">Name</string>
     <string name="addEditProduct_label_note">Note</string>
     <string name="addEditProduct_label_price">Price per unit</string>
     <string name="addEditProduct_label_quantity">Quantity</string>
     <string name="addEditProduct_label_quantitySymbol">Symbol</string>
+    <string name="addEditProduct_label_total">Total</string>
     <string name="addEditProduct_message_nameError">Add name</string>
 
     <string name="all_appName">My Shopping List</string>

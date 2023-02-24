@@ -49,6 +49,12 @@ data class ProductEntity(
     @ColumnInfo(name = "tax_rate_as_percent")
     val taxRateAsPercent: Boolean = false,
 
+    @ColumnInfo(name = "total")
+    val total: Float = 0f,
+
+    @ColumnInfo(name = "total_formatted")
+    val totalFormatted: Boolean = false,
+
     @ColumnInfo(name = "note")
     val note: String = "",
 

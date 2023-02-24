@@ -13,7 +13,7 @@ class AddEditProductPreferencesDao @Inject constructor(
         return localDataStore.getProductPreferences()
     }
 
-    suspend fun invertProductsLockQuantity() {
-        localDataStore.invertProductsLockQuantity()
+    suspend fun saveProductsProductLock(productLock: String) {
+        localDataStore.saveProductsProductLock(productLock)
     }
 }

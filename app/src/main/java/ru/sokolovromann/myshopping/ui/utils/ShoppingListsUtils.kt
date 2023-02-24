@@ -75,9 +75,9 @@ private fun productsToPair(
 
     var productsText = if (displayPrice) {
         if (displayQuantity) {
-            " • ${product.quantity} • ${product.calculateTotal()}"
+            " • ${product.quantity} • ${product.formatTotal()}"
         } else {
-            " • ${product.calculateTotal()}"
+            " • ${product.formatTotal()}"
         }
     } else {
         if (displayQuantity) " • ${product.quantity}" else ""

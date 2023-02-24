@@ -18,11 +18,8 @@ data class Money(
     }
 
     fun valueToString(): String {
-        return if (value % 1.0f == 0f) {
-            String.format("%s", value.toLong())
-        } else {
-            value.toString()
-        }
+        val format = decimalFormat
+        return format.valueToString(value)
     }
 
     fun formatValue(): String {

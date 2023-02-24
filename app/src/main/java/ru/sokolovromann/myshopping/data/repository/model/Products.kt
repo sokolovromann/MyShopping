@@ -22,7 +22,7 @@ data class Products(
         var active = 0f
 
         shoppingList.products.forEach { product ->
-            val totalValue = product.calculateTotal().value
+            val totalValue = product.total.value
 
             all += totalValue
             if (product.completed) {

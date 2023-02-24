@@ -52,7 +52,7 @@ data class AddEditProductProducts(
     fun totals(): List<Money> {
         return products
             .sortedByDescending { it.lastModified }
-            .map { it.calculateTotal() }
+            .map { it.total }
             .distinctBy { it.value }
             .filterIndexed { index, total ->
                 total.isNotEmpty() && index < defaultTotalsLimit

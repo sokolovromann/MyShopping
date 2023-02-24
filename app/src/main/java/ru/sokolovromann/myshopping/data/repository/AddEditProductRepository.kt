@@ -17,5 +17,5 @@ interface AddEditProductRepository {
 
     suspend fun addAutocomplete(autocomplete: Autocomplete)
 
-    suspend fun invertProductsLockQuantity()
+    suspend fun saveProductLock(productLock: ProductLock)
 }
