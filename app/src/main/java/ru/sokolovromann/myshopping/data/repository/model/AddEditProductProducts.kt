@@ -25,7 +25,7 @@ data class AddEditProductProducts(
             .map { it.quantity }
             .distinctBy { it.symbol }
             .filterIndexed { index, quantity ->
-                quantity.isNotEmpty() && index < defaultQuantitiesLimit
+                quantity.value > 0 && quantity.symbol.isNotEmpty() && index < defaultQuantitiesLimit
             }
     }
 
