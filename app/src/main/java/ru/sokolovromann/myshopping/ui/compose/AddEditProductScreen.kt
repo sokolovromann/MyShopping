@@ -364,6 +364,16 @@ fun AddEditProductScreen(
                 }
             }
 
+            AddEditProductAutocompleteTotals(
+                totals = screenData.autocompleteTotals,
+                fontSize = screenData.fontSize,
+                enabled = screenData.productLock != ProductLock.TOTAL,
+                onClick = {
+                    val event = AddEditProductEvent.AutocompleteTotalSelected(it)
+                    viewModel.onEvent(event)
+                }
+            )
+
             OutlinedAppTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -548,6 +558,38 @@ private fun AddEditProductAutocompleteDiscounts(
             .horizontalScroll(scrollState)
     ) {
         discounts.forEach {
+            AppChip(onClick = { onClick(it) }) {
+                Text(
+                    text = it.toString(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
+        }
+    }
+}
+
+@Composable
+private fun AddEditProductAutocompleteTotals(
+    totals: List<Money>,
+    fontSize: FontSize,
+    enabled: Boolean,
+    onClick: (Money) -> Unit
+) {
+    if (!enabled) {
+        return
+    }
+
+    val scrollState = rememberScrollState()
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(AddEditProductElementPaddings)
+            .horizontalScroll(scrollState)
+    ) {
+        totals.forEach {
             AppChip(onClick = { onClick(it) }) {
                 Text(
                     text = it.toString(),

@@ -70,6 +70,8 @@ class AddEditProductViewModel @Inject constructor(
 
             is AddEditProductEvent.AutocompletePriceSelected -> autocompletePriceSelected(event)
 
+            is AddEditProductEvent.AutocompleteTotalSelected -> autocompleteTotalSelected(event)
+
             is AddEditProductEvent.AutocompleteDiscountSelected -> autocompleteDiscountSelected(event)
 
             AddEditProductEvent.AutocompleteMinusOneQuantitySelected -> autocompleteMinusOneQuantitySelected()
@@ -85,8 +87,6 @@ class AddEditProductViewModel @Inject constructor(
             AddEditProductEvent.HideProductDiscountAsPercentMenu -> hideProductDiscountAsPercentMenu()
 
             AddEditProductEvent.HideProductLockMenu -> hideProductLockMenu()
-
-            else -> {}
         }
     }
 
@@ -164,7 +164,8 @@ class AddEditProductViewModel @Inject constructor(
             quantities = addEditProductProducts.quantities(),
             quantitySymbols = addEditProductProducts.quantitySymbols(),
             prices = addEditProductProducts.prices(),
-            discounts = addEditProductProducts.discounts()
+            discounts = addEditProductProducts.discounts(),
+            totals = addEditProductProducts.totals()
         )
     }
 
@@ -263,6 +264,10 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun autocompletePriceSelected(event: AddEditProductEvent.AutocompletePriceSelected) {
         addEditProductState.selectAutocompletePrice(event.price)
+    }
+
+    private fun autocompleteTotalSelected(event: AddEditProductEvent.AutocompleteTotalSelected) {
+        addEditProductState.selectAutocompleteTotal(event.total)
     }
 
     private fun autocompleteDiscountSelected(event: AddEditProductEvent.AutocompleteDiscountSelected) {

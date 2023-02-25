@@ -90,6 +90,7 @@ class AddEditProductState {
             autocompleteQuantitySymbols = listOf(),
             autocompletePrices = listOf(),
             autocompleteDiscounts = listOf(),
+            autocompleteTotals = listOf(),
             fontSize = preferences.fontSize
         )
 
@@ -302,6 +303,26 @@ class AddEditProductState {
         }
     }
 
+    fun selectAutocompleteTotal(total: Money) {
+        product = product.copy(total = total)
+
+        val totalText = total.valueToString()
+        screenData = screenData.copy(
+            totalValue = TextFieldValue(
+                text = totalText,
+                selection = TextRange(totalText.length),
+                composition = TextRange(totalText.length)
+            ),
+            autocompleteTotals = listOf()
+        )
+
+        when (screenData.productLock) {
+            ProductLock.QUANTITY -> setProductQuantityLock()
+            ProductLock.PRICE -> setProductPriceLock()
+            else -> {}
+        }
+    }
+
     fun selectProductLock(productLock: ProductLock) {
         product = product.copy(totalFormatted = productLock != ProductLock.TOTAL)
         screenData = screenData.copy(
@@ -363,13 +384,15 @@ class AddEditProductState {
         quantities: List<Quantity>,
         quantitySymbols: List<Quantity>,
         prices: List<Money>,
-        discounts: List<Discount>
+        discounts: List<Discount>,
+        totals: List<Money>
     ) {
         screenData = screenData.copy(
             autocompleteQuantities = quantities,
             autocompleteQuantitySymbols = quantitySymbols,
             autocompletePrices = prices,
-            autocompleteDiscounts = discounts
+            autocompleteDiscounts = discounts,
+            autocompleteTotals = totals
         )
     }
 
@@ -392,7 +415,8 @@ class AddEditProductState {
             autocompleteQuantities = listOf(),
             autocompleteQuantitySymbols = listOf(),
             autocompletePrices = listOf(),
-            autocompleteDiscounts = listOf()
+            autocompleteDiscounts = listOf(),
+            autocompleteTotals = listOf()
         )
     }
 
@@ -401,7 +425,8 @@ class AddEditProductState {
             autocompleteQuantities = listOf(),
             autocompleteQuantitySymbols = listOf(),
             autocompletePrices = listOf(),
-            autocompleteDiscounts = listOf()
+            autocompleteDiscounts = listOf(),
+            autocompleteTotals = listOf()
         )
     }
 
@@ -550,5 +575,6 @@ data class AddEditProductScreenData(
     val autocompleteQuantitySymbols: List<Quantity> = listOf(),
     val autocompletePrices: List<Money> = listOf(),
     val autocompleteDiscounts: List<Discount> = listOf(),
+    val autocompleteTotals: List<Money> = listOf(),
     val fontSize: FontSize = FontSize.MEDIUM
 )
