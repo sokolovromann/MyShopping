@@ -14,8 +14,8 @@ import ru.sokolovromann.myshopping.data.repository.PurchasesNotificationReposito
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 
 class PurchasesWorker(
-    private val context: Context,
-    private val workerParams: WorkerParameters
+    context: Context,
+    workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
     companion object {

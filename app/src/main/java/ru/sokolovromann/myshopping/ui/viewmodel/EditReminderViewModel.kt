@@ -68,7 +68,7 @@ class EditReminderViewModel @Inject constructor(
     private suspend fun editReminderLoaded(
         editReminder: EditReminder
     ) = withContext(dispatchers.main) {
-        editReminderState.populate(editReminder)
+        editReminderState.populate(editReminder, alarmManager.checkCorrectReminderPermissions())
     }
 
     private fun saveReminder() = viewModelScope.launch {

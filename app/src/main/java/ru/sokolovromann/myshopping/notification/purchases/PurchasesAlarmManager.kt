@@ -1,10 +1,14 @@
 package ru.sokolovromann.myshopping.notification.purchases
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import javax.inject.Inject
 
 class PurchasesAlarmManager @Inject constructor(
@@ -29,6 +33,18 @@ class PurchasesAlarmManager @Inject constructor(
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val pendingIntent = PendingIntent.getBroadcast(context, id, Intent(), flags)
         alarmManager.cancel(pendingIntent)
+    }
+
+    fun checkCorrectReminderPermissions(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val checkSelfPermission = ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+            checkSelfPermission == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
     }
 
     private fun toPendingIntent(uid: String): PendingIntent {

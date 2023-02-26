@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.notification.purchases
 
 import android.content.Context
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.hilt.EntryPoint
@@ -14,10 +13,9 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.PurchasesNotificationRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 
-@ExperimentalFoundationApi
 class BootPurchasesWorker(
-    private val context: Context,
-    private val workerParams: WorkerParameters
+    context: Context,
+    workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
     @EntryPoint

@@ -1,12 +1,15 @@
 package ru.sokolovromann.myshopping.notification.purchases
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ru.sokolovromann.myshopping.R
@@ -50,7 +53,17 @@ class PurchasesNotificationManager @Inject constructor(
             .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(context)) {
-            notify(notification.id(), builder.build())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val checkSelfPermission = ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+                if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {
+                    notify(notification.id(), builder.build())
+                }
+            } else {
+                notify(notification.id(), builder.build())
+            }
         }
     }
 

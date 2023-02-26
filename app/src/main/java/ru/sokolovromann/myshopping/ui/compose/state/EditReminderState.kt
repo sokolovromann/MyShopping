@@ -25,7 +25,7 @@ class EditReminderState {
     var screenData by mutableStateOf(EditReminderScreenData())
         private set
 
-    fun populate(editReminder: EditReminder) {
+    fun populate(editReminder: EditReminder, correctReminderPermission: Boolean) {
         shoppingList = editReminder.shoppingList ?: ShoppingList()
 
         val headerText: UiText = if (shoppingList.reminder == null) {
@@ -55,6 +55,7 @@ class EditReminderState {
             timeText = reminder.getDisplayTime(),
             timeHourOfDay = reminder.get(Calendar.HOUR_OF_DAY),
             timeMinute = reminder.get(Calendar.MINUTE),
+            showPermissionError = !correctReminderPermission,
             showDeleteButton = shoppingList.reminder != null,
             showDateDialog = false,
             showTimeDialog = false,
@@ -142,6 +143,7 @@ data class EditReminderScreenData(
     val timeText: UiText = UiText.Nothing,
     val timeHourOfDay: Int = 0,
     val timeMinute: Int = 0,
+    val showPermissionError: Boolean = false,
     val showDeleteButton: Boolean = false,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
