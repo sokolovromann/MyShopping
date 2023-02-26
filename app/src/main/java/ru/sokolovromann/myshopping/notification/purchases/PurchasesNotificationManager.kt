@@ -25,8 +25,8 @@ class PurchasesNotificationManager @Inject constructor(
 
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationName = context.getString(R.string.notificationChannel_purchasesName)
-            val notificationDescription = context.getString(R.string.notificationChannel_purchasesDescription)
+            val notificationName = context.getString(R.string.notificationChannel_name_purchases)
+            val notificationDescription = context.getString(R.string.notificationChannel_description_purchases)
             val channel = NotificationChannel(
                 AppNotificationChannel.Purchases.name,
                 notificationName,

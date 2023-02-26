@@ -26,7 +26,7 @@
     <string name="addEditProduct_label_total">Total</string>
     <string name="addEditProduct_message_nameError">Add name</string>
 
-    <string name="all_appName">My Shopping List</string>
+    <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListToPurchases">Unarchive</string>
     <string name="archive_action_moveShoppingListToTrash">Delete</string>
@@ -65,7 +65,9 @@
     <string name="copyProduct_header">Select a list</string>
     <string name="copyProduct_text_shoppingListsNotFound">You have no shopping lists</string>
 
-    <string-array name="data_defaultAutocompleteNames">
+    <string name="data_email_developer">sokolovromann@gmail.com</string>
+    <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
+    <string-array name="data_text_defaultAutocompleteNames">
         <item>Air Freshener</item>
         <item>Almond Nuts</item>
         <item>Apples</item>
@@ -221,18 +223,16 @@
         <item>Yogurt</item>
         <item>Zucchini</item>
     </string-array>
-    <string name="data_defaultCurrency">$</string>
-    <bool name="data_defaultCurrencyDisplayToLeft">true</bool>
-    <string name="data_developerEmail">sokolovromann@gmail.com</string>
-    <string name="data_developerName">Roman Sokolov</string>
-    <string name="data_githubLink">https://github.com/sokolovromann/MyShopping</string>
+    <string name="data_text_defaultCurrency">$</string>
+    <string name="data_text_developerName">Roman Sokolov</string>
+    <bool name="data_value_defaultCurrencyDisplayToLeft">true</bool>
 
     <string name="drawer_action_openArchive">@string/archive_header</string>
     <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/purchases_header</string>
     <string name="drawer_action_openSettings">@string/settings_header_settings</string>
     <string name="drawer_action_openTrash">@string/trash_header</string>
-    <string name="drawer_header">@string/all_appName</string>
+    <string name="drawer_header">@string/all_header_appName</string>
 
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">Save</string>
@@ -263,8 +263,8 @@
     <string name="moveProduct_header">Select a list</string>
     <string name="moveProduct_text_shoppingListsNotFound">You have no shopping lists</string>
 
-    <string name="notificationChannel_purchasesDescription">Notifications of shopping lists</string>
-    <string name="notificationChannel_purchasesName">Purchases</string>
+    <string name="notificationChannel_description_purchases">Notifications of shopping lists</string>
+    <string name="notificationChannel_name_purchases">Purchases</string>
 
     <string name="products_action_calculateChange">Calculate change</string>
     <string name="products_action_copyProductToShoppingList">Copy to…</string>
@@ -321,7 +321,7 @@
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_editCompletedProduct">Will be open screen to edit</string>
     <string name="settings_body_email">Tap to write email</string>
-    <string name="settings_body_firstLetterUppercase">Names of shopping lists and products</string>
+    <string name="settings_body_firstLetterUppercase">Names of lists, products and autocompletes</string>
     <string name="settings_body_github">Tap to open</string>
     <string name="settings_body_productsMultiColumns">Multiple cards in one row</string>
     <string name="settings_body_shoppingsMultiColumns">Multiple cards in one row</string>

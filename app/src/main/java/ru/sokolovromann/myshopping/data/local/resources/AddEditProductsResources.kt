@@ -11,7 +11,7 @@ class AddEditProductsResources @Inject constructor(
 ) {
 
     fun getDefaultAutocompleteNames(search: String): Flow<List<String>> {
-        val names = resources.getStringArray(R.array.data_defaultAutocompleteNames)
+        val names = resources.getStringArray(R.array.data_text_defaultAutocompleteNames)
             .filter { it.lowercase().contains(search.lowercase()) }
         return flowOf(names)
     }
