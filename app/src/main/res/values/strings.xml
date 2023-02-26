@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="addEditAutocomplete_action_cancelSavingAutocomplete">Cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">Save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">Add</string>
@@ -67,7 +67,7 @@
 
     <string name="data_email_developer">sokolovromann@gmail.com</string>
     <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
-    <string-array name="data_text_defaultAutocompleteNames">
+    <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
         <item>Air Freshener</item>
         <item>Almond Nuts</item>
         <item>Apples</item>
@@ -255,8 +255,8 @@
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Cancel</string>
     <string name="editTaxRate_action_saveTaxRate">Save</string>
-    <string name="editTaxRate_header">Edit tax rate</string>
-    <string name="editTaxRate_label_taxRate">Tax rate</string>
+    <string name="editTaxRate_header">Tax rate</string>
+    <string name="editTaxRate_label_taxRate">Rate in percentages</string>
     <string name="editTaxRate_message_taxRateError">Add tax rate</string>
 
     <string name="moveProduct_contentDescription_navigationIcon">Cancel</string>
@@ -353,7 +353,6 @@
     <string name="shoppingLists_action_displayActiveTotal">Active</string>
     <string name="shoppingLists_action_displayAllTotal">All</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
-    <string name="shoppingLists_action_hideCompleted">Hide</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>
     <string name="shoppingLists_action_selectTrashLocation">Trash</string>
