@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">Отмена</string>
+    <string name="addEditAutocomplete_action_saveAutocomplete">Сохранить</string>
+    <string name="addEditAutocomplete_header_addAutocomplete">Добавить</string>
+    <string name="addEditAutocomplete_header_editAutocomplete">Редактировать</string>
+    <string name="addEditAutocomplete_label_name">Название</string>
+    <string name="addEditAutocomplete_message_nameError">Добавьте название</string>
+
+    <string name="addEditProduct_action_quantityMinusOne">- 1</string>
+    <string name="addEditProduct_action_quantityPlusOne">+ 1</string>
+    <string name="addEditProduct_action_saveProduct">Сохранить</string>
+    <string name="addEditProduct_action_selectDiscountAsMoney">Деньги</string>
+    <string name="addEditProduct_action_selectDiscountAsPercents">Проценты</string>
+    <string name="addEditProduct_action_selectProductLockPrice">Цена</string>
+    <string name="addEditProduct_action_selectProductLockQuantity">Количество</string>
+    <string name="addEditProduct_action_selectProductLockTotal">Стоимость</string>
+    <string name="addEditProduct_contentDescription_navigationIcon">Назад</string>
+    <string name="addEditProduct_header_productLock">Заблокировать</string>
+    <string name="addEditProduct_label_discount">Скидка</string>
+    <string name="addEditProduct_label_name">Название</string>
+    <string name="addEditProduct_label_note">Заметка</string>
+    <string name="addEditProduct_label_price">Цена за единицу</string>
+    <string name="addEditProduct_label_quantity">Количество</string>
+    <string name="addEditProduct_label_quantitySymbol">Символ</string>
+    <string name="addEditProduct_label_total">Стоимость</string>
+    <string name="addEditProduct_message_nameError">Добавьте название</string>
+
+    <string name="all_header_appName">Мои покупки</string>
+
+    <string name="archive_action_moveShoppingListToPurchases">Разархивировать</string>
+    <string name="archive_action_moveShoppingListToTrash">Удалить</string>
+    <string name="archive_contentDescription_navigationIcon">Показать навигацию</string>
+    <string name="archive_header">Архив</string>
+    <string name="archive_text_productsNotFound">Список покупок пуст</string>
+    <string name="archive_text_shoppingListsNotFound">Архив пуст</string>
+
+    <string name="autocompletes_action_deleteAutocomplete">Удалить</string>
+    <string name="autocompletes_action_editAutocomplete">Редактировать</string>
+    <string name="autocompletes_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
+    <string name="autocompletes_contentDescription_navigationIcon">Показать навигацию</string>
+    <string name="autocompletes_header_autocompletes">Личные подсказки</string>
+    <string name="autocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
+
+    <string name="calculateChange_action_closeCalculatingChange">Назад</string>
+    <string name="calculateChange_header">Посчитать сдачу</string>
+    <string name="calculateChange_label_userMoney">Деньги</string>
+    <string name="calculateChange_text_change">Сдача: %s</string>
+    <string name="calculateChange_text_noChange">Сдача: нет сдачи</string>
+    <string name="calculateChange_text_total">Итого: %s</string>
+
+    <string name="calendar_text_currentYear">%ta, %tb %td</string>
+    <string name="calendar_text_currentYearAt">%ta, %tb %td в %tH:%tM</string>
+    <string name="calendar_text_other">%tb %td, %tY</string>
+    <string name="calendar_text_otherAt">%tb %td, %tY в %tH:%tM</string>
+    <string name="calendar_text_time">%tH:%tM</string>
+    <string name="calendar_text_today">Сегодня</string>
+    <string name="calendar_text_todayAt">Сегодня в %tH:%tM</string>
+    <string name="calendar_text_tomorrow">Завтра</string>
+    <string name="calendar_text_tomorrowAt">Завтра в %tH:%tM</string>
+    <string name="calendar_text_yesterday">Вчера</string>
+    <string name="calendar_text_yesterdayAt">Вчера в %tH:%tM</string>
+
+    <string name="copyProduct_contentDescription_navigationIcon">Отмена</string>
+    <string name="copyProduct_header">Выберите список</string>
+    <string name="copyProduct_text_shoppingListsNotFound">У вас нет покупок</string>
+
+    <string name="data_email_developer">sokolovromann@gmail.com</string>
+    <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
+    <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
+        <item>Авокадо</item>
+        <item>Ананас</item>
+        <item>Апельсины</item>
+        <item>Арахис</item>
+        <item>Арбуз</item>
+        <item>Баклажан</item>
+        <item>Бананы</item>
+        <item>Баранина</item>
+        <item>Батон</item>
+        <item>Бекон</item>
+        <item>Белый хлеб</item>
+        <item>Блины</item>
+        <item>Бобы</item>
+        <item>Болгарский перец</item>
+        <item>Бритвы</item>
+        <item>Брокколи</item>
+        <item>Брюссельская капуста</item>
+        <item>Ветчина</item>
+        <item>Виноград</item>
+        <item>Вишня</item>
+        <item>Вода</item>
+        <item>Говядина</item>
+        <item>Горох</item>
+        <item>Горчица</item>
+        <item>Грейпфруты</item>
+        <item>Грецкие орехи</item>
+        <item>Гречка</item>
+        <item>Грибы</item>
+        <item>Груши</item>
+        <item>Дезодорант</item>
+        <item>Дыня</item>
+        <item>Ежевика</item>
+        <item>Зеленый горошек</item>
+        <item>Зубная паста</item>
+        <item>Зубная щётка</item>
+        <item>Изюм</item>
+        <item>Индейка</item>
+        <item>Инжир</item>
+        <item>Йогурт</item>
+        <item>Кабачки</item>
+        <item>Капуста</item>
+        <item>Картофель</item>
+        <item>Каша</item>
+        <item>Кетчуп</item>
+        <item>Кефир</item>
+        <item>Кинза</item>
+        <item>Клубника</item>
+        <item>Кокос</item>
+        <item>Колбаса</item>
+        <item>Конфеты</item>
+        <item>Корица</item>
+        <item>Котлеты</item>
+        <item>Кофе</item>
+        <item>Красная икра</item>
+        <item>Креветки</item>
+        <item>Крекеры</item>
+        <item>Кукуруза</item>
+        <item>Курага</item>
+        <item>Курица</item>
+        <item>Лаваш</item>
+        <item>Лавровый лист</item>
+        <item>Лимон</item>
+        <item>Лимонад</item>
+        <item>Лук</item>
+        <item>Майонез</item>
+        <item>Макароны</item>
+        <item>Мандарины</item>
+        <item>Манка</item>
+        <item>Мешки для мусора</item>
+        <item>Миндаль</item>
+        <item>Молоко</item>
+        <item>Морковь</item>
+        <item>Мороженое</item>
+        <item>Моющее средство</item>
+        <item>Мука</item>
+        <item>Мыло</item>
+        <item>Мясо</item>
+        <item>Мёд</item>
+        <item>Овсянка</item>
+        <item>Огурцы</item>
+        <item>Оливки</item>
+        <item>Оливковое масло</item>
+        <item>Орехи</item>
+        <item>Освежитель воздуха</item>
+        <item>Паштет</item>
+        <item>Пельмени</item>
+        <item>Перец</item>
+        <item>Персики</item>
+        <item>Петрушка</item>
+        <item>Печенье</item>
+        <item>Пицца</item>
+        <item>Подсолнечное масло</item>
+        <item>Помидоры</item>
+        <item>Пшено</item>
+        <item>Редис</item>
+        <item>Редька</item>
+        <item>Рис</item>
+        <item>Рыба</item>
+        <item>Ряженка</item>
+        <item>Сахар</item>
+        <item>Свинина</item>
+        <item>Свёкла</item>
+        <item>Сгущёнка</item>
+        <item>Сельдерей</item>
+        <item>Сливки</item>
+        <item>Сливочное масло</item>
+        <item>Сметана</item>
+        <item>Сок</item>
+        <item>Соль</item>
+        <item>Сосиски</item>
+        <item>Спагетти</item>
+        <item>Спички</item>
+        <item>Стиральный порошок</item>
+        <item>Сухарики</item>
+        <item>Сыр</item>
+        <item>Творог</item>
+        <item>Томатная паста</item>
+        <item>Торт</item>
+        <item>Туалетная бумага</item>
+        <item>Тущёнка</item>
+        <item>Тыква</item>
+        <item>Укроп</item>
+        <item>Уксус</item>
+        <item>Фарш</item>
+        <item>Фасоль</item>
+        <item>Фисташки</item>
+        <item>Фундук</item>
+        <item>Хлеб</item>
+        <item>Хлопья</item>
+        <item>Цветная капуста</item>
+        <item>Чай</item>
+        <item>Черника</item>
+        <item>Черный хлеб</item>
+        <item>Чеснок</item>
+        <item>Чипсы</item>
+        <item>Шампунь</item>
+        <item>Шоколад</item>
+        <item>Яблоки</item>
+        <item>Яйца</item>
+    </string-array>
+    <string name="data_text_defaultCurrency"> ₽</string>
+    <string name="data_text_developerName">Роман Соколов</string>
+    <bool name="data_value_defaultCurrencyDisplayToLeft">false</bool>
+
+    <string name="drawer_action_openArchive">@string/archive_header</string>
+    <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
+    <string name="drawer_action_openPurchases">@string/purchases_header</string>
+    <string name="drawer_action_openSettings">@string/settings_header_settings</string>
+    <string name="drawer_action_openTrash">@string/trash_header</string>
+    <string name="drawer_header">@string/all_header_appName</string>
+
+    <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Отмена</string>
+    <string name="editCurrencySymbol_action_saveCurrencySymbol">Сохранить</string>
+    <string name="editCurrencySymbol_header">Валюта</string>
+    <string name="editCurrencySymbol_label_symbol">Символ</string>
+    <string name="editCurrencySymbol_message_symbolError">Добавьте символ</string>
+
+    <string name="editReminder_action_cancelSavingReminder">Отмена</string>
+    <string name="editReminder_action_deleteReminder">Удалить напоминание</string>
+    <string name="editReminder_action_saveReminder">Сохранить</string>
+    <string name="editReminder_header_addReminder">Добавить напоминание</string>
+    <string name="editReminder_header_editReminder">Редактировать напоминание</string>
+    <string name="editReminder_message_permissionError">У вас нет разрешения на показ уведомлений. Уведомления не будут отображаться без разрешения.</string>
+
+    <string name="editShoppingListName_action_cancelSavingShoppingListName">Отмена</string>
+    <string name="editShoppingListName_action_saveShoppingListName">Сохранить</string>
+    <string name="editShoppingListName_header_addShoppingListName">Добавить</string>
+    <string name="editShoppingListName_header_editShoppingListName">Редактировать</string>
+    <string name="editShoppingListName_label_name">Название</string>
+
+    <string name="editTaxRate_action_cancelSavingTaxRate">Отмена</string>
+    <string name="editTaxRate_action_saveTaxRate">Сохранить</string>
+    <string name="editTaxRate_header">Налоговая ставка</string>
+    <string name="editTaxRate_label_taxRate">Размер в процентах</string>
+    <string name="editTaxRate_message_taxRateError">Добавьте налоговую ставку</string>
+
+    <string name="moveProduct_contentDescription_navigationIcon">Отмена</string>
+    <string name="moveProduct_header">Выберите список</string>
+    <string name="moveProduct_text_shoppingListsNotFound">У вас нет покупок</string>
+
+    <string name="notificationChannel_description_purchases">Уведомления для списков покупок</string>
+    <string name="notificationChannel_name_purchases">Покупки</string>
+
+    <string name="products_action_calculateChange">Посчитать сдачу</string>
+    <string name="products_action_copyProductToShoppingList">Копировать в…</string>
+    <string name="products_action_deleteProduct">Удалить</string>
+    <string name="products_action_deleteProducts">Очистить</string>
+    <string name="products_action_displayActiveTotal">Не купленные товары</string>
+    <string name="products_action_displayAllTotal">Все товары</string>
+    <string name="products_action_displayCompletedTotal">Купленные товары</string>
+    <string name="products_action_editProduct">Редактировать</string>
+    <string name="products_action_editShoppingListName">Название</string>
+    <string name="products_action_editShoppingListReminder">Напоминание</string>
+    <string name="products_action_moveProductDown">Переместить вниз</string>
+    <string name="products_action_moveProductToShoppingList">Переместить в…</string>
+    <string name="products_action_moveProductUp">Переместить вверх</string>
+    <string name="products_action_shareProducts">Поделиться</string>
+    <string name="products_action_sort">Сортировать</string>
+    <string name="products_action_sortByCreated">По созданию</string>
+    <string name="products_action_sortByLastModified">По редактированию</string>
+    <string name="products_action_sortByName">По названию</string>
+    <string name="products_action_sortByTotal">По стоимости</string>
+    <string name="products_contentDescription_addProductIcon">Добавить товар</string>
+    <string name="products_contentDescription_navigationIcon">Назад</string>
+    <string name="products_contentDescription_productsMenuIcon">Открыть меню товаров</string>
+    <string name="products_header_displayTotal">Итого</string>
+    <string name="products_text_activeTotal">Не куплено: %s</string>
+    <string name="products_text_allTotal">Итого: %s</string>
+    <string name="products_text_completedTotal">Куплено: %s</string>
+    <string name="products_text_hiddenProducts">У вас есть скрытые товары</string>
+    <string name="products_text_productsNotFound">Нажмите на \"+\", чтобы добавить товар</string>
+
+    <string name="purchases_action_moveShoppingListDown">Переместить вниз</string>
+    <string name="purchases_action_moveShoppingListToArchive">Архивировать</string>
+    <string name="purchases_action_moveShoppingListToTrash">Удалить</string>
+    <string name="purchases_action_moveShoppingListUp">Переместить вверх</string>
+    <string name="purchases_contentDescription_addShoppingListIcon">Добавить список покупок</string>
+    <string name="purchases_contentDescription_navigationIcon">Открыть навигацию</string>
+    <string name="purchases_header">Покупки</string>
+    <string name="purchases_text_moreProducts">…</string>
+    <string name="purchases_text_productsNotFound">Список покупок пуст</string>
+    <string name="purchases_text_shoppingListsNotFound">У вас нет покупок</string>
+
+    <string name="settings_action_displayAllAutocomplete">Все подсказки</string>
+    <string name="settings_action_displayCompletedFirst">В начале</string>
+    <string name="settings_action_displayCompletedLast">В конце</string>
+    <string name="settings_action_displayNameAutocomplete">Только названия</string>
+    <string name="settings_action_selectHideAutocomplete">Скрывать</string>
+    <string name="settings_action_selectHideCompleted">Скрывать</string>
+    <string name="settings_action_selectHugeFontSize">Огромный</string>
+    <string name="settings_action_selectLargeFontSize">Большой</string>
+    <string name="settings_action_selectMediumFontSize">Средний</string>
+    <string name="settings_action_selectSmallFontSize">Маленький</string>
+    <string name="settings_action_selectTinyFontSize">Очень маленький</string>
+    <string name="settings_body_addLastProduct">Любые названия товаров будут сохраняться</string>
+    <string name="settings_body_currencySymbol">Символ: %s</string>
+    <string name="settings_body_editCompletedProduct">Откроется экран для редактирования</string>
+    <string name="settings_body_email">Нажмите, чтобы написать</string>
+    <string name="settings_body_firstLetterUppercase">В названиях списков, товаров и подсказок</string>
+    <string name="settings_body_github">Нажмите, чтобы открыть</string>
+    <string name="settings_body_productsMultiColumns">Количество рассчитывается автоматически</string>
+    <string name="settings_body_shoppingsMultiColumns">Количество рассчитывается автоматически</string>
+    <string name="settings_contentDescription_navigationIcon">Открыть навигацию</string>
+    <string name="settings_header_aboutApp">О приложении</string>
+    <string name="settings_header_generalSettings">Общие</string>
+    <string name="settings_header_money">Деньги</string>
+    <string name="settings_header_purchases">Покупки</string>
+    <string name="settings_header_settings">Настройки</string>
+    <string name="settings_title_addLastProduct">Сохранять неизвестные товары</string>
+    <string name="settings_title_appVersion">Версия приложения</string>
+    <string name="settings_title_currencySymbol">Валюта</string>
+    <string name="settings_title_developer">Разработчик</string>
+    <string name="settings_title_displayAutocomplete">Показывать подсказки</string>
+    <string name="settings_title_displayCompleted">Показывать купленные товары</string>
+    <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
+    <string name="settings_title_displayDefaultAutocomplete">Показывать подсказки по-умолчанию</string>
+    <string name="settings_title_displayMoney">Показывать деньги</string>
+    <string name="settings_title_editCompletedProduct">Редактировать товар после покупки</string>
+    <string name="settings_title_email">Email</string>
+    <string name="settings_title_firstLetterUppercase">Первая буква всегда заглавная</string>
+    <string name="settings_title_fontSize">Размер текста</string>
+    <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_nightTheme">Ночная тема</string>
+    <string name="settings_title_productsMultiColumns">Несколько столбцов в товарах</string>
+    <string name="settings_title_shoppingsMultiColumns">Несколько столбцов в списках</string>
+    <string name="settings_title_taxRate">Налоговая ставка</string>
+
+    <string name="shoppingLists_action_displayActiveTotal">Не купленные товары</string>
+    <string name="shoppingLists_action_displayAllTotal">Все товары</string>
+    <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
+    <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
+    <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
+    <string name="shoppingLists_action_selectTrashLocation">Корзина</string>
+    <string name="shoppingLists_header_displayTotal">Итого</string>
+    <string name="shoppingLists_header_location">Показать</string>
+    <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>
+    <string name="shoppingLists_text_allTotal">Итого: %s</string>
+    <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
+    <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
+
+    <string name="trash_action_deleteShoppingList">Удалить</string>
+    <string name="trash_action_deleteShoppingLists">Очистить</string>
+    <string name="trash_action_moveShoppingListToArchive">Архивировать</string>
+    <string name="trash_action_moveShoppingListToPurchases">Восстановить</string>
+    <string name="trash_contentDescription_navigationIcon">Открыть навигацию</string>
+    <string name="trash_header">Корзина</string>
+    <string name="trash_text_productsNotFound">Список покупок пуст</string>
+    <string name="trash_text_shoppingListsNotFound">Корзина пуста</string>
+</resources>
