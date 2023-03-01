@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -140,7 +141,8 @@ fun TrashScreen(
             AppNotFoundContent {
                 Text(
                     text = stringResource(R.string.trash_text_shoppingListsNotFound),
-                    fontSize = screenData.fontSize.toItemTitle().sp
+                    fontSize = screenData.fontSize.toItemTitle().sp,
+                    textAlign = TextAlign.Center
                 )
             }
         }

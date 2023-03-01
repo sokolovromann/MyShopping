@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -206,7 +207,8 @@ fun ProductsScreen(
             AppNotFoundContent {
                 Text(
                     text = stringResource(R.string.products_text_productsNotFound),
-                    fontSize = screenData.fontSize.toItemTitle().sp
+                    fontSize = screenData.fontSize.toItemTitle().sp,
+                    textAlign = TextAlign.Center
                 )
             }
         },
