@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -54,7 +55,7 @@ fun AppDrawerContent(
                     selected = selected == UiRoute.Purchases
                 )
             },
-            title = { Text(text = stringResource(R.string.drawer_action_openPurchases)) },
+            title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openPurchases)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.Purchases)
         )
 
@@ -66,7 +67,7 @@ fun AppDrawerContent(
                     selected = selected == UiRoute.Archive
                 )
             },
-            title = { Text(text = stringResource(R.string.drawer_action_openArchive)) },
+            title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openArchive)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.Archive)
         )
 
@@ -78,7 +79,7 @@ fun AppDrawerContent(
                     selected = selected == UiRoute.Trash
                 )
             },
-            title = { Text(text = stringResource(R.string.drawer_action_openTrash)) },
+            title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openTrash)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.Trash)
         )
 
@@ -90,7 +91,7 @@ fun AppDrawerContent(
                     selected = selected == UiRoute.Autocompletes
                 )
             },
-            title = { Text(text = stringResource(R.string.drawer_action_openAutocompletes)) },
+            title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openAutocompletes)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.Autocompletes)
         )
 
@@ -102,7 +103,7 @@ fun AppDrawerContent(
                     selected = selected == UiRoute.Settings
                 )
             },
-            title = { Text(text = stringResource(R.string.drawer_action_openSettings)) },
+            title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openSettings)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.Settings)
         )
     }
@@ -118,6 +119,15 @@ private fun appDrawerContentBackgroundColor(selected: Boolean): Color {
     } else {
         appDrawerContentBackgroundColor()
     }
+}
+
+@Composable
+private fun AppDrawerItemTitle(text: String) {
+    Text(
+        text = text,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
+    )
 }
 
 private val AppDrawerContentHeaderHeight = 56.dp
