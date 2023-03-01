@@ -24,7 +24,7 @@ data class ShoppingList(
         var active = 0f
 
         products.forEach { product ->
-            val totalValue = product.total.value
+            val totalValue = product.formatTotal().valueToString().toFloat()
 
             all += totalValue
             if (product.completed) {
