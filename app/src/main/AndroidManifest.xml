@@ -14,12 +14,11 @@
         android:label="@string/all_header_appName"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyShopping"
+        android:theme="@style/Theme.MyShopping.Splash"
         tools:targetApi="33">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MyShopping"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
