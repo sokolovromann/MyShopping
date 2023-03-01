@@ -149,20 +149,34 @@ class LocalDataStore @Inject constructor(
         }
     }
 
-    suspend fun saveAppOpenedAction(appOpenedAction: String) = withContext(dispatchers.io) {
-        dataStore.edit { it[appOpenedActionKey] = appOpenedAction }
-    }
-
-    suspend fun saveNightTheme(nightTheme: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[nightThemeKey] = nightTheme }
+    suspend fun addMainPreferences(entity: MainPreferencesEntity) = withContext(dispatchers.io) {
+        dataStore.edit {
+            it[appOpenedActionKey] = entity.appOpenedAction
+            it[nightThemeKey] = entity.nightTheme
+            it[currencyKey] = entity.currency
+            it[currencyDisplayToLeftKey] = entity.currencyDisplayToLeft
+            it[taxRateKey] = entity.taxRate
+            it[taxRateAsPercentKey] = entity.taxRateAsPercent
+            it[fontSizeKey] = entity.fontSize
+            it[firstLetterUppercaseKey] = entity.firstLetterUppercase
+            it[shoppingsMultiColumnsKey] = entity.shoppingsMultiColumns
+            it[shoppingsDisplayTotalKey] = entity.shoppingsDisplayTotal
+            it[shoppingsMaxProductsKey] = entity.shoppingsMaxProducts
+            it[productsMultiColumnsKey] = entity.productsMultiColumns
+            it[productsDisplayTotalKey] = entity.productsDisplayTotal
+            it[productsDisplayAutocompleteKey] = entity.productsDisplayAutocomplete
+            it[productsProductLockKey] = entity.productsProductLock
+            it[productsEditCompletedKey] = entity.productsEditCompleted
+            it[productsAddLastProductKey] = entity.productsAddLastProduct
+            it[productsDisplayDefaultAutocompleteKey] = entity.productsDisplayDefaultAutocomplete
+            it[displayMoneyKey] = entity.displayMoney
+            it[displayCompletedKey] = entity.displayCompleted
+            it[screenSizeKey] = entity.screenSize
+        }
     }
 
     suspend fun saveCurrency(currency: String) = withContext(dispatchers.io) {
         dataStore.edit { it[currencyKey] = currency }
-    }
-
-    suspend fun saveCurrencyDisplayToLeft(displayToLeft: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[currencyDisplayToLeftKey] = displayToLeft }
     }
 
     suspend fun saveTaxRate(taxRate: Float) = withContext(dispatchers.io) {
@@ -177,24 +191,8 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[fontSizeKey] = fontSize }
     }
 
-    suspend fun saveFirstLetterUppercase(firstLetterUppercase: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[firstLetterUppercaseKey] = firstLetterUppercase }
-    }
-
-    suspend fun saveShoppingsMultiColumns(multiColumns: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[shoppingsMultiColumnsKey] = multiColumns }
-    }
-
     suspend fun saveShoppingsDisplayTotal(displayTotal: String) = withContext(dispatchers.io) {
         dataStore.edit { it[shoppingsDisplayTotalKey] = displayTotal }
-    }
-
-    suspend fun saveShoppingsMaxProducts(maxProducts: Int) = withContext(dispatchers.io) {
-        dataStore.edit { it[shoppingsMaxProductsKey] = maxProducts }
-    }
-
-    suspend fun saveProductsMultiColumns(multiColumns: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsMultiColumnsKey] = multiColumns }
     }
 
     suspend fun saveProductsDisplayTotal(displayTotal: String) = withContext(dispatchers.io) {
@@ -209,28 +207,8 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[productsProductLockKey] = productLock }
     }
 
-    suspend fun saveProductsEditCompleted(editCompleted: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsEditCompletedKey] = editCompleted }
-    }
-
-    suspend fun saveProductsAddLastProduct(addLastProduct: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsAddLastProductKey] = addLastProduct }
-    }
-
-    suspend fun saveProductsDisplayDefaultAutocomplete(displayAutocomplete: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[productsDisplayDefaultAutocompleteKey] = displayAutocomplete }
-    }
-
-    suspend fun saveDisplayMoney(displayMoney: Boolean) = withContext(dispatchers.io) {
-        dataStore.edit { it[displayMoneyKey] = displayMoney }
-    }
-
     suspend fun saveDisplayCompleted(displayCompleted: String) = withContext(dispatchers.io) {
         dataStore.edit { it[displayCompletedKey] = displayCompleted }
-    }
-
-    suspend fun saveScreenSize(screenSize: String) = withContext(dispatchers.io) {
-        dataStore.edit { it[screenSizeKey] = screenSize }
     }
 
     suspend fun invertNightTheme() = withContext(dispatchers.io) {
@@ -244,13 +222,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val displayToLeft = it[currencyDisplayToLeftKey] ?: false
             it[currencyDisplayToLeftKey] = !displayToLeft
-        }
-    }
-
-    suspend fun invertTaxRateAsPercent() = withContext(dispatchers.io) {
-        dataStore.edit {
-            val asPercent = it[taxRateAsPercentKey] ?: false
-            it[taxRateAsPercentKey] = !asPercent
         }
     }
 

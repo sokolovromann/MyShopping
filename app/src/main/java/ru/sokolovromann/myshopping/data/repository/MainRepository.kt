@@ -17,31 +17,5 @@ interface MainRepository {
 
     suspend fun addAutocomplete(autocomplete: Autocomplete)
 
-    suspend fun addAppOpenedAction(appOpenedAction: AppOpenedAction)
-
-    suspend fun addCurrency(currency: Currency)
-
-    suspend fun addTaxRate(taxRate: TaxRate)
-
-    suspend fun addFontSize(fontSize: FontSize)
-
-    suspend fun addFirstLetterUppercase(firstLetterUppercase: Boolean)
-
-    suspend fun addShoppingListsMultiColumns(multiColumns: Boolean)
-
-    suspend fun addDisplayCompleted(displayCompleted: DisplayCompleted)
-
-    suspend fun addShoppingListsDisplayTotal(displayTotal: DisplayTotal)
-
-    suspend fun addProductsMultiColumns(multiColumns: Boolean)
-
-    suspend fun addProductsDisplayTotal(displayTotal: DisplayTotal)
-
-    suspend fun addProductsEditCompleted(editCompleted: Boolean)
-
-    suspend fun addProductsAddLastProduct(addLastProduct: Boolean)
-
-    suspend fun addDisplayMoney(displayMoney: Boolean)
-
-    suspend fun addScreenSize(screenSize: ScreenSize)
+    suspend fun addPreferences(mainPreferences: MainPreferences)
 }

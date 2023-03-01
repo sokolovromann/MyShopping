@@ -116,35 +116,36 @@ class MainViewModel @Inject constructor(
         preferences: AppVersion14Preferences,
         screenSize: ScreenSize
     ) {
-        repository.addAppOpenedAction(AppOpenedAction.NOTHING)
-        repository.addCurrency(preferences.currency)
-        repository.addTaxRate(preferences.taxRate)
-        repository.addFontSize(preferences.fontSize)
-        repository.addFirstLetterUppercase(preferences.firstLetterUppercase)
-        repository.addShoppingListsMultiColumns(preferences.multiColumns)
-        repository.addProductsMultiColumns(preferences.multiColumns)
-        repository.addShoppingListsDisplayTotal(preferences.displayTotal)
-        repository.addProductsDisplayTotal(preferences.displayTotal)
-        repository.addProductsEditCompleted(preferences.editCompleted)
-        repository.addProductsAddLastProduct(preferences.addLastProduct)
-        repository.addDisplayMoney(preferences.displayMoney)
-        repository.addScreenSize(screenSize)
+        val mainPreferences = MainPreferences(
+            appOpenedAction = AppOpenedAction.NOTHING,
+            currency = preferences.currency,
+            taxRate = preferences.taxRate,
+            fontSize = preferences.fontSize,
+            firstLetterUppercase = preferences.firstLetterUppercase,
+            shoppingsMultiColumns = preferences.multiColumns,
+            shoppingsDisplayTotal = preferences.displayTotal,
+            productsMultiColumns = preferences.multiColumns,
+            productsDisplayTotal = preferences.displayTotal,
+            productsEditCompleted = preferences.editCompleted,
+            productsAddLastProduct = preferences.addLastProduct,
+            productsDisplayDefaultAutocomplete = false,
+            displayMoney = preferences.displayMoney,
+            screenSize = screenSize
+        )
+        repository.addPreferences(mainPreferences)
     }
 
     private fun addDefaultPreferences(
         event: MainEvent.AddDefaultPreferences
     ) = viewModelScope.launch(dispatchers.io) {
-        val defaultCurrency = repository.getDefaultCurrency().firstOrNull() ?: Currency()
-        repository.addCurrency(defaultCurrency)
-
-        val shoppingsMultiColumns = event.screenWidth >= 600
-        repository.addShoppingListsMultiColumns(shoppingsMultiColumns)
-
-        val productsMultiColumns = event.screenWidth >= 720
-        repository.addProductsMultiColumns(productsMultiColumns)
-
-        repository.addScreenSize(toScreenSize(event.screenWidth))
-        repository.addAppOpenedAction(AppOpenedAction.NOTHING)
+        val mainPreferences = MainPreferences(
+            appOpenedAction = AppOpenedAction.NOTHING,
+            currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
+            shoppingsMultiColumns = event.screenWidth >= 600,
+            productsMultiColumns = event.screenWidth >= 720,
+            screenSize = toScreenSize(event.screenWidth)
+        )
+        repository.addPreferences(mainPreferences)
 
         notificationManager.createNotificationChannel()
     }

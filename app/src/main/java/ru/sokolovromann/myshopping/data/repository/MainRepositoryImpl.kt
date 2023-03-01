@@ -69,91 +69,10 @@ class MainRepositoryImpl @Inject constructor(
         mainDao.insertAutocomplete(entity)
     }
 
-    override suspend fun addAppOpenedAction(
-        appOpenedAction: AppOpenedAction
+    override suspend fun addPreferences(
+        mainPreferences: MainPreferences
     ): Unit = withContext(dispatchers.io) {
-        val name = mapping.toAppOpenedActionName(appOpenedAction)
-        preferencesDao.addAppOpenedAction(name)
-    }
-
-    override suspend fun addCurrency(currency: Currency): Unit = withContext(dispatchers.io) {
-        val symbol = mapping.toCurrencySymbol(currency)
-        preferencesDao.addCurrency(symbol)
-
-        val displayToLeft = mapping.toCurrencyDisplayToLeft(currency)
-        preferencesDao.addCurrencyDisplayToLeft(displayToLeft)
-    }
-
-    override suspend fun addTaxRate(taxRate: TaxRate): Unit = withContext(dispatchers.io) {
-        val value = mapping.toTaxRateValue(taxRate)
-        preferencesDao.addTaxRate(value)
-
-        val asPercent = mapping.toTaxRateAsPercent(taxRate)
-        preferencesDao.addTaxRateAsPercent(asPercent)
-    }
-
-    override suspend fun addFontSize(fontSize: FontSize): Unit = withContext(dispatchers.io) {
-        val name = mapping.toFontSizeName(fontSize)
-        preferencesDao.addFontSize(name)
-    }
-
-    override suspend fun addFirstLetterUppercase(
-        firstLetterUppercase: Boolean
-    ): Unit = withContext(dispatchers.io) {
-        preferencesDao.addFirstLetterUppercase(firstLetterUppercase)
-    }
-
-    override suspend fun addShoppingListsMultiColumns(
-        multiColumns: Boolean
-    ): Unit = withContext(dispatchers.io) {
-        preferencesDao.addShoppingsMultiColumns(multiColumns)
-    }
-
-    override suspend fun addDisplayCompleted(
-        displayCompleted: DisplayCompleted
-    ): Unit = withContext(dispatchers.io) {
-        val name = mapping.toDisplayCompletedName(displayCompleted)
-        preferencesDao.addDisplayCompleted(name)
-    }
-
-    override suspend fun addShoppingListsDisplayTotal(
-        displayTotal: DisplayTotal
-    ): Unit = withContext(dispatchers.io) {
-        val name = mapping.toDisplayTotalName(displayTotal)
-        preferencesDao.addShoppingsDisplayTotal(name)
-    }
-
-    override suspend fun addProductsMultiColumns(
-        multiColumns: Boolean
-    ): Unit = withContext(dispatchers.io) {
-        preferencesDao.addProductsMultiColumns(multiColumns)
-    }
-
-    override suspend fun addProductsDisplayTotal(
-        displayTotal: DisplayTotal
-    ): Unit = withContext(dispatchers.io) {
-        val name = mapping.toDisplayTotalName(displayTotal)
-        preferencesDao.addProductsDisplayTotal(name)
-    }
-
-    override suspend fun addProductsEditCompleted(
-        editCompleted: Boolean
-    ): Unit = withContext(dispatchers.io) {
-        preferencesDao.addProductsEditCompleted(editCompleted)
-    }
-
-    override suspend fun addProductsAddLastProduct(
-        addLastProduct: Boolean
-    ): Unit = withContext(dispatchers.io) {
-        preferencesDao.addProductsAddLastProducts(addLastProduct)
-    }
-
-    override suspend fun addDisplayMoney(displayMoney: Boolean): Unit = withContext(dispatchers.io) {
-        preferencesDao.addDisplayMoney(displayMoney)
-    }
-
-    override suspend fun addScreenSize(screenSize: ScreenSize): Unit = withContext(dispatchers.io) {
-        val name = mapping.toScreenSizeName(screenSize)
-        preferencesDao.addScreenSize(name)
+        val entity = mapping.toMainPreferencesEntity(mainPreferences)
+        preferencesDao.addMainPreferences(entity)
     }
 }

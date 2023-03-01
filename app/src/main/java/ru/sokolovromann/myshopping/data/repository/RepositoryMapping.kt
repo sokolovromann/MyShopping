@@ -200,6 +200,32 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toMainPreferencesEntity(mainPreferences: MainPreferences): MainPreferencesEntity {
+        return MainPreferencesEntity(
+            appOpenedAction = toAppOpenedActionName(mainPreferences.appOpenedAction),
+            nightTheme = mainPreferences.nightTheme,
+            currency = toCurrencySymbol(mainPreferences.currency),
+            currencyDisplayToLeft = toCurrencyDisplayToLeft(mainPreferences.currency),
+            taxRate = toTaxRateValue(mainPreferences.taxRate),
+            taxRateAsPercent = mainPreferences.taxRate.asPercent,
+            fontSize = toFontSizeName(mainPreferences.fontSize),
+            firstLetterUppercase = mainPreferences.firstLetterUppercase,
+            shoppingsMultiColumns = mainPreferences.shoppingsMultiColumns,
+            shoppingsDisplayTotal = toDisplayTotalName(mainPreferences.shoppingsDisplayTotal),
+            shoppingsMaxProducts = mainPreferences.shoppingsMaxProducts,
+            productsMultiColumns = mainPreferences.productsMultiColumns,
+            productsDisplayTotal = toDisplayTotalName(mainPreferences.productsDisplayTotal),
+            productsDisplayAutocomplete = toDisplayAutocompleteName(mainPreferences.productsDisplayAutocomplete),
+            productsProductLock = toProductLockName(mainPreferences.productsProductLock),
+            productsEditCompleted = mainPreferences.productsEditCompleted,
+            productsAddLastProduct = mainPreferences.productsAddLastProduct,
+            productsDisplayDefaultAutocomplete = mainPreferences.productsDisplayDefaultAutocomplete,
+            displayMoney = mainPreferences.displayMoney,
+            displayCompleted = toDisplayCompletedName(mainPreferences.displayCompleted),
+            screenSize = toScreenSizeName(mainPreferences.screenSize)
+        )
+    }
+
     fun toMainPreferences(
         entity: MainPreferencesEntity,
         appVersion14FirstOpened: Boolean
@@ -297,20 +323,8 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toAppOpenedActionName(appOpenedAction: AppOpenedAction): String {
-        return appOpenedAction.name
-    }
-
     fun toCurrency(symbol: String, displayToLeft: Boolean): Currency {
         return Currency(symbol, displayToLeft)
-    }
-
-    fun toCurrencySymbol(currency: Currency): String {
-        return currency.symbol
-    }
-
-    fun toCurrencyDisplayToLeft(currency: Currency): Boolean {
-        return currency.displayToLeft
     }
 
     fun toTaxRateValue(taxRate: TaxRate): Float {
@@ -335,10 +349,6 @@ class RepositoryMapping @Inject constructor() {
 
     fun toDisplayAutocompleteName(displayAutocomplete: DisplayAutocomplete): String {
         return displayAutocomplete.name
-    }
-
-    fun toScreenSizeName(screenSize: ScreenSize): String {
-        return screenSize.name
     }
 
     fun toProductLockName(productLock: ProductLock): String {
@@ -562,6 +572,22 @@ class RepositoryMapping @Inject constructor() {
             editCompleted = entity.editCompleted,
             addLastProduct = entity.addLastProduct
         )
+    }
+
+    private fun toAppOpenedActionName(appOpenedAction: AppOpenedAction): String {
+        return appOpenedAction.name
+    }
+
+    private fun toCurrencySymbol(currency: Currency): String {
+        return currency.symbol
+    }
+
+    private fun toCurrencyDisplayToLeft(currency: Currency): Boolean {
+        return currency.displayToLeft
+    }
+
+    private fun toScreenSizeName(screenSize: ScreenSize): String {
+        return screenSize.name
     }
 
     private fun toDeveloperName(entity: SettingsResourcesEntity): String {

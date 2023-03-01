@@ -208,7 +208,7 @@
         <item>Яблоки</item>
         <item>Яйца</item>
     </string-array>
-    <string name="data_text_defaultCurrency"> ₽</string>
+    <string name="data_text_defaultCurrency">\ ₽</string>
     <string name="data_text_developerName">Роман Соколов</string>
     <bool name="data_value_defaultCurrencyDisplayToLeft">false</bool>
 
