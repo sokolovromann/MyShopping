@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/white" />
 
-    <item android:gravity="center" android:width="288dp" android:height="288dp">
+    <item android:gravity="center" android:width="160dp" android:height="160dp">
         <shape android:shape="oval" >
             <solid android:color="@color/green_900" />
         </shape>
