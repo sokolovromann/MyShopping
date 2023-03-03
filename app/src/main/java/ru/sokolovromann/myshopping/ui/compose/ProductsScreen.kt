@@ -434,7 +434,7 @@ private fun getProductItemBodyOrNull(
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
     Text(
         text = text.asCompose(),
-        fontSize = fontSize.toItemTitle().sp
+        fontSize = fontSize.toItemBody().sp
     )
 }
 
