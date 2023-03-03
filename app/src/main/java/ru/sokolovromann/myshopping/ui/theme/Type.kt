@@ -26,7 +26,7 @@ sealed class AppTypography(val textStyle: TextStyle) {
     object Subtitle1 : AppTypography(
         TextStyle(
             fontWeight = FontWeight.Normal,
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             letterSpacing = 0.15.sp
         )
     )
@@ -34,7 +34,7 @@ sealed class AppTypography(val textStyle: TextStyle) {
     object Subtitle2 : AppTypography(
         TextStyle(
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             letterSpacing = 0.1.sp
         )
     )
