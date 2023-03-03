@@ -498,6 +498,7 @@ class RepositoryMapping @Inject constructor() {
             displayAutocomplete = toDisplayAutocomplete(entity.displayAutocomplete),
             displayDefaultAutocomplete = entity.displayDefaultAutocomplete,
             productLock = toProductLock(entity.productLock),
+            editCompleted = entity.editCompleted,
             addLastProduct = entity.addLastProduct,
             screenSize = toScreenSize(entity.screenSize)
         )
