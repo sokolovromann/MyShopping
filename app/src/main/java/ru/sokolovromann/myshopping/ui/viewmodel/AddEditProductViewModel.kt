@@ -127,7 +127,7 @@ class AddEditProductViewModel @Inject constructor(
         }
 
         val currentName = addEditProductState.screenData.nameValue.text
-        val containsAutocomplete = autocompletes.find { it.name == currentName }
+        val containsAutocomplete = autocompletes.find { it.name.lowercase() == currentName.lowercase() }
 
         if (containsAutocomplete == null) {
             addEditProductState.showAutocompleteNames(autocompletes)
