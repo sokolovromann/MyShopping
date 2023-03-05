@@ -19,8 +19,9 @@ class EditTaxRateState {
         private set
 
     fun populate(editTaxRate: EditTaxRate) {
-        taxRate = editTaxRate.taxRate
+        val preferences = editTaxRate.preferences
 
+        taxRate = preferences.taxRate
         val taxRateText = taxRate.valueToString()
 
         screenData = EditTaxRateScreenData(
@@ -31,7 +32,7 @@ class EditTaxRateState {
                 composition = TextRange(taxRateText.length)
             ),
             showTaxRateError = false,
-            fontSize = editTaxRate.preferences.fontSize
+            fontSize = preferences.fontSize
         )
     }
 

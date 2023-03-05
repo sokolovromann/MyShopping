@@ -2,31 +2,22 @@ package ru.sokolovromann.myshopping.data.local.dao
 
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
-import ru.sokolovromann.myshopping.data.local.entity.SettingsEntity
-import ru.sokolovromann.myshopping.data.local.entity.SettingsPreferencesEntity
+import ru.sokolovromann.myshopping.data.local.entity.AppPreferencesEntity
 import javax.inject.Inject
 
 class SettingsDao @Inject constructor(
     private val localDataStore: LocalDataStore
 ) {
 
-    suspend fun getSettings(): Flow<SettingsEntity> {
-        return localDataStore.getSettings()
+    suspend fun getAppPreferences(): Flow<AppPreferencesEntity> {
+        return localDataStore.getAppPreferences()
     }
 
-    suspend fun getSettingsPreferences(): Flow<SettingsPreferencesEntity> {
-        return localDataStore.getSettingsPreferences()
+    suspend fun displayCompletedPurchases(displayCompleted: String) {
+        localDataStore.displayCompletedPurchases(displayCompleted)
     }
 
-    suspend fun displayProductAutocomplete(displayAutocomplete: String) {
-        localDataStore.saveProductsDisplayAutocomplete(displayAutocomplete)
-    }
-
-    suspend fun displayCompleted(displayCompleted: String) {
-        localDataStore.saveDisplayCompleted(displayCompleted)
-    }
-
-    suspend fun fontSizeSelected(fontSize: String) {
+    suspend fun saveFontSize(fontSize: String) {
         localDataStore.saveFontSize(fontSize)
     }
 
@@ -34,16 +25,12 @@ class SettingsDao @Inject constructor(
         localDataStore.invertNightTheme()
     }
 
-    suspend fun invertCurrencyDisplayToLeft() {
-        localDataStore.invertCurrencyDisplayToLeft()
+    suspend fun invertDisplayCurrencyToLeft() {
+        localDataStore.invertDisplayCurrencyToLeft()
     }
 
     suspend fun invertDisplayMoney() {
         localDataStore.invertDisplayMoney()
-    }
-
-    suspend fun invertFirstLetterUppercase() {
-        localDataStore.invertFirstLetterUppercase()
     }
 
     suspend fun invertShoppingsMultiColumns() {
@@ -54,15 +41,15 @@ class SettingsDao @Inject constructor(
         localDataStore.invertProductsMultiColumns()
     }
 
-    suspend fun invertProductsEditCompleted() {
-        localDataStore.invertProductsEditCompleted()
+    suspend fun invertEditProductAfterCompleted() {
+        localDataStore.invertEditProductAfterCompleted()
     }
 
-    suspend fun invertProductsAddLastProduct() {
-        localDataStore.invertProductsAddLastProduct()
+    suspend fun invertSaveProductToAutocompletes() {
+        localDataStore.invertSaveProductToAutocompletes()
     }
 
-    suspend fun invertProductsDisplayDefaultAutocomplete() {
-        localDataStore.invertProductsDisplayDefaultAutocomplete()
+    suspend fun invertDisplayDefaultAutocompletes() {
+        localDataStore.invertDisplayDefaultAutocompletes()
     }
 }

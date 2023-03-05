@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.EditTaxRateDao
@@ -16,17 +16,15 @@ class EditTaxRateRepositoryImpl @Inject constructor(
 ) : EditTaxRateRepository {
 
     override suspend fun getEditTaxRate(): Flow<EditTaxRate> = withContext(dispatchers.io) {
-        return@withContext taxRateDao.getEditTaxRate().combine(
-            flow = taxRateDao.getSettingsPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toEditTaxRate(entity, preferencesEntity)
-            }
-        )
+        return@withContext taxRateDao.getAppPreferences().transform {
+            val value = mapping.toEditTaxRate(it)
+            emit(value)
+        }
     }
 
     override suspend fun editTaxRate(taxRate: TaxRate): Unit = withContext(dispatchers.io) {
         val value = mapping.toTaxRateValue(taxRate)
         val asPercent = mapping.toTaxRateAsPercent(taxRate)
-        taxRateDao.editTaxRate(value, asPercent)
+        taxRateDao.saveTaxRate(value, asPercent)
     }
 }

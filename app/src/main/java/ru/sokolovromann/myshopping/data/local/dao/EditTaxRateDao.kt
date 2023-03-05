@@ -2,24 +2,19 @@ package ru.sokolovromann.myshopping.data.local.dao
 
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
-import ru.sokolovromann.myshopping.data.local.entity.EditTaxRateEntity
-import ru.sokolovromann.myshopping.data.local.entity.SettingsPreferencesEntity
+import ru.sokolovromann.myshopping.data.local.entity.AppPreferencesEntity
 import javax.inject.Inject
 
 class EditTaxRateDao @Inject constructor(
     private val localDataStore: LocalDataStore
 ) {
 
-    suspend fun getEditTaxRate(): Flow<EditTaxRateEntity> {
-        return localDataStore.getEditTaxRate()
+    suspend fun getAppPreferences(): Flow<AppPreferencesEntity> {
+        return localDataStore.getAppPreferences()
     }
 
-    suspend fun getSettingsPreferences(): Flow<SettingsPreferencesEntity> {
-        return localDataStore.getSettingsPreferences()
-    }
-
-    suspend fun editTaxRate(taxRate: Float, asPercent: Boolean) {
+    suspend fun saveTaxRate(taxRate: Float, asPercent: Boolean) {
         localDataStore.saveTaxRate(taxRate)
-        localDataStore.saveTaxRateAsTaxRate(asPercent)
+        localDataStore.saveTaxRateAsPercent(asPercent)
     }
 }

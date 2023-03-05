@@ -16,7 +16,7 @@ class AddEditProductState {
 
     private var productsLastPosition: Int? by mutableStateOf(null)
 
-    private var preferences by mutableStateOf(ProductPreferences())
+    private var preferences by mutableStateOf(AppPreferences())
 
     private var selectedAutocomplete: Autocomplete? by mutableStateOf(null)
 
@@ -56,7 +56,7 @@ class AddEditProductState {
                 selection = TextRange(quantity.length),
                 composition = TextRange(quantity.length)
             ),
-            productLock = preferences.productLock,
+            lockProductElement = preferences.lockProductElement,
             quantitySymbolValue = TextFieldValue(
                 text = quantitySymbol,
                 selection = TextRange(quantitySymbol.length),
@@ -91,7 +91,8 @@ class AddEditProductState {
             autocompletePrices = listOf(),
             autocompleteDiscounts = listOf(),
             autocompleteTotals = listOf(),
-            fontSize = preferences.fontSize
+            fontSize = preferences.fontSize,
+            displayMoney = preferences.displayMoney
         )
 
         selectedAutocomplete = null
@@ -112,9 +113,9 @@ class AddEditProductState {
 
         screenData = screenData.copy(quantityValue = quantityValue)
 
-        when (screenData.productLock) {
-            ProductLock.PRICE -> setProductPriceLock()
-            ProductLock.TOTAL -> setProductTotalLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.PRICE -> setProductPriceLock()
+            LockProductElement.TOTAL -> setProductTotalLock()
             else -> {}
         }
     }
@@ -132,9 +133,9 @@ class AddEditProductState {
 
         screenData = screenData.copy(priceValue = priceValue)
 
-        when (screenData.productLock) {
-            ProductLock.QUANTITY -> setProductQuantityLock()
-            ProductLock.TOTAL -> setProductTotalLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.QUANTITY -> setProductQuantityLock()
+            LockProductElement.TOTAL -> setProductTotalLock()
             else -> {}
         }
     }
@@ -145,7 +146,7 @@ class AddEditProductState {
 
         screenData = screenData.copy(discountValue = discountValue)
 
-        if (screenData.productLock == ProductLock.TOTAL) {
+        if (screenData.lockProductElement == LockProductElement.TOTAL) {
             setProductTotalLock()
         }
     }
@@ -156,9 +157,9 @@ class AddEditProductState {
 
         screenData = screenData.copy(totalValue = totalValue)
 
-        when (screenData.productLock) {
-            ProductLock.QUANTITY -> setProductQuantityLock()
-            ProductLock.PRICE -> setProductPriceLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.QUANTITY -> setProductQuantityLock()
+            LockProductElement.PRICE -> setProductPriceLock()
             else -> {}
         }
     }
@@ -204,9 +205,9 @@ class AddEditProductState {
             autocompleteQuantitySymbols = listOf(),
         )
 
-        when (screenData.productLock) {
-            ProductLock.PRICE -> setProductPriceLock()
-            ProductLock.TOTAL -> setProductTotalLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.PRICE -> setProductPriceLock()
+            LockProductElement.TOTAL -> setProductTotalLock()
             else -> {}
         }
     }
@@ -239,9 +240,9 @@ class AddEditProductState {
             autocompletePrices = listOf()
         )
 
-        when (screenData.productLock) {
-            ProductLock.QUANTITY -> setProductQuantityLock()
-            ProductLock.TOTAL -> setProductTotalLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.QUANTITY -> setProductQuantityLock()
+            LockProductElement.TOTAL -> setProductTotalLock()
             else -> {}
         }
     }
@@ -266,7 +267,7 @@ class AddEditProductState {
             autocompleteDiscounts = listOf()
         )
 
-        if (screenData.productLock == ProductLock.TOTAL) {
+        if (screenData.lockProductElement == LockProductElement.TOTAL) {
             setProductTotalLock()
         }
     }
@@ -282,7 +283,7 @@ class AddEditProductState {
             showDiscountAsPercent = false
         )
 
-        if (screenData.productLock == ProductLock.TOTAL) {
+        if (screenData.lockProductElement == LockProductElement.TOTAL) {
             setProductTotalLock()
         }
     }
@@ -298,7 +299,7 @@ class AddEditProductState {
             showDiscountAsPercent = false
         )
 
-        if (screenData.productLock == ProductLock.TOTAL) {
+        if (screenData.lockProductElement == LockProductElement.TOTAL) {
             setProductTotalLock()
         }
     }
@@ -316,18 +317,18 @@ class AddEditProductState {
             autocompleteTotals = listOf()
         )
 
-        when (screenData.productLock) {
-            ProductLock.QUANTITY -> setProductQuantityLock()
-            ProductLock.PRICE -> setProductPriceLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.QUANTITY -> setProductQuantityLock()
+            LockProductElement.PRICE -> setProductPriceLock()
             else -> {}
         }
     }
 
-    fun selectProductLock(productLock: ProductLock) {
-        product = product.copy(totalFormatted = productLock != ProductLock.TOTAL)
+    fun lockProductElementSelected(lockProductElement: LockProductElement) {
+        product = product.copy(totalFormatted = lockProductElement != LockProductElement.TOTAL)
         screenData = screenData.copy(
-            productLock = productLock,
-            showProductLock = false
+            lockProductElement = lockProductElement,
+            showLockProductElement = false
         )
     }
 
@@ -344,9 +345,9 @@ class AddEditProductState {
 
         screenData = screenData.copy(quantityValue = quantityValue)
 
-        when (screenData.productLock) {
-            ProductLock.PRICE -> setProductPriceLock()
-            ProductLock.TOTAL -> setProductTotalLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.PRICE -> setProductPriceLock()
+            LockProductElement.TOTAL -> setProductTotalLock()
             else -> {}
         }
     }
@@ -364,15 +365,15 @@ class AddEditProductState {
 
         screenData = screenData.copy(quantityValue = quantityValue)
 
-        when (screenData.productLock) {
-            ProductLock.PRICE -> setProductPriceLock()
-            ProductLock.TOTAL -> setProductTotalLock()
+        when (screenData.lockProductElement) {
+            LockProductElement.PRICE -> setProductPriceLock()
+            LockProductElement.TOTAL -> setProductTotalLock()
             else -> {}
         }
     }
 
     fun showAutocompleteNames(autocompleteNames: List<Autocomplete>) {
-        val names = if (preferences.displayDefaultAutocomplete) {
+        val names = if (preferences.displayDefaultAutocompletes) {
             autocompleteNames
         } else {
             autocompleteNames.filter { !it.default }
@@ -400,8 +401,8 @@ class AddEditProductState {
         screenData = screenData.copy(showDiscountAsPercent = true)
     }
 
-    fun showProductLock() {
-        screenData = screenData.copy(showProductLock = true)
+    fun selectLockProductElement() {
+        screenData = screenData.copy(showLockProductElement = true)
     }
 
     fun hideAutocompleteNames(containsAutocomplete: Autocomplete) {
@@ -434,12 +435,8 @@ class AddEditProductState {
         screenData = screenData.copy(showDiscountAsPercent = false)
     }
 
-    fun hideProductLock() {
-        screenData = screenData.copy(showProductLock = false)
-    }
-
-    fun getDisplayAutocomplete(): DisplayAutocomplete {
-        return preferences.displayAutocomplete
+    fun hideLockProductElement() {
+        screenData = screenData.copy(showLockProductElement = false)
     }
 
     fun getProductResult(newProduct: Boolean): Result<Product> {
@@ -458,7 +455,7 @@ class AddEditProductState {
             }
             val success = product.copy(
                 position = position,
-                totalFormatted = screenData.productLock != ProductLock.TOTAL,
+                totalFormatted = screenData.lockProductElement != LockProductElement.TOTAL,
                 lastModified = System.currentTimeMillis()
             )
             Result.success(success)
@@ -466,7 +463,7 @@ class AddEditProductState {
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
-        return if (preferences.addLastProduct) {
+        return if (preferences.saveProductToAutocompletes) {
             if (selectedAutocomplete == null) {
                 val success = Autocomplete(name = screenData.nameValue.text.trim())
                 Result.success(success)
@@ -478,8 +475,8 @@ class AddEditProductState {
         }
     }
 
-    fun getProductLockResult(): Result<ProductLock> {
-        val success = screenData.productLock
+    fun getProductLockResult(): Result<LockProductElement> {
+        val success = screenData.lockProductElement
         return Result.success(success)
     }
 
@@ -567,8 +564,8 @@ data class AddEditProductScreenData(
     val discountAsPercentText: UiText = UiText.Nothing,
     val showDiscountAsPercent: Boolean = false,
     val totalValue: TextFieldValue = TextFieldValue(),
-    val productLock: ProductLock = ProductLock.DefaultValue,
-    val showProductLock: Boolean = false,
+    val lockProductElement: LockProductElement = LockProductElement.DefaultValue,
+    val showLockProductElement: Boolean = false,
     val noteValue: TextFieldValue = TextFieldValue(),
     val autocompleteNames: List<Autocomplete> = listOf(),
     val autocompleteQuantities: List<Quantity> = listOf(),
@@ -576,5 +573,6 @@ data class AddEditProductScreenData(
     val autocompletePrices: List<Money> = listOf(),
     val autocompleteDiscounts: List<Discount> = listOf(),
     val autocompleteTotals: List<Money> = listOf(),
-    val fontSize: FontSize = FontSize.MEDIUM
+    val fontSize: FontSize = FontSize.MEDIUM,
+    val displayMoney: Boolean = true
 )

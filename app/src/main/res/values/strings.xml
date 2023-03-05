@@ -225,7 +225,7 @@
     </string-array>
     <string name="data_text_defaultCurrency">$</string>
     <string name="data_text_developerName">Roman Sokolov</string>
-    <bool name="data_value_defaultCurrencyDisplayToLeft">true</bool>
+    <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
 
     <string name="drawer_action_openArchive">@string/archive_header</string>
     <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
@@ -306,47 +306,42 @@
     <string name="purchases_text_productsNotFound">Shopping list is empty</string>
     <string name="purchases_text_shoppingListsNotFound">You have no shopping lists</string>
 
-    <string name="settings_action_displayAllAutocomplete">Names, quantities and money</string>
-    <string name="settings_action_displayCompletedFirst">First</string>
-    <string name="settings_action_displayCompletedLast">Last</string>
-    <string name="settings_action_displayNameAutocomplete">Only names</string>
-    <string name="settings_action_selectHideAutocomplete">Hide</string>
-    <string name="settings_action_selectHideCompleted">Hide</string>
+    <string name="settings_action_displayCompletedPurchasesFirst">First</string>
+    <string name="settings_action_displayCompletedPurchasesLast">Last</string>
+    <string name="settings_action_hideCompletedPurchases">Hide</string>
     <string name="settings_action_selectHugeFontSize">Huge</string>
     <string name="settings_action_selectLargeFontSize">Large</string>
     <string name="settings_action_selectMediumFontSize">Medium</string>
     <string name="settings_action_selectSmallFontSize">Small</string>
     <string name="settings_action_selectTinyFontSize">Tiny</string>
-    <string name="settings_body_addLastProduct">Any product name will be save</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
-    <string name="settings_body_editCompletedProduct">Will be open screen to edit</string>
+    <string name="settings_body_editProductAfterCompleted">Will be open screen to edit</string>
     <string name="settings_body_email">Tap to write email</string>
-    <string name="settings_body_firstLetterUppercase">Names of lists, products and autocompletes</string>
     <string name="settings_body_github">Tap to open</string>
     <string name="settings_body_productsMultiColumns">Multiple cards in one row</string>
+    <string name="settings_body_saveProductToAutocompletes">Any product name will be save</string>
     <string name="settings_body_shoppingsMultiColumns">Multiple cards in one row</string>
     <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_header_aboutApp">About</string>
+    <string name="settings_header_autocompletes">Autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
     <string name="settings_header_money">Money</string>
     <string name="settings_header_purchases">Purchases</string>
     <string name="settings_header_settings">Settings</string>
-    <string name="settings_title_addLastProduct">Add unknown product</string>
     <string name="settings_title_appVersion">App version</string>
     <string name="settings_title_currencySymbol">Currency</string>
     <string name="settings_title_developer">Developer</string>
-    <string name="settings_title_displayAutocomplete">Display autocompletes</string>
-    <string name="settings_title_displayCompleted">Display completed</string>
+    <string name="settings_title_displayCompletedPurchases">Display completed</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
-    <string name="settings_title_displayDefaultAutocomplete">Display default autocompletes</string>
+    <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
     <string name="settings_title_displayMoney">Display money</string>
-    <string name="settings_title_editCompletedProduct">Edit product after completed</string>
+    <string name="settings_title_editProductAfterCompleted">Edit product after completed</string>
     <string name="settings_title_email">Email</string>
-    <string name="settings_title_firstLetterUppercase">First letter uppercase</string>
     <string name="settings_title_fontSize">Font size</string>
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_productsMultiColumns">Multi-column in products</string>
+    <string name="settings_title_saveProductToAutocompletes">Add unknown product</string>
     <string name="settings_title_shoppingsMultiColumns">Multi-column in shopping lists</string>
     <string name="settings_title_taxRate">Tax rate</string>
 

@@ -20,9 +20,9 @@ interface ProductsRepository {
 
     suspend fun hideProduct(shoppingUid: String, productUid: String, lastModified: Long)
 
-    suspend fun displayProductsAllTotal()
+    suspend fun displayAllPurchasesTotal()
 
-    suspend fun displayProductsCompletedTotal()
+    suspend fun displayCompletedPurchasesTotal()
 
-    suspend fun displayProductsActiveTotal()
+    suspend fun displayActivePurchasesTotal()
 }

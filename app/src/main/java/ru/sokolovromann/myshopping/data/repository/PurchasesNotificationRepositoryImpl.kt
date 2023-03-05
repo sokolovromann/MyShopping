@@ -19,7 +19,7 @@ class PurchasesNotificationRepositoryImpl @Inject constructor(
 
     override suspend fun getShoppingLists(): Flow<ShoppingListNotifications> = withContext(dispatchers.io) {
         return@withContext notificationDao.getShoppingLists().combine(
-            flow = preferencesDao.getShoppingPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entities, preferencesEntity ->
                 mapping.toShoppingListNotifications(entities, preferencesEntity)
             }
@@ -30,7 +30,7 @@ class PurchasesNotificationRepositoryImpl @Inject constructor(
         uid: String
     ): Flow<ShoppingListNotification?> = withContext(dispatchers.io) {
         return@withContext notificationDao.getShoppingList(uid).combine(
-            flow = preferencesDao.getShoppingPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entity, preferencesEntity ->
                 if (entity == null) {
                     return@combine null

@@ -22,7 +22,7 @@ class AddEditProductRepositoryImpl @Inject constructor(
         search: String
     ): Flow<AddEditProductProducts> = withContext(dispatchers.io) {
         return@withContext productDao.getProducts(search).combine(
-            flow = preferencesDao.getProductPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entities, preferencesEntity ->
                 mapping.toAddEditProductProducts(entities, preferencesEntity)
             }
@@ -35,7 +35,7 @@ class AddEditProductRepositoryImpl @Inject constructor(
     ): Flow<AddEditProduct> = withContext(dispatchers.io) {
         return@withContext if (productUid == null) {
             productDao.getProductsLastPosition(shoppingUid).combine(
-                flow = preferencesDao.getProductPreferences(),
+                flow = preferencesDao.getAppPreferences(),
                 transform = { lastPosition, preferencesEntity ->
                     mapping.toAddEditProduct(null, lastPosition, preferencesEntity)
                 }
@@ -44,7 +44,7 @@ class AddEditProductRepositoryImpl @Inject constructor(
             combine(
                 flow = productDao.getProduct(productUid),
                 flow2 = productDao.getProductsLastPosition(shoppingUid),
-                flow3 = preferencesDao.getProductPreferences(),
+                flow3 = preferencesDao.getAppPreferences(),
                 transform = { entity, lastPosition, preferencesEntity ->
                     mapping.toAddEditProduct(entity, lastPosition, preferencesEntity)
                 }
@@ -58,7 +58,7 @@ class AddEditProductRepositoryImpl @Inject constructor(
         return@withContext combine(
             flow = productDao.getAutocompletes(search),
             flow2 = resources.getDefaultAutocompleteNames(search),
-            flow3 = preferencesDao.getProductPreferences(),
+            flow3 = preferencesDao.getAppPreferences(),
             transform = { entities, resources, preferencesEntity ->
                 mapping.toAddEditProductAutocompletes(entities, resources, preferencesEntity)
             }
@@ -82,8 +82,18 @@ class AddEditProductRepositoryImpl @Inject constructor(
         productDao.insertAutocomplete(entity)
     }
 
-    override suspend fun saveProductLock(productLock: ProductLock): Unit = withContext(dispatchers.io) {
-        val value = mapping.toProductLockName(productLock)
-        preferencesDao.saveProductsProductLock(value)
+    override suspend fun lockProductQuantity(): Unit = withContext(dispatchers.io) {
+        val value = mapping.toLockProductElementName(LockProductElement.QUANTITY)
+        preferencesDao.lockProductElement(value)
+    }
+
+    override suspend fun lockProductPrice(): Unit = withContext(dispatchers.io) {
+        val value = mapping.toLockProductElementName(LockProductElement.PRICE)
+        preferencesDao.lockProductElement(value)
+    }
+
+    override suspend fun lockProductTotal(): Unit = withContext(dispatchers.io) {
+        val value = mapping.toLockProductElementName(LockProductElement.TOTAL)
+        preferencesDao.lockProductElement(value)
     }
 }

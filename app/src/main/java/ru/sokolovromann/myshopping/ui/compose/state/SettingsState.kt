@@ -22,9 +22,8 @@ class SettingsState {
             screenState = ScreenState.Showing,
             settings = settings.getSettingsItems(),
             fontSize = preferences.fontSize,
-            displayAutocomplete = settings.settingsValues.productsDisplayAutocomplete,
-            displayCompleted = settings.settingsValues.displayCompleted,
-            multiColumns = preferences.screenSize == ScreenSize.TABLET
+            displayCompletedPurchases = preferences.displayCompletedPurchases,
+            multiColumns = !preferences.smartphoneScreen
         )
     }
 
@@ -32,23 +31,15 @@ class SettingsState {
         screenData = screenData.copy(settingsItemUid = SettingsUid.FontSize)
     }
 
-    fun showDisplayAutocomplete() {
-        screenData = screenData.copy(settingsItemUid = SettingsUid.DisplayAutocomplete)
-    }
-
-    fun showDisplayCompleted() {
-        screenData = screenData.copy(settingsItemUid = SettingsUid.DisplayCompleted)
+    fun showDisplayCompletedPurchases() {
+        screenData = screenData.copy(settingsItemUid = SettingsUid.DisplayCompletedPurchases)
     }
 
     fun hideFontSize() {
         screenData = screenData.copy(settingsItemUid = null)
     }
 
-    fun hideDisplayAutocomplete() {
-        screenData = screenData.copy(settingsItemUid = null)
-    }
-
-    fun hideDisplayCompleted() {
+    fun hideDisplayCompletedPurchases() {
         screenData = screenData.copy(settingsItemUid = null)
     }
 }
@@ -58,7 +49,6 @@ data class SettingsScreenData(
     val settings: Map<UiText, List<SettingsItem>> = mapOf(),
     val settingsItemUid: SettingsUid? = null,
     val fontSize: FontSize = FontSize.DefaultValue,
-    val displayAutocomplete: DisplayAutocomplete = DisplayAutocomplete.DefaultValue,
-    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
+    val displayCompletedPurchases: DisplayCompleted = DisplayCompleted.DefaultValue,
     val multiColumns: Boolean = false
 )

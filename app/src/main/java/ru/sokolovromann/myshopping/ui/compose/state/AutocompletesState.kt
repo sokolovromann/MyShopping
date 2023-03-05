@@ -15,7 +15,7 @@ class AutocompletesState {
         screenData = AutocompletesScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: AutocompletePreferences) {
+    fun showNotFound(preferences: AppPreferences) {
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
             fontSize = preferences.fontSize
@@ -28,7 +28,7 @@ class AutocompletesState {
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Showing,
             autocompletes = autocompletes.getAutocompleteItems(),
-            multiColumns = preferences.screenSize == ScreenSize.TABLET,
+            multiColumns = !preferences.smartphoneScreen,
             fontSize = preferences.fontSize
         )
     }

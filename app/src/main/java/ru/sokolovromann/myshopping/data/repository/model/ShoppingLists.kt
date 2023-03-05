@@ -2,20 +2,15 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 data class ShoppingLists(
     val shoppingLists: List<ShoppingList> = listOf(),
-    val shoppingListsLastPosition: Int? = 0,
-    val preferences: ShoppingListPreferences = ShoppingListPreferences()
+    val shoppingListsLastPosition: Int? = null,
+    val preferences: AppPreferences = AppPreferences()
 ) {
 
     fun formatShoppingLists(): List<ShoppingList> {
         return shoppingLists
-            .map {
-                it.copy(
-                    name = it.name.formatFirst(preferences.firstLetterUppercase),
-                    products = formatProducts(it.products)
-                )
-            }
+            .map { it.copy(products = formatProducts(it.products)) }
             .sortShoppingLists()
-            .splitShoppingLists(preferences.displayCompleted)
+            .splitShoppingLists(preferences.displayCompletedPurchases)
     }
 
     fun calculateTotal(): Money {
@@ -32,8 +27,7 @@ data class ShoppingLists(
 
     private fun formatProducts(product: List<Product>): List<Product> {
         return product
-            .map { it.copy(name = it.name.formatFirst(preferences.firstLetterUppercase)) }
             .sortProducts()
-            .splitProducts(preferences.displayCompleted)
+            .splitProducts(preferences.displayCompletedPurchases)
     }
 }

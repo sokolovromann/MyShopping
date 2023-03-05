@@ -1,8 +1,8 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 data class CalculateChange(
-    val shoppingList: ShoppingList? = ShoppingList(),
-    val preferences: ProductPreferences = ProductPreferences()
+    val shoppingList: ShoppingList? = null,
+    val preferences: AppPreferences = AppPreferences()
 ) {
 
     fun calculateTotal(): Money {

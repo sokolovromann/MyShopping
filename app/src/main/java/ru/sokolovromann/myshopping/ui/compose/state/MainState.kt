@@ -3,7 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.data.repository.model.MainPreferences
+import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
 
 class MainState {
 
@@ -21,7 +21,7 @@ class MainState {
         loading = false
     }
 
-    fun applyPreferences(preferences: MainPreferences) {
+    fun applyPreferences(preferences: AppPreferences) {
         nightTheme = preferences.nightTheme
     }
 }

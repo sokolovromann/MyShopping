@@ -25,7 +25,7 @@ sealed class AddEditProductEvent {
 
     data class ProductTotalChanged(val value: TextFieldValue) : AddEditProductEvent()
 
-    data class ProductLockSelected(val productLock: ProductLock) : AddEditProductEvent()
+    data class LockProductElementSelected(val lockProductElement: LockProductElement) : AddEditProductEvent()
 
     data class AutocompleteNameSelected(val autocomplete: Autocomplete) : AddEditProductEvent()
 
@@ -47,9 +47,9 @@ sealed class AddEditProductEvent {
 
     object ShowProductDiscountAsPercentMenu : AddEditProductEvent()
 
-    object ShowProductLockMenu : AddEditProductEvent()
+    object SelectLockProductElement : AddEditProductEvent()
 
     object HideProductDiscountAsPercentMenu : AddEditProductEvent()
 
-    object HideProductLockMenu : AddEditProductEvent()
+    object HideLockProductElement : AddEditProductEvent()
 }

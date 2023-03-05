@@ -19,7 +19,7 @@ class MoveProductRepositoryImpl @Inject constructor(
 
     override suspend fun getPurchases(): Flow<ShoppingLists> = withContext(dispatchers.io) {
         return@withContext productDao.getPurchases().combine(
-            flow = preferencesDao.getShoppingPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entity, preferencesEntity ->
                 mapping.toShoppingLists(entity, null, preferencesEntity)
             }
@@ -28,7 +28,7 @@ class MoveProductRepositoryImpl @Inject constructor(
 
     override suspend fun getArchive(): Flow<ShoppingLists> = withContext(dispatchers.io) {
         return@withContext productDao.getArchive().combine(
-            flow = preferencesDao.getShoppingPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entity, preferencesEntity ->
                 mapping.toShoppingLists(entity, null, preferencesEntity)
             }
@@ -37,7 +37,7 @@ class MoveProductRepositoryImpl @Inject constructor(
 
     override suspend fun getTrash(): Flow<ShoppingLists> = withContext(dispatchers.io) {
         return@withContext productDao.getTrash().combine(
-            flow = preferencesDao.getShoppingPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entity, preferencesEntity ->
                 mapping.toShoppingLists(entity, null, preferencesEntity)
             }
@@ -46,7 +46,7 @@ class MoveProductRepositoryImpl @Inject constructor(
 
     override suspend fun getProduct(uid: String): Flow<Product?> = withContext(dispatchers.io) {
         return@withContext productDao.getProduct(uid).combine(
-            flow = preferencesDao.getShoppingPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entity, preferencesEntity ->
                 if (entity == null) {
                     return@combine null

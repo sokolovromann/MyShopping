@@ -21,13 +21,13 @@ class CalculateChangeRepositoryImpl @Inject constructor(
         uid: String?
     ): Flow<CalculateChange> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getProductsPreferences().transform {
+            preferencesDao.getAppPreferences().transform {
                 val value = mapping.toCalculateChange(null, it)
                 emit(value)
             }
         } else {
             calculateChangeDao.getShoppingList(uid).combine(
-                flow = preferencesDao.getProductsPreferences(),
+                flow = preferencesDao.getAppPreferences(),
                 transform = { entity, preferencesEntity ->
                     mapping.toCalculateChange(entity, preferencesEntity)
                 }

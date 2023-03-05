@@ -15,11 +15,11 @@ sealed class PurchasesEvent {
 
     data class MoveShoppingListDown(val uid: String) : PurchasesEvent()
 
-    object SelectShoppingListsDisplayTotal : PurchasesEvent()
+    object SelectDisplayPurchasesTotal : PurchasesEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : PurchasesEvent()
 
-    data class DisplayShoppingListsTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
+    data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
 
     data class ShowProducts(val uid: String) : PurchasesEvent()
 
@@ -31,7 +31,7 @@ sealed class PurchasesEvent {
 
     object HideShoppingListMenu : PurchasesEvent()
 
-    object HideShoppingListsDisplayTotal : PurchasesEvent()
+    object HideDisplayPurchasesTotal : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 }

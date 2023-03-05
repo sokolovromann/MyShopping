@@ -15,9 +15,9 @@ interface TrashRepository {
 
     suspend fun deleteShoppingList(uid: String)
 
-    suspend fun displayShoppingListsAllTotal()
+    suspend fun displayAllPurchasesTotal()
 
-    suspend fun displayShoppingListsCompletedTotal()
+    suspend fun displayCompletedPurchasesTotal()
 
-    suspend fun displayShoppingListsActiveTotal()
+    suspend fun displayActivePurchasesTotal()
 }

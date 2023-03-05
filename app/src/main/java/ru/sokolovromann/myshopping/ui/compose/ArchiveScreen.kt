@@ -102,13 +102,13 @@ fun ArchiveScreen(
                         expanded = screenData.showDisplayTotal,
                         onExpanded = {
                             if (it) {
-                                viewModel.onEvent(ArchiveEvent.SelectShoppingListsDisplayTotal)
+                                viewModel.onEvent(ArchiveEvent.SelectDisplayPurchasesTotal)
                             } else {
-                                viewModel.onEvent(ArchiveEvent.HideShoppingListsDisplayTotal)
+                                viewModel.onEvent(ArchiveEvent.HideDisplayPurchasesTotal)
                             }
                         },
                         onSelected = {
-                            val event = ArchiveEvent.DisplayShoppingListsTotal(it)
+                            val event = ArchiveEvent.DisplayPurchasesTotal(it)
                             viewModel.onEvent(event)
                         }
                     )

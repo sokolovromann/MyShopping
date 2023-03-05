@@ -15,7 +15,8 @@ class EditCurrencySymbolState {
         private set
 
     fun populate(editCurrencySymbol: EditCurrencySymbol) {
-        val symbol = editCurrencySymbol.currency
+        val preferences = editCurrencySymbol.preferences
+        val symbol = preferences.currency.symbol
 
         screenData = EditCurrencySymbolScreenData(
             screenState = ScreenState.Showing,
@@ -25,7 +26,7 @@ class EditCurrencySymbolState {
                 composition = TextRange(symbol.length)
             ),
             showSymbolError = false,
-            fontSize = editCurrencySymbol.preferences.fontSize
+            fontSize = preferences.fontSize
         )
     }
 

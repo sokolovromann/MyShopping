@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 data class ShoppingListNotification(
     val shoppingList: ShoppingList = ShoppingList(),
-    val preferences: ShoppingListPreferences = ShoppingListPreferences()
+    val preferences: AppPreferences = AppPreferences()
 ) {
 
     fun id(): Int {
@@ -10,15 +10,15 @@ data class ShoppingListNotification(
     }
 
     fun title(): String {
-        return shoppingList.name.formatFirst(preferences.firstLetterUppercase)
+        return shoppingList.name
     }
 
     fun body(): String {
         var body = ""
         shoppingList.products
             .sortProducts()
-            .splitProducts(preferences.displayCompleted)
-            .forEach { body += "${it.name.formatFirst(preferences.firstLetterUppercase)}, " }
+            .splitProducts(preferences.displayCompletedPurchases)
+            .forEach { body += "${it.name}, " }
 
         return body.dropLast(2)
     }

@@ -7,17 +7,18 @@ import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import java.util.*
 
 fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
+    val defaultProductsLimit = 10
     return formatShoppingLists().map {
         val productsList = if (it.products.isEmpty()) {
             val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)
         } else {
             val products: MutableList<Pair<Boolean?, UiText>> = it.products
-                .filterIndexed { index, _ -> index < preferences.maxProducts}
+                .filterIndexed { index, _ -> index < defaultProductsLimit}
                 .map { product -> productsToPair(product, preferences) }
                 .toMutableList()
 
-            if (it.products.size > preferences.maxProducts) {
+            if (it.products.size > defaultProductsLimit) {
                 products.add(Pair(null, UiText.FromResources(R.string.purchases_text_moreProducts)))
             }
 
@@ -50,7 +51,7 @@ fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
 }
 
 fun ShoppingLists.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), preferences.displayTotal)
+    return totalToText(calculateTotal(), preferences.displayPurchasesTotal)
 }
 
 fun ShoppingList.calculateTotalToText(): UiText {
@@ -68,7 +69,7 @@ private fun totalToText(total: Money, displayTotal: DisplayTotal): UiText {
 
 private fun productsToPair(
     product: Product,
-    preferences: ShoppingListPreferences
+    preferences: AppPreferences
 ): Pair<Boolean, UiText> {
     val displayQuantity = product.quantity.isNotEmpty()
     val displayPrice = product.price.isNotEmpty() && preferences.displayMoney
@@ -87,8 +88,7 @@ private fun productsToPair(
         productsText += " • ${product.note}"
     }
 
-    val shortText = preferences.multiColumns &&
-            preferences.screenSize == ScreenSize.SMARTPHONE
+    val shortText = preferences.shoppingsMultiColumns && preferences.smartphoneScreen
 
     val text: UiText = if (shortText) {
         UiText.FromString(product.name)

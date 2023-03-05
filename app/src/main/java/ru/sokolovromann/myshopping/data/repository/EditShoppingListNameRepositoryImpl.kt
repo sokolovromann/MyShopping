@@ -21,13 +21,13 @@ class EditShoppingListNameRepositoryImpl @Inject constructor(
         uid: String?
     ): Flow<EditShoppingListName> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getProductsPreferences().transform {
+            preferencesDao.getAppPreferences().transform {
                 val value = mapping.toEditShoppingListName(null, it)
                 emit(value)
             }
         } else {
             shoppingListDao.getShoppingList(uid).combine(
-                flow = preferencesDao.getProductsPreferences(),
+                flow = preferencesDao.getAppPreferences(),
                 transform = { entity, preferencesEntity ->
                     mapping.toEditShoppingListName(entity, preferencesEntity)
                 }

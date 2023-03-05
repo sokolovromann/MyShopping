@@ -106,13 +106,13 @@ fun PurchasesScreen(
                         expanded = screenData.showDisplayTotal,
                         onExpanded = {
                             if (it) {
-                                viewModel.onEvent(PurchasesEvent.SelectShoppingListsDisplayTotal)
+                                viewModel.onEvent(PurchasesEvent.SelectDisplayPurchasesTotal)
                             } else {
-                                viewModel.onEvent(PurchasesEvent.HideShoppingListsDisplayTotal)
+                                viewModel.onEvent(PurchasesEvent.HideDisplayPurchasesTotal)
                             }
                         },
                         onSelected = {
-                            val event = PurchasesEvent.DisplayShoppingListsTotal(it)
+                            val event = PurchasesEvent.DisplayPurchasesTotal(it)
                             viewModel.onEvent(event)
                         }
                     )

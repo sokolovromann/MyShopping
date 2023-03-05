@@ -14,7 +14,7 @@ class MainResources @Inject constructor(
     fun getCurrencyResources(): Flow<CurrencyResourcesEntity> {
         val entity = CurrencyResourcesEntity(
             defaultCurrency = resources.getString(R.string.data_text_defaultCurrency),
-            defaultCurrencyDisplayToLeft = resources.getBoolean(R.bool.data_value_defaultCurrencyDisplayToLeft)
+            displayDefaultCurrencyToLeft = resources.getBoolean(R.bool.data_value_displayDefaultCurrencyToLeft)
         )
         return flowOf(entity)
     }

@@ -21,7 +21,7 @@ class ArchiveRepositoryImpl @Inject constructor(
         return@withContext combine(
             flow = archiveDao.getShoppingLists(),
             flow2 = archiveDao.getShoppingsLastPosition(),
-            flow3 = preferencesDao.getShoppingPreferences(),
+            flow3 = preferencesDao.getAppPreferences(),
             transform = { entity, lastPosition, preferencesEntity ->
                 mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
             }
@@ -42,18 +42,18 @@ class ArchiveRepositoryImpl @Inject constructor(
         archiveDao.moveShoppingToTrash(uid, lastModified)
     }
 
-    override suspend fun displayShoppingListsAllTotal(): Unit = withContext(dispatchers.io) {
+    override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
-        preferencesDao.displayShoppingsTotal(displayTotal)
+        preferencesDao.displayPurchasesTotal(displayTotal)
     }
 
-    override suspend fun displayShoppingListsCompletedTotal(): Unit = withContext(dispatchers.io) {
+    override suspend fun displayCompletedPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.COMPLETED)
-        preferencesDao.displayShoppingsTotal(displayTotal)
+        preferencesDao.displayPurchasesTotal(displayTotal)
     }
 
-    override suspend fun displayShoppingListsActiveTotal(): Unit = withContext(dispatchers.io) {
+    override suspend fun displayActivePurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ACTIVE)
-        preferencesDao.displayShoppingsTotal(displayTotal)
+        preferencesDao.displayPurchasesTotal(displayTotal)
     }
 }

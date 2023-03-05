@@ -13,11 +13,11 @@ sealed class TrashEvent {
 
     data class DeleteShoppingList(val uid: String) : TrashEvent()
 
-    object SelectShoppingListsDisplayTotal : TrashEvent()
+    object SelectDisplayPurchasesTotal : TrashEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : TrashEvent()
 
-    data class DisplayShoppingListsTotal(val displayTotal: DisplayTotal) : TrashEvent()
+    data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : TrashEvent()
 
     object ShowBackScreen : TrashEvent()
 
@@ -31,5 +31,5 @@ sealed class TrashEvent {
 
     object HideShoppingListMenu : TrashEvent()
 
-    object HideShoppingListsDisplayTotal : TrashEvent()
+    object HideDisplayPurchasesTotal : TrashEvent()
 }

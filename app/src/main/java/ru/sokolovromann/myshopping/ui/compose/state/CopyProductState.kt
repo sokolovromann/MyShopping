@@ -19,7 +19,7 @@ class CopyProductState {
         screenData = CopyProductScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: ShoppingListPreferences, location: ShoppingListLocation) {
+    fun showNotFound(preferences: AppPreferences, location: ShoppingListLocation) {
         shoppingLists = listOf()
         screenData = CopyProductScreenData(
             screenState = ScreenState.Nothing,
@@ -32,13 +32,13 @@ class CopyProductState {
         this.shoppingLists = shoppingLists.formatShoppingLists()
         val preferences = shoppingLists.preferences
 
-        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
+        val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         screenData = CopyProductScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
-            multiColumns = preferences.multiColumns,
+            multiColumns = preferences.shoppingsMultiColumns,
             location = location,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists

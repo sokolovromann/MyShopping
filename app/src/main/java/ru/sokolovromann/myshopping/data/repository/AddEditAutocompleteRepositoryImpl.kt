@@ -22,13 +22,13 @@ class AddEditAutocompleteRepositoryImpl @Inject constructor(
         uid: String?
     ): Flow<AddEditAutocomplete> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getAutocompletePreferences().transform {
+            preferencesDao.getAppPreferences().transform {
                 val value = mapping.toAddEditAutocomplete(null, it)
                 emit(value)
             }
         } else {
             autocompleteDao.getAutocomplete(uid).combine(
-                flow = preferencesDao.getAutocompletePreferences(),
+                flow = preferencesDao.getAppPreferences(),
                 transform = { entity, preferencesEntity ->
                     mapping.toAddEditAutocomplete(entity, preferencesEntity)
                 }

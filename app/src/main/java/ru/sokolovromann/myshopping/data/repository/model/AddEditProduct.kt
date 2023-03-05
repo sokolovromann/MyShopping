@@ -1,15 +1,12 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 data class AddEditProduct(
-    val product: Product? = Product(),
-    val productsLastPosition: Int?,
-    val preferences: ProductPreferences = ProductPreferences()
+    val product: Product? = null,
+    val productsLastPosition: Int? = null,
+    val preferences: AppPreferences = AppPreferences()
 ) {
 
     fun formatName(): String {
-        if (product == null) {
-            return ""
-        }
-        return product.name.formatFirst(preferences.firstLetterUppercase)
+        return product?.name ?: ""
     }
 }

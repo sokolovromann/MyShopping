@@ -18,7 +18,7 @@ class AutocompletesRepositoryImpl @Inject constructor(
 
     override suspend fun getAutocompletes(): Flow<Autocompletes> = withContext(dispatchers.io) {
         return@withContext autocompletesDao.getAutocompletes().combine(
-            flow = preferencesDao.getAutocompletePreferences(),
+            flow = preferencesDao.getAppPreferences(),
             transform = { entities, preferencesEntity ->
                 mapping.toAutocompletes(entities, preferencesEntity)
             }

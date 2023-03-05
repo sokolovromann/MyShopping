@@ -38,11 +38,11 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.MoveShoppingListToTrash -> moveShoppingListToTrash(event)
 
-            ArchiveEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
+            ArchiveEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
             is ArchiveEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            is ArchiveEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
+            is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             ArchiveEvent.ShowBackScreen -> showBackScreen()
 
@@ -56,7 +56,7 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
-            ArchiveEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
+            ArchiveEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
         }
     }
 
@@ -106,8 +106,8 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun selectShoppingListsDisplayTotal() {
-        archiveState.showDisplayTotal()
+    private fun selectDisplayPurchasesTotal() {
+        archiveState.selectDisplayPurchasesTotal()
     }
 
     private fun selectNavigationItem(
@@ -122,17 +122,17 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun displayShoppingListsTotal(
-        event: ArchiveEvent.DisplayShoppingListsTotal
+    private fun displayPurchasesTotal(
+        event: ArchiveEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
         when (event.displayTotal) {
-            DisplayTotal.ALL -> repository.displayShoppingListsAllTotal()
-            DisplayTotal.COMPLETED -> repository.displayShoppingListsCompletedTotal()
-            DisplayTotal.ACTIVE -> repository.displayShoppingListsActiveTotal()
+            DisplayTotal.ALL -> repository.displayAllPurchasesTotal()
+            DisplayTotal.COMPLETED -> repository.displayCompletedPurchasesTotal()
+            DisplayTotal.ACTIVE -> repository.displayActivePurchasesTotal()
         }
 
         withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
+            hideDisplayPurchasesTotal()
         }
     }
 
@@ -160,7 +160,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.hideShoppingListMenu()
     }
 
-    private fun hideShoppingListsDisplayTotal() {
-        archiveState.hideDisplayTotal()
+    private fun hideDisplayPurchasesTotal() {
+        archiveState.hideDisplayPurchasesTotal()
     }
 }

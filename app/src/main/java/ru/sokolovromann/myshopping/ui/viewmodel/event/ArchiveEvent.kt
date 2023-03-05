@@ -9,11 +9,11 @@ sealed class ArchiveEvent {
 
     data class MoveShoppingListToTrash(val uid: String) : ArchiveEvent()
 
-    object SelectShoppingListsDisplayTotal : ArchiveEvent()
+    object SelectDisplayPurchasesTotal : ArchiveEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : ArchiveEvent()
 
-    data class DisplayShoppingListsTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
+    data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
 
     object ShowBackScreen : ArchiveEvent()
 
@@ -27,5 +27,5 @@ sealed class ArchiveEvent {
 
     object HideShoppingListMenu : ArchiveEvent()
 
-    object HideShoppingListsDisplayTotal : ArchiveEvent()
+    object HideDisplayPurchasesTotal : ArchiveEvent()
 }

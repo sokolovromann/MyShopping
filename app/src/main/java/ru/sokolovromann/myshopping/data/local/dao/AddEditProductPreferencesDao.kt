@@ -2,18 +2,18 @@ package ru.sokolovromann.myshopping.data.local.dao
 
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
-import ru.sokolovromann.myshopping.data.local.entity.ProductPreferencesEntity
+import ru.sokolovromann.myshopping.data.local.entity.AppPreferencesEntity
 import javax.inject.Inject
 
 class AddEditProductPreferencesDao @Inject constructor(
     private val localDataStore: LocalDataStore
 ) {
 
-    suspend fun getProductPreferences(): Flow<ProductPreferencesEntity> {
-        return localDataStore.getProductPreferences()
+    suspend fun getAppPreferences(): Flow<AppPreferencesEntity> {
+        return localDataStore.getAppPreferences()
     }
 
-    suspend fun saveProductsProductLock(productLock: String) {
-        localDataStore.saveProductsProductLock(productLock)
+    suspend fun lockProductElement(lockProductElement: String) {
+        localDataStore.lockProductElement(lockProductElement)
     }
 }

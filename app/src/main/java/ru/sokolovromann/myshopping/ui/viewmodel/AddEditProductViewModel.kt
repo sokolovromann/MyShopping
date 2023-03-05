@@ -60,7 +60,7 @@ class AddEditProductViewModel @Inject constructor(
 
             is AddEditProductEvent.ProductTotalChanged -> productTotalChanged(event)
 
-            is AddEditProductEvent.ProductLockSelected -> productLockSelected(event)
+            is AddEditProductEvent.LockProductElementSelected -> lockProductElementSelected(event)
 
             is AddEditProductEvent.AutocompleteNameSelected -> autocompleteNameSelected(event)
 
@@ -80,13 +80,13 @@ class AddEditProductViewModel @Inject constructor(
 
             is AddEditProductEvent.ProductNoteChanged -> productNoteChanged(event)
 
-            AddEditProductEvent.ShowProductLockMenu -> showProductLockMenu()
+            AddEditProductEvent.SelectLockProductElement -> selectLockProductElement()
 
             AddEditProductEvent.ShowProductDiscountAsPercentMenu -> showProductDiscountAsPercentMenu()
 
             AddEditProductEvent.HideProductDiscountAsPercentMenu -> hideProductDiscountAsPercentMenu()
 
-            AddEditProductEvent.HideProductLockMenu -> hideProductLockMenu()
+            AddEditProductEvent.HideLockProductElement -> hideLockProductElement()
         }
     }
 
@@ -105,16 +105,8 @@ class AddEditProductViewModel @Inject constructor(
             showKeyboard()
         } else {
             addEditProductState.populate(addEditProduct)
-            when (addEditProduct.preferences.displayAutocomplete) {
-                DisplayAutocomplete.ALL, DisplayAutocomplete.NAME -> {
-                    getAutocompletes(addEditProduct.formatName())
-                    getProducts(addEditProduct.formatName())
-                }
-
-                DisplayAutocomplete.HIDE -> {
-                    addEditProductState.hideAutocompletes()
-                }
-            }
+            getAutocompletes(addEditProduct.formatName())
+            getProducts(addEditProduct.formatName())
         }
     }
 
@@ -182,8 +174,13 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.getAutocompleteResult()
             .onSuccess { repository.addAutocomplete(it) }
 
-        addEditProductState.getProductLockResult()
-            .onSuccess { repository.saveProductLock(it) }
+        addEditProductState.getProductLockResult().onSuccess {
+            when (it) {
+                LockProductElement.QUANTITY -> repository.lockProductQuantity()
+                LockProductElement.PRICE -> repository.lockProductPrice()
+                LockProductElement.TOTAL -> repository.lockProductTotal()
+            }
+        }
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
@@ -200,19 +197,8 @@ class AddEditProductViewModel @Inject constructor(
         val minLength = 2
         if (event.value.text.length >= minLength) {
             val search = event.value.text
-            when (addEditProductState.getDisplayAutocomplete()) {
-                DisplayAutocomplete.ALL -> {
-                    getAutocompletes(search)
-                    getProducts(search)
-                }
-                DisplayAutocomplete.NAME -> {
-                    getAutocompletes(search)
-                }
-
-                DisplayAutocomplete.HIDE -> {
-                    addEditProductState.hideAutocompletes()
-                }
-            }
+            getAutocompletes(search)
+            getProducts(search)
         } else {
             addEditProductState.hideAutocompletes()
         }
@@ -246,8 +232,8 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.changeProductTotalValue(event.value)
     }
 
-    private fun productLockSelected(event: AddEditProductEvent.ProductLockSelected) {
-        addEditProductState.selectProductLock(event.productLock)
+    private fun lockProductElementSelected(event: AddEditProductEvent.LockProductElementSelected) {
+        addEditProductState.lockProductElementSelected(event.lockProductElement)
     }
 
     private fun autocompleteNameSelected(event: AddEditProductEvent.AutocompleteNameSelected) {
@@ -290,8 +276,8 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.showDiscountAsPercent()
     }
 
-    private fun showProductLockMenu() {
-        addEditProductState.showProductLock()
+    private fun selectLockProductElement() {
+        addEditProductState.selectLockProductElement()
     }
 
     private fun showKeyboard() = viewModelScope.launch(dispatchers.main) {
@@ -302,7 +288,7 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.hideDiscountAsPercent()
     }
 
-    private fun hideProductLockMenu() {
-        addEditProductState.hideProductLock()
+    private fun hideLockProductElement() {
+        addEditProductState.hideLockProductElement()
     }
 }

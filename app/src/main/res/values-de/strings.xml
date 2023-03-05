@@ -155,7 +155,7 @@
     </string-array>
     <string name="data_text_defaultCurrency">€</string>
     <string name="data_text_developerName">Roman Sokolov</string>
-    <bool name="data_value_defaultCurrencyDisplayToLeft">false</bool>
+    <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
     <string name="drawer_action_openArchive">@string/archive_header</string>
     <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
@@ -236,47 +236,42 @@
     <string name="purchases_text_productsNotFound">Einkaufsliste ist leer</string>
     <string name="purchases_text_shoppingListsNotFound">Sie haben keine Einkaufslisten</string>
 
-    <string name="settings_action_displayAllAutocomplete">Alle Autovervollständigungen</string>
-    <string name="settings_action_displayCompletedFirst">Zuerst</string>
-    <string name="settings_action_displayCompletedLast">Letzte</string>
-    <string name="settings_action_displayNameAutocomplete">Nur Namen</string>
-    <string name="settings_action_selectHideAutocomplete">Verstecken</string>
-    <string name="settings_action_selectHideCompleted">Verstecken</string>
+    <string name="settings_action_displayCompletedPurchasesFirst">Zuerst</string>
+    <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
+    <string name="settings_action_hideCompletedPurchases">Verstecken</string>
     <string name="settings_action_selectHugeFontSize">Riesig</string>
     <string name="settings_action_selectLargeFontSize">Groß</string>
     <string name="settings_action_selectMediumFontSize">Mittel</string>
     <string name="settings_action_selectSmallFontSize">Klein</string>
     <string name="settings_action_selectTinyFontSize">Winzig</string>
-    <string name="settings_body_addLastProduct">Jedes produkt wird in autovervollständigungen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
-    <string name="settings_body_editCompletedProduct">Wird zum Bearbeiten geöffnet</string>
+    <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet</string>
     <string name="settings_body_email">Zum Schreiben tippen</string>
-    <string name="settings_body_firstLetterUppercase">Namen von einkaufslisten, produkten und autovervollständigungen</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
     <string name="settings_body_productsMultiColumns">Mehrere Karten in einer Reihe</string>
+    <string name="settings_body_saveProductToAutocompletes">Jedes produkt wird in autovervollständigungen</string>
     <string name="settings_body_shoppingsMultiColumns">Mehrere Karten in einer Reihe</string>
     <string name="settings_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="settings_header_aboutApp">Um</string>
+    <string name="settings_header_autocompletes">Autovervollständigungen</string>
     <string name="settings_header_generalSettings">Allgemein</string>
     <string name="settings_header_money">Geld</string>
     <string name="settings_header_purchases">Einkäufe</string>
     <string name="settings_header_settings">Einstellungen</string>
-    <string name="settings_title_addLastProduct">Unbekanntes produkt speichern</string>
     <string name="settings_title_appVersion">App version</string>
     <string name="settings_title_currencySymbol">Währung</string>
     <string name="settings_title_developer">Entwickler</string>
-    <string name="settings_title_displayAutocomplete">Autovervollständigungen anzeigen</string>
-    <string name="settings_title_displayCompleted">Fertige produkte anzeigen</string>
+    <string name="settings_title_displayCompletedPurchases">Fertige produkte anzeigen</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
-    <string name="settings_title_displayDefaultAutocomplete">Standard-Autovervollständigungen anzeigen</string>
+    <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
     <string name="settings_title_displayMoney">Geld anzeigen</string>
-    <string name="settings_title_editCompletedProduct">Bearbeiten sie das produkt nach abschluss</string>
+    <string name="settings_title_editProductAfterCompleted">Bearbeiten sie das produkt nach abschluss</string>
     <string name="settings_title_email">Email</string>
-    <string name="settings_title_firstLetterUppercase">Anfangsbuchstabe groß</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_productsMultiColumns">Mehrspaltig in Produkten</string>
+    <string name="settings_title_saveProductToAutocompletes">Unbekanntes produkt speichern</string>
     <string name="settings_title_shoppingsMultiColumns">Mehrspaltig in Einkaufslisten</string>
     <string name="settings_title_taxRate">Steuersatz</string>
 

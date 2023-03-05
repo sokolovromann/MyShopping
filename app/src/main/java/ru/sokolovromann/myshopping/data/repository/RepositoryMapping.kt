@@ -25,28 +25,28 @@ class RepositoryMapping @Inject constructor() {
     fun toShoppingLists(
         entities: List<ShoppingListEntity>,
         lastPosition: Int?,
-        preferencesEntity: ShoppingPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): ShoppingLists {
         return ShoppingLists(
             shoppingLists = entities.map { toShoppingList(it, preferencesEntity) },
             shoppingListsLastPosition = lastPosition,
-            preferences = toShoppingListPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toShoppingListNotification(
         entity: ShoppingListEntity,
-        preferencesEntity: ShoppingPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): ShoppingListNotification {
         return ShoppingListNotification(
             shoppingList = toShoppingList(entity, preferencesEntity),
-            preferences = toShoppingListPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toShoppingListNotifications(
         entities: List<ShoppingListEntity>,
-        preferencesEntity: ShoppingPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): ShoppingListNotifications {
         return ShoppingListNotifications(
             shoppingLists = entities.map { toShoppingList(it, preferencesEntity) }
@@ -80,7 +80,7 @@ class RepositoryMapping @Inject constructor() {
         return products.map { toProductEntity(it) }
     }
 
-    fun toProduct(entity: ProductEntity, preferencesEntity: ShoppingPreferencesEntity): Product {
+    fun toProduct(entity: ProductEntity, preferencesEntity: AppPreferencesEntity): Product {
         return Product(
             id = entity.id,
             position = entity.position,
@@ -92,17 +92,17 @@ class RepositoryMapping @Inject constructor() {
             quantity = toQuantity(entity.quantity, entity.quantitySymbol),
             price = toMoney(
                 entity.price,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
             ),
             discount = toDiscount(
                 entity.discount,
                 entity.discountAsPercent,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
             ),
             taxRate = toTaxRate(preferencesEntity.taxRate, preferencesEntity.taxRateAsPercent),
             total = toMoney(
                 entity.total,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
             ),
             totalFormatted = entity.totalFormatted,
             note = entity.note,
@@ -110,39 +110,39 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toProducts(entity: ShoppingListEntity, preferencesEntity: ProductPreferencesEntity): Products {
+    fun toProducts(entity: ShoppingListEntity, preferencesEntity: AppPreferencesEntity): Products {
         return Products(
             shoppingList = toShoppingList(entity, preferencesEntity),
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toAddEditProduct(
         entity: ProductEntity?,
         lastPosition: Int?,
-        preferencesEntity: ProductPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): AddEditProduct {
         return AddEditProduct(
             product = if (entity == null) null else toProduct(entity, preferencesEntity),
             productsLastPosition = lastPosition,
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toAddEditProductProducts(
         entities: List<ProductEntity>,
-        preferencesEntity: ProductPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): AddEditProductProducts {
         return AddEditProductProducts(
             products = entities.map { toProduct(it, preferencesEntity) },
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toAddEditProductAutocompletes(
         entities: List<AutocompleteEntity>,
         resources: List<String>?,
-        preferencesEntity: ProductPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): AddEditProductAutocompletes {
         val autocompletes: MutableList<Autocomplete> = entities
             .map { toAutocomplete(it) }
@@ -155,7 +155,7 @@ class RepositoryMapping @Inject constructor() {
 
         return AddEditProductAutocompletes(
             autocompletes = autocompletes,
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
@@ -171,68 +171,79 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAutocompletes(
         entities: List<AutocompleteEntity>,
-        preferencesEntity: AutocompletePreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): Autocompletes {
         return Autocompletes(
             autocompletes = entities.map { toAutocomplete(it) },
-            preferences = toAutocompletePreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toAddEditAutocomplete(
         entity: AutocompleteEntity?,
-        preferencesEntity: AutocompletePreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): AddEditAutocomplete {
         return AddEditAutocomplete(
             autocomplete = if (entity == null) null else toAutocomplete(entity),
-            preferences = toAutocompletePreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toSettings(
-        entity: SettingsEntity,
-        preferencesEntity: SettingsPreferencesEntity,
+        preferencesEntity: AppPreferencesEntity,
         resourcesEntity: SettingsResourcesEntity
     ): Settings {
         return Settings(
-            settingsValues = toSettingsValues(entity, resourcesEntity),
-            preferences = toSettingsPreferences(preferencesEntity)
+            developerName = resourcesEntity.developerName,
+            developerEmail = resourcesEntity.developerEmail,
+            appVersion = BuildConfig.VERSION_NAME,
+            appGithubLink = resourcesEntity.appGithubLink,
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
-    fun toMainPreferencesEntity(mainPreferences: MainPreferences): MainPreferencesEntity {
-        return MainPreferencesEntity(
-            appOpenedAction = toAppOpenedActionName(mainPreferences.appOpenedAction),
-            nightTheme = mainPreferences.nightTheme,
-            currency = toCurrencySymbol(mainPreferences.currency),
-            currencyDisplayToLeft = toCurrencyDisplayToLeft(mainPreferences.currency),
-            taxRate = toTaxRateValue(mainPreferences.taxRate),
-            taxRateAsPercent = mainPreferences.taxRate.asPercent,
-            fontSize = toFontSizeName(mainPreferences.fontSize),
-            firstLetterUppercase = mainPreferences.firstLetterUppercase,
-            shoppingsMultiColumns = mainPreferences.shoppingsMultiColumns,
-            shoppingsDisplayTotal = toDisplayTotalName(mainPreferences.shoppingsDisplayTotal),
-            shoppingsMaxProducts = mainPreferences.shoppingsMaxProducts,
-            productsMultiColumns = mainPreferences.productsMultiColumns,
-            productsDisplayTotal = toDisplayTotalName(mainPreferences.productsDisplayTotal),
-            productsDisplayAutocomplete = toDisplayAutocompleteName(mainPreferences.productsDisplayAutocomplete),
-            productsProductLock = toProductLockName(mainPreferences.productsProductLock),
-            productsEditCompleted = mainPreferences.productsEditCompleted,
-            productsAddLastProduct = mainPreferences.productsAddLastProduct,
-            productsDisplayDefaultAutocomplete = mainPreferences.productsDisplayDefaultAutocomplete,
-            displayMoney = mainPreferences.displayMoney,
-            displayCompleted = toDisplayCompletedName(mainPreferences.displayCompleted),
-            screenSize = toScreenSizeName(mainPreferences.screenSize)
-        )
-    }
-
-    fun toMainPreferences(
-        entity: MainPreferencesEntity,
-        appVersion14FirstOpened: Boolean
-    ): MainPreferences {
-        return MainPreferences(
+    fun toAppPreferences(
+        entity: AppPreferencesEntity,
+        appVersion14FirstOpened: Boolean = false
+    ): AppPreferences {
+        return AppPreferences(
             appOpenedAction = toAppOpenedAction(entity.appOpenedAction, appVersion14FirstOpened),
-            nightTheme = entity.nightTheme
+            nightTheme = entity.nightTheme,
+            fontSize = toFontSize(entity.fontSize),
+            smartphoneScreen = entity.smartphoneScreen,
+            currency = toCurrency(entity.currency, entity.displayCurrencyToLeft),
+            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
+            shoppingsMultiColumns = entity.shoppingsMultiColumns,
+            productsMultiColumns = entity.productsMultiColumns,
+            displayCompletedPurchases = toDisplayCompleted(entity.displayCompletedPurchases),
+            displayPurchasesTotal = toDisplayTotal(entity.displayPurchasesTotal),
+            editProductAfterCompleted = entity.editProductAfterCompleted,
+            saveProductToAutocompletes = entity.saveProductToAutocompletes,
+            lockProductElement = toLockProductElement(entity.lockProductElement),
+            displayMoney = entity.displayMoney,
+            displayDefaultAutocompletes = entity.displayDefaultAutocompletes
+        )
+    }
+
+    fun toAppPreferencesEntity(appPreferences: AppPreferences): AppPreferencesEntity {
+        return AppPreferencesEntity(
+            appOpenedAction = toAppOpenedActionName(appPreferences.appOpenedAction),
+            nightTheme = appPreferences.nightTheme,
+            fontSize = toFontSizeName(appPreferences.fontSize),
+            smartphoneScreen = appPreferences.smartphoneScreen,
+            currency = toCurrencySymbol(appPreferences.currency),
+            displayCurrencyToLeft = toCurrencyDisplayToLeft(appPreferences.currency),
+            taxRate = toTaxRateValue(appPreferences.taxRate),
+            taxRateAsPercent = toTaxRateAsPercent(appPreferences.taxRate),
+            shoppingsMultiColumns = appPreferences.shoppingsMultiColumns,
+            productsMultiColumns = appPreferences.productsMultiColumns,
+            displayCompletedPurchases = toDisplayCompletedName(appPreferences.displayCompletedPurchases),
+            displayPurchasesTotal = toDisplayTotalName(appPreferences.displayPurchasesTotal),
+            editProductAfterCompleted = appPreferences.editProductAfterCompleted,
+            saveProductToAutocompletes = appPreferences.saveProductToAutocompletes,
+            lockProductElement = toLockProductElementName(appPreferences.lockProductElement),
+            displayMoney = appPreferences.displayMoney,
+            displayDefaultAutocompletes = appPreferences.displayDefaultAutocompletes
         )
     }
 
@@ -254,7 +265,12 @@ class RepositoryMapping @Inject constructor() {
                 }
             }
             shoppingLists.add(
-                shoppingList.copy(products = products.sortAppVersion14Products(preferences.sort))
+                shoppingList.copy(
+                    products = products.formatAppVersion14Products(
+                        preferences.sort,
+                        preferences.firstLetterUppercase
+                    )
+                )
             )
 
             productsCursor.moveToFirst()
@@ -267,59 +283,54 @@ class RepositoryMapping @Inject constructor() {
         }
 
         return AppVersion14(
-            shoppingLists = shoppingLists.sortAppVersion14ShoppingLists(preferences.sort).toList(),
+            shoppingLists = shoppingLists.formatAppVersion14ShoppingLists(
+                preferences.sort,
+                preferences.firstLetterUppercase
+            ).toList(),
             autocompletes = autocompletes.toList(),
             preferences = toAppVersion14Preferences(preferences)
         )
     }
 
-    fun toEditCurrencySymbol(
-        entity: EditCurrencySymbolEntity,
-        preferencesEntity: SettingsPreferencesEntity
-    ): EditCurrencySymbol {
+    fun toEditCurrencySymbol(preferencesEntity: AppPreferencesEntity): EditCurrencySymbol {
         return EditCurrencySymbol(
-            currency = entity.currency,
-            preferences = toSettingsPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
-    fun toEditTaxRate(
-        entity: EditTaxRateEntity,
-        preferencesEntity: SettingsPreferencesEntity
-    ): EditTaxRate {
+    fun toEditTaxRate(preferencesEntity: AppPreferencesEntity): EditTaxRate {
         return EditTaxRate(
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
-            preferences = toSettingsPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toEditReminder(
         entity: ShoppingListEntity?,
-        preferencesEntity: ProductPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): EditReminder {
         return EditReminder(
             shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toEditShoppingListName(
         entity: ShoppingListEntity?,
-        preferencesEntity: ProductPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): EditShoppingListName {
         return EditShoppingListName(
             shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
     fun toCalculateChange(
         entity: ShoppingListEntity?,
-        preferencesEntity: ProductPreferencesEntity
+        preferencesEntity: AppPreferencesEntity
     ): CalculateChange {
         return CalculateChange(
             shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
-            preferences = toProductPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity)
         )
     }
 
@@ -347,15 +358,14 @@ class RepositoryMapping @Inject constructor() {
         return displayTotal.name
     }
 
-    fun toDisplayAutocompleteName(displayAutocomplete: DisplayAutocomplete): String {
-        return displayAutocomplete.name
+    fun toLockProductElementName(lockProductElement: LockProductElement): String {
+        return lockProductElement.name
     }
 
-    fun toProductLockName(productLock: ProductLock): String {
-        return productLock.name
-    }
-
-    private fun toShoppingList(shoppingListEntity: ShoppingListEntity, preferencesEntity: ShoppingPreferencesEntity): ShoppingList {
+    private fun toShoppingList(
+        shoppingListEntity: ShoppingListEntity,
+        preferencesEntity: AppPreferencesEntity
+    ): ShoppingList {
         val entity = shoppingListEntity.shoppingEntity
         return ShoppingList(
             id = entity.id,
@@ -371,29 +381,8 @@ class RepositoryMapping @Inject constructor() {
             products = shoppingListEntity.productEntities
                 .filter { it.display }
                 .map { toProduct(it, preferencesEntity) },
-            currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
-            displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
-        )
-    }
-
-    private fun toShoppingList(shoppingListEntity: ShoppingListEntity, preferencesEntity: ProductPreferencesEntity): ShoppingList {
-        val entity = shoppingListEntity.shoppingEntity
-        return ShoppingList(
-            id = entity.id,
-            position = entity.position,
-            uid = entity.uid,
-            created = entity.created,
-            lastModified = entity.lastModified,
-            name = entity.name,
-            reminder = toReminder(entity.reminder),
-            archived = entity.archived,
-            deleted = entity.deleted,
-            completed = toCompleted(shoppingListEntity.productEntities),
-            products = shoppingListEntity.productEntities
-                .filter { it.display }
-                .map { toProduct(it, preferencesEntity) },
-            currency = toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft),
-            displayTotal = toDisplayTotal(preferencesEntity.displayTotal)
+            currency = toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft),
+            displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal)
         )
     }
 
@@ -408,51 +397,6 @@ class RepositoryMapping @Inject constructor() {
             uid = toAppVersion14ShoppingUid(id),
             name = name,
             reminder = toReminder(alarm)
-        )
-    }
-
-    private fun toShoppingListPreferences(entity: ShoppingPreferencesEntity): ShoppingListPreferences {
-        return ShoppingListPreferences(
-            currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
-            fontSize = toFontSize(entity.fontSize),
-            firstLetterUppercase = entity.firstLetterUppercase,
-            multiColumns = entity.multiColumns,
-            displayMoney = entity.displayMoney,
-            displayCompleted = toDisplayCompleted(entity.displayCompleted),
-            displayTotal = toDisplayTotal(entity.displayTotal),
-            screenSize = toScreenSize(entity.screenSize),
-            maxProducts = entity.maxProducts
-        )
-    }
-
-    private fun toProduct(entity: ProductEntity, preferencesEntity: ProductPreferencesEntity): Product {
-        return Product(
-            id = entity.id,
-            position = entity.position,
-            productUid = entity.productUid,
-            shoppingUid = entity.shoppingUid,
-            created = entity.created,
-            lastModified = entity.lastModified,
-            name = entity.name,
-            quantity = toQuantity(entity.quantity, entity.quantitySymbol),
-            price = toMoney(
-                entity.price,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            discount = toDiscount(
-                entity.discount,
-                entity.discountAsPercent,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            taxRate = toTaxRate(preferencesEntity.taxRate, preferencesEntity.taxRateAsPercent),
-            total = toMoney(
-                entity.total,
-                toCurrency(preferencesEntity.currency, preferencesEntity.currencyDisplayToLeft)
-            ),
-            totalFormatted = entity.totalFormatted,
-            note = entity.note,
-            completed = entity.completed
         )
     }
 
@@ -485,25 +429,6 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    private fun toProductPreferences(entity: ProductPreferencesEntity): ProductPreferences {
-        return ProductPreferences(
-            currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
-            fontSize = toFontSize(entity.fontSize),
-            firstLetterUppercase = entity.firstLetterUppercase,
-            multiColumns = entity.multiColumns,
-            displayMoney = entity.displayMoney,
-            displayCompleted = toDisplayCompleted(entity.displayCompleted),
-            displayTotal = toDisplayTotal(entity.displayTotal),
-            displayAutocomplete = toDisplayAutocomplete(entity.displayAutocomplete),
-            displayDefaultAutocomplete = entity.displayDefaultAutocomplete,
-            productLock = toProductLock(entity.productLock),
-            editCompleted = entity.editCompleted,
-            addLastProduct = entity.addLastProduct,
-            screenSize = toScreenSize(entity.screenSize)
-        )
-    }
-
     private fun toAutocomplete(entity: AutocompleteEntity): Autocomplete {
         return Autocomplete(
             id = entity.id,
@@ -519,59 +444,17 @@ class RepositoryMapping @Inject constructor() {
         return Autocomplete(name = name)
     }
 
-    private fun toAutocompletePreferences(entity: AutocompletePreferencesEntity): AutocompletePreferences {
-        return AutocompletePreferences(
-            currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
-            fontSize = toFontSize(entity.fontSize),
-            firstLetterUppercase = entity.firstLetterUppercase,
-            screenSize = toScreenSize(entity.screenSize)
-        )
-    }
-
-    private fun toSettingsValues(
-        entity: SettingsEntity,
-        resourcesEntity: SettingsResourcesEntity
-    ): SettingsValues {
-        return SettingsValues(
-            nightTheme = entity.nightTheme,
-            currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
-            fontSize = toFontSize(entity.fontSize),
-            firstLetterUppercase = entity.firstLetterUppercase,
-            displayMoney = entity.displayMoney,
-            displayCompleted = toDisplayCompleted(entity.displayCompleted),
-            shoppingsMultiColumns = entity.shoppingsMultiColumns,
-            productsMultiColumns = entity.productsMultiColumns,
-            productsDisplayAutocomplete = toDisplayAutocomplete(entity.productsDisplayAutocomplete),
-            productsDisplayDefaultAutocomplete = entity.productsDisplayDefaultAutocomplete,
-            productsEditCompleted = entity.productsEditCompleted,
-            productsAddLastProduct = entity.productsAddLastProduct,
-            developerName = toDeveloperName(resourcesEntity),
-            developerEmail = toDeveloperEmail(resourcesEntity),
-            appVersion = BuildConfig.VERSION_NAME,
-            appGithubLink = toAppGithubLink(resourcesEntity)
-        )
-    }
-
-    private fun toSettingsPreferences(entity: SettingsPreferencesEntity): SettingsPreferences {
-        return SettingsPreferences(
-            fontSize = toFontSize(entity.fontSize),
-            screenSize = toScreenSize(entity.screenSize)
-        )
-    }
-
     private fun toAppVersion14Preferences(entity: AppVersion14PreferencesEntity): AppVersion14Preferences {
         return AppVersion14Preferences(
             firstOpened = entity.firstOpened,
-            currency = toCurrency(entity.currency, entity.currencyDisplayToLeft),
+            currency = toCurrency(entity.currency, entity.displayCurrencyToLeft),
             taxRate = toTaxRate(entity.taxRate, true),
             fontSize = toFontSize(entity.titleFontSize),
-            firstLetterUppercase = entity.firstLetterUppercase,
             multiColumns = toMultiColumns(entity.columnCount),
             displayMoney = entity.displayMoney,
             displayTotal = toDisplayTotal(entity.displayTotal),
-            editCompleted = entity.editCompleted,
-            addLastProduct = entity.addLastProduct
+            editProductAfterCompleted = entity.editProductAfterCompleted,
+            saveProductToAutocompletes = entity.saveProductToAutocompletes
         )
     }
 
@@ -585,22 +468,6 @@ class RepositoryMapping @Inject constructor() {
 
     private fun toCurrencyDisplayToLeft(currency: Currency): Boolean {
         return currency.displayToLeft
-    }
-
-    private fun toScreenSizeName(screenSize: ScreenSize): String {
-        return screenSize.name
-    }
-
-    private fun toDeveloperName(entity: SettingsResourcesEntity): String {
-        return entity.developerName
-    }
-
-    private fun toDeveloperEmail(entity: SettingsResourcesEntity): String {
-        return entity.developerEmail
-    }
-
-    private fun toAppGithubLink(entity: SettingsResourcesEntity): String {
-        return entity.appGithubLink
     }
 
     private fun toAppOpenedAction(name: String, appVersion14FirstOpened: Boolean): AppOpenedAction {
@@ -691,14 +558,6 @@ class RepositoryMapping @Inject constructor() {
         }
     }
 
-    private fun toDisplayAutocomplete(name: String): DisplayAutocomplete {
-        return DisplayAutocomplete.valueOfOrDefault(name)
-    }
-
-    private fun toScreenSize(name: String): ScreenSize {
-        return ScreenSize.valueOfOrDefault(name)
-    }
-
     private fun toReminder(reminder: Long): Long? {
         return if (reminder == 0L) null else reminder
     }
@@ -707,8 +566,8 @@ class RepositoryMapping @Inject constructor() {
         return reminder ?: 0L
     }
 
-    private fun toProductLock(name: String): ProductLock {
-        return ProductLock.valueOfOrDefault(name)
+    private fun toLockProductElement(name: String): LockProductElement {
+        return LockProductElement.valueOfOrDefault(name)
     }
 
     private fun toCompleted(entities: List<ProductEntity>): Boolean {
@@ -728,19 +587,35 @@ class RepositoryMapping @Inject constructor() {
         return buy == completed
     }
 
-    private fun List<ShoppingList>.sortAppVersion14ShoppingLists(sort: Int): List<ShoppingList> {
+    private fun List<ShoppingList>.formatAppVersion14ShoppingLists(
+        sort: Int,
+        firstLetterUppercase: Boolean
+    ): List<ShoppingList> {
         return when (sort) {
             1, 3 -> this.sortedBy { it.name }
             2, 4 -> this.sortedBy { it.calculateTotal().value }
             else -> this.sortedBy { it.id }
-        }.withIndex().map { it.value.copy(position = it.index) }
+        }.withIndex().map {
+            it.value.copy(
+                position = it.index,
+                name = it.value.name.formatFirst(firstLetterUppercase)
+            )
+        }
     }
 
-    private fun List<Product>.sortAppVersion14Products(sort: Int): List<Product> {
+    private fun List<Product>.formatAppVersion14Products(
+        sort: Int,
+        firstLetterUppercase: Boolean
+    ): List<Product> {
         return when (sort) {
             1, 3 -> this.sortedBy { it.name }
             2, 4 -> this.sortedBy { it.total.value }
             else -> this.sortedBy { it.id }
-        }.withIndex().map { it.value.copy(position = it.index) }
+        }.withIndex().map {
+            it.value.copy(
+                position = it.index,
+                name = it.value.name.formatFirst(firstLetterUppercase)
+            )
+        }
     }
 }

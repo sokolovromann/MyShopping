@@ -7,13 +7,9 @@ interface SettingsRepository {
 
     suspend fun getSettings(): Flow<Settings>
 
-    suspend fun displayProductsAutocompleteAll()
+    suspend fun displayCompletedPurchasesFirst()
 
-    suspend fun displayProductAutocompleteName()
-
-    suspend fun displayCompletedFirst()
-
-    suspend fun displayCompletedLast()
+    suspend fun displayCompletedPurchasesLast()
 
     suspend fun tinyFontSizeSelected()
 
@@ -31,19 +27,15 @@ interface SettingsRepository {
 
     suspend fun invertDisplayCurrencyToLeft()
 
-    suspend fun invertFirstLetterUppercase()
-
     suspend fun invertShoppingListsMultiColumns()
 
     suspend fun invertProductsMultiColumns()
 
-    suspend fun invertProductsEditCompleted()
+    suspend fun invertEditProductAfterCompleted()
 
-    suspend fun invertProductsAddLastProduct()
+    suspend fun invertSaveProductToAutocompletes()
 
-    suspend fun invertProductsDisplayDefaultAutocomplete()
+    suspend fun invertDisplayDefaultAutocompletes()
 
-    suspend fun hideProductsAutocomplete()
-
-    suspend fun hideCompleted()
+    suspend fun hideCompletedPurchases()
 }

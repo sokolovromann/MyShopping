@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.EditCurrencySymbolDao
@@ -15,15 +15,13 @@ class EditCurrencySymbolRepositoryImpl @Inject constructor(
 ) : EditCurrencySymbolRepository {
 
     override suspend fun getEditCurrencySymbol(): Flow<EditCurrencySymbol> = withContext(dispatchers.io) {
-        return@withContext currencyDao.getEditCurrency().combine(
-            flow = currencyDao.getSettingsPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toEditCurrencySymbol(entity, preferencesEntity)
-            }
-        )
+        return@withContext currencyDao.getAppPreferences().transform{
+            val value = mapping.toEditCurrencySymbol(it)
+            emit(value)
+        }
     }
 
     override suspend fun editCurrencySymbol(symbol: String): Unit = withContext(dispatchers.io) {
-        currencyDao.editCurrency(symbol)
+        currencyDao.saveCurrency(symbol)
     }
 }

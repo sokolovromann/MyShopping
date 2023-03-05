@@ -1,8 +1,8 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
-data class AddEditProductProducts(
+ data class AddEditProductProducts(
     val products: List<Product> = listOf(),
-    val preferences: ProductPreferences = ProductPreferences()
+    val preferences: AppPreferences = AppPreferences()
 ) {
     private val defaultQuantitiesLimit: Int = 5
     private val defaultPricesLimit: Int = 3

@@ -171,7 +171,7 @@
     </string-array>
     <string name="data_text_defaultCurrency">\ ₴</string>
     <string name="data_text_developerName">Roman Sokolov</string>
-    <bool name="data_value_defaultCurrencyDisplayToLeft">false</bool>
+    <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
     <string name="drawer_action_openArchive">@string/archive_header</string>
     <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
@@ -252,47 +252,42 @@
     <string name="purchases_text_productsNotFound">Список покупок порожній</string>
     <string name="purchases_text_shoppingListsNotFound">У вас немає покупок</string>
 
-    <string name="settings_action_displayAllAutocomplete">Усі підказки</string>
-    <string name="settings_action_displayCompletedFirst">На початку</string>
-    <string name="settings_action_displayCompletedLast">В кінці</string>
-    <string name="settings_action_displayNameAutocomplete">Тільки назви</string>
-    <string name="settings_action_selectHideAutocomplete">Приховувати</string>
-    <string name="settings_action_selectHideCompleted">Приховувати</string>
+    <string name="settings_action_displayCompletedPurchasesFirst">На початку</string>
+    <string name="settings_action_displayCompletedPurchasesLast">В кінці</string>
+    <string name="settings_action_hideCompletedPurchases">Приховувати</string>
     <string name="settings_action_selectHugeFontSize">Величезний</string>
     <string name="settings_action_selectLargeFontSize">Великий</string>
     <string name="settings_action_selectMediumFontSize">Середній</string>
     <string name="settings_action_selectSmallFontSize">Маленький</string>
     <string name="settings_action_selectTinyFontSize">Дуже маленький</string>
-    <string name="settings_body_addLastProduct">Будь-які товари зберігатимуться у підказки</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
-    <string name="settings_body_editCompletedProduct">Відкриється екран для редагування</string>
+    <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування</string>
     <string name="settings_body_email">Натисніть, щоб написати</string>
-    <string name="settings_body_firstLetterUppercase">У назвах списків, товарів та підказок</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_productsMultiColumns">Кількість розраховується автоматично</string>
+    <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться у підказки</string>
     <string name="settings_body_shoppingsMultiColumns">Кількість розраховується автоматично</string>
     <string name="settings_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="settings_header_aboutApp">Про програму</string>
+    <string name="settings_header_autocompletes">Підказки</string>
     <string name="settings_header_generalSettings">Загальні</string>
     <string name="settings_header_money">Гроші</string>
     <string name="settings_header_purchases">Покупки</string>
     <string name="settings_header_settings">Налаштування</string>
-    <string name="settings_title_addLastProduct">Зберігати невідомі товари</string>
     <string name="settings_title_appVersion">Версія програми</string>
     <string name="settings_title_currencySymbol">Валюта</string>
     <string name="settings_title_developer">Розробник</string>
-    <string name="settings_title_displayAutocomplete">Відображати підказки</string>
-    <string name="settings_title_displayCompleted">Показувати куплені товари</string>
+    <string name="settings_title_displayCompletedPurchases">Показувати куплені товари</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
-    <string name="settings_title_displayDefaultAutocomplete">Показувати підказки за замовчуванням</string>
+    <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>
     <string name="settings_title_displayMoney">Показувати гроші</string>
-    <string name="settings_title_editCompletedProduct">Редагувати товар після покупки</string>
+    <string name="settings_title_editProductAfterCompleted">Редагувати товар після покупки</string>
     <string name="settings_title_email">Email</string>
-    <string name="settings_title_firstLetterUppercase">Перша буква завжди велика</string>
     <string name="settings_title_fontSize">Розмір тексту</string>
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_productsMultiColumns">Декілька стовпців у товарах</string>
+    <string name="settings_title_saveProductToAutocompletes">Зберігати невідомі товари</string>
     <string name="settings_title_shoppingsMultiColumns">Декілька стовпців у списках</string>
     <string name="settings_title_taxRate">Податкова ставка</string>
 

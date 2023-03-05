@@ -43,11 +43,11 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.MoveShoppingListDown -> moveShoppingListDown(event)
 
-            PurchasesEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
+            PurchasesEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
             is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            is PurchasesEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
+            is PurchasesEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             is PurchasesEvent.ShowProducts -> showProducts(event)
 
@@ -59,7 +59,7 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
-            PurchasesEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
+            PurchasesEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
 
             PurchasesEvent.FinishApp -> finishApp()
         }
@@ -144,8 +144,8 @@ class PurchasesViewModel @Inject constructor(
         repository.swapShoppingLists(shoppingList.first, shoppingList.second)
     }
 
-    private fun selectShoppingListsDisplayTotal() {
-        purchasesState.showDisplayTotal()
+    private fun selectDisplayPurchasesTotal() {
+        purchasesState.selectDisplayPurchasesTotal()
     }
 
     private fun selectNavigationItem(
@@ -160,17 +160,17 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun displayShoppingListsTotal(
-        event: PurchasesEvent.DisplayShoppingListsTotal
+    private fun displayPurchasesTotal(
+        event: PurchasesEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
         when (event.displayTotal) {
-            DisplayTotal.ALL -> repository.displayShoppingListsAllTotal()
-            DisplayTotal.COMPLETED -> repository.displayShoppingListsCompletedTotal()
-            DisplayTotal.ACTIVE -> repository.displayShoppingListsActiveTotal()
+            DisplayTotal.ALL -> repository.displayAllPurchasesTotal()
+            DisplayTotal.COMPLETED -> repository.displayCompletedPurchasesTotal()
+            DisplayTotal.ACTIVE -> repository.displayActivePurchasesTotal()
         }
 
         withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
+            hideDisplayPurchasesTotal()
         }
     }
 
@@ -196,8 +196,8 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.hideShoppingListMenu()
     }
 
-    private fun hideShoppingListsDisplayTotal() {
-        purchasesState.hideDisplayTotal()
+    private fun hideDisplayPurchasesTotal() {
+        purchasesState.hideDisplayPurchasesTotal()
     }
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {

@@ -38,7 +38,7 @@ fun Products.getProductsItems(): List<ProductItem> {
 }
 
 fun Products.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), preferences.displayTotal)
+    return totalToText(calculateTotal(), preferences.displayPurchasesTotal)
 }
 
 private fun totalToText(total: Money, displayTotal: DisplayTotal): UiText {

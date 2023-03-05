@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.SettingsRepository
-import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
@@ -41,13 +40,11 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            SettingsEvent.SelectDisplayCompleted -> selectDisplayCompleted()
+            SettingsEvent.SelectDisplayCompletedPurchases -> selectDisplayCompletedPurchases()
 
             is SettingsEvent.FontSizeSelected -> fontSizeSelected(event)
 
-            is SettingsEvent.DisplayAutocompleteSelected -> displayAutocompleteSelected(event)
-
-            is SettingsEvent.DisplayCompletedSelected -> displayCompletedSelected(event)
+            is SettingsEvent.DisplayCompletedPurchasesSelected -> displayCompletedPurchasesSelected(event)
 
             SettingsEvent.ShowBackScreen -> showBackScreen()
 
@@ -57,9 +54,7 @@ class SettingsViewModel @Inject constructor(
 
             SettingsEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
-            SettingsEvent.HideProductsDisplayAutocomplete -> hideProductsDisplayAutocomplete()
-
-            SettingsEvent.HideDisplayCompleted -> hideDisplayCompleted()
+            SettingsEvent.HideDisplayCompletedPurchases -> hideDisplayCompletedPurchases()
         }
     }
 
@@ -93,8 +88,6 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.FontSize -> selectFontSize()
 
-            SettingsUid.FirstLetterUppercase -> invertFirstLetterUppercase()
-
             SettingsUid.DisplayMoney -> invertDisplayMoney()
 
             SettingsUid.Currency -> editCurrencySymbol()
@@ -107,15 +100,13 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.ProductsMultiColumns -> invertProductsMultiColumns()
 
-            SettingsUid.DisplayAutocomplete -> selectProductsDisplayAutocomplete()
-
             SettingsUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
 
-            SettingsUid.DisplayCompleted -> selectDisplayCompleted()
+            SettingsUid.DisplayCompletedPurchases -> selectDisplayCompletedPurchases()
 
-            SettingsUid.EditCompleted -> invertProductsEditCompleted()
+            SettingsUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
 
-            SettingsUid.AddProduct -> invertProductsAddLastProducts()
+            SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
             SettingsUid.Email -> sendEmailToDeveloper()
 
@@ -125,10 +116,6 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectFontSize() {
         settingsState.showFontSize()
-    }
-
-    private fun selectProductsDisplayAutocomplete() {
-        settingsState.showDisplayAutocomplete()
     }
 
     private fun selectNavigationItem(
@@ -143,8 +130,8 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun selectDisplayCompleted() {
-        settingsState.showDisplayCompleted()
+    private fun selectDisplayCompletedPurchases() {
+        settingsState.showDisplayCompletedPurchases()
     }
 
     private fun fontSizeSelected(
@@ -163,31 +150,17 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun displayAutocompleteSelected(
-        event: SettingsEvent.DisplayAutocompleteSelected
-    ) = viewModelScope.launch {
-        when (event.displayAutocomplete) {
-            DisplayAutocomplete.ALL -> repository.displayProductsAutocompleteAll()
-            DisplayAutocomplete.NAME -> repository.displayProductAutocompleteName()
-            DisplayAutocomplete.HIDE -> repository.hideProductsAutocomplete()
-        }
-
-        withContext(dispatchers.main) {
-            hideProductsDisplayAutocomplete()
-        }
-    }
-
-    private fun displayCompletedSelected(
-        event: SettingsEvent.DisplayCompletedSelected
+    private fun displayCompletedPurchasesSelected(
+        event: SettingsEvent.DisplayCompletedPurchasesSelected
     ) = viewModelScope.launch {
         when (event.displayCompleted) {
-            DisplayCompleted.FIRST -> repository.displayCompletedFirst()
-            DisplayCompleted.LAST -> repository.displayCompletedLast()
-            DisplayCompleted.HIDE -> repository.hideCompleted()
+            DisplayCompleted.FIRST -> repository.displayCompletedPurchasesFirst()
+            DisplayCompleted.LAST -> repository.displayCompletedPurchasesLast()
+            DisplayCompleted.HIDE -> repository.hideCompletedPurchases()
         }
 
         withContext(dispatchers.main) {
-            hideDisplayCompleted()
+            hideDisplayCompletedPurchases()
         }
     }
 
@@ -203,10 +176,6 @@ class SettingsViewModel @Inject constructor(
         repository.invertDisplayCurrencyToLeft()
     }
 
-    private fun invertFirstLetterUppercase() = viewModelScope.launch {
-        repository.invertFirstLetterUppercase()
-    }
-
     private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
         repository.invertShoppingListsMultiColumns()
     }
@@ -215,25 +184,26 @@ class SettingsViewModel @Inject constructor(
         repository.invertProductsMultiColumns()
     }
 
-    private fun invertProductsEditCompleted() = viewModelScope.launch {
-        repository.invertProductsEditCompleted()
+    private fun invertEditProductAfterCompleted() = viewModelScope.launch {
+        repository.invertEditProductAfterCompleted()
     }
 
-    private fun invertProductsAddLastProducts() = viewModelScope.launch {
-        repository.invertProductsAddLastProduct()
+    private fun invertSaveProductToAutocompletes() = viewModelScope.launch {
+        repository.invertSaveProductToAutocompletes()
     }
 
     private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
-        repository.invertProductsDisplayDefaultAutocomplete()
+        repository.invertDisplayDefaultAutocompletes()
     }
 
     private fun sendEmailToDeveloper() = viewModelScope.launch {
-        val email = repository.getSettings().firstOrNull()
-            ?.settingsValues?.developerEmail ?: return@launch
-        val subject = "MyShopping"
+        repository.getSettings().firstOrNull()?.let {
+            val subject = "MyShopping"
 
-        withContext(dispatchers.main) {
-            _screenEventFlow.emit(SettingsScreenEvent.SendEmailToDeveloper(email, subject))
+            withContext(dispatchers.main) {
+                val event = SettingsScreenEvent.SendEmailToDeveloper(it.developerEmail, subject)
+                _screenEventFlow.emit(event)
+            }
         }
     }
 
@@ -246,11 +216,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun showAppGithub() = viewModelScope.launch {
-        val githubLink = repository.getSettings().firstOrNull()
-            ?.settingsValues?.appGithubLink ?: return@launch
-
-        withContext(dispatchers.main) {
-            _screenEventFlow.emit(SettingsScreenEvent.ShowAppGithub(githubLink))
+        repository.getSettings().firstOrNull()?.let {
+            withContext(dispatchers.main) {
+                val event = SettingsScreenEvent.ShowAppGithub(it.appGithubLink)
+                _screenEventFlow.emit(event)
+            }
         }
     }
 
@@ -262,11 +232,7 @@ class SettingsViewModel @Inject constructor(
         _screenEventFlow.emit(SettingsScreenEvent.HideNavigationDrawer)
     }
 
-    private fun hideProductsDisplayAutocomplete() {
-        settingsState.hideDisplayAutocomplete()
-    }
-
-    private fun hideDisplayCompleted() {
-        settingsState.hideDisplayCompleted()
+    private fun hideDisplayCompletedPurchases() {
+        settingsState.hideDisplayCompletedPurchases()
     }
 }

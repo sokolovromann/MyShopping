@@ -29,11 +29,11 @@ sealed class ProductsEvent {
 
     object SelectProductsSort : ProductsEvent()
 
-    object SelectProductsDisplayTotal : ProductsEvent()
+    object SelectDisplayPurchasesTotal : ProductsEvent()
 
     data class SortProducts(val sortBy: SortBy) : ProductsEvent()
 
-    data class DisplayProductsTotal(val displayTotal: DisplayTotal) : ProductsEvent()
+    data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ProductsEvent()
 
     data class CompleteProduct(val uid: String) : ProductsEvent()
 
@@ -51,7 +51,7 @@ sealed class ProductsEvent {
 
     object HideProductsSort : ProductsEvent()
 
-    object HideProductsDisplayTotal : ProductsEvent()
+    object HideDisplayPurchasesTotal : ProductsEvent()
 
     object CalculateChange : ProductsEvent()
 }

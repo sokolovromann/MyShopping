@@ -19,7 +19,7 @@ class MoveProductState {
         screenData = MoveProductScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: ShoppingListPreferences, location: ShoppingListLocation) {
+    fun showNotFound(preferences: AppPreferences, location: ShoppingListLocation) {
         shoppingLists = listOf()
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
@@ -32,13 +32,13 @@ class MoveProductState {
         this.shoppingLists = shoppingLists.formatShoppingLists()
         val preferences = shoppingLists.preferences
 
-        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
+        val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         screenData = MoveProductScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
-            multiColumns = preferences.multiColumns,
+            multiColumns = preferences.shoppingsMultiColumns,
             location = location,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists

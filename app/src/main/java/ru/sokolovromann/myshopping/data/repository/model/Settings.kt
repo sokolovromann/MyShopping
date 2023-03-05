@@ -1,6 +1,9 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 data class Settings(
-    val settingsValues: SettingsValues = SettingsValues(),
-    val preferences: SettingsPreferences = SettingsPreferences()
+    val developerName: String = "",
+    val developerEmail: String = "",
+    val appVersion: String = "",
+    val appGithubLink: String = "",
+    val preferences: AppPreferences = AppPreferences()
 )

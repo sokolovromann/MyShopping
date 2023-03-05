@@ -19,13 +19,13 @@ class EditReminderRepositoryImpl @Inject constructor(
 
     override suspend fun getEditReminder(uid: String?): Flow<EditReminder> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getProductsPreferences().transform {
+            preferencesDao.getAppPreferences().transform {
                 val value = mapping.toEditReminder(null, it)
                 emit(value)
             }
         } else {
             reminderDao.getShoppingList(uid).combine(
-                flow = preferencesDao.getProductsPreferences(),
+                flow = preferencesDao.getAppPreferences(),
                 transform = { entity, preferencesEntity ->
                     mapping.toEditReminder(entity, preferencesEntity)
                 }

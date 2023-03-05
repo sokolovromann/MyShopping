@@ -25,16 +25,17 @@ class ProductsState {
         screenData = ProductsScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: ProductPreferences, shoppingListName: String, reminder: Long?) {
+    fun showNotFound(preferences: AppPreferences, shoppingListName: String, reminder: Long?) {
         screenData = ProductsScreenData(
             screenState = ScreenState.Nothing,
             shoppingListName = UiText.FromString(shoppingListName),
             reminderText = toReminderText(reminder),
-            displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize
+            displayTotal = preferences.displayPurchasesTotal,
+            fontSize = preferences.fontSize,
+            displayMoney = preferences.displayMoney
         )
 
-        editCompleted = preferences.editCompleted
+        editCompleted = preferences.editProductAfterCompleted
         products = Products(preferences = preferences)
     }
 
@@ -52,7 +53,7 @@ class ProductsState {
             UiText.FromString(products.formatName())
         }
 
-        val showHiddenProducts = preferences.displayCompleted == DisplayCompleted.HIDE
+        val showHiddenProducts = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && products.hasHiddenProducts()
 
         screenData = ProductsScreenData(
@@ -61,13 +62,14 @@ class ProductsState {
             products = products.getProductsItems(),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
-            multiColumns = preferences.multiColumns,
-            displayTotal = preferences.displayTotal,
+            multiColumns = preferences.productsMultiColumns,
+            displayTotal = preferences.displayPurchasesTotal,
             showHiddenProducts = showHiddenProducts,
-            fontSize = preferences.fontSize
+            fontSize = preferences.fontSize,
+            displayMoney = preferences.displayMoney
         )
 
-        editCompleted = preferences.editCompleted
+        editCompleted = preferences.editProductAfterCompleted
 
         var total = 0f
         products.shoppingList.products.forEach {
@@ -99,7 +101,7 @@ class ProductsState {
         )
     }
 
-    fun showDisplayTotal() {
+    fun selectDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
@@ -115,7 +117,7 @@ class ProductsState {
         screenData = screenData.copy(showSort = false)
     }
 
-    fun hideDisplayTotal() {
+    fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
     }
 
@@ -253,5 +255,6 @@ data class ProductsScreenData(
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val showHiddenProducts: Boolean = false,
-    val fontSize: FontSize = FontSize.MEDIUM
+    val fontSize: FontSize = FontSize.MEDIUM,
+    val displayMoney: Boolean = true
 )

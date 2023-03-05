@@ -110,13 +110,13 @@ fun ProductsScreen(
                             expanded = screenData.showDisplayTotal,
                             onExpanded = {
                                 if (it) {
-                                    viewModel.onEvent(ProductsEvent.SelectProductsDisplayTotal)
+                                    viewModel.onEvent(ProductsEvent.SelectDisplayPurchasesTotal)
                                 } else {
-                                    viewModel.onEvent(ProductsEvent.HideProductsDisplayTotal)
+                                    viewModel.onEvent(ProductsEvent.HideDisplayPurchasesTotal)
                                 }
                             },
                             onSelected = {
-                                val event = ProductsEvent.DisplayProductsTotal(it)
+                                val event = ProductsEvent.DisplayPurchasesTotal(it)
                                 viewModel.onEvent(event)
                             }
                         )
@@ -160,10 +160,12 @@ fun ProductsScreen(
                                 },
                                 onClick = { viewModel.onEvent(ProductsEvent.SelectProductsSort) }
                             )
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
-                                onClick = { viewModel.onEvent(ProductsEvent.CalculateChange) }
-                            )
+                            if (screenData.displayMoney) {
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.CalculateChange) }
+                                )
+                            }
                             AppDropdownMenuItem(
                                 onClick = { viewModel.onEvent(ProductsEvent.HideProducts) },
                                 text = { Text(text = stringResource(R.string.products_action_deleteProducts)) }

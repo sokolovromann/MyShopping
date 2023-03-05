@@ -42,11 +42,11 @@ class TrashViewModel @Inject constructor(
 
             is TrashEvent.DeleteShoppingList -> deleteShoppingList(event)
 
-            TrashEvent.SelectShoppingListsDisplayTotal -> selectShoppingListsDisplayTotal()
+            TrashEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
             is TrashEvent.SelectNavigationItem -> selectNavigationItem(event)
 
-            is TrashEvent.DisplayShoppingListsTotal -> displayShoppingListsTotal(event)
+            is TrashEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             TrashEvent.ShowBackScreen -> showBackScreen()
 
@@ -60,7 +60,7 @@ class TrashViewModel @Inject constructor(
 
             TrashEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
-            TrashEvent.HideShoppingListsDisplayTotal -> hideShoppingListsDisplayTotal()
+            TrashEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
         }
     }
 
@@ -126,8 +126,8 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun selectShoppingListsDisplayTotal() {
-        trashState.showDisplayTotal()
+    private fun selectDisplayPurchasesTotal() {
+        trashState.selectDisplayPurchasesTotal()
     }
 
     private fun selectNavigationItem(
@@ -142,17 +142,17 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun displayShoppingListsTotal(
-        event: TrashEvent.DisplayShoppingListsTotal
+    private fun displayPurchasesTotal(
+        event: TrashEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
         when (event.displayTotal) {
-            DisplayTotal.ALL -> repository.displayShoppingListsAllTotal()
-            DisplayTotal.COMPLETED -> repository.displayShoppingListsCompletedTotal()
-            DisplayTotal.ACTIVE -> repository.displayShoppingListsActiveTotal()
+            DisplayTotal.ALL -> repository.displayAllPurchasesTotal()
+            DisplayTotal.COMPLETED -> repository.displayCompletedPurchasesTotal()
+            DisplayTotal.ACTIVE -> repository.displayActivePurchasesTotal()
         }
 
         withContext(dispatchers.main) {
-            hideShoppingListsDisplayTotal()
+            hideDisplayPurchasesTotal()
         }
     }
 
@@ -180,7 +180,7 @@ class TrashViewModel @Inject constructor(
         trashState.hideShoppingListMenu()
     }
 
-    private fun hideShoppingListsDisplayTotal() {
-        trashState.hideDisplayTotal()
+    private fun hideDisplayPurchasesTotal() {
+        trashState.hideDisplayPurchasesTotal()
     }
 }

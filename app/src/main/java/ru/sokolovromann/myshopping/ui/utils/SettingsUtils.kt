@@ -11,6 +11,7 @@ fun Settings.getSettingsItems(): Map<UiText, List<SettingsItem>> {
         UiText.FromResources(R.string.settings_header_generalSettings) to getGeneralSettingsItems(),
         UiText.FromResources(R.string.settings_header_money) to getMoneySettingsItems(),
         UiText.FromResources(R.string.settings_header_purchases) to getPurchasesSettingsItems(),
+        UiText.FromResources(R.string.settings_header_autocompletes) to getAutocompletesSettingsItems(),
         UiText.FromResources(R.string.settings_header_aboutApp) to getAboutSettingsItems()
     )
 }
@@ -20,18 +21,12 @@ private fun Settings.getGeneralSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.NightTheme,
             titleText = UiText.FromResources(R.string.settings_title_nightTheme),
-            checked = settingsValues.nightTheme
+            checked = preferences.nightTheme
         ),
         SettingsItem(
             uid = SettingsUid.FontSize,
             titleText = UiText.FromResources(R.string.settings_title_fontSize),
-            bodyText = settingsValues.fontSize.toSettingsText()
-        ),
-        SettingsItem(
-            uid = SettingsUid.FirstLetterUppercase,
-            titleText = UiText.FromResources(R.string.settings_title_firstLetterUppercase),
-            bodyText = UiText.FromResources(R.string.settings_body_firstLetterUppercase),
-            checked = settingsValues.firstLetterUppercase
+            bodyText = preferences.fontSize.toSettingsText()
         )
     )
 }
@@ -41,25 +36,25 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.DisplayMoney,
             titleText = UiText.FromResources(R.string.settings_title_displayMoney),
-            checked = settingsValues.displayMoney
+            checked = preferences.displayMoney
         ),
         SettingsItem(
             uid = SettingsUid.Currency,
             titleText = UiText.FromResources(R.string.settings_title_currencySymbol),
             bodyText = UiText.FromResourcesWithArgs(
                 R.string.settings_body_currencySymbol,
-                settingsValues.currency.symbol
+                preferences.currency.symbol
             )
         ),
         SettingsItem(
             uid = SettingsUid.DisplayCurrencyToLeft,
             titleText = UiText.FromResources(R.string.settings_title_displayCurrencySymbolToLeft),
-            checked = settingsValues.currency.displayToLeft
+            checked = preferences.currency.displayToLeft
         ),
         SettingsItem(
             uid = SettingsUid.TaxRate,
             titleText = UiText.FromResources(R.string.settings_title_taxRate),
-            bodyText = UiText.FromString(settingsValues.taxRate.toString())
+            bodyText = UiText.FromString(preferences.taxRate.toString())
         )
     )
 }
@@ -70,40 +65,40 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
             uid = SettingsUid.ShoppingsMultiColumns,
             titleText = UiText.FromResources(R.string.settings_title_shoppingsMultiColumns),
             bodyText = UiText.FromResources(R.string.settings_body_shoppingsMultiColumns),
-            checked = settingsValues.shoppingsMultiColumns
+            checked = preferences.shoppingsMultiColumns
         ),
         SettingsItem(
             uid = SettingsUid.ProductsMultiColumns,
             titleText = UiText.FromResources(R.string.settings_title_productsMultiColumns),
             bodyText = UiText.FromResources(R.string.settings_body_productsMultiColumns),
-            checked = settingsValues.productsMultiColumns
+            checked = preferences.productsMultiColumns
         ),
         SettingsItem(
-            uid = SettingsUid.DisplayAutocomplete,
-            titleText = UiText.FromResources(R.string.settings_title_displayAutocomplete),
-            bodyText = settingsValues.productsDisplayAutocomplete.toSettingsText()
+            uid = SettingsUid.DisplayCompletedPurchases,
+            titleText = UiText.FromResources(R.string.settings_title_displayCompletedPurchases),
+            bodyText = preferences.displayCompletedPurchases.toPurchasesSettingsText()
         ),
+        SettingsItem(
+            uid = SettingsUid.EditProductAfterCompleted,
+            titleText = UiText.FromResources(R.string.settings_title_editProductAfterCompleted),
+            bodyText = UiText.FromResources(R.string.settings_body_editProductAfterCompleted),
+            checked = preferences.editProductAfterCompleted
+        )
+    )
+}
+
+private fun Settings.getAutocompletesSettingsItems(): List<SettingsItem> {
+    return listOf(
         SettingsItem(
             uid = SettingsUid.DisplayDefaultAutocomplete,
-            titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocomplete),
-            checked = settingsValues.productsDisplayDefaultAutocomplete
+            titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocompletes),
+            checked = preferences.displayDefaultAutocompletes
         ),
         SettingsItem(
-            uid = SettingsUid.DisplayCompleted,
-            titleText = UiText.FromResources(R.string.settings_title_displayCompleted),
-            bodyText = settingsValues.displayCompleted.toSettingsText()
-        ),
-        SettingsItem(
-            uid = SettingsUid.EditCompleted,
-            titleText = UiText.FromResources(R.string.settings_title_editCompletedProduct),
-            bodyText = UiText.FromResources(R.string.settings_body_editCompletedProduct),
-            checked = settingsValues.productsEditCompleted
-        ),
-        SettingsItem(
-            uid = SettingsUid.AddProduct,
-            titleText = UiText.FromResources(R.string.settings_title_addLastProduct),
-            bodyText = UiText.FromResources(R.string.settings_body_addLastProduct),
-            checked = settingsValues.productsAddLastProduct
+            uid = SettingsUid.SaveProductToAutocompletes,
+            titleText = UiText.FromResources(R.string.settings_title_saveProductToAutocompletes),
+            bodyText = UiText.FromResources(R.string.settings_body_saveProductToAutocompletes),
+            checked = preferences.saveProductToAutocompletes
         )
     )
 }
@@ -113,7 +108,7 @@ private fun Settings.getAboutSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.NoUId,
             titleText = UiText.FromResources(R.string.settings_title_developer),
-            bodyText = UiText.FromString(settingsValues.developerName)
+            bodyText = UiText.FromString(developerName)
         ),
         SettingsItem(
             uid = SettingsUid.Email,
@@ -123,7 +118,7 @@ private fun Settings.getAboutSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.NoUId,
             titleText = UiText.FromResources(R.string.settings_title_appVersion),
-            bodyText = UiText.FromString(settingsValues.appVersion)
+            bodyText = UiText.FromString(appVersion)
         ),
         SettingsItem(
             uid = SettingsUid.Github,

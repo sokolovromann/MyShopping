@@ -23,9 +23,9 @@ class MainRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : MainRepository {
 
-    override suspend fun getMainPreferences(): Flow<MainPreferences> = withContext(dispatchers.io) {
-        return@withContext preferencesDao.getMainPreferences().transform {
-            val value = mapping.toMainPreferences(
+    override suspend fun getAppPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
+        return@withContext preferencesDao.getAppPreferences().transform {
+            val value = mapping.toAppPreferences(
                 it,
                 appVersion14Preferences.isMigrateFromAppVersion14()
             )
@@ -35,7 +35,7 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getDefaultCurrency(): Flow<Currency> = withContext(dispatchers.io) {
         return@withContext resources.getCurrencyResources().transform {
-            val value = mapping.toCurrency(it.defaultCurrency, it.defaultCurrencyDisplayToLeft)
+            val value = mapping.toCurrency(it.defaultCurrency, it.displayDefaultCurrencyToLeft)
             emit(value)
         }
     }
@@ -70,9 +70,9 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addPreferences(
-        mainPreferences: MainPreferences
+        appPreferences: AppPreferences
     ): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toMainPreferencesEntity(mainPreferences)
-        preferencesDao.addMainPreferences(entity)
+        val entity = mapping.toAppPreferencesEntity(appPreferences)
+        preferencesDao.saveAppPreferences(entity)
     }
 }

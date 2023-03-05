@@ -48,18 +48,18 @@ class MainViewModel @Inject constructor(
             mainState.showLoading()
         }
 
-        repository.getMainPreferences().collect {
-            applyMainPreferences(it, event)
+        repository.getAppPreferences().collect {
+            applyAppPreferences(it, event)
         }
     }
 
-    private suspend fun applyMainPreferences(
-        mainPreferences: MainPreferences,
+    private suspend fun applyAppPreferences(
+        appPreferences: AppPreferences,
         event: MainEvent.OnCreate
     ) = withContext(dispatchers.main) {
-        mainState.applyPreferences(mainPreferences)
+        mainState.applyPreferences(appPreferences)
 
-        when (mainPreferences.appOpenedAction) {
+        when (appPreferences.appOpenedAction) {
             AppOpenedAction.NOTHING -> showPurchasesOrProducts(event.shoppingUid)
 
             AppOpenedAction.ADD_DEFAULT_DATA -> getDefaultPreferences()
@@ -89,7 +89,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.async {
                 migrateSettings(
                     appVersion14.preferences,
-                    toScreenSize(event.screenWidth)
+                    toSmartphoneScreen(event.screenWidth)
                 )
             }
         )
@@ -114,38 +114,36 @@ class MainViewModel @Inject constructor(
 
     private suspend fun migrateSettings(
         preferences: AppVersion14Preferences,
-        screenSize: ScreenSize
+        smartphoneScreen: Boolean
     ) {
-        val mainPreferences = MainPreferences(
+        val appPreferences = AppPreferences(
             appOpenedAction = AppOpenedAction.NOTHING,
+            fontSize = preferences.fontSize,
+            smartphoneScreen = smartphoneScreen,
             currency = preferences.currency,
             taxRate = preferences.taxRate,
-            fontSize = preferences.fontSize,
-            firstLetterUppercase = preferences.firstLetterUppercase,
             shoppingsMultiColumns = preferences.multiColumns,
-            shoppingsDisplayTotal = preferences.displayTotal,
             productsMultiColumns = preferences.multiColumns,
-            productsDisplayTotal = preferences.displayTotal,
-            productsEditCompleted = preferences.editCompleted,
-            productsAddLastProduct = preferences.addLastProduct,
-            productsDisplayDefaultAutocomplete = false,
+            displayPurchasesTotal = preferences.displayTotal,
+            editProductAfterCompleted = preferences.editProductAfterCompleted,
+            saveProductToAutocompletes = preferences.saveProductToAutocompletes,
             displayMoney = preferences.displayMoney,
-            screenSize = screenSize
+            displayDefaultAutocompletes = false
         )
-        repository.addPreferences(mainPreferences)
+        repository.addPreferences(appPreferences)
     }
 
     private fun addDefaultPreferences(
         event: MainEvent.AddDefaultPreferences
     ) = viewModelScope.launch(dispatchers.io) {
-        val mainPreferences = MainPreferences(
+        val appPreferences = AppPreferences(
             appOpenedAction = AppOpenedAction.NOTHING,
+            smartphoneScreen = toSmartphoneScreen(event.screenWidth),
             currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
             shoppingsMultiColumns = event.screenWidth >= 600,
-            productsMultiColumns = event.screenWidth >= 720,
-            screenSize = toScreenSize(event.screenWidth)
+            productsMultiColumns = event.screenWidth >= 720
         )
-        repository.addPreferences(mainPreferences)
+        repository.addPreferences(appPreferences)
 
         notificationManager.createNotificationChannel()
     }
@@ -161,11 +159,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun toScreenSize(screenWidth: Int): ScreenSize {
-        return if (screenWidth >= 720) {
-            ScreenSize.TABLET
-        } else {
-            ScreenSize.SMARTPHONE
-        }
+    private fun toSmartphoneScreen(screenWidth: Int): Boolean {
+        return screenWidth < 720
     }
 }

@@ -107,13 +107,13 @@ fun TrashScreen(
                         expanded = screenData.showDisplayTotal,
                         onExpanded = {
                             if (it) {
-                                viewModel.onEvent(TrashEvent.SelectShoppingListsDisplayTotal)
+                                viewModel.onEvent(TrashEvent.SelectDisplayPurchasesTotal)
                             } else {
-                                viewModel.onEvent(TrashEvent.HideShoppingListsDisplayTotal)
+                                viewModel.onEvent(TrashEvent.HideDisplayPurchasesTotal)
                             }
                         },
                         onSelected = {
-                            val event = TrashEvent.DisplayShoppingListsTotal(it)
+                            val event = TrashEvent.DisplayPurchasesTotal(it)
                             viewModel.onEvent(event)
                         }
                     )

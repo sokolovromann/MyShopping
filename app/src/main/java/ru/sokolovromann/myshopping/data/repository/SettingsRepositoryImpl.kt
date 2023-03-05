@@ -6,7 +6,6 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.SettingsDao
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
-import ru.sokolovromann.myshopping.data.repository.model.DisplayAutocomplete
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Settings
@@ -21,58 +20,47 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun getSettings(): Flow<Settings> = withContext(dispatchers.io) {
         return@withContext combine(
-            flow = settingsDao.getSettings(),
-            flow2 = settingsDao.getSettingsPreferences(),
-            flow3 = resources.getSettingsResources(),
-            transform = { entity, preferencesEntity, resourcesEntity ->
-                mapping.toSettings(entity, preferencesEntity, resourcesEntity)
+            flow = settingsDao.getAppPreferences(),
+            flow2 = resources.getSettingsResources(),
+            transform = { preferencesEntity, resourcesEntity ->
+                mapping.toSettings(preferencesEntity, resourcesEntity)
             }
         )
     }
 
-    override suspend fun displayProductsAutocompleteAll(): Unit = withContext(dispatchers.io) {
-        val displayAutocomplete = mapping.toDisplayAutocompleteName(DisplayAutocomplete.ALL)
-        settingsDao.displayProductAutocomplete(displayAutocomplete)
-    }
-
-    override suspend fun displayProductAutocompleteName(): Unit = withContext(dispatchers.io) {
-        val displayAutocomplete = mapping.toDisplayAutocompleteName(DisplayAutocomplete.NAME)
-        settingsDao.displayProductAutocomplete(displayAutocomplete)
-    }
-
-    override suspend fun displayCompletedFirst(): Unit = withContext(dispatchers.io) {
+    override suspend fun displayCompletedPurchasesFirst(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.FIRST)
-        settingsDao.displayCompleted(displayCompleted)
+        settingsDao.displayCompletedPurchases(displayCompleted)
     }
 
-    override suspend fun displayCompletedLast(): Unit = withContext(dispatchers.io) {
+    override suspend fun displayCompletedPurchasesLast(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.LAST)
-        settingsDao.displayCompleted(displayCompleted)
+        settingsDao.displayCompletedPurchases(displayCompleted)
     }
 
     override suspend fun tinyFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.TINY)
-        settingsDao.fontSizeSelected(fontSize)
+        settingsDao.saveFontSize(fontSize)
     }
 
     override suspend fun smallFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.SMALL)
-        settingsDao.fontSizeSelected(fontSize)
+        settingsDao.saveFontSize(fontSize)
     }
 
     override suspend fun mediumFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.MEDIUM)
-        settingsDao.fontSizeSelected(fontSize)
+        settingsDao.saveFontSize(fontSize)
     }
 
     override suspend fun largeFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.LARGE)
-        settingsDao.fontSizeSelected(fontSize)
+        settingsDao.saveFontSize(fontSize)
     }
 
     override suspend fun hugeFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.HUGE)
-        settingsDao.fontSizeSelected(fontSize)
+        settingsDao.saveFontSize(fontSize)
     }
 
     override suspend fun invertNightTheme(): Unit = withContext(dispatchers.io) {
@@ -84,11 +72,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invertDisplayCurrencyToLeft(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertCurrencyDisplayToLeft()
-    }
-
-    override suspend fun invertFirstLetterUppercase(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertFirstLetterUppercase()
+        settingsDao.invertDisplayCurrencyToLeft()
     }
 
     override suspend fun invertShoppingListsMultiColumns(): Unit = withContext(dispatchers.io) {
@@ -99,25 +83,20 @@ class SettingsRepositoryImpl @Inject constructor(
         settingsDao.invertProductsMultiColumns()
     }
 
-    override suspend fun invertProductsEditCompleted(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertProductsEditCompleted()
+    override suspend fun invertEditProductAfterCompleted(): Unit = withContext(dispatchers.io) {
+        settingsDao.invertEditProductAfterCompleted()
     }
 
-    override suspend fun invertProductsAddLastProduct(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertProductsAddLastProduct()
+    override suspend fun invertSaveProductToAutocompletes(): Unit = withContext(dispatchers.io) {
+        settingsDao.invertSaveProductToAutocompletes()
     }
 
-    override suspend fun invertProductsDisplayDefaultAutocomplete(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertProductsDisplayDefaultAutocomplete()
+    override suspend fun invertDisplayDefaultAutocompletes(): Unit = withContext(dispatchers.io) {
+        settingsDao.invertDisplayDefaultAutocompletes()
     }
 
-    override suspend fun hideProductsAutocomplete(): Unit = withContext(dispatchers.io) {
-        val displayAutocomplete = mapping.toDisplayAutocompleteName(DisplayAutocomplete.HIDE)
-        settingsDao.displayProductAutocomplete(displayAutocomplete)
-    }
-
-    override suspend fun hideCompleted(): Unit = withContext(dispatchers.io) {
+    override suspend fun hideCompletedPurchases(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
-        settingsDao.displayCompleted(displayCompleted)
+        settingsDao.displayCompletedPurchases(displayCompleted)
     }
 }

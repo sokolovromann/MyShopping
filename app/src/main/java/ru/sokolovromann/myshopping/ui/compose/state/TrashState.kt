@@ -16,11 +16,11 @@ class TrashState {
         screenData = TrashScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: ShoppingListPreferences) {
+    fun showNotFound(preferences: AppPreferences) {
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
-            displayTotal = preferences.displayTotal,
+            displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
         )
     }
@@ -28,7 +28,7 @@ class TrashState {
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         val preferences = shoppingLists.preferences
 
-        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
+        val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         screenData = TrashScreenData(
@@ -36,8 +36,8 @@ class TrashState {
             shoppingLists = shoppingLists.getShoppingListItems(),
             totalText = shoppingLists.calculateTotalToText(),
             showBottomBar = preferences.displayMoney,
-            multiColumns = preferences.multiColumns,
-            displayTotal = preferences.displayTotal,
+            multiColumns = preferences.shoppingsMultiColumns,
+            displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists
         )
@@ -47,7 +47,7 @@ class TrashState {
         screenData = screenData.copy(shoppingListMenuUid = uid)
     }
 
-    fun showDisplayTotal() {
+    fun selectDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
@@ -55,7 +55,7 @@ class TrashState {
         screenData = screenData.copy(shoppingListMenuUid = null)
     }
 
-    fun hideDisplayTotal() {
+    fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
     }
 
