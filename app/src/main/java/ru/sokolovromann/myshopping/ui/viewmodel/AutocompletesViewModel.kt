@@ -28,7 +28,7 @@ class AutocompletesViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<AutocompletesScreenEvent> = _screenEventFlow
 
     init {
-        getAutocompletes()
+        getPersonalAutocompletes()
     }
 
     override fun onEvent(event: AutocompletesEvent) {
@@ -41,6 +41,10 @@ class AutocompletesViewModel @Inject constructor(
 
             is AutocompletesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
+            AutocompletesEvent.SelectAutocompleteLocation -> selectAutocompleteLocation()
+
+            is AutocompletesEvent.ShowAutocompletes -> showAutocompletes(event)
+
             AutocompletesEvent.ShowBackScreen -> showBackScreen()
 
             AutocompletesEvent.ShowNavigationDrawer -> showNavigationDrawer()
@@ -49,27 +53,40 @@ class AutocompletesViewModel @Inject constructor(
 
             AutocompletesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
+            AutocompletesEvent.HideAutocompleteLocation -> hideAutocompleteLocation()
+
             AutocompletesEvent.HideAutocompleteMenu -> hideAutocompleteMenu()
         }
     }
 
-    private fun getAutocompletes() = viewModelScope.launch {
+    private fun getDefaultAutocompletes() = viewModelScope.launch {
         withContext(dispatchers.main) {
             autocompletesState.showLoading()
         }
 
-        repository.getAutocompletes().collect {
-            autocompletesLoaded(it)
+        repository.getDefaultAutocompletes().collect {
+            autocompletesLoaded(it, AutocompleteLocation.DEFAULT)
+        }
+    }
+
+    private fun getPersonalAutocompletes() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            autocompletesState.showLoading()
+        }
+
+        repository.getPersonalAutocompletes().collect {
+            autocompletesLoaded(it, AutocompleteLocation.PERSONAL)
         }
     }
 
     private suspend fun autocompletesLoaded(
-        autocompletes: Autocompletes
+        autocompletes: Autocompletes,
+        location: AutocompleteLocation
     ) = withContext(dispatchers.main) {
         if (autocompletes.autocompletes.isEmpty()) {
-            autocompletesState.showNotFound(autocompletes.preferences)
+            autocompletesState.showNotFound(autocompletes.preferences, location)
         } else {
-            autocompletesState.showAutocompletes(autocompletes)
+            autocompletesState.showAutocompletes(autocompletes, location)
         }
     }
 
@@ -106,6 +123,19 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
+    private fun selectAutocompleteLocation() {
+        autocompletesState.showLocation()
+    }
+
+    private fun showAutocompletes(event: AutocompletesEvent.ShowAutocompletes) {
+        hideAutocompleteLocation()
+
+        when (event.location) {
+            AutocompleteLocation.DEFAULT -> getDefaultAutocompletes()
+            AutocompleteLocation.PERSONAL -> getPersonalAutocompletes()
+        }
+    }
+
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.ShowBackScreen)
     }
@@ -120,6 +150,10 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.HideNavigationDrawer)
+    }
+
+    private fun hideAutocompleteLocation() {
+        autocompletesState.hideLocation()
     }
 
     private fun hideAutocompleteMenu() {

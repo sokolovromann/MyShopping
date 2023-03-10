@@ -37,9 +37,12 @@
 
     <string name="autocompletes_action_deleteAutocomplete">Удалить</string>
     <string name="autocompletes_action_editAutocomplete">Редактировать</string>
+    <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
+    <string name="autocompletes_action_selectPersonalLocation">Личные</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
     <string name="autocompletes_contentDescription_navigationIcon">Показать навигацию</string>
-    <string name="autocompletes_header_autocompletes">Личные подсказки</string>
+    <string name="autocompletes_header_autocompletes">Подсказки</string>
+    <string name="autocompletes_header_location">Показать</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Назад</string>

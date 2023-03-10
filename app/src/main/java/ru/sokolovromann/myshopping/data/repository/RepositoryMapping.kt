@@ -129,52 +129,41 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toAddEditProductProducts(
-        entities: List<ProductEntity>,
-        preferencesEntity: AppPreferencesEntity
-    ): AddEditProductProducts {
-        return AddEditProductProducts(
-            products = entities.map { toProduct(it, preferencesEntity) },
-            preferences = toAppPreferences(preferencesEntity)
-        )
-    }
-
-    fun toAddEditProductAutocompletes(
-        entities: List<AutocompleteEntity>,
-        resources: List<String>?,
-        preferencesEntity: AppPreferencesEntity
-    ): AddEditProductAutocompletes {
-        val autocompletes: MutableList<Autocomplete> = entities
-            .map { toAutocomplete(it) }
-            .toMutableList()
-
-        resources?.forEach {
-            val autocomplete = Autocomplete(name = it, default = true)
-            autocompletes.add(autocomplete)
-        }
-
-        return AddEditProductAutocompletes(
-            autocompletes = autocompletes,
-            preferences = toAppPreferences(preferencesEntity)
-        )
-    }
-
     fun toAutocompleteEntity(autocomplete: Autocomplete): AutocompleteEntity {
         return AutocompleteEntity(
             id = autocomplete.id,
             uid = autocomplete.uid,
             created = autocomplete.created,
             lastModified = autocomplete.lastModified,
-            name = autocomplete.name
+            name = autocomplete.name,
+            quantity = toQuantityValue(autocomplete.quantity),
+            quantitySymbol = toQuantitySymbol(autocomplete.quantity),
+            price = toMoneyValue(autocomplete.price),
+            discount = toDiscountValue(autocomplete.discount),
+            discountAsPercent = toDiscountAsPercent(autocomplete.discount),
+            taxRate = toTaxRateValue(autocomplete.taxRate),
+            taxRateAsPercent = toTaxRateAsPercent(autocomplete.taxRate),
+            total = toMoneyValue(autocomplete.total),
+            personal = autocomplete.personal
         )
     }
 
     fun toAutocompletes(
         entities: List<AutocompleteEntity>,
+        resources: List<String>?,
         preferencesEntity: AppPreferencesEntity
     ): Autocompletes {
+        val autocompletes: MutableList<Autocomplete> = entities
+            .map { toAutocomplete(it, preferencesEntity) }
+            .toMutableList()
+
+        resources?.forEach {
+            val autocomplete = Autocomplete(name = it, personal = false)
+            autocompletes.add(autocomplete)
+        }
+
         return Autocompletes(
-            autocompletes = entities.map { toAutocomplete(it) },
+            autocompletes = autocompletes,
             preferences = toAppPreferences(preferencesEntity)
         )
     }
@@ -184,7 +173,7 @@ class RepositoryMapping @Inject constructor() {
         preferencesEntity: AppPreferencesEntity
     ): AddEditAutocomplete {
         return AddEditAutocomplete(
-            autocomplete = if (entity == null) null else toAutocomplete(entity),
+            autocomplete = if (entity == null) null else toAutocomplete(entity, preferencesEntity),
             preferences = toAppPreferences(preferencesEntity)
         )
     }
@@ -254,14 +243,17 @@ class RepositoryMapping @Inject constructor() {
         preferences: AppVersion14PreferencesEntity
     ): AppVersion14 {
         val shoppingLists = mutableListOf<ShoppingList>()
+        val autocompletes = mutableListOf<Autocomplete>()
         while (shoppingListsCursor.moveToNext()) {
             val shoppingList = toShoppingList(shoppingListsCursor)
 
             val products = mutableListOf<Product>()
             while (productsCursor.moveToNext()) {
                 val product = toProduct(productsCursor, preferences)
+                val autocomplete = toAutocomplete(product)
                 if (product.shoppingUid == shoppingList.uid) {
                     products.add(product)
+                    autocompletes.add(autocomplete)
                 }
             }
             shoppingLists.add(
@@ -276,7 +268,6 @@ class RepositoryMapping @Inject constructor() {
             productsCursor.moveToFirst()
         }
 
-        val autocompletes = mutableListOf<Autocomplete>()
         while (autocompletesCursor.moveToNext()) {
             val autocomplete = toAutocomplete(autocompletesCursor)
             autocompletes.add(autocomplete)
@@ -429,19 +420,46 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    private fun toAutocomplete(entity: AutocompleteEntity): Autocomplete {
+    private fun toAutocomplete(entity: AutocompleteEntity, preferencesEntity: AppPreferencesEntity): Autocomplete {
         return Autocomplete(
             id = entity.id,
             uid = entity.uid,
             created = entity.created,
             lastModified = entity.lastModified,
-            name = entity.name
+            name = entity.name,
+            quantity = toQuantity(entity.quantity, entity.quantitySymbol),
+            price = toMoney(
+                entity.price,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
+            discount = toDiscount(
+                entity.discount,
+                entity.discountAsPercent,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
+            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
+            total = toMoney(
+                entity.total,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
+            personal = entity.personal
         )
     }
 
     private fun toAutocomplete(cursor: Cursor): Autocomplete {
         val name = cursor.getString(cursor.getColumnIndexOrThrow("completename"))
         return Autocomplete(name = name)
+    }
+
+    private fun toAutocomplete(product: Product): Autocomplete {
+        return Autocomplete(
+            name = product.name,
+            quantity = product.quantity,
+            price = product.price,
+            discount = product.discount,
+            taxRate = product.taxRate,
+            total = product.total
+        )
     }
 
     private fun toAppVersion14Preferences(entity: AppVersion14PreferencesEntity): AppVersion14Preferences {

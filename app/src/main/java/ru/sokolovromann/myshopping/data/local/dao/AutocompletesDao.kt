@@ -8,8 +8,11 @@ import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 @Dao
 interface AutocompletesDao {
 
-    @Query("SELECT * FROM autocompletes")
-    fun getAutocompletes(): Flow<List<AutocompleteEntity>>
+    @Query("SELECT * FROM autocompletes WHERE personal = 0")
+    fun getDefaultAutocompletes(): Flow<List<AutocompleteEntity>>
+
+    @Query("SELECT * FROM autocompletes WHERE personal = 1")
+    fun getPersonalAutocompletes(): Flow<List<AutocompleteEntity>>
 
     @Query("DELETE FROM autocompletes WHERE uid = :uid")
     fun deleteAutocomplete(uid: String)

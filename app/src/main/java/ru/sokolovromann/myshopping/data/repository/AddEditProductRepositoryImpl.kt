@@ -18,17 +18,6 @@ class AddEditProductRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : AddEditProductRepository {
 
-    override suspend fun getProducts(
-        search: String
-    ): Flow<AddEditProductProducts> = withContext(dispatchers.io) {
-        return@withContext productDao.getProducts(search).combine(
-            flow = preferencesDao.getAppPreferences(),
-            transform = { entities, preferencesEntity ->
-                mapping.toAddEditProductProducts(entities, preferencesEntity)
-            }
-        )
-    }
-
     override suspend fun getAddEditProduct(
         shoppingUid: String,
         productUid: String?
@@ -54,13 +43,13 @@ class AddEditProductRepositoryImpl @Inject constructor(
 
     override suspend fun getAutocompletes(
         search: String
-    ): Flow<AddEditProductAutocompletes> = withContext(dispatchers.io) {
+    ): Flow<Autocompletes> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = productDao.getAutocompletes(search),
             flow2 = resources.getDefaultAutocompleteNames(search),
             flow3 = preferencesDao.getAppPreferences(),
             transform = { entities, resources, preferencesEntity ->
-                mapping.toAddEditProductAutocompletes(entities, resources, preferencesEntity)
+                mapping.toAutocompletes(entities, resources, preferencesEntity)
             }
         )
     }

@@ -37,9 +37,12 @@
 
     <string name="autocompletes_action_deleteAutocomplete">Видалити</string>
     <string name="autocompletes_action_editAutocomplete">Редагувати</string>
+    <string name="autocompletes_action_selectDefaultLocation">За замовчуванням</string>
+    <string name="autocompletes_action_selectPersonalLocation">Особисті</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Додати підказку</string>
     <string name="autocompletes_contentDescription_navigationIcon">Показати навігацію</string>
-    <string name="autocompletes_header_autocompletes">Особисті підказки</string>
+    <string name="autocompletes_header_autocompletes">Підказки</string>
+    <string name="autocompletes_header_location">Показувати</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Назад</string>

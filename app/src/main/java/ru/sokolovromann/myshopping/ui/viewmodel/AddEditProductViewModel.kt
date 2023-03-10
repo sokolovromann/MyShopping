@@ -106,58 +106,39 @@ class AddEditProductViewModel @Inject constructor(
         } else {
             addEditProductState.populate(addEditProduct)
             getAutocompletes(addEditProduct.formatName())
-            getProducts(addEditProduct.formatName())
         }
     }
 
     private fun getAutocompletes(name: String) = viewModelScope.launch {
         val search = name.trim()
-        val addEditProductAutocompletes = repository.getAutocompletes(search).firstOrNull()
-            ?: AddEditProductAutocompletes()
-        addEditProductAutocompleteLoaded(addEditProductAutocompletes)
+        val autocompletes = repository.getAutocompletes(search).firstOrNull() ?: Autocompletes()
+        autocompletesLoaded(autocompletes)
     }
 
-    private suspend fun addEditProductAutocompleteLoaded(
-        addEditProductAutocompletes: AddEditProductAutocompletes
+    private suspend fun autocompletesLoaded(
+        autocompletes: Autocompletes
     ) = withContext(dispatchers.main) {
-        val autocompletes = addEditProductAutocompletes.formatAutocompletes()
-        if (autocompletes.isEmpty()) {
+        val names = autocompletes.names()
+        if (names.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
         }
 
         val currentName = addEditProductState.screenData.nameValue.text
-        val containsAutocomplete = autocompletes.find { it.name.lowercase() == currentName.lowercase() }
+        val containsAutocomplete = names.find { it.name.lowercase() == currentName.lowercase() }
 
         if (containsAutocomplete == null) {
-            addEditProductState.showAutocompleteNames(autocompletes)
+            addEditProductState.showAutocompleteNames(names)
         } else {
             addEditProductState.hideAutocompleteNames(containsAutocomplete)
         }
-    }
 
-    private fun getProducts(name: String) = viewModelScope.launch {
-        val search = name.trim()
-        val addEditProductProducts = repository.getProducts(search).firstOrNull()
-            ?: AddEditProductProducts()
-        addEditProductProductsLoaded(addEditProductProducts)
-    }
-
-    private suspend fun addEditProductProductsLoaded(
-        addEditProductProducts: AddEditProductProducts
-    ) = withContext(dispatchers.main) {
-        val products = addEditProductProducts.products
-        if (products.isEmpty()) {
-            addEditProductState.hideProducts()
-            return@withContext
-        }
-
-        addEditProductState.showProducts(
-            quantities = addEditProductProducts.quantities(),
-            quantitySymbols = addEditProductProducts.quantitySymbols(),
-            prices = addEditProductProducts.prices(),
-            discounts = addEditProductProducts.discounts(),
-            totals = addEditProductProducts.totals()
+        addEditProductState.showAutocompleteElements(
+            quantities = autocompletes.quantities(),
+            quantitySymbols = autocompletes.quantitySymbols(),
+            prices = autocompletes.prices(),
+            discounts = autocompletes.discounts(),
+            totals = autocompletes.totals()
         )
     }
 
@@ -198,7 +179,6 @@ class AddEditProductViewModel @Inject constructor(
         if (event.value.text.length >= minLength) {
             val search = event.value.text
             getAutocompletes(search)
-            getProducts(search)
         } else {
             addEditProductState.hideAutocompletes()
         }

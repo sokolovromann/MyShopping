@@ -37,9 +37,12 @@
 
     <string name="autocompletes_action_deleteAutocomplete">Löschen</string>
     <string name="autocompletes_action_editAutocomplete">Bearbeiten</string>
+    <string name="autocompletes_action_selectDefaultLocation">Standard</string>
+    <string name="autocompletes_action_selectPersonalLocation">Persönliche</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Autovervollständigung hinzufügen</string>
     <string name="autocompletes_contentDescription_navigationIcon">Navigation anzeigen</string>
-    <string name="autocompletes_header_autocompletes">Persönliche autovervollständigungen</string>
+    <string name="autocompletes_header_autocompletes">Autovervollständigungen</string>
+    <string name="autocompletes_header_location">Anzeige</string>
     <string name="autocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Zurück</string>

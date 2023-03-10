@@ -17,6 +17,7 @@ import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPrefer
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatabase
 import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
+import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
 import ru.sokolovromann.myshopping.data.repository.*
@@ -148,6 +149,11 @@ object AppModule {
     }
 
     @Provides
+    fun providesAutocompletesResources(resources: Resources): AutocompletesResources {
+        return AutocompletesResources(resources)
+    }
+
+    @Provides
     fun providesSettingsResources(resources: Resources): SettingsResources {
         return SettingsResources(resources)
     }
@@ -211,11 +217,12 @@ object AppModule {
     @Provides
     fun providesAutocompletesRepositoryImpl(
         localDatabase: LocalDatabase,
+        resources: AutocompletesResources,
         preferencesDao: AutocompletesPreferencesDao,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): AutocompletesRepositoryImpl {
-        return AutocompletesRepositoryImpl(localDatabase.autocompletesDao(), preferencesDao, mapping, dispatchers)
+        return AutocompletesRepositoryImpl(localDatabase.autocompletesDao(), resources, preferencesDao, mapping, dispatchers)
     }
 
     @Provides

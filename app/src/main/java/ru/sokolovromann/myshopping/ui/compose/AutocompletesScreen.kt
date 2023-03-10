@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -131,10 +132,28 @@ fun AutocompletesScreen(
                 )
             }
         },
+        gridBar = {
+            AutocompleteLocationContent(
+                location = screenData.location,
+                fontSize = screenData.fontSize.toButton().sp,
+                expanded = screenData.showLocation,
+                onExpanded = {
+                    if (it) {
+                        viewModel.onEvent(AutocompletesEvent.SelectAutocompleteLocation)
+                    } else {
+                        viewModel.onEvent(AutocompletesEvent.HideAutocompleteLocation)
+                    }
+                },
+                onSelected = {
+                    val event = AutocompletesEvent.ShowAutocompletes(it)
+                    viewModel.onEvent(event)
+                }
+            )
+        },
         gridContent = {
             AutocompletesGrid(
                 multiColumns = screenData.multiColumns,
-                items = screenData.autocompletes,
+                map = screenData.autocompletes,
                 fontSize = screenData.fontSize,
                 dropdownMenu = {
                     AppDropdownMenu(
@@ -172,7 +191,7 @@ fun AutocompletesScreen(
 private fun AutocompletesGrid(
     modifier: Modifier = Modifier,
     multiColumns: Boolean,
-    items: List<AutocompleteItem>,
+    map: Map<UiText, AutocompleteItems>,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
@@ -188,14 +207,48 @@ private fun AutocompletesGrid(
             Modifier.padding(AutocompleteItemNotMultiColumnsPaddings)
         }
 
-        items.forEach { item ->
+        map.forEach {
             AppMultiColumnsItem(
                 modifier = itemModifier,
                 multiColumns = multiColumns,
-                title = getAutocompleteItemTitleOrNull(item.nameText, fontSize),
-                dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
-                onClick = { onClick(item.uid) },
-                onLongClick = { onLongClick(item.uid) }
+                title = getAutocompleteItemTitleOrNull(it.key, fontSize),
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Composable
+private fun AutocompleteLocationContent(
+    modifier: Modifier = Modifier,
+    location: AutocompleteLocation,
+    fontSize: TextUnit,
+    expanded: Boolean,
+    onExpanded: (Boolean) -> Unit,
+    onSelected: (AutocompleteLocation) -> Unit
+) {
+    TextButton(
+        modifier = modifier,
+        onClick = { onExpanded(true) }
+    ) {
+        Text(
+            text = location.getText().asCompose(),
+            fontSize = fontSize
+        )
+        AppDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { onExpanded(false) },
+            header = { Text(text = stringResource(R.string.autocompletes_header_location)) }
+        ) {
+            AppDropdownMenuItem(
+                onClick = { onSelected(AutocompleteLocation.DEFAULT) },
+                text = { Text(text = stringResource(R.string.autocompletes_action_selectDefaultLocation)) },
+                after = { CheckmarkAppCheckbox(checked = location == AutocompleteLocation.DEFAULT) }
+            )
+            AppDropdownMenuItem(
+                onClick = { onSelected(AutocompleteLocation.PERSONAL) },
+                text = { Text(text = stringResource(R.string.autocompletes_action_selectPersonalLocation)) },
+                after = { CheckmarkAppCheckbox(checked = location == AutocompleteLocation.PERSONAL) }
             )
         }
     }
