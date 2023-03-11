@@ -39,6 +39,10 @@
     <string name="autocompletes_action_editAutocomplete">Edit</string>
     <string name="autocompletes_action_selectDefaultLocation">Default</string>
     <string name="autocompletes_action_selectPersonalLocation">Personal</string>
+    <string name="autocompletes_body_discounts">Discounts: %s</string>
+    <string name="autocompletes_body_prices">Prices: %s</string>
+    <string name="autocompletes_body_quantities">Quantities: %s</string>
+    <string name="autocompletes_body_totals">Totals: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
     <string name="autocompletes_header_autocompletes">Autocompletes</string>

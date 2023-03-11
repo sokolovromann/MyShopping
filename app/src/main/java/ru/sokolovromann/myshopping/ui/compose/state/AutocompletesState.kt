@@ -19,6 +19,7 @@ class AutocompletesState {
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
             location = location,
+            locationEnabled = preferences.displayDefaultAutocompletes,
             fontSize = preferences.fontSize
         )
     }
@@ -31,6 +32,7 @@ class AutocompletesState {
             autocompletes = autocompletes.getAutocompleteItems(),
             multiColumns = !preferences.smartphoneScreen,
             location = location,
+            locationEnabled = preferences.displayDefaultAutocompletes,
             fontSize = preferences.fontSize
         )
     }
@@ -58,5 +60,6 @@ data class AutocompletesScreenData(
     val multiColumns: Boolean = false,
     val location: AutocompleteLocation = AutocompleteLocation.DefaultValue,
     val showLocation: Boolean = false,
+    val locationEnabled: Boolean = true,
     val fontSize: FontSize = FontSize.MEDIUM
 )

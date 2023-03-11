@@ -135,6 +135,7 @@ fun AutocompletesScreen(
         gridBar = {
             AutocompleteLocationContent(
                 location = screenData.location,
+                enabled = screenData.locationEnabled,
                 fontSize = screenData.fontSize.toButton().sp,
                 expanded = screenData.showLocation,
                 onExpanded = {
@@ -182,8 +183,7 @@ fun AutocompletesScreen(
                     viewModel.onEvent(event)
                 }
             )
-        },
-        gridMultiColumnsSpace = screenData.multiColumns
+        }
     )
 }
 
@@ -201,17 +201,10 @@ private fun AutocompletesGrid(
         modifier = modifier,
         multiColumns = multiColumns
     ) {
-        val itemModifier = if (multiColumns) {
-            Modifier
-        } else {
-            Modifier.padding(AutocompleteItemNotMultiColumnsPaddings)
-        }
-
         map.forEach {
-            AppMultiColumnsItem(
-                modifier = itemModifier,
-                multiColumns = multiColumns,
+            AppSurfaceItem(
                 title = getAutocompleteItemTitleOrNull(it.key, fontSize),
+                body = getAutocompleteItemBodyOrNull(it.value, fontSize),
                 onClick = {}
             )
         }
@@ -222,6 +215,7 @@ private fun AutocompletesGrid(
 private fun AutocompleteLocationContent(
     modifier: Modifier = Modifier,
     location: AutocompleteLocation,
+    enabled: Boolean,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
@@ -229,6 +223,7 @@ private fun AutocompleteLocationContent(
 ) {
     TextButton(
         modifier = modifier,
+        enabled = enabled,
         onClick = { onExpanded(true) }
     ) {
         Text(
@@ -266,5 +261,37 @@ private fun getAutocompleteItemTitleOrNull(
     )
 }
 
+@Composable
+private fun getAutocompleteItemBodyOrNull(
+    autocompleteItems: AutocompleteItems,
+    fontSize: FontSize
+) = itemOrNull(enabled = true) {
+    Column {
+        if (autocompleteItems.quantitiesToText() != UiText.Nothing) {
+            Text(
+                text = autocompleteItems.quantitiesToText().asCompose(),
+                fontSize = fontSize.toItemBody().sp
+            )
+        }
+        if (autocompleteItems.pricesToText() != UiText.Nothing) {
+            Text(
+                text = autocompleteItems.pricesToText().asCompose(),
+                fontSize = fontSize.toItemBody().sp
+            )
+        }
+        if (autocompleteItems.discountsToText() != UiText.Nothing) {
+            Text(
+                text = autocompleteItems.discountsToText().asCompose(),
+                fontSize = fontSize.toItemBody().sp
+            )
+        }
+        if (autocompleteItems.totalsToText() != UiText.Nothing) {
+            Text(
+                text = autocompleteItems.totalsToText().asCompose(),
+                fontSize = fontSize.toItemBody().sp
+            )
+        }
+    }
+}
+
 private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)
-private val AutocompleteItemNotMultiColumnsPaddings = PaddingValues(horizontal = 8.dp)
