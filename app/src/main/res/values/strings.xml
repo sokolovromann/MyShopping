@@ -35,8 +35,8 @@
     <string name="archive_text_productsNotFound">Shopping list is empty</string>
     <string name="archive_text_shoppingListsNotFound">Archive is empty</string>
 
+    <string name="autocompletes_action_clearAutocomplete">Clear</string>
     <string name="autocompletes_action_deleteAutocomplete">Delete</string>
-    <string name="autocompletes_action_editAutocomplete">Edit</string>
     <string name="autocompletes_action_selectDefaultLocation">Default</string>
     <string name="autocompletes_action_selectPersonalLocation">Personal</string>
     <string name="autocompletes_body_discounts">Discounts: %s</string>

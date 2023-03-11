@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
@@ -35,7 +36,7 @@ class AutocompletesViewModel @Inject constructor(
         when (event) {
             AutocompletesEvent.AddAutocomplete -> addAutocomplete()
 
-            is AutocompletesEvent.EditAutocomplete -> editAutocomplete(event)
+            is AutocompletesEvent.ClearAutocomplete -> clearAutocomplete(event)
 
             is AutocompletesEvent.DeleteAutocomplete -> deleteAutocomplete(event)
 
@@ -94,17 +95,44 @@ class AutocompletesViewModel @Inject constructor(
         _screenEventFlow.emit(AutocompletesScreenEvent.AddAutocomplete)
     }
 
-    private fun editAutocomplete(
-        event: AutocompletesEvent.EditAutocomplete
-    ) = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(AutocompletesScreenEvent.EditAutocomplete(event.uid))
-        hideAutocompleteMenu()
+    private fun clearAutocomplete(
+        event: AutocompletesEvent.ClearAutocomplete
+    ) = viewModelScope.launch {
+        when (autocompletesState.screenData.location) {
+            AutocompleteLocation.DEFAULT -> repository.getDefaultAutocompletes()
+            AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
+        }.firstOrNull()?.let { autocompletes ->
+            autocompletes.autocompletes
+                .filter { it.name.lowercase() == event.name.lowercase() }
+                .forEach {
+                    val autocomplete = it.copy(
+                        lastModified = System.currentTimeMillis(),
+                        quantity = Quantity(),
+                        price = Money(),
+                        discount = Discount(),
+                        taxRate = TaxRate(),
+                        total = Money()
+                    )
+                    repository.clearAutocomplete(autocomplete)
+                }
+        }
+
+        withContext(dispatchers.main) {
+            hideAutocompleteMenu()
+        }
     }
 
     private fun deleteAutocomplete(
         event: AutocompletesEvent.DeleteAutocomplete
     ) = viewModelScope.launch {
-        repository.deleteAutocomplete(event.uid)
+        when (autocompletesState.screenData.location) {
+            AutocompleteLocation.DEFAULT -> return@launch
+            AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
+        }.firstOrNull()?.let { autocompletes ->
+            autocompletes.autocompletes
+                .filter { it.name.lowercase() == event.name.lowercase() }
+                .forEach { repository.deleteAutocomplete(it.uid) }
+        }
 
         withContext(dispatchers.main) {
             hideAutocompleteMenu()

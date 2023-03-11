@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AutocompletesDao
 import ru.sokolovromann.myshopping.data.local.dao.AutocompletesPreferencesDao
 import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
+import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 import javax.inject.Inject
 
@@ -36,6 +37,11 @@ class AutocompletesRepositoryImpl @Inject constructor(
                 mapping.toAutocompletes(entities, null, preferencesEntity)
             }
         )
+    }
+
+    override suspend fun clearAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatchers.io) {
+        val entity = mapping.toAutocompleteEntity(autocomplete)
+        autocompletesDao.insertAutocomplete(entity)
     }
 
     override suspend fun deleteAutocomplete(uid: String): Unit = withContext(dispatchers.io) {

@@ -163,18 +163,20 @@ fun AutocompletesScreen(
                     ) {
                         AppDropdownMenuItem(
                             onClick = {
-                                val event = AutocompletesEvent.EditAutocomplete(it)
+                                val event = AutocompletesEvent.ClearAutocomplete(it)
                                 viewModel.onEvent(event)
                             },
-                            text = { Text(text = stringResource(R.string.autocompletes_action_editAutocomplete)) }
+                            text = { Text(text = stringResource(R.string.autocompletes_action_clearAutocomplete)) }
                         )
-                        AppDropdownMenuItem(
-                            onClick = {
-                                val event = AutocompletesEvent.DeleteAutocomplete(it)
-                                viewModel.onEvent(event)
-                            },
-                            text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
-                        )
+                        if (screenData.location == AutocompleteLocation.PERSONAL) {
+                            AppDropdownMenuItem(
+                                onClick = {
+                                    val event = AutocompletesEvent.DeleteAutocomplete(it)
+                                    viewModel.onEvent(event)
+                                },
+                                text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
+                            )
+                        }
                     }
                 },
                 onClick = {},
@@ -202,10 +204,13 @@ private fun AutocompletesGrid(
         multiColumns = multiColumns
     ) {
         map.forEach {
+            val nameToString = (it.key as UiText.FromString).value.lowercase()
             AppSurfaceItem(
                 title = getAutocompleteItemTitleOrNull(it.key, fontSize),
                 body = getAutocompleteItemBodyOrNull(it.value, fontSize),
-                onClick = {}
+                dropdownMenu = { dropdownMenu?.let { it(nameToString) } },
+                onClick = { onClick(nameToString) },
+                onLongClick = { onLongClick(nameToString) }
             )
         }
     }

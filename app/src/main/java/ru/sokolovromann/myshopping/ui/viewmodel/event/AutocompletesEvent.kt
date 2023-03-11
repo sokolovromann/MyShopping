@@ -7,9 +7,9 @@ sealed class AutocompletesEvent {
 
     object AddAutocomplete : AutocompletesEvent()
 
-    data class EditAutocomplete(val uid: String) : AutocompletesEvent()
+    data class ClearAutocomplete(val name: String) : AutocompletesEvent()
 
-    data class DeleteAutocomplete(val uid: String) : AutocompletesEvent()
+    data class DeleteAutocomplete(val name: String) : AutocompletesEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : AutocompletesEvent()
 

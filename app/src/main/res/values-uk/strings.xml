@@ -35,8 +35,8 @@
     <string name="archive_text_productsNotFound">Список покупок порожній</string>
     <string name="archive_text_shoppingListsNotFound">Архів порожній</string>
 
+    <string name="autocompletes_action_clearAutocomplete">Очистити</string>
     <string name="autocompletes_action_deleteAutocomplete">Видалити</string>
-    <string name="autocompletes_action_editAutocomplete">Редагувати</string>
     <string name="autocompletes_action_selectDefaultLocation">За замовчуванням</string>
     <string name="autocompletes_action_selectPersonalLocation">Особисті</string>
     <string name="autocompletes_body_discounts">Знижки: %s</string>
