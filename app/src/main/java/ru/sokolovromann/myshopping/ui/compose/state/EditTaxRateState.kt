@@ -13,16 +13,16 @@ import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 
 class EditTaxRateState {
 
-    private var taxRate by mutableStateOf(TaxRate())
+    private var editTaxRate by mutableStateOf(EditTaxRate())
 
     var screenData by mutableStateOf(EditTaxRateScreenData())
         private set
 
     fun populate(editTaxRate: EditTaxRate) {
+        this.editTaxRate = editTaxRate
         val preferences = editTaxRate.preferences
 
-        taxRate = preferences.taxRate
-        val taxRateText = taxRate.valueToString()
+        val taxRateText = preferences.taxRate.valueToString()
 
         screenData = EditTaxRateScreenData(
             screenState = ScreenState.Showing,
@@ -49,7 +49,7 @@ class EditTaxRateState {
             Result.failure(Exception())
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
-            val success = taxRate.copy(
+            val success = editTaxRate.preferences.taxRate.copy(
                 value = screenData.taxRateValue.toFloatOrZero()
             )
             Result.success(success)

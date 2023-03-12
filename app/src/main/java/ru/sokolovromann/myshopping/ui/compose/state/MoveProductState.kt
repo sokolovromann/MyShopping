@@ -10,7 +10,7 @@ class MoveProductState {
 
     private var product by mutableStateOf(Product())
 
-    private var shoppingLists: List<ShoppingList> by mutableStateOf(listOf())
+    private var shoppingLists by mutableStateOf(ShoppingLists())
 
     var screenData by mutableStateOf(MoveProductScreenData())
         private set
@@ -20,7 +20,7 @@ class MoveProductState {
     }
 
     fun showNotFound(preferences: AppPreferences, location: ShoppingListLocation) {
-        shoppingLists = listOf()
+        shoppingLists = ShoppingLists(preferences = preferences)
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
             location = location,
@@ -29,7 +29,7 @@ class MoveProductState {
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
-        this.shoppingLists = shoppingLists.formatShoppingLists()
+        this.shoppingLists = shoppingLists
         val preferences = shoppingLists.preferences
 
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
@@ -69,7 +69,8 @@ class MoveProductState {
             Result.failure(Exception())
         } else {
             val shoppingUid = screenData.shoppingListSelectedUid!!
-            val position = shoppingLists.find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
+            val position = shoppingLists.formatShoppingLists()
+                .find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
             val success = product.copy(
                 position = position,
                 shoppingUid = screenData.shoppingListSelectedUid!!,

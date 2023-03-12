@@ -12,11 +12,7 @@ import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 
 class AddEditProductState {
 
-    private var product by mutableStateOf(Product())
-
-    private var productsLastPosition: Int? by mutableStateOf(null)
-
-    private var preferences by mutableStateOf(AppPreferences())
+    private var addEditProduct by mutableStateOf(AddEditProduct())
 
     private var selectedAutocomplete: Autocomplete? by mutableStateOf(null)
 
@@ -24,11 +20,10 @@ class AddEditProductState {
         private set
 
     fun populate(addEditProduct: AddEditProduct) {
-        productsLastPosition = addEditProduct.productsLastPosition
-        preferences = addEditProduct.preferences
-        product = addEditProduct.product ?: Product(
-            taxRate = preferences.taxRate
-        )
+        this.addEditProduct = addEditProduct
+
+        val product = addEditProduct.product ?: Product()
+        val preferences = addEditProduct.preferences
 
         val name = product.name
         val quantity = if (product.quantity.isEmpty()) "" else product.quantity.valueToString()
@@ -85,12 +80,6 @@ class AddEditProductState {
             discountAsPercent = discountAsPercent,
             discountAsPercentText = discountAsPercentText,
             showDiscountAsPercent = false,
-            autocompleteNames = listOf(),
-            autocompleteQuantities = listOf(),
-            autocompleteQuantitySymbols = listOf(),
-            autocompletePrices = listOf(),
-            autocompleteDiscounts = listOf(),
-            autocompleteTotals = listOf(),
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney
         )
@@ -99,8 +88,6 @@ class AddEditProductState {
     }
 
     fun changeNameValue(nameValue: TextFieldValue) {
-        product = product.copy(name = nameValue.text.trim())
-
         screenData = screenData.copy(
             nameValue = nameValue,
             showNameError = false
@@ -108,9 +95,6 @@ class AddEditProductState {
     }
 
     fun changeQuantityValue(quantityValue: TextFieldValue) {
-        val quantity = product.quantity.copy(value = quantityValue.toFloatOrZero())
-        product = product.copy(quantity = quantity)
-
         screenData = screenData.copy(quantityValue = quantityValue)
 
         when (screenData.lockProductElement) {
@@ -121,16 +105,10 @@ class AddEditProductState {
     }
 
     fun changeQuantitySymbolValue(quantitySymbolValue: TextFieldValue) {
-        val quantity = product.quantity.copy(symbol = quantitySymbolValue.text.trim())
-        product = product.copy(quantity = quantity)
-
         screenData = screenData.copy(quantitySymbolValue = quantitySymbolValue)
     }
 
     fun changePriceValue(priceValue: TextFieldValue) {
-        val price = product.price.copy(value = priceValue.toFloatOrZero())
-        product = product.copy(price = price)
-
         screenData = screenData.copy(priceValue = priceValue)
 
         when (screenData.lockProductElement) {
@@ -141,9 +119,6 @@ class AddEditProductState {
     }
 
     fun changeDiscountValue(discountValue: TextFieldValue) {
-        val discount = product.discount.copy(value = discountValue.toFloatOrZero())
-        product = product.copy(discount = discount)
-
         screenData = screenData.copy(discountValue = discountValue)
 
         if (screenData.lockProductElement == LockProductElement.TOTAL) {
@@ -152,9 +127,6 @@ class AddEditProductState {
     }
 
     fun changeProductTotalValue(totalValue: TextFieldValue) {
-        val total = product.total.copy(value = totalValue.toFloatOrZero())
-        product = product.copy(total = total)
-
         screenData = screenData.copy(totalValue = totalValue)
 
         when (screenData.lockProductElement) {
@@ -165,13 +137,10 @@ class AddEditProductState {
     }
 
     fun changeProductNoteValue(noteValue: TextFieldValue) {
-        product = product.copy(note = noteValue.text.trim())
         screenData = screenData.copy(noteValue = noteValue)
     }
 
     fun selectAutocompleteName(autocomplete: Autocomplete) {
-        product = product.copy(name = autocomplete.name)
-
         screenData = screenData.copy(
             nameValue = TextFieldValue(
                 text = autocomplete.name,
@@ -185,8 +154,6 @@ class AddEditProductState {
     }
 
     fun selectAutocompleteQuantity(quantity: Quantity) {
-        product = product.copy(quantity = quantity)
-
         val quantityText = quantity.valueToString()
         val quantitySymbol = quantity.symbol
 
@@ -213,8 +180,6 @@ class AddEditProductState {
     }
 
     fun selectAutocompleteQuantitySymbol(quantity: Quantity) {
-        product = product.copy(quantity = quantity)
-
         val quantitySymbol = quantity.symbol
         screenData = screenData.copy(
             quantitySymbolValue = TextFieldValue(
@@ -228,8 +193,6 @@ class AddEditProductState {
     }
 
     fun selectAutocompletePrice(price: Money) {
-        product = product.copy(price = price)
-
         val priceText = price.valueToString()
         screenData = screenData.copy(
             priceValue = TextFieldValue(
@@ -248,8 +211,6 @@ class AddEditProductState {
     }
 
     fun selectAutocompleteDiscount(discount: Discount) {
-        product = product.copy(discount = discount)
-
         val discountText = discount.valueToString()
         val discountAsPercentText: UiText = if (discount.asPercent) {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)
@@ -273,9 +234,6 @@ class AddEditProductState {
     }
 
     fun selectDiscountAsPercent() {
-        val discount = product.discount.copy(asPercent = true)
-        product = product.copy(discount = discount)
-
         val asPercentText: UiText = UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)
         screenData = screenData.copy(
             discountAsPercent = true,
@@ -289,9 +247,6 @@ class AddEditProductState {
     }
 
     fun selectDiscountAsMoney() {
-        val discount = product.discount.copy(asPercent = false)
-        product = product.copy(discount = discount)
-
         val asPercentText: UiText = UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)
         screenData = screenData.copy(
             discountAsPercent = false,
@@ -305,8 +260,6 @@ class AddEditProductState {
     }
 
     fun selectAutocompleteTotal(total: Money) {
-        product = product.copy(total = total)
-
         val totalText = total.valueToString()
         screenData = screenData.copy(
             totalValue = TextFieldValue(
@@ -325,7 +278,6 @@ class AddEditProductState {
     }
 
     fun lockProductElementSelected(lockProductElement: LockProductElement) {
-        product = product.copy(totalFormatted = lockProductElement != LockProductElement.TOTAL)
         screenData = screenData.copy(
             lockProductElement = lockProductElement,
             showLockProductElement = false
@@ -333,9 +285,7 @@ class AddEditProductState {
     }
 
     fun plusOneQuantity() {
-        val quantity = product.quantity.copy(value = product.quantity.value + 1)
-        product = product.copy(quantity = quantity)
-
+        val quantity = Quantity(value = screenData.quantityValue.toFloatOrZero() + 1)
         val quantityText = quantity.valueToString()
         val quantityValue = TextFieldValue(
             text = quantityText,
@@ -353,9 +303,7 @@ class AddEditProductState {
     }
 
     fun minusOneQuantity() {
-        val quantity = product.quantity.copy(value = product.quantity.value - 1)
-        product = product.copy(quantity = quantity)
-
+        val quantity = Quantity(value = screenData.quantityValue.toFloatOrZero() - 1)
         val quantityText = if (quantity.isEmpty()) "" else quantity.valueToString()
         val quantityValue = TextFieldValue(
             text = quantityText,
@@ -373,7 +321,7 @@ class AddEditProductState {
     }
 
     fun showAutocompleteNames(autocompleteNames: List<Autocomplete>) {
-        val names = if (preferences.displayDefaultAutocompletes) {
+        val names = if (addEditProduct.preferences.displayDefaultAutocompletes) {
             autocompleteNames
         } else {
             autocompleteNames.filter { it.personal }
@@ -437,63 +385,13 @@ class AddEditProductState {
             Result.failure(Exception())
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
-
-            val position = if (newProduct) {
-                productsLastPosition?.plus(1) ?: 0
-            } else {
-                product.position
-            }
-
-            val quantity = Quantity(
-                screenData.quantityValue.toFloatOrZero(),
-                screenData.quantitySymbolValue.text.trim()
-            )
-            val price = Money(screenData.priceValue.toFloatOrZero())
-            val discount = Discount(
-                screenData.discountValue.toFloatOrZero(),
-                screenData.discountAsPercent
-            )
-            val total = Money(screenData.totalValue.toFloatOrZero())
-            val success = product.copy(
-                position = position,
-                totalFormatted = screenData.lockProductElement != LockProductElement.TOTAL,
-                lastModified = System.currentTimeMillis(),
-                name = screenData.nameValue.text.trim(),
-                quantity = quantity,
-                price = price,
-                discount = discount,
-                total = total,
-                note = screenData.noteValue.text.trim()
-            )
-            Result.success(success)
+            Result.success(getSavableProduct(newProduct))
         }
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
-        return if (preferences.saveProductToAutocompletes) {
-            val name = screenData.nameValue.text.trim()
-            val quantity = Quantity(
-                screenData.quantityValue.toFloatOrZero(),
-                screenData.quantitySymbolValue.text.trim()
-            )
-            val price = Money(screenData.priceValue.toFloatOrZero())
-            val discount = Discount(
-                screenData.discountValue.toFloatOrZero(),
-                screenData.discountAsPercent
-            )
-            val taxRate = product.taxRate
-            val total = Money(screenData.totalValue.toFloatOrZero())
-
-            val success = Autocomplete(
-                name = name,
-                quantity = quantity,
-                price = price,
-                discount = discount,
-                taxRate = taxRate,
-                total = total,
-                personal = selectedAutocomplete?.personal ?: true
-            )
-            Result.success(success)
+        return if (addEditProduct.preferences.saveProductToAutocompletes) {
+            Result.success(getSavableAutocomplete())
         } else {
             Result.failure(Exception())
         }
@@ -504,19 +402,55 @@ class AddEditProductState {
         return Result.success(success)
     }
 
-    private fun setProductQuantityLock() {
-        val quantity: Quantity
-        val text: String
-        if (product.price.isEmpty() || product.total.isEmpty()) {
-            quantity = product.quantity.copy(value = 0f)
-            text = ""
-        } else {
-            val quantityValue = product.total.value / product.price.value
-            quantity = product.quantity.copy(value = quantityValue)
-            text = quantity.valueToString()
-        }
+    private fun getSavableProduct(newProduct: Boolean = true): Product {
+        val preferences = addEditProduct.preferences
+        val position = (addEditProduct.productsLastPosition ?: 0)
+            .apply { if (newProduct) plus(1) }
 
-        product = product.copy(quantity = quantity)
+        return (addEditProduct.product ?: Product()).copy(
+            position = position,
+            lastModified = System.currentTimeMillis(),
+            name = screenData.nameValue.text.trim(),
+            quantity = Quantity(
+                value = screenData.quantityValue.toFloatOrZero(),
+                symbol = screenData.quantitySymbolValue.text.trim()
+            ),
+            price = Money(
+                value = screenData.priceValue.toFloatOrZero(),
+                currency = preferences.currency
+            ),
+            discount = Discount(
+                value = screenData.discountValue.toFloatOrZero(),
+                asPercent = screenData.discountAsPercent
+            ),
+            total = Money(
+                value = screenData.totalValue.toFloatOrZero(),
+                currency = preferences.currency
+            ),
+            totalFormatted = screenData.lockProductElement != LockProductElement.TOTAL,
+            note = screenData.noteValue.text.trim()
+        )
+    }
+
+    private fun getSavableAutocomplete(): Autocomplete {
+        val product = getSavableProduct()
+        return Autocomplete(
+            name = product.name,
+            quantity = product.quantity,
+            price = product.price,
+            discount = product.discount,
+            taxRate = product.taxRate,
+            total = product.total,
+            personal = selectedAutocomplete?.personal ?: true
+        )
+    }
+
+    private fun setProductQuantityLock() {
+        val price = screenData.priceValue.toFloatOrZero()
+        val total = screenData.totalValue.toFloatOrZero()
+        val calculate = price > 0f && total > 0f
+
+        val text = if (calculate) Quantity(value = total / price).valueToString() else ""
         screenData = screenData.copy(
             quantityValue = TextFieldValue(
                 text = text,
@@ -527,19 +461,11 @@ class AddEditProductState {
     }
 
     private fun setProductPriceLock() {
-        val price: Money
-        val text: String
+        val quantity = screenData.quantityValue.toFloatOrZero()
+        val total = screenData.totalValue.toFloatOrZero()
+        val calculate = quantity > 0f && total > 0f
 
-        if (product.quantity.isEmpty() || product.total.isEmpty()) {
-            price = product.price.copy(value = 0f)
-            text = ""
-        } else {
-            val priceValue = product.total.value / product.quantity.value
-            price = product.price.copy(value = priceValue)
-            text = price.valueToString()
-        }
-
-        product = product.copy(price = price)
+        val text = if (calculate) Money(value = total / quantity).valueToString() else ""
         screenData = screenData.copy(
             priceValue = TextFieldValue(
                 text = text,
@@ -550,22 +476,20 @@ class AddEditProductState {
     }
 
     private fun setProductTotalLock() {
-        val total: Money
-        val text: String
+        val quantity = screenData.quantityValue.toFloatOrZero()
+        val price = screenData.priceValue.toFloatOrZero()
+        val discount = screenData.discountValue.toFloatOrZero()
+        val taxRate = addEditProduct.preferences.taxRate
+        val calculate = quantity > 0f && price > 0f
 
-        if (product.quantity.isEmpty() || product.price.isEmpty()) {
-            total = product.total.copy(value = 0f)
-            text = ""
+        val text = if (calculate) {
+            val totalValue = quantity * price
+            val totalWithDiscountAndTaxRate = totalValue - discount + taxRate.calculate(totalValue)
+            Money(value = totalWithDiscountAndTaxRate).valueToString()
         } else {
-            val totalValue = product.quantity.value * product.price.value
-            val totalWithDiscountAndTaxRate = totalValue -
-                    product.discountToMoney().value + preferences.taxRate.calculate(totalValue)
-
-            total = product.total.copy(value = totalWithDiscountAndTaxRate)
-            text = total.valueToString()
+            ""
         }
 
-        product = product.copy(total = total)
         screenData = screenData.copy(
             totalValue = TextFieldValue(
                 text = text,

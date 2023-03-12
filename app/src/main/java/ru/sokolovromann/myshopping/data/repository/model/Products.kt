@@ -15,7 +15,7 @@ data class Products(
             .splitProducts(preferences.displayCompletedPurchases)
     }
 
-    fun calculateTotal(): Money {
+    fun calculateTotal(displayTotal: DisplayTotal = preferences.displayPurchasesTotal): Money {
         var all = 0f
         var completed = 0f
         var active = 0f
@@ -31,7 +31,7 @@ data class Products(
             }
         }
 
-        val total = when (preferences.displayPurchasesTotal) {
+        val total = when (displayTotal) {
             DisplayTotal.ALL -> all
             DisplayTotal.COMPLETED -> completed
             DisplayTotal.ACTIVE -> active

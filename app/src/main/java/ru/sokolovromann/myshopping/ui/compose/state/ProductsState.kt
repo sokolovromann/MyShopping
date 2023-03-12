@@ -11,21 +11,20 @@ import java.util.*
 
 class ProductsState {
 
+    private var products by mutableStateOf(Products())
+
     var screenData by mutableStateOf(ProductsScreenData())
         private set
 
     var editCompleted by mutableStateOf(false)
         private set
 
-    private var shareTotal by mutableStateOf("")
-
-    private var products by mutableStateOf(Products())
-
     fun showLoading() {
         screenData = ProductsScreenData(screenState = ScreenState.Loading)
     }
 
     fun showNotFound(preferences: AppPreferences, shoppingListName: String, reminder: Long?) {
+        products = Products(preferences = preferences)
         screenData = ProductsScreenData(
             screenState = ScreenState.Nothing,
             shoppingListName = UiText.FromString(shoppingListName),
@@ -36,10 +35,10 @@ class ProductsState {
         )
 
         editCompleted = preferences.editProductAfterCompleted
-        products = Products(preferences = preferences)
     }
 
     fun showProducts(products: Products) {
+        this.products = products
         val preferences = products.preferences
         val totalText = if (preferences.displayMoney) {
             products.calculateTotalToText()
@@ -70,20 +69,6 @@ class ProductsState {
         )
 
         editCompleted = preferences.editProductAfterCompleted
-
-        var total = 0f
-        products.shoppingList.products.forEach {
-            if (!it.completed) {
-                total += it.total.value
-            }
-        }
-        shareTotal = if (preferences.displayMoney && total > 0f) {
-            Money(total, preferences.currency).toString()
-        } else {
-            ""
-        }
-
-        this.products = products
     }
 
     fun showProductMenu(uid: String) {
@@ -136,12 +121,13 @@ class ProductsState {
             }
         }
 
-        if (shareTotal.isEmpty()) {
+        val total = products.calculateTotal(DisplayTotal.COMPLETED)
+        if (products.preferences.displayMoney && total.isNotEmpty()) {
+            shareText += "\n= $total"
+        } else {
             if (shareText.isNotEmpty()) {
                 shareText = shareText.dropLast(1)
             }
-        } else {
-            shareText += "\n= $shareTotal"
         }
 
         return Result.success(shareText)

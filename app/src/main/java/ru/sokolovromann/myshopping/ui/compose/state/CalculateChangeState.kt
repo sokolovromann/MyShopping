@@ -8,22 +8,21 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 
 class CalculateChangeState {
 
-    private var shoppingList by mutableStateOf(ShoppingList())
+    private var calculateChange by mutableStateOf(CalculateChange())
 
     var screenData by mutableStateOf(CalculateChangeScreenData())
         private set
 
     fun populate(calculateChange: CalculateChange) {
-        shoppingList = calculateChange.shoppingList ?: ShoppingList()
+        this.calculateChange = calculateChange
 
         val totalText: UiText = UiText.FromResourcesWithArgs(
             R.string.calculateChange_text_total,
-            shoppingList.calculateTotal().toString()
+            calculateChange.calculateTotal().toString()
         )
 
         val changeText: UiText = UiText.FromResources(R.string.calculateChange_text_noChange)
@@ -38,10 +37,10 @@ class CalculateChangeState {
     }
 
     fun changeUserMoneyValue(userMoneyValue: TextFieldValue) {
-        val change: Float = userMoneyValue.toFloatOrZero() - shoppingList.calculateTotal().value
+        val change: Float = userMoneyValue.toFloatOrZero() - calculateChange.calculateTotal().value
         val changeMoney = Money(
             value = change,
-            currency = shoppingList.currency
+            currency = calculateChange.preferences.currency
         )
         val changeText: UiText = if (changeMoney.isEmpty()) {
             UiText.FromResources(R.string.calculateChange_text_noChange)

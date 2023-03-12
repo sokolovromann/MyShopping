@@ -9,9 +9,7 @@ import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class PurchasesState {
 
-    private var shoppingLists: List<ShoppingList> by mutableStateOf(listOf())
-
-    private var shoppingListsLastPosition: Int? by mutableStateOf(null)
+    private var shoppingLists by mutableStateOf(ShoppingLists())
 
     var screenData by mutableStateOf(PurchasesScreenData())
         private set
@@ -21,17 +19,18 @@ class PurchasesState {
     }
 
     fun showNotFound(preferences: AppPreferences) {
+        shoppingLists = ShoppingLists(preferences = preferences)
+
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
         )
-        shoppingLists = listOf()
-        shoppingListsLastPosition = null
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
+        this.shoppingLists = shoppingLists
         val preferences = shoppingLists.preferences
 
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
@@ -47,9 +46,6 @@ class PurchasesState {
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists
         )
-
-        this.shoppingLists = shoppingLists.formatShoppingLists()
-        shoppingListsLastPosition = shoppingLists.shoppingListsLastPosition
     }
 
     fun showShoppingListMenu(uid: String) {
@@ -69,19 +65,20 @@ class PurchasesState {
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
-        val position = if (shoppingListsLastPosition == null) 0 else shoppingListsLastPosition!! + 1
+        val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
         val success = ShoppingList(position = position)
         return Result.success(success)
     }
 
     fun getShoppingListsUpResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
-        return if (shoppingLists.size < 2) {
+        val formatShoppingList = shoppingLists.formatShoppingLists()
+        return if (formatShoppingList.size < 2) {
             Result.failure(Exception())
         } else {
             var previousIndex = 0
             var currentIndex = 0
-            for (index in shoppingLists.indices) {
-                val shoppingList = shoppingLists[index]
+            for (index in formatShoppingList.indices) {
+                val shoppingList = formatShoppingList[index]
                 if (currentIndex > 0) {
                     previousIndex = index - 1
                 }
@@ -93,12 +90,12 @@ class PurchasesState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentShoppingList = shoppingLists[currentIndex].copy(
-                position = shoppingLists[previousIndex].position,
+            val currentShoppingList = formatShoppingList[currentIndex].copy(
+                position = formatShoppingList[previousIndex].position,
                 lastModified = lastModified
             )
-            val previousShoppingList = shoppingLists[previousIndex].copy(
-                position = shoppingLists[currentIndex].position,
+            val previousShoppingList = formatShoppingList[previousIndex].copy(
+                position = formatShoppingList[currentIndex].position,
                 lastModified = lastModified
             )
 
@@ -108,16 +105,17 @@ class PurchasesState {
     }
 
     fun getShoppingListsDownResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
-        return if (shoppingLists.size < 2) {
+        val formatShoppingList = shoppingLists.formatShoppingLists()
+        return if (formatShoppingList.size < 2) {
             Result.failure(Exception())
         } else {
             var currentIndex = 0
             var nextIndex = 0
-            for (index in shoppingLists.indices) {
-                val shoppingList = shoppingLists[index]
+            for (index in formatShoppingList.indices) {
+                val shoppingList = formatShoppingList[index]
 
                 currentIndex = index
-                if (index < shoppingLists.lastIndex) {
+                if (index < formatShoppingList.lastIndex) {
                     nextIndex = index + 1
                 }
 
@@ -127,12 +125,12 @@ class PurchasesState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentShoppingList = shoppingLists[currentIndex].copy(
-                position = shoppingLists[nextIndex].position,
+            val currentShoppingList = formatShoppingList[currentIndex].copy(
+                position = formatShoppingList[nextIndex].position,
                 lastModified = lastModified
             )
-            val nextShoppingList = shoppingLists[nextIndex].copy(
-                position = shoppingLists[currentIndex].position,
+            val nextShoppingList = formatShoppingList[nextIndex].copy(
+                position = formatShoppingList[currentIndex].position,
                 lastModified = lastModified
             )
 

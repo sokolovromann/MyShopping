@@ -12,20 +12,20 @@ import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 
 class EditShoppingListNameState {
 
-    private var shoppingList by mutableStateOf(ShoppingList())
+    private var editShoppingListName by mutableStateOf(EditShoppingListName())
 
     var screenData by mutableStateOf(EditShoppingListNameScreenData())
         private set
 
     fun populate(editShoppingListName: EditShoppingListName) {
-        shoppingList = editShoppingListName.shoppingList ?: ShoppingList()
+        this.editShoppingListName = editShoppingListName
 
         val headerText: UiText = if (editShoppingListName.shoppingList == null) {
             UiText.FromResources(R.string.editShoppingListName_header_addShoppingListName)
         } else {
             UiText.FromResources(R.string.editShoppingListName_header_editShoppingListName)
         }
-        val name = shoppingList.name
+        val name = editShoppingListName.name()
 
         screenData = EditShoppingListNameScreenData(
             screenState = ScreenState.Showing,
@@ -45,7 +45,7 @@ class EditShoppingListNameState {
 
     fun getShoppingListResult(): Result<ShoppingList> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
-        val success = shoppingList.copy(
+        val success = (editShoppingListName.shoppingList ?: ShoppingList()).copy(
             name = screenData.nameValue.text.trim(),
             lastModified = System.currentTimeMillis()
         )
