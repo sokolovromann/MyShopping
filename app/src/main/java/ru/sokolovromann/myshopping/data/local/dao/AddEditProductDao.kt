@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
@@ -23,10 +23,10 @@ interface AddEditProductDao {
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
     fun getProductsLastPosition(shoppingUid: String): Flow<Int?>
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(productEntity: ProductEntity)
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAutocomplete(autocompleteEntity: AutocompleteEntity)
 
     @Query("UPDATE shoppings SET last_modified = :lastModified WHERE uid = :uid")

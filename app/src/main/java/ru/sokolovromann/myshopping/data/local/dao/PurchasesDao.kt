@@ -1,10 +1,7 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
+import androidx.room.OnConflictStrategy
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
@@ -19,7 +16,7 @@ interface PurchasesDao {
     @Query("SELECT position FROM shoppings ORDER BY position DESC LIMIT 1")
     fun getShoppingsLastPosition(): Flow<Int?>
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertShopping(shoppingEntity: ShoppingEntity)
 
     @Query("UPDATE shoppings SET position = :position, last_modified = :lastModified WHERE uid = :uid")
