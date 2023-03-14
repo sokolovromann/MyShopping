@@ -198,10 +198,8 @@ class SettingsViewModel @Inject constructor(
 
     private fun sendEmailToDeveloper() = viewModelScope.launch {
         repository.getSettings().firstOrNull()?.let {
-            val subject = "MyShopping"
-
             withContext(dispatchers.main) {
-                val event = SettingsScreenEvent.SendEmailToDeveloper(it.developerEmail, subject)
+                val event = SettingsScreenEvent.SendEmailToDeveloper(it.developerEmail)
                 _screenEventFlow.emit(event)
             }
         }

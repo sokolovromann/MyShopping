@@ -73,6 +73,7 @@
     <string name="copyProduct_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>
 
     <string name="data_email_developer">sokolovromann@gmail.com</string>
+    <string name="data_email_subject">Feedback zu My Shopping List</string>
     <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
         <item>Äpfel</item>

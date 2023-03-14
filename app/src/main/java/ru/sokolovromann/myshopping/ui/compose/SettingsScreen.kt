@@ -40,6 +40,7 @@ fun SettingsScreen(
     val screenData = viewModel.settingsState.screenData
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    val subjectText = stringResource(R.string.data_email_subject)
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -53,13 +54,11 @@ fun SettingsScreen(
                 )
 
                 is SettingsScreenEvent.SendEmailToDeveloper -> navController.chooseNavigate(
-                    intent = Intent(
-                        Intent.ACTION_SENDTO,
-                        Uri.parse("mailto:${it.email}")
-                            .buildUpon()
-                            .appendQueryParameter("subject", it.subject)
-                            .build()
-                    )
+                    intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(it.email))
+                        putExtra(Intent.EXTRA_SUBJECT, subjectText)
+                    }
                 )
 
                 SettingsScreenEvent.ShowBackScreen -> navController.popBackStack()

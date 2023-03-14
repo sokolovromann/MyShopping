@@ -6,7 +6,7 @@ sealed class SettingsScreenEvent {
 
     object EditTaxRate : SettingsScreenEvent()
 
-    data class SendEmailToDeveloper(val email: String, val subject: String) : SettingsScreenEvent()
+    data class SendEmailToDeveloper(val email: String) : SettingsScreenEvent()
 
     object ShowBackScreen : SettingsScreenEvent()
 
