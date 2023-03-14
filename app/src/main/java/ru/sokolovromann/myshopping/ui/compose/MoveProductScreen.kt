@@ -72,7 +72,7 @@ fun MoveProductScreen(
                 expanded = screenData.showLocation,
                 onExpanded = {
                     if (it) {
-                        viewModel.onEvent(MoveProductEvent.SelectShoppingListsLocation)
+                        viewModel.onEvent(MoveProductEvent.SelectShoppingListLocation)
                     } else {
                         viewModel.onEvent(MoveProductEvent.HideShoppingListsLocation)
                     }

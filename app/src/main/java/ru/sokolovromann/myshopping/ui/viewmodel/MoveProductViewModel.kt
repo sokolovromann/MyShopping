@@ -39,7 +39,7 @@ class MoveProductViewModel @Inject constructor(
         when (event) {
             is MoveProductEvent.MoveProduct -> moveProduct(event)
 
-            MoveProductEvent.SelectShoppingListsLocation -> selectShoppingListsLocation()
+            MoveProductEvent.SelectShoppingListLocation -> selectShoppingListLocation()
 
             is MoveProductEvent.ShowShoppingLists -> showShoppingLists(event)
 
@@ -124,7 +124,7 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun selectShoppingListsLocation() {
+    private fun selectShoppingListLocation() {
         moveProductState.showLocation()
     }
 

@@ -72,7 +72,7 @@ fun CopyProductScreen(
                 expanded = screenData.showLocation,
                 onExpanded = {
                     if (it) {
-                        viewModel.onEvent(CopyProductEvent.SelectShoppingListsLocation)
+                        viewModel.onEvent(CopyProductEvent.SelectShoppingListLocation)
                     } else {
                         viewModel.onEvent(CopyProductEvent.HideShoppingListsLocation)
                     }

@@ -6,7 +6,7 @@ sealed class CopyProductEvent {
 
     data class CopyProduct(val uid: String) : CopyProductEvent()
 
-    object SelectShoppingListsLocation : CopyProductEvent()
+    object SelectShoppingListLocation : CopyProductEvent()
 
     data class ShowShoppingLists(val location: ShoppingListLocation) : CopyProductEvent()
 

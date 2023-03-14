@@ -6,7 +6,7 @@ sealed class MoveProductEvent {
 
     data class MoveProduct(val uid: String) : MoveProductEvent()
 
-    object SelectShoppingListsLocation : MoveProductEvent()
+    object SelectShoppingListLocation : MoveProductEvent()
 
     data class ShowShoppingLists(val location: ShoppingListLocation) : MoveProductEvent()
 

@@ -39,7 +39,7 @@ class CopyProductViewModel @Inject constructor(
         when (event) {
             is CopyProductEvent.CopyProduct -> copyProduct(event)
 
-            CopyProductEvent.SelectShoppingListsLocation -> selectShoppingListsLocation()
+            CopyProductEvent.SelectShoppingListLocation -> selectShoppingListLocation()
 
             is CopyProductEvent.ShowShoppingLists -> showShoppingLists(event)
 
@@ -124,7 +124,7 @@ class CopyProductViewModel @Inject constructor(
         }
     }
 
-    private fun selectShoppingListsLocation() {
+    private fun selectShoppingListLocation() {
         copyProductState.showLocation()
     }
 
