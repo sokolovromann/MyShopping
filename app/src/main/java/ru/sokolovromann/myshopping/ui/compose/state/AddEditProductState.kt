@@ -434,6 +434,7 @@ class AddEditProductState {
 
     private fun getSavableAutocomplete(): Autocomplete {
         val product = getSavableProduct()
+        val personal = (selectedAutocomplete?.name?.lowercase() ?: "") != product.name.lowercase()
         return Autocomplete(
             name = product.name,
             quantity = product.quantity,
@@ -441,7 +442,7 @@ class AddEditProductState {
             discount = product.discount,
             taxRate = product.taxRate,
             total = product.total,
-            personal = selectedAutocomplete?.personal ?: true
+            personal = personal
         )
     }
 
