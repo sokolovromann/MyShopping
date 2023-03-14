@@ -140,7 +140,7 @@ class MainViewModel @Inject constructor(
             appOpenedAction = AppOpenedAction.NOTHING,
             smartphoneScreen = toSmartphoneScreen(event.screenWidth),
             currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
-            shoppingsMultiColumns = event.screenWidth >= 600,
+            shoppingsMultiColumns = event.screenWidth >= 550,
             productsMultiColumns = event.screenWidth >= 720
         )
         repository.addPreferences(appPreferences)
@@ -160,6 +160,6 @@ class MainViewModel @Inject constructor(
     }
 
     private fun toSmartphoneScreen(screenWidth: Int): Boolean {
-        return screenWidth < 720
+        return screenWidth < 600
     }
 }
