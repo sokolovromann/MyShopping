@@ -482,13 +482,17 @@ class AddEditProductState {
     private fun setProductTotalLock() {
         val quantity = screenData.quantityValue.toFloatOrZero()
         val price = screenData.priceValue.toFloatOrZero()
-        val discount = screenData.discountValue.toFloatOrZero()
+        val discount = Discount(
+            value = screenData.discountValue.toFloatOrZero(),
+            asPercent = screenData.discountAsPercent
+        )
         val taxRate = addEditProduct.preferences.taxRate
         val calculate = quantity > 0f && price > 0f
 
         val text = if (calculate) {
             val totalValue = quantity * price
-            val totalWithDiscountAndTaxRate = totalValue - discount + taxRate.calculate(totalValue)
+            val totalWithDiscountAndTaxRate = totalValue - discount.calculate(totalValue) +
+                    taxRate.calculate(totalValue)
             Money(value = totalWithDiscountAndTaxRate).valueToString()
         } else {
             ""
