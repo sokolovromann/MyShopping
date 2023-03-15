@@ -404,8 +404,11 @@ class AddEditProductState {
 
     private fun getSavableProduct(newProduct: Boolean = true): Product {
         val preferences = addEditProduct.preferences
-        val position = (addEditProduct.productsLastPosition ?: 0)
-            .apply { if (newProduct) plus(1) }
+        val position = if (newProduct) {
+            addEditProduct.productsLastPosition?.plus(1)
+        } else {
+            addEditProduct.productsLastPosition
+        } ?: 0
 
         return (addEditProduct.product ?: Product()).copy(
             position = position,

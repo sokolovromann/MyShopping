@@ -189,23 +189,19 @@ class ProductsViewModel @Inject constructor(
     private fun moveProductUp(
         event: ProductsEvent.MoveProductUp
     ) = viewModelScope.launch(dispatchers.main) {
-        val products = productsState.getProductsUpResult(event.uid).getOrElse {
-            productsState.hideProductMenu()
-            return@launch
-        }
+        productsState.getProductsUpResult(event.uid)
+            .onSuccess { repository.swapProducts(it.first, it.second) }
 
-        repository.swapProducts(products.first, products.second)
+        productsState.hideProductMenu()
     }
 
     private fun moveProductDown(
         event: ProductsEvent.MoveProductDown
     ) = viewModelScope.launch(dispatchers.main) {
-        val products = productsState.getProductsDownResult(event.uid).getOrElse {
-            productsState.hideProductMenu()
-            return@launch
-        }
+        productsState.getProductsDownResult(event.uid)
+            .onSuccess { repository.swapProducts(it.first, it.second) }
 
-        repository.swapProducts(products.first, products.second)
+        productsState.hideProductMenu()
     }
 
     private fun completeProduct(
