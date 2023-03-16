@@ -72,8 +72,8 @@
     <string name="copyProduct_header">Выберите список</string>
     <string name="copyProduct_text_shoppingListsNotFound">У вас нет покупок</string>
 
-    <string name="data_email_developer">sokolovromann@gmail.com</string>
-    <string name="data_email_subject">Отзыв о приложении Мои покупки</string>
+    <string name="data_email_developer">developer.myshopping@gmail.com</string>
+    <string name="data_email_subject">Отзыв о приложении</string>
     <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
         <item>Авокадо</item>
