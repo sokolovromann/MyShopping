@@ -273,7 +273,7 @@
     <string name="settings_body_email">Натисніть, щоб написати</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_productsMultiColumns">Кількість розраховується автоматично</string>
-    <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться у підказки</string>
+    <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_shoppingsMultiColumns">Кількість розраховується автоматично</string>
     <string name="settings_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="settings_header_aboutApp">Про програму</string>

@@ -257,7 +257,7 @@
     <string name="settings_body_email">Zum Schreiben tippen</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
     <string name="settings_body_productsMultiColumns">Mehrere Karten in einer Reihe</string>
-    <string name="settings_body_saveProductToAutocompletes">Jedes produkt wird in autovervollständigungen</string>
+    <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_shoppingsMultiColumns">Mehrere Karten in einer Reihe</string>
     <string name="settings_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="settings_header_aboutApp">Um</string>

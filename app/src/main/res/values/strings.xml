@@ -327,7 +327,7 @@
     <string name="settings_body_email">Tap to write email</string>
     <string name="settings_body_github">Tap to open</string>
     <string name="settings_body_productsMultiColumns">Multiple cards in one row</string>
-    <string name="settings_body_saveProductToAutocompletes">Any product name will be save</string>
+    <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_shoppingsMultiColumns">Multiple cards in one row</string>
     <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_header_aboutApp">About</string>
