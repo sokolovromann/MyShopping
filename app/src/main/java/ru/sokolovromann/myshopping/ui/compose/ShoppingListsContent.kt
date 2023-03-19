@@ -110,7 +110,9 @@ fun ShoppingListsLocationContent(
     onSelected: (ShoppingListLocation) -> Unit
 ) {
     TextButton(
-        modifier = modifier,
+        modifier = Modifier
+            .padding(ShoppingListsLocationPaddings)
+            .then(modifier),
         onClick = { onExpanded(true) }
     ) {
         Text(
@@ -249,4 +251,7 @@ private val ShoppingListsHiddenProductsPaddings = PaddingValues(
     start = 8.dp,
     top = 16.dp,
     end = 8.dp
+)
+private val ShoppingListsLocationPaddings = PaddingValues(
+    horizontal = 8.dp
 )

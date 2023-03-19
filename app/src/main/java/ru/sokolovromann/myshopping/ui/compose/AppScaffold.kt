@@ -116,9 +116,7 @@ private fun AppNothingGridContent(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppGridScaffoldBarPaddings),
+                modifier = Modifier.fillMaxWidth(),
                 content = it
             )
         }
@@ -145,16 +143,13 @@ private fun AppShowingGridContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding)
             .verticalScroll(scrollState)
     ) {
         if (gridBar != null) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppGridScaffoldBarPaddings),
+                modifier = Modifier.fillMaxWidth(),
                 content = gridBar
             )
         }
@@ -163,15 +158,16 @@ private fun AppShowingGridContent(
             Spacer(modifier = Modifier.size(AppGridScaffoldMultiColumnsSpacerSize))
         }
 
-        gridContent()
+        Column(
+            modifier = Modifier.padding(padding),
+            content = { gridContent() }
+        )
 
         if (gridBottomBar != null) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppGridScaffoldBarPaddings),
+                modifier = Modifier.fillMaxWidth(),
                 content = gridBottomBar
             )
         }
@@ -186,5 +182,4 @@ private val AppGridScaffoldNothingPaddings = PaddingValues(horizontal = 4.dp)
 private val AppGridScaffoldMultiColumnsPaddings = PaddingValues(horizontal = 4.dp)
 private val AppGridScaffoldSingleColumnsPaddings = PaddingValues(all = 0.dp)
 private val AppGridScaffoldMultiColumnsSpacerSize = 4.dp
-private val AppGridScaffoldBarPaddings = PaddingValues(horizontal = 8.dp)
 private val AppGridScaffoldSpacerHeight = 128.dp

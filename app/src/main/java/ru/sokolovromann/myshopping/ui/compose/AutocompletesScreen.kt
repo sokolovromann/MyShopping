@@ -227,7 +227,9 @@ private fun AutocompleteLocationContent(
     onSelected: (AutocompleteLocation) -> Unit
 ) {
     TextButton(
-        modifier = modifier,
+        modifier = Modifier
+            .padding(AutocompleteLocationPaddings)
+            .then(modifier),
         enabled = enabled,
         onClick = { onExpanded(true) }
     ) {
@@ -300,3 +302,6 @@ private fun getAutocompleteItemBodyOrNull(
 }
 
 private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)
+private val AutocompleteLocationPaddings = PaddingValues(
+    horizontal = 8.dp
+)
