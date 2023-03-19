@@ -40,3 +40,11 @@ fun FontSize.toTextField(): Int = when (this) {
     FontSize.LARGE -> 18
     FontSize.HUGE -> 20
 }
+
+fun FontSize.toHeader6(): Int = when (this) {
+    FontSize.TINY -> 16
+    FontSize.SMALL -> 18
+    FontSize.MEDIUM -> 20
+    FontSize.LARGE -> 22
+    FontSize.HUGE -> 24
+}

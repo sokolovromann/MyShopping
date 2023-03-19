@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -84,7 +86,7 @@ fun ProductsScreen(
         screenState = screenData.screenState,
         topBar = {
             TopAppBar(
-                title = { Text(text = screenData.shoppingListName.asCompose()) },
+                title = {},
                 navigationIcon = {
                     IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowBackScreen) }) {
                         Icon(
@@ -251,12 +253,37 @@ fun ProductsScreen(
             }
         },
         gridBar = {
-            if (screenData.reminderText != UiText.Nothing) {
-                ProductsReminderContent(
-                    reminderText = screenData.reminderText,
-                    fontSize = screenData.fontSize,
-                    onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
-                )
+            if (screenData.shoppingListName != UiText.Nothing || screenData.reminderText != UiText.Nothing) {
+                val backgroundColor = if (screenData.shoppingListCompleted) {
+                    MaterialTheme.colors.background
+                } else {
+                    MaterialTheme.colors.surface
+                }
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = backgroundColor)
+                    .padding(ProductsGridBarPaddings)
+                ) {
+                    if (screenData.shoppingListName != UiText.Nothing) {
+                        ProductsNameContent(
+                            nameText = screenData.shoppingListName,
+                            color = contentColorFor(backgroundColor = backgroundColor),
+                            fontSize = screenData.fontSize
+                        )
+
+                        if (screenData.reminderText == UiText.Nothing) {
+                            Spacer(modifier = Modifier.size(ProductsNameWithoutReminderSpacerSize))
+                        }
+                    }
+
+                    if (screenData.reminderText != UiText.Nothing) {
+                        ProductsReminderContent(
+                            reminderText = screenData.reminderText,
+                            fontSize = screenData.fontSize,
+                            onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
+                        )
+                    }
+                }
             }
         },
         gridBottomBar = {
@@ -341,6 +368,21 @@ fun ProductsScreen(
             }
         )
     }
+}
+
+@Composable
+private fun ProductsNameContent(
+    nameText: UiText,
+    color: Color,
+    fontSize: FontSize
+) {
+    Text(
+        modifier = Modifier.padding(ProductsNamePaddings),
+        text = nameText.asCompose(),
+        color = color,
+        fontSize = fontSize.toHeader6().sp,
+        style = MaterialTheme.typography.h6
+    )
 }
 
 @Composable
@@ -477,8 +519,11 @@ private fun getProductItemBodyOrNull(
 }
 
 private val ProductsReminderSpacerSize = 4.dp
+private val ProductsNameWithoutReminderSpacerSize = 8.dp
 private val ProductsHiddenProductsPaddings = PaddingValues(
     start = 8.dp,
     top = 16.dp,
     end = 8.dp
 )
+private val ProductsNamePaddings = PaddingValues(horizontal = 8.dp)
+private val ProductsGridBarPaddings = PaddingValues(all = 8.dp)
