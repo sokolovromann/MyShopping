@@ -196,7 +196,8 @@ class RepositoryMapping @Inject constructor() {
         appVersion14FirstOpened: Boolean = false
     ): AppPreferences {
         return AppPreferences(
-            appOpenedAction = toAppOpenedAction(entity.appOpenedAction, appVersion14FirstOpened),
+            appFirstTime = toAppFirstTime(entity.appFirstTime, appVersion14FirstOpened),
+            firstAppVersion = entity.firstAppVersion,
             nightTheme = entity.nightTheme,
             fontSize = toFontSize(entity.fontSize),
             smartphoneScreen = entity.smartphoneScreen,
@@ -216,7 +217,8 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAppPreferencesEntity(appPreferences: AppPreferences): AppPreferencesEntity {
         return AppPreferencesEntity(
-            appOpenedAction = toAppOpenedActionName(appPreferences.appOpenedAction),
+            appFirstTime = toAppFirstTimeName(appPreferences.appFirstTime),
+            firstAppVersion = appPreferences.firstAppVersion,
             nightTheme = appPreferences.nightTheme,
             fontSize = toFontSizeName(appPreferences.fontSize),
             smartphoneScreen = appPreferences.smartphoneScreen,
@@ -476,8 +478,8 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    private fun toAppOpenedActionName(appOpenedAction: AppOpenedAction): String {
-        return appOpenedAction.name
+    private fun toAppFirstTimeName(appFirstTime: AppFirstTime): String {
+        return appFirstTime.name
     }
 
     private fun toCurrencySymbol(currency: Currency): String {
@@ -488,11 +490,13 @@ class RepositoryMapping @Inject constructor() {
         return currency.displayToLeft
     }
 
-    private fun toAppOpenedAction(name: String, appVersion14FirstOpened: Boolean): AppOpenedAction {
-        if (appVersion14FirstOpened) {
-            return AppOpenedAction.MIGRATE_FROM_APP_VERSION_14
+    private fun toAppFirstTime(name: String, appVersion14FirstOpened: Boolean): AppFirstTime {
+        val appFirstTime = AppFirstTime.valueOfOrDefault(name)
+        return if (appFirstTime == AppFirstTime.FIRST_TIME && appVersion14FirstOpened) {
+            AppFirstTime.FIRST_TIME_FROM_APP_VERSION_14
+        } else {
+            appFirstTime
         }
-        return AppOpenedAction.valueOfOrDefault(name)
     }
 
     private fun toMoney(value: Float, currency: Currency): Money {

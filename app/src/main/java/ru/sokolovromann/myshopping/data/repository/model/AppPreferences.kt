@@ -1,7 +1,8 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 data class AppPreferences(
-    val appOpenedAction: AppOpenedAction = AppOpenedAction.DefaultValue,
+    val appFirstTime: AppFirstTime = AppFirstTime.DefaultValue,
+    val firstAppVersion: Int = 0,
     val nightTheme: Boolean = false,
     val fontSize: FontSize = FontSize.DefaultValue,
     val smartphoneScreen: Boolean = true,

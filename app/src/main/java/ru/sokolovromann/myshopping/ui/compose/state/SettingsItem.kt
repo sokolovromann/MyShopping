@@ -21,6 +21,7 @@ enum class SettingsUid {
     DisplayCompletedPurchases,
     EditProductAfterCompleted,
     SaveProductToAutocompletes,
+    MigrateFromAppVersion14,
     Email,
     Github
 }

@@ -7,13 +7,17 @@ import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
 fun Settings.getSettingsItems(): Map<UiText, List<SettingsItem>> {
-    return mapOf(
-        UiText.FromResources(R.string.settings_header_generalSettings) to getGeneralSettingsItems(),
-        UiText.FromResources(R.string.settings_header_money) to getMoneySettingsItems(),
-        UiText.FromResources(R.string.settings_header_purchases) to getPurchasesSettingsItems(),
-        UiText.FromResources(R.string.settings_header_autocompletes) to getAutocompletesSettingsItems(),
-        UiText.FromResources(R.string.settings_header_aboutApp) to getAboutSettingsItems()
-    )
+    val map = mutableMapOf<UiText, List<SettingsItem>>()
+    map[UiText.FromResources(R.string.settings_header_generalSettings)] = getGeneralSettingsItems()
+    map[UiText.FromResources(R.string.settings_header_money)] = getMoneySettingsItems()
+    map[UiText.FromResources(R.string.settings_header_purchases)] = getPurchasesSettingsItems()
+    map[UiText.FromResources(R.string.settings_header_autocompletes)] = getAutocompletesSettingsItems()
+    if (preferences.firstAppVersion == 14) {
+        map[UiText.FromResources(R.string.settings_header_migration)] = getMigrationSettingsItems()
+    }
+    map[UiText.FromResources(R.string.settings_header_aboutApp)] = getAboutSettingsItems()
+
+    return map.toMap()
 }
 
 private fun Settings.getGeneralSettingsItems(): List<SettingsItem> {
@@ -99,6 +103,16 @@ private fun Settings.getAutocompletesSettingsItems(): List<SettingsItem> {
             titleText = UiText.FromResources(R.string.settings_title_saveProductToAutocompletes),
             bodyText = UiText.FromResources(R.string.settings_body_saveProductToAutocompletes),
             checked = preferences.saveProductToAutocompletes
+        )
+    )
+}
+
+private fun Settings.getMigrationSettingsItems(): List<SettingsItem> {
+    return listOf(
+        SettingsItem(
+            uid = SettingsUid.MigrateFromAppVersion14,
+            titleText = UiText.FromResources(R.string.settings_title_migrateFromAppVersion14),
+            bodyText = UiText.FromResources(R.string.settings_body_migrateFromAppVersion14)
         )
     )
 }

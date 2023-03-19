@@ -13,8 +13,6 @@ interface MainRepository {
 
     suspend fun addShoppingList(shoppingList: ShoppingList)
 
-    suspend fun addProduct(product: Product)
-
     suspend fun addAutocomplete(autocomplete: Autocomplete)
 
     suspend fun addPreferences(appPreferences: AppPreferences)

@@ -18,7 +18,8 @@ class LocalDataStore @Inject constructor(
         const val DATASTORE_NAME = "local_datastore"
     }
 
-    private val appOpenedActionKey = stringPreferencesKey("app_opened_action")
+    private val appFirstTimeKey = stringPreferencesKey("app_first_time")
+    private val firstAppVersionKey = intPreferencesKey("first_app_version")
     private val nightThemeKey = booleanPreferencesKey("night_theme")
     private val fontSizeKey = stringPreferencesKey("font_size")
     private val smartphoneScreenKey = booleanPreferencesKey("screen_size")
@@ -39,7 +40,8 @@ class LocalDataStore @Inject constructor(
     suspend fun getAppPreferences(): Flow<AppPreferencesEntity> = withContext(dispatchers.io) {
         return@withContext dataStore.data.map {
             AppPreferencesEntity(
-                appOpenedAction = it[appOpenedActionKey] ?: "",
+                appFirstTime = it[appFirstTimeKey] ?: "",
+                firstAppVersion = it[firstAppVersionKey] ?: 0,
                 nightTheme = it[nightThemeKey] ?: false,
                 fontSize = it[fontSizeKey] ?: "",
                 smartphoneScreen = it[smartphoneScreenKey] ?: true,
@@ -62,7 +64,8 @@ class LocalDataStore @Inject constructor(
 
     suspend fun saveAppPreferences(entity: AppPreferencesEntity) = withContext(dispatchers.io) {
         dataStore.edit {
-            it[appOpenedActionKey] = entity.appOpenedAction
+            it[appFirstTimeKey] = entity.appFirstTime
+            it[firstAppVersionKey] = entity.firstAppVersion
             it[nightThemeKey] = entity.nightTheme
             it[fontSizeKey] = entity.fontSize
             it[smartphoneScreenKey] = entity.smartphoneScreen

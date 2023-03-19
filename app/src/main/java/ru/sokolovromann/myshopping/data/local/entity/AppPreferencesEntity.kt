@@ -1,7 +1,8 @@
 package ru.sokolovromann.myshopping.data.local.entity
 
 data class AppPreferencesEntity(
-    val appOpenedAction: String = "",
+    val appFirstTime: String = "",
+    val firstAppVersion: Int = 0,
     val nightTheme: Boolean = false,
     val fontSize: String = "",
     val smartphoneScreen: Boolean = true,

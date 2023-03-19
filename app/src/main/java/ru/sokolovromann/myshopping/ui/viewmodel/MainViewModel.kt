@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.repository.MainRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -59,12 +60,12 @@ class MainViewModel @Inject constructor(
     ) = withContext(dispatchers.main) {
         mainState.applyPreferences(appPreferences)
 
-        when (appPreferences.appOpenedAction) {
-            AppOpenedAction.NOTHING -> showPurchasesOrProducts(event.shoppingUid)
+        when (appPreferences.appFirstTime) {
+            AppFirstTime.NOTHING -> showPurchasesOrProducts(event.shoppingUid)
 
-            AppOpenedAction.ADD_DEFAULT_DATA -> getDefaultPreferences()
+            AppFirstTime.FIRST_TIME -> getDefaultPreferences()
 
-            AppOpenedAction.MIGRATE_FROM_APP_VERSION_14 -> getScreenSize()
+            AppFirstTime.FIRST_TIME_FROM_APP_VERSION_14 -> getScreenSize()
         }
     }
 
@@ -117,7 +118,8 @@ class MainViewModel @Inject constructor(
         smartphoneScreen: Boolean
     ) {
         val appPreferences = AppPreferences(
-            appOpenedAction = AppOpenedAction.NOTHING,
+            appFirstTime = AppFirstTime.NOTHING,
+            firstAppVersion = 14,
             fontSize = preferences.fontSize,
             smartphoneScreen = smartphoneScreen,
             currency = preferences.currency,
@@ -137,7 +139,8 @@ class MainViewModel @Inject constructor(
         event: MainEvent.AddDefaultPreferences
     ) = viewModelScope.launch(dispatchers.io) {
         val appPreferences = AppPreferences(
-            appOpenedAction = AppOpenedAction.NOTHING,
+            appFirstTime = AppFirstTime.NOTHING,
+            firstAppVersion = BuildConfig.VERSION_CODE,
             smartphoneScreen = toSmartphoneScreen(event.screenWidth),
             currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
             shoppingsMultiColumns = event.screenWidth >= 550,

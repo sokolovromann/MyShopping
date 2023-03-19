@@ -134,8 +134,8 @@ object AppModule {
     }
 
     @Provides
-    fun providesSettingsDao(localDataStore: LocalDataStore): SettingsDao {
-        return SettingsDao(localDataStore)
+    fun providesSettingsPreferencesDao(localDataStore: LocalDataStore): SettingsPreferencesDao {
+        return SettingsPreferencesDao(localDataStore)
     }
 
     @Provides
@@ -249,12 +249,15 @@ object AppModule {
 
     @Provides
     fun providesSettingsRepositoryImpl(
-        settingsDao: SettingsDao,
+        localDatabase: LocalDatabase,
+        preferencesDao: SettingsPreferencesDao,
         resources: SettingsResources,
+        appVersion14LocalDatabase: AppVersion14LocalDatabase,
+        appVersion14Preferences: AppVersion14LocalPreferences,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): SettingsRepositoryImpl {
-        return SettingsRepositoryImpl(settingsDao, resources, mapping, dispatchers)
+        return SettingsRepositoryImpl(localDatabase.settingsDao(),preferencesDao, resources, appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
     }
 
     @Provides

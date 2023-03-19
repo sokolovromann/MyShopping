@@ -1,11 +1,21 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.repository.model.Settings
+import ru.sokolovromann.myshopping.data.repository.model.*
 
 interface SettingsRepository {
 
     suspend fun getSettings(): Flow<Settings>
+
+    suspend fun getReminderUids(): Flow<List<String>>
+
+    suspend fun getAppVersion14(): Flow<AppVersion14>
+
+    suspend fun addShoppingList(shoppingList: ShoppingList)
+
+    suspend fun addAutocomplete(autocomplete: Autocomplete)
+
+    suspend fun deleteAppData(): Result<Unit>
 
     suspend fun displayCompletedPurchasesFirst()
 

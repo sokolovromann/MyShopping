@@ -311,6 +311,7 @@
     <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования</string>
     <string name="settings_body_email">Нажмите, чтобы написать</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
+    <string name="settings_body_migrateFromAppVersion14">Нажмите, чтобы принудительно переместить данные, текущие данные будут удалены</string>
     <string name="settings_body_productsMultiColumns">Количество рассчитывается автоматически</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
     <string name="settings_body_shoppingsMultiColumns">Количество рассчитывается автоматически</string>
@@ -318,6 +319,7 @@
     <string name="settings_header_aboutApp">О приложении</string>
     <string name="settings_header_autocompletes">Подсказки</string>
     <string name="settings_header_generalSettings">Общие</string>
+    <string name="settings_header_migration">Обновление</string>
     <string name="settings_header_money">Деньги</string>
     <string name="settings_header_purchases">Покупки</string>
     <string name="settings_header_settings">Настройки</string>
@@ -332,6 +334,7 @@
     <string name="settings_title_email">Email</string>
     <string name="settings_title_fontSize">Размер текста</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_migrateFromAppVersion14">Обновление с версии 1.3.5</string>
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_productsMultiColumns">Несколько столбцов в товарах</string>
     <string name="settings_title_saveProductToAutocompletes">Сохранять неизвестные товары</string>

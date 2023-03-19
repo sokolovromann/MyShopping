@@ -1,55 +1,35 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
-import ru.sokolovromann.myshopping.data.local.entity.AppPreferencesEntity
-import javax.inject.Inject
+import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
+import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
+import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 
-class SettingsDao @Inject constructor(
-    private val localDataStore: LocalDataStore
-) {
+@Dao
+interface SettingsDao {
 
-    suspend fun getAppPreferences(): Flow<AppPreferencesEntity> {
-        return localDataStore.getAppPreferences()
-    }
+    @Query("SELECT uid FROM shoppings WHERE reminder > 0")
+    fun getReminderUids(): Flow<List<String>>
 
-    suspend fun displayCompletedPurchases(displayCompleted: String) {
-        localDataStore.displayCompletedPurchases(displayCompleted)
-    }
+    @Query("DELETE FROM shoppings")
+    fun deleteShoppings()
 
-    suspend fun saveFontSize(fontSize: String) {
-        localDataStore.saveFontSize(fontSize)
-    }
+    @Query("DELETE FROM products")
+    fun deleteProducts()
 
-    suspend fun invertNightTheme() {
-        localDataStore.invertNightTheme()
-    }
+    @Query("DELETE FROM autocompletes")
+    fun deleteAutocompletes()
 
-    suspend fun invertDisplayCurrencyToLeft() {
-        localDataStore.invertDisplayCurrencyToLeft()
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertShopping(shoppingEntity: ShoppingEntity)
 
-    suspend fun invertDisplayMoney() {
-        localDataStore.invertDisplayMoney()
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertProduct(productEntity: ProductEntity)
 
-    suspend fun invertShoppingsMultiColumns() {
-        localDataStore.invertShoppingsMultiColumns()
-    }
-
-    suspend fun invertProductsMultiColumns() {
-        localDataStore.invertProductsMultiColumns()
-    }
-
-    suspend fun invertEditProductAfterCompleted() {
-        localDataStore.invertEditProductAfterCompleted()
-    }
-
-    suspend fun invertSaveProductToAutocompletes() {
-        localDataStore.invertSaveProductToAutocompletes()
-    }
-
-    suspend fun invertDisplayDefaultAutocompletes() {
-        localDataStore.invertDisplayDefaultAutocompletes()
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAutocomplete(autocompleteEntity: AutocompleteEntity)
 }

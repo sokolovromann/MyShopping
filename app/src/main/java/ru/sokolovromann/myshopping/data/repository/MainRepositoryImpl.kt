@@ -53,13 +53,13 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun addShoppingList(
         shoppingList: ShoppingList
     ): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toShoppingEntity(shoppingList)
-        mainDao.insertShopping(entity)
-    }
+        val shoppingEntity = mapping.toShoppingEntity(shoppingList)
+        mainDao.insertShopping(shoppingEntity)
 
-    override suspend fun addProduct(product: Product): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toProductEntity(product)
-        mainDao.insertProduct(entity)
+        shoppingList.products.forEach {
+            val productEntity = mapping.toProductEntity(it)
+            mainDao.insertProduct(productEntity)
+        }
     }
 
     override suspend fun addAutocomplete(

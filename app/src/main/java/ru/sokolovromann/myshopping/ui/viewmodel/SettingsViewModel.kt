@@ -3,6 +3,8 @@ package ru.sokolovromann.myshopping.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -10,9 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.SettingsRepository
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Settings
+import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val repository: SettingsRepository,
-    private val dispatchers: AppDispatchers
+    private val dispatchers: AppDispatchers,
+    private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<SettingsEvent> {
 
     val settingsState: SettingsState = SettingsState()
@@ -107,6 +109,8 @@ class SettingsViewModel @Inject constructor(
             SettingsUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
 
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
+
+            SettingsUid.MigrateFromAppVersion14 -> migrateFromAppVersion14()
 
             SettingsUid.Email -> sendEmailToDeveloper()
 
@@ -194,6 +198,50 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
         repository.invertDisplayDefaultAutocompletes()
+    }
+
+    private fun migrateFromAppVersion14() = viewModelScope.launch {
+        withContext(dispatchers.main) {
+            settingsState.showLoading()
+        }
+
+        repository.getReminderUids().firstOrNull()?.let { ids ->
+            ids.forEach { alarmManager.deleteReminder(it) }
+        }
+
+        repository.deleteAppData()
+            .onSuccess {
+                val appVersion14 = repository.getAppVersion14().firstOrNull() ?: AppVersion14()
+
+                val migrates = listOf(
+                    viewModelScope.async { migrateShoppings(appVersion14.shoppingLists) },
+                    viewModelScope.async { migrateAutocompletes(appVersion14.autocompletes) }
+                )
+                migrates.awaitAll()
+
+                withContext(dispatchers.main) {
+                    _screenEventFlow.emit(SettingsScreenEvent.ShowPurchases)
+                }
+            }
+            .onFailure {
+                withContext(dispatchers.main) {
+                    _screenEventFlow.emit(SettingsScreenEvent.ShowPurchases)
+                }
+            }
+    }
+
+    private suspend fun migrateShoppings(list: List<ShoppingList>) {
+        list.forEach {
+            repository.addShoppingList(it)
+            if (it.reminder != null) {
+                alarmManager.deleteAppVersion14Reminder(it.id)
+                alarmManager.createReminder(it.uid, it.reminder)
+            }
+        }
+    }
+
+    private suspend fun migrateAutocompletes(list: List<Autocomplete>) {
+        list.forEach { repository.addAutocomplete(it) }
     }
 
     private fun sendEmailToDeveloper() = viewModelScope.launch {

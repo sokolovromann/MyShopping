@@ -272,6 +272,7 @@
     <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування</string>
     <string name="settings_body_email">Натисніть, щоб написати</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
+    <string name="settings_body_migrateFromAppVersion14">Натисніть, щоб примусово перемістити дані, поточні дані будуть видалені</string>
     <string name="settings_body_productsMultiColumns">Кількість розраховується автоматично</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_shoppingsMultiColumns">Кількість розраховується автоматично</string>
@@ -279,6 +280,7 @@
     <string name="settings_header_aboutApp">Про програму</string>
     <string name="settings_header_autocompletes">Підказки</string>
     <string name="settings_header_generalSettings">Загальні</string>
+    <string name="settings_header_migration">Оновлення</string>
     <string name="settings_header_money">Гроші</string>
     <string name="settings_header_purchases">Покупки</string>
     <string name="settings_header_settings">Налаштування</string>
@@ -293,6 +295,7 @@
     <string name="settings_title_email">Email</string>
     <string name="settings_title_fontSize">Розмір тексту</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_migrateFromAppVersion14">Оновлення з версії 1.3.5</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_productsMultiColumns">Декілька стовпців у товарах</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати невідомі товари</string>

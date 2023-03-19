@@ -46,4 +46,6 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun calculateChangeDao(): CalculateChangeDao
 
     abstract fun mainDao(): MainDao
+
+    abstract fun settingsDao(): SettingsDao
 }

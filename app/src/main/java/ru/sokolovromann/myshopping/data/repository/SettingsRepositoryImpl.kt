@@ -2,25 +2,30 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.SettingsDao
+import ru.sokolovromann.myshopping.data.local.dao.SettingsPreferencesDao
+import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
+import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Settings
+import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
     private val settingsDao: SettingsDao,
+    private val preferencesDao: SettingsPreferencesDao,
     private val resources: SettingsResources,
+    private val appVersion14LocalDatabase: AppVersion14LocalDatabase,
+    private val appVersion14Preferences: AppVersion14LocalPreferences,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : SettingsRepository {
 
     override suspend fun getSettings(): Flow<Settings> = withContext(dispatchers.io) {
         return@withContext combine(
-            flow = settingsDao.getAppPreferences(),
+            flow = preferencesDao.getAppPreferences(),
             flow2 = resources.getSettingsResources(),
             transform = { preferencesEntity, resourcesEntity ->
                 mapping.toSettings(preferencesEntity, resourcesEntity)
@@ -28,75 +33,111 @@ class SettingsRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getReminderUids(): Flow<List<String>> = withContext(dispatchers.io) {
+        return@withContext settingsDao.getReminderUids()
+    }
+
+    override suspend fun getAppVersion14(): Flow<AppVersion14> = withContext(dispatchers.io) {
+        val appVersion14 = mapping.toAppVersion14(
+            shoppingListsCursor = appVersion14LocalDatabase.getShoppings(),
+            productsCursor = appVersion14LocalDatabase.getProducts(),
+            autocompletesCursor = appVersion14LocalDatabase.getAutocompletes(),
+            preferences = appVersion14Preferences.getAppVersion14Preferences()
+        )
+        return@withContext flowOf(appVersion14)
+    }
+
+    override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatchers.io) {
+        val shoppingEntity = mapping.toShoppingEntity(shoppingList)
+        settingsDao.insertShopping(shoppingEntity)
+
+        shoppingList.products.forEach {
+            val productEntity = mapping.toProductEntity(it)
+            settingsDao.insertProduct(productEntity)
+        }
+    }
+
+    override suspend fun addAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatchers.io) {
+        val entity = mapping.toAutocompleteEntity(autocomplete)
+        settingsDao.insertAutocomplete(entity)
+    }
+
+    override suspend fun deleteAppData(): Result<Unit> = withContext(dispatchers.io) {
+        settingsDao.deleteShoppings()
+        settingsDao.deleteProducts()
+        settingsDao.deleteAutocompletes()
+        return@withContext Result.success(Unit)
+    }
+
     override suspend fun displayCompletedPurchasesFirst(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.FIRST)
-        settingsDao.displayCompletedPurchases(displayCompleted)
+        preferencesDao.displayCompletedPurchases(displayCompleted)
     }
 
     override suspend fun displayCompletedPurchasesLast(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.LAST)
-        settingsDao.displayCompletedPurchases(displayCompleted)
+        preferencesDao.displayCompletedPurchases(displayCompleted)
     }
 
     override suspend fun tinyFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.TINY)
-        settingsDao.saveFontSize(fontSize)
+        preferencesDao.saveFontSize(fontSize)
     }
 
     override suspend fun smallFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.SMALL)
-        settingsDao.saveFontSize(fontSize)
+        preferencesDao.saveFontSize(fontSize)
     }
 
     override suspend fun mediumFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.MEDIUM)
-        settingsDao.saveFontSize(fontSize)
+        preferencesDao.saveFontSize(fontSize)
     }
 
     override suspend fun largeFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.LARGE)
-        settingsDao.saveFontSize(fontSize)
+        preferencesDao.saveFontSize(fontSize)
     }
 
     override suspend fun hugeFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.HUGE)
-        settingsDao.saveFontSize(fontSize)
+        preferencesDao.saveFontSize(fontSize)
     }
 
     override suspend fun invertNightTheme(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertNightTheme()
+        preferencesDao.invertNightTheme()
     }
 
     override suspend fun invertDisplayMoney(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertDisplayMoney()
+        preferencesDao.invertDisplayMoney()
     }
 
     override suspend fun invertDisplayCurrencyToLeft(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertDisplayCurrencyToLeft()
+        preferencesDao.invertDisplayCurrencyToLeft()
     }
 
     override suspend fun invertShoppingListsMultiColumns(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertShoppingsMultiColumns()
+        preferencesDao.invertShoppingsMultiColumns()
     }
 
     override suspend fun invertProductsMultiColumns(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertProductsMultiColumns()
+        preferencesDao.invertProductsMultiColumns()
     }
 
     override suspend fun invertEditProductAfterCompleted(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertEditProductAfterCompleted()
+        preferencesDao.invertEditProductAfterCompleted()
     }
 
     override suspend fun invertSaveProductToAutocompletes(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertSaveProductToAutocompletes()
+        preferencesDao.invertSaveProductToAutocompletes()
     }
 
     override suspend fun invertDisplayDefaultAutocompletes(): Unit = withContext(dispatchers.io) {
-        settingsDao.invertDisplayDefaultAutocompletes()
+        preferencesDao.invertDisplayDefaultAutocompletes()
     }
 
     override suspend fun hideCompletedPurchases(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
-        settingsDao.displayCompletedPurchases(displayCompleted)
+        preferencesDao.displayCompletedPurchases(displayCompleted)
     }
 }
