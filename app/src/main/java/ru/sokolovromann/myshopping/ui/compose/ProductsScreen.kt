@@ -5,10 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -95,6 +92,45 @@ fun ProductsScreen(
                             contentDescription = stringResource(R.string.products_contentDescription_navigationIcon),
                             tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                         )
+                    }
+                },
+                actions = {
+                    screenData.shoppingListLocation?.let {
+                        when (it) {
+                            ShoppingListLocation.PURCHASES -> {
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_all_archive),
+                                        contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToArchive),
+                                        tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                    )
+                                }
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash)}) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToTrash),
+                                        tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                    )
+                                }
+                            }
+                            ShoppingListLocation.ARCHIVE -> {
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_all_unarchive),
+                                        contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToPurchases),
+                                        tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                    )
+                                }
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash)}) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToTrash),
+                                        tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                    )
+                                }
+                            }
+                            else -> {}
+                        }
                     }
                 }
             )

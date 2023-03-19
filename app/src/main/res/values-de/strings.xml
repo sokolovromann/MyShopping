@@ -224,6 +224,9 @@
     <string name="products_action_sortByName">Nach name</string>
     <string name="products_action_sortByTotal">Nach gesamt</string>
     <string name="products_contentDescription_addProductIcon">Produkt hinzufügen</string>
+    <string name="products_contentDescription_moveShoppingListToArchive">Archivieren</string>
+    <string name="products_contentDescription_moveShoppingListToPurchases">Unarchivieren</string>
+    <string name="products_contentDescription_moveShoppingListToTrash">Löschen</string>
     <string name="products_contentDescription_navigationIcon">Zurück</string>
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
     <string name="products_header_displayTotal">Gesamt</string>

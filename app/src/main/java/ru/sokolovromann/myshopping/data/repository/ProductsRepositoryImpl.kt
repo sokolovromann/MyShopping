@@ -29,6 +29,27 @@ class ProductsRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun moveShoppingListToPurchases(
+        uid: String,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        productsDao.moveShoppingToPurchases(uid, lastModified)
+    }
+
+    override suspend fun moveShoppingListToArchive(
+        uid: String,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        productsDao.moveShoppingToArchive(uid, lastModified)
+    }
+
+    override suspend fun moveShoppingListToTrash(
+        uid: String,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        productsDao.moveShoppingToTrash(uid, lastModified)
+    }
+
     override suspend fun completeProduct(
         uid: String,
         lastModified: Long

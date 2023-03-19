@@ -3,8 +3,21 @@ package ru.sokolovromann.myshopping.ui.utils
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
+import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import java.util.*
+
+fun ShoppingList.getShoppingListLocation(): ShoppingListLocation {
+    return if (deleted) {
+        ShoppingListLocation.TRASH
+    } else {
+        if (archived) {
+            ShoppingListLocation.ARCHIVE
+        } else {
+            ShoppingListLocation.PURCHASES
+        }
+    }
+}
 
 fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
     val defaultProductsLimit = 10

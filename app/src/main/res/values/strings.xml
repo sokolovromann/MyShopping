@@ -294,6 +294,9 @@
     <string name="products_action_sortByName">By name</string>
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
+    <string name="products_contentDescription_moveShoppingListToArchive">Archive</string>
+    <string name="products_contentDescription_moveShoppingListToPurchases">Unarchive</string>
+    <string name="products_contentDescription_moveShoppingListToTrash">Delete</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_header_displayTotal">Display total</string>

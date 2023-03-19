@@ -49,6 +49,12 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.MoveProductToShoppingList -> moveProductToShoppingList(event)
 
+            ProductsEvent.MoveShoppingListToPurchases -> moveShoppingListToPurchases()
+
+            ProductsEvent.MoveShoppingListToArchive -> moveShoppingListToArchive()
+
+            ProductsEvent.MoveShoppingListToTrash -> moveShoppingListToTrash()
+
             is ProductsEvent.MoveProductUp -> moveProductUp(event)
 
             is ProductsEvent.MoveProductDown -> moveProductDown(event)
@@ -105,11 +111,7 @@ class ProductsViewModel @Inject constructor(
         }
 
         if (products.shoppingList.products.isEmpty()) {
-            productsState.showNotFound(
-                preferences = products.preferences,
-                shoppingListName = products.formatName(),
-                reminder = products.shoppingList.reminder
-            )
+            productsState.showNotFound(products)
         } else {
             productsState.showProducts(products)
         }
@@ -183,6 +185,39 @@ class ProductsViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideProductMenu()
+        }
+    }
+
+    private fun moveShoppingListToPurchases() = viewModelScope.launch {
+        repository.moveShoppingListToPurchases(
+            uid = productsState.shoppingListUid,
+            lastModified = System.currentTimeMillis()
+        )
+
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
+        }
+    }
+
+    private fun moveShoppingListToArchive() = viewModelScope.launch {
+        repository.moveShoppingListToArchive(
+            uid = productsState.shoppingListUid,
+            lastModified = System.currentTimeMillis()
+        )
+
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
+        }
+    }
+
+    private fun moveShoppingListToTrash() = viewModelScope.launch {
+        repository.moveShoppingListToTrash(
+            uid = productsState.shoppingListUid,
+            lastModified = System.currentTimeMillis()
+        )
+
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
         }
     }
 

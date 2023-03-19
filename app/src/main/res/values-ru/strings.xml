@@ -279,6 +279,9 @@
     <string name="products_action_sortByName">По названию</string>
     <string name="products_action_sortByTotal">По стоимости</string>
     <string name="products_contentDescription_addProductIcon">Добавить товар</string>
+    <string name="products_contentDescription_moveShoppingListToArchive">Архивировать</string>
+    <string name="products_contentDescription_moveShoppingListToPurchases">Разархивировать</string>
+    <string name="products_contentDescription_moveShoppingListToTrash">Удалить</string>
     <string name="products_contentDescription_navigationIcon">Назад</string>
     <string name="products_contentDescription_productsMenuIcon">Открыть меню товаров</string>
     <string name="products_header_displayTotal">Итого</string>

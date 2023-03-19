@@ -240,6 +240,9 @@
     <string name="products_action_sortByName">За назвою</string>
     <string name="products_action_sortByTotal">За сумою</string>
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
+    <string name="products_contentDescription_moveShoppingListToArchive">Архівувати</string>
+    <string name="products_contentDescription_moveShoppingListToPurchases">Розархівувати</string>
+    <string name="products_contentDescription_moveShoppingListToTrash">Видалити</string>
     <string name="products_contentDescription_navigationIcon">Назад</string>
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
     <string name="products_header_displayTotal">Разом</string>

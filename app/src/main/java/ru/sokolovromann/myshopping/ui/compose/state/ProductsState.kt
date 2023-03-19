@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.utils.getProductsItems
+import ru.sokolovromann.myshopping.ui.utils.getShoppingListLocation
 import java.util.*
 
 class ProductsState {
@@ -19,22 +20,40 @@ class ProductsState {
     var editCompleted by mutableStateOf(false)
         private set
 
+    var shoppingListUid by mutableStateOf("")
+        private set
+
     fun showLoading() {
         screenData = ProductsScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: AppPreferences, shoppingListName: String, reminder: Long?) {
-        products = Products(preferences = preferences)
+    fun showNotFound(products: Products) {
+        this.products = products
+        val preferences = products.preferences
+        val totalText = if (preferences.displayMoney) {
+            products.calculateTotalToText()
+        } else {
+            UiText.Nothing
+        }
+
+        val shoppingListName: UiText = if (products.formatName().isEmpty()) {
+            UiText.Nothing
+        } else {
+            UiText.FromString(products.formatName())
+        }
         screenData = ProductsScreenData(
             screenState = ScreenState.Nothing,
-            shoppingListName = UiText.FromString(shoppingListName),
-            reminderText = toReminderText(reminder),
+            shoppingListName = shoppingListName,
+            shoppingListLocation = products.shoppingList.getShoppingListLocation(),
+            totalText = totalText,
+            reminderText = toReminderText(products.shoppingList.reminder),
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney
         )
 
         editCompleted = preferences.editProductAfterCompleted
+        shoppingListUid = products.shoppingList.uid
     }
 
     fun showProducts(products: Products) {
@@ -58,6 +77,7 @@ class ProductsState {
         screenData = ProductsScreenData(
             screenState = ScreenState.Showing,
             shoppingListName = shoppingListName,
+            shoppingListLocation = products.shoppingList.getShoppingListLocation(),
             products = products.getProductsItems(),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
@@ -69,6 +89,7 @@ class ProductsState {
         )
 
         editCompleted = preferences.editProductAfterCompleted
+        shoppingListUid = products.shoppingList.uid
     }
 
     fun showProductMenu(uid: String) {
@@ -231,6 +252,7 @@ class ProductsState {
 data class ProductsScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingListName: UiText = UiText.Nothing,
+    val shoppingListLocation: ShoppingListLocation? = null,
     val products: List<ProductItem> = listOf(),
     val productMenuUid: String? = null,
     val showProductsMenu: Boolean = false,
