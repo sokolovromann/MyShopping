@@ -44,13 +44,16 @@ class PurchasesNotificationManager @Inject constructor(
 
         val builder = NotificationCompat.Builder(context, AppNotificationChannel.Purchases.name)
             .setSmallIcon(R.drawable.ic_all_purchases)
-            .setContentTitle(notification.title())
             .setContentText(notification.body())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+
+        if (notification.title().isNotEmpty()) {
+            builder.setContentTitle(notification.title())
+        }
 
         with(NotificationManagerCompat.from(context)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
