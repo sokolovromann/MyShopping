@@ -56,10 +56,10 @@
     <string name="calculateChange_text_noChange">Veränderung: keine veränderung</string>
     <string name="calculateChange_text_total">Gesamt: %s</string>
 
-    <string name="calendar_text_currentYear">%ta, %tb %td</string>
-    <string name="calendar_text_currentYearAt">%ta, %tb %td um %tH:%tM</string>
-    <string name="calendar_text_other">%tb %td, %tY</string>
-    <string name="calendar_text_otherAt">%tb %td, %tY um %tH:%tM</string>
+    <string name="calendar_text_currentYear">%ta, %td %tb</string>
+    <string name="calendar_text_currentYearAt">%ta, %td %tb um %tH:%tM</string>
+    <string name="calendar_text_other">%td %tb %tY</string>
+    <string name="calendar_text_otherAt">%td %tb %tY um %tH:%tM</string>
     <string name="calendar_text_time">%tH:%tM</string>
     <string name="calendar_text_today">Heute</string>
     <string name="calendar_text_todayAt">Heute um %tH:%tM</string>

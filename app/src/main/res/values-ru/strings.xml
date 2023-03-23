@@ -56,10 +56,10 @@
     <string name="calculateChange_text_noChange">Сдача: нет сдачи</string>
     <string name="calculateChange_text_total">Итого: %s</string>
 
-    <string name="calendar_text_currentYear">%ta, %tb %td</string>
-    <string name="calendar_text_currentYearAt">%ta, %tb %td в %tH:%tM</string>
-    <string name="calendar_text_other">%tb %td, %tY</string>
-    <string name="calendar_text_otherAt">%tb %td, %tY в %tH:%tM</string>
+    <string name="calendar_text_currentYear">%ta, %td %tb</string>
+    <string name="calendar_text_currentYearAt">%ta, %td %tb в %tH:%tM</string>
+    <string name="calendar_text_other">%td %tb %tY</string>
+    <string name="calendar_text_otherAt">%td %tb %tY в %tH:%tM</string>
     <string name="calendar_text_time">%tH:%tM</string>
     <string name="calendar_text_today">Сегодня</string>
     <string name="calendar_text_todayAt">Сегодня в %tH:%tM</string>
