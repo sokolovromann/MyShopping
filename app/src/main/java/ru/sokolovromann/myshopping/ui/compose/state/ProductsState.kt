@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
@@ -41,11 +42,13 @@ class ProductsState {
         } else {
             UiText.FromString(products.formatName())
         }
+        val location = products.shoppingList.getShoppingListLocation()
         screenData = ProductsScreenData(
             screenState = ScreenState.Nothing,
             shoppingListName = shoppingListName,
-            shoppingListLocation = products.shoppingList.getShoppingListLocation(),
+            shoppingListLocation = location,
             shoppingListCompleted = products.isCompleted(),
+            productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
             displayTotal = preferences.displayPurchasesTotal,
@@ -72,15 +75,18 @@ class ProductsState {
             UiText.FromString(products.formatName())
         }
 
+        val location = products.shoppingList.getShoppingListLocation()
+
         val showHiddenProducts = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && products.hasHiddenProducts()
 
         screenData = ProductsScreenData(
             screenState = ScreenState.Showing,
             shoppingListName = shoppingListName,
-            shoppingListLocation = products.shoppingList.getShoppingListLocation(),
+            shoppingListLocation = location,
             shoppingListCompleted = products.isCompleted(),
             products = products.getProductsItems(),
+            productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
             multiColumns = preferences.productsMultiColumns,
@@ -249,6 +255,14 @@ class ProductsState {
                 .getDisplayDateAndTime()
         }
     }
+
+    private fun toProductNotFoundText(location: ShoppingListLocation): UiText = when(location) {
+        ShoppingListLocation.PURCHASES -> UiText.FromResources(R.string.products_text_purchasesProductsNotFound)
+
+        ShoppingListLocation.ARCHIVE -> UiText.FromResources(R.string.products_text_archiveProductsNotFound)
+
+        ShoppingListLocation.TRASH -> UiText.FromResources(R.string.products_text_trashProductsNotFound)
+    }
 }
 
 data class ProductsScreenData(
@@ -257,6 +271,7 @@ data class ProductsScreenData(
     val shoppingListLocation: ShoppingListLocation? = null,
     val shoppingListCompleted: Boolean = false,
     val products: List<ProductItem> = listOf(),
+    val productsNotFoundText: UiText = UiText.Nothing,
     val productMenuUid: String? = null,
     val showProductsMenu: Boolean = false,
     val totalText: UiText = UiText.Nothing,

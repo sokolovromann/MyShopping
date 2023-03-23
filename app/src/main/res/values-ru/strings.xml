@@ -287,9 +287,11 @@
     <string name="products_header_displayTotal">Итого</string>
     <string name="products_text_activeTotal">Не куплено: %s</string>
     <string name="products_text_allTotal">Итого: %s</string>
+    <string name="products_text_archiveProductsNotFound">Список покупок пуст</string>
     <string name="products_text_completedTotal">Куплено: %s</string>
     <string name="products_text_hiddenProducts">У вас есть скрытые товары</string>
-    <string name="products_text_productsNotFound">Нажмите на \"+\", чтобы добавить товар</string>
+    <string name="products_text_purchasesProductsNotFound">Нажмите на \"+\", чтобы добавить товар</string>
+    <string name="products_text_trashProductsNotFound">Список покупок пуст</string>
 
     <string name="purchases_action_moveShoppingListDown">Переместить вниз</string>
     <string name="purchases_action_moveShoppingListToArchive">Архивировать</string>

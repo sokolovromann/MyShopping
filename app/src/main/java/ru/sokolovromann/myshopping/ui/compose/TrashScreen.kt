@@ -17,7 +17,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
-import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.viewmodel.TrashViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
@@ -96,29 +95,6 @@ fun TrashScreen(
                     }
                 }
             )
-        },
-        bottomBar = {
-            if (screenData.showBottomBar) {
-                AppBottomAppBar {
-                    ShoppingListsTotalContent(
-                        displayTotal = screenData.displayTotal,
-                        totalText = screenData.totalText,
-                        fontSize = screenData.fontSize.toButton().sp,
-                        expanded = screenData.showDisplayTotal,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(TrashEvent.SelectDisplayPurchasesTotal)
-                            } else {
-                                viewModel.onEvent(TrashEvent.HideDisplayPurchasesTotal)
-                            }
-                        },
-                        onSelected = {
-                            val event = TrashEvent.DisplayPurchasesTotal(it)
-                            viewModel.onEvent(event)
-                        }
-                    )
-                }
-            }
         },
         drawerContent = {
             AppDrawerContent(

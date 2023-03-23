@@ -138,107 +138,109 @@ fun ProductsScreen(
             )
         },
         bottomBar = {
-            AppBottomAppBar(
-                content = {
-                    if (screenData.totalText != UiText.Nothing) {
-                        ProductsTotalContent(
-                            displayTotal = screenData.displayTotal,
-                            totalText = screenData.totalText,
-                            fontSize = screenData.fontSize.toButton().sp,
-                            expanded = screenData.showDisplayTotal,
-                            onExpanded = {
-                                if (it) {
-                                    viewModel.onEvent(ProductsEvent.SelectDisplayPurchasesTotal)
-                                } else {
-                                    viewModel.onEvent(ProductsEvent.HideDisplayPurchasesTotal)
-                                }
-                            },
-                            onSelected = {
-                                val event = ProductsEvent.DisplayPurchasesTotal(it)
-                                viewModel.onEvent(event)
-                            }
-                        )
-                    }
-                },
-                actionButtons = {
-                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.AddProduct) }) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.products_contentDescription_addProductIcon),
-                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                        )
-                    }
-                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowProductsMenu) }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon),
-                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                        )
-                        AppDropdownMenu(
-                            expanded = screenData.showProductsMenu,
-                            onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsMenu) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) },
-                                text = { Text(text = stringResource(R.string.products_action_editShoppingListName)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) },
-                                text = { Text(text = stringResource(R.string.products_action_editShoppingListReminder)) }
-                            )
-                            Divider()
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.products_action_sort)) },
-                                after = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
+            if (screenData.shoppingListLocation != ShoppingListLocation.TRASH) {
+                AppBottomAppBar(
+                    content = {
+                        if (screenData.totalText != UiText.Nothing) {
+                            ProductsTotalContent(
+                                displayTotal = screenData.displayTotal,
+                                totalText = screenData.totalText,
+                                fontSize = screenData.fontSize.toButton().sp,
+                                expanded = screenData.showDisplayTotal,
+                                onExpanded = {
+                                    if (it) {
+                                        viewModel.onEvent(ProductsEvent.SelectDisplayPurchasesTotal)
+                                    } else {
+                                        viewModel.onEvent(ProductsEvent.HideDisplayPurchasesTotal)
+                                    }
                                 },
-                                onClick = { viewModel.onEvent(ProductsEvent.SelectProductsSort) }
+                                onSelected = {
+                                    val event = ProductsEvent.DisplayPurchasesTotal(it)
+                                    viewModel.onEvent(event)
+                                }
                             )
-                            if (screenData.displayMoney) {
+                        }
+                    },
+                    actionButtons = {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.AddProduct) }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(R.string.products_contentDescription_addProductIcon),
+                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowProductsMenu) }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon),
+                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                            )
+                            AppDropdownMenu(
+                                expanded = screenData.showProductsMenu,
+                                onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsMenu) }
+                            ) {
                                 AppDropdownMenuItem(
-                                    text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
-                                    onClick = { viewModel.onEvent(ProductsEvent.CalculateChange) }
+                                    onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) },
+                                    text = { Text(text = stringResource(R.string.products_action_editShoppingListName)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) },
+                                    text = { Text(text = stringResource(R.string.products_action_editShoppingListReminder)) }
+                                )
+                                Divider()
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.products_action_sort)) },
+                                    after = {
+                                        Icon(
+                                            imageVector = Icons.Default.KeyboardArrowRight,
+                                            contentDescription = "",
+                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                        )
+                                    },
+                                    onClick = { viewModel.onEvent(ProductsEvent.SelectProductsSort) }
+                                )
+                                if (screenData.displayMoney) {
+                                    AppDropdownMenuItem(
+                                        text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.CalculateChange) }
+                                    )
+                                }
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.HideProducts) },
+                                    text = { Text(text = stringResource(R.string.products_action_deleteProducts)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.ShareProducts) },
+                                    text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
                                 )
                             }
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.HideProducts) },
-                                text = { Text(text = stringResource(R.string.products_action_deleteProducts)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.ShareProducts) },
-                                text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
-                            )
-                        }
 
-                        AppDropdownMenu(
-                            expanded = screenData.showSort,
-                            onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsSort) },
-                            header = { Text(text = stringResource(id = R.string.products_action_sort)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.CREATED)) },
-                                text = { Text(text = stringResource(R.string.products_action_sortByCreated)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.LAST_MODIFIED)) },
-                                text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.NAME)) },
-                                text = { Text(text = stringResource(R.string.products_action_sortByName)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.TOTAL)) },
-                                text = { Text(text = stringResource(R.string.products_action_sortByTotal)) }
-                            )
+                            AppDropdownMenu(
+                                expanded = screenData.showSort,
+                                onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsSort) },
+                                header = { Text(text = stringResource(id = R.string.products_action_sort)) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.CREATED)) },
+                                    text = { Text(text = stringResource(R.string.products_action_sortByCreated)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.LAST_MODIFIED)) },
+                                    text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.NAME)) },
+                                    text = { Text(text = stringResource(R.string.products_action_sortByName)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.TOTAL)) },
+                                    text = { Text(text = stringResource(R.string.products_action_sortByTotal)) }
+                                )
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
         },
         loadingContent = {
             AppLoadingContent(indicator = { CircularProgressIndicator() })
@@ -246,7 +248,7 @@ fun ProductsScreen(
         notFoundContent = {
             AppNotFoundContent {
                 Text(
-                    text = stringResource(R.string.products_text_productsNotFound),
+                    text = screenData.productsNotFoundText.asCompose(),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
@@ -354,6 +356,7 @@ fun ProductsScreen(
                     )
                 }
             },
+            clickableEnabled = screenData.shoppingListLocation != ShoppingListLocation.TRASH,
             onClick = { uid, completed ->
                 val event = if (completed) {
                     ProductsEvent.ActiveProduct(uid)
@@ -458,6 +461,7 @@ private fun ProductsGrid(
     items: List<ProductItem>,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
+    clickableEnabled: Boolean,
     onClick: (String, Boolean) -> Unit,
     onLongClick: (String) -> Unit
 ) {
@@ -472,6 +476,7 @@ private fun ProductsGrid(
                 title = getProductItemTitleOrNull(item.nameText, fontSize),
                 body = getProductItemBodyOrNull(item.bodyText, fontSize),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                clickableEnabled = clickableEnabled,
                 onClick = { onClick(item.uid, item.completed) },
                 onLongClick = { onLongClick(item.uid) },
                 backgroundColor = if (item.completed) {

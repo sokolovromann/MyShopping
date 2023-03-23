@@ -134,11 +134,6 @@ fun ShoppingListsLocationContent(
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectArchiveLocation)) },
                 after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.ARCHIVE) }
             )
-            AppDropdownMenuItem(
-                onClick = { onSelected(ShoppingListLocation.TRASH) },
-                text = { Text(text = stringResource(R.string.shoppingLists_action_selectTrashLocation)) },
-                after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.TRASH) }
-            )
         }
     }
 }

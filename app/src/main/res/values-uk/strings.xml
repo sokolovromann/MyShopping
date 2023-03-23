@@ -248,9 +248,11 @@
     <string name="products_header_displayTotal">Разом</string>
     <string name="products_text_activeTotal">Не куплено: %s</string>
     <string name="products_text_allTotal">Разом: %s</string>
+    <string name="products_text_archiveProductsNotFound">Список покупок порожній</string>
     <string name="products_text_completedTotal">Куплено: %s</string>
     <string name="products_text_hiddenProducts">У вас є приховані товари</string>
-    <string name="products_text_productsNotFound">Натисніть \"+\", щоб додати товар</string>
+    <string name="products_text_purchasesProductsNotFound">Натисніть \"+\", щоб додати товар</string>
+    <string name="products_text_trashProductsNotFound">Список покупок порожній</string>
 
     <string name="purchases_action_moveShoppingListDown">Перемістити вниз</string>
     <string name="purchases_action_moveShoppingListToArchive">Архівувати</string>

@@ -75,19 +75,6 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun getTrash() = viewModelScope.launch {
-        withContext(dispatchers.main) {
-            moveProductState.showLoading()
-        }
-
-        repository.getTrash().collect {
-            shoppingListsLoaded(
-                shoppingLists = it,
-                location = ShoppingListLocation.TRASH
-            )
-        }
-    }
-
     private suspend fun shoppingListsLoaded(
         shoppingLists: ShoppingLists,
         location: ShoppingListLocation
@@ -134,7 +121,7 @@ class MoveProductViewModel @Inject constructor(
         when (event.location) {
             ShoppingListLocation.PURCHASES -> getPurchases()
             ShoppingListLocation.ARCHIVE -> getArchive()
-            ShoppingListLocation.TRASH -> getTrash()
+            else -> {}
         }
     }
 

@@ -35,15 +35,6 @@ class MoveProductRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getTrash(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext productDao.getTrash().combine(
-            flow = preferencesDao.getAppPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, null, preferencesEntity)
-            }
-        )
-    }
-
     override suspend fun getProduct(uid: String): Flow<Product?> = withContext(dispatchers.io) {
         return@withContext productDao.getProduct(uid).combine(
             flow = preferencesDao.getAppPreferences(),
