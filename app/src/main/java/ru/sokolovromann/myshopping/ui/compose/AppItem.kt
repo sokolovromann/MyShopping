@@ -20,6 +20,7 @@ fun AppMultiColumnsItem(
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
+    clickableEnabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
     backgroundColor: Color = MaterialTheme.colors.surface,
@@ -33,6 +34,7 @@ fun AppMultiColumnsItem(
             before = before,
             after = after,
             dropdownMenu = dropdownMenu,
+            clickableEnabled = clickableEnabled,
             onClick = onClick,
             onLongClick = onLongClick,
             backgroundColor = backgroundColor,
@@ -46,6 +48,7 @@ fun AppMultiColumnsItem(
             before = before,
             after = after,
             dropdownMenu = dropdownMenu,
+            clickableEnabled = clickableEnabled,
             onClick = onClick,
             onLongClick = onLongClick,
             backgroundColor = backgroundColor,
@@ -63,18 +66,25 @@ fun AppItem(
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
+    clickableEnabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
+    val modifierWithoutClickable = Modifier
+        .fillMaxWidth()
+        .defaultMinSize(minHeight = AppItemMinHeight)
+        .background(color = backgroundColor)
+
+    val modifierWithClickable = if (clickableEnabled) {
+        modifierWithoutClickable.combinedClickable(onClick = onClick, onLongClick = onLongClick)
+    } else {
+        modifierWithoutClickable
+    }
+
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = AppItemMinHeight)
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .background(color = backgroundColor)
-            .then(modifier),
+        modifier = modifierWithClickable.then(modifier),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center
     ) {
@@ -99,18 +109,25 @@ fun AppSurfaceItem(
     before: @Composable (() -> Unit)? = null,
     after: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
+    clickableEnabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
+    val modifierWithoutClickable = Modifier
+        .fillMaxWidth()
+        .defaultMinSize(minHeight = AppSurfaceItemMinHeight)
+        .padding(AppSurfaceItemSurfacePaddings)
+
+    val modifierWithClickable = if (clickableEnabled) {
+        modifierWithoutClickable.combinedClickable(onClick = onClick, onLongClick = onLongClick)
+    } else {
+        modifierWithoutClickable
+    }
+
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = AppSurfaceItemMinHeight)
-            .padding(AppSurfaceItemSurfacePaddings)
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .then(modifier),
+        modifier = modifierWithClickable.then(modifier),
         shape = MaterialTheme.shapes.medium,
         elevation = AppSurfaceItemElevation,
         color = backgroundColor,
