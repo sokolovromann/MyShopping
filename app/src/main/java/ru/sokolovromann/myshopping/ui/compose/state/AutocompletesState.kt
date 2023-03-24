@@ -18,6 +18,7 @@ class AutocompletesState {
     fun showNotFound(preferences: AppPreferences, location: AutocompleteLocation) {
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
+            smartphoneScreen = preferences.smartphoneScreen,
             location = location,
             locationEnabled = preferences.displayDefaultAutocompletes,
             fontSize = preferences.fontSize
@@ -31,6 +32,7 @@ class AutocompletesState {
             screenState = ScreenState.Showing,
             autocompletes = autocompletes.getAutocompleteItems(),
             multiColumns = !preferences.smartphoneScreen,
+            smartphoneScreen = preferences.smartphoneScreen,
             location = location,
             locationEnabled = preferences.displayDefaultAutocompletes,
             fontSize = preferences.fontSize
@@ -58,6 +60,7 @@ data class AutocompletesScreenData(
     val autocompletes: Map<UiText, AutocompleteItems> = mapOf(),
     val autocompleteMenuUid: String? = null,
     val multiColumns: Boolean = false,
+    val smartphoneScreen: Boolean = true,
     val location: AutocompleteLocation = AutocompleteLocation.DefaultValue,
     val showLocation: Boolean = false,
     val locationEnabled: Boolean = true,

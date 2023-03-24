@@ -137,6 +137,7 @@ fun SettingsScreen(
     ) {
         SettingsGrid(
             multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
             map = screenData.settings,
             fontSize = screenData.fontSize,
             dropdownMenu = {
@@ -178,14 +179,16 @@ fun SettingsScreen(
 private fun SettingsGrid(
     modifier: Modifier = Modifier,
     multiColumns: Boolean,
+    smartphoneScreen: Boolean,
     map: Map<UiText, List<SettingsItem>>,
     fontSize: FontSize,
     dropdownMenu: @Composable (SettingsUid) -> Unit,
     onClick: (SettingsUid) -> Unit
 ) {
-    AppGrid(
+    SmartphoneTabletAppGrid(
         modifier = modifier,
-        multiColumns = multiColumns
+        multiColumns = multiColumns,
+        smartphoneScreen = smartphoneScreen
     ) {
         map.forEach {
             SettingsSurface(

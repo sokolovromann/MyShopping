@@ -23,6 +23,7 @@ class MoveProductState {
         shoppingLists = ShoppingLists(preferences = preferences)
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
+            smartphoneScreen = preferences.smartphoneScreen,
             location = location,
             fontSize = preferences.fontSize
         )
@@ -39,6 +40,7 @@ class MoveProductState {
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
             multiColumns = preferences.shoppingsMultiColumns,
+            smartphoneScreen = preferences.smartphoneScreen,
             location = location,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists
@@ -86,6 +88,7 @@ data class MoveProductScreenData(
     val shoppingLists: List<ShoppingListItem> = listOf(),
     val shoppingListSelectedUid: String? = null,
     val multiColumns: Boolean = false,
+    val smartphoneScreen: Boolean = true,
     val location: ShoppingListLocation = ShoppingListLocation.DefaultValue,
     val showLocation: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,

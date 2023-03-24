@@ -303,6 +303,7 @@ fun ProductsScreen(
     ) {
         ProductsGrid(
             multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.products,
             fontSize = screenData.fontSize,
             dropdownMenu = {
@@ -458,6 +459,7 @@ private fun ProductsTotalContent(
 private fun ProductsGrid(
     modifier: Modifier = Modifier,
     multiColumns: Boolean,
+    smartphoneScreen: Boolean,
     items: List<ProductItem>,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
@@ -465,9 +467,10 @@ private fun ProductsGrid(
     onClick: (String, Boolean) -> Unit,
     onLongClick: (String) -> Unit
 ) {
-    AppGrid(
+    SmartphoneTabletAppGrid(
         modifier = modifier,
-        multiColumns = multiColumns
+        multiColumns = multiColumns,
+        smartphoneScreen = smartphoneScreen
     ) {
         items.forEach { item ->
             AppMultiColumnsItem(

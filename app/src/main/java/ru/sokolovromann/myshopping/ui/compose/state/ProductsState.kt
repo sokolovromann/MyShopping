@@ -51,6 +51,7 @@ class ProductsState {
             productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
+            smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney
@@ -90,6 +91,7 @@ class ProductsState {
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
             multiColumns = preferences.productsMultiColumns,
+            smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             showHiddenProducts = showHiddenProducts,
             fontSize = preferences.fontSize,
@@ -277,6 +279,7 @@ data class ProductsScreenData(
     val totalText: UiText = UiText.Nothing,
     val reminderText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
+    val smartphoneScreen: Boolean = true,
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,

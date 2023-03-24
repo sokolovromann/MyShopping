@@ -8,10 +8,31 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
 @Composable
+fun SmartphoneTabletAppGrid(
+    modifier: Modifier = Modifier,
+    multiColumns: Boolean = false,
+    smartphoneScreen: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val maxColumnWidth = if (smartphoneScreen) {
+        AppGridMediumMaxColumnWidth
+    } else {
+        AppGridLargeMaxColumnWidth
+    }
+
+    AppGrid(
+        modifier = modifier,
+        multiColumns = multiColumns,
+        maxColumnWidth = maxColumnWidth,
+        content = content
+    )
+}
+
+@Composable
 fun AppGrid(
     modifier: Modifier = Modifier,
     multiColumns: Boolean = false,
-    maxColumnWidth: Dp = appGridDefaultMaxColumnWidth,
+    maxColumnWidth: Dp = AppGridMediumMaxColumnWidth,
     content: @Composable () -> Unit
 ) {
     Layout(
@@ -68,4 +89,5 @@ private fun shortestColumn(colHeights: IntArray): Int {
     return column
 }
 
-private val appGridDefaultMaxColumnWidth = 300.dp
+private val AppGridMediumMaxColumnWidth = 300.dp
+private val AppGridLargeMaxColumnWidth = 400.dp

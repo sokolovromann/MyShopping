@@ -154,6 +154,7 @@ fun PurchasesScreen(
     ) {
         ShoppingListsGrid(
             multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
             fontSize = screenData.fontSize,
             dropdownMenu = {

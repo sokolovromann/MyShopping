@@ -91,6 +91,7 @@ fun CopyProductScreen(
         gridContent = {
             ShoppingListsGrid(
                 multiColumns = screenData.multiColumns,
+                smartphoneScreen = screenData.smartphoneScreen,
                 items = screenData.shoppingLists,
                 fontSize = screenData.fontSize,
                 onClick = {

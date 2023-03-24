@@ -24,6 +24,7 @@ class PurchasesState {
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
+            smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
         )
@@ -42,6 +43,7 @@ class PurchasesState {
             totalText = shoppingLists.calculateTotalToText(),
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.shoppingsMultiColumns,
+            smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists
@@ -146,6 +148,7 @@ data class PurchasesScreenData(
     val shoppingListMenuUid: String? = null,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
+    val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,

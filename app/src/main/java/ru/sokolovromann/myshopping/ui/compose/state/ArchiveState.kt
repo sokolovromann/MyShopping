@@ -20,6 +20,7 @@ class ArchiveState {
         screenData = ArchiveScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
+            smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
         )
@@ -37,6 +38,7 @@ class ArchiveState {
             totalText = shoppingLists.calculateTotalToText(),
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.shoppingsMultiColumns,
+            smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists
@@ -66,6 +68,7 @@ data class ArchiveScreenData(
     val shoppingListMenuUid: String? = null,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
+    val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,

@@ -23,15 +23,17 @@ import ru.sokolovromann.myshopping.ui.utils.*
 fun ShoppingListsGrid(
     modifier: Modifier = Modifier,
     multiColumns: Boolean,
+    smartphoneScreen: Boolean,
     items: List<ShoppingListItem>,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
     onLongClick: (String) -> Unit
 ) {
-    AppGrid(
+    SmartphoneTabletAppGrid(
         modifier = modifier,
-        multiColumns = multiColumns
+        multiColumns = multiColumns,
+        smartphoneScreen = smartphoneScreen
     ) {
         items.forEach { item ->
             AppSurfaceItem(

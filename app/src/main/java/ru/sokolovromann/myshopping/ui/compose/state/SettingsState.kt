@@ -23,7 +23,8 @@ class SettingsState {
             settings = settings.getSettingsItems(),
             fontSize = preferences.fontSize,
             displayCompletedPurchases = preferences.displayCompletedPurchases,
-            multiColumns = !preferences.smartphoneScreen
+            multiColumns = !preferences.smartphoneScreen,
+            smartphoneScreen = preferences.smartphoneScreen
         )
     }
 
@@ -50,5 +51,6 @@ data class SettingsScreenData(
     val settingsItemUid: SettingsUid? = null,
     val fontSize: FontSize = FontSize.DefaultValue,
     val displayCompletedPurchases: DisplayCompleted = DisplayCompleted.DefaultValue,
-    val multiColumns: Boolean = false
+    val multiColumns: Boolean = false,
+    val smartphoneScreen: Boolean = true,
 )

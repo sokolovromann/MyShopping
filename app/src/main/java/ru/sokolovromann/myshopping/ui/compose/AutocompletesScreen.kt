@@ -154,6 +154,7 @@ fun AutocompletesScreen(
         gridContent = {
             AutocompletesGrid(
                 multiColumns = screenData.multiColumns,
+                smartphoneScreen = screenData.smartphoneScreen,
                 map = screenData.autocompletes,
                 fontSize = screenData.fontSize,
                 dropdownMenu = {
@@ -193,15 +194,17 @@ fun AutocompletesScreen(
 private fun AutocompletesGrid(
     modifier: Modifier = Modifier,
     multiColumns: Boolean,
+    smartphoneScreen: Boolean,
     map: Map<UiText, AutocompleteItems>,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
     onLongClick: (String) -> Unit
 ) {
-    AppGrid(
+    SmartphoneTabletAppGrid(
         modifier = modifier,
-        multiColumns = multiColumns
+        multiColumns = multiColumns,
+        smartphoneScreen = smartphoneScreen
     ) {
         map.forEach {
             val nameToString = (it.key as UiText.FromString).value.lowercase()
