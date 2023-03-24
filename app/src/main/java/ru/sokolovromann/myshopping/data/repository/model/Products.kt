@@ -9,10 +9,12 @@ data class Products(
         return shoppingList.name
     }
 
-    fun formatProducts(): List<Product> {
+    fun formatProducts(
+        displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+    ): List<Product> {
         return shoppingList.products
             .sortProducts()
-            .splitProducts(preferences.displayCompletedPurchases)
+            .splitProducts(displayCompleted)
     }
 
     fun calculateTotal(displayTotal: DisplayTotal = preferences.displayPurchasesTotal): Money {

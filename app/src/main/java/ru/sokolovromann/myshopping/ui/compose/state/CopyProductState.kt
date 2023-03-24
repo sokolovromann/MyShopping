@@ -55,6 +55,13 @@ class CopyProductState {
         screenData = screenData.copy(shoppingListSelectedUid = uid)
     }
 
+    fun displayHiddenShoppingLists() {
+        screenData = screenData.copy(
+            shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
+            showHiddenShoppingLists = false
+        )
+    }
+
     fun showLocation() {
         screenData = screenData.copy(showLocation = true)
     }

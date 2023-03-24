@@ -85,7 +85,10 @@ fun MoveProductScreen(
         },
         gridBottomBar = {
             if (screenData.showHiddenShoppingLists) {
-                ShoppingListsHiddenText(fontSize = screenData.fontSize)
+                ShoppingListsHidden(
+                    fontSize = screenData.fontSize,
+                    onClick = { viewModel.onEvent(MoveProductEvent.DisplayHiddenShoppingLists) }
+                )
             }
         },
         gridContent = {

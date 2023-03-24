@@ -29,19 +29,20 @@ class TrashState {
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         val preferences = shoppingLists.preferences
 
-        val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
-                && shoppingLists.hasHiddenShoppingLists()
+        val shoppingListItems = when (preferences.displayCompletedPurchases) {
+            DisplayCompleted.FIRST, DisplayCompleted.LAST -> shoppingLists.getShoppingListItems()
+            else -> shoppingLists.getShoppingListItems(DisplayCompleted.LAST)
+        }
 
         screenData = TrashScreenData(
             screenState = ScreenState.Showing,
-            shoppingLists = shoppingLists.getShoppingListItems(),
+            shoppingLists = shoppingListItems,
             totalText = shoppingLists.calculateTotalToText(),
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
-            fontSize = preferences.fontSize,
-            showHiddenShoppingLists = showHiddenShoppingLists
+            fontSize = preferences.fontSize
         )
     }
 
@@ -81,6 +82,5 @@ data class TrashScreenData(
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showBottomBar: Boolean = true,
-    val showHiddenShoppingLists: Boolean = false
+    val showBottomBar: Boolean = true
 )

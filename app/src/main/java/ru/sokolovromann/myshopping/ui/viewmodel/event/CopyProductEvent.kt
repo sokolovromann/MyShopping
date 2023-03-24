@@ -8,6 +8,8 @@ sealed class CopyProductEvent {
 
     object SelectShoppingListLocation : CopyProductEvent()
 
+    object DisplayHiddenShoppingLists : CopyProductEvent()
+
     data class ShowShoppingLists(val location: ShoppingListLocation) : CopyProductEvent()
 
     object CancelCopingProduct : CopyProductEvent()

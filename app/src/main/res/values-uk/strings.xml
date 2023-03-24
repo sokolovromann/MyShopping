@@ -226,6 +226,7 @@
     <string name="products_action_deleteProducts">Очистити</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
+    <string name="products_action_displayCompletedPurchases">Показувати</string>
     <string name="products_action_displayCompletedTotal">Куплені товари</string>
     <string name="products_action_editProduct">Редагувати</string>
     <string name="products_action_editShoppingListName">Назва</string>
@@ -309,6 +310,7 @@
 
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
+    <string name="shoppingLists_action_displayCompletedPurchases">Показувати</string>
     <string name="shoppingLists_action_displayCompletedTotal">Куплені товари</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архів</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>

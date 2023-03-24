@@ -210,6 +210,7 @@
     <string name="products_action_deleteProducts">Klar</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
     <string name="products_action_displayAllTotal">Alle produkte</string>
+    <string name="products_action_displayCompletedPurchases">Anzeige</string>
     <string name="products_action_displayCompletedTotal">Fertige produkte</string>
     <string name="products_action_editProduct">Bearbeiten</string>
     <string name="products_action_editShoppingListName">Name</string>
@@ -293,6 +294,7 @@
 
     <string name="shoppingLists_action_displayActiveTotal">Aktive produkte</string>
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
+    <string name="shoppingLists_action_displayCompletedPurchases">Anzeige</string>
     <string name="shoppingLists_action_displayCompletedTotal">Fertige produkte</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>

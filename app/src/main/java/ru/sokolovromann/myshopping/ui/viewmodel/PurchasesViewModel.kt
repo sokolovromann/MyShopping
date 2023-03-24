@@ -49,6 +49,8 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
+            PurchasesEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
+
             is PurchasesEvent.ShowProducts -> showProducts(event)
 
             PurchasesEvent.ShowNavigationDrawer -> showNavigationDrawer()
@@ -168,6 +170,10 @@ class PurchasesViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()
         }
+    }
+
+    private fun displayHiddenShoppingLists() {
+        purchasesState.displayHiddenShoppingLists()
     }
 
     private fun showProducts(

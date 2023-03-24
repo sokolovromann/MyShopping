@@ -1,14 +1,17 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.ui.compose.state.ProductItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
-fun Products.getProductsItems(): List<ProductItem> {
-    return formatProducts().map {
+fun Products.getProductsItems(
+    displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+): List<ProductItem> {
+    return formatProducts(displayCompleted).map {
         val displayQuantity = it.quantity.isNotEmpty()
         val displayPrice = it.price.isNotEmpty() && preferences.displayMoney
 

@@ -5,10 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
-import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
-import ru.sokolovromann.myshopping.ui.utils.getProductsItems
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListLocation
+import ru.sokolovromann.myshopping.ui.utils.*
 import java.util.*
 
 class ProductsState {
@@ -78,15 +75,25 @@ class ProductsState {
 
         val location = products.shoppingList.getShoppingListLocation()
 
-        val showHiddenProducts = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
+        val showHiddenProducts = location != ShoppingListLocation.TRASH
+                && preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && products.hasHiddenProducts()
+
+        val productsItems = if (location == ShoppingListLocation.TRASH) {
+            when (preferences.displayCompletedPurchases) {
+                DisplayCompleted.FIRST, DisplayCompleted.LAST -> products.getProductsItems()
+                else -> products.getProductsItems(DisplayCompleted.LAST)
+            }
+        } else {
+            products.getProductsItems()
+        }
 
         screenData = ProductsScreenData(
             screenState = ScreenState.Showing,
             shoppingListName = shoppingListName,
             shoppingListLocation = location,
             shoppingListCompleted = products.isCompleted(),
-            products = products.getProductsItems(),
+            products = productsItems,
             productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
@@ -114,6 +121,13 @@ class ProductsState {
         screenData = screenData.copy(
             showSort = true,
             showProductsMenu = false
+        )
+    }
+
+    fun displayHiddenProducts() {
+        screenData = screenData.copy(
+            products = products.getProductsItems(DisplayCompleted.LAST),
+            showHiddenProducts = false
         )
     }
 

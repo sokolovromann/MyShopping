@@ -85,7 +85,10 @@ fun CopyProductScreen(
         },
         gridBottomBar = {
             if (screenData.showHiddenShoppingLists) {
-                ShoppingListsHiddenText(fontSize = screenData.fontSize)
+                ShoppingListsHidden(
+                    fontSize = screenData.fontSize,
+                    onClick = { viewModel.onEvent(CopyProductEvent.DisplayHiddenShoppingLists) }
+                )
             }
         },
         gridContent = {

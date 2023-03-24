@@ -105,11 +105,6 @@ fun TrashScreen(
                 }
             )
         },
-        gridBottomBar = {
-            if (screenData.showHiddenShoppingLists) {
-                ShoppingListsHiddenText(fontSize = screenData.fontSize)
-            }
-        },
         loadingContent = {
             AppLoadingContent(indicator = { CircularProgressIndicator() })
         },

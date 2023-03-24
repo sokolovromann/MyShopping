@@ -21,6 +21,8 @@ sealed class PurchasesEvent {
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
 
+    object DisplayHiddenShoppingLists : PurchasesEvent()
+
     data class ShowProducts(val uid: String) : PurchasesEvent()
 
     object ShowNavigationDrawer : PurchasesEvent()

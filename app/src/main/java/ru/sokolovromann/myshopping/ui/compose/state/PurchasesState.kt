@@ -54,6 +54,13 @@ class PurchasesState {
         screenData = screenData.copy(shoppingListMenuUid = uid)
     }
 
+    fun displayHiddenShoppingLists() {
+        screenData = screenData.copy(
+            shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
+            showHiddenShoppingLists = false
+        )
+    }
+
     fun selectDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = true)
     }

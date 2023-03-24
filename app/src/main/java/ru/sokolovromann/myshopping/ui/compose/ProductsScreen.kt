@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -290,13 +291,24 @@ fun ProductsScreen(
         },
         gridBottomBar = {
             if (screenData.showHiddenProducts) {
-                Text(
+                Row(
                     modifier = Modifier.padding(ProductsHiddenProductsPaddings),
-                    text = stringResource(R.string.products_text_hiddenProducts),
-                    fontSize = screenData.fontSize.toItemBody().sp,
-                    color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
-                    style = MaterialTheme.typography.body1
-                )
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.products_text_hiddenProducts),
+                        fontSize = screenData.fontSize.toItemBody().sp,
+                        color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+                        style = MaterialTheme.typography.body1
+                    )
+                    TextButton(onClick = { viewModel.onEvent(ProductsEvent.DisplayHiddenProducts) }) {
+                        Text(
+                            text = stringResource(R.string.products_action_displayCompletedPurchases),
+                            fontSize = screenData.fontSize.toButton().sp,
+                        )
+                    }
+                }
             }
         },
         gridMultiColumnsSpace = screenData.multiColumns
@@ -530,7 +542,7 @@ private val ProductsReminderSpacerSize = 4.dp
 private val ProductsNameWithoutReminderSpacerSize = 8.dp
 private val ProductsHiddenProductsPaddings = PaddingValues(
     start = 8.dp,
-    top = 16.dp,
+    top = 8.dp,
     end = 8.dp
 )
 private val ProductsNamePaddings = PaddingValues(horizontal = 8.dp)

@@ -15,6 +15,8 @@ sealed class ArchiveEvent {
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
 
+    object DisplayHiddenShoppingLists : ArchiveEvent()
+
     object ShowBackScreen : ArchiveEvent()
 
     data class ShowProducts(val uid: String) : ArchiveEvent()

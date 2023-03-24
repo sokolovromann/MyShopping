@@ -9,6 +9,8 @@ import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class ArchiveState {
 
+    private var shoppingLists by mutableStateOf(ShoppingLists())
+
     var screenData by mutableStateOf(ArchiveScreenData())
         private set
 
@@ -17,6 +19,7 @@ class ArchiveState {
     }
 
     fun showNotFound(preferences: AppPreferences) {
+        shoppingLists = ShoppingLists(preferences = preferences)
         screenData = ArchiveScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
@@ -27,6 +30,7 @@ class ArchiveState {
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
+        this.shoppingLists = shoppingLists
         val preferences = shoppingLists.preferences
 
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
@@ -47,6 +51,13 @@ class ArchiveState {
 
     fun showShoppingListMenu(uid: String) {
         screenData = screenData.copy(shoppingListMenuUid = uid)
+    }
+
+    fun displayHiddenShoppingLists() {
+        screenData = screenData.copy(
+            shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
+            showHiddenShoppingLists = false
+        )
     }
 
     fun selectDisplayPurchasesTotal() {

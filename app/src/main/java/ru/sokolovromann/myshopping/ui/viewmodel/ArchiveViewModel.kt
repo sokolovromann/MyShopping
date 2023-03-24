@@ -44,6 +44,8 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
+            ArchiveEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
+
             ArchiveEvent.ShowBackScreen -> showBackScreen()
 
             is ArchiveEvent.ShowProducts -> showProducts(event)
@@ -134,6 +136,10 @@ class ArchiveViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()
         }
+    }
+
+    private fun displayHiddenShoppingLists() {
+        archiveState.displayHiddenShoppingLists()
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {

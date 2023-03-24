@@ -238,14 +238,28 @@ private fun ShoppingListItemBody(
 }
 
 @Composable
-fun ShoppingListsHiddenText(fontSize: FontSize) {
-    Text(
+fun ShoppingListsHidden(
+    fontSize: FontSize,
+    onClick: () -> Unit
+) {
+    Row(
         modifier = Modifier.padding(ShoppingListsHiddenProductsPaddings),
-        text = stringResource(R.string.shoppingLists_text_hiddenShoppingLists),
-        fontSize = fontSize.toItemBody().sp,
-        color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
-        style = MaterialTheme.typography.body1
-    )
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.shoppingLists_text_hiddenShoppingLists),
+            fontSize = fontSize.toItemBody().sp,
+            color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+            style = MaterialTheme.typography.body1
+        )
+        TextButton(onClick = onClick) {
+            Text(
+                text = stringResource(R.string.shoppingLists_action_displayCompletedPurchases),
+                fontSize = fontSize.toButton().sp,
+            )
+        }
+    }
 }
 
 private val ShoppingListItemTextSmallPaddings = PaddingValues(vertical = 2.dp)
@@ -255,7 +269,7 @@ private val ShoppingListItemSpacerMediumSize = 4.dp
 private val ShoppingListItemSpacerLargeSize = 8.dp
 private val ShoppingListsHiddenProductsPaddings = PaddingValues(
     start = 8.dp,
-    top = 16.dp,
+    top = 8.dp,
     end = 8.dp
 )
 private val ShoppingListsLocationPaddings = PaddingValues(

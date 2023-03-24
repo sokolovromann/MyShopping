@@ -73,6 +73,8 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
+            ProductsEvent.DisplayHiddenProducts -> displayHiddenProducts()
+
             is ProductsEvent.CompleteProduct -> completeProduct(event)
 
             is ProductsEvent.ActiveProduct -> activeProduct(event)
@@ -301,6 +303,10 @@ class ProductsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()
         }
+    }
+
+    private fun displayHiddenProducts() {
+        productsState.displayHiddenProducts()
     }
 
     private fun showProductMenu(event: ProductsEvent.ShowProductMenu) {

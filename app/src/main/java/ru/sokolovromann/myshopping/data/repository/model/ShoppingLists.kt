@@ -6,11 +6,13 @@ data class ShoppingLists(
     val preferences: AppPreferences = AppPreferences()
 ) {
 
-    fun formatShoppingLists(): List<ShoppingList> {
+    fun formatShoppingLists(
+        displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+    ): List<ShoppingList> {
         return shoppingLists
-            .map { it.copy(products = formatProducts(it.products)) }
+            .map { it.copy(products = formatProducts(it.products, displayCompleted)) }
             .sortShoppingLists()
-            .splitShoppingLists(preferences.displayCompletedPurchases)
+            .splitShoppingLists(displayCompleted)
     }
 
     fun calculateTotal(): Money {
@@ -25,9 +27,12 @@ data class ShoppingLists(
         return shoppingLists.splitShoppingLists(DisplayCompleted.FIRST).first().completed
     }
 
-    private fun formatProducts(product: List<Product>): List<Product> {
+    private fun formatProducts(
+        product: List<Product>,
+        displayCompleted: DisplayCompleted
+    ): List<Product> {
         return product
             .sortProducts()
-            .splitProducts(preferences.displayCompletedPurchases)
+            .splitProducts(displayCompleted)
     }
 }

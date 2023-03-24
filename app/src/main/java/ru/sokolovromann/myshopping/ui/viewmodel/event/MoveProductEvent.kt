@@ -8,6 +8,8 @@ sealed class MoveProductEvent {
 
     object SelectShoppingListLocation : MoveProductEvent()
 
+    object DisplayHiddenShoppingLists : MoveProductEvent()
+
     data class ShowShoppingLists(val location: ShoppingListLocation) : MoveProductEvent()
 
     object CancelMovingProduct : MoveProductEvent()

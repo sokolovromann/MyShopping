@@ -19,9 +19,11 @@ fun ShoppingList.getShoppingListLocation(): ShoppingListLocation {
     }
 }
 
-fun ShoppingLists.getShoppingListItems(): List<ShoppingListItem> {
+fun ShoppingLists.getShoppingListItems(
+    displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+): List<ShoppingListItem> {
     val defaultProductsLimit = 10
-    return formatShoppingLists().map {
+    return formatShoppingLists(displayCompleted).map {
         val productsList = if (it.products.isEmpty()) {
             val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)

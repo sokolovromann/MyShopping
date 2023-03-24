@@ -136,7 +136,10 @@ fun PurchasesScreen(
         },
         gridBottomBar = {
             if (screenData.showHiddenShoppingLists) {
-                ShoppingListsHiddenText(fontSize = screenData.fontSize)
+                ShoppingListsHidden(
+                    fontSize = screenData.fontSize,
+                    onClick = { viewModel.onEvent(PurchasesEvent.DisplayHiddenShoppingLists) }
+                )
             }
         },
         loadingContent = {
