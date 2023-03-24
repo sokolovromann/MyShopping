@@ -39,6 +39,7 @@ fun ShoppingListsGrid(
                 title = getShoppingListItemTitleOrNull(item.nameText, fontSize),
                 body = {
                     ShoppingListItemBody(
+                        hasName = item.nameText.asCompose().isNotEmpty(),
                         products = item.productsList,
                         total = item.totalText,
                         reminder = item.reminderText,
@@ -143,15 +144,18 @@ private fun getShoppingListItemTitleOrNull(
     name: UiText,
     fontSize: FontSize
 ) = itemOrNull(enabled = name.asCompose().isNotEmpty()) {
-    Text(
-        modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
-        text = name.asCompose(),
-        fontSize = fontSize.toItemTitle().sp
-    )
+    Column {
+        Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+        Text(
+            text = name.asCompose(),
+            fontSize = fontSize.toItemTitle().sp
+        )
+    }
 }
 
 @Composable
 private fun ShoppingListItemBody(
+    hasName: Boolean,
     products: List<Pair<Boolean?, UiText>>,
     total: UiText,
     reminder: UiText,
@@ -160,6 +164,33 @@ private fun ShoppingListItemBody(
     val itemFontSize = fontSize.toItemBody()
 
     Column {
+        val reminderAsCompose = reminder.asCompose()
+        val hasReminder = reminderAsCompose.isNotEmpty()
+        if (hasReminder) {
+            Spacer(modifier = Modifier.size(ShoppingListItemSpacerSmallSize))
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier.size(itemFontSize.dp),
+                    painter = painterResource(R.drawable.ic_all_reminder),
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
+                )
+                Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+                Text(
+                    text = reminderAsCompose,
+                    color = MaterialTheme.colors.primary,
+                    fontSize = itemFontSize.sp
+                )
+            }
+        }
+
+        if (hasName || hasReminder) {
+            Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
+        }
+
         products.forEach {
             Row(
                 horizontalArrangement = Arrangement.Start,
@@ -180,7 +211,7 @@ private fun ShoppingListItemBody(
                         tint = contentColorFor(MaterialTheme.colors.onSurface)
                             .copy(ContentAlpha.medium)
                     )
-                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerSize))
+                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
                 }
 
                 Text(
@@ -193,37 +224,13 @@ private fun ShoppingListItemBody(
         }
 
         val totalAsCompose = total.asCompose()
-        val reminderAsCompose = reminder.asCompose()
-        if (totalAsCompose.isNotEmpty() || reminderAsCompose.isNotEmpty()) {
-            Spacer(modifier = Modifier.size(ShoppingListItemSpacerSize))
-        }
-
         if (totalAsCompose.isNotEmpty()) {
+            Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
             Text(
                 modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
                 text = totalAsCompose,
                 fontSize = itemFontSize.sp
             )
-        }
-
-        if (reminderAsCompose.isNotEmpty()) {
-            Row(
-                modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier.size(itemFontSize.dp),
-                    painter = painterResource(R.drawable.ic_all_reminder),
-                    contentDescription = "",
-                    tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
-                )
-                Spacer(modifier = Modifier.size(ShoppingListItemSpacerSize))
-                Text(
-                    text = reminderAsCompose,
-                    fontSize = itemFontSize.sp
-                )
-            }
         }
     }
 }
@@ -241,7 +248,9 @@ fun ShoppingListsHiddenText(fontSize: FontSize) {
 
 private val ShoppingListItemTextSmallPaddings = PaddingValues(vertical = 2.dp)
 private val ShoppingListItemTextMediumPaddings = PaddingValues(vertical = 4.dp)
-private val ShoppingListItemSpacerSize = 4.dp
+private val ShoppingListItemSpacerSmallSize = 2.dp
+private val ShoppingListItemSpacerMediumSize = 4.dp
+private val ShoppingListItemSpacerLargeSize = 8.dp
 private val ShoppingListsHiddenProductsPaddings = PaddingValues(
     start = 8.dp,
     top = 16.dp,
