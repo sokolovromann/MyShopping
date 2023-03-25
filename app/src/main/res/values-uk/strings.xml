@@ -120,7 +120,6 @@
         <item>Лимон</item>
         <item>Лимонад</item>
         <item>Лук</item>
-        <item>М\'ясо</item>
         <item>Майонез</item>
         <item>Макарони</item>
         <item>Мандарини</item>
@@ -137,6 +136,7 @@
         <item>Оливкова олія</item>
         <item>Освіжувач повітря</item>
         <item>Оцет</item>
+        <item>Оселедець</item>
         <item>Паштет</item>
         <item>Пельмені</item>
         <item>Перець</item>
@@ -145,10 +145,10 @@
         <item>Помідори</item>
         <item>Пральний порошок</item>
         <item>Редис</item>
-        <item>Риба</item>
         <item>Рис</item>
         <item>Свинина</item>
         <item>Сир</item>
+        <item>Скумбрія</item>
         <item>Сливки</item>
         <item>Сметана</item>
         <item>Соняшникова олія</item>
@@ -168,7 +168,8 @@
         <item>Цукор</item>
         <item>Чай</item>
         <item>Часник</item>
-        <item>Чорний хліб</item>
+        <item>Червона риба</item>
+        <item>Житній хліб</item>
         <item>Чіпси</item>
         <item>Шампунь</item>
         <item>Шинка</item>

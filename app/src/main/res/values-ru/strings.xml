@@ -86,13 +86,12 @@
         <item>Баранина</item>
         <item>Батон</item>
         <item>Бекон</item>
-        <item>Белый хлеб</item>
         <item>Блины</item>
         <item>Бобы</item>
-        <item>Болгарский перец</item>
         <item>Бритвы</item>
         <item>Брокколи</item>
         <item>Брюссельская капуста</item>
+        <item>Вареники</item>
         <item>Ветчина</item>
         <item>Виноград</item>
         <item>Вишня</item>
@@ -108,7 +107,8 @@
         <item>Дезодорант</item>
         <item>Дыня</item>
         <item>Ежевика</item>
-        <item>Зеленый горошек</item>
+        <item>Зелёный горошек</item>
+        <item>Зелень</item>
         <item>Зубная паста</item>
         <item>Зубная щётка</item>
         <item>Изюм</item>
@@ -130,6 +130,7 @@
         <item>Котлеты</item>
         <item>Кофе</item>
         <item>Красная икра</item>
+        <item>Красная рыба</item>
         <item>Креветки</item>
         <item>Крекеры</item>
         <item>Кукуруза</item>
@@ -144,6 +145,9 @@
         <item>Макароны</item>
         <item>Мандарины</item>
         <item>Манка</item>
+        <item>Масло оливковое</item>
+        <item>Масло подсолнечное</item>
+        <item>Масло сливочное</item>
         <item>Мешки для мусора</item>
         <item>Миндаль</item>
         <item>Молоко</item>
@@ -152,36 +156,36 @@
         <item>Моющее средство</item>
         <item>Мука</item>
         <item>Мыло</item>
-        <item>Мясо</item>
         <item>Мёд</item>
         <item>Овсянка</item>
+        <item>Окорочка</item>
         <item>Огурцы</item>
         <item>Оливки</item>
-        <item>Оливковое масло</item>
         <item>Орехи</item>
         <item>Освежитель воздуха</item>
         <item>Паштет</item>
         <item>Пельмени</item>
-        <item>Перец</item>
+        <item>Перец сладкий</item>
+        <item>Перец болгарский</item>
+        <item>Перец молотый</item>
         <item>Персики</item>
         <item>Петрушка</item>
         <item>Печенье</item>
         <item>Пицца</item>
-        <item>Подсолнечное масло</item>
         <item>Помидоры</item>
         <item>Пшено</item>
         <item>Редис</item>
         <item>Редька</item>
         <item>Рис</item>
-        <item>Рыба</item>
         <item>Ряженка</item>
         <item>Сахар</item>
         <item>Свинина</item>
         <item>Свёкла</item>
         <item>Сгущёнка</item>
         <item>Сельдерей</item>
+        <item>Скумбрия</item>
+        <item>Селёдка</item>
         <item>Сливки</item>
-        <item>Сливочное масло</item>
         <item>Сметана</item>
         <item>Сок</item>
         <item>Соль</item>
@@ -190,8 +194,10 @@
         <item>Спички</item>
         <item>Стиральный порошок</item>
         <item>Сухарики</item>
-        <item>Сыр</item>
+        <item>Сыр твёрдый</item>
+        <item>Сыр плавленый</item>
         <item>Творог</item>
+        <item>Тесто</item>
         <item>Томатная паста</item>
         <item>Торт</item>
         <item>Туалетная бумага</item>
@@ -203,12 +209,13 @@
         <item>Фасоль</item>
         <item>Фисташки</item>
         <item>Фундук</item>
-        <item>Хлеб</item>
         <item>Хлопья</item>
         <item>Цветная капуста</item>
-        <item>Чай</item>
+        <item>Чай чёрный</item>
+        <item>Чай зелёный</item>
         <item>Черника</item>
-        <item>Черный хлеб</item>
+        <item>Хлеб белый</item>
+        <item>Хлеб ржаной</item>
         <item>Чеснок</item>
         <item>Чипсы</item>
         <item>Шампунь</item>
