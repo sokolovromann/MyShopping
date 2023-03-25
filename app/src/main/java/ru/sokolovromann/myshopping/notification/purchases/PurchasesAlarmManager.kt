@@ -50,6 +50,7 @@ class PurchasesAlarmManager @Inject constructor(
     private fun toPendingIntent(uid: String): PendingIntent {
         val requestCode = 0
         val intent: Intent = Intent(context, PurchasesBroadcastReceiver::class.java).apply {
+            action = PurchasesWorker.createAction(uid)
             val args = Bundle().apply { putString(PurchasesWorker.UID_KEY, uid) }
             putExtras(args)
         }

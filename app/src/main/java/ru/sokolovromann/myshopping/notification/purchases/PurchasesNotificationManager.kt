@@ -73,6 +73,7 @@ class PurchasesNotificationManager @Inject constructor(
     private fun toPendingIntent(uid: String): PendingIntent {
         val requestCode = 0
         val intent: Intent = Intent(context, MainActivity::class.java).apply {
+            action = PurchasesWorker.createAction(uid)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             val extras = Bundle().apply { putString(UiRouteKey.ShoppingUid.key, uid) }
             putExtras(extras)
