@@ -47,6 +47,15 @@ class SettingsState {
         screenData = screenData.copy(settingsItemUid = null)
     }
 
+    fun getAppGithubLinkResult(): Result<String> {
+        val link = settings.appGithubLink
+        return if (link.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            Result.success(link)
+        }
+    }
+
     fun getPrivacyPolicyLinkResult(): Result<String> {
         val link = settings.privacyPolicyLink
         return if (link.isEmpty()) {

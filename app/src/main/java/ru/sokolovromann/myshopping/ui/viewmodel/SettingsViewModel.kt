@@ -265,13 +265,11 @@ class SettingsViewModel @Inject constructor(
         _screenEventFlow.emit(SettingsScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showAppGithub() = viewModelScope.launch {
-        repository.getSettings().firstOrNull()?.let {
-            withContext(dispatchers.main) {
-                val event = SettingsScreenEvent.ShowAppGithub(it.appGithubLink)
-                _screenEventFlow.emit(event)
-            }
-        }
+    private fun showAppGithub() = viewModelScope.launch(dispatchers.main) {
+        val link = settingsState.getAppGithubLinkResult()
+            .getOrElse { return@launch }
+        val event = SettingsScreenEvent.ShowAppGithub(link)
+        _screenEventFlow.emit(event)
     }
 
     private fun showPrivacyPolicy() = viewModelScope.launch(dispatchers.main) {
