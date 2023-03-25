@@ -23,5 +23,7 @@ enum class SettingsUid {
     SaveProductToAutocompletes,
     MigrateFromAppVersion14,
     Email,
-    Github
+    Github,
+    PrivacyPolicy,
+    TermsAndConditions
 }

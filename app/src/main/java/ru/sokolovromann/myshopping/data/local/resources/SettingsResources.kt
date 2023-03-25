@@ -15,7 +15,9 @@ class SettingsResources @Inject constructor(
         val entity = SettingsResourcesEntity(
             developerName = resources.getString(R.string.data_text_developerName),
             developerEmail = resources.getString(R.string.data_email_developer),
-            appGithubLink = resources.getString(R.string.data_link_github)
+            appGithubLink = resources.getString(R.string.data_link_github),
+            privacyPolicyLink = resources.getString(R.string.data_link_privacy_policy),
+            termsAndConditionsLink = resources.getString(R.string.data_link_terms_and_conditions)
         )
         return flowOf(entity)
     }

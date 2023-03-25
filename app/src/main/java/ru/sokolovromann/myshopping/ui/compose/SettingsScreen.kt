@@ -97,6 +97,20 @@ fun SettingsScreen(
                 SettingsScreenEvent.HideNavigationDrawer -> coroutineScope.launch {
                     scaffoldState.drawerState.close()
                 }
+
+                is SettingsScreenEvent.ShowPrivacyPolicy -> navController.chooseNavigate(
+                    intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(it.link)
+                    )
+                )
+
+                is SettingsScreenEvent.ShowTermsAndConditions -> navController.chooseNavigate(
+                    intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(it.link)
+                    )
+                )
             }
         }
     }

@@ -187,6 +187,8 @@ class RepositoryMapping @Inject constructor() {
             developerEmail = resourcesEntity.developerEmail,
             appVersion = BuildConfig.VERSION_NAME,
             appGithubLink = resourcesEntity.appGithubLink,
+            privacyPolicyLink = resourcesEntity.privacyPolicyLink,
+            termsAndConditionsLink = resourcesEntity.termsAndConditionsLink,
             preferences = toAppPreferences(preferencesEntity)
         )
     }

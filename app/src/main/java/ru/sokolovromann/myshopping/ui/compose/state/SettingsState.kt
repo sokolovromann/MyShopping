@@ -8,6 +8,8 @@ import ru.sokolovromann.myshopping.ui.utils.*
 
 class SettingsState {
 
+    private var settings by mutableStateOf(Settings())
+
     var screenData by mutableStateOf(SettingsScreenData())
         private set
 
@@ -16,6 +18,7 @@ class SettingsState {
     }
 
     fun showSetting(settings: Settings) {
+        this.settings = settings
         val preferences = settings.preferences
 
         screenData = SettingsScreenData(
@@ -42,6 +45,24 @@ class SettingsState {
 
     fun hideDisplayCompletedPurchases() {
         screenData = screenData.copy(settingsItemUid = null)
+    }
+
+    fun getPrivacyPolicyLinkResult(): Result<String> {
+        val link = settings.privacyPolicyLink
+        return if (link.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            Result.success(link)
+        }
+    }
+
+    fun getTermsAndConditionsLinkResult(): Result<String> {
+        val link = settings.termsAndConditionsLink
+        return if (link.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            Result.success(link)
+        }
     }
 }
 

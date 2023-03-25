@@ -115,6 +115,10 @@ class SettingsViewModel @Inject constructor(
             SettingsUid.Email -> sendEmailToDeveloper()
 
             SettingsUid.Github -> showAppGithub()
+
+            SettingsUid.PrivacyPolicy -> showPrivacyPolicy()
+
+            SettingsUid.TermsAndConditions -> showTermsAndConditions()
         }
     }
 
@@ -268,6 +272,20 @@ class SettingsViewModel @Inject constructor(
                 _screenEventFlow.emit(event)
             }
         }
+    }
+
+    private fun showPrivacyPolicy() = viewModelScope.launch(dispatchers.main) {
+        val link = settingsState.getPrivacyPolicyLinkResult()
+            .getOrElse { return@launch }
+        val event = SettingsScreenEvent.ShowPrivacyPolicy(link)
+        _screenEventFlow.emit(event)
+    }
+
+    private fun showTermsAndConditions() = viewModelScope.launch(dispatchers.main) {
+        val link = settingsState.getTermsAndConditionsLinkResult()
+            .getOrElse { return@launch }
+        val event = SettingsScreenEvent.ShowTermsAndConditions(link)
+        _screenEventFlow.emit(event)
     }
 
     private fun hideFontSize() {

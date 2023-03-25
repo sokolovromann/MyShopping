@@ -75,6 +75,8 @@
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Відгук про програму</string>
     <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
+    <string name="data_link_privacy_policy">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
+    <string name="data_link_terms_and_conditions">https://sokolovromann.github.io/MyShopping/terms_and_conditions.html</string>
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
         <item>Апельсини</item>
         <item>Арахіс</item>
@@ -280,9 +282,11 @@
     <string name="settings_body_email">Натисніть, щоб написати</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_migrateFromAppVersion14">Натисніть, щоб примусово перемістити дані, поточні дані будуть видалені</string>
+    <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
     <string name="settings_body_productsMultiColumns">Кількість розраховується автоматично</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_shoppingsMultiColumns">Кількість розраховується автоматично</string>
+    <string name="settings_body_terms_and_conditions">Натисніть, щоб прочитати</string>
     <string name="settings_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="settings_header_aboutApp">Про програму</string>
     <string name="settings_header_autocompletes">Підказки</string>
@@ -304,10 +308,12 @@
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_migrateFromAppVersion14">Оновлення з версії 1.3.5</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
+    <string name="settings_title_privacy_policy">Політика конфіденційності</string>
     <string name="settings_title_productsMultiColumns">Декілька стовпців у товарах</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати невідомі товари</string>
     <string name="settings_title_shoppingsMultiColumns">Декілька стовпців у списках</string>
     <string name="settings_title_taxRate">Податкова ставка</string>
+    <string name="settings_title_terms_and_conditions">Умови використання</string>
 
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>

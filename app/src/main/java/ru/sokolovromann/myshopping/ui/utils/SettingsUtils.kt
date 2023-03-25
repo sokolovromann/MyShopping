@@ -138,6 +138,16 @@ private fun Settings.getAboutSettingsItems(): List<SettingsItem> {
             uid = SettingsUid.Github,
             titleText = UiText.FromResources(R.string.settings_title_github),
             bodyText = UiText.FromResources(R.string.settings_body_github)
+        ),
+        SettingsItem(
+            uid = SettingsUid.PrivacyPolicy,
+            titleText = UiText.FromResources(R.string.settings_title_privacy_policy),
+            bodyText = UiText.FromResources(R.string.settings_body_privacy_policy)
+        ),
+        SettingsItem(
+            uid = SettingsUid.TermsAndConditions,
+            titleText = UiText.FromResources(R.string.settings_title_terms_and_conditions),
+            bodyText = UiText.FromResources(R.string.settings_body_terms_and_conditions)
         )
     )
 }

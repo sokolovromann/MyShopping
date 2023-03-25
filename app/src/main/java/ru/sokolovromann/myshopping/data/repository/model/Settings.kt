@@ -5,5 +5,7 @@ data class Settings(
     val developerEmail: String = "",
     val appVersion: String = "",
     val appGithubLink: String = "",
+    val privacyPolicyLink: String = "",
+    val termsAndConditionsLink: String = "",
     val preferences: AppPreferences = AppPreferences()
 )
