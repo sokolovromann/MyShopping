@@ -47,6 +47,10 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
+            PurchasesEvent.SelectShoppingListsSort -> selectShoppingListsSort()
+
+            is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
+
             is PurchasesEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             PurchasesEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
@@ -57,11 +61,17 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.ShowShoppingListMenu -> showShoppingListMenu(event)
 
+            PurchasesEvent.ShowPurchasesMenu -> showPurchasesMenu()
+
             PurchasesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             PurchasesEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             PurchasesEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
+
+            PurchasesEvent.HidePurchasesMenu -> hidePurchasesMenu()
+
+            PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
 
             PurchasesEvent.FinishApp -> finishApp()
         }
@@ -158,6 +168,23 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
+    private fun selectShoppingListsSort() {
+        purchasesState.showSort()
+    }
+
+    private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
+        val shoppingLists = purchasesState.sortShoppingListsResult(event.sortBy).getOrElse {
+            withContext(dispatchers.main) { hideShoppingListsSort() }
+            return@launch
+        }
+
+        repository.swapShoppingLists(shoppingLists)
+
+        withContext(dispatchers.main) {
+            hideShoppingListsSort()
+        }
+    }
+
     private fun displayPurchasesTotal(
         event: PurchasesEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
@@ -190,6 +217,10 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.showShoppingListMenu(event.uid)
     }
 
+    private fun showPurchasesMenu() {
+        purchasesState.showPurchasesMenu()
+    }
+
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(PurchasesScreenEvent.HideNavigationDrawer)
     }
@@ -200,6 +231,14 @@ class PurchasesViewModel @Inject constructor(
 
     private fun hideDisplayPurchasesTotal() {
         purchasesState.hideDisplayPurchasesTotal()
+    }
+
+    private fun hidePurchasesMenu() {
+        purchasesState.hidePurchasesMenu()
+    }
+
+    private fun hideShoppingListsSort() {
+        purchasesState.hideSort()
     }
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {

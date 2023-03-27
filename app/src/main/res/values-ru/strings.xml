@@ -30,6 +30,7 @@
 
     <string name="archive_action_moveShoppingListToPurchases">Разархивировать</string>
     <string name="archive_action_moveShoppingListToTrash">Удалить</string>
+    <string name="archive_contentDescription_archiveMenuIcon">Открыть меню архива</string>
     <string name="archive_contentDescription_navigationIcon">Показать навигацию</string>
     <string name="archive_header">Архив</string>
     <string name="archive_text_productsNotFound">Список покупок пуст</string>
@@ -309,6 +310,7 @@
     <string name="purchases_action_moveShoppingListUp">Переместить вверх</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Добавить список покупок</string>
     <string name="purchases_contentDescription_navigationIcon">Открыть навигацию</string>
+    <string name="purchases_contentDescription_purchasesMenuIcon">Открыть меню покупок</string>
     <string name="purchases_header">Покупки</string>
     <string name="purchases_text_moreProducts">…</string>
     <string name="purchases_text_productsNotFound">Список покупок пуст</string>
@@ -367,6 +369,11 @@
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
     <string name="shoppingLists_action_selectTrashLocation">Корзина</string>
+    <string name="shoppingLists_action_sort">Сортировать</string>
+    <string name="shoppingLists_action_sortByCreated">По созданию</string>
+    <string name="shoppingLists_action_sortByLastModified">По редактированию</string>
+    <string name="shoppingLists_action_sortByName">По названию</string>
+    <string name="shoppingLists_action_sortByTotal">По стоимости</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>

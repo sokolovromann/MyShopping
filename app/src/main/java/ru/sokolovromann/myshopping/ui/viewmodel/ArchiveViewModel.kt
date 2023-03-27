@@ -42,6 +42,10 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.SelectNavigationItem -> selectNavigationItem(event)
 
+            ArchiveEvent.SelectShoppingListsSort -> selectShoppingListsSort()
+
+            is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
+
             is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             ArchiveEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
@@ -54,11 +58,17 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.ShowShoppingListMenu -> showShoppingListMenu(event)
 
+            ArchiveEvent.ShowArchiveMenu -> showArchiveMenu()
+
             ArchiveEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             ArchiveEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             ArchiveEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
+
+            ArchiveEvent.HideArchiveMenu -> hideArchiveMenu()
+
+            ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
         }
     }
 
@@ -124,6 +134,23 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
+    private fun selectShoppingListsSort() {
+        archiveState.showSort()
+    }
+
+    private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
+        val shoppingLists = archiveState.sortShoppingListsResult(event.sortBy).getOrElse {
+            withContext(dispatchers.main) { hideShoppingListsSort() }
+            return@launch
+        }
+
+        repository.swapShoppingLists(shoppingLists)
+
+        withContext(dispatchers.main) {
+            hideShoppingListsSort()
+        }
+    }
+
     private fun displayPurchasesTotal(
         event: ArchiveEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
@@ -158,6 +185,10 @@ class ArchiveViewModel @Inject constructor(
         archiveState.showShoppingListMenu(event.uid)
     }
 
+    private fun showArchiveMenu() {
+        archiveState.showArchiveMenu()
+    }
+
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ArchiveScreenEvent.HideNavigationDrawer)
     }
@@ -168,5 +199,13 @@ class ArchiveViewModel @Inject constructor(
 
     private fun hideDisplayPurchasesTotal() {
         archiveState.hideDisplayPurchasesTotal()
+    }
+
+    private fun hideArchiveMenu() {
+        archiveState.hideArchiveMenu()
+    }
+
+    private fun hideShoppingListsSort() {
+        archiveState.hideSort()
     }
 }

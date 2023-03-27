@@ -22,6 +22,10 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toShoppingEntities(shoppingLists: List<ShoppingList>): List<ShoppingEntity> {
+        return shoppingLists.map { toShoppingEntity(it) }
+    }
+
     fun toShoppingLists(
         entities: List<ShoppingListEntity>,
         lastPosition: Int?,

@@ -30,6 +30,7 @@
 
     <string name="archive_action_moveShoppingListToPurchases">Unarchive</string>
     <string name="archive_action_moveShoppingListToTrash">Delete</string>
+    <string name="archive_contentDescription_archiveMenuIcon">Open archive menu</string>
     <string name="archive_contentDescription_navigationIcon">Show navigation</string>
     <string name="archive_header">Archive</string>
     <string name="archive_text_productsNotFound">Shopping list is empty</string>
@@ -316,6 +317,7 @@
     <string name="purchases_action_moveShoppingListUp">Move up</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
+    <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
     <string name="purchases_header">Purchases</string>
     <string name="purchases_text_moreProducts">…</string>
     <string name="purchases_text_productsNotFound">Shopping list is empty</string>
@@ -374,6 +376,11 @@
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>
     <string name="shoppingLists_action_selectTrashLocation">Trash</string>
+    <string name="shoppingLists_action_sort">Sort</string>
+    <string name="shoppingLists_action_sortByCreated">By created</string>
+    <string name="shoppingLists_action_sortByLastModified">By last modified</string>
+    <string name="shoppingLists_action_sortByName">By name</string>
+    <string name="shoppingLists_action_sortByTotal">By total</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_text_activeTotal">Active: %s</string>

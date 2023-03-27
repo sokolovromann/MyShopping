@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class PurchasesEvent {
@@ -19,6 +20,10 @@ sealed class PurchasesEvent {
 
     data class SelectNavigationItem(val route: UiRoute) : PurchasesEvent()
 
+    object SelectShoppingListsSort : PurchasesEvent()
+
+    data class SortShoppingLists(val sortBy: SortBy) : PurchasesEvent()
+
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
 
     object DisplayHiddenShoppingLists : PurchasesEvent()
@@ -29,11 +34,17 @@ sealed class PurchasesEvent {
 
     data class ShowShoppingListMenu(val uid: String) : PurchasesEvent()
 
+    object ShowPurchasesMenu : PurchasesEvent()
+
     object HideNavigationDrawer : PurchasesEvent()
 
     object HideShoppingListMenu : PurchasesEvent()
 
     object HideDisplayPurchasesTotal : PurchasesEvent()
+
+    object HidePurchasesMenu : PurchasesEvent()
+
+    object HideShoppingListsSort : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 }

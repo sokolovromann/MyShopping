@@ -22,7 +22,6 @@ class ArchiveState {
         shoppingLists = ShoppingLists(preferences = preferences)
         screenData = ArchiveScreenData(
             screenState = ScreenState.Nothing,
-            showBottomBar = false,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
@@ -33,14 +32,19 @@ class ArchiveState {
         this.shoppingLists = shoppingLists
         val preferences = shoppingLists.preferences
 
+        val totalText: UiText = if (preferences.displayMoney) {
+            shoppingLists.calculateTotalToText()
+        } else {
+            UiText.Nothing
+        }
+
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         screenData = ArchiveScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
-            totalText = shoppingLists.calculateTotalToText(),
-            showBottomBar = preferences.displayMoney,
+            totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
@@ -51,6 +55,17 @@ class ArchiveState {
 
     fun showShoppingListMenu(uid: String) {
         screenData = screenData.copy(shoppingListMenuUid = uid)
+    }
+
+    fun showArchiveMenu() {
+        screenData = screenData.copy(showArchiveMenu = true)
+    }
+
+    fun showSort() {
+        screenData = screenData.copy(
+            showSort = true,
+            showArchiveMenu = false
+        )
     }
 
     fun displayHiddenShoppingLists() {
@@ -71,6 +86,29 @@ class ArchiveState {
     fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
     }
+
+    fun hideArchiveMenu() {
+        screenData = screenData.copy(showArchiveMenu = false)
+    }
+
+    fun hideSort() {
+        screenData = screenData.copy(showSort = false)
+    }
+
+    fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
+        val sortShoppingLists = shoppingLists.shoppingLists.sortShoppingLists(sort = Sort(sortBy))
+        return if (sortShoppingLists.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            val success = sortShoppingLists.mapIndexed { index, shoppingList ->
+                shoppingList.copy(
+                    position = index,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
+            Result.success(success)
+        }
+    }
 }
 
 data class ArchiveScreenData(
@@ -82,7 +120,8 @@ data class ArchiveScreenData(
     val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
+    val showArchiveMenu: Boolean = false,
+    val showSort: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showBottomBar: Boolean = true,
     val showHiddenShoppingLists: Boolean = false
 )

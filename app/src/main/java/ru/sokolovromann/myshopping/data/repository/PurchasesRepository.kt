@@ -16,6 +16,8 @@ interface PurchasesRepository {
 
     suspend fun swapShoppingLists(first: ShoppingList, second: ShoppingList)
 
+    suspend fun swapShoppingLists(shoppingLists: List<ShoppingList>)
+
     suspend fun displayAllPurchasesTotal()
 
     suspend fun displayCompletedPurchasesTotal()

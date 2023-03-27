@@ -23,7 +23,6 @@ class PurchasesState {
 
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
-            showBottomBar = false,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
@@ -34,14 +33,19 @@ class PurchasesState {
         this.shoppingLists = shoppingLists
         val preferences = shoppingLists.preferences
 
+        val totalText: UiText = if (preferences.displayMoney) {
+            shoppingLists.calculateTotalToText()
+        } else {
+            UiText.Nothing
+        }
+
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         screenData = PurchasesScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
-            totalText = shoppingLists.calculateTotalToText(),
-            showBottomBar = preferences.displayMoney,
+            totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
@@ -52,6 +56,17 @@ class PurchasesState {
 
     fun showShoppingListMenu(uid: String) {
         screenData = screenData.copy(shoppingListMenuUid = uid)
+    }
+
+    fun showPurchasesMenu() {
+        screenData = screenData.copy(showPurchasesMenu = true)
+    }
+
+    fun showSort() {
+        screenData = screenData.copy(
+            showSort = true,
+            showPurchasesMenu = false
+        )
     }
 
     fun displayHiddenShoppingLists() {
@@ -71,6 +86,29 @@ class PurchasesState {
 
     fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
+    }
+
+    fun hidePurchasesMenu() {
+        screenData = screenData.copy(showPurchasesMenu = false)
+    }
+
+    fun hideSort() {
+        screenData = screenData.copy(showSort = false)
+    }
+
+    fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
+        val sortShoppingLists = shoppingLists.shoppingLists.sortShoppingLists(sort = Sort(sortBy))
+        return if (sortShoppingLists.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            val success = sortShoppingLists.mapIndexed { index, shoppingList ->
+                shoppingList.copy(
+                    position = index,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
+            Result.success(success)
+        }
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
@@ -158,7 +196,8 @@ data class PurchasesScreenData(
     val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
+    val showPurchasesMenu: Boolean = false,
+    val showSort: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showBottomBar: Boolean = true,
     val showHiddenShoppingLists: Boolean = false
 )

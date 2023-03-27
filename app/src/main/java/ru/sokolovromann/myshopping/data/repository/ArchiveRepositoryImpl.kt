@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.ArchiveDao
 import ru.sokolovromann.myshopping.data.local.dao.ArchivePreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import javax.inject.Inject
 
@@ -40,6 +41,13 @@ class ArchiveRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         archiveDao.moveShoppingToTrash(uid, lastModified)
+    }
+
+    override suspend fun swapShoppingLists(
+        shoppingLists: List<ShoppingList>
+    ): Unit = withContext(dispatchers.io) {
+        val entities = mapping.toShoppingEntities(shoppingLists)
+        archiveDao.updateShoppings(entities)
     }
 
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {

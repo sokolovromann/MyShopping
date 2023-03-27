@@ -22,6 +22,9 @@ interface PurchasesDao {
     @Query("UPDATE shoppings SET position = :position, last_modified = :lastModified WHERE uid = :uid")
     fun updateShoppingPosition(uid: String, position: Int, lastModified: Long)
 
+    @Update
+    fun updateShoppings(shoppingEntities: List<ShoppingEntity>)
+
     @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToArchive(uid: String, lastModified: Long)
 

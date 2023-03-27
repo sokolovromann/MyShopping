@@ -30,6 +30,7 @@
 
     <string name="archive_action_moveShoppingListToPurchases">Unarchivieren</string>
     <string name="archive_action_moveShoppingListToTrash">Löschen</string>
+    <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
     <string name="archive_contentDescription_navigationIcon">Navigation anzeigen</string>
     <string name="archive_header">Archiv</string>
     <string name="archive_text_productsNotFound">Einkaufsliste ist leer</string>
@@ -246,6 +247,7 @@
     <string name="purchases_action_moveShoppingListUp">Nach oben verschieben</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
     <string name="purchases_contentDescription_navigationIcon">Navigation öffnen</string>
+    <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
     <string name="purchases_text_moreProducts">…</string>
     <string name="purchases_text_productsNotFound">Einkaufsliste ist leer</string>
@@ -304,6 +306,11 @@
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
     <string name="shoppingLists_action_selectTrashLocation">Müll</string>
+    <string name="shoppingLists_action_sort">Sortieren</string>
+    <string name="shoppingLists_action_sortByCreated">Nach Erstellt</string>
+    <string name="shoppingLists_action_sortByLastModified">Nach zuletzt bearbeitet</string>
+    <string name="shoppingLists_action_sortByName">Nach name</string>
+    <string name="shoppingLists_action_sortByTotal">Nach gesamt</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
     <string name="shoppingLists_text_activeTotal">Aktive: %s</string>

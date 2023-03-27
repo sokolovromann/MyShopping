@@ -56,6 +56,13 @@ class PurchasesRepositoryImpl @Inject constructor(
         purchasesDao.updateShoppingPosition(second.uid, second.position, second.lastModified)
     }
 
+    override suspend fun swapShoppingLists(
+        shoppingLists: List<ShoppingList>
+    ): Unit = withContext(dispatchers.io) {
+        val entities = mapping.toShoppingEntities(shoppingLists)
+        purchasesDao.updateShoppings(entities)
+    }
+
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayPurchasesTotal(displayTotal)

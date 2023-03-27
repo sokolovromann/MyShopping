@@ -3,7 +3,9 @@ package ru.sokolovromann.myshopping.ui.compose
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -14,8 +16,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
@@ -93,27 +97,77 @@ fun ArchiveScreen(
             )
         },
         bottomBar = {
-            if (screenData.showBottomBar) {
-                AppBottomAppBar {
-                    ShoppingListsTotalContent(
-                        displayTotal = screenData.displayTotal,
-                        totalText = screenData.totalText,
-                        fontSize = screenData.fontSize.toButton().sp,
-                        expanded = screenData.showDisplayTotal,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(ArchiveEvent.SelectDisplayPurchasesTotal)
-                            } else {
-                                viewModel.onEvent(ArchiveEvent.HideDisplayPurchasesTotal)
+            AppBottomAppBar(
+                content = {
+                    if (screenData.totalText != UiText.Nothing) {
+                        ShoppingListsTotalContent(
+                            displayTotal = screenData.displayTotal,
+                            totalText = screenData.totalText,
+                            fontSize = screenData.fontSize.toButton().sp,
+                            expanded = screenData.showDisplayTotal,
+                            onExpanded = {
+                                if (it) {
+                                    viewModel.onEvent(ArchiveEvent.SelectDisplayPurchasesTotal)
+                                } else {
+                                    viewModel.onEvent(ArchiveEvent.HideDisplayPurchasesTotal)
+                                }
+                            },
+                            onSelected = {
+                                val event = ArchiveEvent.DisplayPurchasesTotal(it)
+                                viewModel.onEvent(event)
                             }
-                        },
-                        onSelected = {
-                            val event = ArchiveEvent.DisplayPurchasesTotal(it)
-                            viewModel.onEvent(event)
+                        )
+                    }
+                },
+                actionButtons = {
+                    IconButton(onClick = { viewModel.onEvent(ArchiveEvent.ShowArchiveMenu) }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.archive_contentDescription_archiveMenuIcon),
+                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                        )
+                        AppDropdownMenu(
+                            expanded = screenData.showArchiveMenu,
+                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideArchiveMenu) }
+                        ) {
+                            AppDropdownMenuItem(
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
+                                after = {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                    )
+                                },
+                                onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsSort) }
+                            )
                         }
-                    )
+
+                        AppDropdownMenu(
+                            expanded = screenData.showSort,
+                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsSort) },
+                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.CREATED)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.NAME)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.TOTAL)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
+                            )
+                        }
+                    }
                 }
-            }
+            )
         },
         drawerContent = {
             AppDrawerContent(

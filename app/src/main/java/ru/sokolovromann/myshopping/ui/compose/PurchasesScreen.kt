@@ -4,7 +4,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -15,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
@@ -124,6 +127,52 @@ fun PurchasesScreen(
                             contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
                             tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
                         )
+                    }
+                    IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowPurchasesMenu) }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon),
+                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                        )
+                        AppDropdownMenu(
+                            expanded = screenData.showPurchasesMenu,
+                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HidePurchasesMenu) }
+                        ) {
+                            AppDropdownMenuItem(
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
+                                after = {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                    )
+                                },
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsSort) }
+                            )
+                        }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showSort,
+                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
+                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.CREATED)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.NAME)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.TOTAL)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
+                            )
+                        }
                     }
                 }
             )
