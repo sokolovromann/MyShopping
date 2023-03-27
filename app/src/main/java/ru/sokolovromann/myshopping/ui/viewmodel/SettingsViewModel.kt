@@ -108,6 +108,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
 
+            SettingsUid.CompletedWithCheckbox -> invertCompletedWithCheckbox()
+
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
             SettingsUid.MigrateFromAppVersion14 -> migrateFromAppVersion14()
@@ -194,6 +196,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertEditProductAfterCompleted() = viewModelScope.launch {
         repository.invertEditProductAfterCompleted()
+    }
+
+    private fun invertCompletedWithCheckbox() = viewModelScope.launch {
+        repository.invertCompletedWithCheckbox()
     }
 
     private fun invertSaveProductToAutocompletes() = viewModelScope.launch {

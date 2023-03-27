@@ -87,6 +87,12 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
             titleText = UiText.FromResources(R.string.settings_title_editProductAfterCompleted),
             bodyText = UiText.FromResources(R.string.settings_body_editProductAfterCompleted),
             checked = preferences.editProductAfterCompleted
+        ),
+        SettingsItem(
+            uid = SettingsUid.CompletedWithCheckbox,
+            titleText = UiText.FromResources(R.string.settings_title_completedWithCheckbox),
+            bodyText = UiText.FromResources(R.string.settings_body_completedWithCheckbox),
+            checked = preferences.completedWithCheckbox,
         )
     )
 }

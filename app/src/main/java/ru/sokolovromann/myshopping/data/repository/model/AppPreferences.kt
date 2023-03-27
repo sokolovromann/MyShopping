@@ -16,5 +16,6 @@ data class AppPreferences(
     val saveProductToAutocompletes: Boolean = true,
     val lockProductElement: LockProductElement = LockProductElement.DefaultValue,
     val displayMoney: Boolean = true,
-    val displayDefaultAutocompletes: Boolean = true
+    val displayDefaultAutocompletes: Boolean = true,
+    val completedWithCheckbox: Boolean = false
 )

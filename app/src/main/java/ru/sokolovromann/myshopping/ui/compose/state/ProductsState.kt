@@ -51,7 +51,8 @@ class ProductsState {
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
-            displayMoney = preferences.displayMoney
+            displayMoney = preferences.displayMoney,
+            completedWithCheckbox = preferences.completedWithCheckbox
         )
 
         editCompleted = preferences.editProductAfterCompleted
@@ -102,7 +103,8 @@ class ProductsState {
             displayTotal = preferences.displayPurchasesTotal,
             showHiddenProducts = showHiddenProducts,
             fontSize = preferences.fontSize,
-            displayMoney = preferences.displayMoney
+            displayMoney = preferences.displayMoney,
+            completedWithCheckbox = preferences.completedWithCheckbox
         )
 
         editCompleted = preferences.editProductAfterCompleted
@@ -299,5 +301,6 @@ data class ProductsScreenData(
     val showDisplayTotal: Boolean = false,
     val showHiddenProducts: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val displayMoney: Boolean = true
+    val displayMoney: Boolean = true,
+    val completedWithCheckbox: Boolean = false
 )

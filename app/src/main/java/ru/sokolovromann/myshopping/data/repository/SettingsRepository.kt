@@ -47,5 +47,7 @@ interface SettingsRepository {
 
     suspend fun invertDisplayDefaultAutocompletes()
 
+    suspend fun invertCompletedWithCheckbox()
+
     suspend fun hideCompletedPurchases()
 }

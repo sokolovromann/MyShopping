@@ -261,6 +261,7 @@
     <string name="settings_action_selectMediumFontSize">Mittel</string>
     <string name="settings_action_selectSmallFontSize">Klein</string>
     <string name="settings_action_selectTinyFontSize">Winzig</string>
+    <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet</string>
     <string name="settings_body_email">Zum Schreiben tippen</string>
@@ -280,6 +281,7 @@
     <string name="settings_header_purchases">Einkäufe</string>
     <string name="settings_header_settings">Einstellungen</string>
     <string name="settings_title_appVersion">App version</string>
+    <string name="settings_title_completedWithCheckbox">Abgeschlossen mit Kontrollkästchen</string>
     <string name="settings_title_currencySymbol">Währung</string>
     <string name="settings_title_developer">Entwickler</string>
     <string name="settings_title_displayCompletedPurchases">Fertige produkte anzeigen</string>

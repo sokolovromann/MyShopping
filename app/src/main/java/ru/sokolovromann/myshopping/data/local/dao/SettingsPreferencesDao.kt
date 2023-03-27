@@ -52,4 +52,8 @@ class SettingsPreferencesDao @Inject constructor(
     suspend fun invertDisplayDefaultAutocompletes() {
         localDataStore.invertDisplayDefaultAutocompletes()
     }
+
+    suspend fun invertCompletedWithCheckbox() {
+        localDataStore.invertCompletedWithCheckbox()
+    }
 }

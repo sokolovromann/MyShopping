@@ -279,6 +279,7 @@
     <string name="settings_action_selectMediumFontSize">Середній</string>
     <string name="settings_action_selectSmallFontSize">Маленький</string>
     <string name="settings_action_selectTinyFontSize">Дуже маленький</string>
+    <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування</string>
     <string name="settings_body_email">Натисніть, щоб написати</string>
@@ -298,6 +299,7 @@
     <string name="settings_header_purchases">Покупки</string>
     <string name="settings_header_settings">Налаштування</string>
     <string name="settings_title_appVersion">Версія програми</string>
+    <string name="settings_title_completedWithCheckbox">Купівля товару натисканням на чекбокс</string>
     <string name="settings_title_currencySymbol">Валюта</string>
     <string name="settings_title_developer">Розробник</string>
     <string name="settings_title_displayCompletedPurchases">Показувати куплені товари</string>

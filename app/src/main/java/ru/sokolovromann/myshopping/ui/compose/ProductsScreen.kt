@@ -369,7 +369,8 @@ fun ProductsScreen(
                     )
                 }
             },
-            clickableEnabled = screenData.shoppingListLocation != ShoppingListLocation.TRASH,
+            completedWithCheckbox = screenData.completedWithCheckbox,
+            location = screenData.shoppingListLocation,
             onClick = { uid, completed ->
                 val event = if (completed) {
                     ProductsEvent.ActiveProduct(uid)
@@ -475,7 +476,8 @@ private fun ProductsGrid(
     items: List<ProductItem>,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
-    clickableEnabled: Boolean,
+    completedWithCheckbox: Boolean,
+    location: ShoppingListLocation?,
     onClick: (String, Boolean) -> Unit,
     onLongClick: (String) -> Unit
 ) {
@@ -485,13 +487,24 @@ private fun ProductsGrid(
         smartphoneScreen = smartphoneScreen
     ) {
         items.forEach { item ->
+            val beforeOnClick: ((Boolean) -> Unit)? = if (location != ShoppingListLocation.TRASH && completedWithCheckbox) {
+                { onClick(item.uid, item.completed) }
+            } else {
+                null
+            }
+
+            val clickableEnabled = location != ShoppingListLocation.TRASH && !completedWithCheckbox
+
+            val longClickableEnabled = location != ShoppingListLocation.TRASH
+
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
-                before = getProductItemBefore(item.completed),
+                before = getProductItemBefore(item.completed, beforeOnClick),
                 title = getProductItemTitleOrNull(item.nameText, fontSize),
                 body = getProductItemBodyOrNull(item.bodyText, fontSize),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 clickableEnabled = clickableEnabled,
+                longClickableEnabled = longClickableEnabled,
                 onClick = { onClick(item.uid, item.completed) },
                 onLongClick = { onLongClick(item.uid) },
                 backgroundColor = if (item.completed) {
@@ -506,10 +519,12 @@ private fun ProductsGrid(
 
 @Composable
 private fun getProductItemBefore(
-    completed: Boolean
+    completed: Boolean,
+    onCheckedChange: ((Boolean) -> Unit)?
 ): @Composable () -> Unit = {
     AppCheckbox(
         checked = completed,
+        onCheckedChange = onCheckedChange,
         colors = CheckboxDefaults.colors(
             checkedColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
         )

@@ -217,7 +217,8 @@ class RepositoryMapping @Inject constructor() {
             saveProductToAutocompletes = entity.saveProductToAutocompletes,
             lockProductElement = toLockProductElement(entity.lockProductElement),
             displayMoney = entity.displayMoney,
-            displayDefaultAutocompletes = entity.displayDefaultAutocompletes
+            displayDefaultAutocompletes = entity.displayDefaultAutocompletes,
+            completedWithCheckbox = entity.completedWithCheckbox
         )
     }
 
@@ -240,7 +241,8 @@ class RepositoryMapping @Inject constructor() {
             saveProductToAutocompletes = appPreferences.saveProductToAutocompletes,
             lockProductElement = toLockProductElementName(appPreferences.lockProductElement),
             displayMoney = appPreferences.displayMoney,
-            displayDefaultAutocompletes = appPreferences.displayDefaultAutocompletes
+            displayDefaultAutocompletes = appPreferences.displayDefaultAutocompletes,
+            completedWithCheckbox = appPreferences.completedWithCheckbox
         )
     }
 
