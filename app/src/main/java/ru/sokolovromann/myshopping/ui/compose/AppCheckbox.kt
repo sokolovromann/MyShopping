@@ -1,13 +1,12 @@
 package ru.sokolovromann.myshopping.ui.compose
 
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxColors
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AppCheckbox(
     modifier: Modifier = Modifier,
@@ -15,12 +14,14 @@ fun AppCheckbox(
     onCheckedChange: ((Boolean) -> Unit)? = null,
     colors: CheckboxColors = CheckboxDefaults.colors()
 ) {
-    Checkbox(
-        modifier = modifier,
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-        colors = colors
-    )
+    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+        Checkbox(
+            modifier = modifier,
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = colors
+        )
+    }
 }
 
 @Composable
