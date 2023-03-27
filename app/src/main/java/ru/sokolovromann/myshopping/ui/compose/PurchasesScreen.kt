@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -9,10 +8,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -20,6 +17,7 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
@@ -97,27 +95,38 @@ fun PurchasesScreen(
             )
         },
         bottomBar = {
-            if (screenData.showBottomBar) {
-                AppBottomAppBar {
-                    ShoppingListsTotalContent(
-                        displayTotal = screenData.displayTotal,
-                        totalText = screenData.totalText,
-                        fontSize = screenData.fontSize.toButton().sp,
-                        expanded = screenData.showDisplayTotal,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(PurchasesEvent.SelectDisplayPurchasesTotal)
-                            } else {
-                                viewModel.onEvent(PurchasesEvent.HideDisplayPurchasesTotal)
+            AppBottomAppBar(
+                content = {
+                    if (screenData.totalText != UiText.Nothing) {
+                        ShoppingListsTotalContent(
+                            displayTotal = screenData.displayTotal,
+                            totalText = screenData.totalText,
+                            fontSize = screenData.fontSize.toButton().sp,
+                            expanded = screenData.showDisplayTotal,
+                            onExpanded = {
+                                if (it) {
+                                    viewModel.onEvent(PurchasesEvent.SelectDisplayPurchasesTotal)
+                                } else {
+                                    viewModel.onEvent(PurchasesEvent.HideDisplayPurchasesTotal)
+                                }
+                            },
+                            onSelected = {
+                                val event = PurchasesEvent.DisplayPurchasesTotal(it)
+                                viewModel.onEvent(event)
                             }
-                        },
-                        onSelected = {
-                            val event = PurchasesEvent.DisplayPurchasesTotal(it)
-                            viewModel.onEvent(event)
-                        }
-                    )
+                        )
+                    }
+                },
+                actionButtons = {
+                    IconButton(onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
+                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                        )
+                    }
                 }
-            }
+            )
         },
         drawerContent = {
             AppDrawerContent(
@@ -126,12 +135,6 @@ fun PurchasesScreen(
                     val event = PurchasesEvent.SelectNavigationItem(it)
                     viewModel.onEvent(event)
                 }
-            )
-        },
-        floatingActionButton = {
-            PurchasesFloatingActionButton(
-                isOffset = screenData.showBottomBar,
-                onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }
             )
         },
         gridBottomBar = {
@@ -207,27 +210,3 @@ fun PurchasesScreen(
         )
     }
 }
-
-@Composable
-private fun PurchasesFloatingActionButton(
-    isOffset: Boolean,
-    onClick: () -> Unit
-) {
-    val modifier = if (isOffset) {
-        Modifier.offset(y = PurchasesFabVerticalOffset)
-    } else {
-        Modifier
-    }
-    FloatingActionButton(
-        modifier = modifier,
-        onClick = onClick
-    ) {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
-            tint = MaterialTheme.colors.onSecondary
-        )
-    }
-}
-
-private val PurchasesFabVerticalOffset = 42.dp
