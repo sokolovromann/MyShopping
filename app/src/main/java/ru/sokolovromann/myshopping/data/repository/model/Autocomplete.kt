@@ -13,5 +13,10 @@ data class Autocomplete(
     val discount: Discount = Discount(),
     val taxRate: TaxRate = TaxRate(),
     val total: Money = Money(),
+    val manufacturer: String = "",
+    val brand: String = "",
+    val size: String = "",
+    val color: String = "",
+    val provider: String = "",
     val personal: Boolean = true
 )

@@ -32,5 +32,14 @@ data class ShoppingEntity(
     val archived: Boolean = false,
 
     @ColumnInfo(name = "deleted")
-    val deleted: Boolean = false
+    val deleted: Boolean = false,
+
+    @ColumnInfo(name = "sort_by")
+    val sortBy: String = "",
+
+    @ColumnInfo(name = "sort_ascending")
+    val sortAscending: Boolean = true,
+
+    @ColumnInfo(name = "sort_formatted")
+    val sortFormatted: Boolean = false
 )

@@ -15,7 +15,9 @@ data class ShoppingList(
     val completed: Boolean = false,
     val products: List<Product> = listOf(),
     val currency: Currency = Currency(),
-    val displayTotal: DisplayTotal = DisplayTotal.DefaultValue
+    val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
+    val sort: Sort = Sort(),
+    val sortFormatted: Boolean = false
 ) {
 
     fun calculateTotal(): Money {

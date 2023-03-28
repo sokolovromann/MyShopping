@@ -17,6 +17,11 @@ data class Product(
     val total: Money = Money(),
     val totalFormatted: Boolean = false,
     val note: String = "",
+    val manufacturer: String = "",
+    val brand: String = "",
+    val size: String = "",
+    val color: String = "",
+    val provider: String = "",
     val completed: Boolean = false
 ) {
 

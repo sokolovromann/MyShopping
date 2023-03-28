@@ -18,7 +18,10 @@ class RepositoryMapping @Inject constructor() {
             name = shoppingList.name,
             reminder = toReminderEntity(shoppingList.reminder),
             archived = shoppingList.archived,
-            deleted = shoppingList.deleted
+            deleted = shoppingList.deleted,
+            sortBy = toSortByName(shoppingList.sort.sortBy),
+            sortAscending = shoppingList.sort.ascending,
+            sortFormatted = shoppingList.sortFormatted
         )
     }
 
@@ -76,6 +79,11 @@ class RepositoryMapping @Inject constructor() {
             total = toMoneyValue(product.total),
             totalFormatted = product.totalFormatted,
             note = product.note,
+            manufacturer = product.manufacturer,
+            brand = product.brand,
+            size = product.size,
+            color = product.color,
+            provider = product.provider,
             completed = product.completed
         )
     }
@@ -110,6 +118,11 @@ class RepositoryMapping @Inject constructor() {
             ),
             totalFormatted = entity.totalFormatted,
             note = entity.note,
+            manufacturer = entity.manufacturer,
+            brand = entity.brand,
+            size = entity.size,
+            color = entity.color,
+            provider = entity.color,
             completed = entity.completed
         )
     }
@@ -148,6 +161,11 @@ class RepositoryMapping @Inject constructor() {
             taxRate = toTaxRateValue(autocomplete.taxRate),
             taxRateAsPercent = toTaxRateAsPercent(autocomplete.taxRate),
             total = toMoneyValue(autocomplete.total),
+            manufacturer = autocomplete.manufacturer,
+            brand = autocomplete.brand,
+            size = autocomplete.size,
+            color = autocomplete.color,
+            provider = autocomplete.provider,
             personal = autocomplete.personal
         )
     }
@@ -383,7 +401,9 @@ class RepositoryMapping @Inject constructor() {
                 .filter { it.display }
                 .map { toProduct(it, preferencesEntity) },
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft),
-            displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal)
+            displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal),
+            sort = toSort(entity.sortBy, entity.sortAscending),
+            sortFormatted = entity.sortFormatted
         )
     }
 
@@ -452,6 +472,11 @@ class RepositoryMapping @Inject constructor() {
                 entity.total,
                 toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
             ),
+            manufacturer = entity.manufacturer,
+            brand = entity.brand,
+            size = entity.size,
+            color = entity.color,
+            provider = entity.provider,
             personal = entity.personal
         )
     }
@@ -468,7 +493,12 @@ class RepositoryMapping @Inject constructor() {
             price = product.price,
             discount = product.discount,
             taxRate = product.taxRate,
-            total = product.total
+            total = product.total,
+            manufacturer = product.manufacturer,
+            brand = product.brand,
+            size = product.size,
+            color = product.color,
+            provider = product.provider
         )
     }
 
@@ -586,6 +616,14 @@ class RepositoryMapping @Inject constructor() {
             2 -> DisplayTotal.COMPLETED
             else -> DisplayTotal.ALL
         }
+    }
+
+    private fun toSort(sortBy: String, ascending: Boolean): Sort {
+        return Sort(SortBy.valueOfOrDefault(sortBy), ascending)
+    }
+
+    private fun toSortByName(sortBy: SortBy): String {
+        return sortBy.name
     }
 
     private fun toReminder(reminder: Long): Long? {

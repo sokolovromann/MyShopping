@@ -58,6 +58,21 @@ data class ProductEntity(
     @ColumnInfo(name = "note")
     val note: String = "",
 
+    @ColumnInfo(name = "manufacturer")
+    val manufacturer: String = "",
+
+    @ColumnInfo(name = "brand")
+    val brand: String = "",
+
+    @ColumnInfo(name = "size")
+    val size: String = "",
+
+    @ColumnInfo(name = "color")
+    val color: String = "",
+
+    @ColumnInfo(name = "provider")
+    val provider: String = "",
+
     @ColumnInfo(name = "completed")
     val completed: Boolean = false,
 

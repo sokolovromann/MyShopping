@@ -46,6 +46,21 @@ data class AutocompleteEntity(
     @ColumnInfo(name = "total")
     val total: Float = 0f,
 
+    @ColumnInfo(name = "manufacturer")
+    val manufacturer: String = "",
+
+    @ColumnInfo(name = "brand")
+    val brand: String = "",
+
+    @ColumnInfo(name = "size")
+    val size: String = "",
+
+    @ColumnInfo(name = "color")
+    val color: String = "",
+
+    @ColumnInfo(name = "provider")
+    val provider: String = "",
+
     @ColumnInfo(name = "personal")
     val personal: Boolean = true
 )
