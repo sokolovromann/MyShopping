@@ -245,6 +245,8 @@
     <string name="purchases_action_moveShoppingListToArchive">Archivieren</string>
     <string name="purchases_action_moveShoppingListToTrash">Löschen</string>
     <string name="purchases_action_moveShoppingListUp">Nach oben verschieben</string>
+    <string name="purchases_action_moveShoppingListsToArchive">Archivieren</string>
+    <string name="purchases_action_moveShoppingListsToTrash">Löschen</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
     <string name="purchases_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
@@ -305,6 +307,9 @@
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Anzeige</string>
     <string name="shoppingLists_action_displayCompletedTotal">Fertige produkte</string>
+    <string name="shoppingLists_action_moveActiveShoppingListsTo">Aktive Listen</string>
+    <string name="shoppingLists_action_moveAllShoppingListsTo">Alle Listen</string>
+    <string name="shoppingLists_action_moveCompletedShoppingListsTo">Abgeschlossene Listen</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
     <string name="shoppingLists_action_selectTrashLocation">Müll</string>

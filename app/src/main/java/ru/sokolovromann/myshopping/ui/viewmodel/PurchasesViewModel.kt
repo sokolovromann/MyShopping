@@ -49,7 +49,17 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
+            PurchasesEvent.SelectShoppingListsToArchive -> selectShoppingListsToArchive()
+
+            PurchasesEvent.SelectShoppingListsToDelete -> selectShoppingListsToDelete()
+
             is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
+
+            is PurchasesEvent.MoveAllShoppingListsTo -> moveAllShoppingListsTo(event)
+
+            is PurchasesEvent.MoveCompletedShoppingListsTo -> moveCompletedShoppingListsTo(event)
+
+            is PurchasesEvent.MoveActiveShoppingListsTo -> moveActiveShoppingListsTo(event)
 
             is PurchasesEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
@@ -72,6 +82,10 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HidePurchasesMenu -> hidePurchasesMenu()
 
             PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
+
+            PurchasesEvent.HideShoppingListsToArchive -> hideShoppingListsToArchive()
+
+            PurchasesEvent.HideShoppingListsToDelete -> hideShoppingListsToDelete()
 
             PurchasesEvent.FinishApp -> finishApp()
         }
@@ -172,6 +186,14 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.showSort()
     }
 
+    private fun selectShoppingListsToArchive() {
+        purchasesState.showToArchive()
+    }
+
+    private fun selectShoppingListsToDelete() {
+        purchasesState.showToDelete()
+    }
+
     private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
         val shoppingLists = purchasesState.sortShoppingListsResult(event.sortBy).getOrElse {
             withContext(dispatchers.main) { hideShoppingListsSort() }
@@ -182,6 +204,63 @@ class PurchasesViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
+        }
+    }
+
+    private fun moveAllShoppingListsTo(
+        event: PurchasesEvent.MoveAllShoppingListsTo
+    ) = viewModelScope.launch {
+        purchasesState.getShoppingListsResult().onSuccess { shoppingLists ->
+            shoppingLists.forEach {
+                moveShoppingListToArchiveOrTrash(it.uid, event.toArchive)
+            }
+        }
+
+        withContext(dispatchers.main) {
+            hideShoppingListsToArchiveOrToDelete(event.toArchive)
+        }
+    }
+
+    private fun moveCompletedShoppingListsTo(
+        event: PurchasesEvent.MoveCompletedShoppingListsTo
+    ) = viewModelScope.launch {
+        purchasesState.getShoppingListsResult().onSuccess { shoppingLists ->
+            shoppingLists.forEach {
+                if (it.completed) {
+                    moveShoppingListToArchiveOrTrash(it.uid, event.toArchive)
+                }
+            }
+        }
+
+        withContext(dispatchers.main) {
+            hideShoppingListsToArchiveOrToDelete(event.toArchive)
+        }
+    }
+
+    private fun moveActiveShoppingListsTo(
+        event: PurchasesEvent.MoveActiveShoppingListsTo
+    ) = viewModelScope.launch {
+        purchasesState.getShoppingListsResult().onSuccess { shoppingLists ->
+            shoppingLists.forEach {
+                if (!it.completed) {
+                    moveShoppingListToArchiveOrTrash(it.uid, event.toArchive)
+                }
+            }
+        }
+
+        withContext(dispatchers.main) {
+            hideShoppingListsToArchiveOrToDelete(event.toArchive)
+        }
+    }
+
+    private fun moveShoppingListToArchiveOrTrash(
+        uid: String,
+        toArchive: Boolean
+    ) = viewModelScope.launch {
+        if (toArchive) {
+            repository.moveShoppingListToArchive(uid, System.currentTimeMillis())
+        } else {
+            repository.moveShoppingListToTrash(uid, System.currentTimeMillis())
         }
     }
 
@@ -239,6 +318,22 @@ class PurchasesViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         purchasesState.hideSort()
+    }
+
+    private fun hideShoppingListsToArchive() {
+        purchasesState.hideToArchive()
+    }
+
+    private fun hideShoppingListsToDelete() {
+        purchasesState.hideToDelete()
+    }
+
+    private fun hideShoppingListsToArchiveOrToDelete(toArchive: Boolean) {
+        if (toArchive) {
+            hideShoppingListsToArchive()
+        } else {
+            hideShoppingListsToDelete()
+        }
     }
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {

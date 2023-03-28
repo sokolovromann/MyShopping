@@ -22,7 +22,17 @@ sealed class PurchasesEvent {
 
     object SelectShoppingListsSort : PurchasesEvent()
 
+    object SelectShoppingListsToArchive : PurchasesEvent()
+
+    object SelectShoppingListsToDelete : PurchasesEvent()
+
     data class SortShoppingLists(val sortBy: SortBy) : PurchasesEvent()
+
+    data class MoveAllShoppingListsTo(val toArchive: Boolean) : PurchasesEvent()
+
+    data class MoveCompletedShoppingListsTo(val toArchive: Boolean) : PurchasesEvent()
+
+    data class MoveActiveShoppingListsTo(val toArchive: Boolean) : PurchasesEvent()
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
 
@@ -45,6 +55,10 @@ sealed class PurchasesEvent {
     object HidePurchasesMenu : PurchasesEvent()
 
     object HideShoppingListsSort : PurchasesEvent()
+
+    object HideShoppingListsToArchive : PurchasesEvent()
+
+    object HideShoppingListsToDelete : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 }

@@ -69,6 +69,20 @@ class PurchasesState {
         )
     }
 
+    fun showToArchive() {
+        screenData = screenData.copy(
+            showToArchive = true,
+            showPurchasesMenu = false
+        )
+    }
+
+    fun showToDelete() {
+        screenData = screenData.copy(
+            showToDelete = true,
+            showPurchasesMenu = false
+        )
+    }
+
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
             shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
@@ -96,6 +110,14 @@ class PurchasesState {
         screenData = screenData.copy(showSort = false)
     }
 
+    fun hideToArchive() {
+        screenData = screenData.copy(showToArchive = false)
+    }
+
+    fun hideToDelete() {
+        screenData = screenData.copy(showToDelete = false)
+    }
+
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
         val sortShoppingLists = shoppingLists.shoppingLists.sortShoppingLists(sort = Sort(sortBy))
         return if (sortShoppingLists.isEmpty()) {
@@ -108,6 +130,15 @@ class PurchasesState {
                 )
             }
             Result.success(success)
+        }
+    }
+
+    fun getShoppingListsResult(): Result<List<ShoppingList>> {
+        val resultShoppingLists = shoppingLists.shoppingLists
+        return if (resultShoppingLists.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            Result.success(resultShoppingLists)
         }
     }
 
@@ -198,6 +229,8 @@ data class PurchasesScreenData(
     val showDisplayTotal: Boolean = false,
     val showPurchasesMenu: Boolean = false,
     val showSort: Boolean = false,
+    val showToArchive: Boolean = false,
+    val showToDelete: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false
 )

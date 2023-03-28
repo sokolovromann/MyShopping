@@ -315,6 +315,8 @@
     <string name="purchases_action_moveShoppingListToArchive">Archive</string>
     <string name="purchases_action_moveShoppingListToTrash">Delete</string>
     <string name="purchases_action_moveShoppingListUp">Move up</string>
+    <string name="purchases_action_moveShoppingListsToArchive">Archive</string>
+    <string name="purchases_action_moveShoppingListsToTrash">Delete</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
@@ -375,6 +377,9 @@
     <string name="shoppingLists_action_displayAllTotal">All</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Display</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
+    <string name="shoppingLists_action_moveActiveShoppingListsTo">Active</string>
+    <string name="shoppingLists_action_moveAllShoppingListsTo">All</string>
+    <string name="shoppingLists_action_moveCompletedShoppingListsTo">Completed</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>
     <string name="shoppingLists_action_selectTrashLocation">Trash</string>
