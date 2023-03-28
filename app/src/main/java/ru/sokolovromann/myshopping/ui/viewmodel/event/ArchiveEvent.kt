@@ -16,7 +16,17 @@ sealed class ArchiveEvent {
 
     object SelectShoppingListsSort : ArchiveEvent()
 
+    object SelectShoppingListsToPurchases : ArchiveEvent()
+
+    object SelectShoppingListsToTrash : ArchiveEvent()
+
     data class SortShoppingLists(val sortBy: SortBy) : ArchiveEvent()
+
+    data class MoveAllShoppingListsTo(val toPurchases: Boolean) : ArchiveEvent()
+
+    data class MoveCompletedShoppingListsTo(val toPurchases: Boolean) : ArchiveEvent()
+
+    data class MoveActiveShoppingListsTo(val toPurchases: Boolean) : ArchiveEvent()
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
 
@@ -41,4 +51,8 @@ sealed class ArchiveEvent {
     object HideArchiveMenu : ArchiveEvent()
 
     object HideShoppingListsSort : ArchiveEvent()
+
+    object HideShoppingListsToPurchases : ArchiveEvent()
+
+    object HideShoppingListsToTrash : ArchiveEvent()
 }

@@ -44,7 +44,17 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
+            ArchiveEvent.SelectShoppingListsToPurchases -> selectShoppingListsToPurchases()
+
+            ArchiveEvent.SelectShoppingListsToTrash -> selectShoppingListsToTrash()
+
             is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
+
+            is ArchiveEvent.MoveAllShoppingListsTo -> moveAllShoppingListsTo(event)
+
+            is ArchiveEvent.MoveCompletedShoppingListsTo -> moveCompletedShoppingListsTo(event)
+
+            is ArchiveEvent.MoveActiveShoppingListsTo -> moveActiveShoppingListsTo(event)
 
             is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
@@ -69,6 +79,10 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.HideArchiveMenu -> hideArchiveMenu()
 
             ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
+
+            ArchiveEvent.HideShoppingListsToPurchases -> hideShoppingListsToPurchases()
+
+            ArchiveEvent.HideShoppingListsToTrash -> hideShoppingListsToTrash()
         }
     }
 
@@ -138,6 +152,14 @@ class ArchiveViewModel @Inject constructor(
         archiveState.showSort()
     }
 
+    private fun selectShoppingListsToPurchases() {
+        archiveState.showToPurchases()
+    }
+
+    private fun selectShoppingListsToTrash() {
+        archiveState.showToTrash()
+    }
+
     private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
         val shoppingLists = archiveState.sortShoppingListsResult(event.sortBy).getOrElse {
             withContext(dispatchers.main) { hideShoppingListsSort() }
@@ -148,6 +170,63 @@ class ArchiveViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
+        }
+    }
+
+    private fun moveAllShoppingListsTo(
+        event: ArchiveEvent.MoveAllShoppingListsTo
+    ) = viewModelScope.launch {
+        archiveState.getShoppingListsResult().onSuccess { shoppingLists ->
+            shoppingLists.forEach {
+                moveShoppingListToPurchasesOrTrash(it.uid, event.toPurchases)
+            }
+        }
+
+        withContext(dispatchers.main) {
+            hideShoppingListsToPurchasesOrToTrash(event.toPurchases)
+        }
+    }
+
+    private fun moveCompletedShoppingListsTo(
+        event: ArchiveEvent.MoveCompletedShoppingListsTo
+    ) = viewModelScope.launch {
+        archiveState.getShoppingListsResult().onSuccess { shoppingLists ->
+            shoppingLists.forEach {
+                if (it.completed) {
+                    moveShoppingListToPurchasesOrTrash(it.uid, event.toPurchases)
+                }
+            }
+        }
+
+        withContext(dispatchers.main) {
+            hideShoppingListsToPurchasesOrToTrash(event.toPurchases)
+        }
+    }
+
+    private fun moveActiveShoppingListsTo(
+        event: ArchiveEvent.MoveActiveShoppingListsTo
+    ) = viewModelScope.launch {
+        archiveState.getShoppingListsResult().onSuccess { shoppingLists ->
+            shoppingLists.forEach {
+                if (!it.completed) {
+                    moveShoppingListToPurchasesOrTrash(it.uid, event.toPurchases)
+                }
+            }
+        }
+
+        withContext(dispatchers.main) {
+            hideShoppingListsToPurchasesOrToTrash(event.toPurchases)
+        }
+    }
+
+    private fun moveShoppingListToPurchasesOrTrash(
+        uid: String,
+        toPurchases: Boolean
+    ) = viewModelScope.launch {
+        if (toPurchases) {
+            repository.moveShoppingListToPurchases(uid, System.currentTimeMillis())
+        } else {
+            repository.moveShoppingListToTrash(uid, System.currentTimeMillis())
         }
     }
 
@@ -207,5 +286,21 @@ class ArchiveViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         archiveState.hideSort()
+    }
+
+    private fun hideShoppingListsToPurchases() {
+        archiveState.hideToPurchases()
+    }
+
+    private fun hideShoppingListsToTrash() {
+        archiveState.hideToTrash()
+    }
+
+    private fun hideShoppingListsToPurchasesOrToTrash(toPurchases: Boolean) {
+        if (toPurchases) {
+            hideShoppingListsToPurchases()
+        } else {
+            hideShoppingListsToTrash()
+        }
     }
 }

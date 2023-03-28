@@ -30,6 +30,8 @@
 
     <string name="archive_action_moveShoppingListToPurchases">Разархивировать</string>
     <string name="archive_action_moveShoppingListToTrash">Удалить</string>
+    <string name="archive_action_moveShoppingListsToPurchases">Разархивировать</string>
+    <string name="archive_action_moveShoppingListsToTrash">Удалить</string>
     <string name="archive_contentDescription_archiveMenuIcon">Открыть меню архива</string>
     <string name="archive_contentDescription_navigationIcon">Показать навигацию</string>
     <string name="archive_header">Архив</string>

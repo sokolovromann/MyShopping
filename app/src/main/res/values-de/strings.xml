@@ -30,6 +30,8 @@
 
     <string name="archive_action_moveShoppingListToPurchases">Unarchivieren</string>
     <string name="archive_action_moveShoppingListToTrash">Löschen</string>
+    <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
+    <string name="archive_action_moveShoppingListsToTrash">Löschen</string>
     <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
     <string name="archive_contentDescription_navigationIcon">Navigation anzeigen</string>
     <string name="archive_header">Archiv</string>
