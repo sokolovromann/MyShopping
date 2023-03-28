@@ -32,7 +32,8 @@ fun AppTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors()
 ) {
     val textStyle = createAppTextFieldTextStyle(valueColor, valueFontSize)
 
@@ -60,7 +61,8 @@ fun AppTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             singleLine = singleLine,
-            maxLines = maxLines
+            maxLines = maxLines,
+            colors = colors
         )
     }
 }
@@ -79,7 +81,10 @@ fun OutlinedAppTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+        disabledBorderColor =  MaterialTheme.colors.onSurface.copy(alpha = 0.05f)
+    )
 ) {
     val textStyle = createAppTextFieldTextStyle(valueColor, valueFontSize)
 
@@ -107,7 +112,8 @@ fun OutlinedAppTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             singleLine = singleLine,
-            maxLines = maxLines
+            maxLines = maxLines,
+            colors = colors
         )
     }
 }
