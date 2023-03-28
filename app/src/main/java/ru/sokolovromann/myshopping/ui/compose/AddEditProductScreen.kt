@@ -325,7 +325,16 @@ fun AddEditProductScreen(
 
                     Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
 
-                    IconButton(onClick = { viewModel.onEvent(AddEditProductEvent.SelectLockProductElement) }) {
+                    IconButton(
+                        modifier = Modifier
+                            .height(AddEditProductButtonHeight)
+                            .padding(AddEditProductButtonPaddings)
+                            .border(
+                                border = getButtonBorderStroke(),
+                                shape = MaterialTheme.shapes.small
+                            ),
+                        onClick = { viewModel.onEvent(AddEditProductEvent.SelectLockProductElement) }
+                    ) {
                         Icon(
                             painter = screenData.lockProductElement.toButtonIcon().asPainter() ?: return@IconButton,
                             contentDescription = "",
@@ -612,12 +621,13 @@ private fun AddEditProductDiscountAsPercentButton(
 ) {
     OutlinedButton(
         modifier = Modifier
-            .height(64.dp)
-            .padding(top = 8.dp)
+            .height(AddEditProductButtonHeight)
+            .padding(AddEditProductButtonPaddings)
             .then(modifier),
         onClick = onClick,
-        contentPadding = PaddingValues(0.dp),
-        enabled = enabled
+        contentPadding = AddEditProductButtonNoContentPadding,
+        enabled = enabled,
+        border = getButtonBorderStroke(enabled)
     ) {
         Column(
             modifier = Modifier
@@ -628,6 +638,16 @@ private fun AddEditProductDiscountAsPercentButton(
             content = content
         )
     }
+}
+
+@Composable
+private fun getButtonBorderStroke(enabled: Boolean = true): BorderStroke {
+    val color = if (enabled) {
+        MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
+    } else {
+        MaterialTheme.colors.onSurface.copy(alpha = 0.05f)
+    }
+    return BorderStroke(ButtonDefaults.OutlinedBorderSize, color)
 }
 
 private val AddEditProductContentPaddings = PaddingValues(
@@ -643,3 +663,6 @@ private val AddEditProductItemPaddings = PaddingValues(
 private val AddEditProductElementPaddings = PaddingValues(vertical = 2.dp)
 private val AddEditProductSpacerMediumSize = 4.dp
 private val AddEditProductSpacerLargeSize = 8.dp
+private val AddEditProductButtonHeight = 64.dp
+private val AddEditProductButtonPaddings = PaddingValues(top = 8.dp)
+private val AddEditProductButtonNoContentPadding = PaddingValues(0.dp)
