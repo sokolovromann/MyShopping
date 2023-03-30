@@ -25,6 +25,6 @@ interface TrashDao {
     @Query("DELETE FROM shoppings WHERE uid = :uid")
     fun deleteShoppingList(uid: String)
 
-    @Query("UPDATE products SET display = 0 WHERE shopping_uid = :shoppingUid")
-    fun hideProducts(shoppingUid: String)
+    @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid")
+    fun deleteProducts(shoppingUid: String)
 }

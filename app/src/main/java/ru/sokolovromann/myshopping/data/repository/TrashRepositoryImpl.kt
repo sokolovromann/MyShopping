@@ -45,13 +45,13 @@ class TrashRepositoryImpl @Inject constructor(
     override suspend fun deleteShoppingLists(uids: List<String>): Unit = withContext(dispatchers.io) {
         uids.forEach {
             trashDao.deleteShoppingList(it)
-            trashDao.hideProducts(it)
+            trashDao.deleteProducts(it)
         }
     }
 
     override suspend fun deleteShoppingList(uid: String): Unit = withContext(dispatchers.io) {
         trashDao.deleteShoppingList(uid)
-        trashDao.hideProducts(uid)
+        trashDao.deleteProducts(uid)
     }
 
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {

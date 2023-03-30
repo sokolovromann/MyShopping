@@ -400,9 +400,7 @@ class RepositoryMapping @Inject constructor() {
             archived = entity.archived,
             deleted = entity.deleted,
             completed = toCompleted(shoppingListEntity.productEntities),
-            products = shoppingListEntity.productEntities
-                .filter { it.display }
-                .map { toProduct(it, preferencesEntity) },
+            products = shoppingListEntity.productEntities.map { toProduct(it, preferencesEntity) },
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal),
             sort = toSort(entity.sortBy, entity.sortAscending),

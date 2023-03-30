@@ -207,7 +207,7 @@ fun ProductsScreen(
                                     )
                                 }
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.HideProducts) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) },
                                     text = { Text(text = stringResource(R.string.products_action_deleteProducts)) }
                                 )
                                 AppDropdownMenuItem(
@@ -332,7 +332,7 @@ fun ProductsScreen(
                     )
                     AppDropdownMenuItem(
                         onClick = {
-                            val event = ProductsEvent.HideProduct(it)
+                            val event = ProductsEvent.DeleteProduct(it)
                             viewModel.onEvent(event)
                         },
                         text = { Text(text = stringResource(R.string.products_action_deleteProduct)) }

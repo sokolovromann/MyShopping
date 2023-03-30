@@ -76,9 +76,6 @@ data class ProductEntity(
     @ColumnInfo(name = "completed")
     val completed: Boolean = false,
 
-    @ColumnInfo(name = "display")
-    val display: Boolean = true,
-
     @ColumnInfo(name = "pinned")
     val pinned: Boolean = false
 )

@@ -22,9 +22,9 @@ interface ProductsRepository {
 
     suspend fun swapProducts(products: List<Product>)
 
-    suspend fun hideProducts(shoppingUid: String, lastModified: Long)
+    suspend fun deleteProducts(shoppingUid: String, lastModified: Long)
 
-    suspend fun hideProduct(shoppingUid: String, productUid: String, lastModified: Long)
+    suspend fun deleteProduct(shoppingUid: String, productUid: String, lastModified: Long)
 
     suspend fun displayAllPurchasesTotal()
 
