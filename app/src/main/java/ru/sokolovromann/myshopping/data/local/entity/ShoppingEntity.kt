@@ -41,5 +41,8 @@ data class ShoppingEntity(
     val sortAscending: Boolean = true,
 
     @ColumnInfo(name = "sort_formatted")
-    val sortFormatted: Boolean = false
+    val sortFormatted: Boolean = false,
+
+    @ColumnInfo(name = "pinned")
+    val pinned: Boolean = false
 )

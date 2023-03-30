@@ -22,7 +22,8 @@ data class Product(
     val size: String = "",
     val color: String = "",
     val provider: String = "",
-    val completed: Boolean = false
+    val completed: Boolean = false,
+    val pinned: Boolean = false
 ) {
 
     fun formatTotal(): Money {

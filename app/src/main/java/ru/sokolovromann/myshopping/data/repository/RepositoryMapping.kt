@@ -21,7 +21,8 @@ class RepositoryMapping @Inject constructor() {
             deleted = shoppingList.deleted,
             sortBy = toSortByName(shoppingList.sort.sortBy),
             sortAscending = shoppingList.sort.ascending,
-            sortFormatted = shoppingList.sortFormatted
+            sortFormatted = shoppingList.sortFormatted,
+            pinned = shoppingList.pinned
         )
     }
 
@@ -84,7 +85,8 @@ class RepositoryMapping @Inject constructor() {
             size = product.size,
             color = product.color,
             provider = product.provider,
-            completed = product.completed
+            completed = product.completed,
+            pinned = product.pinned
         )
     }
 
@@ -123,7 +125,8 @@ class RepositoryMapping @Inject constructor() {
             size = entity.size,
             color = entity.color,
             provider = entity.color,
-            completed = entity.completed
+            completed = entity.completed,
+            pinned = entity.pinned
         )
     }
 
@@ -403,7 +406,8 @@ class RepositoryMapping @Inject constructor() {
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal),
             sort = toSort(entity.sortBy, entity.sortAscending),
-            sortFormatted = entity.sortFormatted
+            sortFormatted = entity.sortFormatted,
+            pinned = entity.pinned
         )
     }
 
