@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -28,10 +29,7 @@ import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
-import ru.sokolovromann.myshopping.ui.utils.toButton
-import ru.sokolovromann.myshopping.ui.utils.toButtonIcon
-import ru.sokolovromann.myshopping.ui.utils.toItemBody
-import ru.sokolovromann.myshopping.ui.utils.toTextField
+import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
 
@@ -184,6 +182,24 @@ fun AddEditProductScreen(
                         )
                     }
                 },
+                defaultQuantitySymbolChips = {
+                    stringArrayResource(R.array.data_text_defaultAutocompleteQuantitySymbols).forEach {
+                        AppChip(
+                            onClick = {
+                                val event = AddEditProductEvent.ProductQuantitySymbolChanged(it.toTextFieldValue())
+                                viewModel.onEvent(event)
+                            },
+                            content = {
+                                Text(
+                                    text = it,
+                                    fontSize = screenData.fontSize.toItemBody().sp
+                                )
+                            }
+                        )
+                        Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
+                    }
+                },
+                defaultQuantitySymbolChipsEnabled = screenData.showDefaultQuantitySymbols,
                 fontSize = screenData.fontSize,
                 enabled = screenData.lockProductElement != LockProductElement.QUANTITY,
                 onClick = {
@@ -484,6 +500,8 @@ private fun AddEditProductAutocompleteSymbols(
     quantities: List<Quantity>,
     minusOneQuantityChip: @Composable () -> Unit,
     plusOneQuantityChip: @Composable () -> Unit,
+    defaultQuantitySymbolChips: @Composable () -> Unit,
+    defaultQuantitySymbolChipsEnabled: Boolean,
     fontSize: FontSize,
     enabled: Boolean,
     onClick: (Quantity) -> Unit
@@ -502,6 +520,10 @@ private fun AddEditProductAutocompleteSymbols(
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
             plusOneQuantityChip()
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
+
+            if (defaultQuantitySymbolChipsEnabled) {
+                defaultQuantitySymbolChips()
+            }
         }
 
         quantities.forEach {

@@ -228,6 +228,13 @@
         <item>Яблоки</item>
         <item>Яйца</item>
     </string-array>
+    <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
+        <item>кг</item>
+        <item>шт</item>
+        <item>л</item>
+        <item>бут</item>
+        <item>упак</item>
+    </string-array>
     <string name="data_text_defaultCurrency">\ ₽</string>
     <string name="data_text_developerName">Роман Соколов</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>

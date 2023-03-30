@@ -183,6 +183,11 @@
         <item>Яйця</item>
         <item>Яловичина</item>
     </string-array>
+    <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
+        <item>кг</item>
+        <item>шт</item>
+        <item>л</item>
+    </string-array>
     <string name="data_text_defaultCurrency">\ ₴</string>
     <string name="data_text_developerName">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>

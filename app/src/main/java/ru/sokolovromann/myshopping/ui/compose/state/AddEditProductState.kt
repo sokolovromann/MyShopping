@@ -336,9 +336,11 @@ class AddEditProductState {
         discounts: List<Discount>,
         totals: List<Money>
     ) {
+        val showDefaultQuantitySymbols = quantitySymbols.isEmpty() && screenData.quantitySymbolValue.isEmpty()
         screenData = screenData.copy(
             autocompleteQuantities = quantities,
             autocompleteQuantitySymbols = quantitySymbols,
+            showDefaultQuantitySymbols = showDefaultQuantitySymbols,
             autocompletePrices = prices,
             autocompleteDiscounts = discounts,
             autocompleteTotals = totals
@@ -363,6 +365,7 @@ class AddEditProductState {
             autocompleteNames = listOf(),
             autocompleteQuantities = listOf(),
             autocompleteQuantitySymbols = listOf(),
+            showDefaultQuantitySymbols = screenData.quantitySymbolValue.isEmpty(),
             autocompletePrices = listOf(),
             autocompleteDiscounts = listOf(),
             autocompleteTotals = listOf()
@@ -526,6 +529,7 @@ data class AddEditProductScreenData(
     val autocompleteNames: List<Autocomplete> = listOf(),
     val autocompleteQuantities: List<Quantity> = listOf(),
     val autocompleteQuantitySymbols: List<Quantity> = listOf(),
+    val showDefaultQuantitySymbols: Boolean = true,
     val autocompletePrices: List<Money> = listOf(),
     val autocompleteDiscounts: List<Discount> = listOf(),
     val autocompleteTotals: List<Money> = listOf(),
