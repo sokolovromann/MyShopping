@@ -218,6 +218,7 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun autocompleteNameSelected(event: AddEditProductEvent.AutocompleteNameSelected) {
         addEditProductState.selectAutocompleteName(event.autocomplete)
+        getAutocompletes(event.autocomplete.name)
     }
 
     private fun autocompleteQuantitySelected(event: AddEditProductEvent.AutocompleteQuantitySelected) {
