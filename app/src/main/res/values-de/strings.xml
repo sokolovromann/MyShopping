@@ -333,7 +333,7 @@
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
 
     <string name="trash_action_deleteShoppingList">Löschen</string>
-    <string name="trash_action_deleteShoppingLists">Klar</string>
+    <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
     <string name="trash_action_moveShoppingListToArchive">Archivieren</string>
     <string name="trash_action_moveShoppingListToPurchases">Wiederherstellen</string>
     <string name="trash_contentDescription_navigationIcon">Navigation öffnen</string>

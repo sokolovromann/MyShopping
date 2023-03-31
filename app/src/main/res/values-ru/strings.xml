@@ -398,7 +398,7 @@
     <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
 
     <string name="trash_action_deleteShoppingList">Удалить</string>
-    <string name="trash_action_deleteShoppingLists">Очистить</string>
+    <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
     <string name="trash_action_moveShoppingListToArchive">Архивировать</string>
     <string name="trash_action_moveShoppingListToPurchases">Восстановить</string>
     <string name="trash_contentDescription_navigationIcon">Открыть навигацию</string>

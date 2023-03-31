@@ -403,7 +403,7 @@
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
 
     <string name="trash_action_deleteShoppingList">Delete</string>
-    <string name="trash_action_deleteShoppingLists">Clear</string>
+    <string name="trash_action_deleteShoppingLists">Empty trash</string>
     <string name="trash_action_moveShoppingListToArchive">Archive</string>
     <string name="trash_action_moveShoppingListToPurchases">Restore</string>
     <string name="trash_contentDescription_navigationIcon">Open navigation</string>

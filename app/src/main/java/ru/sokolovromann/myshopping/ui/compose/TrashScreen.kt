@@ -1,14 +1,18 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -17,6 +21,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
+import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.viewmodel.TrashViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
@@ -88,11 +93,6 @@ fun TrashScreen(
                             tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                         )
                     }
-                },
-                actions = {
-                    AppTopAppBarButton(onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }) {
-                        Text(text = stringResource(R.string.trash_action_deleteShoppingLists).uppercase())
-                    }
                 }
             )
         },
@@ -114,6 +114,17 @@ fun TrashScreen(
                     text = stringResource(R.string.trash_text_shoppingListsNotFound),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
+                )
+            }
+        },
+        gridBar = {
+            TextButton(
+                modifier = Modifier.padding(TrashGridBarPaddings),
+                onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }
+            ) {
+                Text(
+                    text = stringResource(R.string.trash_action_deleteShoppingLists),
+                    fontSize = screenData.fontSize.toButton().sp
                 )
             }
         }
@@ -162,3 +173,5 @@ fun TrashScreen(
         )
     }
 }
+
+private val TrashGridBarPaddings = PaddingValues(horizontal = 8.dp)
