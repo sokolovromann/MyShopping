@@ -79,9 +79,8 @@ fun TrashScreen(
         viewModel.onEvent(TrashEvent.HideNavigationDrawer)
     }
 
-    AppGridScaffold(
+    AppScaffold(
         scaffoldState = scaffoldState,
-        screenState = screenData.screenState,
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.trash_header)) },
@@ -104,35 +103,32 @@ fun TrashScreen(
                     viewModel.onEvent(event)
                 }
             )
-        },
-        loadingContent = {
-            AppLoadingContent(indicator = { CircularProgressIndicator() })
-        },
-        notFoundContent = {
-            AppNotFoundContent {
+        }
+    ) { paddings ->
+        ShoppingListsGrid(
+            modifier = Modifier.padding(paddings),
+            screenState = screenData.screenState,
+            multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
+            items = screenData.shoppingLists,
+            topBar = {
+                TextButton(
+                    modifier = Modifier.padding(TrashGridBarPaddings),
+                    onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }
+                ) {
+                    Text(
+                        text = stringResource(R.string.trash_action_deleteShoppingLists),
+                        fontSize = screenData.fontSize.toButton().sp
+                    )
+                }
+            },
+            notFound = {
                 Text(
                     text = stringResource(R.string.trash_text_shoppingListsNotFound),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
-            }
-        },
-        gridBar = {
-            TextButton(
-                modifier = Modifier.padding(TrashGridBarPaddings),
-                onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }
-            ) {
-                Text(
-                    text = stringResource(R.string.trash_action_deleteShoppingLists),
-                    fontSize = screenData.fontSize.toButton().sp
-                )
-            }
-        }
-    ) {
-        ShoppingListsGrid(
-            multiColumns = screenData.multiColumns,
-            smartphoneScreen = screenData.smartphoneScreen,
-            items = screenData.shoppingLists,
+            },
             fontSize = screenData.fontSize,
             dropdownMenu = {
                 AppDropdownMenu(

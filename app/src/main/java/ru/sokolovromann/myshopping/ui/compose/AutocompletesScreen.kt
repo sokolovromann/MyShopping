@@ -1,7 +1,9 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -85,9 +87,8 @@ fun AutocompletesScreen(
         viewModel.onEvent(AutocompletesEvent.HideNavigationDrawer)
     }
 
-    AppGridScaffold(
+    AppScaffold(
         scaffoldState = scaffoldState,
-        screenState = screenData.screenState,
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
@@ -119,83 +120,83 @@ fun AutocompletesScreen(
                     tint = MaterialTheme.colors.onSecondary
                 )
             }
-        },
-        loadingContent = {
-            AppLoadingContent(indicator = { CircularProgressIndicator() })
-        },
-        notFoundContent = {
-            AppNotFoundContent {
+        }
+    ) { paddings ->
+        AutocompletesGrid(
+            modifier = Modifier.padding(paddings),
+            screenState = screenData.screenState,
+            multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
+            map = screenData.autocompletes,
+            topBar = {
+                AutocompleteLocationContent(
+                    location = screenData.location,
+                    enabled = screenData.locationEnabled,
+                    fontSize = screenData.fontSize.toButton().sp,
+                    expanded = screenData.showLocation,
+                    onExpanded = {
+                        if (it) {
+                            viewModel.onEvent(AutocompletesEvent.SelectAutocompleteLocation)
+                        } else {
+                            viewModel.onEvent(AutocompletesEvent.HideAutocompleteLocation)
+                        }
+                    },
+                    onSelected = {
+                        val event = AutocompletesEvent.ShowAutocompletes(it)
+                        viewModel.onEvent(event)
+                    }
+                )
+            },
+            notFound = {
                 Text(
                     text = stringResource(R.string.autocompletes_text_autocompletesNotFound),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
-            }
-        },
-        gridBar = {
-            AutocompleteLocationContent(
-                location = screenData.location,
-                enabled = screenData.locationEnabled,
-                fontSize = screenData.fontSize.toButton().sp,
-                expanded = screenData.showLocation,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(AutocompletesEvent.SelectAutocompleteLocation)
-                    } else {
-                        viewModel.onEvent(AutocompletesEvent.HideAutocompleteLocation)
-                    }
-                },
-                onSelected = {
-                    val event = AutocompletesEvent.ShowAutocompletes(it)
-                    viewModel.onEvent(event)
-                }
-            )
-        },
-        gridContent = {
-            AutocompletesGrid(
-                multiColumns = screenData.multiColumns,
-                smartphoneScreen = screenData.smartphoneScreen,
-                map = screenData.autocompletes,
-                fontSize = screenData.fontSize,
-                dropdownMenu = {
-                    AppDropdownMenu(
-                        expanded = it == screenData.autocompleteMenuUid,
-                        onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
-                    ) {
+            },
+            fontSize = screenData.fontSize,
+            dropdownMenu = {
+                AppDropdownMenu(
+                    expanded = it == screenData.autocompleteMenuUid,
+                    onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
+                ) {
+                    AppDropdownMenuItem(
+                        onClick = {
+                            val event = AutocompletesEvent.ClearAutocomplete(it)
+                            viewModel.onEvent(event)
+                        },
+                        text = { Text(text = stringResource(R.string.autocompletes_action_clearAutocomplete)) }
+                    )
+                    if (screenData.location == AutocompleteLocation.PERSONAL) {
                         AppDropdownMenuItem(
                             onClick = {
-                                val event = AutocompletesEvent.ClearAutocomplete(it)
+                                val event = AutocompletesEvent.DeleteAutocomplete(it)
                                 viewModel.onEvent(event)
                             },
-                            text = { Text(text = stringResource(R.string.autocompletes_action_clearAutocomplete)) }
+                            text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
                         )
-                        if (screenData.location == AutocompleteLocation.PERSONAL) {
-                            AppDropdownMenuItem(
-                                onClick = {
-                                    val event = AutocompletesEvent.DeleteAutocomplete(it)
-                                    viewModel.onEvent(event)
-                                },
-                                text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
-                            )
-                        }
                     }
-                },
-                onClick = {},
-                onLongClick = {
-                    val event = AutocompletesEvent.ShowAutocompleteMenu(it)
-                    viewModel.onEvent(event)
                 }
-            )
-        }
-    )
+            },
+            onClick = {},
+            onLongClick = {
+                val event = AutocompletesEvent.ShowAutocompleteMenu(it)
+                viewModel.onEvent(event)
+            }
+        )
+    }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AutocompletesGrid(
     modifier: Modifier = Modifier,
+    screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     map: Map<UiText, AutocompleteItems>,
+    topBar: @Composable RowScope.() -> Unit,
+    notFound: @Composable (ColumnScope.() -> Unit)? = null,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
@@ -203,14 +204,19 @@ private fun AutocompletesGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
+        screenState = screenState,
         multiColumns = multiColumns,
-        smartphoneScreen = smartphoneScreen
+        multiColumnsSpace = true,
+        smartphoneScreen = smartphoneScreen,
+        topBar = topBar,
+        notFound = notFound
     ) {
-        map.forEach {
-            val nameToString = (it.key as UiText.FromString).value.lowercase()
+        val names = map.keys.toList()
+        itemsIndexed(map.values.toList()) { index, item ->
+            val nameToString = (names[index] as UiText.FromString).value.lowercase()
             AppSurfaceItem(
-                title = getAutocompleteItemTitleOrNull(it.key, fontSize),
-                body = getAutocompleteItemBodyOrNull(it.value, fontSize),
+                title = getAutocompleteItemTitleOrNull(names[index], fontSize),
+                body = getAutocompleteItemBodyOrNull(item, fontSize),
                 dropdownMenu = { dropdownMenu?.let { it(nameToString) } },
                 onClick = { onClick(nameToString) },
                 onLongClick = { onLongClick(nameToString) }

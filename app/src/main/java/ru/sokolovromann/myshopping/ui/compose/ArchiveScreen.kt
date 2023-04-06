@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -79,9 +81,8 @@ fun ArchiveScreen(
         viewModel.onEvent(ArchiveEvent.HideNavigationDrawer)
     }
 
-    AppGridScaffold(
+    AppScaffold(
         scaffoldState = scaffoldState,
-        screenState = screenData.screenState,
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.archive_header)) },
@@ -187,44 +188,6 @@ fun ArchiveScreen(
                                 text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
                             )
                         }
-
-                        AppDropdownMenu(
-                            expanded = screenData.showToPurchases,
-                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsToPurchases) },
-                            header = { Text(text = stringResource(id = R.string.archive_action_moveShoppingListsToPurchases)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.MoveAllShoppingListsTo(true)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.MoveCompletedShoppingListsTo(true)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.MoveActiveShoppingListsTo(true)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
-                            )
-                        }
-
-                        AppDropdownMenu(
-                            expanded = screenData.showToTrash,
-                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsToTrash) },
-                            header = { Text(text = stringResource(id = R.string.archive_action_moveShoppingListsToTrash)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.MoveAllShoppingListsTo(false)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.MoveCompletedShoppingListsTo(false)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.MoveActiveShoppingListsTo(false)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
-                            )
-                        }
                     }
                 }
             )
@@ -237,32 +200,29 @@ fun ArchiveScreen(
                     viewModel.onEvent(event)
                 }
             )
-        },
-        gridBottomBar = {
-            if (screenData.showHiddenShoppingLists) {
-                ShoppingListsHidden(
-                    fontSize = screenData.fontSize,
-                    onClick = { viewModel.onEvent(ArchiveEvent.DisplayHiddenShoppingLists) }
-                )
-            }
-        },
-        loadingContent = {
-            AppLoadingContent(indicator = { CircularProgressIndicator() })
-        },
-        notFoundContent = {
-            AppNotFoundContent {
+        }
+    ) { paddings ->
+        ShoppingListsGrid(
+            modifier = Modifier.padding(paddings),
+            screenState = screenData.screenState,
+            multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
+            items = screenData.shoppingLists,
+            bottomBar = {
+                if (screenData.showHiddenShoppingLists) {
+                    ShoppingListsHiddenContent(
+                        fontSize = screenData.fontSize,
+                        onClick = { viewModel.onEvent(ArchiveEvent.DisplayHiddenShoppingLists) }
+                    )
+                }
+            },
+            notFound = {
                 Text(
                     text = stringResource(R.string.archive_text_shoppingListsNotFound),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
-            }
-        }
-    ) {
-        ShoppingListsGrid(
-            multiColumns = screenData.multiColumns,
-            smartphoneScreen = screenData.smartphoneScreen,
-            items = screenData.shoppingLists,
+            },
             fontSize = screenData.fontSize,
             dropdownMenu = {
                 AppDropdownMenu(

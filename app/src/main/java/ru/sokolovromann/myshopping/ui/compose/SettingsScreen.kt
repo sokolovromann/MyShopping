@@ -3,8 +3,10 @@ package ru.sokolovromann.myshopping.ui.compose
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -119,8 +121,7 @@ fun SettingsScreen(
         viewModel.onEvent(SettingsEvent.HideNavigationDrawer)
     }
 
-    AppGridScaffold(
-        screenState = screenData.screenState,
+    AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
@@ -144,12 +145,11 @@ fun SettingsScreen(
                     viewModel.onEvent(event)
                 }
             )
-        },
-        loadingContent = {
-            AppLoadingContent(indicator = { CircularProgressIndicator() })
         }
-    ) {
+    ) { paddings ->
         SettingsGrid(
+            modifier = Modifier.padding(paddings),
+            screenState = screenData.screenState,
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
             map = screenData.settings,
@@ -189,9 +189,11 @@ fun SettingsScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SettingsGrid(
     modifier: Modifier = Modifier,
+    screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     map: Map<UiText, List<SettingsItem>>,
@@ -201,20 +203,23 @@ private fun SettingsGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
+        screenState = screenState,
         multiColumns = multiColumns,
+        multiColumnsSpace = true,
         smartphoneScreen = smartphoneScreen
     ) {
-        map.forEach {
+        val headers = map.keys.toList()
+        itemsIndexed(map.values.toList()) { index, settingsItems ->
             SettingsSurface(
                 header = {
                     Text(
                         modifier = Modifier.padding(SettingsSurfaceHeaderPaddings),
-                        text = it.key.asCompose(),
+                        text = headers[index].asCompose(),
                         fontSize = fontSize.toItemTitle().sp
                     )
                 },
                 items = {
-                    it.value.forEach { item ->
+                    settingsItems.forEach { item ->
                         AppItem(
                             title = getSettingsItemTitle(item.titleText, fontSize),
                             body = getSettingsItemBodyOrNull(item.bodyText, fontSize),

@@ -1,11 +1,13 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -37,8 +39,7 @@ fun MoveProductScreen(
         viewModel.onEvent(MoveProductEvent.CancelMovingProduct)
     }
 
-    AppGridScaffold(
-        screenState = screenData.screenState,
+    AppScaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.moveProduct_header)) },
@@ -52,57 +53,53 @@ fun MoveProductScreen(
                     }
                 }
             )
-        },
-        loadingContent = {
-            AppLoadingContent(indicator = { CircularProgressIndicator() })
-        },
-        notFoundContent = {
-            AppNotFoundContent {
+        }
+    ) { paddings ->
+        ShoppingListsGrid(
+            modifier = Modifier.padding(paddings),
+            screenState = screenData.screenState,
+            multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
+            items = screenData.shoppingLists,
+            topBar = {
+                ShoppingListsLocationContent(
+                    location = screenData.location,
+                    fontSize = screenData.fontSize.toButton().sp,
+                    expanded = screenData.showLocation,
+                    onExpanded = {
+                        if (it) {
+                            viewModel.onEvent(MoveProductEvent.SelectShoppingListLocation)
+                        } else {
+                            viewModel.onEvent(MoveProductEvent.HideShoppingListsLocation)
+                        }
+                    },
+                    onSelected = {
+                        val event = MoveProductEvent.ShowShoppingLists(it)
+                        viewModel.onEvent(event)
+                    }
+                )
+            },
+            bottomBar = {
+                if (screenData.showHiddenShoppingLists) {
+                    ShoppingListsHiddenContent(
+                        fontSize = screenData.fontSize,
+                        onClick = { viewModel.onEvent(MoveProductEvent.DisplayHiddenShoppingLists) }
+                    )
+                }
+            },
+            notFound = {
                 Text(
                     text = stringResource(R.string.moveProduct_text_shoppingListsNotFound),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
-            }
-        },
-        gridBar = {
-            ShoppingListsLocationContent(
-                location = screenData.location,
-                fontSize = screenData.fontSize.toButton().sp,
-                expanded = screenData.showLocation,
-                onExpanded = {
-                    if (it) {
-                        viewModel.onEvent(MoveProductEvent.SelectShoppingListLocation)
-                    } else {
-                        viewModel.onEvent(MoveProductEvent.HideShoppingListsLocation)
-                    }
-                },
-                onSelected = {
-                    val event = MoveProductEvent.ShowShoppingLists(it)
-                    viewModel.onEvent(event)
-                }
-            )
-        },
-        gridBottomBar = {
-            if (screenData.showHiddenShoppingLists) {
-                ShoppingListsHidden(
-                    fontSize = screenData.fontSize,
-                    onClick = { viewModel.onEvent(MoveProductEvent.DisplayHiddenShoppingLists) }
-                )
-            }
-        },
-        gridContent = {
-            ShoppingListsGrid(
-                multiColumns = screenData.multiColumns,
-                smartphoneScreen = screenData.smartphoneScreen,
-                items = screenData.shoppingLists,
-                fontSize = screenData.fontSize,
-                onClick = {
-                    val event = MoveProductEvent.MoveProduct(it)
-                    viewModel.onEvent(event)
-                },
-                onLongClick = {}
-            )
-        }
-    )
+            },
+            fontSize = screenData.fontSize,
+            onClick = {
+                val event = MoveProductEvent.MoveProduct(it)
+                viewModel.onEvent(event)
+            },
+            onLongClick = {}
+        )
+    }
 }

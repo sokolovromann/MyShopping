@@ -2,8 +2,10 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -12,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -83,8 +86,7 @@ fun ProductsScreen(
 
     BackHandler { viewModel.onEvent(ProductsEvent.ShowBackScreen) }
 
-    AppGridScaffold(
-        screenState = screenData.screenState,
+    AppScaffold(
         topBar = {
             TopAppBar(
                 title = {},
@@ -242,81 +244,64 @@ fun ProductsScreen(
                     }
                 )
             }
-        },
-        loadingContent = {
-            AppLoadingContent(indicator = { CircularProgressIndicator() })
-        },
-        notFoundContent = {
-            AppNotFoundContent {
+        }
+    ) { paddings ->
+        ProductsGrid(
+            modifier = Modifier.padding(paddings),
+            screenState = screenData.screenState,
+            multiColumns = screenData.multiColumns,
+            smartphoneScreen = screenData.smartphoneScreen,
+            items = screenData.products,
+            topBar = {
+                if (screenData.shoppingListName != UiText.Nothing || screenData.reminderText != UiText.Nothing) {
+                    val backgroundColor = if (screenData.shoppingListCompleted) {
+                        MaterialTheme.colors.background
+                    } else {
+                        MaterialTheme.colors.surface
+                    }
+                    val shape = if (screenData.multiColumns) MaterialTheme.shapes.medium else RectangleShape
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = backgroundColor, shape = shape)
+                        .padding(ProductsGridBarPaddings)
+                    ) {
+                        if (screenData.shoppingListName != UiText.Nothing) {
+                            ProductsNameContent(
+                                nameText = screenData.shoppingListName,
+                                color = contentColorFor(backgroundColor = backgroundColor),
+                                fontSize = screenData.fontSize
+                            )
+
+                            if (screenData.reminderText == UiText.Nothing) {
+                                Spacer(modifier = Modifier.size(ProductsNameWithoutReminderSpacerSize))
+                            }
+                        }
+
+                        if (screenData.reminderText != UiText.Nothing) {
+                            ProductsReminderContent(
+                                reminderText = screenData.reminderText,
+                                fontSize = screenData.fontSize,
+                                onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
+                            )
+                        }
+                    }
+                }
+            },
+            bottomBar = {
+                if (screenData.showHiddenProducts) {
+                    ProductsHiddenContent(
+                        fontSize = screenData.fontSize,
+                        onClick = { viewModel.onEvent(ProductsEvent.DisplayHiddenProducts) }
+                    )
+                }
+            },
+            notFound = {
                 Text(
                     text = screenData.productsNotFoundText.asCompose(),
                     fontSize = screenData.fontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
-            }
-        },
-        gridBar = {
-            if (screenData.shoppingListName != UiText.Nothing || screenData.reminderText != UiText.Nothing) {
-                val backgroundColor = if (screenData.shoppingListCompleted) {
-                    MaterialTheme.colors.background
-                } else {
-                    MaterialTheme.colors.surface
-                }
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = backgroundColor)
-                    .padding(ProductsGridBarPaddings)
-                ) {
-                    if (screenData.shoppingListName != UiText.Nothing) {
-                        ProductsNameContent(
-                            nameText = screenData.shoppingListName,
-                            color = contentColorFor(backgroundColor = backgroundColor),
-                            fontSize = screenData.fontSize
-                        )
-
-                        if (screenData.reminderText == UiText.Nothing) {
-                            Spacer(modifier = Modifier.size(ProductsNameWithoutReminderSpacerSize))
-                        }
-                    }
-
-                    if (screenData.reminderText != UiText.Nothing) {
-                        ProductsReminderContent(
-                            reminderText = screenData.reminderText,
-                            fontSize = screenData.fontSize,
-                            onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
-                        )
-                    }
-                }
-            }
-        },
-        gridBottomBar = {
-            if (screenData.showHiddenProducts) {
-                Row(
-                    modifier = Modifier.padding(ProductsHiddenProductsPaddings),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.products_text_hiddenProducts),
-                        fontSize = screenData.fontSize.toItemBody().sp,
-                        color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
-                        style = MaterialTheme.typography.body1
-                    )
-                    TextButton(onClick = { viewModel.onEvent(ProductsEvent.DisplayHiddenProducts) }) {
-                        Text(
-                            text = stringResource(R.string.products_action_displayCompletedPurchases),
-                            fontSize = screenData.fontSize.toButton().sp,
-                        )
-                    }
-                }
-            }
-        },
-        gridMultiColumnsSpace = screenData.multiColumns
-    ) {
-        ProductsGrid(
-            multiColumns = screenData.multiColumns,
-            smartphoneScreen = screenData.smartphoneScreen,
-            items = screenData.products,
+            },
             fontSize = screenData.fontSize,
             dropdownMenu = {
                 AppDropdownMenu(
@@ -468,12 +453,17 @@ private fun ProductsTotalContent(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ProductsGrid(
     modifier: Modifier = Modifier,
+    screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     items: List<ProductItem>,
+    topBar: @Composable RowScope.() -> Unit,
+    bottomBar: @Composable RowScope.() -> Unit,
+    notFound: @Composable ColumnScope.() -> Unit,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     completedWithCheckbox: Boolean,
@@ -483,10 +473,14 @@ private fun ProductsGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
+        screenState = screenState,
         multiColumns = multiColumns,
-        smartphoneScreen = smartphoneScreen
+        smartphoneScreen = smartphoneScreen,
+        topBar = topBar,
+        bottomBar = bottomBar,
+        notFound = notFound
     ) {
-        items.forEach { item ->
+        items(items) { item ->
             val beforeOnClick: ((Boolean) -> Unit)? = if (location != ShoppingListLocation.TRASH && completedWithCheckbox) {
                 { onClick(item.uid, item.completed) }
             } else {
@@ -512,6 +506,31 @@ private fun ProductsGrid(
                 } else {
                     MaterialTheme.colors.surface
                 }
+            )
+        }
+    }
+}
+
+@Composable
+fun ProductsHiddenContent(
+    fontSize: FontSize,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.padding(ProductsHiddenProductsPaddings),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.products_text_hiddenProducts),
+            fontSize = fontSize.toItemBody().sp,
+            color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+            style = MaterialTheme.typography.body1
+        )
+        TextButton(onClick = onClick) {
+            Text(
+                text = stringResource(R.string.products_action_displayCompletedPurchases),
+                fontSize = fontSize.toButton().sp,
             )
         }
     }

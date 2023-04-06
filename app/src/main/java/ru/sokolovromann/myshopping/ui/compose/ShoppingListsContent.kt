@@ -1,8 +1,10 @@
 package ru.sokolovromann.myshopping.ui.compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -14,17 +16,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.utils.*
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ShoppingListsGrid(
     modifier: Modifier = Modifier,
+    screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     items: List<ShoppingListItem>,
+    topBar: @Composable (RowScope.() -> Unit)? = null,
+    bottomBar: @Composable (RowScope.() -> Unit)? = null,
+    notFound: @Composable (ColumnScope.() -> Unit)? = null,
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
@@ -32,12 +40,16 @@ fun ShoppingListsGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
+        screenState = screenState,
         multiColumns = multiColumns,
-        smartphoneScreen = smartphoneScreen
+        multiColumnsSpace = true,
+        smartphoneScreen = smartphoneScreen,
+        topBar = topBar,
+        bottomBar = bottomBar,
+        notFound = notFound
     ) {
-        items.forEach { item ->
+        items(items) { item ->
             AppSurfaceItem(
-                modifier = modifier,
                 title = getShoppingListItemTitleOrNull(item.nameText, fontSize),
                 body = {
                     ShoppingListItemBody(
@@ -142,6 +154,31 @@ fun ShoppingListsLocationContent(
 }
 
 @Composable
+fun ShoppingListsHiddenContent(
+    fontSize: FontSize,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.padding(ShoppingListsHiddenProductsPaddings),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.shoppingLists_text_hiddenShoppingLists),
+            fontSize = fontSize.toItemBody().sp,
+            color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+            style = MaterialTheme.typography.body1
+        )
+        TextButton(onClick = onClick) {
+            Text(
+                text = stringResource(R.string.shoppingLists_action_displayCompletedPurchases),
+                fontSize = fontSize.toButton().sp,
+            )
+        }
+    }
+}
+
+@Composable
 private fun getShoppingListItemTitleOrNull(
     name: UiText,
     fontSize: FontSize
@@ -232,31 +269,6 @@ private fun ShoppingListItemBody(
                 modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
                 text = totalAsCompose,
                 fontSize = itemFontSize.sp
-            )
-        }
-    }
-}
-
-@Composable
-fun ShoppingListsHidden(
-    fontSize: FontSize,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier.padding(ShoppingListsHiddenProductsPaddings),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = stringResource(R.string.shoppingLists_text_hiddenShoppingLists),
-            fontSize = fontSize.toItemBody().sp,
-            color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
-            style = MaterialTheme.typography.body1
-        )
-        TextButton(onClick = onClick) {
-            Text(
-                text = stringResource(R.string.shoppingLists_action_displayCompletedPurchases),
-                fontSize = fontSize.toButton().sp,
             )
         }
     }
