@@ -188,6 +188,44 @@ fun ArchiveScreen(
                                 text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
                             )
                         }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showToPurchases,
+                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsToPurchases) },
+                            header = { Text(text = stringResource(id = R.string.archive_action_moveShoppingListsToPurchases)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.MoveAllShoppingListsTo(true)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.MoveCompletedShoppingListsTo(true)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.MoveActiveShoppingListsTo(true)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
+                            )
+                        }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showToTrash,
+                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsToTrash) },
+                            header = { Text(text = stringResource(id = R.string.archive_action_moveShoppingListsToTrash)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.MoveAllShoppingListsTo(false)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.MoveCompletedShoppingListsTo(false)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(ArchiveEvent.MoveActiveShoppingListsTo(false)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
+                            )
+                        }
                     }
                 }
             )

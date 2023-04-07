@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -97,37 +96,6 @@ fun PurchasesScreen(
             )
         },
         bottomBar = {
-            if (screenData.selectedMode) {
-                AppBottomAppBar(
-                    content = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingList) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon),
-                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                            )
-                        }
-                    },
-                    actionButtons = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToArchive) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_archive),
-                                contentDescription = stringResource(R.string.purchases_action_moveShoppingListsToArchive),
-                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                            )
-                        }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToTrash)}) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.purchases_action_moveShoppingListsToTrash),
-                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                            )
-                        }
-                    }
-                )
-                return@AppScaffold
-            }
-
             AppBottomAppBar(
                 content = {
                     if (screenData.totalText != UiText.Nothing) {
@@ -181,8 +149,26 @@ fun PurchasesScreen(
                             )
 
                             AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.purchases_action_selectAllShoppingList)) },
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) }
+                                text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListsToArchive)) },
+                                after = {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                    )
+                                },
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsToArchive) }
+                            )
+                            AppDropdownMenuItem(
+                                text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListsToTrash)) },
+                                after = {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                    )
+                                },
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsToTrash) }
                             )
                         }
 
@@ -206,6 +192,44 @@ fun PurchasesScreen(
                             AppDropdownMenuItem(
                                 onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.TOTAL)) },
                                 text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
+                            )
+                        }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showToArchive,
+                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsToArchive) },
+                            header = { Text(text = stringResource(id = R.string.purchases_action_moveShoppingListsToArchive)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.MoveAllShoppingListsTo(true)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.MoveCompletedShoppingListsTo(true)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.MoveActiveShoppingListsTo(true)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
+                            )
+                        }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showToTrash,
+                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsToTrash) },
+                            header = { Text(text = stringResource(id = R.string.purchases_action_moveShoppingListsToTrash)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.MoveAllShoppingListsTo(false)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.MoveCompletedShoppingListsTo(false)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(PurchasesEvent.MoveActiveShoppingListsTo(false)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
                             )
                         }
                     }

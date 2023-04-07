@@ -76,9 +76,9 @@ class PurchasesState {
         )
     }
 
-    fun showToDelete() {
+    fun showToTrash() {
         screenData = screenData.copy(
-            showToDelete = true,
+            showToTrash = true,
             showPurchasesMenu = false
         )
     }
@@ -114,8 +114,8 @@ class PurchasesState {
         screenData = screenData.copy(showToArchive = false)
     }
 
-    fun hideToDelete() {
-        screenData = screenData.copy(showToDelete = false)
+    fun hideToTrash() {
+        screenData = screenData.copy(showToTrash = false)
     }
 
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
@@ -230,7 +230,7 @@ data class PurchasesScreenData(
     val showPurchasesMenu: Boolean = false,
     val showSort: Boolean = false,
     val showToArchive: Boolean = false,
-    val showToDelete: Boolean = false,
+    val showToTrash: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false
 )

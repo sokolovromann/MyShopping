@@ -51,7 +51,7 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.SelectShoppingListsToArchive -> selectShoppingListsToArchive()
 
-            PurchasesEvent.SelectShoppingListsToDelete -> selectShoppingListsToDelete()
+            PurchasesEvent.SelectShoppingListsToTrash -> selectShoppingListsToTrash()
 
             is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
 
@@ -85,7 +85,7 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.HideShoppingListsToArchive -> hideShoppingListsToArchive()
 
-            PurchasesEvent.HideShoppingListsToDelete -> hideShoppingListsToDelete()
+            PurchasesEvent.HideShoppingListsToTrash -> hideShoppingListsToTrash()
 
             PurchasesEvent.FinishApp -> finishApp()
         }
@@ -190,8 +190,8 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.showToArchive()
     }
 
-    private fun selectShoppingListsToDelete() {
-        purchasesState.showToDelete()
+    private fun selectShoppingListsToTrash() {
+        purchasesState.showToTrash()
     }
 
     private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
@@ -217,7 +217,7 @@ class PurchasesViewModel @Inject constructor(
         }
 
         withContext(dispatchers.main) {
-            hideShoppingListsToArchiveOrToDelete(event.toArchive)
+            hideShoppingListsToArchiveOrToTrash(event.toArchive)
         }
     }
 
@@ -233,7 +233,7 @@ class PurchasesViewModel @Inject constructor(
         }
 
         withContext(dispatchers.main) {
-            hideShoppingListsToArchiveOrToDelete(event.toArchive)
+            hideShoppingListsToArchiveOrToTrash(event.toArchive)
         }
     }
 
@@ -249,7 +249,7 @@ class PurchasesViewModel @Inject constructor(
         }
 
         withContext(dispatchers.main) {
-            hideShoppingListsToArchiveOrToDelete(event.toArchive)
+            hideShoppingListsToArchiveOrToTrash(event.toArchive)
         }
     }
 
@@ -324,15 +324,15 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.hideToArchive()
     }
 
-    private fun hideShoppingListsToDelete() {
-        purchasesState.hideToDelete()
+    private fun hideShoppingListsToTrash() {
+        purchasesState.hideToTrash()
     }
 
-    private fun hideShoppingListsToArchiveOrToDelete(toArchive: Boolean) {
+    private fun hideShoppingListsToArchiveOrToTrash(toArchive: Boolean) {
         if (toArchive) {
             hideShoppingListsToArchive()
         } else {
-            hideShoppingListsToDelete()
+            hideShoppingListsToTrash()
         }
     }
 

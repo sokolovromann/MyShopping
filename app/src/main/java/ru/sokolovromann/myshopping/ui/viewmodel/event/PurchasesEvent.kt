@@ -24,7 +24,7 @@ sealed class PurchasesEvent {
 
     object SelectShoppingListsToArchive : PurchasesEvent()
 
-    object SelectShoppingListsToDelete : PurchasesEvent()
+    object SelectShoppingListsToTrash : PurchasesEvent()
 
     data class SortShoppingLists(val sortBy: SortBy) : PurchasesEvent()
 
@@ -58,7 +58,7 @@ sealed class PurchasesEvent {
 
     object HideShoppingListsToArchive : PurchasesEvent()
 
-    object HideShoppingListsToDelete : PurchasesEvent()
+    object HideShoppingListsToTrash : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 }
