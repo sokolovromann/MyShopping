@@ -440,7 +440,12 @@ class AddEditProductState {
 
     private fun getSavableAutocomplete(): Autocomplete {
         val product = getSavableProduct()
-        val personal = (selectedAutocomplete?.name?.lowercase() ?: "") != product.name.lowercase()
+        val namesEquals = (selectedAutocomplete?.name?.lowercase() ?: "") == product.name.lowercase()
+        val personal = if (namesEquals) {
+            selectedAutocomplete?.personal ?: true
+        } else {
+            true
+        }
         return Autocomplete(
             name = product.name,
             quantity = product.quantity,
