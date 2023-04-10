@@ -410,7 +410,7 @@ class AddEditProductState {
         val position = if (newProduct) {
             addEditProduct.productsLastPosition?.plus(1)
         } else {
-            addEditProduct.productsLastPosition
+            addEditProduct.product?.position ?: 0
         } ?: 0
 
         return (addEditProduct.product ?: Product()).copy(
