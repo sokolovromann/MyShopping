@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="calendar_text_currentYear">%ta, %tb %td</string>
+    <string name="calendar_text_currentYearAt">%ta, %tb %td at %tl:%tM %Tp</string>
+    <string name="calendar_text_other">%tb %td, %tY</string>
+    <string name="calendar_text_otherAt">%tb %td, %tY at %tl:%tM %Tp</string>
+    <string name="calendar_text_time">%tl:%tM %Tp</string>
+    <string name="calendar_text_today">Today</string>
+    <string name="calendar_text_todayAt">Today at %tl:%tM %Tp</string>
+    <string name="calendar_text_tomorrow">Tomorrow</string>
+    <string name="calendar_text_tomorrowAt">Tomorrow at %tl:%tM %Tp</string>
+    <string name="calendar_text_yesterday">Yesterday</string>
+    <string name="calendar_text_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
+
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
         <item>lb</item>
         <item>oz</item>
