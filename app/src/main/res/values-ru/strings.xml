@@ -229,8 +229,8 @@
         <item>Яйца</item>
     </string-array>
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
-        <item>кг</item>
         <item>шт</item>
+        <item>кг</item>
         <item>л</item>
         <item>бут</item>
         <item>упак</item>

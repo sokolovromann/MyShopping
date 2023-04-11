@@ -13,8 +13,10 @@
     <string name="calendar_text_yesterdayAt">Yesterday at %tl:%tM %Tp</string>
 
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
+        <item>pcs</item>
         <item>lb</item>
         <item>oz</item>
         <item>gal</item>
+        <item>pkg</item>
     </string-array>
 </resources>
