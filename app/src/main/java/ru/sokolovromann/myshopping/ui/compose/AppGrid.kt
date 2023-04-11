@@ -215,7 +215,7 @@ private fun CircularAppGridLoading() {
 }
 
 private val AppGridMediumMinColumnSize = 200.dp
-private val AppGridLargeMinColumnSize = 350.dp
+private val AppGridLargeMinColumnSize = 280.dp
 private val AppGridSpacerHeight = 128.dp
 private val AppGridLoadingContentPaddings = PaddingValues(
     vertical = 8.dp,
