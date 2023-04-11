@@ -7,9 +7,7 @@ data class Autocompletes(
 
     private val defaultNamesLimit: Int = 10
     private val defaultQuantitiesLimit: Int = 5
-    private val defaultPricesLimit: Int = 3
-    private val defaultDiscountsLimit: Int = 3
-    private val defaultTotalsLimit: Int = 3
+    private val defaultMoneyLimit: Int = 3
 
     fun formatAutocompletes(): List<Autocomplete> {
         return autocompletes.sortAutocompletes()
@@ -20,7 +18,7 @@ data class Autocompletes(
             .sortAutocompletes()
             .distinctBy { it.name.lowercase() }
             .filterIndexed { index, autocomplete ->
-                autocomplete.name.isNotEmpty() && index < defaultNamesLimit
+                autocomplete.name.isNotEmpty() && index <= defaultNamesLimit
             }
     }
 
@@ -30,7 +28,7 @@ data class Autocompletes(
             .map { it.quantity }
             .distinctBy { it.value }
             .filterIndexed { index, quantity ->
-                quantity.isNotEmpty() && index < defaultQuantitiesLimit
+                quantity.isNotEmpty() && index <= defaultQuantitiesLimit
             }
     }
 
@@ -40,7 +38,7 @@ data class Autocompletes(
             .map { it.quantity }
             .distinctBy { it.symbol }
             .filterIndexed { index, quantity ->
-                quantity.value > 0 && quantity.symbol.isNotEmpty() && index < defaultQuantitiesLimit
+                quantity.value > 0 && quantity.symbol.isNotEmpty() && index <= defaultQuantitiesLimit
             }
     }
 
@@ -50,7 +48,7 @@ data class Autocompletes(
             .map { it.price }
             .distinctBy { it.value }
             .filterIndexed { index, price ->
-                price.isNotEmpty() && index < defaultPricesLimit
+                price.isNotEmpty() && index <= defaultMoneyLimit
             }
     }
 
@@ -60,7 +58,7 @@ data class Autocompletes(
             .map { it.discount }
             .distinctBy { it.value }
             .filterIndexed { index, discount ->
-                discount.isNotEmpty() && index < defaultDiscountsLimit
+                discount.isNotEmpty() && index <= defaultMoneyLimit
             }
     }
 
@@ -70,7 +68,7 @@ data class Autocompletes(
             .map { it.total }
             .distinctBy { it.value }
             .filterIndexed { index, total ->
-                total.isNotEmpty() && index < defaultTotalsLimit
+                total.isNotEmpty() && index <= defaultMoneyLimit
             }
     }
 }
