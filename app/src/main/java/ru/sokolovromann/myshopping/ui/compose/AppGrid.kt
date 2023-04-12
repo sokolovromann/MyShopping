@@ -27,6 +27,7 @@ fun SmartphoneTabletAppGrid(
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     loading: @Composable (ColumnScope.() -> Unit)? = { CircularAppGridLoading() },
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
+    saving: @Composable (ColumnScope.() -> Unit)? = { CircularAppGridLoading() },
     bottomSpacer: @Composable (() -> Unit)? = { AppGridBottomSpacer() },
     items: LazyStaggeredGridScope.() -> Unit
 ) {
@@ -53,7 +54,11 @@ fun SmartphoneTabletAppGrid(
             items = items
         )
 
-        else -> throw Exception("Invalid state: ${screenState.name}")
+        ScreenState.Saving -> AppGridSaving(
+            modifier = modifier,
+            topBar = topBar,
+            saving = saving
+        )
     }
 }
 
@@ -184,6 +189,37 @@ private fun AppGridShowing(
             item(
                 span = StaggeredGridItemSpan.FullLine,
                 content = { it() }
+            )
+        }
+    }
+}
+
+@Composable
+private fun AppGridSaving(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colors.background,
+    topBar: @Composable (RowScope.() -> Unit)?,
+    saving: @Composable (ColumnScope.() -> Unit)?
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(AppGridNothingPaddings)
+    ) {
+        topBar?.let {
+            AppGridBar(content = it)
+        }
+
+        saving?.let {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = backgroundColor)
+                    .padding(AppGridLoadingContentPaddings)
+                    .then(modifier),
+                content = it
             )
         }
     }
