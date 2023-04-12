@@ -5,6 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -38,6 +40,24 @@ fun AppScaffold(
         drawerContent = drawerContent,
         backgroundColor = backgroundColor,
         contentColor = contentColor,
-        content = { content(it) }
+        content = {
+            val paddings = getAppScaffoldPaddings(it)
+            content(paddings)
+        }
     )
+}
+
+@Composable
+private fun getAppScaffoldPaddings(scaffoldPaddings: PaddingValues): PaddingValues {
+    val configuration = LocalConfiguration.current
+    return if (configuration.screenWidthDp > 700 && configuration.screenHeightDp > 700) {
+        PaddingValues(
+            start = 72.dp,
+            top = scaffoldPaddings.calculateTopPadding(),
+            end = 72.dp,
+            bottom = scaffoldPaddings.calculateBottomPadding()
+        )
+    } else {
+        scaffoldPaddings
+    }
 }
