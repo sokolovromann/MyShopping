@@ -14,7 +14,7 @@ fun AppCheckbox(
     onCheckedChange: ((Boolean) -> Unit)? = null,
     colors: CheckboxColors = CheckboxDefaults.colors()
 ) {
-    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Checkbox(
             modifier = modifier,
             checked = checked,
