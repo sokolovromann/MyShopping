@@ -54,10 +54,6 @@ class PurchasesState {
         )
     }
 
-    fun showShoppingListMenu(uid: String) {
-        screenData = screenData.copy(shoppingListMenuUid = uid)
-    }
-
     fun showPurchasesMenu() {
         screenData = screenData.copy(showPurchasesMenu = true)
     }
@@ -69,16 +65,9 @@ class PurchasesState {
         )
     }
 
-    fun showToArchive() {
+    fun showSelectingMenu() {
         screenData = screenData.copy(
-            showToArchive = true,
-            showPurchasesMenu = false
-        )
-    }
-
-    fun showToTrash() {
-        screenData = screenData.copy(
-            showToTrash = true,
+            showSelectingMenu = true,
             showPurchasesMenu = false
         )
     }
@@ -94,8 +83,49 @@ class PurchasesState {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
-    fun hideShoppingListMenu() {
-        screenData = screenData.copy(shoppingListMenuUid = null)
+    fun selectShoppingList(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { add(uid) }
+        screenData = screenData.copy(selectedUids = uids)
+    }
+
+    fun selectAllShoppingList() {
+        val uids = shoppingLists.shoppingLists.map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectCompletedShoppingList() {
+        val uids = shoppingLists.shoppingLists
+            .filter { it.completed }
+            .map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectActiveShoppingList() {
+        val uids = shoppingLists.shoppingLists
+            .filter { !it.completed }
+            .map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun unselectShoppingList(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { remove(uid) }
+        val checkedUids = if (uids.isEmpty()) null else uids
+        screenData = screenData.copy(selectedUids = checkedUids)
+    }
+
+    fun unselectAllShoppingList() {
+        screenData = screenData.copy(selectedUids = null)
     }
 
     fun hideDisplayPurchasesTotal() {
@@ -110,12 +140,8 @@ class PurchasesState {
         screenData = screenData.copy(showSort = false)
     }
 
-    fun hideToArchive() {
-        screenData = screenData.copy(showToArchive = false)
-    }
-
-    fun hideToTrash() {
-        screenData = screenData.copy(showToTrash = false)
+    fun hideSelectingMenu() {
+        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
@@ -130,15 +156,6 @@ class PurchasesState {
                 )
             }
             Result.success(success)
-        }
-    }
-
-    fun getShoppingListsResult(): Result<List<ShoppingList>> {
-        val resultShoppingLists = shoppingLists.shoppingLists
-        return if (resultShoppingLists.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            Result.success(resultShoppingLists)
         }
     }
 
@@ -221,7 +238,6 @@ class PurchasesState {
 data class PurchasesScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
-    val shoppingListMenuUid: String? = null,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
@@ -229,8 +245,8 @@ data class PurchasesScreenData(
     val showDisplayTotal: Boolean = false,
     val showPurchasesMenu: Boolean = false,
     val showSort: Boolean = false,
-    val showToArchive: Boolean = false,
-    val showToTrash: Boolean = false,
+    val showSelectingMenu: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showHiddenShoppingLists: Boolean = false
+    val showHiddenShoppingLists: Boolean = false,
+    val selectedUids: List<String>? = null
 )

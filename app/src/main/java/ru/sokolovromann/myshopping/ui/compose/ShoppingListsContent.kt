@@ -36,7 +36,8 @@ fun ShoppingListsGrid(
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
-    onLongClick: (String) -> Unit
+    onLongClick: (String) -> Unit,
+    selectedUids: List<String>? = null
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
@@ -49,6 +50,8 @@ fun ShoppingListsGrid(
         notFound = notFound
     ) {
         items(items) { item ->
+            val selected = selectedUids?.contains(item.uid) ?: false
+
             AppSurfaceItem(
                 title = getShoppingListItemTitleOrNull(item.nameText, fontSize),
                 body = {
@@ -63,11 +66,7 @@ fun ShoppingListsGrid(
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid) },
                 onLongClick = { onLongClick(item.uid) },
-                backgroundColor = if (item.completed) {
-                    MaterialTheme.colors.background
-                } else {
-                    MaterialTheme.colors.surface
-                }
+                backgroundColor = getAppItemBackgroundColor(selected, item.completed)
             )
         }
     }

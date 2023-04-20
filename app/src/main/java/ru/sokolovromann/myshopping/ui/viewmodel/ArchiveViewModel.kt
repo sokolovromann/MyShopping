@@ -34,9 +34,9 @@ class ArchiveViewModel @Inject constructor(
 
     override fun onEvent(event: ArchiveEvent) {
         when (event) {
-            is ArchiveEvent.MoveShoppingListToPurchases -> moveShoppingListToPurchases(event)
+            ArchiveEvent.MoveShoppingListsToPurchases -> moveShoppingListsToPurchases()
 
-            is ArchiveEvent.MoveShoppingListToTrash -> moveShoppingListToTrash(event)
+            ArchiveEvent.MoveShoppingListsToTrash -> moveShoppingListsToTrash()
 
             ArchiveEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
@@ -44,17 +44,21 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.SelectShoppingListsSort -> selectShoppingListsSort()
 
-            ArchiveEvent.SelectShoppingListsToPurchases -> selectShoppingListsToPurchases()
+            is ArchiveEvent.SelectShoppingList -> selectShoppingList(event)
 
-            ArchiveEvent.SelectShoppingListsToTrash -> selectShoppingListsToTrash()
+            ArchiveEvent.SelectSelectShoppingLists -> selectSelectShoppingLists()
+
+            ArchiveEvent.SelectAllShoppingLists -> selectAllShoppingLists()
+
+            ArchiveEvent.SelectCompletedShoppingLists -> selectCompletedShoppingLists()
+
+            ArchiveEvent.SelectActiveShoppingLists -> selectActiveShoppingLists()
+
+            is ArchiveEvent.UnselectShoppingList -> unselectShoppingList(event)
+
+            ArchiveEvent.CancelSelectingShoppingLists -> cancelSelectingShoppingLists()
 
             is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
-
-            is ArchiveEvent.MoveAllShoppingListsTo -> moveAllShoppingListsTo(event)
-
-            is ArchiveEvent.MoveCompletedShoppingListsTo -> moveCompletedShoppingListsTo(event)
-
-            is ArchiveEvent.MoveActiveShoppingListsTo -> moveActiveShoppingListsTo(event)
 
             is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
@@ -66,13 +70,9 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.ShowNavigationDrawer -> showNavigationDrawer()
 
-            is ArchiveEvent.ShowShoppingListMenu -> showShoppingListMenu(event)
-
             ArchiveEvent.ShowArchiveMenu -> showArchiveMenu()
 
             ArchiveEvent.HideNavigationDrawer -> hideNavigationDrawer()
-
-            ArchiveEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             ArchiveEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
 
@@ -80,9 +80,7 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
 
-            ArchiveEvent.HideShoppingListsToPurchases -> hideShoppingListsToPurchases()
-
-            ArchiveEvent.HideShoppingListsToTrash -> hideShoppingListsToTrash()
+            ArchiveEvent.HideSelectShoppingLists -> hideSelectShoppingLists()
         }
     }
 
@@ -106,29 +104,29 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private fun moveShoppingListToPurchases(
-        event: ArchiveEvent.MoveShoppingListToPurchases
-    ) = viewModelScope.launch {
-        repository.moveShoppingListToPurchases(
-            uid = event.uid,
-            lastModified = System.currentTimeMillis()
-        )
+    private fun moveShoppingListsToPurchases() = viewModelScope.launch {
+        archiveState.screenData.selectedUids?.let {
+            repository.moveShoppingListsToPurchases(
+                uids = it,
+                lastModified = System.currentTimeMillis()
+            )
 
-        withContext(dispatchers.main) {
-            hideShoppingListMenu()
+            withContext(dispatchers.main) {
+                unselectAllShoppingLists()
+            }
         }
     }
 
-    private fun moveShoppingListToTrash(
-        event: ArchiveEvent.MoveShoppingListToTrash
-    ) = viewModelScope.launch {
-        repository.moveShoppingListToTrash(
-            uid = event.uid,
-            lastModified = System.currentTimeMillis()
-        )
+    private fun moveShoppingListsToTrash() = viewModelScope.launch {
+        archiveState.screenData.selectedUids?.let {
+            repository.moveShoppingListsToTrash(
+                uids = it,
+                lastModified = System.currentTimeMillis()
+            )
 
-        withContext(dispatchers.main) {
-            hideShoppingListMenu()
+            withContext(dispatchers.main) {
+                unselectAllShoppingLists()
+            }
         }
     }
 
@@ -152,12 +150,36 @@ class ArchiveViewModel @Inject constructor(
         archiveState.showSort()
     }
 
-    private fun selectShoppingListsToPurchases() {
-        archiveState.showToPurchases()
+    private fun selectShoppingList(event: ArchiveEvent.SelectShoppingList) {
+        archiveState.selectShoppingList(event.uid)
     }
 
-    private fun selectShoppingListsToTrash() {
-        archiveState.showToTrash()
+    private fun selectSelectShoppingLists() {
+        archiveState.showSelectingMenu()
+    }
+
+    private fun selectAllShoppingLists() {
+        archiveState.selectAllShoppingList()
+    }
+
+    private fun selectCompletedShoppingLists() {
+        archiveState.selectCompletedShoppingList()
+    }
+
+    private fun selectActiveShoppingLists() {
+        archiveState.selectActiveShoppingList()
+    }
+
+    private fun unselectShoppingList(event: ArchiveEvent.UnselectShoppingList) {
+        archiveState.unselectShoppingList(event.uid)
+    }
+
+    private fun unselectAllShoppingLists() {
+        archiveState.unselectAllShoppingList()
+    }
+
+    private fun cancelSelectingShoppingLists() {
+        unselectAllShoppingLists()
     }
 
     private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
@@ -170,63 +192,6 @@ class ArchiveViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
-        }
-    }
-
-    private fun moveAllShoppingListsTo(
-        event: ArchiveEvent.MoveAllShoppingListsTo
-    ) = viewModelScope.launch {
-        archiveState.getShoppingListsResult().onSuccess { shoppingLists ->
-            shoppingLists.forEach {
-                moveShoppingListToPurchasesOrTrash(it.uid, event.toPurchases)
-            }
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsToPurchasesOrToTrash(event.toPurchases)
-        }
-    }
-
-    private fun moveCompletedShoppingListsTo(
-        event: ArchiveEvent.MoveCompletedShoppingListsTo
-    ) = viewModelScope.launch {
-        archiveState.getShoppingListsResult().onSuccess { shoppingLists ->
-            shoppingLists.forEach {
-                if (it.completed) {
-                    moveShoppingListToPurchasesOrTrash(it.uid, event.toPurchases)
-                }
-            }
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsToPurchasesOrToTrash(event.toPurchases)
-        }
-    }
-
-    private fun moveActiveShoppingListsTo(
-        event: ArchiveEvent.MoveActiveShoppingListsTo
-    ) = viewModelScope.launch {
-        archiveState.getShoppingListsResult().onSuccess { shoppingLists ->
-            shoppingLists.forEach {
-                if (!it.completed) {
-                    moveShoppingListToPurchasesOrTrash(it.uid, event.toPurchases)
-                }
-            }
-        }
-
-        withContext(dispatchers.main) {
-            hideShoppingListsToPurchasesOrToTrash(event.toPurchases)
-        }
-    }
-
-    private fun moveShoppingListToPurchasesOrTrash(
-        uid: String,
-        toPurchases: Boolean
-    ) = viewModelScope.launch {
-        if (toPurchases) {
-            repository.moveShoppingListToPurchases(uid, System.currentTimeMillis())
-        } else {
-            repository.moveShoppingListToTrash(uid, System.currentTimeMillis())
         }
     }
 
@@ -260,20 +225,12 @@ class ArchiveViewModel @Inject constructor(
         _screenEventFlow.emit(ArchiveScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showShoppingListMenu(event: ArchiveEvent.ShowShoppingListMenu) {
-        archiveState.showShoppingListMenu(event.uid)
-    }
-
     private fun showArchiveMenu() {
         archiveState.showArchiveMenu()
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ArchiveScreenEvent.HideNavigationDrawer)
-    }
-
-    private fun hideShoppingListMenu() {
-        archiveState.hideShoppingListMenu()
     }
 
     private fun hideDisplayPurchasesTotal() {
@@ -288,19 +245,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.hideSort()
     }
 
-    private fun hideShoppingListsToPurchases() {
-        archiveState.hideToPurchases()
-    }
-
-    private fun hideShoppingListsToTrash() {
-        archiveState.hideToTrash()
-    }
-
-    private fun hideShoppingListsToPurchasesOrToTrash(toPurchases: Boolean) {
-        if (toPurchases) {
-            hideShoppingListsToPurchases()
-        } else {
-            hideShoppingListsToTrash()
-        }
+    private fun hideSelectShoppingLists() {
+        archiveState.hideSelectingMenu()
     }
 }

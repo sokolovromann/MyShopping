@@ -10,9 +10,9 @@ interface PurchasesRepository {
 
     suspend fun addShoppingList(shoppingList: ShoppingList)
 
-    suspend fun moveShoppingListToArchive(uid: String, lastModified: Long)
+    suspend fun moveShoppingListsToArchive(uids: List<String>, lastModified: Long)
 
-    suspend fun moveShoppingListToTrash(uid: String, lastModified: Long)
+    suspend fun moveShoppingListsToTrash(uids: List<String>, lastModified: Long)
 
     suspend fun swapShoppingLists(first: ShoppingList, second: ShoppingList)
 

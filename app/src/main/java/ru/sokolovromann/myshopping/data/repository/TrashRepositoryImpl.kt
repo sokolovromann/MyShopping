@@ -49,11 +49,6 @@ class TrashRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteShoppingList(uid: String): Unit = withContext(dispatchers.io) {
-        trashDao.deleteShoppingList(uid)
-        trashDao.deleteProducts(uid)
-    }
-
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayPurchasesTotal(displayTotal)

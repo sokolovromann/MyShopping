@@ -5,17 +5,29 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class TrashEvent {
 
-    data class MoveShoppingListToPurchases(val uid: String) : TrashEvent()
+    object MoveShoppingListsToPurchases : TrashEvent()
 
-    data class MoveShoppingListToArchive(val uid: String) : TrashEvent()
+    object MoveShoppingListsToArchive : TrashEvent()
 
     object DeleteShoppingLists : TrashEvent()
-
-    data class DeleteShoppingList(val uid: String) : TrashEvent()
 
     object SelectDisplayPurchasesTotal : TrashEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : TrashEvent()
+
+    data class SelectShoppingList(val uid: String) : TrashEvent()
+
+    object SelectSelectShoppingLists : TrashEvent()
+
+    object SelectAllShoppingLists : TrashEvent()
+
+    object SelectCompletedShoppingLists : TrashEvent()
+
+    object SelectActiveShoppingLists : TrashEvent()
+
+    data class UnselectShoppingList(val uid: String) : TrashEvent()
+
+    object CancelSelectingShoppingLists : TrashEvent()
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : TrashEvent()
 
@@ -25,11 +37,13 @@ sealed class TrashEvent {
 
     object ShowNavigationDrawer : TrashEvent()
 
-    data class ShowShoppingListMenu(val uid: String) : TrashEvent()
+    object ShowTrashMenu : TrashEvent()
 
     object HideNavigationDrawer : TrashEvent()
 
-    object HideShoppingListMenu : TrashEvent()
+    object HideTrashMenu : TrashEvent()
 
     object HideDisplayPurchasesTotal : TrashEvent()
+
+    object HideSelectShoppingLists : TrashEvent()
 }

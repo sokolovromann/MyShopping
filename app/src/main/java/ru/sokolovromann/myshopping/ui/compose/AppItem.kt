@@ -24,7 +24,7 @@ fun AppMultiColumnsItem(
     longClickableEnabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = getAppItemBackgroundColor(selected = false),
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
     if (multiColumns) {
@@ -73,7 +73,7 @@ fun AppItem(
     longClickableEnabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = getAppItemBackgroundColor(selected = false),
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
 
@@ -83,8 +83,16 @@ fun AppItem(
             .defaultMinSize(minHeight = AppItemMinHeight)
             .background(color = backgroundColor)
             .combinedClickable(
-                onClick = if (clickableEnabled) { onClick } else { {} },
-                onLongClick = if (longClickableEnabled) { onLongClick } else { null }
+                onClick = if (clickableEnabled) {
+                    onClick
+                } else {
+                    {}
+                },
+                onLongClick = if (longClickableEnabled) {
+                    onLongClick
+                } else {
+                    null
+                }
             )
             .then(modifier),
         horizontalAlignment = Alignment.Start,
@@ -115,7 +123,7 @@ fun AppSurfaceItem(
     longClickableEnabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = getAppItemBackgroundColor(selected = false),
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
 
@@ -125,8 +133,16 @@ fun AppSurfaceItem(
             .defaultMinSize(minHeight = AppSurfaceItemMinHeight)
             .padding(AppSurfaceItemSurfacePaddings)
             .combinedClickable(
-                onClick = if (clickableEnabled) { onClick } else { {} },
-                onLongClick = if (longClickableEnabled) { onLongClick } else { null }
+                onClick = if (clickableEnabled) {
+                    onClick
+                } else {
+                    {}
+                },
+                onLongClick = if (longClickableEnabled) {
+                    onLongClick
+                } else {
+                    null
+                }
             )
             .then(modifier),
         shape = MaterialTheme.shapes.medium,
@@ -151,6 +167,28 @@ fun AppSurfaceItem(
 @Composable
 fun itemOrNull(enabled: Boolean, content: @Composable () -> Unit): @Composable (() -> Unit)? {
     return if (enabled) content else null
+}
+
+@Composable
+fun getAppItemBackgroundColor(selected: Boolean, completed: Boolean): Color {
+    return if (selected) {
+        MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
+    } else {
+        if (completed) {
+            MaterialTheme.colors.background
+        } else {
+            MaterialTheme.colors.surface
+        }
+    }
+}
+
+@Composable
+fun getAppItemBackgroundColor(selected: Boolean): Color {
+    return if (selected) {
+        MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
+    } else {
+        MaterialTheme.colors.surface
+    }
 }
 
 @Composable

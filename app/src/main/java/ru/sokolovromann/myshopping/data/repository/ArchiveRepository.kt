@@ -8,9 +8,9 @@ interface ArchiveRepository {
 
     suspend fun getShoppingLists(): Flow<ShoppingLists>
 
-    suspend fun moveShoppingListToPurchases(uid: String, lastModified: Long)
+    suspend fun moveShoppingListsToPurchases(uids: List<String>, lastModified: Long)
 
-    suspend fun moveShoppingListToTrash(uid: String, lastModified: Long)
+    suspend fun moveShoppingListsToTrash(uids: List<String>, lastModified: Long)
 
     suspend fun swapShoppingLists(shoppingLists: List<ShoppingList>)
 

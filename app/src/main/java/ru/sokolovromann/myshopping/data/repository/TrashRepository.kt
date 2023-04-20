@@ -13,8 +13,6 @@ interface TrashRepository {
 
     suspend fun deleteShoppingLists(uids: List<String>)
 
-    suspend fun deleteShoppingList(uid: String)
-
     suspend fun displayAllPurchasesTotal()
 
     suspend fun displayCompletedPurchasesTotal()

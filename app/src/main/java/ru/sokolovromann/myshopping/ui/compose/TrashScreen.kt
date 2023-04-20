@@ -5,11 +5,16 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -82,15 +87,101 @@ fun TrashScreen(
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.trash_header)) },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(TrashEvent.ShowNavigationDrawer) }) {
+            if (screenData.selectedUids == null) {
+                TopAppBar(
+                    title = { Text(text = stringResource(R.string.trash_header)) },
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.ShowNavigationDrawer) }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = stringResource(R.string.trash_contentDescription_navigationIcon),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                    }
+                )
+            } else {
+                TopAppBar(
+                    title = {},
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists) }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(R.string.trash_contentDescription_cancelSelectingShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.MoveShoppingListsToPurchases) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_restore),
+                                contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToPurchases),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.MoveShoppingListsToArchive) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_archive),
+                                contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToArchive),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.trash_contentDescription_deleteShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                    }
+                )
+            }
+        },
+        bottomBar = {
+            AppBottomAppBar(
+                actionButtons = {
+                    IconButton(onClick = { viewModel.onEvent(TrashEvent.ShowTrashMenu) }) {
                         Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = stringResource(R.string.trash_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.trash_contentDescription_trashMenuIcon),
+                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
                         )
+                        AppDropdownMenu(
+                            expanded = screenData.showTrashMenu,
+                            onDismissRequest = { viewModel.onEvent(TrashEvent.HideTrashMenu) }
+                        ) {
+                            AppDropdownMenuItem(
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectShoppingLists)) },
+                                after = {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowRight,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                    )
+                                },
+                                onClick = { viewModel.onEvent(TrashEvent.SelectSelectShoppingLists) }
+                            )
+                        }
+
+                        AppDropdownMenu(
+                            expanded = screenData.showSelectingMenu,
+                            onDismissRequest = { viewModel.onEvent(TrashEvent.HideSelectShoppingLists) },
+                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectShoppingLists)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(TrashEvent.SelectAllShoppingLists) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(TrashEvent.SelectCompletedShoppingLists) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectCompletedShoppingListsTo)) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = { viewModel.onEvent(TrashEvent.SelectActiveShoppingLists) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectActiveShoppingListsTo)) }
+                            )
+                        }
                     }
                 }
             )
@@ -130,42 +221,26 @@ fun TrashScreen(
                 )
             },
             fontSize = screenData.fontSize,
-            dropdownMenu = {
-                AppDropdownMenu(
-                    expanded = it == screenData.shoppingListMenuUid,
-                    onDismissRequest = { viewModel.onEvent(TrashEvent.HideShoppingListMenu) }
-                ) {
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = TrashEvent.MoveShoppingListToPurchases(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.trash_action_moveShoppingListToPurchases)) }
-                    )
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = TrashEvent.MoveShoppingListToArchive(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.trash_action_moveShoppingListToArchive)) }
-                    )
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = TrashEvent.DeleteShoppingList(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.trash_action_deleteShoppingList)) }
-                    )
-                }
-            },
             onClick = {
-                val event = TrashEvent.ShowProducts(it)
+                val uids = screenData.selectedUids
+                val event = if (uids == null) {
+                    TrashEvent.ShowProducts(it)
+                } else {
+                    if (uids.contains(it)) {
+                        TrashEvent.UnselectShoppingList(it)
+                    } else {
+                        TrashEvent.SelectShoppingList(it)
+                    }
+                }
                 viewModel.onEvent(event)
             },
             onLongClick = {
-                val event = TrashEvent.ShowShoppingListMenu(it)
-                viewModel.onEvent(event)
-            }
+                if (screenData.selectedUids == null) {
+                    val event = TrashEvent.SelectShoppingList(it)
+                    viewModel.onEvent(event)
+                }
+            },
+            selectedUids = screenData.selectedUids
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -82,18 +83,49 @@ fun PurchasesScreen(
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.purchases_header)) },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowNavigationDrawer) }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                        )
+            if (screenData.selectedUids == null) {
+                TopAppBar(
+                    title = { Text(text = stringResource(R.string.purchases_header)) },
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowNavigationDrawer) }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                     }
-                }
-            )
+                )
+            } else {
+                TopAppBar(
+                    title = {},
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists) }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(R.string.purchases_contentDescription_cancelSelectingShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToArchive) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_archive),
+                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToTrash) }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                    }
+                )
+            }
         },
         bottomBar = {
             AppBottomAppBar(
@@ -149,7 +181,7 @@ fun PurchasesScreen(
                             )
 
                             AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListsToArchive)) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectShoppingLists)) },
                                 after = {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowRight,
@@ -157,18 +189,7 @@ fun PurchasesScreen(
                                         tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                                     )
                                 },
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsToArchive) }
-                            )
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListsToTrash)) },
-                                after = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
-                                },
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsToTrash) }
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectSelectShoppingLists) }
                             )
                         }
 
@@ -196,40 +217,21 @@ fun PurchasesScreen(
                         }
 
                         AppDropdownMenu(
-                            expanded = screenData.showToArchive,
-                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsToArchive) },
-                            header = { Text(text = stringResource(id = R.string.purchases_action_moveShoppingListsToArchive)) }
+                            expanded = screenData.showSelectingMenu,
+                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideSelectShoppingLists) },
+                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectShoppingLists)) }
                         ) {
                             AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.MoveAllShoppingListsTo(true)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingListsTo)) }
                             )
                             AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.MoveCompletedShoppingListsTo(true)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectCompletedShoppingLists) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectCompletedShoppingListsTo)) }
                             )
                             AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.MoveActiveShoppingListsTo(true)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
-                            )
-                        }
-
-                        AppDropdownMenu(
-                            expanded = screenData.showToTrash,
-                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsToTrash) },
-                            header = { Text(text = stringResource(id = R.string.purchases_action_moveShoppingListsToTrash)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.MoveAllShoppingListsTo(false)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveAllShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.MoveCompletedShoppingListsTo(false)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveCompletedShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.MoveActiveShoppingListsTo(false)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_moveActiveShoppingListsTo)) }
+                                onClick = { viewModel.onEvent(PurchasesEvent.SelectActiveShoppingLists) },
+                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectActiveShoppingListsTo)) }
                             )
                         }
                     }
@@ -268,50 +270,26 @@ fun PurchasesScreen(
                 )
             },
             fontSize = screenData.fontSize,
-            dropdownMenu = {
-                AppDropdownMenu(
-                    expanded = it == screenData.shoppingListMenuUid,
-                    onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListMenu) }
-                ) {
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = PurchasesEvent.MoveShoppingListToArchive(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToArchive)) }
-                    )
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = PurchasesEvent.MoveShoppingListToTrash(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListToTrash)) }
-                    )
-                    Divider()
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = PurchasesEvent.MoveShoppingListUp(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListUp)) }
-                    )
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = PurchasesEvent.MoveShoppingListDown(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.purchases_action_moveShoppingListDown)) }
-                    )
-                }
-            },
             onClick = {
-                val event = PurchasesEvent.ShowProducts(it)
+                val uids = screenData.selectedUids
+                val event = if (uids == null) {
+                    PurchasesEvent.ShowProducts(it)
+                } else {
+                    if (uids.contains(it)) {
+                        PurchasesEvent.UnselectShoppingList(it)
+                    } else {
+                        PurchasesEvent.SelectShoppingList(it)
+                    }
+                }
                 viewModel.onEvent(event)
             },
             onLongClick = {
-                val event = PurchasesEvent.ShowShoppingListMenu(it)
-                viewModel.onEvent(event)
-            }
+                if (screenData.selectedUids == null) {
+                    val event = PurchasesEvent.SelectShoppingList(it)
+                    viewModel.onEvent(event)
+                }
+            },
+            selectedUids = screenData.selectedUids
         )
     }
 }

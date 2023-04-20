@@ -9,6 +9,8 @@ import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class TrashState {
 
+    private var shoppingLists by mutableStateOf(ShoppingLists())
+
     var screenData by mutableStateOf(TrashScreenData())
         private set
 
@@ -17,6 +19,7 @@ class TrashState {
     }
 
     fun showNotFound(preferences: AppPreferences) {
+        shoppingLists = ShoppingLists(preferences = preferences)
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
             showBottomBar = false,
@@ -27,6 +30,7 @@ class TrashState {
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
+        this.shoppingLists = shoppingLists
         val preferences = shoppingLists.preferences
 
         val shoppingListItems = when (preferences.displayCompletedPurchases) {
@@ -46,41 +50,90 @@ class TrashState {
         )
     }
 
-    fun showShoppingListMenu(uid: String) {
-        screenData = screenData.copy(shoppingListMenuUid = uid)
+    fun showTrashMenu() {
+        screenData = screenData.copy(showTrashMenu = true)
+    }
+
+    fun showSelectingMenu() {
+        screenData = screenData.copy(
+            showSelectingMenu = true,
+            showTrashMenu = false
+        )
     }
 
     fun selectDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
-    fun hideShoppingListMenu() {
-        screenData = screenData.copy(shoppingListMenuUid = null)
+    fun selectShoppingList(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { add(uid) }
+        screenData = screenData.copy(selectedUids = uids)
+    }
+
+    fun selectAllShoppingList() {
+        val uids = shoppingLists.shoppingLists.map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectCompletedShoppingList() {
+        val uids = shoppingLists.shoppingLists
+            .filter { it.completed }
+            .map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectActiveShoppingList() {
+        val uids = shoppingLists.shoppingLists
+            .filter { !it.completed }
+            .map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun unselectShoppingList(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { remove(uid) }
+        val checkedUids = if (uids.isEmpty()) null else uids
+        screenData = screenData.copy(selectedUids = checkedUids)
+    }
+
+    fun unselectAllShoppingList() {
+        screenData = screenData.copy(selectedUids = null)
+    }
+
+    fun hideTrashMenu() {
+        screenData = screenData.copy(showTrashMenu = false)
+    }
+
+    fun hideSelectingMenu() {
+        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
-    }
-
-    fun getUidsResult(): Result<List<String>> {
-        val uids = screenData.shoppingLists.map { it.uid }
-        return if (uids.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            Result.success(uids)
-        }
     }
 }
 
 data class TrashScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
-    val shoppingListMenuUid: String? = null,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
+    val showTrashMenu: Boolean = false,
+    val showSelectingMenu: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showBottomBar: Boolean = true
+    val showBottomBar: Boolean = true,
+    val selectedUids: List<String>? = null
 )

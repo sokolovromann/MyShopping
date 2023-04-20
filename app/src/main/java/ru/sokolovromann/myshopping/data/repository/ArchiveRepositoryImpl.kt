@@ -29,18 +29,22 @@ class ArchiveRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun moveShoppingListToPurchases(
-        uid: String,
+    override suspend fun moveShoppingListsToPurchases(
+        uids: List<String>,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        archiveDao.moveShoppingToPurchases(uid, lastModified)
+        uids.forEach {
+            archiveDao.moveShoppingToPurchases(it, lastModified)
+        }
     }
 
-    override suspend fun moveShoppingListToTrash(
-        uid: String,
+    override suspend fun moveShoppingListsToTrash(
+        uids: List<String>,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        archiveDao.moveShoppingToTrash(uid, lastModified)
+        uids.forEach {
+            archiveDao.moveShoppingToTrash(it, lastModified)
+        }
     }
 
     override suspend fun swapShoppingLists(

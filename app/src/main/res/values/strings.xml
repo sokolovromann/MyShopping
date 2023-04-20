@@ -28,11 +28,12 @@
 
     <string name="all_header_appName">My Shopping List</string>
 
-    <string name="archive_action_moveShoppingListToPurchases">Unarchive</string>
-    <string name="archive_action_moveShoppingListToTrash">Delete</string>
     <string name="archive_action_moveShoppingListsToPurchases">Unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">Delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Open archive menu</string>
+    <string name="archive_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
+    <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchive</string>
+    <string name="archive_contentDescription_moveShoppingListsToTrash">Delete</string>
     <string name="archive_contentDescription_navigationIcon">Show navigation</string>
     <string name="archive_header">Archive</string>
     <string name="archive_text_productsNotFound">Shopping list is empty</string>
@@ -318,13 +319,10 @@
     <string name="products_text_purchasesProductsNotFound">Click \"+\" to add new product</string>
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
 
-    <string name="purchases_action_moveShoppingListDown">Move down</string>
-    <string name="purchases_action_moveShoppingListToArchive">Archive</string>
-    <string name="purchases_action_moveShoppingListToTrash">Delete</string>
-    <string name="purchases_action_moveShoppingListUp">Move up</string>
-    <string name="purchases_action_moveShoppingListsToArchive">Archive</string>
-    <string name="purchases_action_moveShoppingListsToTrash">Delete</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
+    <string name="purchases_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
+    <string name="purchases_contentDescription_moveShoppingListsToArchive">Archive</string>
+    <string name="purchases_contentDescription_moveShoppingListsToTrash">Delete</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
     <string name="purchases_header">Purchases</string>
@@ -384,11 +382,12 @@
     <string name="shoppingLists_action_displayAllTotal">All</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Display</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
-    <string name="shoppingLists_action_moveActiveShoppingListsTo">Active</string>
-    <string name="shoppingLists_action_moveAllShoppingListsTo">All</string>
-    <string name="shoppingLists_action_moveCompletedShoppingListsTo">Completed</string>
+    <string name="shoppingLists_action_selectActiveShoppingListsTo">Active</string>
+    <string name="shoppingLists_action_selectAllShoppingListsTo">All</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
+    <string name="shoppingLists_action_selectCompletedShoppingListsTo">Completed</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>
+    <string name="shoppingLists_action_selectShoppingLists">Select</string>
     <string name="shoppingLists_action_selectTrashLocation">Trash</string>
     <string name="shoppingLists_action_sort">Sort</string>
     <string name="shoppingLists_action_sortByCreated">By created</string>
@@ -402,11 +401,13 @@
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
 
-    <string name="trash_action_deleteShoppingList">Delete</string>
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
-    <string name="trash_action_moveShoppingListToArchive">Archive</string>
-    <string name="trash_action_moveShoppingListToPurchases">Restore</string>
+    <string name="trash_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
+    <string name="trash_contentDescription_deleteShoppingLists">Delete</string>
+    <string name="trash_contentDescription_moveShoppingListsToArchive">Archive</string>
+    <string name="trash_contentDescription_moveShoppingListsToPurchases">Restore</string>
     <string name="trash_contentDescription_navigationIcon">Open navigation</string>
+    <string name="trash_contentDescription_trashMenuIcon">Open trash menu</string>
     <string name="trash_header">Trash</string>
     <string name="trash_text_productsNotFound">Shopping list is empty</string>
     <string name="trash_text_shoppingListsNotFound">Trash is empty</string>

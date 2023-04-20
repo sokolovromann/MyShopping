@@ -6,9 +6,9 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class ArchiveEvent {
 
-    data class MoveShoppingListToPurchases(val uid: String) : ArchiveEvent()
+    object MoveShoppingListsToPurchases : ArchiveEvent()
 
-    data class MoveShoppingListToTrash(val uid: String) : ArchiveEvent()
+    object MoveShoppingListsToTrash : ArchiveEvent()
 
     object SelectDisplayPurchasesTotal : ArchiveEvent()
 
@@ -16,17 +16,21 @@ sealed class ArchiveEvent {
 
     object SelectShoppingListsSort : ArchiveEvent()
 
-    object SelectShoppingListsToPurchases : ArchiveEvent()
+    data class SelectShoppingList(val uid: String) : ArchiveEvent()
 
-    object SelectShoppingListsToTrash : ArchiveEvent()
+    object SelectSelectShoppingLists : ArchiveEvent()
+
+    object SelectAllShoppingLists : ArchiveEvent()
+
+    object SelectCompletedShoppingLists : ArchiveEvent()
+
+    object SelectActiveShoppingLists : ArchiveEvent()
+
+    data class UnselectShoppingList(val uid: String) : ArchiveEvent()
+
+    object CancelSelectingShoppingLists : ArchiveEvent()
 
     data class SortShoppingLists(val sortBy: SortBy) : ArchiveEvent()
-
-    data class MoveAllShoppingListsTo(val toPurchases: Boolean) : ArchiveEvent()
-
-    data class MoveCompletedShoppingListsTo(val toPurchases: Boolean) : ArchiveEvent()
-
-    data class MoveActiveShoppingListsTo(val toPurchases: Boolean) : ArchiveEvent()
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
 
@@ -38,13 +42,9 @@ sealed class ArchiveEvent {
 
     object ShowNavigationDrawer : ArchiveEvent()
 
-    data class ShowShoppingListMenu(val uid: String) : ArchiveEvent()
-
     object ShowArchiveMenu : ArchiveEvent()
 
     object HideNavigationDrawer : ArchiveEvent()
-
-    object HideShoppingListMenu : ArchiveEvent()
 
     object HideDisplayPurchasesTotal : ArchiveEvent()
 
@@ -52,7 +52,5 @@ sealed class ArchiveEvent {
 
     object HideShoppingListsSort : ArchiveEvent()
 
-    object HideShoppingListsToPurchases : ArchiveEvent()
-
-    object HideShoppingListsToTrash : ArchiveEvent()
+    object HideSelectShoppingLists : ArchiveEvent()
 }

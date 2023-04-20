@@ -53,10 +53,6 @@ class ArchiveState {
         )
     }
 
-    fun showShoppingListMenu(uid: String) {
-        screenData = screenData.copy(shoppingListMenuUid = uid)
-    }
-
     fun showArchiveMenu() {
         screenData = screenData.copy(showArchiveMenu = true)
     }
@@ -68,16 +64,9 @@ class ArchiveState {
         )
     }
 
-    fun showToPurchases() {
+    fun showSelectingMenu() {
         screenData = screenData.copy(
-            showToPurchases = true,
-            showArchiveMenu = false
-        )
-    }
-
-    fun showToTrash() {
-        screenData = screenData.copy(
-            showToTrash = true,
+            showSelectingMenu = true,
             showArchiveMenu = false
         )
     }
@@ -93,8 +82,49 @@ class ArchiveState {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
-    fun hideShoppingListMenu() {
-        screenData = screenData.copy(shoppingListMenuUid = null)
+    fun selectShoppingList(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { add(uid) }
+        screenData = screenData.copy(selectedUids = uids)
+    }
+
+    fun selectAllShoppingList() {
+        val uids = shoppingLists.shoppingLists.map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectCompletedShoppingList() {
+        val uids = shoppingLists.shoppingLists
+            .filter { it.completed }
+            .map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectActiveShoppingList() {
+        val uids = shoppingLists.shoppingLists
+            .filter { !it.completed }
+            .map { it.uid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun unselectShoppingList(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { remove(uid) }
+        val checkedUids = if (uids.isEmpty()) null else uids
+        screenData = screenData.copy(selectedUids = checkedUids)
+    }
+
+    fun unselectAllShoppingList() {
+        screenData = screenData.copy(selectedUids = null)
     }
 
     fun hideDisplayPurchasesTotal() {
@@ -109,12 +139,8 @@ class ArchiveState {
         screenData = screenData.copy(showSort = false)
     }
 
-    fun hideToPurchases() {
-        screenData = screenData.copy(showToPurchases = false)
-    }
-
-    fun hideToTrash() {
-        screenData = screenData.copy(showToTrash = false)
+    fun hideSelectingMenu() {
+        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
@@ -131,21 +157,11 @@ class ArchiveState {
             Result.success(success)
         }
     }
-
-    fun getShoppingListsResult(): Result<List<ShoppingList>> {
-        val resultShoppingLists = shoppingLists.shoppingLists
-        return if (resultShoppingLists.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            Result.success(resultShoppingLists)
-        }
-    }
 }
 
 data class ArchiveScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
-    val shoppingListMenuUid: String? = null,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
@@ -153,8 +169,8 @@ data class ArchiveScreenData(
     val showDisplayTotal: Boolean = false,
     val showArchiveMenu: Boolean = false,
     val showSort: Boolean = false,
-    val showToPurchases: Boolean = false,
-    val showToTrash: Boolean = false,
+    val showSelectingMenu: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
-    val showHiddenShoppingLists: Boolean = false
+    val showHiddenShoppingLists: Boolean = false,
+    val selectedUids: List<String>? = null
 )

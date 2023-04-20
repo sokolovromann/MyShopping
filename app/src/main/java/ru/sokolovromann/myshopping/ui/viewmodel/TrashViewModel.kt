@@ -34,19 +34,31 @@ class TrashViewModel @Inject constructor(
 
     override fun onEvent(event: TrashEvent) {
         when (event) {
-            is TrashEvent.MoveShoppingListToPurchases -> moveShoppingListToPurchases(event)
+            TrashEvent.MoveShoppingListsToPurchases -> moveShoppingListsToPurchases()
 
-            is TrashEvent.MoveShoppingListToArchive -> moveShoppingListToArchive(event)
+            TrashEvent.MoveShoppingListsToArchive -> moveShoppingListsToArchive()
 
             TrashEvent.DeleteShoppingLists -> deleteShoppingLists()
-
-            is TrashEvent.DeleteShoppingList -> deleteShoppingList(event)
 
             TrashEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
             is TrashEvent.SelectNavigationItem -> selectNavigationItem(event)
 
+            is TrashEvent.SelectShoppingList -> selectShoppingList(event)
+
+            TrashEvent.SelectSelectShoppingLists -> selectSelectShoppingLists()
+
+            TrashEvent.SelectAllShoppingLists -> selectAllShoppingLists()
+
+            TrashEvent.SelectCompletedShoppingLists -> selectCompletedShoppingLists()
+
+            TrashEvent.SelectActiveShoppingLists -> selectActiveShoppingLists()
+
+            is TrashEvent.UnselectShoppingList -> unselectShoppingList(event)
+
             is TrashEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
+
+            TrashEvent.CancelSelectingShoppingLists -> cancelSelectingShoppingLists()
 
             TrashEvent.ShowBackScreen -> showBackScreen()
 
@@ -54,13 +66,15 @@ class TrashViewModel @Inject constructor(
 
             TrashEvent.ShowNavigationDrawer -> showNavigationDrawer()
 
-            is TrashEvent.ShowShoppingListMenu -> showShoppingListMenu(event)
+            TrashEvent.ShowTrashMenu -> showTrashMenu()
 
             TrashEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
-            TrashEvent.HideShoppingListMenu -> hideShoppingListMenu()
+            TrashEvent.HideTrashMenu -> hideTrashMenu()
 
             TrashEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
+
+            TrashEvent.HideSelectShoppingLists -> hideSelectShoppingLists()
         }
     }
 
@@ -85,44 +99,38 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun deleteShoppingLists() = viewModelScope.launch {
-        val uids = trashState.getUidsResult()
-            .getOrElse { return@launch }
-        repository.deleteShoppingLists(uids)
-    }
-
-    private fun deleteShoppingList(
-        event: TrashEvent.DeleteShoppingList
-    ) = viewModelScope.launch {
-        repository.deleteShoppingList(event.uid)
+        trashState.screenData.selectedUids?.let {
+            repository.deleteShoppingLists(it)
+        }
 
         withContext(dispatchers.main) {
-            hideShoppingListMenu()
+            unselectAllShoppingLists()
         }
     }
 
-    private fun moveShoppingListToPurchases(
-        event: TrashEvent.MoveShoppingListToPurchases
-    ) = viewModelScope.launch {
-        repository.moveShoppingListToPurchases(
-            uid = event.uid,
-            lastModified = System.currentTimeMillis()
-        )
+    private fun moveShoppingListsToPurchases() = viewModelScope.launch {
+        trashState.screenData.selectedUids?.forEach {
+            repository.moveShoppingListToPurchases(
+                uid = it,
+                lastModified = System.currentTimeMillis()
+            )
+        }
 
         withContext(dispatchers.main) {
-            hideShoppingListMenu()
+            unselectAllShoppingLists()
         }
     }
 
-    private fun moveShoppingListToArchive(
-        event: TrashEvent.MoveShoppingListToArchive
-    ) = viewModelScope.launch {
-        repository.moveShoppingListToArchive(
-            uid = event.uid,
-            lastModified = System.currentTimeMillis()
-        )
+    private fun moveShoppingListsToArchive() = viewModelScope.launch {
+        trashState.screenData.selectedUids?.forEach {
+            repository.moveShoppingListToArchive(
+                uid = it,
+                lastModified = System.currentTimeMillis()
+            )
+        }
 
         withContext(dispatchers.main) {
-            hideShoppingListMenu()
+            unselectAllShoppingLists()
         }
     }
 
@@ -140,6 +148,38 @@ class TrashViewModel @Inject constructor(
             UiRoute.Settings -> _screenEventFlow.emit(TrashScreenEvent.ShowSettings)
             else -> return@launch
         }
+    }
+
+    private fun selectShoppingList(event: TrashEvent.SelectShoppingList) {
+        trashState.selectShoppingList(event.uid)
+    }
+
+    private fun selectSelectShoppingLists() {
+        trashState.showSelectingMenu()
+    }
+
+    private fun selectAllShoppingLists() {
+        trashState.selectAllShoppingList()
+    }
+
+    private fun selectCompletedShoppingLists() {
+        trashState.selectCompletedShoppingList()
+    }
+
+    private fun selectActiveShoppingLists() {
+        trashState.selectActiveShoppingList()
+    }
+
+    private fun unselectShoppingList(event: TrashEvent.UnselectShoppingList) {
+        trashState.unselectShoppingList(event.uid)
+    }
+
+    private fun unselectAllShoppingLists() {
+        trashState.unselectAllShoppingList()
+    }
+
+    private fun cancelSelectingShoppingLists() {
+        unselectAllShoppingLists()
     }
 
     private fun displayPurchasesTotal(
@@ -168,19 +208,23 @@ class TrashViewModel @Inject constructor(
         _screenEventFlow.emit(TrashScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showShoppingListMenu(event: TrashEvent.ShowShoppingListMenu) {
-        trashState.showShoppingListMenu(event.uid)
+    private fun showTrashMenu() {
+        trashState.showTrashMenu()
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(TrashScreenEvent.HideNavigationDrawer)
     }
 
-    private fun hideShoppingListMenu() {
-        trashState.hideShoppingListMenu()
+    private fun hideTrashMenu() {
+        trashState.hideTrashMenu()
     }
 
     private fun hideDisplayPurchasesTotal() {
         trashState.hideDisplayPurchasesTotal()
+    }
+
+    private fun hideSelectShoppingLists() {
+        trashState.hideSelectingMenu()
     }
 }

@@ -28,11 +28,12 @@
 
     <string name="all_header_appName">My Shopping List</string>
 
-    <string name="archive_action_moveShoppingListToPurchases">Unarchivieren</string>
-    <string name="archive_action_moveShoppingListToTrash">Löschen</string>
     <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
     <string name="archive_action_moveShoppingListsToTrash">Löschen</string>
     <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
+    <string name="archive_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>
+    <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchivieren</string>
+    <string name="archive_contentDescription_moveShoppingListsToTrash">Löschen</string>
     <string name="archive_contentDescription_navigationIcon">Navigation anzeigen</string>
     <string name="archive_header">Archiv</string>
     <string name="archive_text_productsNotFound">Einkaufsliste ist leer</string>
@@ -248,13 +249,10 @@
     <string name="products_text_purchasesProductsNotFound">Klicken Sie auf \"+\" um ein neues Produkt hinzuzufügen</string>
     <string name="products_text_trashProductsNotFound">Einkaufsliste ist leer</string>
 
-    <string name="purchases_action_moveShoppingListDown">Nach unten verschieben</string>
-    <string name="purchases_action_moveShoppingListToArchive">Archivieren</string>
-    <string name="purchases_action_moveShoppingListToTrash">Löschen</string>
-    <string name="purchases_action_moveShoppingListUp">Nach oben verschieben</string>
-    <string name="purchases_action_moveShoppingListsToArchive">Archivieren</string>
-    <string name="purchases_action_moveShoppingListsToTrash">Löschen</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
+    <string name="purchases_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>
+    <string name="purchases_contentDescription_moveShoppingListsToArchive">Archivieren</string>
+    <string name="purchases_contentDescription_moveShoppingListsToTrash">Löschen</string>
     <string name="purchases_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
@@ -314,11 +312,12 @@
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Anzeige</string>
     <string name="shoppingLists_action_displayCompletedTotal">Fertige produkte</string>
-    <string name="shoppingLists_action_moveActiveShoppingListsTo">Aktive Listen</string>
-    <string name="shoppingLists_action_moveAllShoppingListsTo">Alle Listen</string>
-    <string name="shoppingLists_action_moveCompletedShoppingListsTo">Abgeschlossene Listen</string>
+    <string name="shoppingLists_action_selectActiveShoppingListsTo">Aktive Listen</string>
+    <string name="shoppingLists_action_selectAllShoppingListsTo">Alle Listen</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
+    <string name="shoppingLists_action_selectCompletedShoppingListsTo">Abgeschlossene Listen</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
+    <string name="shoppingLists_action_selectShoppingLists">Wählen</string>
     <string name="shoppingLists_action_selectTrashLocation">Müll</string>
     <string name="shoppingLists_action_sort">Sortieren</string>
     <string name="shoppingLists_action_sortByCreated">Nach Erstellt</string>
@@ -332,11 +331,13 @@
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
 
-    <string name="trash_action_deleteShoppingList">Löschen</string>
     <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
-    <string name="trash_action_moveShoppingListToArchive">Archivieren</string>
-    <string name="trash_action_moveShoppingListToPurchases">Wiederherstellen</string>
+    <string name="trash_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>
+    <string name="trash_contentDescription_deleteShoppingLists">Löschen</string>
+    <string name="trash_contentDescription_moveShoppingListsToArchive">Archivieren</string>
+    <string name="trash_contentDescription_moveShoppingListsToPurchases">Wiederherstellen</string>
     <string name="trash_contentDescription_navigationIcon">Navigation öffnen</string>
+    <string name="trash_contentDescription_trashMenuIcon">Müll menü öffnen</string>
     <string name="trash_header">Müll</string>
     <string name="trash_text_productsNotFound">Einkaufsliste ist leer</string>
     <string name="trash_text_shoppingListsNotFound">Müll ist leer</string>

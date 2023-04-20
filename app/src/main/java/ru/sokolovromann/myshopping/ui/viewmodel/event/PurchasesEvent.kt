@@ -8,9 +8,9 @@ sealed class PurchasesEvent {
 
     object AddShoppingList : PurchasesEvent()
 
-    data class MoveShoppingListToArchive(val uid: String) : PurchasesEvent()
+    object MoveShoppingListsToArchive : PurchasesEvent()
 
-    data class MoveShoppingListToTrash(val uid: String) : PurchasesEvent()
+    object MoveShoppingListsToTrash : PurchasesEvent()
 
     data class MoveShoppingListUp(val uid: String) : PurchasesEvent()
 
@@ -22,17 +22,21 @@ sealed class PurchasesEvent {
 
     object SelectShoppingListsSort : PurchasesEvent()
 
-    object SelectShoppingListsToArchive : PurchasesEvent()
+    data class SelectShoppingList(val uid: String) : PurchasesEvent()
 
-    object SelectShoppingListsToTrash : PurchasesEvent()
+    object SelectSelectShoppingLists : PurchasesEvent()
+
+    object SelectAllShoppingLists : PurchasesEvent()
+
+    object SelectCompletedShoppingLists : PurchasesEvent()
+
+    object SelectActiveShoppingLists : PurchasesEvent()
+
+    data class UnselectShoppingList(val uid: String) : PurchasesEvent()
+
+    object CancelSelectingShoppingLists : PurchasesEvent()
 
     data class SortShoppingLists(val sortBy: SortBy) : PurchasesEvent()
-
-    data class MoveAllShoppingListsTo(val toArchive: Boolean) : PurchasesEvent()
-
-    data class MoveCompletedShoppingListsTo(val toArchive: Boolean) : PurchasesEvent()
-
-    data class MoveActiveShoppingListsTo(val toArchive: Boolean) : PurchasesEvent()
 
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
 
@@ -42,13 +46,9 @@ sealed class PurchasesEvent {
 
     object ShowNavigationDrawer : PurchasesEvent()
 
-    data class ShowShoppingListMenu(val uid: String) : PurchasesEvent()
-
     object ShowPurchasesMenu : PurchasesEvent()
 
     object HideNavigationDrawer : PurchasesEvent()
-
-    object HideShoppingListMenu : PurchasesEvent()
 
     object HideDisplayPurchasesTotal : PurchasesEvent()
 
@@ -56,9 +56,7 @@ sealed class PurchasesEvent {
 
     object HideShoppingListsSort : PurchasesEvent()
 
-    object HideShoppingListsToArchive : PurchasesEvent()
-
-    object HideShoppingListsToTrash : PurchasesEvent()
+    object HideSelectShoppingLists : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 }

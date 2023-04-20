@@ -28,11 +28,12 @@
 
     <string name="all_header_appName">Мои покупки</string>
 
-    <string name="archive_action_moveShoppingListToPurchases">Разархивировать</string>
-    <string name="archive_action_moveShoppingListToTrash">Удалить</string>
     <string name="archive_action_moveShoppingListsToPurchases">Разархивировать</string>
     <string name="archive_action_moveShoppingListsToTrash">Удалить</string>
     <string name="archive_contentDescription_archiveMenuIcon">Открыть меню архива</string>
+    <string name="archive_contentDescription_cancelSelectingShoppingLists">Отменить выбор</string>
+    <string name="archive_contentDescription_moveShoppingListsToPurchases">Разархивировать</string>
+    <string name="archive_contentDescription_moveShoppingListsToTrash">Удалить</string>
     <string name="archive_contentDescription_navigationIcon">Показать навигацию</string>
     <string name="archive_header">Архив</string>
     <string name="archive_text_productsNotFound">Список покупок пуст</string>
@@ -313,13 +314,10 @@
     <string name="products_text_purchasesProductsNotFound">Нажмите на \"+\", чтобы добавить товар</string>
     <string name="products_text_trashProductsNotFound">Список покупок пуст</string>
 
-    <string name="purchases_action_moveShoppingListDown">Переместить вниз</string>
-    <string name="purchases_action_moveShoppingListToArchive">Архивировать</string>
-    <string name="purchases_action_moveShoppingListToTrash">Удалить</string>
-    <string name="purchases_action_moveShoppingListUp">Переместить вверх</string>
-    <string name="purchases_action_moveShoppingListsToArchive">Архивировать</string>
-    <string name="purchases_action_moveShoppingListsToTrash">Удалить</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Добавить список покупок</string>
+    <string name="purchases_contentDescription_cancelSelectingShoppingLists">Отменить выбор</string>
+    <string name="purchases_contentDescription_moveShoppingListsToArchive">Архивировать</string>
+    <string name="purchases_contentDescription_moveShoppingListsToTrash">Удалить</string>
     <string name="purchases_contentDescription_navigationIcon">Открыть навигацию</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Открыть меню покупок</string>
     <string name="purchases_header">Покупки</string>
@@ -379,11 +377,12 @@
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Показать</string>
     <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
-    <string name="shoppingLists_action_moveActiveShoppingListsTo">Не купленные списки</string>
-    <string name="shoppingLists_action_moveAllShoppingListsTo">Все списки</string>
-    <string name="shoppingLists_action_moveCompletedShoppingListsTo">Купленные списки</string>
+    <string name="shoppingLists_action_selectActiveShoppingListsTo">Не купленные списки</string>
+    <string name="shoppingLists_action_selectAllShoppingListsTo">Все списки</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
+    <string name="shoppingLists_action_selectCompletedShoppingListsTo">Купленные списки</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
+    <string name="shoppingLists_action_selectShoppingLists">Выбрать</string>
     <string name="shoppingLists_action_selectTrashLocation">Корзина</string>
     <string name="shoppingLists_action_sort">Сортировать</string>
     <string name="shoppingLists_action_sortByCreated">По созданию</string>
@@ -397,11 +396,13 @@
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
 
-    <string name="trash_action_deleteShoppingList">Удалить</string>
     <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
-    <string name="trash_action_moveShoppingListToArchive">Архивировать</string>
-    <string name="trash_action_moveShoppingListToPurchases">Восстановить</string>
+    <string name="trash_contentDescription_cancelSelectingShoppingLists">Отменить выбор</string>
+    <string name="trash_contentDescription_deleteShoppingLists">Удалить навсегда</string>
+    <string name="trash_contentDescription_moveShoppingListsToArchive">Архивировать</string>
+    <string name="trash_contentDescription_moveShoppingListsToPurchases">Восстановить</string>
     <string name="trash_contentDescription_navigationIcon">Открыть навигацию</string>
+    <string name="trash_contentDescription_trashMenuIcon">Открыть меню корзины</string>
     <string name="trash_header">Корзина</string>
     <string name="trash_text_productsNotFound">Список покупок пуст</string>
     <string name="trash_text_shoppingListsNotFound">Корзина пуста</string>

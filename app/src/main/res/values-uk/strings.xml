@@ -28,11 +28,12 @@
 
     <string name="all_header_appName">Мої покупки</string>
 
-    <string name="archive_action_moveShoppingListToPurchases">Розархівувати</string>
-    <string name="archive_action_moveShoppingListToTrash">Видалити</string>
     <string name="archive_action_moveShoppingListsToPurchases">Розархівувати</string>
     <string name="archive_action_moveShoppingListsToTrash">Видалити</string>
     <string name="archive_contentDescription_archiveMenuIcon">Відкрити меню архіву</string>
+    <string name="archive_contentDescription_cancelSelectingShoppingLists">Скасувати вибір</string>
+    <string name="archive_contentDescription_moveShoppingListsToPurchases">Розархівувати</string>
+    <string name="archive_contentDescription_moveShoppingListsToTrash">Видалити</string>
     <string name="archive_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="archive_header">Архів</string>
     <string name="archive_text_productsNotFound">Список покупок порожній</string>
@@ -266,13 +267,10 @@
     <string name="products_text_purchasesProductsNotFound">Натисніть \"+\", щоб додати товар</string>
     <string name="products_text_trashProductsNotFound">Список покупок порожній</string>
 
-    <string name="purchases_action_moveShoppingListDown">Перемістити вниз</string>
-    <string name="purchases_action_moveShoppingListToArchive">Архівувати</string>
-    <string name="purchases_action_moveShoppingListToTrash">Видалити</string>
-    <string name="purchases_action_moveShoppingListUp">Перемістити вгору</string>
-    <string name="purchases_action_moveShoppingListsToArchive">Архівувати</string>
-    <string name="purchases_action_moveShoppingListsToTrash">Видалити</string>
     <string name="purchases_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
+    <string name="purchases_contentDescription_cancelSelectingShoppingLists">Скасувати вибір</string>
+    <string name="purchases_contentDescription_moveShoppingListsToArchive">Архівувати</string>
+    <string name="purchases_contentDescription_moveShoppingListsToTrash">Видалити</string>
     <string name="purchases_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Відкрити меню покупок</string>
     <string name="purchases_header">Покупки</string>
@@ -332,11 +330,12 @@
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Показувати</string>
     <string name="shoppingLists_action_displayCompletedTotal">Куплені товари</string>
-    <string name="shoppingLists_action_moveActiveShoppingListsTo">Не куплені списки</string>
-    <string name="shoppingLists_action_moveAllShoppingListsTo">Усі списки</string>
-    <string name="shoppingLists_action_moveCompletedShoppingListsTo">Куплені списки</string>
+    <string name="shoppingLists_action_selectActiveShoppingListsTo">Не куплені списки</string>
+    <string name="shoppingLists_action_selectAllShoppingListsTo">Усі списки</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архів</string>
+    <string name="shoppingLists_action_selectCompletedShoppingListsTo">Куплені списки</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
+    <string name="shoppingLists_action_selectShoppingLists">Вибрати</string>
     <string name="shoppingLists_action_selectTrashLocation">Кошик</string>
     <string name="shoppingLists_action_sort">Сортувати</string>
     <string name="shoppingLists_action_sortByCreated">За створеним</string>
@@ -350,11 +349,13 @@
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас є приховані покупки</string>
 
-    <string name="trash_action_deleteShoppingList">Видалити</string>
     <string name="trash_action_deleteShoppingLists">Очистити корзину</string>
-    <string name="trash_action_moveShoppingListToArchive">Архівувати</string>
-    <string name="trash_action_moveShoppingListToPurchases">Відновити</string>
+    <string name="trash_contentDescription_cancelSelectingShoppingLists">Вибрати</string>
+    <string name="trash_contentDescription_deleteShoppingLists">Видалити</string>
+    <string name="trash_contentDescription_moveShoppingListsToArchive">Архівувати</string>
+    <string name="trash_contentDescription_moveShoppingListsToPurchases">Відновити</string>
     <string name="trash_contentDescription_navigationIcon">Показати навігацію</string>
+    <string name="trash_contentDescription_trashMenuIcon">Відкрити меню кошика</string>
     <string name="trash_header">Кошик</string>
     <string name="trash_text_productsNotFound">Список покупок порожній</string>
     <string name="trash_text_shoppingListsNotFound">Кошик порожній</string>

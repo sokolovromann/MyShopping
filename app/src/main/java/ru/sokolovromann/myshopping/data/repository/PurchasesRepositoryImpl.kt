@@ -34,18 +34,22 @@ class PurchasesRepositoryImpl @Inject constructor(
         purchasesDao.insertShopping(shoppingEntity)
     }
 
-    override suspend fun moveShoppingListToArchive(
-        uid: String,
+    override suspend fun moveShoppingListsToArchive(
+        uids: List<String>,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        purchasesDao.moveShoppingToArchive(uid, lastModified)
+        uids.forEach {
+            purchasesDao.moveShoppingToArchive(it, lastModified)
+        }
     }
 
-    override suspend fun moveShoppingListToTrash(
-        uid: String,
+    override suspend fun moveShoppingListsToTrash(
+        uids: List<String>,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        purchasesDao.moveShoppingToTrash(uid, lastModified)
+        uids.forEach {
+            purchasesDao.moveShoppingToTrash(it, lastModified)
+        }
     }
 
     override suspend fun swapShoppingLists(
