@@ -159,15 +159,15 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun selectAllShoppingLists() {
-        trashState.selectAllShoppingList()
+        trashState.selectAllShoppingLists()
     }
 
     private fun selectCompletedShoppingLists() {
-        trashState.selectCompletedShoppingList()
+        trashState.selectCompletedShoppingLists()
     }
 
     private fun selectActiveShoppingLists() {
-        trashState.selectActiveShoppingList()
+        trashState.selectActiveShoppingLists()
     }
 
     private fun unselectShoppingList(event: TrashEvent.UnselectShoppingList) {
@@ -175,7 +175,7 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun unselectAllShoppingLists() {
-        trashState.unselectAllShoppingList()
+        trashState.unselectAllShoppingLists()
     }
 
     private fun cancelSelectingShoppingLists() {

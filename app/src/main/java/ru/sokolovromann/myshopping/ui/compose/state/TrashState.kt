@@ -71,7 +71,7 @@ class TrashState {
         screenData = screenData.copy(selectedUids = uids)
     }
 
-    fun selectAllShoppingList() {
+    fun selectAllShoppingLists() {
         val uids = shoppingLists.shoppingLists.map { it.uid }
         screenData = screenData.copy(
             selectedUids = uids,
@@ -79,7 +79,7 @@ class TrashState {
         )
     }
 
-    fun selectCompletedShoppingList() {
+    fun selectCompletedShoppingLists() {
         val uids = shoppingLists.shoppingLists
             .filter { it.completed }
             .map { it.uid }
@@ -89,7 +89,7 @@ class TrashState {
         )
     }
 
-    fun selectActiveShoppingList() {
+    fun selectActiveShoppingLists() {
         val uids = shoppingLists.shoppingLists
             .filter { !it.completed }
             .map { it.uid }
@@ -106,7 +106,7 @@ class TrashState {
         screenData = screenData.copy(selectedUids = checkedUids)
     }
 
-    fun unselectAllShoppingList() {
+    fun unselectAllShoppingLists() {
         screenData = screenData.copy(selectedUids = null)
     }
 

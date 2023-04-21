@@ -88,7 +88,7 @@ class ArchiveState {
         screenData = screenData.copy(selectedUids = uids)
     }
 
-    fun selectAllShoppingList() {
+    fun selectAllShoppingLists() {
         val uids = shoppingLists.shoppingLists.map { it.uid }
         screenData = screenData.copy(
             selectedUids = uids,
@@ -96,7 +96,7 @@ class ArchiveState {
         )
     }
 
-    fun selectCompletedShoppingList() {
+    fun selectCompletedShoppingLists() {
         val uids = shoppingLists.shoppingLists
             .filter { it.completed }
             .map { it.uid }
@@ -106,7 +106,7 @@ class ArchiveState {
         )
     }
 
-    fun selectActiveShoppingList() {
+    fun selectActiveShoppingLists() {
         val uids = shoppingLists.shoppingLists
             .filter { !it.completed }
             .map { it.uid }
@@ -123,7 +123,7 @@ class ArchiveState {
         screenData = screenData.copy(selectedUids = checkedUids)
     }
 
-    fun unselectAllShoppingList() {
+    fun unselectAllShoppingLists() {
         screenData = screenData.copy(selectedUids = null)
     }
 

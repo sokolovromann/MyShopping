@@ -159,15 +159,15 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun selectAllShoppingLists() {
-        archiveState.selectAllShoppingList()
+        archiveState.selectAllShoppingLists()
     }
 
     private fun selectCompletedShoppingLists() {
-        archiveState.selectCompletedShoppingList()
+        archiveState.selectCompletedShoppingLists()
     }
 
     private fun selectActiveShoppingLists() {
-        archiveState.selectActiveShoppingList()
+        archiveState.selectActiveShoppingLists()
     }
 
     private fun unselectShoppingList(event: ArchiveEvent.UnselectShoppingList) {
@@ -175,7 +175,7 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun unselectAllShoppingLists() {
-        archiveState.unselectAllShoppingList()
+        archiveState.unselectAllShoppingLists()
     }
 
     private fun cancelSelectingShoppingLists() {

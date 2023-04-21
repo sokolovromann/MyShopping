@@ -173,15 +173,15 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun selectAllShoppingLists() {
-        purchasesState.selectAllShoppingList()
+        purchasesState.selectAllShoppingLists()
     }
 
     private fun selectCompletedShoppingLists() {
-        purchasesState.selectCompletedShoppingList()
+        purchasesState.selectCompletedShoppingLists()
     }
 
     private fun selectActiveShoppingLists() {
-        purchasesState.selectActiveShoppingList()
+        purchasesState.selectActiveShoppingLists()
     }
 
     private fun unselectShoppingList(event: PurchasesEvent.UnselectShoppingList) {
@@ -189,7 +189,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun unselectAllShoppingList() {
-        purchasesState.unselectAllShoppingList()
+        purchasesState.unselectAllShoppingLists()
     }
 
     private fun cancelSelectingShoppingLists() {
