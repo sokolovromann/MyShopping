@@ -32,7 +32,7 @@ class CopyProductViewModel @Inject constructor(
 
     init {
         getPurchases()
-        getProduct()
+        getProducts()
     }
 
     override fun onEvent(event: CopyProductEvent) {
@@ -88,25 +88,26 @@ class CopyProductViewModel @Inject constructor(
         }
     }
 
-    private fun getProduct() = viewModelScope.launch {
+    private fun getProducts() = viewModelScope.launch {
         val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
-        val product = repository.getProduct(productUid).firstOrNull()
+        val uids = productUid.split(",")
+        val products = repository.getProducts(uids).firstOrNull()
 
-        if (product == null) {
+        if (products == null) {
             cancelCopingProduct()
         } else {
             withContext(dispatchers.main) {
-                copyProductState.saveProduct(product)
+                copyProductState.saveProducts(products)
             }
         }
     }
 
     private fun copyProduct(event: CopyProductEvent.CopyProduct) = viewModelScope.launch {
         copyProductState.selectShoppingList(event.uid)
-        val product = copyProductState.getProductResult()
+        val products = copyProductState.getProductsResult()
             .getOrElse { return@launch }
 
-        repository.addProduct(product)
+        repository.addProducts(products)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(CopyProductScreenEvent.ShowBackScreen)

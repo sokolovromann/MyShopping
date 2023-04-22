@@ -137,6 +137,10 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toProducts(entities: List<ProductEntity>, preferencesEntity: AppPreferencesEntity): List<Product> {
+        return entities.map { toProduct(it, preferencesEntity) }
+    }
+
     fun toAddEditProduct(
         entity: ProductEntity?,
         lastPosition: Int?,

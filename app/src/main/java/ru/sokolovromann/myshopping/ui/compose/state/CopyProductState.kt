@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class CopyProductState {
 
-    private var product by mutableStateOf(Product())
+    private var products by mutableStateOf<List<Product>>(listOf())
 
     private var shoppingLists by mutableStateOf(ShoppingLists())
 
@@ -47,8 +47,8 @@ class CopyProductState {
         )
     }
 
-    fun saveProduct(product: Product) {
-        this.product = product
+    fun saveProducts(products: List<Product>) {
+        this.products = products
     }
 
     fun selectShoppingList(uid: String) {
@@ -70,7 +70,7 @@ class CopyProductState {
         screenData = screenData.copy(showLocation = false)
     }
 
-    fun getProductResult(): Result<Product> {
+    fun getProductsResult(): Result<List<Product>> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
 
         return if (screenData.shoppingListSelectedUid == null) {
@@ -80,16 +80,19 @@ class CopyProductState {
             val shoppingUid = screenData.shoppingListSelectedUid!!
             val position = shoppingLists.formatShoppingLists()
                 .find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
-            val success = Product(
-                position = position,
-                shoppingUid = shoppingUid,
-                name = product.name,
-                quantity = product.quantity,
-                price = product.price,
-                discount = product.discount,
-                taxRate = product.taxRate,
-                completed = product.completed
-            )
+            val success = products.mapIndexed { index, product ->
+                val newPosition = position + index
+                Product(
+                    position = newPosition,
+                    shoppingUid = shoppingUid,
+                    name = product.name,
+                    quantity = product.quantity,
+                    price = product.price,
+                    discount = product.discount,
+                    taxRate = product.taxRate,
+                    completed = product.completed
+                )
+            }
 
             Result.success(success)
         }

@@ -35,22 +35,23 @@ class CopyProductRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getProduct(uid: String): Flow<Product?> = withContext(dispatchers.io) {
-        return@withContext productDao.getProduct(uid).combine(
+    override suspend fun getProducts(
+        uids: List<String>
+    ): Flow<List<Product>> = withContext(dispatchers.io) {
+        return@withContext productDao.getProducts(uids).combine(
             flow = preferencesDao.getAppPreferences(),
-            transform = { entity, preferencesEntity ->
-                if (entity == null) {
-                    return@combine null
-                }
-
-                mapping.toProduct(entity, preferencesEntity)
+            transform = { entities, preferencesEntity ->
+                mapping.toProducts(entities, preferencesEntity)
             }
         )
     }
 
-    override suspend fun addProduct(product: Product): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toProductEntity(product)
-        productDao.insertProduct(entity)
-        productDao.updateShoppingLastModified(entity.shoppingUid, entity.lastModified)
+    override suspend fun addProducts(products: List<Product>): Unit = withContext(dispatchers.io) {
+        val entities = mapping.toProductEntities(products)
+        productDao.insertProducts(entities)
+        productDao.updateShoppingLastModified(
+            entities.first().shoppingUid,
+            entities.first().lastModified
+        )
     }
 }

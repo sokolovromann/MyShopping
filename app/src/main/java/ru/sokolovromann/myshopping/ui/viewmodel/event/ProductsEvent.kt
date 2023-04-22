@@ -13,9 +13,9 @@ sealed class ProductsEvent {
 
     object EditShoppingListReminder : ProductsEvent()
 
-    data class CopyProductToShoppingList(val uid: String) : ProductsEvent()
+    object CopyProductsToShoppingList : ProductsEvent()
 
-    data class MoveProductToShoppingList(val uid: String) : ProductsEvent()
+    object MoveProductsToShoppingList : ProductsEvent()
 
     object MoveShoppingListToPurchases : ProductsEvent()
 
@@ -29,13 +29,25 @@ sealed class ProductsEvent {
 
     object DeleteProducts : ProductsEvent()
 
-    data class DeleteProduct(val uid: String) : ProductsEvent()
-
     object ShareProducts : ProductsEvent()
 
     object SelectProductsSort : ProductsEvent()
 
     object SelectDisplayPurchasesTotal : ProductsEvent()
+
+    data class SelectProduct(val uid: String) : ProductsEvent()
+
+    object SelectSelectProducts : ProductsEvent()
+
+    object SelectAllProducts : ProductsEvent()
+
+    object SelectCompletedProducts : ProductsEvent()
+
+    object SelectActiveProducts : ProductsEvent()
+
+    data class UnselectProduct(val uid: String) : ProductsEvent()
+
+    object CancelSelectingProducts : ProductsEvent()
 
     data class SortProducts(val sortBy: SortBy) : ProductsEvent()
 
@@ -49,17 +61,15 @@ sealed class ProductsEvent {
 
     object ShowBackScreen : ProductsEvent()
 
-    data class ShowProductMenu(val uid: String) : ProductsEvent()
-
     object ShowProductsMenu : ProductsEvent()
-
-    object HideProductMenu : ProductsEvent()
 
     object HideProductsMenu : ProductsEvent()
 
     object HideProductsSort : ProductsEvent()
 
     object HideDisplayPurchasesTotal : ProductsEvent()
+
+    object HideSelectProducts : ProductsEvent()
 
     object CalculateChange : ProductsEvent()
 }

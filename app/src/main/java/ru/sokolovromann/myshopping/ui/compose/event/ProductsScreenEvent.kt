@@ -10,9 +10,9 @@ sealed class ProductsScreenEvent {
 
     data class EditShoppingListReminder(val uid: String) : ProductsScreenEvent()
 
-    data class CopyProductToShoppingList(val uid: String) : ProductsScreenEvent()
+    data class CopyProductToShoppingList(val uids: String) : ProductsScreenEvent()
 
-    data class MoveProductToShoppingList(val uid: String) : ProductsScreenEvent()
+    data class MoveProductToShoppingList(val uids: String) : ProductsScreenEvent()
 
     object ShowBackScreen : ProductsScreenEvent()
 

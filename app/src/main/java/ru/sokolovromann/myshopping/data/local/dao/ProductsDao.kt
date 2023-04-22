@@ -39,9 +39,6 @@ interface ProductsDao {
     @Update
     fun updateProducts(products: List<ProductEntity>)
 
-    @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid")
-    fun deleteProducts(shoppingUid: String)
-
     @Query("DELETE FROM products WHERE product_uid = :uid")
     fun deleteProduct(uid: String)
 }

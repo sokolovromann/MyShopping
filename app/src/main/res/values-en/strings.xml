@@ -286,8 +286,6 @@
     <string name="notificationChannel_name_purchases">Purchases</string>
 
     <string name="products_action_calculateChange">Calculate change</string>
-    <string name="products_action_copyProductToShoppingList">Copy to…</string>
-    <string name="products_action_deleteProduct">Delete</string>
     <string name="products_action_deleteProducts">Clear</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
@@ -297,8 +295,11 @@
     <string name="products_action_editShoppingListName">Name</string>
     <string name="products_action_editShoppingListReminder">Reminder</string>
     <string name="products_action_moveProductDown">Move down</string>
-    <string name="products_action_moveProductToShoppingList">Move to…</string>
     <string name="products_action_moveProductUp">Move up</string>
+    <string name="products_action_selectActiveProductsTo">Active</string>
+    <string name="products_action_selectAllProductsTo">All</string>
+    <string name="products_action_selectCompletedProductsTo">Completed</string>
+    <string name="products_action_selectProducts">Select</string>
     <string name="products_action_shareProducts">Share</string>
     <string name="products_action_sort">Sort</string>
     <string name="products_action_sortByCreated">By created</string>
@@ -306,6 +307,10 @@
     <string name="products_action_sortByName">By name</string>
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
+    <string name="products_contentDescription_cancelSelectingProducts">Cancel selection</string>
+    <string name="products_contentDescription_copyProductsToShoppingList">Copy to…</string>
+    <string name="products_contentDescription_deleteProducts">Delete</string>
+    <string name="products_contentDescription_moveProductsToShoppingList">Move to…</string>
     <string name="products_contentDescription_moveShoppingListToArchive">Archive</string>
     <string name="products_contentDescription_moveShoppingListToPurchases">Unarchive</string>
     <string name="products_contentDescription_moveShoppingListToTrash">Delete</string>

@@ -31,7 +31,7 @@ class MoveProductViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<MoveProductScreenEvent> = _screenEventFlow
 
     init {
-        getProduct()
+        getProducts()
         getPurchases()
     }
 
@@ -88,25 +88,26 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun getProduct() = viewModelScope.launch {
+    private fun getProducts() = viewModelScope.launch {
         val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
-        val product = repository.getProduct(productUid).firstOrNull()
+        val uids = productUid.split(",")
+        val products = repository.getProducts(uids).firstOrNull()
 
-        if (product == null) {
+        if (products == null) {
             cancelMovingProduct()
         } else {
             withContext(dispatchers.main) {
-                moveProductState.saveProduct(product)
+                moveProductState.saveProducts(products)
             }
         }
     }
 
     private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
         moveProductState.selectShoppingList(event.uid)
-        val product = moveProductState.getProductResult()
+        val products = moveProductState.getProductsResult()
             .getOrElse { return@launch }
 
-        repository.editProduct(product)
+        repository.editProducts(products)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)

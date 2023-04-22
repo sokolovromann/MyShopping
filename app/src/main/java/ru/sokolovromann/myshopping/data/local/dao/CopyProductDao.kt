@@ -17,14 +17,14 @@ interface CopyProductDao {
     @Query("SELECT * FROM shoppings WHERE archived = 1 AND deleted = 0")
     fun getArchive(): Flow<List<ShoppingListEntity>>
 
-    @Query("SELECT * FROM products WHERE product_uid = :uid")
-    fun getProduct(uid: String): Flow<ProductEntity?>
+    @Query("SELECT * FROM products WHERE product_uid IN (:uids)")
+    fun getProducts(uids: List<String>): Flow<List<ProductEntity>>
 
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
     fun getProductsLastPosition(shoppingUid: String): Flow<Int?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProduct(productEntity: ProductEntity)
+    fun insertProducts(productEntities: List<ProductEntity>)
 
     @Query("UPDATE shoppings SET last_modified = :lastModified WHERE uid = :uid")
     fun updateShoppingLastModified(uid: String, lastModified: Long)

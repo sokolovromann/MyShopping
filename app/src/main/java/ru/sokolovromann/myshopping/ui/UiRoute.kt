@@ -45,12 +45,12 @@ sealed class UiRoute(val graph: String) {
             return "edit-shopping-list-reminder/$shoppingUid"
         }
 
-        fun copyProductToShoppingList(productUid: String): String {
-            return "copy-product-to-shopping-list/$productUid"
+        fun copyProductToShoppingList(productUids: String): String {
+            return "copy-product-to-shopping-list/$productUids"
         }
 
-        fun moveProductToShoppingList(productUid: String): String {
-            return "move-product-to-shopping-list/$productUid"
+        fun moveProductToShoppingList(productUids: String): String {
+            return "move-product-to-shopping-list/$productUids"
         }
 
         fun calculateChange(shoppingUid: String): String {

@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class MoveProductState {
 
-    private var product by mutableStateOf(Product())
+    private var products by mutableStateOf<List<Product>>(listOf())
 
     private var shoppingLists by mutableStateOf(ShoppingLists())
 
@@ -47,8 +47,8 @@ class MoveProductState {
         )
     }
 
-    fun saveProduct(product: Product) {
-        this.product = product
+    fun saveProducts(products: List<Product>) {
+        this.products = products
     }
 
     fun selectShoppingList(uid: String) {
@@ -70,7 +70,7 @@ class MoveProductState {
         screenData = screenData.copy(showLocation = false)
     }
 
-    fun getProductResult(): Result<Product> {
+    fun getProductsResult(): Result<List<Product>> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
 
         return if (screenData.shoppingListSelectedUid == null) {
@@ -80,11 +80,14 @@ class MoveProductState {
             val shoppingUid = screenData.shoppingListSelectedUid!!
             val position = shoppingLists.formatShoppingLists()
                 .find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
-            val success = product.copy(
-                position = position,
-                shoppingUid = screenData.shoppingListSelectedUid!!,
-                lastModified = System.currentTimeMillis()
-            )
+            val success = products.mapIndexed { index, product ->
+                val newPosition = position + index
+                product.copy(
+                    position = newPosition,
+                    shoppingUid = screenData.shoppingListSelectedUid!!,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
             Result.success(success)
         }
     }

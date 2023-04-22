@@ -233,8 +233,6 @@
     <string name="notificationChannel_name_purchases">Покупки</string>
 
     <string name="products_action_calculateChange">Порахувати здачу</string>
-    <string name="products_action_copyProductToShoppingList">Копіювати в…</string>
-    <string name="products_action_deleteProduct">Видалити</string>
     <string name="products_action_deleteProducts">Очистити</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
@@ -244,8 +242,11 @@
     <string name="products_action_editShoppingListName">Назва</string>
     <string name="products_action_editShoppingListReminder">Нагадування</string>
     <string name="products_action_moveProductDown">Перемістити вниз</string>
-    <string name="products_action_moveProductToShoppingList">Перемістити в…</string>
     <string name="products_action_moveProductUp">Перемістити вгору</string>
+    <string name="products_action_selectActiveProductsTo">Не куплені товари</string>
+    <string name="products_action_selectAllProductsTo">Усі товари</string>
+    <string name="products_action_selectCompletedProductsTo">Куплені товари</string>
+    <string name="products_action_selectProducts">Вибрати</string>
     <string name="products_action_shareProducts">Поділитися</string>
     <string name="products_action_sort">Сортувати</string>
     <string name="products_action_sortByCreated">За створеним</string>
@@ -253,6 +254,10 @@
     <string name="products_action_sortByName">За назвою</string>
     <string name="products_action_sortByTotal">За сумою</string>
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
+    <string name="products_contentDescription_cancelSelectingProducts">Скасувати вибір</string>
+    <string name="products_contentDescription_copyProductsToShoppingList">Копіювати в…</string>
+    <string name="products_contentDescription_deleteProducts">Видалити</string>
+    <string name="products_contentDescription_moveProductsToShoppingList">Перемістити в…</string>
     <string name="products_contentDescription_moveShoppingListToArchive">Архівувати</string>
     <string name="products_contentDescription_moveShoppingListToPurchases">Розархівувати</string>
     <string name="products_contentDescription_moveShoppingListToTrash">Видалити</string>

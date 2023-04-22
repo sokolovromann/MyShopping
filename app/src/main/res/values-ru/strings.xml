@@ -280,8 +280,6 @@
     <string name="notificationChannel_name_purchases">Покупки</string>
 
     <string name="products_action_calculateChange">Посчитать сдачу</string>
-    <string name="products_action_copyProductToShoppingList">Копировать в…</string>
-    <string name="products_action_deleteProduct">Удалить</string>
     <string name="products_action_deleteProducts">Очистить</string>
     <string name="products_action_displayActiveTotal">Не купленные товары</string>
     <string name="products_action_displayAllTotal">Все товары</string>
@@ -291,8 +289,11 @@
     <string name="products_action_editShoppingListName">Название</string>
     <string name="products_action_editShoppingListReminder">Напоминание</string>
     <string name="products_action_moveProductDown">Переместить вниз</string>
-    <string name="products_action_moveProductToShoppingList">Переместить в…</string>
     <string name="products_action_moveProductUp">Переместить вверх</string>
+    <string name="products_action_selectActiveProductsTo">Не купленные товары</string>
+    <string name="products_action_selectAllProductsTo">Все товары</string>
+    <string name="products_action_selectCompletedProductsTo">Купленные товары</string>
+    <string name="products_action_selectProducts">Выбрать</string>
     <string name="products_action_shareProducts">Поделиться</string>
     <string name="products_action_sort">Сортировать</string>
     <string name="products_action_sortByCreated">По созданию</string>
@@ -300,6 +301,10 @@
     <string name="products_action_sortByName">По названию</string>
     <string name="products_action_sortByTotal">По стоимости</string>
     <string name="products_contentDescription_addProductIcon">Добавить товар</string>
+    <string name="products_contentDescription_cancelSelectingProducts">Отменить выбор</string>
+    <string name="products_contentDescription_copyProductsToShoppingList">Копировать в…</string>
+    <string name="products_contentDescription_deleteProducts">Удалить</string>
+    <string name="products_contentDescription_moveProductsToShoppingList">Переместить в…</string>
     <string name="products_contentDescription_moveShoppingListToArchive">Архивировать</string>
     <string name="products_contentDescription_moveShoppingListToPurchases">Разархивировать</string>
     <string name="products_contentDescription_moveShoppingListToTrash">Удалить</string>

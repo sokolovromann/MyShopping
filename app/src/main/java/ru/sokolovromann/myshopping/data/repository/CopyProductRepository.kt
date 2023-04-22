@@ -10,7 +10,7 @@ interface CopyProductRepository {
 
     suspend fun getArchive(): Flow<ShoppingLists>
 
-    suspend fun getProduct(uid: String): Flow<Product?>
+    suspend fun getProducts(uids: List<String>): Flow<List<Product>>
 
-    suspend fun addProduct(product: Product)
+    suspend fun addProducts(products: List<Product>)
 }

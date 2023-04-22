@@ -45,9 +45,9 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.EditShoppingListReminder -> editShoppingListReminder()
 
-            is ProductsEvent.CopyProductToShoppingList -> copyProductToShoppingList(event)
+            ProductsEvent.CopyProductsToShoppingList -> copyProductsToShoppingList()
 
-            is ProductsEvent.MoveProductToShoppingList -> moveProductToShoppingList(event)
+            ProductsEvent.MoveProductsToShoppingList -> moveProductsToShoppingList()
 
             ProductsEvent.MoveShoppingListToPurchases -> moveShoppingListToPurchases()
 
@@ -55,19 +55,27 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.MoveShoppingListToTrash -> moveShoppingListToTrash()
 
-            is ProductsEvent.MoveProductUp -> moveProductUp(event)
-
-            is ProductsEvent.MoveProductDown -> moveProductDown(event)
-
             ProductsEvent.DeleteProducts -> deleteProducts()
-
-            is ProductsEvent.DeleteProduct -> deleteProduct(event)
 
             ProductsEvent.ShareProducts -> shareProducts()
 
             ProductsEvent.SelectProductsSort -> selectProductsSort()
 
             ProductsEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
+
+            is ProductsEvent.SelectProduct -> selectProduct(event)
+
+            ProductsEvent.SelectSelectProducts -> selectSelectProducts()
+
+            ProductsEvent.SelectAllProducts -> selectAllProducts()
+
+            ProductsEvent.SelectCompletedProducts -> selectCompletedProducts()
+
+            ProductsEvent.SelectActiveProducts -> selectActiveProducts()
+
+            is ProductsEvent.UnselectProduct -> unselectProduct(event)
+
+            ProductsEvent.CancelSelectingProducts -> cancelSelectingProducts()
 
             is ProductsEvent.SortProducts -> sortProducts(event)
 
@@ -81,11 +89,7 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.ShowBackScreen -> showBackScreen()
 
-            is ProductsEvent.ShowProductMenu -> showProductMenu(event)
-
             ProductsEvent.ShowProductsMenu -> showProductsMenu()
-
-            ProductsEvent.HideProductMenu -> hideProductMenu()
 
             ProductsEvent.HideProductsMenu -> hideProductsMenu()
 
@@ -93,7 +97,11 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
 
+            ProductsEvent.HideSelectProducts -> hideSelectProducts()
+
             ProductsEvent.CalculateChange -> calculateChange()
+
+            else -> {}
         }
     }
 
@@ -127,7 +135,10 @@ class ProductsViewModel @Inject constructor(
         event: ProductsEvent.EditProduct
     ) = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
-        hideProductMenu()
+
+        withContext(dispatchers.main) {
+            unselectAllProducts()
+        }
     }
 
     private fun editShoppingListName() = viewModelScope.launch(dispatchers.main) {
@@ -141,27 +152,16 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun deleteProducts() = viewModelScope.launch {
-        repository.deleteProducts(
-            shoppingUid = shoppingUid,
-            lastModified = System.currentTimeMillis()
-        )
-
-        withContext(dispatchers.main) {
-            hideProductsMenu()
+        productsState.screenData.selectedUids?.let {
+            repository.deleteProducts(
+                uids = it,
+                shoppingUid = shoppingUid,
+                lastModified = System.currentTimeMillis()
+            )
         }
-    }
-
-    private fun deleteProduct(
-        event: ProductsEvent.DeleteProduct
-    ) = viewModelScope.launch {
-        repository.deleteProduct(
-            shoppingUid = shoppingUid,
-            productUid = event.uid,
-            lastModified = System.currentTimeMillis()
-        )
 
         withContext(dispatchers.main) {
-            hideProductMenu()
+            unselectAllProducts()
         }
     }
 
@@ -173,20 +173,25 @@ class ProductsViewModel @Inject constructor(
         hideProductsMenu()
     }
 
-    private fun copyProductToShoppingList(
-        event: ProductsEvent.CopyProductToShoppingList
-    ) = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(ProductsScreenEvent.CopyProductToShoppingList(event.uid))
-        hideProductMenu()
-    }
-
-    private fun moveProductToShoppingList(
-        event: ProductsEvent.MoveProductToShoppingList
-    ) = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(ProductsScreenEvent.MoveProductToShoppingList(event.uid))
+    private fun copyProductsToShoppingList() = viewModelScope.launch {
+        productsState.screenData.selectedUids?.let {
+            val uids = uidsToString(it)
+            _screenEventFlow.emit(ProductsScreenEvent.CopyProductToShoppingList(uids))
+        }
 
         withContext(dispatchers.main) {
-            hideProductMenu()
+            unselectAllProducts()
+        }
+    }
+
+    private fun moveProductsToShoppingList() = viewModelScope.launch {
+        productsState.screenData.selectedUids?.let {
+            val uids = uidsToString(it)
+            _screenEventFlow.emit(ProductsScreenEvent.MoveProductToShoppingList(uids))
+        }
+
+        withContext(dispatchers.main) {
+            unselectAllProducts()
         }
     }
 
@@ -221,24 +226,6 @@ class ProductsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
         }
-    }
-
-    private fun moveProductUp(
-        event: ProductsEvent.MoveProductUp
-    ) = viewModelScope.launch(dispatchers.main) {
-        productsState.getProductsUpResult(event.uid)
-            .onSuccess { repository.swapProducts(it.first, it.second) }
-
-        productsState.hideProductMenu()
-    }
-
-    private fun moveProductDown(
-        event: ProductsEvent.MoveProductDown
-    ) = viewModelScope.launch(dispatchers.main) {
-        productsState.getProductsDownResult(event.uid)
-            .onSuccess { repository.swapProducts(it.first, it.second) }
-
-        productsState.hideProductMenu()
     }
 
     private fun completeProduct(
@@ -278,6 +265,38 @@ class ProductsViewModel @Inject constructor(
         productsState.selectDisplayPurchasesTotal()
     }
 
+    private fun selectProduct(event: ProductsEvent.SelectProduct) {
+        productsState.selectProduct(event.uid)
+    }
+
+    private fun selectSelectProducts() {
+        productsState.showSelectingMenu()
+    }
+
+    private fun selectAllProducts() {
+        productsState.selectAllProducts()
+    }
+
+    private fun selectCompletedProducts() {
+        productsState.selectCompletedProducts()
+    }
+
+    private fun selectActiveProducts() {
+        productsState.selectActiveProducts()
+    }
+
+    private fun unselectProduct(event: ProductsEvent.UnselectProduct) {
+        productsState.unselectProduct(event.uid)
+    }
+
+    private fun unselectAllProducts() {
+        productsState.unselectAllProducts()
+    }
+
+    private fun cancelSelectingProducts() {
+        productsState.unselectAllProducts()
+    }
+
     private fun sortProducts(event: ProductsEvent.SortProducts) = viewModelScope.launch {
         val products = productsState.sortProductsResult(event.sortBy).getOrElse {
             withContext(dispatchers.main) { hideProductsSort() }
@@ -309,20 +328,12 @@ class ProductsViewModel @Inject constructor(
         productsState.displayHiddenProducts()
     }
 
-    private fun showProductMenu(event: ProductsEvent.ShowProductMenu) {
-        productsState.showProductMenu(event.uid)
-    }
-
     private fun showProductsMenu() {
         productsState.showProductsMenu()
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-    }
-
-    private fun hideProductMenu() {
-        productsState.hideProductMenu()
     }
 
     private fun hideProductsMenu() {
@@ -333,7 +344,18 @@ class ProductsViewModel @Inject constructor(
         productsState.hideSort()
     }
 
+    private fun hideSelectProducts() {
+        productsState.hideSelectingMenu()
+    }
+
     private fun hideDisplayPurchasesTotal() {
         productsState.hideDisplayPurchasesTotal()
+    }
+
+    private fun uidsToString(uids: List<String>): String {
+        return uids.toString()
+            .replace("[", "")
+            .replace("]", "")
+            .replace(" ", "")
     }
 }

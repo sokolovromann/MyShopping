@@ -111,10 +111,6 @@ class ProductsState {
         shoppingListUid = products.shoppingList.uid
     }
 
-    fun showProductMenu(uid: String) {
-        screenData = screenData.copy(productMenuUid = uid)
-    }
-
     fun showProductsMenu() {
         screenData = screenData.copy(showProductsMenu = true)
     }
@@ -122,6 +118,13 @@ class ProductsState {
     fun showSort() {
         screenData = screenData.copy(
             showSort = true,
+            showProductsMenu = false
+        )
+    }
+
+    fun showSelectingMenu() {
+        screenData = screenData.copy(
+            showSelectingMenu = true,
             showProductsMenu = false
         )
     }
@@ -137,8 +140,49 @@ class ProductsState {
         screenData = screenData.copy(showDisplayTotal = true)
     }
 
-    fun hideProductMenu() {
-        screenData = screenData.copy(productMenuUid = null)
+    fun selectProduct(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { add(uid) }
+        screenData = screenData.copy(selectedUids = uids)
+    }
+
+    fun selectAllProducts() {
+        val uids = products.shoppingList.products.map { it.productUid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectCompletedProducts() {
+        val uids = products.shoppingList.products
+            .filter { it.completed }
+            .map { it.productUid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun selectActiveProducts() {
+        val uids = products.shoppingList.products
+            .filter { !it.completed }
+            .map { it.productUid }
+        screenData = screenData.copy(
+            selectedUids = uids,
+            showSelectingMenu = false
+        )
+    }
+
+    fun unselectProduct(uid: String) {
+        val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
+            .apply { remove(uid) }
+        val checkedUids = if (uids.isEmpty()) null else uids
+        screenData = screenData.copy(selectedUids = checkedUids)
+    }
+
+    fun unselectAllProducts() {
+        screenData = screenData.copy(selectedUids = null)
     }
 
     fun hideProductsMenu() {
@@ -151,6 +195,10 @@ class ProductsState {
 
     fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
+    }
+
+    fun hideSelectingMenu() {
+        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun getShareProductsResult(): Result<String> {
@@ -290,17 +338,18 @@ data class ProductsScreenData(
     val shoppingListCompleted: Boolean = false,
     val products: List<ProductItem> = listOf(),
     val productsNotFoundText: UiText = UiText.Nothing,
-    val productMenuUid: String? = null,
     val showProductsMenu: Boolean = false,
     val totalText: UiText = UiText.Nothing,
     val reminderText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
     val showSort: Boolean = false,
+    val showSelectingMenu: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val showHiddenProducts: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val displayMoney: Boolean = true,
-    val completedWithCheckbox: Boolean = false
+    val completedWithCheckbox: Boolean = false,
+    val selectedUids: List<String>? = null
 )
