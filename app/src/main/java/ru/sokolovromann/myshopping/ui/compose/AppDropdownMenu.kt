@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 
 @Composable
 fun AppDropdownMenu(
@@ -17,6 +18,7 @@ fun AppDropdownMenu(
     onDismissRequest: () -> Unit,
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = contentColorFor(backgroundColor),
+    properties: PopupProperties = PopupProperties(focusable = true),
     header: @Composable (() -> Unit)? = null,
     items: @Composable ColumnScope.() -> Unit
 ) {
@@ -25,7 +27,8 @@ fun AppDropdownMenu(
             .background(color = backgroundColor)
             .then(modifier),
         expanded = expanded,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        properties = properties
     ) {
         header?.let {
             Column(
