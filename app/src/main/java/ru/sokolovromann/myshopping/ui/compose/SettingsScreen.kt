@@ -223,7 +223,7 @@ private fun SettingsGrid(
                         AppItem(
                             title = getSettingsItemTitle(item.titleText, fontSize),
                             body = getSettingsItemBodyOrNull(item.bodyText, fontSize),
-                            after = getSettingsItemAfterOrNull(item.checked),
+                            right = getSettingsItemAfterOrNull(item.checked),
                             dropdownMenu = { dropdownMenu(item.uid) },
                             onClick = { onClick(item.uid) }
                         )

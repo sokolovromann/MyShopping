@@ -17,8 +17,10 @@ fun AppMultiColumnsItem(
     multiColumns: Boolean,
     title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
-    before: @Composable (() -> Unit)? = null,
-    after: @Composable (() -> Unit)? = null,
+    left: @Composable (() -> Unit)? = null,
+    top: @Composable (() -> Unit)? = null,
+    right: @Composable (() -> Unit)? = null,
+    bottom: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
     clickableEnabled: Boolean = true,
     longClickableEnabled: Boolean = true,
@@ -32,8 +34,10 @@ fun AppMultiColumnsItem(
             modifier = modifier,
             title = title,
             body = body,
-            before = before,
-            after = after,
+            left = left,
+            top = top,
+            right = right,
+            bottom = bottom,
             dropdownMenu = dropdownMenu,
             clickableEnabled = clickableEnabled,
             longClickableEnabled = longClickableEnabled,
@@ -47,8 +51,10 @@ fun AppMultiColumnsItem(
             modifier = modifier,
             title = title,
             body = body,
-            before = before,
-            after = after,
+            left = left,
+            top = top,
+            right = right,
+            bottom = bottom,
             dropdownMenu = dropdownMenu,
             clickableEnabled = clickableEnabled,
             longClickableEnabled = longClickableEnabled,
@@ -66,8 +72,10 @@ fun AppItem(
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
-    before: @Composable (() -> Unit)? = null,
-    after: @Composable (() -> Unit)? = null,
+    left: @Composable (() -> Unit)? = null,
+    top: @Composable (() -> Unit)? = null,
+    right: @Composable (() -> Unit)? = null,
+    bottom: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
     clickableEnabled: Boolean = true,
     longClickableEnabled: Boolean = true,
@@ -100,10 +108,12 @@ fun AppItem(
     ) {
         AppItemImpl(
             modifier = Modifier.padding(AppItemPaddings),
-            before = before,
             title = title,
             body = body,
-            after = after,
+            left = left,
+            top = top,
+            right = right,
+            bottom = bottom,
             dropdownMenu = dropdownMenu,
             contentColor = contentColor
         )
@@ -116,8 +126,10 @@ fun AppSurfaceItem(
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
     body: @Composable (() -> Unit)? = null,
-    before: @Composable (() -> Unit)? = null,
-    after: @Composable (() -> Unit)? = null,
+    left: @Composable (() -> Unit)? = null,
+    top: @Composable (() -> Unit)? = null,
+    right: @Composable (() -> Unit)? = null,
+    bottom: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
     clickableEnabled: Boolean = true,
     longClickableEnabled: Boolean = true,
@@ -154,10 +166,12 @@ fun AppSurfaceItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppItemPaddings),
-            before = before,
             title = title,
             body = body,
-            after = after,
+            left = left,
+            top = top,
+            right = right,
+            bottom = bottom,
             dropdownMenu = dropdownMenu,
             contentColor = contentColor
         )
@@ -196,40 +210,57 @@ private fun AppItemImpl(
     modifier: Modifier,
     title: @Composable (() -> Unit)?,
     body: @Composable (() -> Unit)?,
-    before: @Composable (() -> Unit)?,
-    after: @Composable (() -> Unit)?,
+    left: @Composable (() -> Unit)?,
+    top: @Composable (() -> Unit)?,
+    right: @Composable (() -> Unit)?,
+    bottom: @Composable (() -> Unit)?,
     dropdownMenu: @Composable (() -> Unit)?,
     contentColor: Color
 ) {
-    Row(
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
     ) {
-        before?.let {
-            Spacer(modifier = Modifier.size(AppItemSpacerMediumSize))
+        top?.let {
             it()
-            Spacer(modifier = Modifier.size(AppItemSpacerLargeSize))
+            Spacer(modifier = Modifier.size(AppItemSpacerSmallSize))
         }
 
-        Column(modifier = Modifier.weight(1f)) {
-            title?.let {
-                ProvideAppItemTitleTextStyle(
-                    contentColor = contentColor,
-                    content = it
-                )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            left?.let {
+                Spacer(modifier = Modifier.size(AppItemSpacerMediumSize))
+                it()
+                Spacer(modifier = Modifier.size(AppItemSpacerLargeSize))
             }
-            body?.let {
-                ProvideAppItemBodyTextStyle(
-                    contentColor = contentColor,
-                    content = it
-                )
+
+            Column(modifier = Modifier.weight(1f)) {
+                title?.let {
+                    ProvideAppItemTitleTextStyle(
+                        contentColor = contentColor,
+                        content = it
+                    )
+                }
+                body?.let {
+                    ProvideAppItemBodyTextStyle(
+                        contentColor = contentColor,
+                        content = it
+                    )
+                }
+                dropdownMenu?.let { it() }
             }
-            dropdownMenu?.let { it() }
+
+            right?.let {
+                Spacer(modifier = Modifier.size(AppItemSpacerMediumSize))
+                it()
+            }
         }
 
-        after?.let {
-            Spacer(modifier = Modifier.size(AppItemSpacerMediumSize))
+        bottom?.let {
+            Spacer(modifier = Modifier.size(AppItemSpacerSmallSize))
             it()
         }
     }
@@ -254,6 +285,7 @@ private fun ProvideAppItemBodyTextStyle(contentColor: Color, content: @Composabl
 
 private val AppItemMinHeight = 48.dp
 private val AppItemPaddings = PaddingValues(all = 8.dp)
+private val AppItemSpacerSmallSize = 4.dp
 private val AppItemSpacerMediumSize = 8.dp
 private val AppItemSpacerLargeSize = 16.dp
 

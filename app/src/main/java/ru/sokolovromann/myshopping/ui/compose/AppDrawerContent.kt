@@ -49,7 +49,7 @@ fun AppDrawerContent(
 
         AppItem(
             onClick = { onItemClick(UiRoute.Purchases) },
-            before = {
+            left = {
                 AppDrawerContentItemIcon(
                     icon = UiIcon.FromResources(R.drawable.ic_all_purchases),
                     selected = selected == UiRoute.Purchases
@@ -61,7 +61,7 @@ fun AppDrawerContent(
 
         AppItem(
             onClick = { onItemClick(UiRoute.Archive) },
-            before = {
+            left = {
                 AppDrawerContentItemIcon(
                     icon = UiIcon.FromResources(R.drawable.ic_all_archive),
                     selected = selected == UiRoute.Archive
@@ -73,7 +73,7 @@ fun AppDrawerContent(
 
         AppItem(
             onClick = { onItemClick(UiRoute.Trash) },
-            before = {
+            left = {
                 AppDrawerContentItemIcon(
                     icon = UiIcon.FromVector(Icons.Default.Delete),
                     selected = selected == UiRoute.Trash
@@ -85,7 +85,7 @@ fun AppDrawerContent(
 
         AppItem(
             onClick = { onItemClick(UiRoute.Autocompletes) },
-            before = {
+            left = {
                 AppDrawerContentItemIcon(
                     icon = UiIcon.FromVector(Icons.Default.List),
                     selected = selected == UiRoute.Autocompletes
@@ -97,7 +97,7 @@ fun AppDrawerContent(
 
         AppItem(
             onClick = { onItemClick(UiRoute.Settings) },
-            before = {
+            left = {
                 AppDrawerContentItemIcon(
                     icon = UiIcon.FromVector(Icons.Default.Settings),
                     selected = selected == UiRoute.Settings
