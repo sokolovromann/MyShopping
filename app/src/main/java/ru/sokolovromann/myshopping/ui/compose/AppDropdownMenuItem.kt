@@ -17,8 +17,8 @@ fun AppDropdownMenuItem(
     contentPadding: PaddingValues = MenuDefaults.DropdownMenuItemContentPadding,
     backgroundColor: Color = Color.Transparent,
     contentColor: Color = MaterialTheme.colors.onSurface,
-    before: @Composable (() -> Unit)? = null,
-    after: @Composable (() -> Unit)? = null,
+    left: @Composable (() -> Unit)? = null,
+    right: @Composable (() -> Unit)? = null,
     text: @Composable () -> Unit,
 ) {
     DropdownMenuItem(
@@ -36,8 +36,8 @@ fun AppDropdownMenuItem(
         ) {
             AppDropdownMenuItemImpl(
                 contentColor = contentColor,
-                before = before,
-                after = after,
+                left = left,
+                right = right,
                 text = text,
             )
         }
@@ -47,15 +47,15 @@ fun AppDropdownMenuItem(
 @Composable
 private fun AppDropdownMenuItemImpl(
     contentColor: Color,
-    before: @Composable (() -> Unit)? = null,
-    after: @Composable (() -> Unit)? = null,
+    left: @Composable (() -> Unit)? = null,
+    right: @Composable (() -> Unit)? = null,
     text: @Composable () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        before?.let {
+        left?.let {
             it()
             Spacer(modifier = Modifier.padding(AppDropdownMenuItemBeforePaddings))
         }
@@ -65,7 +65,7 @@ private fun AppDropdownMenuItemImpl(
             content = text
         )
 
-        after?.let {
+        right?.let {
             Spacer(modifier = Modifier
                 .weight(1f)
                 .padding(AppDropdownMenuItemAfterPaddings)

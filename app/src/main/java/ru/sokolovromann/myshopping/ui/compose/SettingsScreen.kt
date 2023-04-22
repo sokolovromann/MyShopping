@@ -275,27 +275,27 @@ private fun SettingsFontSizeMenu(
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.TINY) },
             text = { Text(text = stringResource(R.string.settings_action_selectTinyFontSize)) },
-            after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.TINY) }
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.TINY) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.SMALL) },
             text = { Text(text = stringResource(R.string.settings_action_selectSmallFontSize)) },
-            after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.SMALL) }
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.SMALL) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.MEDIUM) },
             text = { Text(text = stringResource(R.string.settings_action_selectMediumFontSize)) },
-            after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.MEDIUM) }
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.MEDIUM) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.LARGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectLargeFontSize)) },
-            after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.LARGE) }
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.LARGE) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.HUGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
-            after = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
         )
     }
 }
@@ -314,17 +314,17 @@ private fun SettingsDisplayCompletedMenu(
         AppDropdownMenuItem(
             onClick = { onSelected(DisplayCompleted.FIRST) },
             text = { Text(text = stringResource(R.string.settings_action_displayCompletedPurchasesFirst)) },
-            after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.FIRST) }
+            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.FIRST) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(DisplayCompleted.LAST) },
             text = { Text(text = stringResource(R.string.settings_action_displayCompletedPurchasesLast)) },
-            after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.LAST) }
+            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.LAST) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(DisplayCompleted.HIDE) },
             text = { Text(text = stringResource(R.string.settings_action_hideCompletedPurchases)) },
-            after = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
+            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
         )
     }
 }

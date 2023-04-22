@@ -254,12 +254,12 @@ private fun AutocompleteLocationContent(
             AppDropdownMenuItem(
                 onClick = { onSelected(AutocompleteLocation.DEFAULT) },
                 text = { Text(text = stringResource(R.string.autocompletes_action_selectDefaultLocation)) },
-                after = { CheckmarkAppCheckbox(checked = location == AutocompleteLocation.DEFAULT) }
+                right = { CheckmarkAppCheckbox(checked = location == AutocompleteLocation.DEFAULT) }
             )
             AppDropdownMenuItem(
                 onClick = { onSelected(AutocompleteLocation.PERSONAL) },
                 text = { Text(text = stringResource(R.string.autocompletes_action_selectPersonalLocation)) },
-                after = { CheckmarkAppCheckbox(checked = location == AutocompleteLocation.PERSONAL) }
+                right = { CheckmarkAppCheckbox(checked = location == AutocompleteLocation.PERSONAL) }
             )
         }
     }

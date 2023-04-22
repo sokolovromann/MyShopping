@@ -167,7 +167,7 @@ fun ArchiveScreen(
                         ) {
                             AppDropdownMenuItem(
                                 text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                after = {
+                                right = {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowRight,
                                         contentDescription = "",
@@ -178,7 +178,7 @@ fun ArchiveScreen(
                             )
                             AppDropdownMenuItem(
                                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectShoppingLists)) },
-                                after = {
+                                right = {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowRight,
                                         contentDescription = "",

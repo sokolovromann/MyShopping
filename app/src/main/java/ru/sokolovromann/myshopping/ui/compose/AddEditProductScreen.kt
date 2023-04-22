@@ -294,12 +294,12 @@ fun AddEditProductScreen(
                             AppDropdownMenuItem(
                                 onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsPercentSelected) },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsPercents)) },
-                                after = { CheckmarkAppCheckbox(checked = screenData.discountAsPercent) }
+                                right = { CheckmarkAppCheckbox(checked = screenData.discountAsPercent) }
                             )
                             AppDropdownMenuItem(
                                 onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsMoney)) },
-                                after = { CheckmarkAppCheckbox(checked = !screenData.discountAsPercent) }
+                                right = { CheckmarkAppCheckbox(checked = !screenData.discountAsPercent) }
                             )
                         }
                     }
@@ -368,7 +368,7 @@ fun AddEditProductScreen(
                                     viewModel.onEvent(event)
                                 },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockQuantity)) },
-                                after = { CheckmarkAppCheckbox(checked = screenData.lockProductElement == LockProductElement.QUANTITY) }
+                                right = { CheckmarkAppCheckbox(checked = screenData.lockProductElement == LockProductElement.QUANTITY) }
                             )
                             AppDropdownMenuItem(
                                 onClick = {
@@ -376,7 +376,7 @@ fun AddEditProductScreen(
                                     viewModel.onEvent(event)
                                 },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockPrice)) },
-                                after = { CheckmarkAppCheckbox(checked = screenData.lockProductElement == LockProductElement.PRICE) }
+                                right = { CheckmarkAppCheckbox(checked = screenData.lockProductElement == LockProductElement.PRICE) }
                             )
                             AppDropdownMenuItem(
                                 onClick = {
@@ -384,7 +384,7 @@ fun AddEditProductScreen(
                                     viewModel.onEvent(event)
                                 },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockTotal)) },
-                                after = { CheckmarkAppCheckbox(checked = screenData.lockProductElement == LockProductElement.TOTAL) }
+                                right = { CheckmarkAppCheckbox(checked = screenData.lockProductElement == LockProductElement.TOTAL) }
                             )
                         }
                     }

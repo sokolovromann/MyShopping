@@ -98,17 +98,17 @@ fun ShoppingListsTotalContent(
             AppDropdownMenuItem(
                 onClick = { onSelected(DisplayTotal.ALL) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_displayAllTotal)) },
-                after = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ALL) }
+                right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ALL) }
             )
             AppDropdownMenuItem(
                 onClick = { onSelected(DisplayTotal.COMPLETED) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_displayCompletedTotal)) },
-                after = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.COMPLETED) }
+                right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.COMPLETED) }
             )
             AppDropdownMenuItem(
                 onClick = { onSelected(DisplayTotal.ACTIVE) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_displayActiveTotal)) },
-                after = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ACTIVE) }
+                right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ACTIVE) }
             )
         }
     }
@@ -141,12 +141,12 @@ fun ShoppingListsLocationContent(
             AppDropdownMenuItem(
                 onClick = { onSelected(ShoppingListLocation.PURCHASES) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectPurchasesLocation)) },
-                after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.PURCHASES) }
+                right = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.PURCHASES) }
             )
             AppDropdownMenuItem(
                 onClick = { onSelected(ShoppingListLocation.ARCHIVE) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectArchiveLocation)) },
-                after = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.ARCHIVE) }
+                right = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.ARCHIVE) }
             )
         }
     }
