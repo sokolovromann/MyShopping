@@ -36,13 +36,19 @@ class AutocompletesViewModel @Inject constructor(
         when (event) {
             AutocompletesEvent.AddAutocomplete -> addAutocomplete()
 
-            is AutocompletesEvent.ClearAutocomplete -> clearAutocomplete(event)
+            AutocompletesEvent.ClearAutocompletes -> clearAutocompletes()
 
-            is AutocompletesEvent.DeleteAutocomplete -> deleteAutocomplete(event)
+            AutocompletesEvent.DeleteAutocompletes -> deleteAutocompletes()
 
             is AutocompletesEvent.SelectNavigationItem -> selectNavigationItem(event)
 
             AutocompletesEvent.SelectAutocompleteLocation -> selectAutocompleteLocation()
+
+            is AutocompletesEvent.SelectAutocomplete -> selectAutocomplete(event)
+
+            is AutocompletesEvent.UnselectAutocomplete -> unselectAutocomplete(event)
+
+            AutocompletesEvent.CancelSelectingAutocompletes -> cancelSelectingAutocompletes()
 
             is AutocompletesEvent.ShowAutocompletes -> showAutocompletes(event)
 
@@ -50,13 +56,9 @@ class AutocompletesViewModel @Inject constructor(
 
             AutocompletesEvent.ShowNavigationDrawer -> showNavigationDrawer()
 
-            is AutocompletesEvent.ShowAutocompleteMenu -> showAutocompleteMenu(event)
-
             AutocompletesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             AutocompletesEvent.HideAutocompleteLocation -> hideAutocompleteLocation()
-
-            AutocompletesEvent.HideAutocompleteMenu -> hideAutocompleteMenu()
         }
     }
 
@@ -95,47 +97,48 @@ class AutocompletesViewModel @Inject constructor(
         _screenEventFlow.emit(AutocompletesScreenEvent.AddAutocomplete)
     }
 
-    private fun clearAutocomplete(
-        event: AutocompletesEvent.ClearAutocomplete
-    ) = viewModelScope.launch {
+    private fun clearAutocompletes() = viewModelScope.launch {
         when (autocompletesState.screenData.location) {
             AutocompleteLocation.DEFAULT -> repository.getDefaultAutocompletes()
             AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
-            autocompletes.autocompletes
-                .filter { it.name.lowercase() == event.name.lowercase() }
-                .forEach {
-                    val autocomplete = it.copy(
-                        lastModified = System.currentTimeMillis(),
-                        quantity = Quantity(),
-                        price = Money(),
-                        discount = Discount(),
-                        taxRate = TaxRate(),
-                        total = Money()
-                    )
-                    repository.clearAutocomplete(autocomplete)
-                }
+            autocompletesState.screenData.selectedNames?.let { names ->
+                val clear = autocompletes.autocompletes
+                    .filter { names.contains(it.name.lowercase()) }
+                    .map {
+                        it.copy(
+                            lastModified = System.currentTimeMillis(),
+                            quantity = Quantity(),
+                            price = Money(),
+                            discount = Discount(),
+                            taxRate = TaxRate(),
+                            total = Money()
+                        )
+                    }
+                repository.clearAutocompletes(clear)
+            }
         }
 
         withContext(dispatchers.main) {
-            hideAutocompleteMenu()
+            unselectAutocompletes()
         }
     }
 
-    private fun deleteAutocomplete(
-        event: AutocompletesEvent.DeleteAutocomplete
-    ) = viewModelScope.launch {
+    private fun deleteAutocompletes() = viewModelScope.launch {
         when (autocompletesState.screenData.location) {
             AutocompleteLocation.DEFAULT -> return@launch
             AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
-            autocompletes.autocompletes
-                .filter { it.name.lowercase() == event.name.lowercase() }
-                .forEach { repository.deleteAutocomplete(it.uid) }
+            autocompletesState.screenData.selectedNames?.let { names ->
+                val uids = autocompletes.autocompletes
+                    .filter { names.contains(it.name.lowercase()) }
+                    .map { it.uid }
+                repository.deleteAutocompletes(uids)
+            }
         }
 
         withContext(dispatchers.main) {
-            hideAutocompleteMenu()
+            unselectAutocompletes()
         }
     }
 
@@ -155,6 +158,22 @@ class AutocompletesViewModel @Inject constructor(
         autocompletesState.showLocation()
     }
 
+    private fun selectAutocomplete(event: AutocompletesEvent.SelectAutocomplete) {
+        autocompletesState.selectAutocomplete(event.name)
+    }
+
+    private fun unselectAutocomplete(event: AutocompletesEvent.UnselectAutocomplete) {
+        autocompletesState.unselectAutocomplete(event.name)
+    }
+
+    private fun unselectAutocompletes() {
+        autocompletesState.unselectAllAutocompletes()
+    }
+
+    private fun cancelSelectingAutocompletes() {
+        unselectAutocompletes()
+    }
+
     private fun showAutocompletes(event: AutocompletesEvent.ShowAutocompletes) {
         hideAutocompleteLocation()
 
@@ -172,19 +191,11 @@ class AutocompletesViewModel @Inject constructor(
         _screenEventFlow.emit(AutocompletesScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showAutocompleteMenu(event: AutocompletesEvent.ShowAutocompleteMenu) {
-        autocompletesState.showAutocompleteMenu(event.uid)
-    }
-
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.HideNavigationDrawer)
     }
 
     private fun hideAutocompleteLocation() {
         autocompletesState.hideLocation()
-    }
-
-    private fun hideAutocompleteMenu() {
-        autocompletesState.hideAutocompleteMenu()
     }
 }

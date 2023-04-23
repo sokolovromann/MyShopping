@@ -39,8 +39,6 @@
     <string name="archive_text_productsNotFound">Shopping list is empty</string>
     <string name="archive_text_shoppingListsNotFound">Archive is empty</string>
 
-    <string name="autocompletes_action_clearAutocomplete">Clear</string>
-    <string name="autocompletes_action_deleteAutocomplete">Delete</string>
     <string name="autocompletes_action_selectDefaultLocation">Default</string>
     <string name="autocompletes_action_selectPersonalLocation">Personal</string>
     <string name="autocompletes_body_discounts">Discounts: %s</string>
@@ -48,6 +46,9 @@
     <string name="autocompletes_body_quantities">Quantities: %s</string>
     <string name="autocompletes_body_totals">Totals: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
+    <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Cancel selection</string>
+    <string name="autocompletes_contentDescription_clearAutocompletes">Clear</string>
+    <string name="autocompletes_contentDescription_deleteAutocompletes">Delete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
     <string name="autocompletes_header_autocompletes">Autocompletes</string>
     <string name="autocompletes_header_location">Display</string>

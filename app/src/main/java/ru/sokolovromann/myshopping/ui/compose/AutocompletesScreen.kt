@@ -7,11 +7,14 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
@@ -90,18 +93,52 @@ fun AutocompletesScreen(
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ShowNavigationDrawer) }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                        )
+            if (screenData.selectedNames == null) {
+                TopAppBar(
+                    title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ShowNavigationDrawer) }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                     }
-                }
-            )
+                )
+            } else {
+                TopAppBar(
+                    title = {},
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.CancelSelectingAutocompletes) }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelectingAutocompletes),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ClearAutocompletes) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_autocompletes_clear),
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_clearAutocompletes),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
+
+                        if (screenData.location == AutocompleteLocation.PERSONAL) {
+                            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.DeleteAutocompletes) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = stringResource(R.string.autocompletes_contentDescription_deleteAutocompletes),
+                                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                )
+                            }
+                        }
+                    }
+                )
+            }
         },
         drawerContent = {
             AppDrawerContent(
@@ -113,12 +150,14 @@ fun AutocompletesScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
-                    tint = MaterialTheme.colors.onSecondary
-                )
+            if (screenData.selectedNames == null) {
+                FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
+                        tint = MaterialTheme.colors.onSecondary
+                    )
+                }
             }
         }
     ) { paddings ->
@@ -155,34 +194,23 @@ fun AutocompletesScreen(
                 )
             },
             fontSize = screenData.fontSize,
-            dropdownMenu = {
-                AppDropdownMenu(
-                    expanded = it == screenData.autocompleteMenuUid,
-                    onDismissRequest = { viewModel.onEvent(AutocompletesEvent.HideAutocompleteMenu) }
-                ) {
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = AutocompletesEvent.ClearAutocomplete(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(R.string.autocompletes_action_clearAutocomplete)) }
-                    )
-                    if (screenData.location == AutocompleteLocation.PERSONAL) {
-                        AppDropdownMenuItem(
-                            onClick = {
-                                val event = AutocompletesEvent.DeleteAutocomplete(it)
-                                viewModel.onEvent(event)
-                            },
-                            text = { Text(text = stringResource(R.string.autocompletes_action_deleteAutocomplete)) }
-                        )
+            onClick = {
+                screenData.selectedNames?.let { names ->
+                    val event = if (names.contains(it)) {
+                        AutocompletesEvent.UnselectAutocomplete(it)
+                    } else {
+                        AutocompletesEvent.SelectAutocomplete(it)
                     }
+                    viewModel.onEvent(event)
                 }
             },
-            onClick = {},
             onLongClick = {
-                val event = AutocompletesEvent.ShowAutocompleteMenu(it)
-                viewModel.onEvent(event)
-            }
+                if (screenData.selectedNames == null) {
+                    val event = AutocompletesEvent.SelectAutocomplete(it)
+                    viewModel.onEvent(event)
+                }
+            },
+            selectedNames = screenData.selectedNames
         )
     }
 }
@@ -200,7 +228,8 @@ private fun AutocompletesGrid(
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
-    onLongClick: (String) -> Unit
+    onLongClick: (String) -> Unit,
+    selectedNames: List<String>?
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
@@ -214,12 +243,15 @@ private fun AutocompletesGrid(
         val names = map.keys.toList()
         itemsIndexed(map.values.toList()) { index, item ->
             val nameToString = (names[index] as UiText.FromString).value.lowercase()
+            val selected = selectedNames?.contains(nameToString) ?: false
+
             AppSurfaceItem(
                 title = getAutocompleteItemTitleOrNull(names[index], fontSize),
                 body = getAutocompleteItemBodyOrNull(item, fontSize),
                 dropdownMenu = { dropdownMenu?.let { it(nameToString) } },
                 onClick = { onClick(nameToString) },
-                onLongClick = { onLongClick(nameToString) }
+                onLongClick = { onLongClick(nameToString) },
+                backgroundColor = getAppItemBackgroundColor(selected)
             )
         }
     }

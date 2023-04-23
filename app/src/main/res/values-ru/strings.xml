@@ -39,8 +39,6 @@
     <string name="archive_text_productsNotFound">Список покупок пуст</string>
     <string name="archive_text_shoppingListsNotFound">Архив пуст</string>
 
-    <string name="autocompletes_action_clearAutocomplete">Очистить</string>
-    <string name="autocompletes_action_deleteAutocomplete">Удалить</string>
     <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
     <string name="autocompletes_action_selectPersonalLocation">Личные</string>
     <string name="autocompletes_body_discounts">Скидки: %s</string>
@@ -48,6 +46,9 @@
     <string name="autocompletes_body_quantities">Количества: %s</string>
     <string name="autocompletes_body_totals">Стоимости: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
+    <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Отменить выбор</string>
+    <string name="autocompletes_contentDescription_clearAutocompletes">Очистить</string>
+    <string name="autocompletes_contentDescription_deleteAutocompletes">Удалить</string>
     <string name="autocompletes_contentDescription_navigationIcon">Показать навигацию</string>
     <string name="autocompletes_header_autocompletes">Подсказки</string>
     <string name="autocompletes_header_location">Показать</string>

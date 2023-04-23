@@ -39,8 +39,6 @@
     <string name="archive_text_productsNotFound">Список покупок порожній</string>
     <string name="archive_text_shoppingListsNotFound">Архів порожній</string>
 
-    <string name="autocompletes_action_clearAutocomplete">Очистити</string>
-    <string name="autocompletes_action_deleteAutocomplete">Видалити</string>
     <string name="autocompletes_action_selectDefaultLocation">За замовчуванням</string>
     <string name="autocompletes_action_selectPersonalLocation">Особисті</string>
     <string name="autocompletes_body_discounts">Знижки: %s</string>
@@ -48,6 +46,9 @@
     <string name="autocompletes_body_quantities">Кількості: %s</string>
     <string name="autocompletes_body_totals">Вартість: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Додати підказку</string>
+    <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Скасувати вибір</string>
+    <string name="autocompletes_contentDescription_clearAutocompletes">Очистити</string>
+    <string name="autocompletes_contentDescription_deleteAutocompletes">Видалити</string>
     <string name="autocompletes_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="autocompletes_header_autocompletes">Підказки</string>
     <string name="autocompletes_header_location">Показувати</string>

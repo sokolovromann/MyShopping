@@ -39,12 +39,14 @@ class AutocompletesRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun clearAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toAutocompleteEntity(autocomplete)
-        autocompletesDao.insertAutocomplete(entity)
+    override suspend fun clearAutocompletes(autocompletes: List<Autocomplete>): Unit = withContext(dispatchers.io) {
+        autocompletes.forEach {
+            val entity = mapping.toAutocompleteEntity(it)
+            autocompletesDao.insertAutocomplete(entity)
+        }
     }
 
-    override suspend fun deleteAutocomplete(uid: String): Unit = withContext(dispatchers.io) {
-        autocompletesDao.deleteAutocomplete(uid)
+    override suspend fun deleteAutocompletes(uids: List<String>): Unit = withContext(dispatchers.io) {
+        uids.forEach { autocompletesDao.deleteAutocomplete(it) }
     }
 }

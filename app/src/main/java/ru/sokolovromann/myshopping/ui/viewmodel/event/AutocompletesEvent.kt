@@ -7,13 +7,19 @@ sealed class AutocompletesEvent {
 
     object AddAutocomplete : AutocompletesEvent()
 
-    data class ClearAutocomplete(val name: String) : AutocompletesEvent()
+    object ClearAutocompletes : AutocompletesEvent()
 
-    data class DeleteAutocomplete(val name: String) : AutocompletesEvent()
+    object DeleteAutocompletes : AutocompletesEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : AutocompletesEvent()
 
     object SelectAutocompleteLocation : AutocompletesEvent()
+
+    data class SelectAutocomplete(val name: String) : AutocompletesEvent()
+
+    data class UnselectAutocomplete(val name: String) : AutocompletesEvent()
+
+    object CancelSelectingAutocompletes : AutocompletesEvent()
 
     data class ShowAutocompletes(val location: AutocompleteLocation) : AutocompletesEvent()
 
@@ -21,11 +27,7 @@ sealed class AutocompletesEvent {
 
     object ShowNavigationDrawer : AutocompletesEvent()
 
-    data class ShowAutocompleteMenu(val uid: String) : AutocompletesEvent()
-
     object HideNavigationDrawer : AutocompletesEvent()
 
     object HideAutocompleteLocation : AutocompletesEvent()
-
-    object HideAutocompleteMenu : AutocompletesEvent()
 }

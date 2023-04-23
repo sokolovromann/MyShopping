@@ -10,7 +10,7 @@ interface AutocompletesRepository {
 
     suspend fun getPersonalAutocompletes(): Flow<Autocompletes>
 
-    suspend fun clearAutocomplete(autocomplete: Autocomplete)
+    suspend fun clearAutocompletes(autocompletes: List<Autocomplete>)
 
-    suspend fun deleteAutocomplete(uid: String)
+    suspend fun deleteAutocompletes(uids: List<String>)
 }

@@ -39,30 +39,40 @@ class AutocompletesState {
         )
     }
 
-    fun showAutocompleteMenu(uid: String) {
-        screenData = screenData.copy(autocompleteMenuUid = uid)
-    }
     fun showLocation() {
         screenData = screenData.copy(showLocation = true)
     }
 
-    fun hideAutocompleteMenu() {
-        screenData = screenData.copy(autocompleteMenuUid = null)
-    }
-
     fun hideLocation() {
         screenData = screenData.copy(showLocation = false)
+    }
+
+    fun selectAutocomplete(name: String) {
+        val names = (screenData.selectedNames?.toMutableList() ?: mutableListOf())
+            .apply { add(name) }
+        screenData = screenData.copy(selectedNames = names)
+    }
+
+    fun unselectAutocomplete(name: String) {
+        val names = (screenData.selectedNames?.toMutableList() ?: mutableListOf())
+            .apply { remove(name) }
+        val checkedNames = if (names.isEmpty()) null else names
+        screenData = screenData.copy(selectedNames = checkedNames)
+    }
+
+    fun unselectAllAutocompletes() {
+        screenData = screenData.copy(selectedNames = null)
     }
 }
 
 data class AutocompletesScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val autocompletes: Map<UiText, AutocompleteItems> = mapOf(),
-    val autocompleteMenuUid: String? = null,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
     val location: AutocompleteLocation = AutocompleteLocation.DefaultValue,
     val showLocation: Boolean = false,
     val locationEnabled: Boolean = true,
-    val fontSize: FontSize = FontSize.MEDIUM
+    val fontSize: FontSize = FontSize.MEDIUM,
+    val selectedNames: List<String>? = null
 )
