@@ -4,9 +4,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +21,7 @@ import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 @Composable
 fun SmartphoneTabletAppGrid(
     modifier: Modifier = Modifier,
+    gridState: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
     screenState: ScreenState,
     multiColumns: Boolean,
     multiColumnsSpace: Boolean = multiColumns,
@@ -45,6 +48,7 @@ fun SmartphoneTabletAppGrid(
 
         ScreenState.Showing -> AppGridShowing(
             modifier = modifier,
+            state = gridState,
             multiColumns = multiColumns,
             multiColumnsSpace = multiColumnsSpace,
             smartphoneScreen = smartphoneScreen,
@@ -124,6 +128,7 @@ private fun AppGridNotFound(
 @Composable
 private fun AppGridShowing(
     modifier: Modifier = Modifier,
+    state: LazyStaggeredGridState,
     multiColumns: Boolean,
     multiColumnsSpace: Boolean,
     smartphoneScreen: Boolean,
@@ -150,7 +155,8 @@ private fun AppGridShowing(
             .fillMaxSize()
             .padding(padding)
             .then(modifier),
-        columns = columns
+        columns = columns,
+        state = state
     ) {
         topBar?.let {
             item(
