@@ -55,6 +55,10 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.MoveShoppingListToTrash -> moveShoppingListToTrash()
 
+            is ProductsEvent.MoveProductUp -> moveProductUp(event)
+
+            is ProductsEvent.MoveProductDown -> moveProductDown(event)
+
             ProductsEvent.DeleteProducts -> deleteProducts()
 
             ProductsEvent.ShareProducts -> shareProducts()
@@ -100,8 +104,6 @@ class ProductsViewModel @Inject constructor(
             ProductsEvent.HideSelectProducts -> hideSelectProducts()
 
             ProductsEvent.CalculateChange -> calculateChange()
-
-            else -> {}
         }
     }
 
@@ -149,6 +151,16 @@ class ProductsViewModel @Inject constructor(
     private fun editShoppingListReminder() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListReminder(shoppingUid))
         hideProductsMenu()
+    }
+
+    private fun moveProductUp(event: ProductsEvent.MoveProductUp) = viewModelScope.launch {
+        productsState.getProductsUpResult(event.uid)
+            .onSuccess { repository.swapProducts(it.first, it.second) }
+    }
+
+    private fun moveProductDown(event: ProductsEvent.MoveProductDown) = viewModelScope.launch {
+        productsState.getProductsDownResult(event.uid)
+            .onSuccess { repository.swapProducts(it.first, it.second) }
     }
 
     private fun deleteProducts() = viewModelScope.launch {

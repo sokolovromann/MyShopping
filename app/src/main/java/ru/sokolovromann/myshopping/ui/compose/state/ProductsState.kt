@@ -12,6 +12,8 @@ class ProductsState {
 
     private var products by mutableStateOf(Products())
 
+    private var savedSelectedUid by mutableStateOf("")
+
     var screenData by mutableStateOf(ProductsScreenData())
         private set
 
@@ -89,6 +91,12 @@ class ProductsState {
             products.getProductsItems()
         }
 
+        val selectedUids = if (savedSelectedUid.isEmpty()) {
+            null
+        } else {
+            listOf(savedSelectedUid)
+        }
+
         screenData = ProductsScreenData(
             screenState = ScreenState.Showing,
             shoppingListName = shoppingListName,
@@ -104,7 +112,8 @@ class ProductsState {
             showHiddenProducts = showHiddenProducts,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney,
-            completedWithCheckbox = preferences.completedWithCheckbox
+            completedWithCheckbox = preferences.completedWithCheckbox,
+            selectedUids = selectedUids
         )
 
         editCompleted = preferences.editProductAfterCompleted
@@ -175,6 +184,8 @@ class ProductsState {
     }
 
     fun unselectProduct(uid: String) {
+        savedSelectedUid = ""
+
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
@@ -182,6 +193,7 @@ class ProductsState {
     }
 
     fun unselectAllProducts() {
+        savedSelectedUid = ""
         screenData = screenData.copy(selectedUids = null)
     }
 
@@ -233,6 +245,8 @@ class ProductsState {
         return if (formatProducts.size < 2) {
             Result.failure(Exception())
         } else {
+            savedSelectedUid = uid
+
             var previousIndex = 0
             var currentIndex = 0
             for (index in formatProducts.indices) {
@@ -267,6 +281,8 @@ class ProductsState {
         return if (formatProducts.size < 2) {
             Result.failure(Exception())
         } else {
+            savedSelectedUid = uid
+
             var currentIndex = 0
             var nextIndex = 0
             for (index in formatProducts.indices) {

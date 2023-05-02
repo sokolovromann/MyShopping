@@ -286,11 +286,8 @@
     <string name="products_action_displayAllTotal">Все товары</string>
     <string name="products_action_displayCompletedPurchases">Показать</string>
     <string name="products_action_displayCompletedTotal">Купленные товары</string>
-    <string name="products_action_editProduct">Редактировать</string>
     <string name="products_action_editShoppingListName">Название</string>
     <string name="products_action_editShoppingListReminder">Напоминание</string>
-    <string name="products_action_moveProductDown">Переместить вниз</string>
-    <string name="products_action_moveProductUp">Переместить вверх</string>
     <string name="products_action_selectActiveProductsTo">Не купленные товары</string>
     <string name="products_action_selectAllProductsTo">Все товары</string>
     <string name="products_action_selectCompletedProductsTo">Купленные товары</string>
@@ -305,6 +302,9 @@
     <string name="products_contentDescription_cancelSelectingProducts">Отменить выбор</string>
     <string name="products_contentDescription_copyProductsToShoppingList">Копировать в…</string>
     <string name="products_contentDescription_deleteProducts">Удалить</string>
+    <string name="products_contentDescription_editProduct">Редактировать</string>
+    <string name="products_contentDescription_moveProductDown">Переместить вниз</string>
+    <string name="products_contentDescription_moveProductUp">Переместить вверх</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Переместить в…</string>
     <string name="products_contentDescription_moveShoppingListToArchive">Архивировать</string>
     <string name="products_contentDescription_moveShoppingListToPurchases">Разархивировать</string>

@@ -221,11 +221,8 @@
     <string name="products_action_displayAllTotal">Alle produkte</string>
     <string name="products_action_displayCompletedPurchases">Anzeige</string>
     <string name="products_action_displayCompletedTotal">Fertige produkte</string>
-    <string name="products_action_editProduct">Bearbeiten</string>
     <string name="products_action_editShoppingListName">Name</string>
     <string name="products_action_editShoppingListReminder">Erinnerung</string>
-    <string name="products_action_moveProductDown">Nach unten verschieben</string>
-    <string name="products_action_moveProductUp">Nach oben verschieben</string>
     <string name="products_action_selectActiveProductsTo">Aktive produkte</string>
     <string name="products_action_selectAllProductsTo">Alle produkte</string>
     <string name="products_action_selectCompletedProductsTo">Fertige produkte</string>
@@ -240,6 +237,9 @@
     <string name="products_contentDescription_cancelSelectingProducts">Auswahl abbrechen</string>
     <string name="products_contentDescription_copyProductsToShoppingList">Kopieren nach…</string>
     <string name="products_contentDescription_deleteProducts">Löschen</string>
+    <string name="products_contentDescription_editProduct">Bearbeiten</string>
+    <string name="products_contentDescription_moveProductDown">Nach unten verschieben</string>
+    <string name="products_contentDescription_moveProductUp">Nach oben verschieben</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Ziehen nach…</string>
     <string name="products_contentDescription_moveShoppingListToArchive">Archivieren</string>
     <string name="products_contentDescription_moveShoppingListToPurchases">Unarchivieren</string>

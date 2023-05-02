@@ -380,13 +380,29 @@ fun ProductsScreen(
                     onDismissRequest = {},
                     properties = PopupProperties(focusable = false)
                 ) {
-                    AppDropdownMenuItem(
-                        onClick = {
-                            val event = ProductsEvent.EditProduct(it)
-                            viewModel.onEvent(event)
-                        },
-                        text = { Text(text = stringResource(id = R.string.products_action_editProduct)) }
-                    )
+                    Row {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditProduct(it)) }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(id = R.string.products_contentDescription_editProduct),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductUp(it)) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowUp,
+                                contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUp),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductDown(it)) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowDown,
+                                contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                    }
                 }
             },
             completedWithCheckbox = screenData.completedWithCheckbox,
