@@ -395,6 +395,8 @@
     <string name="shoppingLists_action_sortByLastModified">По редактированию</string>
     <string name="shoppingLists_action_sortByName">По названию</string>
     <string name="shoppingLists_action_sortByTotal">По стоимости</string>
+    <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
+    <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>

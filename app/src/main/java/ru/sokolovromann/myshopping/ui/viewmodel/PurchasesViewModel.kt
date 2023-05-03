@@ -39,6 +39,10 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.MoveShoppingListsToTrash -> moveShoppingListsToTrash()
 
+            is PurchasesEvent.MoveShoppingListUp -> moveShoppingListUp(event)
+
+            is PurchasesEvent.MoveShoppingListDown -> moveShoppingListDown(event)
+
             PurchasesEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
             is PurchasesEvent.SelectNavigationItem -> selectNavigationItem(event)
@@ -82,8 +86,6 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HideSelectShoppingLists -> hideSelectShoppingLists()
 
             PurchasesEvent.FinishApp -> finishApp()
-
-            else -> {}
         }
     }
 
@@ -142,6 +144,20 @@ class PurchasesViewModel @Inject constructor(
         withContext(dispatchers.main) {
             unselectAllShoppingList()
         }
+    }
+
+    private fun moveShoppingListUp(
+        event: PurchasesEvent.MoveShoppingListUp
+    ) = viewModelScope.launch {
+        purchasesState.getShoppingListsUpResult(event.uid)
+            .onSuccess { repository.swapShoppingLists(it.first, it.second) }
+    }
+
+    private fun moveShoppingListDown(
+        event: PurchasesEvent.MoveShoppingListDown
+    ) = viewModelScope.launch {
+        purchasesState.getShoppingListsDownResult(event.uid)
+            .onSuccess { repository.swapShoppingLists(it.first, it.second) }
     }
 
     private fun selectDisplayPurchasesTotal() {

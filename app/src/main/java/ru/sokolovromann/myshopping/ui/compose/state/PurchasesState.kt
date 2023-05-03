@@ -11,6 +11,8 @@ class PurchasesState {
 
     private var shoppingLists by mutableStateOf(ShoppingLists())
 
+    private var savedSelectedUid by mutableStateOf("")
+
     var screenData by mutableStateOf(PurchasesScreenData())
         private set
 
@@ -42,6 +44,12 @@ class PurchasesState {
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
+        val selectedUids = if (savedSelectedUid.isEmpty()) {
+            null
+        } else {
+            listOf(savedSelectedUid)
+        }
+
         screenData = PurchasesScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
@@ -50,7 +58,8 @@ class PurchasesState {
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
-            showHiddenShoppingLists = showHiddenShoppingLists
+            showHiddenShoppingLists = showHiddenShoppingLists,
+            selectedUids = selectedUids
         )
     }
 
@@ -118,6 +127,8 @@ class PurchasesState {
     }
 
     fun unselectShoppingList(uid: String) {
+        savedSelectedUid = ""
+
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
@@ -125,6 +136,7 @@ class PurchasesState {
     }
 
     fun unselectAllShoppingLists() {
+        savedSelectedUid = ""
         screenData = screenData.copy(selectedUids = null)
     }
 
@@ -170,6 +182,8 @@ class PurchasesState {
         return if (formatShoppingList.size < 2) {
             Result.failure(Exception())
         } else {
+            savedSelectedUid = uid
+
             var previousIndex = 0
             var currentIndex = 0
             for (index in formatShoppingList.indices) {
@@ -204,6 +218,8 @@ class PurchasesState {
         return if (formatShoppingList.size < 2) {
             Result.failure(Exception())
         } else {
+            savedSelectedUid = uid
+
             var currentIndex = 0
             var nextIndex = 0
             for (index in formatShoppingList.indices) {

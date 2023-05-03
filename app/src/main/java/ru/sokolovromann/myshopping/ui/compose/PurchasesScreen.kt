@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -270,6 +272,32 @@ fun PurchasesScreen(
                 )
             },
             fontSize = screenData.fontSize,
+            dropdownMenu = {
+                val expanded = screenData.selectedUids?.count() == 1 &&
+                        screenData.selectedUids.contains(it)
+                AppDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = {},
+                    properties = PopupProperties(focusable = false)
+                ) {
+                    Row {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListUp(it)) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowUp,
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUp),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListDown(it)) }) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowDown,
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDown),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                    }
+                }
+            },
             onClick = {
                 val uids = screenData.selectedUids
                 val event = if (uids == null) {
