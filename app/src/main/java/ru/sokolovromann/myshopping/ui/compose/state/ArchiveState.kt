@@ -20,8 +20,16 @@ class ArchiveState {
 
     fun showNotFound(preferences: AppPreferences) {
         shoppingLists = ShoppingLists(preferences = preferences)
+
+        val totalText: UiText = if (preferences.displayMoney) {
+            shoppingLists.calculateTotalToText()
+        } else {
+            UiText.Nothing
+        }
+
         screenData = ArchiveScreenData(
             screenState = ScreenState.Nothing,
+            totalText = totalText,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize

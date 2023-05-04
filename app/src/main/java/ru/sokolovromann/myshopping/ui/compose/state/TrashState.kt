@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
 
 class TrashState {
@@ -41,7 +40,6 @@ class TrashState {
         screenData = TrashScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingListItems,
-            totalText = shoppingLists.calculateTotalToText(),
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -126,7 +124,6 @@ class TrashState {
 data class TrashScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
-    val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
