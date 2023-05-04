@@ -23,6 +23,17 @@ data class ShoppingLists(
         return Money(total, preferences.currency)
     }
 
+    fun calculateTotal(uids: List<String>): Money {
+        var total = 0f
+        shoppingLists.forEach {
+            if (uids.contains(it.uid)) {
+                total += it.calculateTotal().value
+            }
+        }
+
+        return Money(total, preferences.currency)
+    }
+
     fun hasHiddenShoppingLists(): Boolean {
         return shoppingLists.splitShoppingLists(DisplayCompleted.FIRST).first().completed
     }

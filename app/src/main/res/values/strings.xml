@@ -323,6 +323,7 @@
     <string name="products_text_completedTotal">Completed: %s</string>
     <string name="products_text_hiddenProducts">You have hidden products</string>
     <string name="products_text_purchasesProductsNotFound">Click \"+\" to add new product</string>
+    <string name="products_text_selectedTotal">Selected: %s</string>
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
@@ -408,6 +409,7 @@
     <string name="shoppingLists_text_allTotal">All: %s</string>
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
+    <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
 
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
     <string name="trash_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>

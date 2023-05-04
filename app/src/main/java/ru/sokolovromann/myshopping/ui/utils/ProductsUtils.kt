@@ -44,6 +44,11 @@ fun Products.calculateTotalToText(): UiText {
     return totalToText(calculateTotal(), preferences.displayPurchasesTotal)
 }
 
+fun Products.calculateTotalToText(uids: List<String>): UiText {
+    val total = calculateTotal(uids)
+    return UiText.FromResourcesWithArgs(R.string.products_text_selectedTotal, total.toString())
+}
+
 private fun totalToText(total: Money, displayTotal: DisplayTotal): UiText {
     val id = when (displayTotal) {
         DisplayTotal.ALL -> R.string.products_text_allTotal

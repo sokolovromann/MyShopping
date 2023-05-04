@@ -69,6 +69,11 @@ fun ShoppingLists.calculateTotalToText(): UiText {
     return totalToText(calculateTotal(), preferences.displayPurchasesTotal)
 }
 
+fun ShoppingLists.calculateTotalToText(uids: List<String>): UiText {
+    val total = calculateTotal(uids)
+    return UiText.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.toString())
+}
+
 fun ShoppingList.calculateTotalToText(): UiText {
     return totalToText(calculateTotal(), displayTotal)
 }

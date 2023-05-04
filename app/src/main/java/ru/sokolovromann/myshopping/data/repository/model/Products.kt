@@ -42,6 +42,19 @@ data class Products(
         return Money(total, preferences.currency)
     }
 
+    fun calculateTotal(uids: List<String>): Money {
+        var total = 0f
+
+        shoppingList.products.forEach { product ->
+            val totalValue = product.formatTotal().valueToString().toFloat()
+            if (uids.contains(product.productUid)) {
+                total += totalValue
+            }
+        }
+
+        return Money(total, preferences.currency)
+    }
+
     fun isCompleted(): Boolean {
         return shoppingList.completed
     }

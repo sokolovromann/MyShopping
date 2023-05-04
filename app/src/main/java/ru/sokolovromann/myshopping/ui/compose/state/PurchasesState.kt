@@ -102,12 +102,30 @@ class PurchasesState {
     fun selectShoppingList(uid: String) {
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { add(uid) }
-        screenData = screenData.copy(selectedUids = uids)
+
+        val totalText = if (shoppingLists.preferences.displayMoney) {
+            shoppingLists.calculateTotalToText(uids)
+        } else {
+            UiText.Nothing
+        }
+
+        screenData = screenData.copy(
+            totalText = totalText,
+            selectedUids = uids
+        )
     }
 
     fun selectAllShoppingLists() {
         val uids = shoppingLists.shoppingLists.map { it.uid }
+
+        val totalText = if (shoppingLists.preferences.displayMoney) {
+            shoppingLists.calculateTotalToText(uids)
+        } else {
+            UiText.Nothing
+        }
+
         screenData = screenData.copy(
+            totalText = totalText,
             selectedUids = uids,
             showSelectingMenu = false
         )
@@ -117,7 +135,15 @@ class PurchasesState {
         val uids = shoppingLists.shoppingLists
             .filter { it.completed }
             .map { it.uid }
+
+        val totalText = if (shoppingLists.preferences.displayMoney) {
+            shoppingLists.calculateTotalToText(uids)
+        } else {
+            UiText.Nothing
+        }
+
         screenData = screenData.copy(
+            totalText = totalText,
             selectedUids = uids,
             showSelectingMenu = false
         )
@@ -127,7 +153,15 @@ class PurchasesState {
         val uids = shoppingLists.shoppingLists
             .filter { !it.completed }
             .map { it.uid }
+
+        val totalText = if (shoppingLists.preferences.displayMoney) {
+            shoppingLists.calculateTotalToText(uids)
+        } else {
+            UiText.Nothing
+        }
+
         screenData = screenData.copy(
+            totalText = totalText,
             selectedUids = uids,
             showSelectingMenu = false
         )
@@ -139,12 +173,35 @@ class PurchasesState {
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
-        screenData = screenData.copy(selectedUids = checkedUids)
+
+        val totalText = if (shoppingLists.preferences.displayMoney) {
+            if (checkedUids == null) {
+                shoppingLists.calculateTotalToText()
+            } else {
+                shoppingLists.calculateTotalToText(checkedUids)
+            }
+        } else {
+            UiText.Nothing
+        }
+
+        screenData = screenData.copy(
+            totalText = totalText,
+            selectedUids = checkedUids
+        )
     }
 
     fun unselectAllShoppingLists() {
+        val totalText = if (shoppingLists.preferences.displayMoney) {
+            shoppingLists.calculateTotalToText()
+        } else {
+            UiText.Nothing
+        }
+
         savedSelectedUid = ""
-        screenData = screenData.copy(selectedUids = null)
+        screenData = screenData.copy(
+            totalText = totalText,
+            selectedUids = null
+        )
     }
 
     fun hideDisplayPurchasesTotal() {

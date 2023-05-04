@@ -253,6 +253,7 @@
     <string name="products_text_completedTotal">Fertige: %s</string>
     <string name="products_text_hiddenProducts">Sie haben versteckte Produkte</string>
     <string name="products_text_purchasesProductsNotFound">Klicken Sie auf \"+\" um ein neues Produkt hinzuzufügen</string>
+    <string name="products_text_selectedTotal">Ausgewählt: %s</string>
     <string name="products_text_trashProductsNotFound">Einkaufsliste ist leer</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
@@ -338,6 +339,7 @@
     <string name="shoppingLists_text_allTotal">Alle: %s</string>
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
+    <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
 
     <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
     <string name="trash_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>
