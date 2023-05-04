@@ -108,7 +108,7 @@ fun AutocompletesScreen(
                 )
             } else {
                 TopAppBar(
-                    title = {},
+                    title = { Text(text = screenData.selectedNames.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.CancelSelectingAutocompletes) }) {
                             Icon(

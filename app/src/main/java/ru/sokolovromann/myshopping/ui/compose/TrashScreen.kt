@@ -102,7 +102,7 @@ fun TrashScreen(
                 )
             } else {
                 TopAppBar(
-                    title = {},
+                    title = { Text(text = screenData.selectedUids.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists) }) {
                             Icon(
