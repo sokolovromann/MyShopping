@@ -13,10 +13,25 @@ data class Autocompletes(
         return autocompletes.sortAutocompletes()
     }
 
-    fun names(): List<Autocomplete> {
-        return autocompletes
+    fun names(search: String = ""): List<Autocomplete> {
+        val partition = autocompletes.partition {
+            it.name.lowercase().toCharArray(startIndex = 0, endIndex = search.length)
+                .contentEquals(search.lowercase().toCharArray())
+        }
+        val searchAutocompletes = partition.first
             .sortAutocompletes()
             .distinctBy { it.name.lowercase() }
+
+        val otherAutocompletes = partition.second
+            .sortAutocompletes()
+            .distinctBy { it.name.lowercase() }
+
+        val bothAutocompletes = mutableListOf<Autocomplete>()
+        return bothAutocompletes
+            .apply {
+                addAll(searchAutocompletes)
+                addAll(otherAutocompletes)
+            }
             .filterIndexed { index, autocomplete ->
                 autocomplete.name.isNotEmpty() && index <= defaultNamesLimit
             }

@@ -118,13 +118,13 @@ class AddEditProductViewModel @Inject constructor(
     private suspend fun autocompletesLoaded(
         autocompletes: Autocompletes
     ) = withContext(dispatchers.main) {
-        val names = autocompletes.names()
+        val currentName = addEditProductState.screenData.nameValue.text
+        val names = autocompletes.names(search = currentName)
         if (names.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
         }
 
-        val currentName = addEditProductState.screenData.nameValue.text
         val containsAutocomplete = names.find { it.name.lowercase() == currentName.lowercase() }
 
         if (containsAutocomplete == null) {
