@@ -28,7 +28,7 @@ data class Product(
 
     fun formatTotal(): Money {
         return if (totalFormatted) {
-            total
+            if (total.isEmpty()) price else total
         } else {
             val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
             val total = quantityValue * price.value

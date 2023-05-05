@@ -13,7 +13,7 @@ fun Products.getProductsItems(
 ): List<ProductItem> {
     return formatProducts(displayCompleted).map {
         val displayQuantity = it.quantity.isNotEmpty()
-        val displayPrice = it.price.isNotEmpty() && preferences.displayMoney
+        val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney
 
         var body = if (displayPrice) {
             if (displayQuantity) {

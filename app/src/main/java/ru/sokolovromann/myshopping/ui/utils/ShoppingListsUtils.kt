@@ -92,7 +92,7 @@ private fun productsToPair(
     preferences: AppPreferences
 ): Pair<Boolean, UiText> {
     val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.price.isNotEmpty() && preferences.displayMoney
+    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney
 
     var productsText = if (displayPrice) {
         if (displayQuantity) {
