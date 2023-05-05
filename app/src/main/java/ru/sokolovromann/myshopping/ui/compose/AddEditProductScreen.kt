@@ -520,10 +520,10 @@ private fun AddEditProductAutocompleteSymbols(
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
             plusOneQuantityChip()
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
+        }
 
-            if (defaultQuantitySymbolChipsEnabled) {
-                defaultQuantitySymbolChips()
-            }
+        if (defaultQuantitySymbolChipsEnabled) {
+            defaultQuantitySymbolChips()
         }
 
         quantities.forEach {
