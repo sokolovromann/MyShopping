@@ -381,13 +381,6 @@ fun ProductsScreen(
                     properties = PopupProperties(focusable = false)
                 ) {
                     Row {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditProduct(it)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = stringResource(id = R.string.products_contentDescription_editProduct),
-                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
-                            )
-                        }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductUp(it)) }) {
                             Icon(
                                 imageVector = Icons.Default.KeyboardArrowUp,
@@ -399,6 +392,14 @@ fun ProductsScreen(
                             Icon(
                                 imageVector = Icons.Default.KeyboardArrowDown,
                                 contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                        AppVerticalDivider()
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditProduct(it)) }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(id = R.string.products_contentDescription_editProduct),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
