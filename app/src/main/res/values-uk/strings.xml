@@ -234,7 +234,6 @@
     <string name="notificationChannel_name_purchases">Покупки</string>
 
     <string name="products_action_calculateChange">Порахувати здачу</string>
-    <string name="products_action_deleteProducts">Очистити</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
     <string name="products_action_displayCompletedPurchases">Показувати</string>

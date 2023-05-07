@@ -216,7 +216,6 @@
     <string name="notificationChannel_name_purchases">Einkäufe</string>
 
     <string name="products_action_calculateChange">Veränderung berechnen</string>
-    <string name="products_action_deleteProducts">Klar</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
     <string name="products_action_displayAllTotal">Alle produkte</string>
     <string name="products_action_displayCompletedPurchases">Anzeige</string>

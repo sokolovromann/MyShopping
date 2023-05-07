@@ -287,7 +287,6 @@
     <string name="notificationChannel_name_purchases">Purchases</string>
 
     <string name="products_action_calculateChange">Calculate change</string>
-    <string name="products_action_deleteProducts">Clear</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
     <string name="products_action_displayCompletedPurchases">Display</string>

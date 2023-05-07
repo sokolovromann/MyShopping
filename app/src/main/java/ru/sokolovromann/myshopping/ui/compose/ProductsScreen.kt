@@ -259,10 +259,6 @@ fun ProductsScreen(
                                     )
                                 }
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) },
-                                    text = { Text(text = stringResource(R.string.products_action_deleteProducts)) }
-                                )
-                                AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(ProductsEvent.ShareProducts) },
                                     text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
                                 )
