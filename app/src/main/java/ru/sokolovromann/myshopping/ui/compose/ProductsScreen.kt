@@ -104,34 +104,18 @@ fun ProductsScreen(
                     actions = {
                         screenData.shoppingListLocation?.let {
                             when (it) {
-                                ShoppingListLocation.PURCHASES -> {
-                                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) }) {
+                                ShoppingListLocation.PURCHASES, ShoppingListLocation.ARCHIVE -> {
+                                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) }) {
                                         Icon(
-                                            painter = painterResource(R.drawable.ic_all_archive),
-                                            contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToArchive),
+                                            painter = painterResource(R.drawable.ic_all_rename),
+                                            contentDescription = stringResource(R.string.products_contentDescription_editShoppingListName),
                                             tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                                         )
                                     }
-                                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash)}) {
+                                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }) {
                                         Icon(
-                                            imageVector = Icons.Default.Delete,
-                                            contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToTrash),
-                                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                                        )
-                                    }
-                                }
-                                ShoppingListLocation.ARCHIVE -> {
-                                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) }) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.ic_all_unarchive),
-                                            contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToPurchases),
-                                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                                        )
-                                    }
-                                    IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash)}) {
-                                        Icon(
-                                            imageVector = Icons.Default.Delete,
-                                            contentDescription = stringResource(R.string.products_contentDescription_moveShoppingListToTrash),
+                                            painter = painterResource(R.drawable.ic_all_reminder),
+                                            contentDescription = stringResource(R.string.products_contentDescription_editShoppingListReminder),
                                             tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                                         )
                                     }
@@ -221,14 +205,29 @@ fun ProductsScreen(
                                 expanded = screenData.showProductsMenu,
                                 onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsMenu) }
                             ) {
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) },
-                                    text = { Text(text = stringResource(R.string.products_action_editShoppingListName)) }
-                                )
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) },
-                                    text = { Text(text = stringResource(R.string.products_action_editShoppingListReminder)) }
-                                )
+                                when (screenData.shoppingListLocation) {
+                                    ShoppingListLocation.PURCHASES -> {
+                                        AppDropdownMenuItem(
+                                            onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) },
+                                            text = { Text(text = stringResource(R.string.products_action_moveShoppingListToArchive)) }
+                                        )
+                                        AppDropdownMenuItem(
+                                            onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
+                                            text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
+                                        )
+                                    }
+                                    ShoppingListLocation.ARCHIVE -> {
+                                        AppDropdownMenuItem(
+                                            onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) },
+                                            text = { Text(text = stringResource(R.string.products_action_moveShoppingListToPurchases)) }
+                                        )
+                                        AppDropdownMenuItem(
+                                            onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
+                                            text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
+                                        )
+                                    }
+                                    else -> {}
+                                }
                                 Divider()
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.products_action_sort)) },

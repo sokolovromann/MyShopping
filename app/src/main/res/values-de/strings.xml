@@ -200,7 +200,7 @@
     <string name="editShoppingListName_action_saveShoppingListName">Speichern</string>
     <string name="editShoppingListName_header_addShoppingListName">Hinzufügen</string>
     <string name="editShoppingListName_header_editShoppingListName">Bearbeiten</string>
-    <string name="editShoppingListName_label_name">Name</string>
+    <string name="editShoppingListName_label_name">Listennamen</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Absagen</string>
     <string name="editTaxRate_action_saveTaxRate">Speichern</string>
@@ -220,8 +220,9 @@
     <string name="products_action_displayAllTotal">Alle produkte</string>
     <string name="products_action_displayCompletedPurchases">Anzeige</string>
     <string name="products_action_displayCompletedTotal">Fertige produkte</string>
-    <string name="products_action_editShoppingListName">Name</string>
-    <string name="products_action_editShoppingListReminder">Erinnerung</string>
+    <string name="products_action_moveShoppingListToArchive">Archivieren</string>
+    <string name="products_action_moveShoppingListToPurchases">Unarchivieren</string>
+    <string name="products_action_moveShoppingListToTrash">Löschen</string>
     <string name="products_action_selectActiveProductsTo">Aktive produkte</string>
     <string name="products_action_selectAllProductsTo">Alle produkte</string>
     <string name="products_action_selectCompletedProductsTo">Fertige produkte</string>
@@ -237,12 +238,11 @@
     <string name="products_contentDescription_copyProductsToShoppingList">Kopieren nach…</string>
     <string name="products_contentDescription_deleteProducts">Löschen</string>
     <string name="products_contentDescription_editProduct">Bearbeiten</string>
+    <string name="products_contentDescription_editShoppingListName">Bearbeiten Sie den Namen der Einkaufsliste</string>
+    <string name="products_contentDescription_editShoppingListReminder">Erinnerung bearbeiten</string>
     <string name="products_contentDescription_moveProductDown">Nach unten verschieben</string>
     <string name="products_contentDescription_moveProductUp">Nach oben verschieben</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Ziehen nach…</string>
-    <string name="products_contentDescription_moveShoppingListToArchive">Archivieren</string>
-    <string name="products_contentDescription_moveShoppingListToPurchases">Unarchivieren</string>
-    <string name="products_contentDescription_moveShoppingListToTrash">Löschen</string>
     <string name="products_contentDescription_navigationIcon">Zurück</string>
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
     <string name="products_header_displayTotal">Gesamt</string>

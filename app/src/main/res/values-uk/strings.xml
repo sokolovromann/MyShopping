@@ -238,8 +238,9 @@
     <string name="products_action_displayAllTotal">Усі товари</string>
     <string name="products_action_displayCompletedPurchases">Показувати</string>
     <string name="products_action_displayCompletedTotal">Куплені товари</string>
-    <string name="products_action_editShoppingListName">Назва</string>
-    <string name="products_action_editShoppingListReminder">Нагадування</string>
+    <string name="products_action_moveShoppingListToArchive">Архівувати</string>
+    <string name="products_action_moveShoppingListToPurchases">Розархівувати</string>
+    <string name="products_action_moveShoppingListToTrash">Видалити</string>
     <string name="products_action_selectActiveProductsTo">Не куплені товари</string>
     <string name="products_action_selectAllProductsTo">Усі товари</string>
     <string name="products_action_selectCompletedProductsTo">Куплені товари</string>
@@ -255,12 +256,11 @@
     <string name="products_contentDescription_copyProductsToShoppingList">Копіювати в…</string>
     <string name="products_contentDescription_deleteProducts">Видалити</string>
     <string name="products_contentDescription_editProduct">Редагувати</string>
+    <string name="products_contentDescription_editShoppingListName">Редагувати назву списку покупок</string>
+    <string name="products_contentDescription_editShoppingListReminder">Редагувати нагадування</string>
     <string name="products_contentDescription_moveProductDown">Перемістити вниз</string>
     <string name="products_contentDescription_moveProductUp">Перемістити вгору</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Перемістити в…</string>
-    <string name="products_contentDescription_moveShoppingListToArchive">Архівувати</string>
-    <string name="products_contentDescription_moveShoppingListToPurchases">Розархівувати</string>
-    <string name="products_contentDescription_moveShoppingListToTrash">Видалити</string>
     <string name="products_contentDescription_navigationIcon">Назад</string>
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
     <string name="products_header_displayTotal">Разом</string>

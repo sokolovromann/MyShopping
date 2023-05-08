@@ -270,7 +270,7 @@
     <string name="editShoppingListName_action_saveShoppingListName">Save</string>
     <string name="editShoppingListName_header_addShoppingListName">Add</string>
     <string name="editShoppingListName_header_editShoppingListName">Edit</string>
-    <string name="editShoppingListName_label_name">Name</string>
+    <string name="editShoppingListName_label_name">List name</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Cancel</string>
     <string name="editTaxRate_action_saveTaxRate">Save</string>
@@ -290,8 +290,9 @@
     <string name="products_action_displayAllTotal">All</string>
     <string name="products_action_displayCompletedPurchases">Display</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
-    <string name="products_action_editShoppingListName">Name</string>
-    <string name="products_action_editShoppingListReminder">Reminder</string>
+    <string name="products_action_moveShoppingListToArchive">Archive</string>
+    <string name="products_action_moveShoppingListToPurchases">Unarchive</string>
+    <string name="products_action_moveShoppingListToTrash">Delete</string>
     <string name="products_action_selectActiveProductsTo">Active</string>
     <string name="products_action_selectAllProductsTo">All</string>
     <string name="products_action_selectCompletedProductsTo">Completed</string>
@@ -307,12 +308,11 @@
     <string name="products_contentDescription_copyProductsToShoppingList">Copy to…</string>
     <string name="products_contentDescription_deleteProducts">Delete</string>
     <string name="products_contentDescription_editProduct">Edit</string>
+    <string name="products_contentDescription_editShoppingListName">Edit shopping list name</string>
+    <string name="products_contentDescription_editShoppingListReminder">Edit reminder</string>
     <string name="products_contentDescription_moveProductDown">Move down</string>
     <string name="products_contentDescription_moveProductUp">Move up</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Move to…</string>
-    <string name="products_contentDescription_moveShoppingListToArchive">Archive</string>
-    <string name="products_contentDescription_moveShoppingListToPurchases">Unarchive</string>
-    <string name="products_contentDescription_moveShoppingListToTrash">Delete</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_header_displayTotal">Display total</string>
