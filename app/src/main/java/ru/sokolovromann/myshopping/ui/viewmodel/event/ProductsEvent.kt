@@ -37,13 +37,7 @@ sealed class ProductsEvent {
 
     data class SelectProduct(val uid: String) : ProductsEvent()
 
-    object SelectSelectProducts : ProductsEvent()
-
     object SelectAllProducts : ProductsEvent()
-
-    object SelectCompletedProducts : ProductsEvent()
-
-    object SelectActiveProducts : ProductsEvent()
 
     data class UnselectProduct(val uid: String) : ProductsEvent()
 
@@ -68,8 +62,6 @@ sealed class ProductsEvent {
     object HideProductsSort : ProductsEvent()
 
     object HideDisplayPurchasesTotal : ProductsEvent()
-
-    object HideSelectProducts : ProductsEvent()
 
     object CalculateChange : ProductsEvent()
 }

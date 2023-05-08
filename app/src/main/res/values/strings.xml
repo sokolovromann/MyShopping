@@ -293,10 +293,6 @@
     <string name="products_action_moveShoppingListToArchive">Archive</string>
     <string name="products_action_moveShoppingListToPurchases">Unarchive</string>
     <string name="products_action_moveShoppingListToTrash">Delete</string>
-    <string name="products_action_selectActiveProductsTo">Active</string>
-    <string name="products_action_selectAllProductsTo">All</string>
-    <string name="products_action_selectCompletedProductsTo">Completed</string>
-    <string name="products_action_selectProducts">Select</string>
     <string name="products_action_shareProducts">Share</string>
     <string name="products_action_sort">Sort</string>
     <string name="products_action_sortByCreated">By created</string>
@@ -315,6 +311,7 @@
     <string name="products_contentDescription_moveProductsToShoppingList">Move to…</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
+    <string name="products_contentDescription_selectAllProducts">Select all products</string>
     <string name="products_header_displayTotal">Display total</string>
     <string name="products_text_activeTotal">Active: %s</string>
     <string name="products_text_allTotal">All: %s</string>

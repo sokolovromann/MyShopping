@@ -241,10 +241,6 @@
     <string name="products_action_moveShoppingListToArchive">Архівувати</string>
     <string name="products_action_moveShoppingListToPurchases">Розархівувати</string>
     <string name="products_action_moveShoppingListToTrash">Видалити</string>
-    <string name="products_action_selectActiveProductsTo">Не куплені товари</string>
-    <string name="products_action_selectAllProductsTo">Усі товари</string>
-    <string name="products_action_selectCompletedProductsTo">Куплені товари</string>
-    <string name="products_action_selectProducts">Вибрати</string>
     <string name="products_action_shareProducts">Поділитися</string>
     <string name="products_action_sort">Сортувати</string>
     <string name="products_action_sortByCreated">За створеним</string>
@@ -263,6 +259,7 @@
     <string name="products_contentDescription_moveProductsToShoppingList">Перемістити в…</string>
     <string name="products_contentDescription_navigationIcon">Назад</string>
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
+    <string name="products_contentDescription_selectAllProducts">Вибрати всі товари</string>
     <string name="products_header_displayTotal">Разом</string>
     <string name="products_text_activeTotal">Не куплено: %s</string>
     <string name="products_text_allTotal">Разом: %s</string>

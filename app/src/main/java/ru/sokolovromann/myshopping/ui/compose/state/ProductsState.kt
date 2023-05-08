@@ -131,13 +131,6 @@ class ProductsState {
         )
     }
 
-    fun showSelectingMenu() {
-        screenData = screenData.copy(
-            showSelectingMenu = true,
-            showProductsMenu = false
-        )
-    }
-
     fun displayHiddenProducts() {
         screenData = screenData.copy(
             products = products.getProductsItems(DisplayCompleted.LAST),
@@ -176,44 +169,7 @@ class ProductsState {
 
         screenData = screenData.copy(
             totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectCompletedProducts() {
-        val uids = products.shoppingList.products
-            .filter { it.completed }
-            .map { it.productUid }
-
-        val totalText = if (products.preferences.displayMoney) {
-            products.calculateTotalToText(uids)
-        } else {
-            UiText.Nothing
-        }
-
-        screenData = screenData.copy(
-            totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectActiveProducts() {
-        val uids = products.shoppingList.products
-            .filter { !it.completed }
-            .map { it.productUid }
-
-        val totalText = if (products.preferences.displayMoney) {
-            products.calculateTotalToText(uids)
-        } else {
-            UiText.Nothing
-        }
-
-        screenData = screenData.copy(
-            totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
+            selectedUids = uids
         )
     }
 
@@ -264,10 +220,6 @@ class ProductsState {
 
     fun hideDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = false)
-    }
-
-    fun hideSelectingMenu() {
-        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun getShareProductsResult(): Result<String> {
@@ -417,7 +369,6 @@ data class ProductsScreenData(
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
     val showSort: Boolean = false,
-    val showSelectingMenu: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
     val showHiddenProducts: Boolean = false,

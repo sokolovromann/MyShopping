@@ -69,13 +69,7 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.SelectProduct -> selectProduct(event)
 
-            ProductsEvent.SelectSelectProducts -> selectSelectProducts()
-
             ProductsEvent.SelectAllProducts -> selectAllProducts()
-
-            ProductsEvent.SelectCompletedProducts -> selectCompletedProducts()
-
-            ProductsEvent.SelectActiveProducts -> selectActiveProducts()
 
             is ProductsEvent.UnselectProduct -> unselectProduct(event)
 
@@ -100,8 +94,6 @@ class ProductsViewModel @Inject constructor(
             ProductsEvent.HideProductsSort -> hideProductsSort()
 
             ProductsEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
-
-            ProductsEvent.HideSelectProducts -> hideSelectProducts()
 
             ProductsEvent.CalculateChange -> calculateChange()
         }
@@ -281,20 +273,8 @@ class ProductsViewModel @Inject constructor(
         productsState.selectProduct(event.uid)
     }
 
-    private fun selectSelectProducts() {
-        productsState.showSelectingMenu()
-    }
-
     private fun selectAllProducts() {
         productsState.selectAllProducts()
-    }
-
-    private fun selectCompletedProducts() {
-        productsState.selectCompletedProducts()
-    }
-
-    private fun selectActiveProducts() {
-        productsState.selectActiveProducts()
     }
 
     private fun unselectProduct(event: ProductsEvent.UnselectProduct) {
@@ -354,10 +334,6 @@ class ProductsViewModel @Inject constructor(
 
     private fun hideProductsSort() {
         productsState.hideSort()
-    }
-
-    private fun hideSelectProducts() {
-        productsState.hideSelectingMenu()
     }
 
     private fun hideDisplayPurchasesTotal() {
