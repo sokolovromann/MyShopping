@@ -125,6 +125,13 @@ fun PurchasesScreen(
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                             )
                         }
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_select_all),
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                     }
                 )
             }
@@ -153,88 +160,59 @@ fun PurchasesScreen(
                     }
                 },
                 actionButtons = {
-                    IconButton(onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
-                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                        )
-                    }
-                    IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowPurchasesMenu) }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon),
-                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                        )
-                        AppDropdownMenu(
-                            expanded = screenData.showPurchasesMenu,
-                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HidePurchasesMenu) }
-                        ) {
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                right = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
-                                },
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsSort) }
-                            )
-
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectShoppingLists)) },
-                                right = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
-                                },
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectSelectShoppingLists) }
+                    if (screenData.selectedUids == null) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
+                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
                             )
                         }
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowPurchasesMenu) }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon),
+                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                            )
+                            AppDropdownMenu(
+                                expanded = screenData.showPurchasesMenu,
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.HidePurchasesMenu) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
+                                    right = {
+                                        Icon(
+                                            imageVector = Icons.Default.KeyboardArrowRight,
+                                            contentDescription = "",
+                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                        )
+                                    },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsSort) }
+                                )
+                            }
 
-                        AppDropdownMenu(
-                            expanded = screenData.showSort,
-                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
-                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.CREATED)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.NAME)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.TOTAL)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
-                            )
-                        }
-
-                        AppDropdownMenu(
-                            expanded = screenData.showSelectingMenu,
-                            onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideSelectShoppingLists) },
-                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectShoppingLists)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectCompletedShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectCompletedShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(PurchasesEvent.SelectActiveShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectActiveShoppingListsTo)) }
-                            )
+                            AppDropdownMenu(
+                                expanded = screenData.showSort,
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
+                                header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.CREATED)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.NAME)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.TOTAL)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
+                                )
+                            }
                         }
                     }
                 }

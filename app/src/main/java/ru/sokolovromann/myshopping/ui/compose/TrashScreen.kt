@@ -7,9 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -134,57 +132,16 @@ fun TrashScreen(
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                             )
                         }
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.SelectAllShoppingLists) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_select_all),
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                     }
                 )
             }
-        },
-        bottomBar = {
-            AppBottomAppBar(
-                actionButtons = {
-                    IconButton(onClick = { viewModel.onEvent(TrashEvent.ShowTrashMenu) }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.trash_contentDescription_trashMenuIcon),
-                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                        )
-                        AppDropdownMenu(
-                            expanded = screenData.showTrashMenu,
-                            onDismissRequest = { viewModel.onEvent(TrashEvent.HideTrashMenu) }
-                        ) {
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectShoppingLists)) },
-                                right = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
-                                },
-                                onClick = { viewModel.onEvent(TrashEvent.SelectSelectShoppingLists) }
-                            )
-                        }
-
-                        AppDropdownMenu(
-                            expanded = screenData.showSelectingMenu,
-                            onDismissRequest = { viewModel.onEvent(TrashEvent.HideSelectShoppingLists) },
-                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectShoppingLists)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(TrashEvent.SelectAllShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(TrashEvent.SelectCompletedShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectCompletedShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(TrashEvent.SelectActiveShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectActiveShoppingListsTo)) }
-                            )
-                        }
-                    }
-                }
-            )
         },
         drawerContent = {
             AppDrawerContent(

@@ -81,13 +81,6 @@ class PurchasesState {
         )
     }
 
-    fun showSelectingMenu() {
-        screenData = screenData.copy(
-            showSelectingMenu = true,
-            showPurchasesMenu = false
-        )
-    }
-
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
             shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
@@ -126,44 +119,7 @@ class PurchasesState {
 
         screenData = screenData.copy(
             totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectCompletedShoppingLists() {
-        val uids = shoppingLists.shoppingLists
-            .filter { it.completed }
-            .map { it.uid }
-
-        val totalText = if (shoppingLists.preferences.displayMoney) {
-            shoppingLists.calculateTotalToText(uids)
-        } else {
-            UiText.Nothing
-        }
-
-        screenData = screenData.copy(
-            totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectActiveShoppingLists() {
-        val uids = shoppingLists.shoppingLists
-            .filter { !it.completed }
-            .map { it.uid }
-
-        val totalText = if (shoppingLists.preferences.displayMoney) {
-            shoppingLists.calculateTotalToText(uids)
-        } else {
-            UiText.Nothing
-        }
-
-        screenData = screenData.copy(
-            totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
+            selectedUids = uids
         )
     }
 
@@ -214,10 +170,6 @@ class PurchasesState {
 
     fun hideSort() {
         screenData = screenData.copy(showSort = false)
-    }
-
-    fun hideSelectingMenu() {
-        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
@@ -325,7 +277,6 @@ data class PurchasesScreenData(
     val showDisplayTotal: Boolean = false,
     val showPurchasesMenu: Boolean = false,
     val showSort: Boolean = false,
-    val showSelectingMenu: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false,
     val selectedUids: List<String>? = null

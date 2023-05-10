@@ -51,13 +51,7 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.SelectShoppingList -> selectShoppingList(event)
 
-            PurchasesEvent.SelectSelectShoppingLists -> selectSelectShoppingLists()
-
             PurchasesEvent.SelectAllShoppingLists -> selectAllShoppingLists()
-
-            PurchasesEvent.SelectCompletedShoppingLists -> selectCompletedShoppingLists()
-
-            PurchasesEvent.SelectActiveShoppingLists -> selectActiveShoppingLists()
 
             is PurchasesEvent.UnselectShoppingList -> unselectShoppingList(event)
 
@@ -82,8 +76,6 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HidePurchasesMenu -> hidePurchasesMenu()
 
             PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
-
-            PurchasesEvent.HideSelectShoppingLists -> hideSelectShoppingLists()
 
             PurchasesEvent.FinishApp -> finishApp()
         }
@@ -184,20 +176,8 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.selectShoppingList(event.uid)
     }
 
-    private fun selectSelectShoppingLists() {
-        purchasesState.showSelectingMenu()
-    }
-
     private fun selectAllShoppingLists() {
         purchasesState.selectAllShoppingLists()
-    }
-
-    private fun selectCompletedShoppingLists() {
-        purchasesState.selectCompletedShoppingLists()
-    }
-
-    private fun selectActiveShoppingLists() {
-        purchasesState.selectActiveShoppingLists()
     }
 
     private fun unselectShoppingList(event: PurchasesEvent.UnselectShoppingList) {
@@ -271,10 +251,6 @@ class PurchasesViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         purchasesState.hideSort()
-    }
-
-    private fun hideSelectShoppingLists() {
-        purchasesState.hideSelectingMenu()
     }
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {

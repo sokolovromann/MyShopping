@@ -48,17 +48,6 @@ class TrashState {
         )
     }
 
-    fun showTrashMenu() {
-        screenData = screenData.copy(showTrashMenu = true)
-    }
-
-    fun showSelectingMenu() {
-        screenData = screenData.copy(
-            showSelectingMenu = true,
-            showTrashMenu = false
-        )
-    }
-
     fun selectDisplayPurchasesTotal() {
         screenData = screenData.copy(showDisplayTotal = true)
     }
@@ -71,30 +60,7 @@ class TrashState {
 
     fun selectAllShoppingLists() {
         val uids = shoppingLists.shoppingLists.map { it.uid }
-        screenData = screenData.copy(
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectCompletedShoppingLists() {
-        val uids = shoppingLists.shoppingLists
-            .filter { it.completed }
-            .map { it.uid }
-        screenData = screenData.copy(
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectActiveShoppingLists() {
-        val uids = shoppingLists.shoppingLists
-            .filter { !it.completed }
-            .map { it.uid }
-        screenData = screenData.copy(
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
+        screenData = screenData.copy(selectedUids = uids)
     }
 
     fun unselectShoppingList(uid: String) {
@@ -106,14 +72,6 @@ class TrashState {
 
     fun unselectAllShoppingLists() {
         screenData = screenData.copy(selectedUids = null)
-    }
-
-    fun hideTrashMenu() {
-        screenData = screenData.copy(showTrashMenu = false)
-    }
-
-    fun hideSelectingMenu() {
-        screenData = screenData.copy(showSelectingMenu = false)
     }
 
     fun hideDisplayPurchasesTotal() {
@@ -128,8 +86,6 @@ data class TrashScreenData(
     val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
-    val showTrashMenu: Boolean = false,
-    val showSelectingMenu: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showBottomBar: Boolean = true,
     val selectedUids: List<String>? = null

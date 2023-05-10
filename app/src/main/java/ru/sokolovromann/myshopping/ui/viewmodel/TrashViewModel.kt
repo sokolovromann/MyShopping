@@ -46,13 +46,7 @@ class TrashViewModel @Inject constructor(
 
             is TrashEvent.SelectShoppingList -> selectShoppingList(event)
 
-            TrashEvent.SelectSelectShoppingLists -> selectSelectShoppingLists()
-
             TrashEvent.SelectAllShoppingLists -> selectAllShoppingLists()
-
-            TrashEvent.SelectCompletedShoppingLists -> selectCompletedShoppingLists()
-
-            TrashEvent.SelectActiveShoppingLists -> selectActiveShoppingLists()
 
             is TrashEvent.UnselectShoppingList -> unselectShoppingList(event)
 
@@ -66,15 +60,9 @@ class TrashViewModel @Inject constructor(
 
             TrashEvent.ShowNavigationDrawer -> showNavigationDrawer()
 
-            TrashEvent.ShowTrashMenu -> showTrashMenu()
-
             TrashEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
-            TrashEvent.HideTrashMenu -> hideTrashMenu()
-
             TrashEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
-
-            TrashEvent.HideSelectShoppingLists -> hideSelectShoppingLists()
         }
     }
 
@@ -154,20 +142,8 @@ class TrashViewModel @Inject constructor(
         trashState.selectShoppingList(event.uid)
     }
 
-    private fun selectSelectShoppingLists() {
-        trashState.showSelectingMenu()
-    }
-
     private fun selectAllShoppingLists() {
         trashState.selectAllShoppingLists()
-    }
-
-    private fun selectCompletedShoppingLists() {
-        trashState.selectCompletedShoppingLists()
-    }
-
-    private fun selectActiveShoppingLists() {
-        trashState.selectActiveShoppingLists()
     }
 
     private fun unselectShoppingList(event: TrashEvent.UnselectShoppingList) {
@@ -208,23 +184,11 @@ class TrashViewModel @Inject constructor(
         _screenEventFlow.emit(TrashScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showTrashMenu() {
-        trashState.showTrashMenu()
-    }
-
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(TrashScreenEvent.HideNavigationDrawer)
     }
 
-    private fun hideTrashMenu() {
-        trashState.hideTrashMenu()
-    }
-
     private fun hideDisplayPurchasesTotal() {
         trashState.hideDisplayPurchasesTotal()
-    }
-
-    private fun hideSelectShoppingLists() {
-        trashState.hideSelectingMenu()
     }
 }

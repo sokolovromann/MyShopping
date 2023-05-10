@@ -24,13 +24,7 @@ sealed class PurchasesEvent {
 
     data class SelectShoppingList(val uid: String) : PurchasesEvent()
 
-    object SelectSelectShoppingLists : PurchasesEvent()
-
     object SelectAllShoppingLists : PurchasesEvent()
-
-    object SelectCompletedShoppingLists : PurchasesEvent()
-
-    object SelectActiveShoppingLists : PurchasesEvent()
 
     data class UnselectShoppingList(val uid: String) : PurchasesEvent()
 
@@ -55,8 +49,6 @@ sealed class PurchasesEvent {
     object HidePurchasesMenu : PurchasesEvent()
 
     object HideShoppingListsSort : PurchasesEvent()
-
-    object HideSelectShoppingLists : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 }

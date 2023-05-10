@@ -127,6 +127,13 @@ fun ArchiveScreen(
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                             )
                         }
+                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.SelectAllShoppingLists) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_select_all),
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                     }
                 )
             }
@@ -155,80 +162,52 @@ fun ArchiveScreen(
                     }
                 },
                 actionButtons = {
-                    IconButton(onClick = { viewModel.onEvent(ArchiveEvent.ShowArchiveMenu) }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.archive_contentDescription_archiveMenuIcon),
-                            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                        )
-                        AppDropdownMenu(
-                            expanded = screenData.showArchiveMenu,
-                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideArchiveMenu) }
-                        ) {
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                right = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
-                                },
-                                onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsSort) }
+                    if (screenData.selectedUids == null) {
+                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.ShowArchiveMenu) }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.archive_contentDescription_archiveMenuIcon),
+                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
                             )
-                            AppDropdownMenuItem(
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectShoppingLists)) },
-                                right = {
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "",
-                                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                    )
-                                },
-                                onClick = { viewModel.onEvent(ArchiveEvent.SelectSelectShoppingLists) }
-                            )
-                        }
+                            AppDropdownMenu(
+                                expanded = screenData.showArchiveMenu,
+                                onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideArchiveMenu) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
+                                    right = {
+                                        Icon(
+                                            imageVector = Icons.Default.KeyboardArrowRight,
+                                            contentDescription = "",
+                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                        )
+                                    },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SelectShoppingListsSort) }
+                                )
+                            }
 
-                        AppDropdownMenu(
-                            expanded = screenData.showSort,
-                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsSort) },
-                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.CREATED)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.NAME)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.TOTAL)) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
-                            )
-                        }
-
-                        AppDropdownMenu(
-                            expanded = screenData.showSelectingMenu,
-                            onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideSelectShoppingLists) },
-                            header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectShoppingLists)) }
-                        ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SelectAllShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SelectCompletedShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectCompletedShoppingListsTo)) }
-                            )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(ArchiveEvent.SelectActiveShoppingLists) },
-                                text = { Text(text = stringResource(R.string.shoppingLists_action_selectActiveShoppingListsTo)) }
-                            )
+                            AppDropdownMenu(
+                                expanded = screenData.showSort,
+                                onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideShoppingListsSort) },
+                                header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.CREATED)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.NAME)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.TOTAL)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
+                                )
+                            }
                         }
                     }
                 }

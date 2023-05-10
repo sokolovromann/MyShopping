@@ -46,13 +46,7 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.SelectShoppingList -> selectShoppingList(event)
 
-            ArchiveEvent.SelectSelectShoppingLists -> selectSelectShoppingLists()
-
             ArchiveEvent.SelectAllShoppingLists -> selectAllShoppingLists()
-
-            ArchiveEvent.SelectCompletedShoppingLists -> selectCompletedShoppingLists()
-
-            ArchiveEvent.SelectActiveShoppingLists -> selectActiveShoppingLists()
 
             is ArchiveEvent.UnselectShoppingList -> unselectShoppingList(event)
 
@@ -79,8 +73,6 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.HideArchiveMenu -> hideArchiveMenu()
 
             ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
-
-            ArchiveEvent.HideSelectShoppingLists -> hideSelectShoppingLists()
         }
     }
 
@@ -154,20 +146,8 @@ class ArchiveViewModel @Inject constructor(
         archiveState.selectShoppingList(event.uid)
     }
 
-    private fun selectSelectShoppingLists() {
-        archiveState.showSelectingMenu()
-    }
-
     private fun selectAllShoppingLists() {
         archiveState.selectAllShoppingLists()
-    }
-
-    private fun selectCompletedShoppingLists() {
-        archiveState.selectCompletedShoppingLists()
-    }
-
-    private fun selectActiveShoppingLists() {
-        archiveState.selectActiveShoppingLists()
     }
 
     private fun unselectShoppingList(event: ArchiveEvent.UnselectShoppingList) {
@@ -243,9 +223,5 @@ class ArchiveViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         archiveState.hideSort()
-    }
-
-    private fun hideSelectShoppingLists() {
-        archiveState.hideSelectingMenu()
     }
 }

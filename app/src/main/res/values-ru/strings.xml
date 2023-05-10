@@ -380,12 +380,8 @@
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Показать</string>
     <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
-    <string name="shoppingLists_action_selectActiveShoppingListsTo">Не купленные списки</string>
-    <string name="shoppingLists_action_selectAllShoppingListsTo">Все списки</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
-    <string name="shoppingLists_action_selectCompletedShoppingListsTo">Купленные списки</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
-    <string name="shoppingLists_action_selectShoppingLists">Выбрать</string>
     <string name="shoppingLists_action_selectTrashLocation">Корзина</string>
     <string name="shoppingLists_action_sort">Сортировать</string>
     <string name="shoppingLists_action_sortByCreated">По созданию</string>
@@ -394,6 +390,7 @@
     <string name="shoppingLists_action_sortByTotal">По стоимости</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
+    <string name="shoppingLists_contentDescription_selectAllShoppingLists">Выбрать все списки</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>
@@ -408,7 +405,6 @@
     <string name="trash_contentDescription_moveShoppingListsToArchive">Архивировать</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Восстановить</string>
     <string name="trash_contentDescription_navigationIcon">Открыть навигацию</string>
-    <string name="trash_contentDescription_trashMenuIcon">Открыть меню корзины</string>
     <string name="trash_header">Корзина</string>
     <string name="trash_text_productsNotFound">Список покупок пуст</string>
     <string name="trash_text_shoppingListsNotFound">Корзина пуста</string>

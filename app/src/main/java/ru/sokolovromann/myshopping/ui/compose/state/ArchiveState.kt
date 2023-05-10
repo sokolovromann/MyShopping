@@ -72,13 +72,6 @@ class ArchiveState {
         )
     }
 
-    fun showSelectingMenu() {
-        screenData = screenData.copy(
-            showSelectingMenu = true,
-            showArchiveMenu = false
-        )
-    }
-
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
             shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
@@ -117,44 +110,7 @@ class ArchiveState {
 
         screenData = screenData.copy(
             totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectCompletedShoppingLists() {
-        val uids = shoppingLists.shoppingLists
-            .filter { it.completed }
-            .map { it.uid }
-
-        val totalText = if (shoppingLists.preferences.displayMoney) {
-            shoppingLists.calculateTotalToText(uids)
-        } else {
-            UiText.Nothing
-        }
-
-        screenData = screenData.copy(
-            totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
-        )
-    }
-
-    fun selectActiveShoppingLists() {
-        val uids = shoppingLists.shoppingLists
-            .filter { !it.completed }
-            .map { it.uid }
-
-        val totalText = if (shoppingLists.preferences.displayMoney) {
-            shoppingLists.calculateTotalToText(uids)
-        } else {
-            UiText.Nothing
-        }
-
-        screenData = screenData.copy(
-            totalText = totalText,
-            selectedUids = uids,
-            showSelectingMenu = false
+            selectedUids = uids
         )
     }
 
@@ -204,10 +160,6 @@ class ArchiveState {
         screenData = screenData.copy(showSort = false)
     }
 
-    fun hideSelectingMenu() {
-        screenData = screenData.copy(showSelectingMenu = false)
-    }
-
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
         val sortShoppingLists = shoppingLists.shoppingLists.sortShoppingLists(sort = Sort(sortBy))
         return if (sortShoppingLists.isEmpty()) {
@@ -234,7 +186,6 @@ data class ArchiveScreenData(
     val showDisplayTotal: Boolean = false,
     val showArchiveMenu: Boolean = false,
     val showSort: Boolean = false,
-    val showSelectingMenu: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false,
     val selectedUids: List<String>? = null
