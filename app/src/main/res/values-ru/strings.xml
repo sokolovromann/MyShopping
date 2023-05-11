@@ -265,7 +265,7 @@
     <string name="editShoppingListName_action_saveShoppingListName">Сохранить</string>
     <string name="editShoppingListName_header_addShoppingListName">Добавить</string>
     <string name="editShoppingListName_header_editShoppingListName">Редактировать</string>
-    <string name="editShoppingListName_label_name">Назва списку</string>
+    <string name="editShoppingListName_label_name">Название списка</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Отмена</string>
     <string name="editTaxRate_action_saveTaxRate">Сохранить</string>

@@ -218,7 +218,7 @@
     <string name="editShoppingListName_action_saveShoppingListName">Зберегти</string>
     <string name="editShoppingListName_header_addShoppingListName">Додати</string>
     <string name="editShoppingListName_header_editShoppingListName">Редагувати</string>
-    <string name="editShoppingListName_label_name">Назва</string>
+    <string name="editShoppingListName_label_name">Назва списку</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Скасування</string>
     <string name="editTaxRate_action_saveTaxRate">Зберегти</string>
