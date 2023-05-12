@@ -240,7 +240,7 @@
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
         <item>pcs</item>
         <item>kg</item>
-        <item>l</item>
+        <item>L</item>
         <item>pkg</item>
     </string-array>
     <string name="data_text_defaultCurrency">$</string>
