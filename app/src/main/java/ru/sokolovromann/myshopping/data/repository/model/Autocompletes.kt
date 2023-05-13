@@ -14,9 +14,10 @@ data class Autocompletes(
     }
 
     fun names(search: String = ""): List<Autocomplete> {
+        val endIndex = search.length - 1
         val partition = autocompletes.partition {
-            it.name.lowercase().toCharArray(startIndex = 0, endIndex = search.length)
-                .contentEquals(search.lowercase().toCharArray())
+            it.name.lowercase().toCharArray(endIndex = endIndex)
+                .contentEquals(search.lowercase().toCharArray(endIndex = endIndex))
         }
         val searchAutocompletes = partition.first
             .sortAutocompletes()
