@@ -548,9 +548,10 @@ private fun ProductsGrid(
 
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
-                left = getProductItemLeft(selected, item.completed, leftOnClick),
+                left = getProductItemLeft(item.completed, leftOnClick),
                 title = getProductItemTitleOrNull(item.nameText, fontSize),
                 body = getProductItemBodyOrNull(item.bodyText, fontSize),
+                right = getProductItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 clickableEnabled = clickableEnabled,
                 longClickableEnabled = longClickableEnabled,
@@ -589,25 +590,26 @@ fun ProductsHiddenContent(
 
 @Composable
 private fun getProductItemLeft(
-    selected: Boolean,
     completed: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?
 ): @Composable () -> Unit = {
-    val checkmarkColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-    if (selected) {
-        CheckmarkAppCheckbox(
-            checked = true,
-            checkmarkColor = checkmarkColor
+    AppCheckbox(
+        checked = completed,
+        onCheckedChange = onCheckedChange,
+        colors = CheckboxDefaults.colors(
+            checkedColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
         )
-    } else {
-        AppCheckbox(
-            checked = completed,
-            onCheckedChange = onCheckedChange,
-            colors = CheckboxDefaults.colors(
-                checkedColor = checkmarkColor
-            )
-        )
-    }
+    )
+}
+
+@Composable
+private fun getProductItemRightOrNull(
+    selected: Boolean,
+)= itemOrNull(enabled = selected) {
+    CheckmarkAppCheckbox(
+        checked = true,
+        checkmarkColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+    )
 }
 
 @Composable

@@ -248,6 +248,7 @@ private fun AutocompletesGrid(
             AppSurfaceItem(
                 title = getAutocompleteItemTitleOrNull(names[index], fontSize),
                 body = getAutocompleteItemBodyOrNull(item, fontSize),
+                right = getAutocompleteItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(nameToString) } },
                 onClick = { onClick(nameToString) },
                 onLongClick = { onLongClick(nameToString) },
@@ -340,6 +341,16 @@ private fun getAutocompleteItemBodyOrNull(
             )
         }
     }
+}
+
+@Composable
+private fun getAutocompleteItemRightOrNull(
+    selected: Boolean
+) = itemOrNull(enabled = selected) {
+    CheckmarkAppCheckbox(
+        checked = true,
+        checkmarkColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+    )
 }
 
 private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)

@@ -63,6 +63,7 @@ fun ShoppingListsGrid(
                         fontSize = fontSize
                     )
                 },
+                right = getShoppingListItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid) },
                 onLongClick = { onLongClick(item.uid) },
@@ -271,6 +272,16 @@ private fun ShoppingListItemBody(
             )
         }
     }
+}
+
+@Composable
+private fun getShoppingListItemRightOrNull(
+    selected: Boolean
+) = itemOrNull(enabled = selected) {
+    CheckmarkAppCheckbox(
+        checked = true,
+        checkmarkColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+    )
 }
 
 private val ShoppingListItemTextSmallPaddings = PaddingValues(vertical = 2.dp)
