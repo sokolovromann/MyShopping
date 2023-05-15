@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 
@@ -138,8 +139,12 @@ private fun AppGridShowing(
     items: LazyStaggeredGridScope.() -> Unit
 ) {
     val columns = if (multiColumns) {
-        val minSize = if (smartphoneScreen) AppGridMediumMinColumnSize else AppGridLargeMinColumnSize
-        StaggeredGridCells.Adaptive(minSize)
+        if (LocalConfiguration.current.screenWidthDp < AppGridMediumMinColumnSize.value * 2) {
+            StaggeredGridCells.Fixed(2)
+        } else {
+            val minSize = if (smartphoneScreen) AppGridMediumMinColumnSize else AppGridLargeMinColumnSize
+            StaggeredGridCells.Adaptive(minSize)
+        }
     } else {
         StaggeredGridCells.Fixed(1)
     }
