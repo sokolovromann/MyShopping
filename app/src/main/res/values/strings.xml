@@ -50,6 +50,7 @@
     <string name="autocompletes_contentDescription_clearAutocompletes">Clear</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Delete</string>
     <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
+    <string name="autocompletes_contentDescription_selectAllAutocompletes">Select all autocompletes</string>
     <string name="autocompletes_header_autocompletes">Autocompletes</string>
     <string name="autocompletes_header_location">Display</string>
     <string name="autocompletes_text_autocompletesNotFound">You have no autocompletes</string>

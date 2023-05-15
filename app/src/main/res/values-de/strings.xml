@@ -50,6 +50,7 @@
     <string name="autocompletes_contentDescription_clearAutocompletes">Klar</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Löschen</string>
     <string name="autocompletes_contentDescription_navigationIcon">Navigation anzeigen</string>
+    <string name="autocompletes_contentDescription_selectAllAutocompletes">Wählen Sie alle Autovervollständigungen</string>
     <string name="autocompletes_header_autocompletes">Autovervollständigungen</string>
     <string name="autocompletes_header_location">Anzeige</string>
     <string name="autocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>

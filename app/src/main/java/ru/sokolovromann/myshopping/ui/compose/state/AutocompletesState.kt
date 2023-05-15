@@ -8,6 +8,8 @@ import ru.sokolovromann.myshopping.ui.utils.getAutocompleteItems
 
 class AutocompletesState {
 
+    private var autocompletes by mutableStateOf(Autocompletes())
+
     var screenData by mutableStateOf(AutocompletesScreenData())
         private set
 
@@ -16,6 +18,8 @@ class AutocompletesState {
     }
 
     fun showNotFound(preferences: AppPreferences, location: AutocompleteLocation) {
+        autocompletes = Autocompletes(preferences = preferences)
+
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -26,6 +30,7 @@ class AutocompletesState {
     }
 
     fun showAutocompletes(autocompletes: Autocompletes, location: AutocompleteLocation) {
+        this.autocompletes = autocompletes
         val preferences = autocompletes.preferences
 
         screenData = AutocompletesScreenData(
@@ -45,6 +50,11 @@ class AutocompletesState {
 
     fun hideLocation() {
         screenData = screenData.copy(showLocation = false)
+    }
+
+    fun selectAllAutocompletes() {
+        val names = autocompletes.formatAutocompletes().groupBy { it.name.lowercase() }
+        screenData = screenData.copy(selectedNames = names.keys.toList())
     }
 
     fun selectAutocomplete(name: String) {

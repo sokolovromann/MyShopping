@@ -50,6 +50,7 @@
     <string name="autocompletes_contentDescription_clearAutocompletes">Очистить</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Удалить</string>
     <string name="autocompletes_contentDescription_navigationIcon">Показать навигацию</string>
+    <string name="autocompletes_contentDescription_selectAllAutocompletes">Выбрать все подсказки</string>
     <string name="autocompletes_header_autocompletes">Подсказки</string>
     <string name="autocompletes_header_location">Показать</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас нет подсказок</string>

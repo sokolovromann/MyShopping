@@ -44,6 +44,8 @@ class AutocompletesViewModel @Inject constructor(
 
             AutocompletesEvent.SelectAutocompleteLocation -> selectAutocompleteLocation()
 
+            AutocompletesEvent.SelectAllAutocompletes -> selectAllAutocompletes()
+
             is AutocompletesEvent.SelectAutocomplete -> selectAutocomplete(event)
 
             is AutocompletesEvent.UnselectAutocomplete -> unselectAutocomplete(event)
@@ -156,6 +158,10 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun selectAutocompleteLocation() {
         autocompletesState.showLocation()
+    }
+
+    private fun selectAllAutocompletes() {
+        autocompletesState.selectAllAutocompletes()
     }
 
     private fun selectAutocomplete(event: AutocompletesEvent.SelectAutocomplete) {

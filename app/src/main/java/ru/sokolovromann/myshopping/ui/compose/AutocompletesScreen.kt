@@ -136,6 +136,14 @@ fun AutocompletesScreen(
                                 )
                             }
                         }
+
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.SelectAllAutocompletes) }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_all_select_all),
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_selectAllAutocompletes),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                     }
                 )
             }

@@ -15,6 +15,8 @@ sealed class AutocompletesEvent {
 
     object SelectAutocompleteLocation : AutocompletesEvent()
 
+    object SelectAllAutocompletes : AutocompletesEvent()
+
     data class SelectAutocomplete(val name: String) : AutocompletesEvent()
 
     data class UnselectAutocomplete(val name: String) : AutocompletesEvent()
