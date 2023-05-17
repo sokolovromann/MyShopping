@@ -144,7 +144,8 @@ class MainViewModel @Inject constructor(
             smartphoneScreen = toSmartphoneScreen(event.screenWidth),
             currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
             shoppingsMultiColumns = event.screenWidth >= 550,
-            productsMultiColumns = event.screenWidth >= 720
+            productsMultiColumns = event.screenWidth >= 720,
+            completedWithCheckbox = false
         )
         repository.addPreferences(appPreferences)
 

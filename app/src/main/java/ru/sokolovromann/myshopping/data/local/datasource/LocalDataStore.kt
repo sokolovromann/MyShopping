@@ -59,7 +59,7 @@ class LocalDataStore @Inject constructor(
                 lockProductElement = it[lockProductElementKey] ?: "",
                 displayMoney = it[displayMoneyKey] ?: true,
                 displayDefaultAutocompletes = it[displayDefaultAutocompletesKey] ?: true,
-                completedWithCheckbox = it[completedWithCheckboxKey] ?: false
+                completedWithCheckbox = it[completedWithCheckboxKey] ?: true
             )
         }
     }
@@ -174,7 +174,7 @@ class LocalDataStore @Inject constructor(
 
     suspend fun invertCompletedWithCheckbox() = withContext(dispatchers.io) {
         dataStore.edit {
-            val completedWithCheckbox = it[completedWithCheckboxKey] ?: false
+            val completedWithCheckbox = it[completedWithCheckboxKey] ?: true
             it[completedWithCheckboxKey] = !completedWithCheckbox
         }
     }
