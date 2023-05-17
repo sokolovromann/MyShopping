@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.TrashRepository
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TrashViewModel @Inject constructor(
     private val repository: TrashRepository,
-    private val dispatchers: AppDispatchers
+    private val dispatchers: AppDispatchers,
+    private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<TrashEvent> {
 
     val trashState: TrashState = TrashState()
@@ -89,11 +91,11 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun deleteShoppingLists() = viewModelScope.launch {
-        trashState.screenData.selectedUids?.let {
-            repository.deleteShoppingLists(it)
-        }
+        val uids = trashState.screenData.selectedUids
+        uids?.let { repository.deleteShoppingLists(it) }
 
         withContext(dispatchers.main) {
+            uids?.forEach { uid -> alarmManager.deleteReminder(uid) }
             unselectAllShoppingLists()
         }
     }
@@ -101,6 +103,10 @@ class TrashViewModel @Inject constructor(
     private fun emptyTrash() = viewModelScope.launch {
         val uids = trashState.screenData.shoppingLists.map { it.uid }
         repository.deleteShoppingLists(uids)
+
+        withContext(dispatchers.main) {
+            uids.forEach { alarmManager.deleteReminder(it) }
+        }
     }
 
     private fun moveShoppingListsToPurchases() = viewModelScope.launch {
