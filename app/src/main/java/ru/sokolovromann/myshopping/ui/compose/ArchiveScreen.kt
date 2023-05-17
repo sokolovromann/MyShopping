@@ -84,6 +84,10 @@ fun ArchiveScreen(
         viewModel.onEvent(ArchiveEvent.HideNavigationDrawer)
     }
 
+    BackHandler(enabled = screenData.selectedUids != null) {
+        viewModel.onEvent(ArchiveEvent.CancelSelectingShoppingLists)
+    }
+
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {

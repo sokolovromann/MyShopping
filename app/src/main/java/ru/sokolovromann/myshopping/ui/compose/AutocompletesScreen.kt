@@ -90,6 +90,10 @@ fun AutocompletesScreen(
         viewModel.onEvent(AutocompletesEvent.HideNavigationDrawer)
     }
 
+    BackHandler(enabled = screenData.selectedNames != null) {
+        viewModel.onEvent(AutocompletesEvent.CancelSelectingAutocompletes)
+    }
+
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {

@@ -85,7 +85,13 @@ fun ProductsScreen(
         }
     }
 
-    BackHandler { viewModel.onEvent(ProductsEvent.ShowBackScreen) }
+    BackHandler {
+        if (screenData.selectedUids == null) {
+            viewModel.onEvent(ProductsEvent.ShowBackScreen)
+        } else {
+            viewModel.onEvent(ProductsEvent.CancelSelectingProducts)
+        }
+    }
 
     AppScaffold(
         topBar = {

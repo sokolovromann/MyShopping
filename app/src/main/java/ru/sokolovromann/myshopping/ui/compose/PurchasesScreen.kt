@@ -82,6 +82,10 @@ fun PurchasesScreen(
         viewModel.onEvent(PurchasesEvent.HideNavigationDrawer)
     }
 
+    BackHandler(enabled = screenData.selectedUids != null) {
+        viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists)
+    }
+
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {

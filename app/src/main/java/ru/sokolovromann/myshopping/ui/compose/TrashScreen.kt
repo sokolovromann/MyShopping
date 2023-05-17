@@ -82,6 +82,10 @@ fun TrashScreen(
         viewModel.onEvent(TrashEvent.HideNavigationDrawer)
     }
 
+    BackHandler(enabled = screenData.selectedUids != null) {
+        viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists)
+    }
+
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
