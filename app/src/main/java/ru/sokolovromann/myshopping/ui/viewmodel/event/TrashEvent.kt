@@ -11,6 +11,8 @@ sealed class TrashEvent {
 
     object DeleteShoppingLists : TrashEvent()
 
+    object EmptyTrash : TrashEvent()
+
     object SelectDisplayPurchasesTotal : TrashEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : TrashEvent()

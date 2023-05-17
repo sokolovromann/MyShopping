@@ -40,6 +40,8 @@ class TrashViewModel @Inject constructor(
 
             TrashEvent.DeleteShoppingLists -> deleteShoppingLists()
 
+            TrashEvent.EmptyTrash -> emptyTrash()
+
             TrashEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
 
             is TrashEvent.SelectNavigationItem -> selectNavigationItem(event)
@@ -94,6 +96,11 @@ class TrashViewModel @Inject constructor(
         withContext(dispatchers.main) {
             unselectAllShoppingLists()
         }
+    }
+
+    private fun emptyTrash() = viewModelScope.launch {
+        val uids = trashState.screenData.shoppingLists.map { it.uid }
+        repository.deleteShoppingLists(uids)
     }
 
     private fun moveShoppingListsToPurchases() = viewModelScope.launch {

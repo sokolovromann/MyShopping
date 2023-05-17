@@ -162,7 +162,7 @@ fun TrashScreen(
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),
-                    onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }
+                    onClick = { viewModel.onEvent(TrashEvent.EmptyTrash) }
                 ) {
                     Text(
                         text = stringResource(R.string.trash_action_deleteShoppingLists),
