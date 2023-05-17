@@ -28,7 +28,7 @@ private fun toAutocompleteItems(
 
     val quantitiesList: List<UiText> = autocompletes
         .sortedByDescending { it.lastModified }
-        .distinctBy { it.quantity.value }
+        .distinctBy { it.quantity.formatValue() }
         .filterIndexed { index, autocomplete ->
             autocomplete.quantity.isNotEmpty() && index < quantitiesLimit
         }
@@ -37,7 +37,7 @@ private fun toAutocompleteItems(
     val pricesList: List<UiText> = if (preferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
-            .distinctBy { it.price.value }
+            .distinctBy { it.price.formatValue() }
             .filterIndexed { index, autocomplete ->
                 autocomplete.price.isNotEmpty() && index < pricesLimit
             }
@@ -49,7 +49,7 @@ private fun toAutocompleteItems(
     val discountsList: List<UiText> = if (preferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
-            .distinctBy { it.discount.value }
+            .distinctBy { it.discount.formatValue() }
             .filterIndexed { index, autocomplete ->
                 autocomplete.discount.isNotEmpty() && index < discountsLimit
             }
@@ -61,7 +61,7 @@ private fun toAutocompleteItems(
     val totalsList: List<UiText> = if (preferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
-            .distinctBy { it.total.value }
+            .distinctBy { it.total.formatValue() }
             .filterIndexed { index, autocomplete ->
                 autocomplete.total.isNotEmpty() && index < totalsLimit
             }

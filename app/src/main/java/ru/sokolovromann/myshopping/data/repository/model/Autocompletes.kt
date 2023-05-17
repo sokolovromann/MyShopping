@@ -42,7 +42,7 @@ data class Autocompletes(
         return autocompletes
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
-            .distinctBy { it.value }
+            .distinctBy { it.formatValue() }
             .filterIndexed { index, quantity ->
                 quantity.isNotEmpty() && index <= defaultQuantitiesLimit
             }
@@ -62,7 +62,7 @@ data class Autocompletes(
         return autocompletes
             .sortedByDescending { it.lastModified }
             .map { it.price }
-            .distinctBy { it.value }
+            .distinctBy { it.formatValue() }
             .filterIndexed { index, price ->
                 price.isNotEmpty() && index <= defaultMoneyLimit
             }
@@ -72,7 +72,7 @@ data class Autocompletes(
         return autocompletes
             .sortedByDescending { it.lastModified }
             .map { it.discount }
-            .distinctBy { it.value }
+            .distinctBy { it.formatValue() }
             .filterIndexed { index, discount ->
                 discount.isNotEmpty() && index <= defaultMoneyLimit
             }
@@ -82,7 +82,7 @@ data class Autocompletes(
         return autocompletes
             .sortedByDescending { it.lastModified }
             .map { it.total }
-            .distinctBy { it.value }
+            .distinctBy { it.formatValue() }
             .filterIndexed { index, total ->
                 total.isNotEmpty() && index <= defaultMoneyLimit
             }
