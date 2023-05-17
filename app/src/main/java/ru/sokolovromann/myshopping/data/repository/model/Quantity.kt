@@ -12,7 +12,7 @@ data class Quantity(
     companion object {
         val DefaultDecimalFormat = DecimalFormat().apply {
             minimumFractionDigits = 0
-            maximumFractionDigits = 5
+            maximumFractionDigits = 3
             roundingMode = RoundingMode.HALF_UP
         }
     }
