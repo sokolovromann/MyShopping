@@ -216,6 +216,11 @@ fun PurchasesScreen(
                                     onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(SortBy.TOTAL)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
                                 )
+                                Divider()
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.ReverseSortShoppingLists) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
+                                )
                             }
                         }
                     }

@@ -32,6 +32,8 @@ sealed class PurchasesEvent {
 
     data class SortShoppingLists(val sortBy: SortBy) : PurchasesEvent()
 
+    object ReverseSortShoppingLists : PurchasesEvent()
+
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
 
     object DisplayHiddenShoppingLists : PurchasesEvent()

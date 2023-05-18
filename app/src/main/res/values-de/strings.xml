@@ -224,6 +224,7 @@
     <string name="products_action_moveShoppingListToArchive">Archivieren</string>
     <string name="products_action_moveShoppingListToPurchases">Unarchivieren</string>
     <string name="products_action_moveShoppingListToTrash">Löschen</string>
+    <string name="products_action_reverseSort">Umgekehrte</string>
     <string name="products_action_shareProducts">Teilen</string>
     <string name="products_action_sort">Sortieren</string>
     <string name="products_action_sortByCreated">Nach Erstellt</string>
@@ -316,6 +317,7 @@
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Anzeige</string>
     <string name="shoppingLists_action_displayCompletedTotal">Fertige produkte</string>
+    <string name="shoppingLists_action_reverseSort">Umgekehrte</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
     <string name="shoppingLists_action_selectTrashLocation">Müll</string>

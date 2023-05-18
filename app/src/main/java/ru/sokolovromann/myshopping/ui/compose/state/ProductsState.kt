@@ -337,6 +337,21 @@ class ProductsState {
         }
     }
 
+    fun reverseSortProductsResult(): Result<List<Product>> {
+        val sortProducts = products.formatProducts().reversed()
+        return if (sortProducts.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            val success = sortProducts.mapIndexed { index, product ->
+                product.copy(
+                    position = index,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
+            Result.success(success)
+        }
+    }
+
     private fun toReminderText(reminder: Long?): UiText {
         return if (reminder == null) {
             UiText.Nothing

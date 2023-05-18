@@ -211,6 +211,11 @@ fun ArchiveScreen(
                                     onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.TOTAL)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
                                 )
+                                Divider()
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.ReverseSortShoppingLists) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
+                                )
                             }
                         }
                     }

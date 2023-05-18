@@ -289,6 +289,7 @@
     <string name="products_action_moveShoppingListToArchive">Архивировать</string>
     <string name="products_action_moveShoppingListToPurchases">Разархивировать</string>
     <string name="products_action_moveShoppingListToTrash">Удалить</string>
+    <string name="products_action_reverseSort">В обратном порядке</string>
     <string name="products_action_shareProducts">Поделиться</string>
     <string name="products_action_sort">Сортировать</string>
     <string name="products_action_sortByCreated">По созданию</string>
@@ -381,6 +382,7 @@
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Показать</string>
     <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
+    <string name="shoppingLists_action_reverseSort">В обратном порядке</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
     <string name="shoppingLists_action_selectTrashLocation">Корзина</string>

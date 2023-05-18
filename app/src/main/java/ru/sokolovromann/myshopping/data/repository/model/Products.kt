@@ -10,11 +10,14 @@ data class Products(
     }
 
     fun formatProducts(
-        displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
     ): List<Product> {
-        return shoppingList.products
-            .sortProducts()
-            .splitProducts(displayCompleted)
+        val sorted = shoppingList.products.sortProducts()
+        return if (displayCompleted == null) {
+            sorted
+        } else {
+            sorted.splitProducts(displayCompleted)
+        }
     }
 
     fun calculateTotal(displayTotal: DisplayTotal = preferences.displayPurchasesTotal): Money {

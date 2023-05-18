@@ -26,6 +26,8 @@ sealed class ArchiveEvent {
 
     data class SortShoppingLists(val sortBy: SortBy) : ArchiveEvent()
 
+    object ReverseSortShoppingLists : ArchiveEvent()
+
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ArchiveEvent()
 
     object DisplayHiddenShoppingLists : ArchiveEvent()

@@ -54,6 +54,8 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
 
+            ArchiveEvent.ReverseSortShoppingLists -> reverseSortShoppingLists()
+
             is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             ArchiveEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
@@ -164,6 +166,19 @@ class ArchiveViewModel @Inject constructor(
 
     private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
         val shoppingLists = archiveState.sortShoppingListsResult(event.sortBy).getOrElse {
+            withContext(dispatchers.main) { hideShoppingListsSort() }
+            return@launch
+        }
+
+        repository.swapShoppingLists(shoppingLists)
+
+        withContext(dispatchers.main) {
+            hideShoppingListsSort()
+        }
+    }
+
+    private fun reverseSortShoppingLists() = viewModelScope.launch {
+        val shoppingLists = archiveState.reverseSortShoppingListsResult().getOrElse {
             withContext(dispatchers.main) { hideShoppingListsSort() }
             return@launch
         }

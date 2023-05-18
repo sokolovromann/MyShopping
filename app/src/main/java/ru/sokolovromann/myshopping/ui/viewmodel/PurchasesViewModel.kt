@@ -59,6 +59,8 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.SortShoppingLists -> sortShoppingLists(event)
 
+            PurchasesEvent.ReverseSortShoppingLists -> reverseSortShoppingLists()
+
             is PurchasesEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
 
             PurchasesEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
@@ -194,6 +196,19 @@ class PurchasesViewModel @Inject constructor(
 
     private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
         val shoppingLists = purchasesState.sortShoppingListsResult(event.sortBy).getOrElse {
+            withContext(dispatchers.main) { hideShoppingListsSort() }
+            return@launch
+        }
+
+        repository.swapShoppingLists(shoppingLists)
+
+        withContext(dispatchers.main) {
+            hideShoppingListsSort()
+        }
+    }
+
+    private fun reverseSortShoppingLists() = viewModelScope.launch {
+        val shoppingLists = purchasesState.reverseSortShoppingListsResult().getOrElse {
             withContext(dispatchers.main) { hideShoppingListsSort() }
             return@launch
         }

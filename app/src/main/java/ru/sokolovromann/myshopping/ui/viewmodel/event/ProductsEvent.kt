@@ -45,6 +45,8 @@ sealed class ProductsEvent {
 
     data class SortProducts(val sortBy: SortBy) : ProductsEvent()
 
+    object ReverseSortProducts : ProductsEvent()
+
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ProductsEvent()
 
     object DisplayHiddenProducts : ProductsEvent()

@@ -287,6 +287,11 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.TOTAL)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByTotal)) }
                                     )
+                                    Divider()
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.ReverseSortProducts) },
+                                        text = { Text(text = stringResource(R.string.products_action_reverseSort)) }
+                                    )
                                 }
                             }
                         }

@@ -187,6 +187,21 @@ class PurchasesState {
         }
     }
 
+    fun reverseSortShoppingListsResult(): Result<List<ShoppingList>> {
+        val sortShoppingLists = shoppingLists.formatShoppingLists().reversed()
+        return if (sortShoppingLists.isEmpty()) {
+            Result.failure(Exception())
+        } else {
+            val success = sortShoppingLists.mapIndexed { index, shoppingList ->
+                shoppingList.copy(
+                    position = index,
+                    lastModified = System.currentTimeMillis()
+                )
+            }
+            Result.success(success)
+        }
+    }
+
     fun getShoppingListResult(): Result<ShoppingList> {
         val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
         val success = ShoppingList(position = position)
