@@ -16,4 +16,8 @@ class ProductsPreferencesDao @Inject constructor(
     suspend fun displayPurchasesTotal(displayTotal: String) {
         localDataStore.displayPurchasesTotal(displayTotal)
     }
+
+    suspend fun invertProductsMultiColumns() {
+        localDataStore.invertProductsMultiColumns()
+    }
 }

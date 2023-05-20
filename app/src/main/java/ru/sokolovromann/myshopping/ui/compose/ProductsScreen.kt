@@ -244,6 +244,10 @@ fun ProductsScreen(
                                     }
                                     Divider()
                                     AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.InvertProductsMultiColumns) },
+                                        text = { Text(text = screenData.multiColumnsText.asCompose()) }
+                                    )
+                                    AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_sort)) },
                                         right = {
                                             Icon(

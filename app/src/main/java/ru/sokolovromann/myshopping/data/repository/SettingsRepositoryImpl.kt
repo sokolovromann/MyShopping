@@ -116,14 +116,6 @@ class SettingsRepositoryImpl @Inject constructor(
         preferencesDao.invertDisplayCurrencyToLeft()
     }
 
-    override suspend fun invertShoppingListsMultiColumns(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertShoppingsMultiColumns()
-    }
-
-    override suspend fun invertProductsMultiColumns(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertProductsMultiColumns()
-    }
-
     override suspend fun invertEditProductAfterCompleted(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertEditProductAfterCompleted()
     }

@@ -183,6 +183,10 @@ fun PurchasesScreen(
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.HidePurchasesMenu) }
                             ) {
                                 AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.InvertShoppingsMultiColumns) },
+                                    text = { Text(text = screenData.multiColumnsText.asCompose()) }
+                                )
+                                AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
                                     right = {
                                         Icon(

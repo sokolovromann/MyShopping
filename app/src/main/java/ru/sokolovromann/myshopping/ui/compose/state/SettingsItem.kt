@@ -15,8 +15,6 @@ enum class SettingsUid {
     Currency,
     DisplayCurrencyToLeft,
     TaxRate,
-    ShoppingsMultiColumns,
-    ProductsMultiColumns,
     DisplayDefaultAutocomplete,
     DisplayCompletedPurchases,
     EditProductAfterCompleted,

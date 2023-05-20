@@ -98,10 +98,6 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.TaxRate -> editTaxRate()
 
-            SettingsUid.ShoppingsMultiColumns -> invertShoppingListsMultiColumns()
-
-            SettingsUid.ProductsMultiColumns -> invertProductsMultiColumns()
-
             SettingsUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
 
             SettingsUid.DisplayCompletedPurchases -> selectDisplayCompletedPurchases()
@@ -184,14 +180,6 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertDisplayCurrencyToLeft() = viewModelScope.launch {
         repository.invertDisplayCurrencyToLeft()
-    }
-
-    private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
-        repository.invertShoppingListsMultiColumns()
-    }
-
-    private fun invertProductsMultiColumns() = viewModelScope.launch {
-        repository.invertProductsMultiColumns()
     }
 
     private fun invertEditProductAfterCompleted() = viewModelScope.launch {

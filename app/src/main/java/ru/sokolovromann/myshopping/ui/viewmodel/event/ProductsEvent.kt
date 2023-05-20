@@ -66,4 +66,6 @@ sealed class ProductsEvent {
     object HideDisplayPurchasesTotal : ProductsEvent()
 
     object CalculateChange : ProductsEvent()
+
+    object InvertProductsMultiColumns : ProductsEvent()
 }

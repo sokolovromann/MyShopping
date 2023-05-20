@@ -37,10 +37,6 @@ interface SettingsRepository {
 
     suspend fun invertDisplayCurrencyToLeft()
 
-    suspend fun invertShoppingListsMultiColumns()
-
-    suspend fun invertProductsMultiColumns()
-
     suspend fun invertEditProductAfterCompleted()
 
     suspend fun invertSaveProductToAutocompletes()

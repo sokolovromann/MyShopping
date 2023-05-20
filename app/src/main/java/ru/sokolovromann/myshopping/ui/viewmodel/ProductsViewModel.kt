@@ -98,6 +98,8 @@ class ProductsViewModel @Inject constructor(
             ProductsEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
 
             ProductsEvent.CalculateChange -> calculateChange()
+
+            ProductsEvent.InvertProductsMultiColumns -> invertProductsMultiColumns()
         }
     }
 
@@ -353,6 +355,10 @@ class ProductsViewModel @Inject constructor(
 
     private fun hideDisplayPurchasesTotal() {
         productsState.hideDisplayPurchasesTotal()
+    }
+
+    private fun invertProductsMultiColumns() = viewModelScope.launch {
+        repository.invertProductsMultiColumns()
     }
 
     private fun uidsToString(uids: List<String>): String {

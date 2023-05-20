@@ -80,6 +80,8 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
 
             PurchasesEvent.FinishApp -> finishApp()
+
+            PurchasesEvent.InvertShoppingsMultiColumns -> invertShoppingListsMultiColumns()
         }
     }
 
@@ -270,5 +272,9 @@ class PurchasesViewModel @Inject constructor(
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(PurchasesScreenEvent.FinishApp)
+    }
+
+    private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
+        repository.invertShoppingListsMultiColumns()
     }
 }

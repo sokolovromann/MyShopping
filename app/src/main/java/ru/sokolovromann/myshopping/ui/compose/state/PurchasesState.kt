@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
@@ -29,9 +30,16 @@ class PurchasesState {
             UiText.Nothing
         }
 
+        val multiColumnsText: UiText = if (preferences.shoppingsMultiColumns) {
+            UiText.FromResources(R.string.shoppingLists_action_disableShoppingsMultiColumns)
+        } else {
+            UiText.FromResources(R.string.shoppingLists_action_enableShoppingsMultiColumns)
+        }
+
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
             totalText = totalText,
+            multiColumnsText = multiColumnsText,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize
@@ -48,6 +56,12 @@ class PurchasesState {
             UiText.Nothing
         }
 
+        val multiColumnsText: UiText = if (preferences.shoppingsMultiColumns) {
+            UiText.FromResources(R.string.shoppingLists_action_disableShoppingsMultiColumns)
+        } else {
+            UiText.FromResources(R.string.shoppingLists_action_enableShoppingsMultiColumns)
+        }
+
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
@@ -62,6 +76,7 @@ class PurchasesState {
             shoppingLists = shoppingLists.getShoppingListItems(),
             totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
+            multiColumnsText = multiColumnsText,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             fontSize = preferences.fontSize,
@@ -287,6 +302,7 @@ data class PurchasesScreenData(
     val shoppingLists: List<ShoppingListItem> = listOf(),
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
+    val multiColumnsText: UiText = UiText.Nothing,
     val smartphoneScreen: Boolean = true,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,

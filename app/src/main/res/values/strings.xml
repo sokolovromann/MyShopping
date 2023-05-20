@@ -287,10 +287,12 @@
     <string name="notificationChannel_name_purchases">Purchases</string>
 
     <string name="products_action_calculateChange">Calculate change</string>
+    <string name="products_action_disableProductsMultiColumns">One column</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
     <string name="products_action_displayCompletedPurchases">Display</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
+    <string name="products_action_enableProductsMultiColumns">Multi-columns</string>
     <string name="products_action_moveShoppingListToArchive">Archive</string>
     <string name="products_action_moveShoppingListToPurchases">Unarchive</string>
     <string name="products_action_moveShoppingListToTrash">Delete</string>
@@ -350,9 +352,7 @@
     <string name="settings_body_github">Tap to open</string>
     <string name="settings_body_migrateFromAppVersion14">Tap to force data transfer, current data will be deleted</string>
     <string name="settings_body_privacy_policy">Tap to read</string>
-    <string name="settings_body_productsMultiColumns">Multiple cards in one row</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
-    <string name="settings_body_shoppingsMultiColumns">Multiple cards in one row</string>
     <string name="settings_body_terms_and_conditions">Tap to read</string>
     <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_header_aboutApp">About</string>
@@ -377,16 +377,16 @@
     <string name="settings_title_migrateFromAppVersion14">Migrate from 1.3.5</string>
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_privacy_policy">Privacy policy</string>
-    <string name="settings_title_productsMultiColumns">Multi-column in products</string>
     <string name="settings_title_saveProductToAutocompletes">Add unknown product</string>
-    <string name="settings_title_shoppingsMultiColumns">Multi-column in shopping lists</string>
     <string name="settings_title_taxRate">Tax rate</string>
     <string name="settings_title_terms_and_conditions">Terms and conditions</string>
 
+    <string name="shoppingLists_action_disableShoppingsMultiColumns">One column</string>
     <string name="shoppingLists_action_displayActiveTotal">Active</string>
     <string name="shoppingLists_action_displayAllTotal">All</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Display</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
+    <string name="shoppingLists_action_enableShoppingsMultiColumns">Multi-columns</string>
     <string name="shoppingLists_action_reverseSort">Reverse</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Purchases</string>

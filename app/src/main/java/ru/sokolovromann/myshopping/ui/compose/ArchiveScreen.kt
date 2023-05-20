@@ -178,6 +178,10 @@ fun ArchiveScreen(
                                 onDismissRequest = { viewModel.onEvent(ArchiveEvent.HideArchiveMenu) }
                             ) {
                                 AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.InvertShoppingsMultiColumns) },
+                                    text = { Text(text = screenData.multiColumnsText.asCompose()) }
+                                )
+                                AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
                                     right = {
                                         Icon(

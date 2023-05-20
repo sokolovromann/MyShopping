@@ -282,10 +282,12 @@
     <string name="notificationChannel_name_purchases">Покупки</string>
 
     <string name="products_action_calculateChange">Посчитать сдачу</string>
+    <string name="products_action_disableProductsMultiColumns">Один столбец</string>
     <string name="products_action_displayActiveTotal">Не купленные товары</string>
     <string name="products_action_displayAllTotal">Все товары</string>
     <string name="products_action_displayCompletedPurchases">Показать</string>
     <string name="products_action_displayCompletedTotal">Купленные товары</string>
+    <string name="products_action_enableProductsMultiColumns">Несколько столбцов</string>
     <string name="products_action_moveShoppingListToArchive">Архивировать</string>
     <string name="products_action_moveShoppingListToPurchases">Разархивировать</string>
     <string name="products_action_moveShoppingListToTrash">Удалить</string>
@@ -345,9 +347,7 @@
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
     <string name="settings_body_migrateFromAppVersion14">Нажмите, чтобы принудительно переместить данные, текущие данные будут удалены</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
-    <string name="settings_body_productsMultiColumns">Количество рассчитывается автоматически</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
-    <string name="settings_body_shoppingsMultiColumns">Количество рассчитывается автоматически</string>
     <string name="settings_body_terms_and_conditions">Нажмите, чтобы прочитать</string>
     <string name="settings_contentDescription_navigationIcon">Открыть навигацию</string>
     <string name="settings_header_aboutApp">О приложении</string>
@@ -372,16 +372,16 @@
     <string name="settings_title_migrateFromAppVersion14">Обновление с версии 1.3.5</string>
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>
-    <string name="settings_title_productsMultiColumns">Несколько столбцов в товарах</string>
     <string name="settings_title_saveProductToAutocompletes">Сохранять неизвестные товары</string>
-    <string name="settings_title_shoppingsMultiColumns">Несколько столбцов в списках</string>
     <string name="settings_title_taxRate">Налоговая ставка</string>
     <string name="settings_title_terms_and_conditions">Условия использования</string>
 
+    <string name="shoppingLists_action_disableShoppingsMultiColumns">Один столбец</string>
     <string name="shoppingLists_action_displayActiveTotal">Не купленные товары</string>
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Показать</string>
     <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
+    <string name="shoppingLists_action_enableShoppingsMultiColumns">Несколько столбцов</string>
     <string name="shoppingLists_action_reverseSort">В обратном порядке</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>

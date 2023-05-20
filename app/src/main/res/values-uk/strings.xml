@@ -235,10 +235,12 @@
     <string name="notificationChannel_name_purchases">Покупки</string>
 
     <string name="products_action_calculateChange">Порахувати здачу</string>
+    <string name="products_action_disableProductsMultiColumns">Один стовпець</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
     <string name="products_action_displayCompletedPurchases">Показувати</string>
     <string name="products_action_displayCompletedTotal">Куплені товари</string>
+    <string name="products_action_enableProductsMultiColumns">Декілька стовпців</string>
     <string name="products_action_moveShoppingListToArchive">Архівувати</string>
     <string name="products_action_moveShoppingListToPurchases">Розархівувати</string>
     <string name="products_action_moveShoppingListToTrash">Видалити</string>
@@ -298,9 +300,7 @@
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_migrateFromAppVersion14">Натисніть, щоб примусово перемістити дані, поточні дані будуть видалені</string>
     <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
-    <string name="settings_body_productsMultiColumns">Кількість розраховується автоматично</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
-    <string name="settings_body_shoppingsMultiColumns">Кількість розраховується автоматично</string>
     <string name="settings_body_terms_and_conditions">Натисніть, щоб прочитати</string>
     <string name="settings_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="settings_header_aboutApp">Про програму</string>
@@ -325,16 +325,16 @@
     <string name="settings_title_migrateFromAppVersion14">Оновлення з версії 1.3.5</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_privacy_policy">Політика конфіденційності</string>
-    <string name="settings_title_productsMultiColumns">Декілька стовпців у товарах</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати невідомі товари</string>
-    <string name="settings_title_shoppingsMultiColumns">Декілька стовпців у списках</string>
     <string name="settings_title_taxRate">Податкова ставка</string>
     <string name="settings_title_terms_and_conditions">Умови використання</string>
 
+    <string name="shoppingLists_action_disableShoppingsMultiColumns">Один стовпець</string>
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
     <string name="shoppingLists_action_displayCompletedPurchases">Показувати</string>
     <string name="shoppingLists_action_displayCompletedTotal">Куплені товари</string>
+    <string name="shoppingLists_action_enableShoppingsMultiColumns">Декілька стовпців</string>
     <string name="shoppingLists_action_reverseSort">У зворотному порядку</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архів</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>

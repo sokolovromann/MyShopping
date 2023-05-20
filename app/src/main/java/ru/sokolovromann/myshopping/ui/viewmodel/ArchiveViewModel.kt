@@ -75,6 +75,8 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.HideArchiveMenu -> hideArchiveMenu()
 
             ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
+
+            ArchiveEvent.InvertShoppingsMultiColumns -> invertShoppingListsMultiColumns()
         }
     }
 
@@ -238,5 +240,9 @@ class ArchiveViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         archiveState.hideSort()
+    }
+
+    private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
+        repository.invertShoppingListsMultiColumns()
     }
 }

@@ -47,4 +47,6 @@ sealed class ArchiveEvent {
     object HideArchiveMenu : ArchiveEvent()
 
     object HideShoppingListsSort : ArchiveEvent()
+
+    object InvertShoppingsMultiColumns : ArchiveEvent()
 }

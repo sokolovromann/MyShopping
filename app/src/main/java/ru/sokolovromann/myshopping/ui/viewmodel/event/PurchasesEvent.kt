@@ -53,4 +53,6 @@ sealed class PurchasesEvent {
     object HideShoppingListsSort : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
+
+    object InvertShoppingsMultiColumns : PurchasesEvent()
 }

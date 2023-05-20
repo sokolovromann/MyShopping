@@ -81,4 +81,8 @@ class PurchasesRepositoryImpl @Inject constructor(
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ACTIVE)
         preferencesDao.displayPurchasesTotal(displayTotal)
     }
+
+    override suspend fun invertShoppingListsMultiColumns(): Unit = withContext(dispatchers.io) {
+        preferencesDao.invertShoppingsMultiColumns()
+    }
 }

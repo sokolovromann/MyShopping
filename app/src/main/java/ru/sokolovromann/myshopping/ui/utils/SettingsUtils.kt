@@ -66,18 +66,6 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
 private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
     return listOf(
         SettingsItem(
-            uid = SettingsUid.ShoppingsMultiColumns,
-            titleText = UiText.FromResources(R.string.settings_title_shoppingsMultiColumns),
-            bodyText = UiText.FromResources(R.string.settings_body_shoppingsMultiColumns),
-            checked = preferences.shoppingsMultiColumns
-        ),
-        SettingsItem(
-            uid = SettingsUid.ProductsMultiColumns,
-            titleText = UiText.FromResources(R.string.settings_title_productsMultiColumns),
-            bodyText = UiText.FromResources(R.string.settings_body_productsMultiColumns),
-            checked = preferences.productsMultiColumns
-        ),
-        SettingsItem(
             uid = SettingsUid.DisplayCompletedPurchases,
             titleText = UiText.FromResources(R.string.settings_title_displayCompletedPurchases),
             bodyText = preferences.displayCompletedPurchases.toPurchasesSettingsText()

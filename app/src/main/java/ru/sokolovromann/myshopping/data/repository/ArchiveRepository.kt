@@ -19,4 +19,6 @@ interface ArchiveRepository {
     suspend fun displayCompletedPurchasesTotal()
 
     suspend fun displayActivePurchasesTotal()
+
+    suspend fun invertShoppingListsMultiColumns()
 }

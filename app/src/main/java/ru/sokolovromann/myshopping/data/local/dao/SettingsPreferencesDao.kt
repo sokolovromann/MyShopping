@@ -33,14 +33,6 @@ class SettingsPreferencesDao @Inject constructor(
         localDataStore.invertDisplayMoney()
     }
 
-    suspend fun invertShoppingsMultiColumns() {
-        localDataStore.invertShoppingsMultiColumns()
-    }
-
-    suspend fun invertProductsMultiColumns() {
-        localDataStore.invertProductsMultiColumns()
-    }
-
     suspend fun invertEditProductAfterCompleted() {
         localDataStore.invertEditProductAfterCompleted()
     }

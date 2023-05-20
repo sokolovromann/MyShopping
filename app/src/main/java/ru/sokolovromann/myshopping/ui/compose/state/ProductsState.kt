@@ -36,6 +36,12 @@ class ProductsState {
             UiText.Nothing
         }
 
+        val multiColumnsText: UiText = if (preferences.productsMultiColumns) {
+            UiText.FromResources(R.string.products_action_disableProductsMultiColumns)
+        } else {
+            UiText.FromResources(R.string.products_action_enableProductsMultiColumns)
+        }
+
         val shoppingListName: UiText = if (products.formatName().isEmpty()) {
             UiText.Nothing
         } else {
@@ -49,6 +55,7 @@ class ProductsState {
             shoppingListCompleted = products.isCompleted(),
             productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
+            multiColumnsText = multiColumnsText,
             reminderText = toReminderText(products.shoppingList.reminder),
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
@@ -68,6 +75,12 @@ class ProductsState {
             products.calculateTotalToText()
         } else {
             UiText.Nothing
+        }
+
+        val multiColumnsText: UiText = if (preferences.productsMultiColumns) {
+            UiText.FromResources(R.string.products_action_disableProductsMultiColumns)
+        } else {
+            UiText.FromResources(R.string.products_action_enableProductsMultiColumns)
         }
 
         val shoppingListName: UiText = if (products.formatName().isEmpty()) {
@@ -107,6 +120,7 @@ class ProductsState {
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
             multiColumns = preferences.productsMultiColumns,
+            multiColumnsText = multiColumnsText,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
             showHiddenProducts = showHiddenProducts,
@@ -382,6 +396,7 @@ data class ProductsScreenData(
     val totalText: UiText = UiText.Nothing,
     val reminderText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
+    val multiColumnsText: UiText = UiText.Nothing,
     val smartphoneScreen: Boolean = true,
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,

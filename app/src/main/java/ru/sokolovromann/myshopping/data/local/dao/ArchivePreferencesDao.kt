@@ -16,4 +16,8 @@ class ArchivePreferencesDao @Inject constructor(
     suspend fun displayPurchasesTotal(displayTotal: String) {
         localDataStore.displayPurchasesTotal(displayTotal)
     }
+
+    suspend fun invertShoppingsMultiColumns() {
+        localDataStore.invertShoppingsMultiColumns()
+    }
 }

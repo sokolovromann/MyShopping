@@ -29,4 +29,6 @@ interface ProductsRepository {
     suspend fun displayCompletedPurchasesTotal()
 
     suspend fun displayActivePurchasesTotal()
+
+    suspend fun invertProductsMultiColumns()
 }
