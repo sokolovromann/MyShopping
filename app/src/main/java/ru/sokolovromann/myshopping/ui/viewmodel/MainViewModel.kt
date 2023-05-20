@@ -130,7 +130,8 @@ class MainViewModel @Inject constructor(
             editProductAfterCompleted = preferences.editProductAfterCompleted,
             saveProductToAutocompletes = preferences.saveProductToAutocompletes,
             displayMoney = preferences.displayMoney,
-            displayDefaultAutocompletes = false
+            displayDefaultAutocompletes = false,
+            completedWithCheckbox = false
         )
         repository.addPreferences(appPreferences)
     }
@@ -144,8 +145,7 @@ class MainViewModel @Inject constructor(
             smartphoneScreen = toSmartphoneScreen(event.screenWidth),
             currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
             shoppingsMultiColumns = event.screenWidth >= 550,
-            productsMultiColumns = event.screenWidth >= 720,
-            completedWithCheckbox = false
+            productsMultiColumns = event.screenWidth >= 720
         )
         repository.addPreferences(appPreferences)
 
