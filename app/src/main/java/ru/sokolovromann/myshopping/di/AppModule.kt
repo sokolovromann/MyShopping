@@ -415,7 +415,24 @@ object AppModule {
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): EditShoppingListNameRepositoryImpl {
-        return EditShoppingListNameRepositoryImpl(localDatabase.editShoppingListDao(), preferencesDao, mapping, dispatchers)
+        return EditShoppingListNameRepositoryImpl(localDatabase.editShoppingListNameDao(), preferencesDao, mapping, dispatchers)
+    }
+
+    @Provides
+    fun providesEditShoppingListTotalRepository(
+        repository: EditShoppingListTotalRepositoryImpl
+    ): EditShoppingListTotalRepository {
+        return repository
+    }
+
+    @Provides
+    fun providesEditShoppingListTotalRepositoryImpl(
+        localDatabase: LocalDatabase,
+        preferencesDao: ProductsPreferencesDao,
+        mapping: RepositoryMapping,
+        dispatchers: AppDispatchers
+    ): EditShoppingListTotalRepositoryImpl {
+        return EditShoppingListTotalRepositoryImpl(localDatabase.editShoppingListTotalDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides

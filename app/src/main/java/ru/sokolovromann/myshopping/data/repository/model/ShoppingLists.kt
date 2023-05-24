@@ -23,7 +23,11 @@ data class ShoppingLists(
     fun calculateTotal(): Money {
         var total = 0f
         shoppingLists.forEach {
-            total += it.calculateTotal().value
+            total += if (it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL) {
+                it.calculateTotal(false).value
+            } else {
+                it.calculateTotal(true).value
+            }
         }
         return Money(total, preferences.currency)
     }
@@ -32,7 +36,11 @@ data class ShoppingLists(
         var total = 0f
         shoppingLists.forEach {
             if (uids.contains(it.uid)) {
-                total += it.calculateTotal().value
+                total += if (it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL) {
+                    it.calculateTotal(false).value
+                } else {
+                    it.calculateTotal(true).value
+                }
             }
         }
 

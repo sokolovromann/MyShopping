@@ -59,6 +59,7 @@ class ProductsState {
             reminderText = toReminderText(products.shoppingList.reminder),
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
+            totalFormatted = products.shoppingList.totalFormatted,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney,
             completedWithCheckbox = preferences.completedWithCheckbox
@@ -123,6 +124,7 @@ class ProductsState {
             multiColumnsText = multiColumnsText,
             smartphoneScreen = preferences.smartphoneScreen,
             displayTotal = preferences.displayPurchasesTotal,
+            totalFormatted = products.shoppingList.totalFormatted,
             showHiddenProducts = showHiddenProducts,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney,
@@ -401,6 +403,7 @@ data class ProductsScreenData(
     val showSort: Boolean = false,
     val displayTotal: DisplayTotal = DisplayTotal.DefaultValue,
     val showDisplayTotal: Boolean = false,
+    val totalFormatted: Boolean = false,
     val showHiddenProducts: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val displayMoney: Boolean = true,

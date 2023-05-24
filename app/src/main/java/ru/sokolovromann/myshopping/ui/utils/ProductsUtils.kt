@@ -13,7 +13,7 @@ fun Products.getProductsItems(
 ): List<ProductItem> {
     return formatProducts(displayCompleted).map {
         val displayQuantity = it.quantity.isNotEmpty()
-        val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney
+        val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
 
         var body = if (displayPrice) {
             if (displayQuantity) {
@@ -41,7 +41,7 @@ fun Products.getProductsItems(
 }
 
 fun Products.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), preferences.displayPurchasesTotal)
+    return totalToText(calculateTotal(), preferences.displayPurchasesTotal, totalFormatted())
 }
 
 fun Products.calculateTotalToText(uids: List<String>): UiText {
@@ -49,11 +49,15 @@ fun Products.calculateTotalToText(uids: List<String>): UiText {
     return UiText.FromResourcesWithArgs(R.string.products_text_selectedTotal, total.toString())
 }
 
-private fun totalToText(total: Money, displayTotal: DisplayTotal): UiText {
-    val id = when (displayTotal) {
-        DisplayTotal.ALL -> R.string.products_text_allTotal
-        DisplayTotal.COMPLETED -> R.string.products_text_completedTotal
-        DisplayTotal.ACTIVE -> R.string.products_text_activeTotal
+private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted: Boolean): UiText {
+    return if (totalFormatted) {
+        UiText.FromResourcesWithArgs(R.string.products_text_totalFormatted, total.toString())
+    } else {
+        val id = when (displayTotal) {
+            DisplayTotal.ALL -> R.string.products_text_allTotal
+            DisplayTotal.COMPLETED -> R.string.products_text_completedTotal
+            DisplayTotal.ACTIVE -> R.string.products_text_activeTotal
+        }
+        UiText.FromResourcesWithArgs(id, total.toString())
     }
-    return UiText.FromResourcesWithArgs(id, total.toString())
 }

@@ -203,6 +203,12 @@
     <string name="editShoppingListName_header_editShoppingListName">Bearbeiten</string>
     <string name="editShoppingListName_label_name">Listennamen</string>
 
+    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">Absagen</string>
+    <string name="editShoppingListTotal_action_saveShoppingListTotal">Speichern</string>
+    <string name="editShoppingListTotal_header_addShoppingListTotal">Hinzufügen</string>
+    <string name="editShoppingListTotal_header_editShoppingListTotal">Bearbeiten</string>
+    <string name="editShoppingListTotal_label_total">Liste gesamt</string>
+
     <string name="editTaxRate_action_cancelSavingTaxRate">Absagen</string>
     <string name="editTaxRate_action_saveTaxRate">Speichern</string>
     <string name="editTaxRate_header">Steuersatz</string>
@@ -216,12 +222,14 @@
     <string name="notificationChannel_description_purchases">Benachrichtigungen über einkäufe</string>
     <string name="notificationChannel_name_purchases">Einkäufe</string>
 
+    <string name="products_action_addShoppingListTotal">Gesamt addieren</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_disableProductsMultiColumns">Eine Spalte</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
     <string name="products_action_displayAllTotal">Alle produkte</string>
     <string name="products_action_displayCompletedPurchases">Anzeige</string>
     <string name="products_action_displayCompletedTotal">Fertige produkte</string>
+    <string name="products_action_editShoppingListTotal">Gesamt bearbeiten</string>
     <string name="products_action_enableProductsMultiColumns">Mehrspaltig</string>
     <string name="products_action_moveShoppingListToArchive">Archivieren</string>
     <string name="products_action_moveShoppingListToPurchases">Unarchivieren</string>
@@ -254,6 +262,7 @@
     <string name="products_text_hiddenProducts">Sie haben versteckte Produkte</string>
     <string name="products_text_purchasesProductsNotFound">Klicken Sie auf \"+\" um ein neues Produkt hinzuzufügen</string>
     <string name="products_text_selectedTotal">Ausgewählt: %s</string>
+    <string name="products_text_totalFormatted">Bearbeitet: %s</string>
     <string name="products_text_trashProductsNotFound">Einkaufsliste ist leer</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
@@ -336,6 +345,7 @@
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
     <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
+    <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
     <string name="trash_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>

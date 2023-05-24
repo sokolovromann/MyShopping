@@ -60,6 +60,10 @@ fun ProductsScreen(
                     route = UiRoute.Products.editShoppingListReminderScreen(it.uid)
                 )
 
+                is ProductsScreenEvent.EditShoppingListTotal -> navController.navigate(
+                    route = UiRoute.Products.editShoppingListTotalScreen(it.uid)
+                )
+
                 is ProductsScreenEvent.CopyProductToShoppingList -> navController.navigate(
                     route = UiRoute.Products.copyProductToShoppingList(it.uids)
                 )
@@ -184,6 +188,7 @@ fun ProductsScreen(
                             ProductsTotalContent(
                                 displayTotal = screenData.displayTotal,
                                 totalText = screenData.totalText,
+                                totalFormatted = screenData.totalFormatted,
                                 fontSize = screenData.fontSize.toButton().sp,
                                 expanded = screenData.showDisplayTotal,
                                 onExpanded = {
@@ -196,7 +201,8 @@ fun ProductsScreen(
                                 onSelected = {
                                     val event = ProductsEvent.DisplayPurchasesTotal(it)
                                     viewModel.onEvent(event)
-                                }
+                                },
+                                onEditTotal = { viewModel.onEvent(ProductsEvent.EditShoppingListTotal) }
                             )
                         }
                     },
@@ -474,11 +480,13 @@ private fun ProductsReminderContent(
 private fun ProductsTotalContent(
     modifier: Modifier = Modifier,
     displayTotal: DisplayTotal,
+    totalFormatted: Boolean,
     totalText: UiText,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
-    onSelected: (DisplayTotal) -> Unit
+    onSelected: (DisplayTotal) -> Unit,
+    onEditTotal: () -> Unit
 ) {
     TextButton(
         modifier = modifier,
@@ -494,21 +502,33 @@ private fun ProductsTotalContent(
             onDismissRequest = { onExpanded(false) },
             header = { Text(text = stringResource(R.string.products_header_displayTotal)) }
         ) {
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayTotal.ALL) },
-                text = { Text(text = stringResource(R.string.products_action_displayAllTotal)) },
-                right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ALL) }
-            )
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayTotal.COMPLETED) },
-                text = { Text(text = stringResource(R.string.products_action_displayCompletedTotal)) },
-                right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.COMPLETED) }
-            )
-            AppDropdownMenuItem(
-                onClick = { onSelected(DisplayTotal.ACTIVE) },
-                text = { Text(text = stringResource(R.string.products_action_displayActiveTotal)) },
-                right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ACTIVE) }
-            )
+            if (totalFormatted) {
+                AppDropdownMenuItem(
+                    onClick = onEditTotal,
+                    text = { Text(text = stringResource(R.string.products_action_editShoppingListTotal)) }
+                )
+            } else {
+                AppDropdownMenuItem(
+                    onClick = { onSelected(DisplayTotal.ALL) },
+                    text = { Text(text = stringResource(R.string.products_action_displayAllTotal)) },
+                    right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ALL) }
+                )
+                AppDropdownMenuItem(
+                    onClick = { onSelected(DisplayTotal.COMPLETED) },
+                    text = { Text(text = stringResource(R.string.products_action_displayCompletedTotal)) },
+                    right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.COMPLETED) }
+                )
+                AppDropdownMenuItem(
+                    onClick = { onSelected(DisplayTotal.ACTIVE) },
+                    text = { Text(text = stringResource(R.string.products_action_displayActiveTotal)) },
+                    right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ACTIVE) }
+                )
+                Divider()
+                AppDropdownMenuItem(
+                    onClick = onEditTotal,
+                    text = { Text(text = stringResource(R.string.products_action_addShoppingListTotal)) }
+                )
+            }
         }
     }
 }

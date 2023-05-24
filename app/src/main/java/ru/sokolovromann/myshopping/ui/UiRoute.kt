@@ -45,6 +45,10 @@ sealed class UiRoute(val graph: String) {
             return "edit-shopping-list-reminder/$shoppingUid"
         }
 
+        fun editShoppingListTotalScreen(shoppingUid: String): String {
+            return "edit-shopping-list-total/$shoppingUid"
+        }
+
         fun copyProductToShoppingList(productUids: String): String {
             return "copy-product-to-shopping-list/$productUids"
         }
@@ -153,6 +157,9 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         }
         dialog(route = UiRoute.Products.editShoppingListReminderScreen(UiRouteKey.ShoppingUid.placeholder)) {
             EditReminderScreen(navController)
+        }
+        dialog(route = UiRoute.Products.editShoppingListTotalScreen(UiRouteKey.ShoppingUid.placeholder)) {
+            EditShoppingListTotalScreen(navController)
         }
     }
 }

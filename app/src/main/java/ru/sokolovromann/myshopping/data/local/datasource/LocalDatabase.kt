@@ -37,7 +37,9 @@ abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun editReminderDao(): EditReminderDao
 
-    abstract fun editShoppingListDao(): EditShoppingListNameDao
+    abstract fun editShoppingListNameDao(): EditShoppingListNameDao
+
+    abstract fun editShoppingListTotalDao(): EditShoppingListTotalDao
 
     abstract fun copyProductDao(): CopyProductDao
 

@@ -10,6 +10,8 @@ data class ShoppingList(
     val lastModified: Long = created,
     val name: String = "",
     val reminder: Long? = null,
+    val total: Money = Money(),
+    val totalFormatted: Boolean = false,
     val archived: Boolean = false,
     val deleted: Boolean = false,
     val completed: Boolean = false,
@@ -21,29 +23,33 @@ data class ShoppingList(
     val pinned: Boolean = false
 ) {
 
-    fun calculateTotal(): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+    fun calculateTotal(forceCalculate: Boolean = !totalFormatted): Money {
+        return if (forceCalculate) {
+            var all = 0f
+            var completed = 0f
+            var active = 0f
 
-        products.forEach { product ->
-            val totalValue = product.formatTotal().valueToString().toFloat()
+            products.forEach { product ->
+                val totalValue = product.formatTotal().valueToString().toFloat()
 
-            all += totalValue
-            if (product.completed) {
-                completed += totalValue
-            } else {
-                active += totalValue
+                all += totalValue
+                if (product.completed) {
+                    completed += totalValue
+                } else {
+                    active += totalValue
+                }
             }
-        }
 
-        val total = when (displayTotal) {
-            DisplayTotal.ALL -> all
-            DisplayTotal.COMPLETED -> completed
-            DisplayTotal.ACTIVE -> active
-        }
+            val total = when (displayTotal) {
+                DisplayTotal.ALL -> all
+                DisplayTotal.COMPLETED -> completed
+                DisplayTotal.ACTIVE -> active
+            }
 
-        return Money(total, currency)
+            Money(total, currency)
+        } else {
+            total
+        }
     }
 
     fun nextProductsPosition(): Int {

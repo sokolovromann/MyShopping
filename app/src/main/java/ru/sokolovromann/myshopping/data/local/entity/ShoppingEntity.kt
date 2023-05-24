@@ -28,6 +28,12 @@ data class ShoppingEntity(
     @ColumnInfo(name = "reminder")
     val reminder: Long = 0L,
 
+    @ColumnInfo(name = "total")
+    val total: Float = 0f,
+
+    @ColumnInfo(name = "total_formatted")
+    val totalFormatted: Boolean = false,
+
     @ColumnInfo(name = "archived")
     val archived: Boolean = false,
 

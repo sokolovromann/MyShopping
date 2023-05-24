@@ -24,13 +24,15 @@ fun ShoppingLists.getShoppingListItems(
 ): List<ShoppingListItem> {
     val defaultProductsLimit = 10
     return formatShoppingLists(displayCompleted).map {
+        val totalFormatted = it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL
+
         val productsList = if (it.products.isEmpty()) {
             val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)
         } else {
             val products: MutableList<Pair<Boolean?, UiText>> = it.products
                 .filterIndexed { index, _ -> index < defaultProductsLimit}
-                .map { product -> productsToPair(product, preferences) }
+                .map { product -> productsToPair(product, preferences, totalFormatted) }
                 .toMutableList()
 
             if (it.products.size > defaultProductsLimit) {
@@ -41,7 +43,7 @@ fun ShoppingLists.getShoppingListItems(
         }
 
         val totalText: UiText = if (preferences.displayMoney) {
-            it.calculateTotalToText()
+            it.calculateTotalToText(totalFormatted)
         } else {
             UiText.Nothing
         }
@@ -66,7 +68,7 @@ fun ShoppingLists.getShoppingListItems(
 }
 
 fun ShoppingLists.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), preferences.displayPurchasesTotal)
+    return totalToText(calculateTotal(), preferences.displayPurchasesTotal, false)
 }
 
 fun ShoppingLists.calculateTotalToText(uids: List<String>): UiText {
@@ -74,25 +76,30 @@ fun ShoppingLists.calculateTotalToText(uids: List<String>): UiText {
     return UiText.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.toString())
 }
 
-fun ShoppingList.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), displayTotal)
+private fun ShoppingList.calculateTotalToText(totalFormatted: Boolean): UiText {
+    return totalToText(calculateTotal(!totalFormatted), displayTotal, totalFormatted)
 }
 
-private fun totalToText(total: Money, displayTotal: DisplayTotal): UiText {
-    val id = when (displayTotal) {
-        DisplayTotal.ALL -> R.string.shoppingLists_text_allTotal
-        DisplayTotal.COMPLETED -> R.string.shoppingLists_text_completedTotal
-        DisplayTotal.ACTIVE -> R.string.shoppingLists_text_activeTotal
+private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted: Boolean): UiText {
+    return if (totalFormatted) {
+        UiText.FromResourcesWithArgs(R.string.shoppingLists_text_totalFormatted, total.toString())
+    } else {
+        val id = when (displayTotal) {
+            DisplayTotal.ALL -> R.string.shoppingLists_text_allTotal
+            DisplayTotal.COMPLETED -> R.string.shoppingLists_text_completedTotal
+            DisplayTotal.ACTIVE -> R.string.shoppingLists_text_activeTotal
+        }
+        UiText.FromResourcesWithArgs(id, total.toString())
     }
-    return UiText.FromResourcesWithArgs(id, total.toString())
 }
 
 private fun productsToPair(
     product: Product,
-    preferences: AppPreferences
+    preferences: AppPreferences,
+    totalFormatted: Boolean
 ): Pair<Boolean, UiText> {
     val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney
+    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted
 
     var productsText = if (displayPrice) {
         if (displayQuantity) {

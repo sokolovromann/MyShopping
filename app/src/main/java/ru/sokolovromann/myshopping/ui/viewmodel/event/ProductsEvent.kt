@@ -13,6 +13,8 @@ sealed class ProductsEvent {
 
     object EditShoppingListReminder : ProductsEvent()
 
+    object EditShoppingListTotal : ProductsEvent()
+
     object CopyProductsToShoppingList : ProductsEvent()
 
     object MoveProductsToShoppingList : ProductsEvent()

@@ -17,6 +17,8 @@ class RepositoryMapping @Inject constructor() {
             lastModified = shoppingList.lastModified,
             name = shoppingList.name,
             reminder = toReminderEntity(shoppingList.reminder),
+            total = toMoneyValue(shoppingList.total),
+            totalFormatted = shoppingList.totalFormatted,
             archived = shoppingList.archived,
             deleted = shoppingList.deleted,
             sortBy = toSortByName(shoppingList.sort.sortBy),
@@ -350,6 +352,16 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toEditShoppingListTotal(
+        entity: ShoppingListEntity?,
+        preferencesEntity: AppPreferencesEntity
+    ): EditShoppingListTotal {
+        return EditShoppingListTotal(
+            shoppingList = if (entity == null) null else toShoppingList(entity, preferencesEntity),
+            preferences = toAppPreferences(preferencesEntity)
+        )
+    }
+
     fun toCalculateChange(
         entity: ShoppingListEntity?,
         preferencesEntity: AppPreferencesEntity
@@ -388,6 +400,10 @@ class RepositoryMapping @Inject constructor() {
         return lockProductElement.name
     }
 
+    fun toMoneyValue(money: Money): Float {
+        return money.value
+    }
+
     private fun toShoppingList(
         shoppingListEntity: ShoppingListEntity,
         preferencesEntity: AppPreferencesEntity
@@ -401,6 +417,11 @@ class RepositoryMapping @Inject constructor() {
             lastModified = entity.lastModified,
             name = entity.name,
             reminder = toReminder(entity.reminder),
+            total = toMoney(
+                entity.total,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
+            totalFormatted = entity.totalFormatted,
             archived = entity.archived,
             deleted = entity.deleted,
             completed = toCompleted(shoppingListEntity.productEntities),
@@ -545,10 +566,6 @@ class RepositoryMapping @Inject constructor() {
 
     private fun toMoney(value: Float, currency: Currency): Money {
         return Money(value, currency)
-    }
-
-    private fun toMoneyValue(money: Money): Float {
-        return money.value
     }
 
     private fun toQuantity(value: Float, symbol: String): Quantity {

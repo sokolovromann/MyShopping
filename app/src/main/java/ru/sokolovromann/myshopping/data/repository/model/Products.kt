@@ -9,6 +9,14 @@ data class Products(
         return shoppingList.name
     }
 
+    fun total(): Money {
+        return shoppingList.total
+    }
+
+    fun totalFormatted(): Boolean {
+        return shoppingList.totalFormatted
+    }
+
     fun formatProducts(
         displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
     ): List<Product> {
@@ -20,29 +28,36 @@ data class Products(
         }
     }
 
-    fun calculateTotal(displayTotal: DisplayTotal = preferences.displayPurchasesTotal): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+    fun calculateTotal(
+        displayTotal: DisplayTotal = preferences.displayPurchasesTotal,
+        forceCalculate: Boolean = !totalFormatted()
+    ): Money {
+        return if (forceCalculate) {
+            var all = 0f
+            var completed = 0f
+            var active = 0f
 
-        shoppingList.products.forEach { product ->
-            val totalValue = product.formatTotal().valueToString().toFloat()
+            shoppingList.products.forEach { product ->
+                val totalValue = product.formatTotal().valueToString().toFloat()
 
-            all += totalValue
-            if (product.completed) {
-                completed += totalValue
-            } else {
-                active += totalValue
+                all += totalValue
+                if (product.completed) {
+                    completed += totalValue
+                } else {
+                    active += totalValue
+                }
             }
-        }
 
-        val total = when (displayTotal) {
-            DisplayTotal.ALL -> all
-            DisplayTotal.COMPLETED -> completed
-            DisplayTotal.ACTIVE -> active
-        }
+            val total = when (displayTotal) {
+                DisplayTotal.ALL -> all
+                DisplayTotal.COMPLETED -> completed
+                DisplayTotal.ACTIVE -> active
+            }
 
-        return Money(total, preferences.currency)
+            Money(total, preferences.currency)
+        } else {
+            total()
+        }
     }
 
     fun calculateTotal(uids: List<String>): Money {

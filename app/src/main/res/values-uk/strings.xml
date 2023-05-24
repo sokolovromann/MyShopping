@@ -221,6 +221,12 @@
     <string name="editShoppingListName_header_editShoppingListName">Редагувати</string>
     <string name="editShoppingListName_label_name">Назва списку</string>
 
+    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">Скасування</string>
+    <string name="editShoppingListTotal_action_saveShoppingListTotal">Зберегти</string>
+    <string name="editShoppingListTotal_header_addShoppingListTotal">Додати</string>
+    <string name="editShoppingListTotal_header_editShoppingListTotal">Редагувати</string>
+    <string name="editShoppingListTotal_label_total">Разом списку</string>
+
     <string name="editTaxRate_action_cancelSavingTaxRate">Скасування</string>
     <string name="editTaxRate_action_saveTaxRate">Зберегти</string>
     <string name="editTaxRate_header">Податкова ставка</string>
@@ -234,12 +240,14 @@
     <string name="notificationChannel_description_purchases">Сповіщення для покупок</string>
     <string name="notificationChannel_name_purchases">Покупки</string>
 
+    <string name="products_action_addShoppingListTotal">Додати разом</string>
     <string name="products_action_calculateChange">Порахувати здачу</string>
     <string name="products_action_disableProductsMultiColumns">Один стовпець</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
     <string name="products_action_displayCompletedPurchases">Показувати</string>
     <string name="products_action_displayCompletedTotal">Куплені товари</string>
+    <string name="products_action_editShoppingListTotal">Редагувати разом</string>
     <string name="products_action_enableProductsMultiColumns">Декілька стовпців</string>
     <string name="products_action_moveShoppingListToArchive">Архівувати</string>
     <string name="products_action_moveShoppingListToPurchases">Розархівувати</string>
@@ -272,6 +280,7 @@
     <string name="products_text_hiddenProducts">У вас є приховані товари</string>
     <string name="products_text_purchasesProductsNotFound">Натисніть \"+\", щоб додати товар</string>
     <string name="products_text_selectedTotal">Вибрано: %s</string>
+    <string name="products_text_totalFormatted">Змінено: %s</string>
     <string name="products_text_trashProductsNotFound">Список покупок порожній</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
@@ -354,6 +363,7 @@
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас є приховані покупки</string>
     <string name="shoppingLists_text_selectedTotal">Вибрано: %s</string>
+    <string name="shoppingLists_text_totalFormatted">Разом (змінено): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Очистити корзину</string>
     <string name="trash_contentDescription_cancelSelectingShoppingLists">Вибрати</string>

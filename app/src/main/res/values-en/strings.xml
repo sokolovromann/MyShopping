@@ -274,6 +274,12 @@
     <string name="editShoppingListName_header_editShoppingListName">Edit</string>
     <string name="editShoppingListName_label_name">List name</string>
 
+    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">Cancel</string>
+    <string name="editShoppingListTotal_action_saveShoppingListTotal">Save</string>
+    <string name="editShoppingListTotal_header_addShoppingListTotal">Add</string>
+    <string name="editShoppingListTotal_header_editShoppingListTotal">Edit</string>
+    <string name="editShoppingListTotal_label_total">List total</string>
+
     <string name="editTaxRate_action_cancelSavingTaxRate">Cancel</string>
     <string name="editTaxRate_action_saveTaxRate">Save</string>
     <string name="editTaxRate_header">Tax rate</string>
@@ -287,12 +293,14 @@
     <string name="notificationChannel_description_purchases">Notifications of shopping lists</string>
     <string name="notificationChannel_name_purchases">Purchases</string>
 
+    <string name="products_action_addShoppingListTotal">Add total</string>
     <string name="products_action_calculateChange">Calculate change</string>
     <string name="products_action_disableProductsMultiColumns">One column</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
     <string name="products_action_displayCompletedPurchases">Display</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
+    <string name="products_action_editShoppingListTotal">Edit total</string>
     <string name="products_action_enableProductsMultiColumns">Multi-columns</string>
     <string name="products_action_moveShoppingListToArchive">Archive</string>
     <string name="products_action_moveShoppingListToPurchases">Unarchive</string>
@@ -325,6 +333,7 @@
     <string name="products_text_hiddenProducts">You have hidden products</string>
     <string name="products_text_purchasesProductsNotFound">Click \"+\" to add new product</string>
     <string name="products_text_selectedTotal">Selected: %s</string>
+    <string name="products_text_totalFormatted">Edited: %s</string>
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
@@ -407,6 +416,7 @@
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
     <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
+    <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
     <string name="trash_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
