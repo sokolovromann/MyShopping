@@ -42,14 +42,15 @@ class AddEditProductRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAutocompletes(
-        search: String
+        search: String,
+        language: String
     ): Flow<Autocompletes> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = productDao.getAutocompletes(search),
             flow2 = resources.getDefaultAutocompleteNames(search),
             flow3 = preferencesDao.getAppPreferences(),
             transform = { entities, resources, preferencesEntity ->
-                mapping.toAutocompletes(entities, resources, preferencesEntity)
+                mapping.toAutocompletes(entities, resources, preferencesEntity, language)
             }
         )
     }

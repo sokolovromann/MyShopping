@@ -19,13 +19,15 @@ class AutocompletesRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : AutocompletesRepository {
 
-    override suspend fun getDefaultAutocompletes(): Flow<Autocompletes> = withContext(dispatchers.io) {
+    override suspend fun getDefaultAutocompletes(
+        language: String
+    ): Flow<Autocompletes> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = autocompletesDao.getDefaultAutocompletes(),
             flow2 = resources.getDefaultAutocompleteNames(),
             flow3 = preferencesDao.getAppPreferences(),
             transform = { entities, names, preferencesEntity ->
-                mapping.toAutocompletes(entities, names, preferencesEntity)
+                mapping.toAutocompletes(entities, names, preferencesEntity, language)
             }
         )
     }
@@ -34,7 +36,7 @@ class AutocompletesRepositoryImpl @Inject constructor(
         return@withContext autocompletesDao.getPersonalAutocompletes().combine(
             flow = preferencesDao.getAppPreferences(),
             transform = { entities, preferencesEntity ->
-                mapping.toAutocompletes(entities, null, preferencesEntity)
+                mapping.toAutocompletes(entities, null, preferencesEntity, null)
             }
         )
     }

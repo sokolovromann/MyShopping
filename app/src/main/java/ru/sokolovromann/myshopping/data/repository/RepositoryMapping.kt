@@ -175,16 +175,26 @@ class RepositoryMapping @Inject constructor() {
             size = autocomplete.size,
             color = autocomplete.color,
             provider = autocomplete.provider,
-            personal = autocomplete.personal
+            personal = autocomplete.personal,
+            language = autocomplete.language
         )
     }
 
     fun toAutocompletes(
         entities: List<AutocompleteEntity>,
         resources: List<String>?,
-        preferencesEntity: AppPreferencesEntity
+        preferencesEntity: AppPreferencesEntity,
+        language: String?
     ): Autocompletes {
-        val autocompletes: MutableList<Autocomplete> = entities
+        val autocompletes = if (language == null) { entities } else {
+            val default = entities.filter { !it.personal && it.language == language }
+            val personal = entities.filter { it.personal }
+
+            mutableListOf<AutocompleteEntity>().apply {
+                addAll(default)
+                addAll(personal)
+            }
+        }
             .map { toAutocomplete(it, preferencesEntity) }
             .toMutableList()
 
@@ -504,7 +514,8 @@ class RepositoryMapping @Inject constructor() {
             size = entity.size,
             color = entity.color,
             provider = entity.provider,
-            personal = entity.personal
+            personal = entity.personal,
+            language = entity.language
         )
     }
 

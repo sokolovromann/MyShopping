@@ -6,7 +6,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 
 interface AutocompletesRepository {
 
-    suspend fun getDefaultAutocompletes(): Flow<Autocompletes>
+    suspend fun getDefaultAutocompletes(language: String): Flow<Autocompletes>
 
     suspend fun getPersonalAutocompletes(): Flow<Autocompletes>
 

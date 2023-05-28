@@ -16,6 +16,7 @@ import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -111,7 +112,10 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun getAutocompletes(name: String) = viewModelScope.launch {
         val search = name.trim()
-        val autocompletes = repository.getAutocompletes(search).firstOrNull() ?: Autocompletes()
+        val autocompletes = repository.getAutocompletes(
+            search = search,
+            language = Locale.getDefault().language
+        ).firstOrNull() ?: Autocompletes()
         autocompletesLoaded(autocompletes)
     }
 

@@ -15,6 +15,7 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -69,7 +70,7 @@ class AutocompletesViewModel @Inject constructor(
             autocompletesState.showLoading()
         }
 
-        repository.getDefaultAutocompletes().collect {
+        repository.getDefaultAutocompletes(getCurrentLanguage()).collect {
             autocompletesLoaded(it, AutocompleteLocation.DEFAULT)
         }
     }
@@ -101,7 +102,7 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun clearAutocompletes() = viewModelScope.launch {
         when (autocompletesState.screenData.location) {
-            AutocompleteLocation.DEFAULT -> repository.getDefaultAutocompletes()
+            AutocompleteLocation.DEFAULT -> repository.getDefaultAutocompletes(getCurrentLanguage())
             AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
             autocompletesState.screenData.selectedNames?.let { names ->
@@ -203,5 +204,9 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun hideAutocompleteLocation() {
         autocompletesState.hideLocation()
+    }
+
+    private fun getCurrentLanguage(): String {
+        return Locale.getDefault().language
     }
 }

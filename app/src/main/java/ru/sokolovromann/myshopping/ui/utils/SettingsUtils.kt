@@ -5,6 +5,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsItem
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import java.util.Locale
 
 fun Settings.getSettingsItems(): Map<UiText, List<SettingsItem>> {
     val map = mutableMapOf<UiText, List<SettingsItem>>()
@@ -86,19 +87,24 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
 }
 
 private fun Settings.getAutocompletesSettingsItems(): List<SettingsItem> {
-    return listOf(
-        SettingsItem(
-            uid = SettingsUid.DisplayDefaultAutocomplete,
-            titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocompletes),
-            checked = preferences.displayDefaultAutocompletes
-        ),
-        SettingsItem(
-            uid = SettingsUid.SaveProductToAutocompletes,
-            titleText = UiText.FromResources(R.string.settings_title_saveProductToAutocompletes),
-            bodyText = UiText.FromResources(R.string.settings_body_saveProductToAutocompletes),
-            checked = preferences.saveProductToAutocompletes
-        )
+    val displayDefaultAutocompletes = SettingsItem(
+        uid = SettingsUid.DisplayDefaultAutocomplete,
+        titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocompletes),
+        checked = preferences.displayDefaultAutocompletes
     )
+
+    val saveProductsToAutocompletes = SettingsItem(
+        uid = SettingsUid.SaveProductToAutocompletes,
+        titleText = UiText.FromResources(R.string.settings_title_saveProductToAutocompletes),
+        bodyText = UiText.FromResources(R.string.settings_body_saveProductToAutocompletes),
+        checked = preferences.saveProductToAutocompletes
+    )
+
+    return if (Locale.getDefault().isSupported()) {
+        listOf(displayDefaultAutocompletes, saveProductsToAutocompletes)
+    } else {
+        listOf(saveProductsToAutocompletes)
+    }
 }
 
 private fun Settings.getMigrationSettingsItems(): List<SettingsItem> {

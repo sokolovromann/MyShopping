@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.getAutocompleteItems
+import ru.sokolovromann.myshopping.ui.utils.isSupported
+import java.util.Locale
 
 class AutocompletesState {
 
@@ -20,11 +22,14 @@ class AutocompletesState {
     fun showNotFound(preferences: AppPreferences, location: AutocompleteLocation) {
         autocompletes = Autocompletes(preferences = preferences)
 
+        val locationEnabled = Locale.getDefault().isSupported() &&
+                preferences.displayDefaultAutocompletes
+
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
             smartphoneScreen = preferences.smartphoneScreen,
             location = location,
-            locationEnabled = preferences.displayDefaultAutocompletes,
+            locationEnabled = locationEnabled,
             fontSize = preferences.fontSize
         )
     }
@@ -33,13 +38,16 @@ class AutocompletesState {
         this.autocompletes = autocompletes
         val preferences = autocompletes.preferences
 
+        val locationEnabled = Locale.getDefault().isSupported() &&
+                preferences.displayDefaultAutocompletes
+
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Showing,
             autocompletes = autocompletes.getAutocompleteItems(),
             multiColumns = !preferences.smartphoneScreen,
             smartphoneScreen = preferences.smartphoneScreen,
             location = location,
-            locationEnabled = preferences.displayDefaultAutocompletes,
+            locationEnabled = locationEnabled,
             fontSize = preferences.fontSize
         )
     }

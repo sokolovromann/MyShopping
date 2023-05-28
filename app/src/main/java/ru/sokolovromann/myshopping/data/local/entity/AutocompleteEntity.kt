@@ -62,5 +62,8 @@ data class AutocompleteEntity(
     val provider: String = "",
 
     @ColumnInfo(name = "personal")
-    val personal: Boolean = true
+    val personal: Boolean = true,
+
+    @ColumnInfo(name = "language")
+    val language: String = ""
 )
