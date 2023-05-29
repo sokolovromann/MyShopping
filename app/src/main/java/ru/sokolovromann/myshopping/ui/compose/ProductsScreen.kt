@@ -391,17 +391,17 @@ fun ProductsScreen(
                             )
                         }
                         AppVerticalDivider()
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.products_contentDescription_deleteProducts),
-                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
-                            )
-                        }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditProduct(it)) }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = stringResource(id = R.string.products_contentDescription_editProduct),
+                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.products_contentDescription_deleteProducts),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
