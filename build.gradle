@@ -13,7 +13,7 @@ buildscript {
 
         core_ktx_version = '1.10.1'
         core_version = '1.10.1'
-        core_splashscreen_version = '1.0.0'
+        core_splashscreen_version = '1.0.1'
         compose_compiler_version = '1.4.0'
         compose_version = '1.4.2'
         system_ui_controller_version = "0.28.0"
