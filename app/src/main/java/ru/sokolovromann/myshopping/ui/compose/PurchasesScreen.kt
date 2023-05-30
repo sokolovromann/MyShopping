@@ -274,14 +274,14 @@ fun PurchasesScreen(
                     Row {
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListUp(it)) }) {
                             Icon(
-                                imageVector = Icons.Default.KeyboardArrowUp,
+                                painter = painterResource(R.drawable.ic_all_arrow_up),
                                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUp),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListDown(it)) }) {
                             Icon(
-                                imageVector = Icons.Default.KeyboardArrowDown,
+                                painter = painterResource(R.drawable.ic_all_arrow_down),
                                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDown),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )

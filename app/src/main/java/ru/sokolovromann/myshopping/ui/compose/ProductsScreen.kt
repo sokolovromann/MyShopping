@@ -378,14 +378,14 @@ fun ProductsScreen(
                     Row {
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductUp(it)) }) {
                             Icon(
-                                imageVector = Icons.Default.KeyboardArrowUp,
+                                painter = painterResource(R.drawable.ic_all_arrow_up),
                                 contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUp),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductDown(it)) }) {
                             Icon(
-                                imageVector = Icons.Default.KeyboardArrowDown,
+                                painter = painterResource(R.drawable.ic_all_arrow_down),
                                 contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
