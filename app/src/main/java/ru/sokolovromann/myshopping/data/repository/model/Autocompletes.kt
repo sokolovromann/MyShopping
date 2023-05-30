@@ -13,12 +13,16 @@ data class Autocompletes(
         return autocompletes.sortAutocompletes()
     }
 
-    fun names(search: String = ""): List<Autocomplete> {
+    fun names(
+        search: String = "",
+        displayDefault: Boolean = preferences.displayDefaultAutocompletes
+    ): List<Autocomplete> {
         val endIndex = search.length - 1
-        val partition = autocompletes.partition {
-            it.name.lowercase().toCharArray(endIndex = endIndex)
-                .contentEquals(search.lowercase().toCharArray(endIndex = endIndex))
-        }
+        val partition = filteredAutocompletes(displayDefault)
+            .partition {
+                it.name.lowercase().toCharArray(endIndex = endIndex)
+                    .contentEquals(search.lowercase().toCharArray(endIndex = endIndex))
+            }
         val searchAutocompletes = partition.first
             .sortAutocompletes()
             .distinctBy { it.name.lowercase() }
@@ -38,8 +42,8 @@ data class Autocompletes(
             }
     }
 
-    fun quantities(): List<Quantity> {
-        return autocompletes
+    fun quantities(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Quantity> {
+        return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
             .distinctBy { it.formatValue() }
@@ -48,8 +52,8 @@ data class Autocompletes(
             }
     }
 
-    fun quantitySymbols(): List<Quantity> {
-        return autocompletes
+    fun quantitySymbols(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Quantity> {
+        return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
             .distinctBy { it.symbol }
@@ -58,8 +62,8 @@ data class Autocompletes(
             }
     }
 
-    fun prices(): List<Money> {
-        return autocompletes
+    fun prices(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
+        return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.price }
             .distinctBy { it.formatValue() }
@@ -68,8 +72,8 @@ data class Autocompletes(
             }
     }
 
-    fun discounts(): List<Discount> {
-        return autocompletes
+    fun discounts(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Discount> {
+        return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.discount }
             .distinctBy { it.formatValue() }
@@ -78,13 +82,21 @@ data class Autocompletes(
             }
     }
 
-    fun totals(): List<Money> {
-        return autocompletes
+    fun totals(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
+        return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.total }
             .distinctBy { it.formatValue() }
             .filterIndexed { index, total ->
                 total.isNotEmpty() && index <= defaultMoneyLimit
             }
+    }
+
+    private fun filteredAutocompletes(displayDefault: Boolean): List<Autocomplete> {
+        return if (displayDefault) {
+            autocompletes
+        } else {
+            autocompletes.filter { it.personal }
+        }
     }
 }
