@@ -4,4 +4,8 @@ data class AppVersion14(
     val shoppingLists: List<ShoppingList> = listOf(),
     val autocompletes: List<Autocomplete> = listOf(),
     val preferences: AppVersion14Preferences = AppVersion14Preferences()
-)
+) {
+    companion object {
+        const val APP_VERSION = 14
+    }
+}

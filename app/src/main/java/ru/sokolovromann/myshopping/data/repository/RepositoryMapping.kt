@@ -287,6 +287,7 @@ class RepositoryMapping @Inject constructor() {
         shoppingListsCursor: Cursor,
         productsCursor: Cursor,
         autocompletesCursor: Cursor,
+        defaultAutocompleteNames: List<String>,
         preferences: AppVersion14PreferencesEntity
     ): AppVersion14 {
         val shoppingLists = mutableListOf<ShoppingList>()
@@ -297,10 +298,14 @@ class RepositoryMapping @Inject constructor() {
             val products = mutableListOf<Product>()
             while (productsCursor.moveToNext()) {
                 val product = toProduct(productsCursor, preferences)
-                val autocomplete = toAutocomplete(product)
                 if (product.shoppingUid == shoppingList.uid) {
                     products.add(product)
-                    autocompletes.add(autocomplete)
+
+                    if (preferences.saveProductToAutocompletes) {
+                        val personal = isPersonalAutocomplete(defaultAutocompleteNames, product.name)
+                        val autocomplete = toAutocomplete(product, personal)
+                        autocompletes.add(autocomplete)
+                    }
                 }
             }
             shoppingLists.add(
@@ -316,7 +321,10 @@ class RepositoryMapping @Inject constructor() {
         }
 
         while (autocompletesCursor.moveToNext()) {
-            val autocomplete = toAutocomplete(autocompletesCursor)
+            val autocompleteFromCursor = toAutocomplete(autocompletesCursor)
+            val autocomplete = autocompleteFromCursor.copy(
+                personal = isPersonalAutocomplete(defaultAutocompleteNames, autocompleteFromCursor.name)
+            )
             autocompletes.add(autocomplete)
         }
 
@@ -524,7 +532,7 @@ class RepositoryMapping @Inject constructor() {
         return Autocomplete(name = name)
     }
 
-    private fun toAutocomplete(product: Product): Autocomplete {
+    private fun toAutocomplete(product: Product, personal: Boolean): Autocomplete {
         return Autocomplete(
             name = product.name,
             quantity = product.quantity,
@@ -536,7 +544,8 @@ class RepositoryMapping @Inject constructor() {
             brand = product.brand,
             size = product.size,
             color = product.color,
-            provider = product.provider
+            provider = product.provider,
+            personal = personal
         )
     }
 
@@ -678,6 +687,10 @@ class RepositoryMapping @Inject constructor() {
         } else {
             entities.find { !it.completed } == null
         }
+    }
+
+    private fun isPersonalAutocomplete(defaultNames: List<String>, search: String): Boolean {
+        return defaultNames.find { it.equals(search, true) } == null
     }
 
     private fun toAppVersion14ShoppingUid(listId: Long): String {

@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.repository.model.AppVersion14
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsItem
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
@@ -13,7 +14,7 @@ fun Settings.getSettingsItems(): Map<UiText, List<SettingsItem>> {
     map[UiText.FromResources(R.string.settings_header_money)] = getMoneySettingsItems()
     map[UiText.FromResources(R.string.settings_header_purchases)] = getPurchasesSettingsItems()
     map[UiText.FromResources(R.string.settings_header_autocompletes)] = getAutocompletesSettingsItems()
-    if (preferences.firstAppVersion == 14) {
+    if (preferences.firstAppVersion == AppVersion14.APP_VERSION) {
         map[UiText.FromResources(R.string.settings_header_migration)] = getMigrationSettingsItems()
     }
     map[UiText.FromResources(R.string.settings_header_aboutApp)] = getAboutSettingsItems()

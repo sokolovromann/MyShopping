@@ -119,7 +119,7 @@ class MainViewModel @Inject constructor(
     ) {
         val appPreferences = AppPreferences(
             appFirstTime = AppFirstTime.NOTHING,
-            firstAppVersion = 14,
+            firstAppVersion = AppVersion14.APP_VERSION,
             fontSize = preferences.fontSize,
             smartphoneScreen = smartphoneScreen,
             currency = preferences.currency,
@@ -130,7 +130,6 @@ class MainViewModel @Inject constructor(
             editProductAfterCompleted = preferences.editProductAfterCompleted,
             saveProductToAutocompletes = preferences.saveProductToAutocompletes,
             displayMoney = preferences.displayMoney,
-            displayDefaultAutocompletes = false,
             completedWithCheckbox = false
         )
         repository.addPreferences(appPreferences)

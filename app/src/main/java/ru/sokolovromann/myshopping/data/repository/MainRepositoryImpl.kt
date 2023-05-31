@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.data.local.dao.MainDao
 import ru.sokolovromann.myshopping.data.local.dao.MainPreferencesDao
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
+import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val mainDao: MainDao,
     private val preferencesDao: MainPreferencesDao,
-    private val resources: MainResources,
+    private val mainResources: MainResources,
+    private val autocompletesResources: AutocompletesResources,
     private val appVersion14LocalDatabase: AppVersion14LocalDatabase,
     private val appVersion14Preferences: AppVersion14LocalPreferences,
     private val mapping: RepositoryMapping,
@@ -34,20 +36,22 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDefaultCurrency(): Flow<Currency> = withContext(dispatchers.io) {
-        return@withContext resources.getCurrencyResources().transform {
+        return@withContext mainResources.getCurrencyResources().transform {
             val value = mapping.toCurrency(it.defaultCurrency, it.displayDefaultCurrencyToLeft)
             emit(value)
         }
     }
 
     override suspend fun getAppVersion14(): Flow<AppVersion14> = withContext(dispatchers.io) {
-        val appVersion14 = mapping.toAppVersion14(
-            shoppingListsCursor = appVersion14LocalDatabase.getShoppings(),
-            productsCursor = appVersion14LocalDatabase.getProducts(),
-            autocompletesCursor = appVersion14LocalDatabase.getAutocompletes(),
-            preferences = appVersion14Preferences.getAppVersion14Preferences()
-        )
-        return@withContext flowOf(appVersion14)
+        return@withContext autocompletesResources.getDefaultAutocompleteNames().map {
+            mapping.toAppVersion14(
+                shoppingListsCursor = appVersion14LocalDatabase.getShoppings(),
+                productsCursor = appVersion14LocalDatabase.getProducts(),
+                autocompletesCursor = appVersion14LocalDatabase.getAutocompletes(),
+                defaultAutocompleteNames = it,
+                preferences = appVersion14Preferences.getAppVersion14Preferences()
+            )
+        }
     }
 
     override suspend fun addShoppingList(

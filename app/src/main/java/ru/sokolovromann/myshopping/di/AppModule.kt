@@ -251,13 +251,15 @@ object AppModule {
     fun providesSettingsRepositoryImpl(
         localDatabase: LocalDatabase,
         preferencesDao: SettingsPreferencesDao,
-        resources: SettingsResources,
+        settingsResources: SettingsResources,
+        autocompletesResources: AutocompletesResources,
         appVersion14LocalDatabase: AppVersion14LocalDatabase,
         appVersion14Preferences: AppVersion14LocalPreferences,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): SettingsRepositoryImpl {
-        return SettingsRepositoryImpl(localDatabase.settingsDao(),preferencesDao, resources, appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
+        return SettingsRepositoryImpl(localDatabase.settingsDao(),preferencesDao, settingsResources,
+            autocompletesResources, appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
     }
 
     @Provides
@@ -359,14 +361,15 @@ object AppModule {
     fun providesMainRepositoryImpl(
         localDatabase: LocalDatabase,
         preferencesDao: MainPreferencesDao,
-        resources: MainResources,
+        mainResources: MainResources,
+        autocompletesResources: AutocompletesResources,
         appVersion14LocalDatabase: AppVersion14LocalDatabase,
         appVersion14Preferences: AppVersion14LocalPreferences,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): MainRepositoryImpl {
-        return MainRepositoryImpl(localDatabase.mainDao(), preferencesDao, resources,
-            appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
+        return MainRepositoryImpl(localDatabase.mainDao(), preferencesDao, mainResources,
+            autocompletesResources, appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
     }
 
     @Provides

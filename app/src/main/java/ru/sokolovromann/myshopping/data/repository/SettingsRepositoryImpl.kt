@@ -2,13 +2,14 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.SettingsDao
 import ru.sokolovromann.myshopping.data.local.dao.SettingsPreferencesDao
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
+import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
 import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class SettingsRepositoryImpl @Inject constructor(
     private val settingsDao: SettingsDao,
     private val preferencesDao: SettingsPreferencesDao,
-    private val resources: SettingsResources,
+    private val settingsResources: SettingsResources,
+    private val autocompletesResources: AutocompletesResources,
     private val appVersion14LocalDatabase: AppVersion14LocalDatabase,
     private val appVersion14Preferences: AppVersion14LocalPreferences,
     private val mapping: RepositoryMapping,
@@ -26,7 +28,7 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun getSettings(): Flow<Settings> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = preferencesDao.getAppPreferences(),
-            flow2 = resources.getSettingsResources(),
+            flow2 = settingsResources.getSettingsResources(),
             transform = { preferencesEntity, resourcesEntity ->
                 mapping.toSettings(preferencesEntity, resourcesEntity)
             }
@@ -38,13 +40,15 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAppVersion14(): Flow<AppVersion14> = withContext(dispatchers.io) {
-        val appVersion14 = mapping.toAppVersion14(
-            shoppingListsCursor = appVersion14LocalDatabase.getShoppings(),
-            productsCursor = appVersion14LocalDatabase.getProducts(),
-            autocompletesCursor = appVersion14LocalDatabase.getAutocompletes(),
-            preferences = appVersion14Preferences.getAppVersion14Preferences()
-        )
-        return@withContext flowOf(appVersion14)
+        return@withContext autocompletesResources.getDefaultAutocompleteNames().map {
+            mapping.toAppVersion14(
+                shoppingListsCursor = appVersion14LocalDatabase.getShoppings(),
+                productsCursor = appVersion14LocalDatabase.getProducts(),
+                autocompletesCursor = appVersion14LocalDatabase.getAutocompletes(),
+                defaultAutocompleteNames = it,
+                preferences = appVersion14Preferences.getAppVersion14Preferences()
+            )
+        }
     }
 
     override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatchers.io) {
