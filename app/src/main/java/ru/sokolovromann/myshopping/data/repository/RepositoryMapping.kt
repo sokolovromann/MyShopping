@@ -476,7 +476,7 @@ class RepositoryMapping @Inject constructor() {
 
         val quantity = Quantity(
             value = number.toFloatOrNull() ?: 0f,
-            symbol = numberMeasure
+            symbol = numberMeasure.replace(".", "")
         )
         val price = Money(value = priceMeasure)
         val taxRate = toTaxRate(preferences.taxRate, true)
