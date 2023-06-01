@@ -19,6 +19,7 @@ class RepositoryMapping @Inject constructor() {
             reminder = toReminderEntity(shoppingList.reminder),
             total = toMoneyValue(shoppingList.total),
             totalFormatted = shoppingList.totalFormatted,
+            budget = toMoneyValue(shoppingList.budget),
             archived = shoppingList.archived,
             deleted = shoppingList.deleted,
             sortBy = toSortByName(shoppingList.sort.sortBy),
@@ -440,6 +441,10 @@ class RepositoryMapping @Inject constructor() {
                 toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
             ),
             totalFormatted = entity.totalFormatted,
+            budget = toMoney(
+                entity.budget,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
             archived = entity.archived,
             deleted = entity.deleted,
             completed = toCompleted(shoppingListEntity.productEntities),

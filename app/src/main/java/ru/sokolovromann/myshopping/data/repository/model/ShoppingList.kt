@@ -12,6 +12,7 @@ data class ShoppingList(
     val reminder: Long? = null,
     val total: Money = Money(),
     val totalFormatted: Boolean = false,
+    val budget: Money = Money(),
     val archived: Boolean = false,
     val deleted: Boolean = false,
     val completed: Boolean = false,

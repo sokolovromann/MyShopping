@@ -34,6 +34,9 @@ data class ShoppingEntity(
     @ColumnInfo(name = "total_formatted")
     val totalFormatted: Boolean = false,
 
+    @ColumnInfo(name = "budget")
+    val budget: Float = 0f,
+
     @ColumnInfo(name = "archived")
     val archived: Boolean = false,
 
