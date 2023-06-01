@@ -41,6 +41,7 @@
 
     <string name="autocompletes_action_selectDefaultLocation">Standard</string>
     <string name="autocompletes_action_selectPersonalLocation">Persönliche</string>
+    <string name="autocompletes_body_dataNotFound">Keine Daten</string>
     <string name="autocompletes_body_discounts">Rabatte: %s</string>
     <string name="autocompletes_body_prices">Preise: %s</string>
     <string name="autocompletes_body_quantities">Mengen: %s</string>

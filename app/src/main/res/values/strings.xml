@@ -41,6 +41,7 @@
 
     <string name="autocompletes_action_selectDefaultLocation">Default</string>
     <string name="autocompletes_action_selectPersonalLocation">Personal</string>
+    <string name="autocompletes_body_dataNotFound">No data</string>
     <string name="autocompletes_body_discounts">Discounts: %s</string>
     <string name="autocompletes_body_prices">Prices: %s</string>
     <string name="autocompletes_body_quantities">Quantities: %s</string>

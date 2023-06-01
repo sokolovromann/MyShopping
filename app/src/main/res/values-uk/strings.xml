@@ -41,6 +41,7 @@
 
     <string name="autocompletes_action_selectDefaultLocation">За замовчуванням</string>
     <string name="autocompletes_action_selectPersonalLocation">Особисті</string>
+    <string name="autocompletes_body_dataNotFound">Немає даних</string>
     <string name="autocompletes_body_discounts">Знижки: %s</string>
     <string name="autocompletes_body_prices">Ціни: %s</string>
     <string name="autocompletes_body_quantities">Кількості: %s</string>

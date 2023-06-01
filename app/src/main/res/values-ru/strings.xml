@@ -41,6 +41,7 @@
 
     <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
     <string name="autocompletes_action_selectPersonalLocation">Личные</string>
+    <string name="autocompletes_body_dataNotFound">Нет данных</string>
     <string name="autocompletes_body_discounts">Скидки: %s</string>
     <string name="autocompletes_body_prices">Цены: %s</string>
     <string name="autocompletes_body_quantities">Количества: %s</string>

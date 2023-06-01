@@ -10,6 +10,13 @@ data class AutocompleteItems(
     val totalsList: List<UiText> = listOf()
 ) {
 
+    fun inEmpty(): Boolean {
+        return quantitiesList.isEmpty() &&
+                pricesList.isEmpty() &&
+                discountsList.isEmpty() &&
+                totalsList.isEmpty()
+    }
+
     @Composable
     fun quantitiesToText(): UiText {
         var quantities = ""

@@ -328,29 +328,36 @@ private fun getAutocompleteItemBodyOrNull(
     fontSize: FontSize
 ) = itemOrNull(enabled = true) {
     Column {
-        if (autocompleteItems.quantitiesToText() != UiText.Nothing) {
+        if (autocompleteItems.inEmpty()) {
             Text(
-                text = autocompleteItems.quantitiesToText().asCompose(),
+                text = stringResource(R.string.autocompletes_body_dataNotFound),
                 fontSize = fontSize.toItemBody().sp
             )
-        }
-        if (autocompleteItems.pricesToText() != UiText.Nothing) {
-            Text(
-                text = autocompleteItems.pricesToText().asCompose(),
-                fontSize = fontSize.toItemBody().sp
-            )
-        }
-        if (autocompleteItems.discountsToText() != UiText.Nothing) {
-            Text(
-                text = autocompleteItems.discountsToText().asCompose(),
-                fontSize = fontSize.toItemBody().sp
-            )
-        }
-        if (autocompleteItems.totalsToText() != UiText.Nothing) {
-            Text(
-                text = autocompleteItems.totalsToText().asCompose(),
-                fontSize = fontSize.toItemBody().sp
-            )
+        } else {
+            if (autocompleteItems.quantitiesToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.quantitiesToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            if (autocompleteItems.pricesToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.pricesToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            if (autocompleteItems.discountsToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.discountsToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            if (autocompleteItems.totalsToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.totalsToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
         }
     }
 }
