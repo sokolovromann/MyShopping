@@ -359,6 +359,7 @@
     <string name="settings_body_migrateFromAppVersion14">Данные из старой версии приложения автоматически переносятся в новую. Но если, данные не перенеслись, то вы можете принудительно их перенести в новую версию приложения. При этом все данные, созданные после обновления будут удалены.</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
+    <string name="settings_body_shoppingsProductsOneLine">Если включено, то товары в Покупках будут отображаться в одну строку</string>
     <string name="settings_body_terms_and_conditions">Нажмите, чтобы прочитать</string>
     <string name="settings_contentDescription_navigationIcon">Открыть навигацию</string>
     <string name="settings_header_aboutApp">О приложении</string>
@@ -384,6 +385,7 @@
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_title_saveProductToAutocompletes">Сохранять неизвестные товары</string>
+    <string name="settings_title_shoppingsProductsOneLine">Отображать товары в одну строку</string>
     <string name="settings_title_taxRate">Налоговая ставка</string>
     <string name="settings_title_terms_and_conditions">Условия использования</string>
 

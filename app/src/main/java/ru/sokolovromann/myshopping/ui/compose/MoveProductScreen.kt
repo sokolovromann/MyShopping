@@ -61,6 +61,7 @@ fun MoveProductScreen(
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
+            productsOneLine = screenData.productsOneLine,
             topBar = {
                 ShoppingListsLocationContent(
                     location = screenData.location,

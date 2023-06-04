@@ -83,6 +83,12 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
             titleText = UiText.FromResources(R.string.settings_title_completedWithCheckbox),
             bodyText = UiText.FromResources(R.string.settings_body_completedWithCheckbox),
             checked = preferences.completedWithCheckbox,
+        ),
+        SettingsItem(
+            uid = SettingsUid.ShoppingsProductsOneLine,
+            titleText = UiText.FromResources(R.string.settings_title_shoppingsProductsOneLine),
+            bodyText = UiText.FromResources(R.string.settings_body_shoppingsProductsOneLine),
+            checked = preferences.shoppingsProductsOneLine
         )
     )
 }

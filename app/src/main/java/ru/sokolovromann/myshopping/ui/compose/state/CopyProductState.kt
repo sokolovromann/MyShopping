@@ -23,6 +23,7 @@ class CopyProductState {
         shoppingLists = ShoppingLists(preferences = preferences)
         screenData = CopyProductScreenData(
             screenState = ScreenState.Nothing,
+            productsOneLine = preferences.shoppingsProductsOneLine,
             smartphoneScreen = preferences.smartphoneScreen,
             location = location,
             fontSize = preferences.fontSize
@@ -39,6 +40,7 @@ class CopyProductState {
         screenData = CopyProductScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
+            productsOneLine = preferences.shoppingsProductsOneLine,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
             location = location,
@@ -102,6 +104,7 @@ class CopyProductState {
 data class CopyProductScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
+    val productsOneLine: Boolean = false,
     val shoppingListSelectedUid: String? = null,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,

@@ -294,6 +294,7 @@
     <string name="settings_body_migrateFromAppVersion14">Die Daten werden automatisch in eine neue Version der App übertragen. Wenn die Daten jedoch nicht übertragen wurden, können Sie die Übertragung auf die neue Version der App erzwingen. Alle nach dem Update erstellten Daten werden gelöscht.</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
+    <string name="settings_body_shoppingsProductsOneLine">Wenn aktiviert, produkte in Einkäufe werden in einer Zeile angezeigt</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>
     <string name="settings_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="settings_header_aboutApp">Um</string>
@@ -319,6 +320,7 @@
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
     <string name="settings_title_saveProductToAutocompletes">Unbekanntes produkt speichern</string>
+    <string name="settings_title_shoppingsProductsOneLine">Produkte in einer Zeile anzeigen</string>
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 

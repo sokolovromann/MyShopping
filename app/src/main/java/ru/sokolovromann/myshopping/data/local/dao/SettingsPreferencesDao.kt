@@ -48,4 +48,8 @@ class SettingsPreferencesDao @Inject constructor(
     suspend fun invertCompletedWithCheckbox() {
         localDataStore.invertCompletedWithCheckbox()
     }
+
+    suspend fun invertShoppingsProductsOneLine() {
+        localDataStore.invertShoppingsProductsOneLine()
+    }
 }

@@ -36,6 +36,7 @@ class ArchiveState {
 
         screenData = ArchiveScreenData(
             screenState = ScreenState.Nothing,
+            productsOneLine = preferences.shoppingsProductsOneLine,
             totalText = totalText,
             multiColumnsText = multiColumnsText,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -66,6 +67,7 @@ class ArchiveState {
         screenData = ArchiveScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
+            productsOneLine = preferences.shoppingsProductsOneLine,
             totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
             multiColumnsText = multiColumnsText,
@@ -209,6 +211,7 @@ class ArchiveState {
 data class ArchiveScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
+    val productsOneLine: Boolean = false,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val multiColumnsText: UiText = UiText.Nothing,

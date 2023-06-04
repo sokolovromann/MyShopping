@@ -217,6 +217,8 @@
     <string name="settings_header_settings">Settings</string>
     <string name="settings_title_appVersion">App version</string>
     <string name="settings_title_completedWithCheckbox">Completed with checkbox</string>
+    <string name="settings_title_shoppingsProductsOneLine">Display products in one line</string>
+    <string name="settings_body_shoppingsProductsOneLine">If enabled, products in Purchases will be displayed in one line</string>
     <string name="settings_title_currencySymbol">Currency</string>
     <string name="settings_title_developer">Developer</string>
     <string name="settings_title_displayCompletedPurchases">Display completed</string>

@@ -30,6 +30,7 @@ fun ShoppingListsGrid(
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     items: List<ShoppingListItem>,
+    productsOneLine: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
@@ -58,6 +59,7 @@ fun ShoppingListsGrid(
                     ShoppingListItemBody(
                         hasName = item.nameText.asCompose().isNotEmpty(),
                         products = item.productsList,
+                        productsOneLine = productsOneLine,
                         total = item.totalText,
                         reminder = item.reminderText,
                         fontSize = fontSize
@@ -196,6 +198,7 @@ private fun getShoppingListItemTitleOrNull(
 private fun ShoppingListItemBody(
     hasName: Boolean,
     products: List<Pair<Boolean?, UiText>>,
+    productsOneLine: Boolean,
     total: UiText,
     reminder: UiText,
     fontSize: FontSize,
@@ -230,36 +233,12 @@ private fun ShoppingListItemBody(
             Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
         }
 
-        products.forEach {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(ShoppingListItemTextSmallPaddings)
-            ) {
-                it.first?.let { completed ->
-                    val painter: Painter = if (completed) {
-                        painterResource(R.drawable.ic_all_check_box)
-                    } else {
-                        painterResource(R.drawable.ic_all_check_box_outline)
-                    }
-
-                    Icon(
-                        modifier = Modifier.size(itemFontSize.dp),
-                        painter = painter,
-                        contentDescription = "",
-                        tint = contentColorFor(MaterialTheme.colors.onSurface)
-                            .copy(ContentAlpha.medium)
-                    )
-                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
-                }
-
-                Text(
-                    text = it.second.asCompose(),
-                    fontSize = itemFontSize.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+        if (productsOneLine) {
+            Row {
+                ShoppingsListsItemProducts(products, false, fontSize)
             }
+        } else {
+            ShoppingsListsItemProducts(products, true, fontSize)
         }
 
         val totalAsCompose = total.asCompose()
@@ -270,6 +249,54 @@ private fun ShoppingListItemBody(
                 text = totalAsCompose,
                 fontSize = itemFontSize.sp
             )
+        }
+    }
+}
+
+@Composable
+private fun ShoppingsListsItemProducts(
+    products: List<Pair<Boolean?, UiText>>,
+    spacerAfterIcon: Boolean,
+    fontSize: FontSize,
+) {
+    val itemFontSize = fontSize.toItemBody()
+
+    products.forEach {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(ShoppingListItemTextSmallPaddings)
+        ) {
+            it.first?.let { completed ->
+                val painter: Painter = if (completed) {
+                    painterResource(R.drawable.ic_all_check_box)
+                } else {
+                    painterResource(R.drawable.ic_all_check_box_outline)
+                }
+
+                Icon(
+                    modifier = Modifier.size(itemFontSize.dp),
+                    painter = painter,
+                    contentDescription = "",
+                    tint = contentColorFor(MaterialTheme.colors.onSurface)
+                        .copy(ContentAlpha.medium)
+                )
+
+                if (spacerAfterIcon) {
+                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+                }
+            }
+
+            Text(
+                text = it.second.asCompose(),
+                fontSize = itemFontSize.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            if (!spacerAfterIcon) {
+                Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+            }
         }
     }
 }
