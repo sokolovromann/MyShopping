@@ -333,7 +333,7 @@
     <string name="products_text_archiveProductsNotFound">Shopping list is empty</string>
     <string name="products_text_completedTotal">Completed: %s</string>
     <string name="products_text_hiddenProducts">You have hidden products</string>
-    <string name="products_text_purchasesProductsNotFound">Click \"+\" to add new product</string>
+    <string name="products_text_purchasesProductsNotFound">Tap \"+\" to add new product</string>
     <string name="products_text_selectedTotal">Selected: %s</string>
     <string name="products_text_totalFormatted">Edited: %s</string>
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
