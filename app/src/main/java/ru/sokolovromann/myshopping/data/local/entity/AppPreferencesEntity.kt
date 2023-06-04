@@ -20,5 +20,6 @@ data class AppPreferencesEntity(
     val displayMoney: Boolean = true,
     val displayDefaultAutocompletes: Boolean = true,
     val completedWithCheckbox: Boolean = true,
-    val displayShoppingsProducts: String = ""
+    val displayShoppingsProducts: String = "",
+    val enterToSaveProduct: Boolean = true
 )

@@ -38,6 +38,7 @@ class LocalDataStore @Inject constructor(
     private val displayDefaultAutocompletesKey = booleanPreferencesKey("display_default_autocompletes")
     private val completedWithCheckboxKey = booleanPreferencesKey("completed_with_checkbox")
     private val displayShoppingsProductsKey = stringPreferencesKey("display_shoppings_products")
+    private val enterToSaveProductKey = booleanPreferencesKey("enter_to_save_product")
 
     suspend fun getAppPreferences(): Flow<AppPreferencesEntity> = withContext(dispatchers.io) {
         return@withContext dataStore.data.map {
@@ -61,7 +62,8 @@ class LocalDataStore @Inject constructor(
                 displayMoney = it[displayMoneyKey] ?: true,
                 displayDefaultAutocompletes = it[displayDefaultAutocompletesKey] ?: true,
                 completedWithCheckbox = it[completedWithCheckboxKey] ?: true,
-                displayShoppingsProducts = it[displayShoppingsProductsKey] ?: ""
+                displayShoppingsProducts = it[displayShoppingsProductsKey] ?: "",
+                enterToSaveProduct = it[enterToSaveProductKey] ?: true
             )
         }
     }
@@ -88,6 +90,7 @@ class LocalDataStore @Inject constructor(
             it[displayDefaultAutocompletesKey] = entity.displayDefaultAutocompletes
             it[completedWithCheckboxKey] = entity.completedWithCheckbox
             it[displayShoppingsProductsKey] = entity.displayShoppingsProducts
+            it[enterToSaveProductKey] = entity.enterToSaveProduct
         }
     }
 
@@ -183,6 +186,13 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val completedWithCheckbox = it[completedWithCheckboxKey] ?: true
             it[completedWithCheckboxKey] = !completedWithCheckbox
+        }
+    }
+
+    suspend fun invertEnterToSaveProduct() = withContext(dispatchers.io) {
+        dataStore.edit {
+            val enterToSave = it[enterToSaveProductKey] ?: true
+            it[enterToSaveProductKey] = !enterToSave
         }
     }
 }

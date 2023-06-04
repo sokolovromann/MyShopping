@@ -112,6 +112,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.DisplayShoppingsProducts -> selectShoppingsProducts()
 
+            SettingsUid.EnterToSaveProducts -> enterToSaveProducts()
+
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
             SettingsUid.MigrateFromAppVersion14 -> migrateFromAppVersion14()
@@ -216,6 +218,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
         repository.invertDisplayDefaultAutocompletes()
+    }
+
+    private fun enterToSaveProducts() = viewModelScope.launch {
+        repository.invertEnterToSaveProduct()
     }
 
     private fun migrateFromAppVersion14() = viewModelScope.launch {

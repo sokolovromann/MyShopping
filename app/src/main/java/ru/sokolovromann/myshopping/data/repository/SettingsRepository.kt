@@ -49,6 +49,8 @@ interface SettingsRepository {
 
     suspend fun invertCompletedWithCheckbox()
 
+    suspend fun invertEnterToSaveProduct()
+
     suspend fun hideCompletedPurchases()
 
     suspend fun hideShoppingsProducts()

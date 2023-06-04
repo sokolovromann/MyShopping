@@ -82,6 +82,18 @@ fun AddEditProductScreen(
         backgroundColor = MaterialTheme.colors.surface
     ) { paddings ->
         AddEditProductContent(scaffoldPaddings = paddings) {
+            val keyboardActions: KeyboardActions = if (screenData.enterToSaveProduct) {
+                KeyboardActions(onDone = { viewModel.onEvent(AddEditProductEvent.SaveProduct) })
+            } else {
+                KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
+            }
+
+            val imeAction: ImeAction = if (screenData.enterToSaveProduct) {
+                ImeAction.Done
+            } else {
+                ImeAction.Next
+            }
+
             OutlinedAppTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -99,11 +111,9 @@ fun AddEditProductScreen(
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
+                    imeAction = imeAction
                 ),
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                )
+                keyboardActions = keyboardActions
             )
 
             AddEditProductAutocompleteNames(
@@ -132,11 +142,9 @@ fun AddEditProductScreen(
                     label = { Text(text = stringResource(R.string.addEditProduct_label_quantity)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next
+                        imeAction = imeAction
                     ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                    )
+                    keyboardActions = keyboardActions
                 )
 
                 Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
@@ -152,11 +160,9 @@ fun AddEditProductScreen(
                     label = { Text(text = stringResource(R.string.addEditProduct_label_quantitySymbol)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
+                        imeAction = imeAction
                     ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                    )
+                    keyboardActions = keyboardActions
                 )
             }
 
@@ -233,11 +239,9 @@ fun AddEditProductScreen(
                     label = { Text(text = stringResource(R.string.addEditProduct_label_price)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal,
-                        imeAction = ImeAction.Next
+                        imeAction = imeAction
                     ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                    )
+                    keyboardActions = keyboardActions
                 )
 
                 AddEditProductAutocompletePrices(
@@ -267,11 +271,9 @@ fun AddEditProductScreen(
                         label = { Text(text = stringResource(R.string.addEditProduct_label_discount)) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Decimal,
-                            imeAction = ImeAction.Next
+                            imeAction = imeAction
                         ),
-                        keyboardActions = KeyboardActions(
-                            onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                        )
+                        keyboardActions = keyboardActions
                     )
 
                     Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
@@ -332,11 +334,9 @@ fun AddEditProductScreen(
                         label = { Text(text = stringResource(R.string.addEditProduct_label_total)) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Decimal,
-                            imeAction = ImeAction.Next
+                            imeAction = imeAction
                         ),
-                        keyboardActions = KeyboardActions(
-                            onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                        )
+                        keyboardActions = keyboardActions
                     )
 
                     Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))

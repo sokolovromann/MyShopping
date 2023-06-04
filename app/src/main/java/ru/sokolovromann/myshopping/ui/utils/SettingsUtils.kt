@@ -88,6 +88,12 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
             uid = SettingsUid.DisplayShoppingsProducts,
             titleText = UiText.FromResources(R.string.settings_title_displayShoppingsProducts),
             bodyText = preferences.displayShoppingsProducts.toPurchasesSettingsText()
+        ),
+        SettingsItem(
+            uid = SettingsUid.EnterToSaveProducts,
+            titleText = UiText.FromResources(R.string.settings_title_enterToSaveProduct),
+            bodyText = UiText.FromResources(R.string.settings_body_enterToSaveProduct),
+            checked = preferences.enterToSaveProduct
         )
     )
 }

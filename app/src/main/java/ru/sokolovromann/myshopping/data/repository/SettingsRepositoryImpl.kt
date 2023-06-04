@@ -146,6 +146,10 @@ class SettingsRepositoryImpl @Inject constructor(
         preferencesDao.invertCompletedWithCheckbox()
     }
 
+    override suspend fun invertEnterToSaveProduct(): Unit = withContext(dispatchers.io) {
+        preferencesDao.invertEnterToSaveProduct()
+    }
+
     override suspend fun hideCompletedPurchases(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
         preferencesDao.displayCompletedPurchases(displayCompleted)

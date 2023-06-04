@@ -81,7 +81,8 @@ class AddEditProductState {
             discountAsPercentText = discountAsPercentText,
             showDiscountAsPercent = false,
             fontSize = preferences.fontSize,
-            displayMoney = preferences.displayMoney
+            displayMoney = preferences.displayMoney,
+            enterToSaveProduct = preferences.enterToSaveProduct
         )
 
         selectedAutocomplete = null
@@ -534,5 +535,6 @@ data class AddEditProductScreenData(
     val autocompleteDiscounts: List<Discount> = listOf(),
     val autocompleteTotals: List<Money> = listOf(),
     val fontSize: FontSize = FontSize.MEDIUM,
-    val displayMoney: Boolean = true
+    val displayMoney: Boolean = true,
+    val enterToSaveProduct: Boolean = true
 )
