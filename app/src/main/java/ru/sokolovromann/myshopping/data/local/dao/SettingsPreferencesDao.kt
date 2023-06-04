@@ -17,6 +17,10 @@ class SettingsPreferencesDao @Inject constructor(
         localDataStore.displayCompletedPurchases(displayCompleted)
     }
 
+    suspend fun displayShoppingsProducts(displayProducts: String) {
+        localDataStore.displayShoppingsProducts(displayProducts)
+    }
+
     suspend fun saveFontSize(fontSize: String) {
         localDataStore.saveFontSize(fontSize)
     }
@@ -47,9 +51,5 @@ class SettingsPreferencesDao @Inject constructor(
 
     suspend fun invertCompletedWithCheckbox() {
         localDataStore.invertCompletedWithCheckbox()
-    }
-
-    suspend fun invertShoppingsProductsOneLine() {
-        localDataStore.invertShoppingsProductsOneLine()
     }
 }

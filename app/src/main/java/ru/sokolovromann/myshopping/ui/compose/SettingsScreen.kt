@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
@@ -178,6 +179,17 @@ fun SettingsScreen(
                         )
                     }
 
+                    SettingsUid.DisplayShoppingsProducts -> {
+                        SettingsDisplayShoppingsProductsMenu(
+                            expanded = it == screenData.settingsItemUid,
+                            displayProducts = screenData.displayShoppingsProducts,
+                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideDisplayShoppingsProducts) },
+                            onSelected = { displayProducts ->
+                                viewModel.onEvent(SettingsEvent.DisplayShoppingsProductsSelected(displayProducts))
+                            }
+                        )
+                    }
+
                     else -> {}
                 }
             },
@@ -325,6 +337,35 @@ private fun SettingsDisplayCompletedMenu(
             onClick = { onSelected(DisplayCompleted.HIDE) },
             text = { Text(text = stringResource(R.string.settings_action_hideCompletedPurchases)) },
             right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
+        )
+    }
+}
+
+@Composable
+private fun SettingsDisplayShoppingsProductsMenu(
+    expanded: Boolean,
+    displayProducts: DisplayProducts,
+    onDismissRequest: () -> Unit,
+    onSelected: (DisplayProducts) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.COLUMNS) },
+            text = { Text(text = stringResource(R.string.settings_action_displayShoppingsProductsColumns)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.COLUMNS) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.ROW) },
+            text = { Text(text = stringResource(R.string.settings_action_displayShoppingsProductsRow)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.ROW) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.HIDE) },
+            text = { Text(text = stringResource(R.string.settings_action_hideShoppingsProducts)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE) }
         )
     }
 }

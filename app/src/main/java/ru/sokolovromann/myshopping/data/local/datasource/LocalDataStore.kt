@@ -28,7 +28,6 @@ class LocalDataStore @Inject constructor(
     private val taxRateKey = floatPreferencesKey("tax_rate")
     private val taxRateAsPercentKey = booleanPreferencesKey("tax_rate_as_percent")
     private val shoppingsMultiColumnsKey = booleanPreferencesKey("shoppings_multi_columns")
-    private val shoppingsProductsOneLineKey = booleanPreferencesKey("shoppings_products_one_line")
     private val productsMultiColumnsKey = booleanPreferencesKey("products_multi_columns")
     private val displayCompletedPurchasesKey = stringPreferencesKey("display_completed_purchases")
     private val displayPurchasesTotalKey = stringPreferencesKey("display_purchases_total")
@@ -38,6 +37,7 @@ class LocalDataStore @Inject constructor(
     private val displayMoneyKey = booleanPreferencesKey("display_money")
     private val displayDefaultAutocompletesKey = booleanPreferencesKey("display_default_autocompletes")
     private val completedWithCheckboxKey = booleanPreferencesKey("completed_with_checkbox")
+    private val displayShoppingsProductsKey = stringPreferencesKey("display_shoppings_products")
 
     suspend fun getAppPreferences(): Flow<AppPreferencesEntity> = withContext(dispatchers.io) {
         return@withContext dataStore.data.map {
@@ -52,7 +52,6 @@ class LocalDataStore @Inject constructor(
                 taxRate = it[taxRateKey] ?: 0f,
                 taxRateAsPercent = it[taxRateAsPercentKey] ?: true,
                 shoppingsMultiColumns = it[shoppingsMultiColumnsKey] ?: false,
-                shoppingsProductsOneLine = it[shoppingsProductsOneLineKey] ?: false,
                 productsMultiColumns = it[productsMultiColumnsKey] ?: false,
                 displayCompletedPurchases = it[displayCompletedPurchasesKey] ?: "",
                 displayPurchasesTotal = it[displayPurchasesTotalKey] ?: "",
@@ -61,7 +60,8 @@ class LocalDataStore @Inject constructor(
                 lockProductElement = it[lockProductElementKey] ?: "",
                 displayMoney = it[displayMoneyKey] ?: true,
                 displayDefaultAutocompletes = it[displayDefaultAutocompletesKey] ?: true,
-                completedWithCheckbox = it[completedWithCheckboxKey] ?: true
+                completedWithCheckbox = it[completedWithCheckboxKey] ?: true,
+                displayShoppingsProducts = it[displayShoppingsProductsKey] ?: ""
             )
         }
     }
@@ -78,7 +78,6 @@ class LocalDataStore @Inject constructor(
             it[taxRateKey] = entity.taxRate
             it[taxRateAsPercentKey] = entity.taxRateAsPercent
             it[shoppingsMultiColumnsKey] = entity.shoppingsMultiColumns
-            it[shoppingsProductsOneLineKey] = entity.shoppingsProductsOneLine
             it[productsMultiColumnsKey] = entity.productsMultiColumns
             it[displayCompletedPurchasesKey] = entity.displayCompletedPurchases
             it[displayPurchasesTotalKey] = entity.displayPurchasesTotal
@@ -88,6 +87,7 @@ class LocalDataStore @Inject constructor(
             it[displayMoneyKey] = entity.displayMoney
             it[displayDefaultAutocompletesKey] = entity.displayDefaultAutocompletes
             it[completedWithCheckboxKey] = entity.completedWithCheckbox
+            it[displayShoppingsProductsKey] = entity.displayShoppingsProducts
         }
     }
 
@@ -115,6 +115,10 @@ class LocalDataStore @Inject constructor(
         dataStore.edit { it[displayPurchasesTotalKey] = displayTotal }
     }
 
+    suspend fun displayShoppingsProducts(displayProducts: String) = withContext(dispatchers.io) {
+        dataStore.edit { it[displayShoppingsProductsKey] = displayProducts }
+    }
+
     suspend fun lockProductElement(lockProductElement: String) = withContext(dispatchers.io) {
         dataStore.edit { it[lockProductElementKey] = lockProductElement }
     }
@@ -137,13 +141,6 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val multiColumns = it[shoppingsMultiColumnsKey] ?: false
             it[shoppingsMultiColumnsKey] = !multiColumns
-        }
-    }
-
-    suspend fun invertShoppingsProductsOneLine() = withContext(dispatchers.io) {
-        dataStore.edit {
-            val oneLine = it[shoppingsProductsOneLineKey] ?: false
-            it[shoppingsProductsOneLineKey] = !oneLine
         }
     }
 

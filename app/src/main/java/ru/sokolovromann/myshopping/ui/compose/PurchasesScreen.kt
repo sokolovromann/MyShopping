@@ -247,7 +247,7 @@ fun PurchasesScreen(
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
-            productsOneLine = screenData.productsOneLine,
+            displayProducts = screenData.displayProducts,
             bottomBar = {
                 if (screenData.showHiddenShoppingLists) {
                     ShoppingListsHiddenContent(

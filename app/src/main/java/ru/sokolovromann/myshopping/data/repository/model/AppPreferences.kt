@@ -9,7 +9,6 @@ data class AppPreferences(
     val currency: Currency = Currency(),
     val taxRate: TaxRate = TaxRate(),
     val shoppingsMultiColumns: Boolean = false,
-    val shoppingsProductsOneLine: Boolean = false,
     val productsMultiColumns: Boolean = false,
     val displayCompletedPurchases: DisplayCompleted = DisplayCompleted.DefaultValue,
     val displayPurchasesTotal: DisplayTotal = DisplayTotal.DefaultValue,
@@ -18,5 +17,6 @@ data class AppPreferences(
     val lockProductElement: LockProductElement = LockProductElement.DefaultValue,
     val displayMoney: Boolean = true,
     val displayDefaultAutocompletes: Boolean = true,
-    val completedWithCheckbox: Boolean = true
+    val completedWithCheckbox: Boolean = true,
+    val displayShoppingsProducts: DisplayProducts = DisplayProducts.DefaultValue
 )

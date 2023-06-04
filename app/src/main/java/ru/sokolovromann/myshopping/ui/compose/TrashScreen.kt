@@ -163,7 +163,7 @@ fun TrashScreen(
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
-            productsOneLine = screenData.productsOneLine,
+            displayProducts = screenData.displayProducts,
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),

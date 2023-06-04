@@ -24,6 +24,12 @@ fun ShoppingLists.getShoppingListItems(
 ): List<ShoppingListItem> {
     val defaultProductsLimit = 10
     return formatShoppingLists(displayCompleted).map {
+        val name: UiText = if (preferences.displayShoppingsProducts == DisplayProducts.HIDE && it.name.isEmpty()) {
+            UiText.FromResources(R.string.shoppingLists_text_nameNotFound)
+        } else {
+            UiText.FromString(it.name)
+        }
+
         val totalFormatted = it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL
 
         val productsList = if (it.products.isEmpty()) {
@@ -58,7 +64,7 @@ fun ShoppingLists.getShoppingListItems(
 
         ShoppingListItem(
             uid = it.uid,
-            nameText = UiText.FromString(it.name),
+            nameText = name,
             productsList = productsList,
             totalText = totalText,
             reminderText = reminderText,

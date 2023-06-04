@@ -48,6 +48,8 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.DisplayCompletedPurchasesSelected -> displayCompletedPurchasesSelected(event)
 
+            is SettingsEvent.DisplayShoppingsProductsSelected -> displayShoppingsProductsSelected(event)
+
             SettingsEvent.ShowBackScreen -> showBackScreen()
 
             SettingsEvent.ShowNavigationDrawer -> showNavigationDrawer()
@@ -57,6 +59,8 @@ class SettingsViewModel @Inject constructor(
             SettingsEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             SettingsEvent.HideDisplayCompletedPurchases -> hideDisplayCompletedPurchases()
+
+            SettingsEvent.HideDisplayShoppingsProducts -> hideDisplayShoppingsProducts()
         }
     }
 
@@ -106,7 +110,7 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.CompletedWithCheckbox -> invertCompletedWithCheckbox()
 
-            SettingsUid.ShoppingsProductsOneLine -> invertShoppingsProductsOneLine()
+            SettingsUid.DisplayShoppingsProducts -> selectShoppingsProducts()
 
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
@@ -124,6 +128,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectFontSize() {
         settingsState.showFontSize()
+    }
+
+    private fun selectShoppingsProducts() {
+        settingsState.showShoppingsProducts()
     }
 
     private fun selectNavigationItem(
@@ -172,6 +180,16 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun displayShoppingsProductsSelected(
+        event: SettingsEvent.DisplayShoppingsProductsSelected
+    ) = viewModelScope.launch {
+        when (event.displayProducts) {
+            DisplayProducts.COLUMNS -> repository.displayShoppingsProductsColumns()
+            DisplayProducts.ROW -> repository.displayShoppingsProductsRow()
+            DisplayProducts.HIDE -> repository.hideShoppingsProducts()
+        }
+    }
+
     private fun invertNightTheme() = viewModelScope.launch {
         repository.invertNightTheme()
     }
@@ -190,10 +208,6 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertCompletedWithCheckbox() = viewModelScope.launch {
         repository.invertCompletedWithCheckbox()
-    }
-
-    private fun invertShoppingsProductsOneLine() = viewModelScope.launch {
-        repository.invertShoppingsProductsOneLine()
     }
 
     private fun invertSaveProductToAutocompletes() = viewModelScope.launch {
@@ -296,5 +310,9 @@ class SettingsViewModel @Inject constructor(
 
     private fun hideDisplayCompletedPurchases() {
         settingsState.hideDisplayCompletedPurchases()
+    }
+
+    private fun hideDisplayShoppingsProducts() {
+        settingsState.hideDisplayShoppingsProducts()
     }
 }

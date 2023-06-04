@@ -345,7 +345,10 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
     <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Колонки</string>
+    <string name="settings_action_displayShoppingsProductsRow">Строка</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
+    <string name="settings_action_hideShoppingsProducts">Скрывать</string>
     <string name="settings_action_selectHugeFontSize">Огромный</string>
     <string name="settings_action_selectLargeFontSize">Большой</string>
     <string name="settings_action_selectMediumFontSize">Средний</string>
@@ -359,7 +362,6 @@
     <string name="settings_body_migrateFromAppVersion14">Данные из старой версии приложения автоматически переносятся в новую. Но если, данные не перенеслись, то вы можете принудительно их перенести в новую версию приложения. При этом все данные, созданные после обновления будут удалены.</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
-    <string name="settings_body_shoppingsProductsOneLine">Если включено, то товары в Покупках будут отображаться в одну строку</string>
     <string name="settings_body_terms_and_conditions">Нажмите, чтобы прочитать</string>
     <string name="settings_contentDescription_navigationIcon">Открыть навигацию</string>
     <string name="settings_header_aboutApp">О приложении</string>
@@ -377,6 +379,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
     <string name="settings_title_displayDefaultAutocompletes">Показывать подсказки по-умолчанию</string>
     <string name="settings_title_displayMoney">Показывать деньги</string>
+    <string name="settings_title_displayShoppingsProducts">Показывать товары в Покупках</string>
     <string name="settings_title_editProductAfterCompleted">Редактировать товар после покупки</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_fontSize">Размер текста</string>
@@ -385,7 +388,6 @@
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_title_saveProductToAutocompletes">Сохранять неизвестные товары</string>
-    <string name="settings_title_shoppingsProductsOneLine">Отображать товары в одну строку</string>
     <string name="settings_title_taxRate">Налоговая ставка</string>
     <string name="settings_title_terms_and_conditions">Условия использования</string>
 
@@ -413,6 +415,7 @@
     <string name="shoppingLists_text_allTotal">Итого: %s</string>
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
+    <string name="shoppingLists_text_nameNotFound">Без названия</string>
     <string name="shoppingLists_text_selectedTotal">Выбрано: %s</string>
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
 

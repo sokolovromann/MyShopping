@@ -351,7 +351,10 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">First</string>
     <string name="settings_action_displayCompletedPurchasesLast">Last</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Columns</string>
+    <string name="settings_action_displayShoppingsProductsRow">Row</string>
     <string name="settings_action_hideCompletedPurchases">Hide</string>
+    <string name="settings_action_hideShoppingsProducts">Hide</string>
     <string name="settings_action_selectHugeFontSize">Huge</string>
     <string name="settings_action_selectLargeFontSize">Large</string>
     <string name="settings_action_selectMediumFontSize">Medium</string>
@@ -365,7 +368,6 @@
     <string name="settings_body_migrateFromAppVersion14">Data is automatically transferred to a new version of the app. But if the data was not transferred, then you can force it to be transferred to the new version of the app. All data created after update will be deleted.</string>
     <string name="settings_body_privacy_policy">Tap to read</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
-    <string name="settings_body_shoppingsProductsOneLine">If enabled, products in Purchases will be displayed in one line</string>
     <string name="settings_body_terms_and_conditions">Tap to read</string>
     <string name="settings_contentDescription_navigationIcon">Open navigation</string>
     <string name="settings_header_aboutApp">About</string>
@@ -383,6 +385,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
     <string name="settings_title_displayMoney">Display money</string>
+    <string name="settings_title_displayShoppingsProducts">Display products in Purchases</string>
     <string name="settings_title_editProductAfterCompleted">Edit product after completed</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_fontSize">Font size</string>
@@ -391,7 +394,6 @@
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_privacy_policy">Privacy policy</string>
     <string name="settings_title_saveProductToAutocompletes">Add unknown product</string>
-    <string name="settings_title_shoppingsProductsOneLine">Display products in one line</string>
     <string name="settings_title_taxRate">Tax rate</string>
     <string name="settings_title_terms_and_conditions">Terms and conditions</string>
 
@@ -419,6 +421,7 @@
     <string name="shoppingLists_text_allTotal">All: %s</string>
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
+    <string name="shoppingLists_text_nameNotFound">Without name</string>
     <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 

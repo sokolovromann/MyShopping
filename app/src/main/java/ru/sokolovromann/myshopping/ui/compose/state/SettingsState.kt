@@ -26,6 +26,7 @@ class SettingsState {
             settings = settings.getSettingsItems(),
             fontSize = preferences.fontSize,
             displayCompletedPurchases = preferences.displayCompletedPurchases,
+            displayShoppingsProducts = preferences.displayShoppingsProducts,
             multiColumns = !preferences.smartphoneScreen,
             smartphoneScreen = preferences.smartphoneScreen
         )
@@ -33,6 +34,10 @@ class SettingsState {
 
     fun showFontSize() {
         screenData = screenData.copy(settingsItemUid = SettingsUid.FontSize)
+    }
+
+    fun showShoppingsProducts() {
+        screenData = screenData.copy(settingsItemUid = SettingsUid.DisplayShoppingsProducts)
     }
 
     fun showDisplayCompletedPurchases() {
@@ -44,6 +49,10 @@ class SettingsState {
     }
 
     fun hideDisplayCompletedPurchases() {
+        screenData = screenData.copy(settingsItemUid = null)
+    }
+
+    fun hideDisplayShoppingsProducts() {
         screenData = screenData.copy(settingsItemUid = null)
     }
 
@@ -81,6 +90,7 @@ data class SettingsScreenData(
     val settingsItemUid: SettingsUid? = null,
     val fontSize: FontSize = FontSize.DefaultValue,
     val displayCompletedPurchases: DisplayCompleted = DisplayCompleted.DefaultValue,
+    val displayShoppingsProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
 )

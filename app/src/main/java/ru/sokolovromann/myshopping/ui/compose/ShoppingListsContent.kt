@@ -30,7 +30,7 @@ fun ShoppingListsGrid(
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     items: List<ShoppingListItem>,
-    productsOneLine: Boolean,
+    displayProducts: DisplayProducts,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
@@ -59,7 +59,7 @@ fun ShoppingListsGrid(
                     ShoppingListItemBody(
                         hasName = item.nameText.asCompose().isNotEmpty(),
                         products = item.productsList,
-                        productsOneLine = productsOneLine,
+                        displayProducts = displayProducts,
                         total = item.totalText,
                         reminder = item.reminderText,
                         fontSize = fontSize
@@ -198,7 +198,7 @@ private fun getShoppingListItemTitleOrNull(
 private fun ShoppingListItemBody(
     hasName: Boolean,
     products: List<Pair<Boolean?, UiText>>,
-    productsOneLine: Boolean,
+    displayProducts: DisplayProducts,
     total: UiText,
     reminder: UiText,
     fontSize: FontSize,
@@ -229,21 +229,34 @@ private fun ShoppingListItemBody(
             }
         }
 
-        if (hasName || hasReminder) {
-            Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
-        }
+        when (displayProducts) {
+            DisplayProducts.COLUMNS -> {
+                if (hasName || hasReminder) {
+                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
+                }
 
-        if (productsOneLine) {
-            Row {
-                ShoppingsListsItemProducts(products, false, fontSize)
+                ShoppingsListsItemProducts(products, true, fontSize)
             }
-        } else {
-            ShoppingsListsItemProducts(products, true, fontSize)
+
+            DisplayProducts.ROW -> {
+                if (hasName || hasReminder) {
+                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
+                }
+
+                Row {
+                    ShoppingsListsItemProducts(products, false, fontSize)
+                }
+            }
+
+            DisplayProducts.HIDE -> {}
         }
 
         val totalAsCompose = total.asCompose()
         if (totalAsCompose.isNotEmpty()) {
-            Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+            if (displayProducts != DisplayProducts.HIDE) {
+                Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+            }
+
             Text(
                 modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
                 text = totalAsCompose,

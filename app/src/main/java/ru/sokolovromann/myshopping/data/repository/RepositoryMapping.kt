@@ -248,7 +248,6 @@ class RepositoryMapping @Inject constructor() {
             currency = toCurrency(entity.currency, entity.displayCurrencyToLeft),
             taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
             shoppingsMultiColumns = entity.shoppingsMultiColumns,
-            shoppingsProductsOneLine = entity.shoppingsProductsOneLine,
             productsMultiColumns = entity.productsMultiColumns,
             displayCompletedPurchases = toDisplayCompleted(entity.displayCompletedPurchases),
             displayPurchasesTotal = toDisplayTotal(entity.displayPurchasesTotal),
@@ -257,7 +256,8 @@ class RepositoryMapping @Inject constructor() {
             lockProductElement = toLockProductElement(entity.lockProductElement),
             displayMoney = entity.displayMoney,
             displayDefaultAutocompletes = entity.displayDefaultAutocompletes,
-            completedWithCheckbox = entity.completedWithCheckbox
+            completedWithCheckbox = entity.completedWithCheckbox,
+            displayShoppingsProducts = toDisplayProducts(entity.displayShoppingsProducts)
         )
     }
 
@@ -273,7 +273,6 @@ class RepositoryMapping @Inject constructor() {
             taxRate = toTaxRateValue(appPreferences.taxRate),
             taxRateAsPercent = toTaxRateAsPercent(appPreferences.taxRate),
             shoppingsMultiColumns = appPreferences.shoppingsMultiColumns,
-            shoppingsProductsOneLine = appPreferences.shoppingsProductsOneLine,
             productsMultiColumns = appPreferences.productsMultiColumns,
             displayCompletedPurchases = toDisplayCompletedName(appPreferences.displayCompletedPurchases),
             displayPurchasesTotal = toDisplayTotalName(appPreferences.displayPurchasesTotal),
@@ -282,7 +281,8 @@ class RepositoryMapping @Inject constructor() {
             lockProductElement = toLockProductElementName(appPreferences.lockProductElement),
             displayMoney = appPreferences.displayMoney,
             displayDefaultAutocompletes = appPreferences.displayDefaultAutocompletes,
-            completedWithCheckbox = appPreferences.completedWithCheckbox
+            completedWithCheckbox = appPreferences.completedWithCheckbox,
+            displayShoppingsProducts = toDisplayProductsName(appPreferences.displayShoppingsProducts)
         )
     }
 
@@ -423,6 +423,10 @@ class RepositoryMapping @Inject constructor() {
 
     fun toMoneyValue(money: Money): Float {
         return money.value
+    }
+
+    fun toDisplayProductsName(displayProducts: DisplayProducts): String {
+        return displayProducts.name
     }
 
     private fun toShoppingList(
@@ -686,6 +690,10 @@ class RepositoryMapping @Inject constructor() {
 
     private fun toLockProductElement(name: String): LockProductElement {
         return LockProductElement.valueOfOrDefault(name)
+    }
+
+    private fun toDisplayProducts(name: String): DisplayProducts {
+        return DisplayProducts.valueOfOrDefault(name)
     }
 
     private fun toCompleted(entities: List<ProductEntity>): Boolean {

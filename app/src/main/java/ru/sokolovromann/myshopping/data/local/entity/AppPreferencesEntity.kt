@@ -11,7 +11,6 @@ data class AppPreferencesEntity(
     val taxRate: Float = 0f,
     val taxRateAsPercent: Boolean = false,
     val shoppingsMultiColumns: Boolean = false,
-    val shoppingsProductsOneLine: Boolean = false,
     val productsMultiColumns: Boolean = false,
     val displayCompletedPurchases: String = "",
     val displayPurchasesTotal: String = "",
@@ -20,5 +19,6 @@ data class AppPreferencesEntity(
     val lockProductElement: String = "",
     val displayMoney: Boolean = true,
     val displayDefaultAutocompletes: Boolean = true,
-    val completedWithCheckbox: Boolean = true
+    val completedWithCheckbox: Boolean = true,
+    val displayShoppingsProducts: String = ""
 )

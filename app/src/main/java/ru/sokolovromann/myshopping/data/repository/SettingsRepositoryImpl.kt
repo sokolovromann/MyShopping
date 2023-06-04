@@ -83,6 +83,16 @@ class SettingsRepositoryImpl @Inject constructor(
         preferencesDao.displayCompletedPurchases(displayCompleted)
     }
 
+    override suspend fun displayShoppingsProductsColumns(): Unit = withContext(dispatchers.io) {
+        val displayProducts = mapping.toDisplayProductsName(DisplayProducts.COLUMNS)
+        preferencesDao.displayShoppingsProducts(displayProducts)
+    }
+
+    override suspend fun displayShoppingsProductsRow(): Unit = withContext(dispatchers.io) {
+        val displayProducts = mapping.toDisplayProductsName(DisplayProducts.ROW)
+        preferencesDao.displayShoppingsProducts(displayProducts)
+    }
+
     override suspend fun tinyFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.TINY)
         preferencesDao.saveFontSize(fontSize)
@@ -136,12 +146,13 @@ class SettingsRepositoryImpl @Inject constructor(
         preferencesDao.invertCompletedWithCheckbox()
     }
 
-    override suspend fun invertShoppingsProductsOneLine(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertShoppingsProductsOneLine()
-    }
-
     override suspend fun hideCompletedPurchases(): Unit = withContext(dispatchers.io) {
         val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.HIDE)
         preferencesDao.displayCompletedPurchases(displayCompleted)
+    }
+
+    override suspend fun hideShoppingsProducts(): Unit = withContext(dispatchers.io) {
+        val displayProducts = mapping.toDisplayProductsName(DisplayProducts.HIDE)
+        preferencesDao.displayShoppingsProducts(displayProducts)
     }
 }

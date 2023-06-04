@@ -280,7 +280,10 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">Zuerst</string>
     <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Säulen</string>
+    <string name="settings_action_displayShoppingsProductsRow">Reihe</string>
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
+    <string name="settings_action_hideShoppingsProducts">Verstecken</string>
     <string name="settings_action_selectHugeFontSize">Riesig</string>
     <string name="settings_action_selectLargeFontSize">Groß</string>
     <string name="settings_action_selectMediumFontSize">Mittel</string>
@@ -294,7 +297,6 @@
     <string name="settings_body_migrateFromAppVersion14">Die Daten werden automatisch in eine neue Version der App übertragen. Wenn die Daten jedoch nicht übertragen wurden, können Sie die Übertragung auf die neue Version der App erzwingen. Alle nach dem Update erstellten Daten werden gelöscht.</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
-    <string name="settings_body_shoppingsProductsOneLine">Wenn aktiviert, produkte in Einkäufe werden in einer Zeile angezeigt</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>
     <string name="settings_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="settings_header_aboutApp">Um</string>
@@ -312,6 +314,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
     <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
     <string name="settings_title_displayMoney">Geld anzeigen</string>
+    <string name="settings_title_displayShoppingsProducts">Produkte anzeigen in Einkäufe</string>
     <string name="settings_title_editProductAfterCompleted">Bearbeiten sie das produkt nach abschluss</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
@@ -320,7 +323,6 @@
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
     <string name="settings_title_saveProductToAutocompletes">Unbekanntes produkt speichern</string>
-    <string name="settings_title_shoppingsProductsOneLine">Produkte in einer Zeile anzeigen</string>
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 
@@ -348,6 +350,7 @@
     <string name="shoppingLists_text_allTotal">Alle: %s</string>
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
+    <string name="shoppingLists_text_nameNotFound">Ohne Namen</string>
     <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 

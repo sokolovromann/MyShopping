@@ -21,6 +21,10 @@ interface SettingsRepository {
 
     suspend fun displayCompletedPurchasesLast()
 
+    suspend fun displayShoppingsProductsColumns()
+
+    suspend fun displayShoppingsProductsRow()
+
     suspend fun tinyFontSizeSelected()
 
     suspend fun smallFontSizeSelected()
@@ -45,7 +49,7 @@ interface SettingsRepository {
 
     suspend fun invertCompletedWithCheckbox()
 
-    suspend fun invertShoppingsProductsOneLine()
-
     suspend fun hideCompletedPurchases()
+
+    suspend fun hideShoppingsProducts()
 }
