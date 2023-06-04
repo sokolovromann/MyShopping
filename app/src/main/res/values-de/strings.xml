@@ -290,7 +290,7 @@
     <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet</string>
     <string name="settings_body_email">Zum Schreiben tippen</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
-    <string name="settings_body_migrateFromAppVersion14">Tippen Sie hier, um die Datenübertragung zu erzwingen, aktuelle Daten werden gelöscht</string>
+    <string name="settings_body_migrateFromAppVersion14">Die Daten werden automatisch in eine neue Version der App übertragen. Wenn die Daten jedoch nicht übertragen wurden, können Sie die Übertragung auf die neue Version der App erzwingen. Alle nach dem Update erstellten Daten werden gelöscht.</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>
@@ -314,7 +314,7 @@
     <string name="settings_title_email">Email</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_migrateFromAppVersion14">Migrieren Sie von 1.3.5</string>
+    <string name="settings_title_migrateFromAppVersion14">Migrieren Sie von Version 1.3.5 und niedriger</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
     <string name="settings_title_saveProductToAutocompletes">Unbekanntes produkt speichern</string>
