@@ -227,6 +227,7 @@
     <string name="editShoppingListTotal_header_addShoppingListTotal">Додати</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">Редагувати</string>
     <string name="editShoppingListTotal_label_total">Разом списку</string>
+    <string name="editShoppingListTotal_message_totalWarning">Ціни на товари будуть приховані</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Скасування</string>
     <string name="editTaxRate_action_saveTaxRate">Зберегти</string>

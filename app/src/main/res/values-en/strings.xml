@@ -280,6 +280,7 @@
     <string name="editShoppingListTotal_header_addShoppingListTotal">Add</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">Edit</string>
     <string name="editShoppingListTotal_label_total">List total</string>
+    <string name="editShoppingListTotal_message_totalWarning">Product prices will be hidden</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Cancel</string>
     <string name="editTaxRate_action_saveTaxRate">Save</string>

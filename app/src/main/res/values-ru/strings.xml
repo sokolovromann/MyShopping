@@ -274,6 +274,7 @@
     <string name="editShoppingListTotal_header_addShoppingListTotal">Добавить</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">Редактировать</string>
     <string name="editShoppingListTotal_label_total">Итого списка</string>
+    <string name="editShoppingListTotal_message_totalWarning">Цены на товары будут скрыты</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Отмена</string>
     <string name="editTaxRate_action_saveTaxRate">Сохранить</string>

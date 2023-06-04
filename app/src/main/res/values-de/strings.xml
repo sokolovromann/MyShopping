@@ -209,6 +209,7 @@
     <string name="editShoppingListTotal_header_addShoppingListTotal">Hinzufügen</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">Bearbeiten</string>
     <string name="editShoppingListTotal_label_total">Liste gesamt</string>
+    <string name="editShoppingListTotal_message_totalWarning">Produktpreise werden ausgeblendet</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">Absagen</string>
     <string name="editTaxRate_action_saveTaxRate">Speichern</string>
