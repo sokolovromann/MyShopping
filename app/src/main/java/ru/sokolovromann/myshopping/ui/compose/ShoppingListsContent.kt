@@ -270,8 +270,12 @@ private fun ShoppingListItemBody(
             }
 
             DisplayProducts.ROW -> {
-                if (hasName || hasReminder) {
-                    Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
+                if (hasName) {
+                    if (hasReminder) {
+                        Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
+                    } else {
+                        Spacer(modifier = Modifier.size(ShoppingListItemSpacerSmallSize))
+                    }
                 }
 
                 Row {
