@@ -212,6 +212,7 @@
     <string name="editReminder_action_cancelSavingReminder">Скасування</string>
     <string name="editReminder_action_deleteReminder">Видалити нагадування</string>
     <string name="editReminder_action_saveReminder">Зберегти</string>
+    <string name="editReminder_action_showPermissions">Відкрити дозволи</string>
     <string name="editReminder_header_addReminder">Додати</string>
     <string name="editReminder_header_editReminder">Редагувати</string>
     <string name="editReminder_message_permissionError">Ви не маєте дозволу показувати сповіщення. Сповіщення не відображатимуться без дозволу.</string>

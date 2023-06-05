@@ -259,6 +259,7 @@
     <string name="editReminder_action_cancelSavingReminder">Отмена</string>
     <string name="editReminder_action_deleteReminder">Удалить напоминание</string>
     <string name="editReminder_action_saveReminder">Сохранить</string>
+    <string name="editReminder_action_showPermissions">Открыть разрешения</string>
     <string name="editReminder_header_addReminder">Добавить напоминание</string>
     <string name="editReminder_header_editReminder">Редактировать напоминание</string>
     <string name="editReminder_message_permissionError">У вас нет разрешения на показ уведомлений. Уведомления не будут отображаться без разрешения.</string>

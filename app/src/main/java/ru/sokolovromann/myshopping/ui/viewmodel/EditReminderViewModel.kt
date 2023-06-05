@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.repository.EditReminderRepository
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -55,6 +56,8 @@ class EditReminderViewModel @Inject constructor(
             is EditReminderEvent.ReminderDateChanged -> reminderDateChanged(event)
 
             is EditReminderEvent.ReminderTimeChanged -> reminderTimeChanged(event)
+
+            EditReminderEvent.ShowPermissions -> showPermissions()
         }
     }
 
@@ -133,5 +136,10 @@ class EditReminderViewModel @Inject constructor(
 
     private fun reminderTimeChanged(event: EditReminderEvent.ReminderTimeChanged) {
         editReminderState.changeReminderTime(event.hourOfDay, event.minute)
+    }
+
+    private fun showPermissions() = viewModelScope.launch {
+        val event = EditReminderScreenEvent.ShowPermissions(BuildConfig.APPLICATION_ID)
+        _screenEventFlow.emit(event)
     }
 }

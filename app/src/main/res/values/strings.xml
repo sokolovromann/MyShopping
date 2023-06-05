@@ -106,6 +106,7 @@
     <string name="editReminder_action_cancelSavingReminder">Cancel</string>
     <string name="editReminder_action_deleteReminder">Delete reminder</string>
     <string name="editReminder_action_saveReminder">Save</string>
+    <string name="editReminder_action_showPermissions">Open permissions</string>
     <string name="editReminder_header_addReminder">Add</string>
     <string name="editReminder_header_editReminder">Edit</string>
     <string name="editReminder_message_permissionError">You do not have permission to show notifications. Notifications will not be shown without permission.</string>

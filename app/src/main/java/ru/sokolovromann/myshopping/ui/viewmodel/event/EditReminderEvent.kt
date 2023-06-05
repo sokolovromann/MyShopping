@@ -19,4 +19,6 @@ sealed class EditReminderEvent {
     data class ReminderDateChanged(val year: Int, val month: Int, val dayOfMonth: Int) : EditReminderEvent()
 
     data class ReminderTimeChanged(val hourOfDay: Int, val minute: Int) : EditReminderEvent()
+
+    object ShowPermissions : EditReminderEvent()
 }

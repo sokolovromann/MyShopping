@@ -1,5 +1,8 @@
 package ru.sokolovromann.myshopping.ui.compose
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
@@ -15,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
+import ru.sokolovromann.myshopping.ui.navigate
 import ru.sokolovromann.myshopping.ui.utils.toItemBody
 import ru.sokolovromann.myshopping.ui.viewmodel.EditReminderViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
@@ -30,6 +34,16 @@ fun EditReminderScreen(
         viewModel.screenEventFlow.collect {
             when (it) {
                 EditReminderScreenEvent.ShowBackScreen -> navController.popBackStack()
+
+                is EditReminderScreenEvent.ShowPermissions -> {
+                    navController.popBackStack()
+                    navController.navigate(
+                        intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            val uri = Uri.fromParts("package", it.packageName, null)
+                            data = uri
+                        }
+                    )
+                }
             }
         }
     }
@@ -58,7 +72,15 @@ fun EditReminderScreen(
                         }
                     )
 
-                    if (!screenData.showPermissionError) {
+                    if (screenData.showPermissionError) {
+                        AppDialogActionButton(
+                            onClick = { viewModel.onEvent(EditReminderEvent.ShowPermissions) },
+                            primaryButton = true,
+                            content = {
+                                Text(text = stringResource(R.string.editReminder_action_showPermissions))
+                            }
+                        )
+                    } else {
                         AppDialogActionButton(
                             onClick = { viewModel.onEvent(EditReminderEvent.SaveReminder) },
                             primaryButton = true,

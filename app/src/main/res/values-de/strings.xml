@@ -194,6 +194,7 @@
     <string name="editReminder_action_cancelSavingReminder">Absagen</string>
     <string name="editReminder_action_deleteReminder">Erinnerung löschen</string>
     <string name="editReminder_action_saveReminder">Speichern</string>
+    <string name="editReminder_action_showPermissions">Öffnen Sie Berechtigungen</string>
     <string name="editReminder_header_addReminder">Hinzufügen</string>
     <string name="editReminder_header_editReminder">Bearbeiten</string>
     <string name="editReminder_message_permissionError">Sie sind nicht berechtigt, Benachrichtigungen anzuzeigen. Benachrichtigungen werden nicht ohne Erlaubnis angezeigt.</string>
