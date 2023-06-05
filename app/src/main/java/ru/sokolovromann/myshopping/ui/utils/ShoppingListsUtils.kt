@@ -126,7 +126,11 @@ private fun productsToPair(
     val text: UiText = if (shortText) {
         UiText.FromString(product.name)
     } else {
-        val str = "${product.name}$productsText"
+        val str = if (preferences.displayShoppingsProducts == DisplayProducts.COLUMNS) {
+            "${product.name}$productsText"
+        } else {
+            product.name
+        }
         UiText.FromString(str)
     }
 
