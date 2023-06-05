@@ -21,6 +21,7 @@ enum class SettingsUid {
     CompletedWithCheckbox,
     DisplayShoppingsProducts,
     EnterToSaveProducts,
+    HighlightCheckbox,
     SaveProductToAutocompletes,
     MigrateFromAppVersion14,
     Email,

@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
@@ -31,6 +32,7 @@ fun ShoppingListsGrid(
     smartphoneScreen: Boolean,
     items: List<ShoppingListItem>,
     displayProducts: DisplayProducts,
+    highlightCheckbox: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
@@ -65,6 +67,11 @@ fun ShoppingListsGrid(
                         fontSize = fontSize
                     )
                 },
+                left = getShoppingListItemLeftOrNull(
+                    highlightCheckbox = highlightCheckbox,
+                    checked = item.completed,
+                    displayProducts = displayProducts
+                ),
                 right = getShoppingListItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid) },
@@ -178,6 +185,30 @@ fun ShoppingListsHiddenContent(
             )
         }
     }
+}
+
+@Composable
+private fun getShoppingListItemLeftOrNull(
+    highlightCheckbox: Boolean,
+    checked: Boolean,
+    displayProducts: DisplayProducts
+) = itemOrNull(enabled = highlightCheckbox) {
+    val height = if (displayProducts == DisplayProducts.HIDE) {
+        ShoppingListItemHideProductsHeight
+    } else {
+        ShoppingListItemShowProductsHeight
+    }
+
+    val color = if (checked) {
+        MaterialTheme.colors.primary.copy(alpha = ContentAlpha.medium)
+    } else {
+        MaterialTheme.colors.error.copy(alpha = ContentAlpha.medium)
+    }
+
+    Spacer(modifier = Modifier
+        .size(width = ShoppingListItemSpacerMediumSize, height = height)
+        .background(color = color)
+    )
 }
 
 @Composable
@@ -337,3 +368,6 @@ private val ShoppingListsHiddenProductsPaddings = PaddingValues(
 private val ShoppingListsLocationPaddings = PaddingValues(
     horizontal = 8.dp
 )
+
+private val ShoppingListItemHideProductsHeight = 48.dp
+private val ShoppingListItemShowProductsHeight = 64.dp

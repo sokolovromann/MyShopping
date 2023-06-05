@@ -114,6 +114,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.EnterToSaveProducts -> enterToSaveProducts()
 
+            SettingsUid.HighlightCheckbox -> highlightCheckbox()
+
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
             SettingsUid.MigrateFromAppVersion14 -> migrateFromAppVersion14()
@@ -222,6 +224,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun enterToSaveProducts() = viewModelScope.launch {
         repository.invertEnterToSaveProduct()
+    }
+
+    private fun highlightCheckbox() = viewModelScope.launch {
+        repository.invertHighlightCheckbox()
     }
 
     private fun migrateFromAppVersion14() = viewModelScope.launch {

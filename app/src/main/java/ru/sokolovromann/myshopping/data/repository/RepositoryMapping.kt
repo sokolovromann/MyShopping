@@ -258,7 +258,8 @@ class RepositoryMapping @Inject constructor() {
             displayDefaultAutocompletes = entity.displayDefaultAutocompletes,
             completedWithCheckbox = entity.completedWithCheckbox,
             displayShoppingsProducts = toDisplayProducts(entity.displayShoppingsProducts),
-            enterToSaveProduct = entity.enterToSaveProduct
+            enterToSaveProduct = entity.enterToSaveProduct,
+            highlightCheckbox = entity.highlightCheckbox
         )
     }
 
@@ -284,7 +285,8 @@ class RepositoryMapping @Inject constructor() {
             displayDefaultAutocompletes = appPreferences.displayDefaultAutocompletes,
             completedWithCheckbox = appPreferences.completedWithCheckbox,
             displayShoppingsProducts = toDisplayProductsName(appPreferences.displayShoppingsProducts),
-            enterToSaveProduct = appPreferences.enterToSaveProduct
+            enterToSaveProduct = appPreferences.enterToSaveProduct,
+            highlightCheckbox = appPreferences.highlightCheckbox
         )
     }
 

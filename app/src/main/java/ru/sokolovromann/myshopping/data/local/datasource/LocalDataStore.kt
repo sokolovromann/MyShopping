@@ -39,6 +39,7 @@ class LocalDataStore @Inject constructor(
     private val completedWithCheckboxKey = booleanPreferencesKey("completed_with_checkbox")
     private val displayShoppingsProductsKey = stringPreferencesKey("display_shoppings_products")
     private val enterToSaveProductKey = booleanPreferencesKey("enter_to_save_product")
+    private val highlightCheckboxKey = booleanPreferencesKey("highlight_checkbox")
 
     suspend fun getAppPreferences(): Flow<AppPreferencesEntity> = withContext(dispatchers.io) {
         return@withContext dataStore.data.map {
@@ -63,7 +64,8 @@ class LocalDataStore @Inject constructor(
                 displayDefaultAutocompletes = it[displayDefaultAutocompletesKey] ?: true,
                 completedWithCheckbox = it[completedWithCheckboxKey] ?: true,
                 displayShoppingsProducts = it[displayShoppingsProductsKey] ?: "",
-                enterToSaveProduct = it[enterToSaveProductKey] ?: true
+                enterToSaveProduct = it[enterToSaveProductKey] ?: true,
+                highlightCheckbox = it[highlightCheckboxKey] ?: false
             )
         }
     }
@@ -91,6 +93,7 @@ class LocalDataStore @Inject constructor(
             it[completedWithCheckboxKey] = entity.completedWithCheckbox
             it[displayShoppingsProductsKey] = entity.displayShoppingsProducts
             it[enterToSaveProductKey] = entity.enterToSaveProduct
+            it[highlightCheckboxKey] = entity.highlightCheckbox
         }
     }
 
@@ -193,6 +196,13 @@ class LocalDataStore @Inject constructor(
         dataStore.edit {
             val enterToSave = it[enterToSaveProductKey] ?: true
             it[enterToSaveProductKey] = !enterToSave
+        }
+    }
+
+    suspend fun invertHighlightCheckbox() = withContext(dispatchers.io) {
+        dataStore.edit {
+            val highlightCheckbox = it[highlightCheckboxKey] ?: false
+            it[highlightCheckboxKey] = !highlightCheckbox
         }
     }
 }

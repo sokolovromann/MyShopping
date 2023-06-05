@@ -62,6 +62,7 @@ fun CopyProductScreen(
             smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
+            highlightCheckbox = screenData.highlightCheckbox,
             topBar = {
                 ShoppingListsLocationContent(
                     location = screenData.location,

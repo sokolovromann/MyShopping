@@ -315,6 +315,7 @@ fun ProductsScreen(
             screenState = screenData.screenState,
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
+            highlightCheckbox = screenData.highlightCheckbox,
             items = screenData.products,
             topBar = {
                 if (screenData.shoppingListName != UiText.Nothing || screenData.reminderText != UiText.Nothing) {
@@ -540,6 +541,7 @@ private fun ProductsGrid(
     screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
+    highlightCheckbox: Boolean,
     items: List<ProductItem>,
     topBar: @Composable RowScope.() -> Unit,
     bottomBar: @Composable RowScope.() -> Unit,
@@ -583,7 +585,7 @@ private fun ProductsGrid(
 
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
-                left = getProductItemLeft(item.completed, leftOnClick),
+                left = getProductItemLeft(highlightCheckbox, item.completed, leftOnClick),
                 title = getProductItemTitleOrNull(item.nameText, fontSize),
                 body = getProductItemBodyOrNull(item.bodyText, fontSize),
                 right = getProductItemRightOrNull(selected),
@@ -625,14 +627,28 @@ fun ProductsHiddenContent(
 
 @Composable
 private fun getProductItemLeft(
-    completed: Boolean,
+    highlightCheckbox: Boolean,
+    checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?
 ): @Composable () -> Unit = {
+    val checkedColor = if (highlightCheckbox) {
+        MaterialTheme.colors.primary.copy(alpha = ContentAlpha.medium)
+    } else {
+        MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+    }
+
+    val uncheckedColor = if (highlightCheckbox) {
+        MaterialTheme.colors.error.copy(alpha = ContentAlpha.medium)
+    } else {
+        MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+    }
+
     AppCheckbox(
-        checked = completed,
+        checked = checked,
         onCheckedChange = onCheckedChange,
         colors = CheckboxDefaults.colors(
-            checkedColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+            checkedColor = checkedColor,
+            uncheckedColor = uncheckedColor
         )
     )
 }

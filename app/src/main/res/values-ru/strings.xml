@@ -360,6 +360,7 @@
     <string name="settings_body_email">Нажмите, чтобы написать</string>
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
+    <string name="settings_body_highlightCheckbox">Если включено, то чекбокс будут выделяться цветом</string>
     <string name="settings_body_migrateFromAppVersion14">Данные из старой версии приложения автоматически переносятся в новую. Но если, данные не перенеслись, то вы можете принудительно их перенести в новую версию приложения. При этом все данные, созданные после обновления будут удалены.</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
@@ -386,6 +387,7 @@
     <string name="settings_title_enterToSaveProduct">Enter для сохранения товара</string>
     <string name="settings_title_fontSize">Размер текста</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_highlightCheckbox">Выделять чекбокс</string>
     <string name="settings_title_migrateFromAppVersion14">Обновление с версии 1.3.5 и ниже</string>
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>

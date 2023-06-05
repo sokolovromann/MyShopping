@@ -248,6 +248,7 @@ fun PurchasesScreen(
             smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
+            highlightCheckbox = screenData.highlightCheckbox,
             bottomBar = {
                 if (screenData.showHiddenShoppingLists) {
                     ShoppingListsHiddenContent(

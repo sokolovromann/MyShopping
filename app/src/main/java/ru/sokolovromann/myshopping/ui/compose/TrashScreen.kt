@@ -164,6 +164,7 @@ fun TrashScreen(
             smartphoneScreen = screenData.smartphoneScreen,
             items = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
+            highlightCheckbox = screenData.highlightCheckbox,
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),

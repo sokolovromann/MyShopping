@@ -19,5 +19,6 @@ data class AppPreferences(
     val displayDefaultAutocompletes: Boolean = true,
     val completedWithCheckbox: Boolean = true,
     val displayShoppingsProducts: DisplayProducts = DisplayProducts.DefaultValue,
-    val enterToSaveProduct: Boolean = true
+    val enterToSaveProduct: Boolean = true,
+    val highlightCheckbox: Boolean = false
 )

@@ -39,6 +39,7 @@ class PurchasesState {
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
+            highlightCheckbox = preferences.highlightCheckbox,
             totalText = totalText,
             multiColumnsText = multiColumnsText,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -76,6 +77,7 @@ class PurchasesState {
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getShoppingListItems(),
             displayProducts = preferences.displayShoppingsProducts,
+            highlightCheckbox = preferences.highlightCheckbox,
             totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
             multiColumnsText = multiColumnsText,
@@ -303,6 +305,7 @@ data class PurchasesScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
+    val highlightCheckbox: Boolean = false,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,
     val multiColumnsText: UiText = UiText.Nothing,
