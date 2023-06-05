@@ -423,7 +423,7 @@
     <string name="shoppingLists_text_allTotal">All: %s</string>
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
-    <string name="shoppingLists_text_nameNotFound">Without name</string>
+    <string name="shoppingLists_text_nameNotFound">Unnamed</string>
     <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 

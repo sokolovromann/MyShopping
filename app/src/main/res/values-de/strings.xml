@@ -352,7 +352,7 @@
     <string name="shoppingLists_text_allTotal">Alle: %s</string>
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
-    <string name="shoppingLists_text_nameNotFound">Ohne Namen</string>
+    <string name="shoppingLists_text_nameNotFound">Unbenannt</string>
     <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 
