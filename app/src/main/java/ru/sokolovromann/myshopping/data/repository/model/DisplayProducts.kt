@@ -5,7 +5,7 @@ enum class DisplayProducts {
     COLUMNS, ROW, HIDE;
 
     companion object {
-        val DefaultValue: DisplayProducts = COLUMNS
+        val DefaultValue: DisplayProducts = ROW
 
         fun valueOfOrDefault(value: String): DisplayProducts = try {
             valueOf(value)
