@@ -206,6 +206,10 @@ fun NavController.navigateWithDrawerOption(route: String) {
     }
 }
 
+fun NavController.navigate(intent: Intent) {
+    context.startActivity(intent)
+}
+
 fun NavController.chooseNavigate(intent: Intent, title: String? = null) {
     context.startActivity(Intent.createChooser(intent, title))
 }
