@@ -284,7 +284,7 @@ private fun ShoppingListItemBody(
 
         val totalAsCompose = total.asCompose()
         if (totalAsCompose.isNotEmpty()) {
-            if (displayProducts != DisplayProducts.HIDE) {
+            if (displayProducts == DisplayProducts.COLUMNS) {
                 Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
             }
 
