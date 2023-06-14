@@ -137,6 +137,15 @@
     <string name="notificationChannel_description_purchases">Notifications of shopping lists</string>
     <string name="notificationChannel_name_purchases">Purchases</string>
 
+    <string name="productsWidgetConfig_contentDescription_navigationIcon">Cancel</string>
+    <string name="productsWidgetConfig_header">Select a list</string>
+    <string name="productsWidgetConfig_text_shoppingListsNotFound">You have no shopping lists</string>
+
+    <string name="productsWidget_description">Products of the selected shopping list</string>
+    <string name="productsWidget_label">Shopping list</string>
+    <string name="productsWidget_text_loading">Loading…</string>
+    <string name="productsWidget_text_productsNotFound">Shopping list is empty</string>
+
     <string name="products_action_addShoppingListTotal">Add total</string>
     <string name="products_action_calculateChange">Calculate change</string>
     <string name="products_action_disableProductsMultiColumns">One column</string>

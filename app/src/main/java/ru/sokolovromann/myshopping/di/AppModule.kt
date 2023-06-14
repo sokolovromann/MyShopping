@@ -124,6 +124,11 @@ object AppModule {
     }
 
     @Provides
+    fun providesProductsWidgetsPreferencesDao(localDataStore: LocalDataStore): ProductsWidgetPreferencesDao {
+        return ProductsWidgetPreferencesDao(localDataStore)
+    }
+
+    @Provides
     fun providesPurchasesNotificationPreferencesDao(localDataStore: LocalDataStore): PurchasesNotificationPreferencesDao {
         return PurchasesNotificationPreferencesDao(localDataStore)
     }
@@ -191,6 +196,23 @@ object AppModule {
         dispatchers: AppDispatchers
     ): ProductsRepositoryImpl {
         return ProductsRepositoryImpl(localDatabase.productsDao(), preferencesDao, mapping, dispatchers)
+    }
+
+    @Provides
+    fun providesProductsWidgetRepository(
+        repository: ProductsWidgetRepositoryImpl
+    ): ProductsWidgetRepository {
+        return repository
+    }
+
+    @Provides
+    fun providesProductsWidgetRepositoryImpl(
+        localDatabase: LocalDatabase,
+        preferencesDao: ProductsWidgetPreferencesDao,
+        mapping: RepositoryMapping,
+        dispatchers: AppDispatchers
+    ): ProductsWidgetRepositoryImpl {
+        return ProductsWidgetRepositoryImpl(localDatabase.productsWidgetDao(), preferencesDao, mapping, dispatchers)
     }
 
     @Provides

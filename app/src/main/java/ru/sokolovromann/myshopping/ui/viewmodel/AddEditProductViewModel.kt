@@ -168,7 +168,8 @@ class AddEditProductViewModel @Inject constructor(
         }
 
         withContext(dispatchers.main) {
-            _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
+            val event = AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
+            _screenEventFlow.emit(event)
         }
     }
 

@@ -21,4 +21,6 @@ sealed class ProductsScreenEvent {
     data class CalculateChange(val uid: String) : ProductsScreenEvent()
 
     data class ShareProducts(val products: String) : ProductsScreenEvent()
+
+    data class UpdateProductsWidget(val shoppingUid: String) : ProductsScreenEvent()
 }

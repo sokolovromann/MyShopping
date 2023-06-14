@@ -48,3 +48,17 @@ fun FontSize.toHeader6(): Int = when (this) {
     FontSize.LARGE -> 22
     FontSize.HUGE -> 24
 }
+
+fun FontSize.toWidgetTitle(): Int = when (this) {
+    FontSize.TINY, FontSize.SMALL -> 16
+    FontSize.MEDIUM -> 18
+    FontSize.LARGE -> 20
+    FontSize.HUGE -> 22
+}
+
+fun FontSize.toWidgetBody(): Int = when (this) {
+    FontSize.TINY, FontSize.SMALL -> 14
+    FontSize.MEDIUM -> 16
+    FontSize.LARGE -> 18
+    FontSize.HUGE -> 20
+}

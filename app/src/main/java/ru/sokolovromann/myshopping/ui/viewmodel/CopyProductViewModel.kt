@@ -110,7 +110,8 @@ class CopyProductViewModel @Inject constructor(
         repository.addProducts(products)
 
         withContext(dispatchers.main) {
-            _screenEventFlow.emit(CopyProductScreenEvent.ShowBackScreen)
+            val screenEvent = CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets
+            _screenEventFlow.emit(screenEvent)
         }
     }
 

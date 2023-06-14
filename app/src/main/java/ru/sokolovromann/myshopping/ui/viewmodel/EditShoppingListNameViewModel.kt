@@ -69,7 +69,8 @@ class EditShoppingListNameViewModel @Inject constructor(
         )
 
         withContext(dispatchers.main) {
-            _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowBackScreen)
+            val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingList.uid)
+            _screenEventFlow.emit(event)
         }
     }
 

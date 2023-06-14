@@ -110,7 +110,7 @@ class MoveProductViewModel @Inject constructor(
         repository.editProducts(products)
 
         withContext(dispatchers.main) {
-            _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
+            _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
         }
     }
 

@@ -290,6 +290,15 @@
     <string name="notificationChannel_description_purchases">Уведомления для списков покупок</string>
     <string name="notificationChannel_name_purchases">Покупки</string>
 
+    <string name="productsWidgetConfig_contentDescription_navigationIcon">Отмена</string>
+    <string name="productsWidgetConfig_header">Выберите список</string>
+    <string name="productsWidgetConfig_text_shoppingListsNotFound">У вас нет покупок</string>
+
+    <string name="productsWidget_description">Товары из выбранного списка покупок</string>
+    <string name="productsWidget_label">Список покупок</string>
+    <string name="productsWidget_text_loading">Загрузка…</string>
+    <string name="productsWidget_text_productsNotFound">Список покупок пуст</string>
+
     <string name="products_action_addShoppingListTotal">Добавить итого</string>
     <string name="products_action_calculateChange">Посчитать сдачу</string>
     <string name="products_action_disableProductsMultiColumns">Один столбец</string>

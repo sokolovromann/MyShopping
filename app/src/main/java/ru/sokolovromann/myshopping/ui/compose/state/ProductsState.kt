@@ -370,6 +370,10 @@ class ProductsState {
         }
     }
 
+    fun getShoppingListResult(): Result<ShoppingList> {
+        return Result.success(products.shoppingList)
+    }
+
     private fun toReminderText(reminder: Long?): UiText {
         return if (reminder == null) {
             UiText.Nothing

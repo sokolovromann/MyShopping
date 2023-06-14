@@ -127,6 +127,14 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun updateProductsWidget() = withContext(dispatchers.main) {
+        val shoppingList = productsState.getShoppingListResult().getOrElse {
+            return@withContext
+        }
+        val event = ProductsScreenEvent.UpdateProductsWidget(shoppingList.uid)
+        _screenEventFlow.emit(event)
+    }
+
     private fun addProduct() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.AddProduct(shoppingUid))
     }
@@ -157,13 +165,17 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun moveProductUp(event: ProductsEvent.MoveProductUp) = viewModelScope.launch {
-        productsState.getProductsUpResult(event.uid)
-            .onSuccess { repository.swapProducts(it.first, it.second) }
+        productsState.getProductsUpResult(event.uid).onSuccess {
+            repository.swapProducts(it.first, it.second)
+            updateProductsWidget()
+        }
     }
 
     private fun moveProductDown(event: ProductsEvent.MoveProductDown) = viewModelScope.launch {
-        productsState.getProductsDownResult(event.uid)
-            .onSuccess { repository.swapProducts(it.first, it.second) }
+        productsState.getProductsDownResult(event.uid).onSuccess {
+            repository.swapProducts(it.first, it.second)
+            updateProductsWidget()
+        }
     }
 
     private fun deleteProducts() = viewModelScope.launch {
@@ -173,6 +185,8 @@ class ProductsViewModel @Inject constructor(
                 shoppingUid = shoppingUid,
                 lastModified = System.currentTimeMillis()
             )
+
+            updateProductsWidget()
         }
 
         withContext(dispatchers.main) {
@@ -338,6 +352,8 @@ class ProductsViewModel @Inject constructor(
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()
         }
+
+        updateProductsWidget()
     }
 
     private fun displayHiddenProducts() {

@@ -31,6 +31,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".ui.ProductsWidgetConfigActivity"/>
         <receiver android:name=".notification.purchases.PurchasesBroadcastReceiver"/>
         <receiver
             android:exported="true"
@@ -39,6 +40,17 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
+        </receiver>
+        <receiver
+            android:exported="false"
+            android:enabled="true"
+            android:name=".widget.products.ProductsWidgetReceiver"
+            android:label="@string/productsWidget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/products_widget_metadata" />
         </receiver>
     </application>
 

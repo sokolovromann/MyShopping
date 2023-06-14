@@ -4,5 +4,7 @@ sealed class EditShoppingListTotalScreenEvent {
 
     object ShowBackScreen : EditShoppingListTotalScreenEvent()
 
+    data class ShowBackScreenAndUpdateProductsWidget(val shoppingUid: String) : EditShoppingListTotalScreenEvent()
+
     object ShowKeyboard : EditShoppingListTotalScreenEvent()
 }

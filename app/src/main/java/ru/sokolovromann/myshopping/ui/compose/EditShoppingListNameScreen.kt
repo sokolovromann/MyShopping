@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -21,6 +22,7 @@ import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.toTextField
+import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.EditShoppingListNameViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListNameEvent
 
@@ -32,11 +34,18 @@ fun EditShoppingListNameScreen(
     val screenData = viewModel.editShoppingListNameState.screenData
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
                 EditShoppingListNameScreenEvent.ShowBackScreen -> {
+                    focusManager.clearFocus(force = true)
+                    navController.popBackStack()
+                }
+
+                is EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget -> {
+                    updateProductsWidget(context, it.shoppingUid)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }

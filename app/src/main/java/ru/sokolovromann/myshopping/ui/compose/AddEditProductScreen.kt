@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +40,7 @@ fun AddEditProductScreen(
     viewModel: AddEditProductViewModel = hiltViewModel()
 ) {
     val screenData = viewModel.addEditProductState.screenData
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
@@ -46,6 +48,12 @@ fun AddEditProductScreen(
         viewModel.screenEventFlow.collect {
             when (it) {
                 AddEditProductScreenEvent.ShowBackScreen -> {
+                    navController.popBackStack()
+                    focusManager.clearFocus(force = true)
+                }
+
+                is AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget -> {
+                    updateProductsWidget(context, it.shoppingUid)
                     navController.popBackStack()
                     focusManager.clearFocus(force = true)
                 }

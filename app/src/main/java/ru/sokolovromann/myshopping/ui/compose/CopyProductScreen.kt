@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -17,6 +18,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.CopyProductScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
+import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.CopyProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyProductEvent
 
@@ -26,11 +28,17 @@ fun CopyProductScreen(
     viewModel: CopyProductViewModel = hiltViewModel()
 ) {
     val screenData = viewModel.copyProductState.screenData
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
                 CopyProductScreenEvent.ShowBackScreen -> navController.popBackStack()
+
+                CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets -> {
+                    updateProductsWidgets(context)
+                    navController.popBackStack()
+                }
             }
         }
     }

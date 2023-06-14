@@ -50,4 +50,6 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun mainDao(): MainDao
 
     abstract fun settingsDao(): SettingsDao
+
+    abstract fun productsWidgetDao(): ProductsWidgetDao
 }

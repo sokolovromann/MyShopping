@@ -84,6 +84,9 @@ dependencies {
 
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
+    implementation "androidx.glance:glance:$glance_version"
+    implementation "androidx.glance:glance-appwidget:$glance_version"
+
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_version"
 

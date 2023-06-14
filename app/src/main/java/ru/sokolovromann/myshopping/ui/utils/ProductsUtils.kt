@@ -6,7 +6,32 @@ import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.ui.compose.state.ProductItem
+import ru.sokolovromann.myshopping.ui.compose.state.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
+
+fun Products.getProductWidgetItems(): List<ProductWidgetItem> {
+    return formatProducts().map {
+        val displayQuantity = it.quantity.isNotEmpty()
+        val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
+
+        val body = if (displayPrice) {
+            if (displayQuantity) {
+                " • ${it.quantity} • ${it.formatTotal()}"
+            } else {
+                " • ${it.formatTotal()}"
+            }
+        } else {
+            if (displayQuantity) " • ${it.quantity}" else ""
+        }
+
+        ProductWidgetItem(
+            uid = it.productUid,
+            name = it.name,
+            body = body,
+            completed = it.completed
+        )
+    }
+}
 
 fun Products.getProductsItems(
     displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases

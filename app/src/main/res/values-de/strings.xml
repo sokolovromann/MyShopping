@@ -225,6 +225,15 @@
     <string name="notificationChannel_description_purchases">Benachrichtigungen über einkäufe</string>
     <string name="notificationChannel_name_purchases">Einkäufe</string>
 
+    <string name="productsWidgetConfig_contentDescription_navigationIcon">Absagen</string>
+    <string name="productsWidgetConfig_header">Wählen Sie eine Liste aus</string>
+    <string name="productsWidgetConfig_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>
+
+    <string name="productsWidget_description">Produkte der ausgewählten Einkaufsliste</string>
+    <string name="productsWidget_label">Einkaufsliste</string>
+    <string name="productsWidget_text_loading">Wird geladen…</string>
+    <string name="productsWidget_text_productsNotFound">Einkaufsliste ist leer</string>
+
     <string name="products_action_addShoppingListTotal">Gesamt addieren</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_disableProductsMultiColumns">Eine Spalte</string>
