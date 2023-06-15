@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,10 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val mainState = viewModel.mainState
-
-        val shoppingUid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
-        val event = MainEvent.OnCreate(shoppingUid)
-        viewModel.onEvent(event)
+        viewModel.onEvent(MainEvent.OnCreate)
 
         installSplashScreen().apply {
             setKeepOnScreenCondition { mainState.loading }
@@ -38,6 +36,30 @@ class MainActivity : ComponentActivity() {
                 darkTheme = mainState.nightTheme,
                 content = { MainContent() }
             )
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val shoppingUid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
+        val event = MainEvent.OnStart(shoppingUid)
+        viewModel.onEvent(event)
+    }
+
+    override fun onStop() {
+        intent = getIntentWithoutExtras()
+
+        viewModel.onEvent(MainEvent.OnStop)
+        super.onStop()
+    }
+
+    private fun getIntentWithoutExtras(): Intent {
+        return Intent().apply {
+            val args = intent.extras
+            if (args?.containsKey(UiRouteKey.ShoppingUid.key) == true) {
+                intent.removeExtra(UiRouteKey.ShoppingUid.key)
+            }
         }
     }
 
@@ -57,14 +79,14 @@ class MainActivity : ComponentActivity() {
             }
         )
 
+        viewModel.mainState.shoppingUid?.let {
+            navController.navigate(route = UiRoute.Products.productsScreen(it))
+        }
+
         LaunchedEffect(Unit) {
             viewModel.screenEventFlow.collect {
                 when (it) {
                     MainScreenEvent.GetDefaultPreferences -> addDefaultPreferences()
-
-                    is MainScreenEvent.ShowProducts -> navController.navigate(
-                        route = UiRoute.Products.productsScreen(it.uid)
-                    )
 
                     MainScreenEvent.GetScreenSize -> migrateFromAppVersion14()
                 }

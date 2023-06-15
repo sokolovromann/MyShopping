@@ -36,7 +36,11 @@ class MainViewModel @Inject constructor(
 
     override fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.OnCreate -> onCreate(event)
+            MainEvent.OnCreate -> onCreate()
+
+            is MainEvent.OnStart -> onStart(event)
+
+            MainEvent.OnStop -> onStop()
 
             is MainEvent.AddDefaultPreferences -> addDefaultPreferences(event)
 
@@ -44,24 +48,31 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch {
+    private fun onCreate() = viewModelScope.launch {
         withContext(dispatchers.main) {
             mainState.showLoading()
         }
 
         repository.getAppPreferences().collect {
-            applyAppPreferences(it, event)
+            applyAppPreferences(it)
         }
     }
 
-    private suspend fun applyAppPreferences(
-        appPreferences: AppPreferences,
-        event: MainEvent.OnCreate
-    ) = withContext(dispatchers.main) {
+    private fun onStart(event: MainEvent.OnStart) = viewModelScope.launch {
+        if (event.shoppingUid != null) {
+            mainState.showProducts(event.shoppingUid)
+        }
+    }
+
+    private fun onStop() = viewModelScope.launch {
+        mainState.clearShoppingUid()
+    }
+
+    private suspend fun applyAppPreferences(appPreferences: AppPreferences) = withContext(dispatchers.main) {
         mainState.applyPreferences(appPreferences)
 
         when (appPreferences.appFirstTime) {
-            AppFirstTime.NOTHING -> showPurchasesOrProducts(event.shoppingUid)
+            AppFirstTime.NOTHING -> mainState.hideLoading()
 
             AppFirstTime.FIRST_TIME -> getDefaultPreferences()
 
@@ -96,7 +107,7 @@ class MainViewModel @Inject constructor(
         )
         migrates.awaitAll()
 
-        showPurchasesOrProducts(null)
+        mainState.hideLoading()
     }
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
@@ -149,17 +160,6 @@ class MainViewModel @Inject constructor(
         repository.addPreferences(appPreferences)
 
         notificationManager.createNotificationChannel()
-    }
-
-    private suspend fun showPurchasesOrProducts(
-        shoppingUid: String?
-    ) = viewModelScope.launch(dispatchers.main) {
-        mainState.showContent()
-
-        if (shoppingUid != null) {
-            val event = MainScreenEvent.ShowProducts(shoppingUid)
-            _screenEventFlow.emit(event)
-        }
     }
 
     private fun toSmartphoneScreen(screenWidth: Int): Boolean {

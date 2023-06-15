@@ -13,12 +13,23 @@ class MainState {
     var nightTheme by mutableStateOf(false)
         private set
 
+    var shoppingUid: String? by mutableStateOf(null)
+        private set
+
     fun showLoading() {
         loading = true
     }
 
-    fun showContent() {
+    fun hideLoading() {
         loading = false
+    }
+
+    fun showProducts(shoppingUid: String) {
+        this.shoppingUid = shoppingUid
+    }
+
+    fun clearShoppingUid() {
+        shoppingUid = null
     }
 
     fun applyPreferences(preferences: AppPreferences) {
