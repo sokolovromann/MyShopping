@@ -292,16 +292,9 @@ private fun ProductsWidgetProducts(
                     )
                 )
                 Text(
-                    text = it.name,
-                    style = TextDefaults.defaultTextStyle.copy(
-                        color = ColorProvider(R.color.black),
-                        fontSize = fontSize.toWidgetBody().sp
-                    )
-                )
-                Text(
                     text = it.body,
                     style = TextDefaults.defaultTextStyle.copy(
-                        color = ColorProvider(R.color.black_opacity_75),
+                        color = ColorProvider(R.color.black),
                         fontSize = fontSize.toWidgetBody().sp
                     )
                 )

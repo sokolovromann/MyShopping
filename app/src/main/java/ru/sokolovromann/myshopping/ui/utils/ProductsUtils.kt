@@ -16,17 +16,16 @@ fun Products.getProductWidgetItems(): List<ProductWidgetItem> {
 
         val body = if (displayPrice) {
             if (displayQuantity) {
-                " • ${it.quantity} • ${it.formatTotal()}"
+                "${it.name} • ${it.quantity} • ${it.formatTotal()}"
             } else {
-                " • ${it.formatTotal()}"
+                "${it.name} • ${it.formatTotal()}"
             }
         } else {
-            if (displayQuantity) " • ${it.quantity}" else ""
+            if (displayQuantity) "${it.name} • ${it.quantity}" else it.name
         }
 
         ProductWidgetItem(
             uid = it.productUid,
-            name = it.name,
             body = body,
             completed = it.completed
         )
