@@ -35,6 +35,7 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextDefaults
 import androidx.glance.unit.ColorProvider
@@ -96,7 +97,8 @@ class ProductsWidget : GlanceAppWidget() {
         Column(modifier = GlanceModifier.fillMaxSize()) {
             ProductsWidgetName(
                 name = products.value.shoppingList.name,
-                fontSize = products.value.preferences.fontSize
+                fontSize = products.value.preferences.fontSize,
+                completed = products.value.isCompleted()
             )
 
             if (products.value.formatProducts().isEmpty()) {
@@ -174,16 +176,23 @@ private fun createAction(uid: String): String {
 @Composable
 private fun ProductsWidgetName(
     name: String,
-    fontSize: FontSize
+    fontSize: FontSize,
+    completed: Boolean
 ) {
     if (name.isEmpty()) {
         return
     }
 
+    val background = if (completed) {
+        R.color.gray_200
+    } else {
+        R.color.white
+    }
+
     Column(
         modifier = GlanceModifier
             .fillMaxWidth()
-            .background(R.color.green_900)
+            .background(background)
             .padding(
                 vertical = ProductsWidgetMediumSize,
                 horizontal = ProductsWidgetLargeSize
@@ -194,8 +203,9 @@ private fun ProductsWidgetName(
         Text(
             text = name,
             style = TextDefaults.defaultTextStyle.copy(
-                color = ColorProvider(R.color.white),
-                fontSize = fontSize.toWidgetTitle().sp
+                color = ColorProvider(R.color.black),
+                fontSize = fontSize.toWidgetTitle().sp,
+                fontWeight = FontWeight.Bold
             ),
             maxLines = 1
         )
