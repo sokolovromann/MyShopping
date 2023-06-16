@@ -1,4 +1,4 @@
-## My Shopping List with widget
+## My Shopping List
 
 [![Latest Github release](https://img.shields.io/github/v/release/sokolovromann/MyShopping?style=plastic)](https://github.com/sokolovromann/MyShopping/releases/latest)
 
