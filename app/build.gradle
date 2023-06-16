@@ -16,7 +16,6 @@ android {
         versionCode app_code_version
         versionName app_name_version
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -86,9 +85,4 @@ dependencies {
 
     implementation "androidx.glance:glance:$glance_version"
     implementation "androidx.glance:glance-appwidget:$glance_version"
-
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$android_junit_version"
-
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }
