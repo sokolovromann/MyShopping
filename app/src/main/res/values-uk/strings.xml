@@ -308,8 +308,8 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">На початку</string>
     <string name="settings_action_displayCompletedPurchasesLast">В кінці</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Колонки</string>
-    <string name="settings_action_displayShoppingsProductsRow">Рядок</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Вертикально</string>
+    <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Приховувати</string>
     <string name="settings_action_hideShoppingsProducts">Приховувати</string>
     <string name="settings_action_selectHugeFontSize">Величезний</string>

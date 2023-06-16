@@ -290,8 +290,8 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">Zuerst</string>
     <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Säulen</string>
-    <string name="settings_action_displayShoppingsProductsRow">Reihe</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Vertikal</string>
+    <string name="settings_action_displayShoppingsProductsRow">Horizontal</string>
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
     <string name="settings_action_hideShoppingsProducts">Verstecken</string>
     <string name="settings_action_selectHugeFontSize">Riesig</string>

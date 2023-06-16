@@ -361,8 +361,8 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">First</string>
     <string name="settings_action_displayCompletedPurchasesLast">Last</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Columns</string>
-    <string name="settings_action_displayShoppingsProductsRow">Row</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Vertical</string>
+    <string name="settings_action_displayShoppingsProductsRow">Horizontally</string>
     <string name="settings_action_hideCompletedPurchases">Hide</string>
     <string name="settings_action_hideShoppingsProducts">Hide</string>
     <string name="settings_action_selectHugeFontSize">Huge</string>

@@ -355,8 +355,8 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
     <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Колонки</string>
-    <string name="settings_action_displayShoppingsProductsRow">Строка</string>
+    <string name="settings_action_displayShoppingsProductsColumns">Вертикально</string>
+    <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
     <string name="settings_action_hideShoppingsProducts">Скрывать</string>
     <string name="settings_action_selectHugeFontSize">Огромный</string>
