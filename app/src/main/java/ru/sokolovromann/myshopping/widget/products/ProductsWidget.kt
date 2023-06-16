@@ -95,13 +95,13 @@ class ProductsWidget : GlanceAppWidget() {
         }
 
         Column(modifier = GlanceModifier.fillMaxSize()) {
-            ProductsWidgetName(
-                name = products.value.shoppingList.name,
-                fontSize = products.value.preferences.fontSize,
-                completed = products.value.isCompleted()
-            )
-
             if (products.value.formatProducts().isEmpty()) {
+                ProductsWidgetName(
+                    name = products.value.shoppingList.name,
+                    fontSize = products.value.preferences.fontSize,
+                    completed = products.value.isCompleted()
+                )
+
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
@@ -110,6 +110,8 @@ class ProductsWidget : GlanceAppWidget() {
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),
+                    name = products.value.shoppingList.name,
+                    completed = products.value.isCompleted(),
                     widgetItems = products.value.getProductWidgetItems(),
                     fontSize = products.value.preferences.fontSize
                 ) {
@@ -262,6 +264,8 @@ private fun ProductsWidgetNotFound(
 @Composable
 private fun ProductsWidgetProducts(
     modifier: GlanceModifier,
+    name: String,
+    completed: Boolean,
     widgetItems: List<ProductWidgetItem>,
     fontSize: FontSize,
     onCheckedChange: (ProductWidgetItem) -> Unit
@@ -272,6 +276,13 @@ private fun ProductsWidgetProducts(
             .background(ColorProvider(R.color.gray_200))
             .then(modifier)
     ) {
+        item {
+            ProductsWidgetName(
+                name = name,
+                fontSize = fontSize,
+                completed = completed
+            )
+        }
         items(widgetItems) {
             val backgroundColorResId = if (it.completed) R.color.gray_200 else R.color.white
 
