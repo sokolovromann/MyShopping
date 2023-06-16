@@ -319,12 +319,13 @@
     <string name="settings_action_selectTinyFontSize">Дуже маленький</string>
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
-    <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування</string>
+    <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування (окрім віджетів)</string>
     <string name="settings_body_email">Натисніть, щоб написати</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_highlightCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>
     <string name="settings_body_migrateFromAppVersion14">Дані зі старої версії програми автоматично переносяться до нової. Але якщо дані не перенеслися, то ви можете примусово їх перенести в нову версію програми. При цьому всі дані, створені після оновлення, будуть видалені.</string>
+    <string name="settings_body_nightTheme">Окрім віджетів</string>
     <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_terms_and_conditions">Натисніть, щоб прочитати</string>

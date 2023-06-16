@@ -213,12 +213,13 @@
     <string name="settings_action_selectTinyFontSize">Tiny</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
-    <string name="settings_body_editProductAfterCompleted">Will be open screen to edit</string>
+    <string name="settings_body_editProductAfterCompleted">Will be open screen to edit (except widgets)</string>
     <string name="settings_body_email">Tap to write email</string>
     <string name="settings_body_enterToSaveProduct">If enabled, a product can be saved by tapping Enter</string>
     <string name="settings_body_github">Tap to open</string>
     <string name="settings_body_highlightCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_migrateFromAppVersion14">Data is automatically transferred to a new version of the app. But if the data was not transferred, then you can force it to be transferred to the new version of the app. All data created after update will be deleted.</string>
+    <string name="settings_body_nightTheme">Except widgets</string>
     <string name="settings_body_privacy_policy">Tap to read</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_terms_and_conditions">Tap to read</string>

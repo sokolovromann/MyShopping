@@ -167,6 +167,7 @@ class SettingsViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideFontSize()
+            _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
         }
     }
 
@@ -181,6 +182,7 @@ class SettingsViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             hideDisplayCompletedPurchases()
+            _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
         }
     }
 
@@ -200,10 +202,12 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertDisplayMoney() = viewModelScope.launch {
         repository.invertDisplayMoney()
+        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun invertDisplayCurrencyToLeft() = viewModelScope.launch {
         repository.invertDisplayCurrencyToLeft()
+        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun invertEditProductAfterCompleted() = viewModelScope.launch {
@@ -212,6 +216,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertCompletedWithCheckbox() = viewModelScope.launch {
         repository.invertCompletedWithCheckbox()
+        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun invertSaveProductToAutocompletes() = viewModelScope.launch {
@@ -228,6 +233,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun highlightCheckbox() = viewModelScope.launch {
         repository.invertHighlightCheckbox()
+        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun migrateFromAppVersion14() = viewModelScope.launch {

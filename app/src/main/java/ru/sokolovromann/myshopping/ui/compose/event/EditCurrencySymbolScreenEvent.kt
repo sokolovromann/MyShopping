@@ -4,5 +4,7 @@ sealed class EditCurrencySymbolScreenEvent {
 
     object ShowBackScreen : EditCurrencySymbolScreenEvent()
 
+    object ShowBackScreenAndUpdateProductsWidgets : EditCurrencySymbolScreenEvent()
+
     object ShowKeyboard : EditCurrencySymbolScreenEvent()
 }

@@ -27,4 +27,6 @@ sealed class SettingsScreenEvent {
     data class ShowTermsAndConditions(val link: String) : SettingsScreenEvent()
 
     object HideNavigationDrawer : SettingsScreenEvent()
+
+    object UpdateProductsWidgets : SettingsScreenEvent()
 }

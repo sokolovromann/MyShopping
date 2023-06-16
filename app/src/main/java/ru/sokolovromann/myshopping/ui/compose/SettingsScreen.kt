@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,6 +33,7 @@ import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.utils.toItemBody
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
+import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.SettingsViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SettingsEvent
 
@@ -44,6 +46,7 @@ fun SettingsScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val subjectText = stringResource(R.string.data_email_subject)
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -114,6 +117,8 @@ fun SettingsScreen(
                         Uri.parse(it.link)
                     )
                 )
+
+                SettingsScreenEvent.UpdateProductsWidgets -> updateProductsWidgets(context)
             }
         }
     }

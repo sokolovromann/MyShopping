@@ -19,8 +19,6 @@ import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.action.clickable
-import androidx.glance.appwidget.CheckBox
-import androidx.glance.appwidget.CheckboxDefaults
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
@@ -35,6 +33,7 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.layout.size
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextDefaults
@@ -49,6 +48,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ProductsWidgetRepository
+import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.ui.MainActivity
@@ -60,6 +60,11 @@ import ru.sokolovromann.myshopping.ui.utils.toWidgetTitle
 import ru.sokolovromann.myshopping.widget.WidgetKey
 
 class ProductsWidget : GlanceAppWidget() {
+
+    companion object {
+        internal val GreenColor = Color(0xFF1B5E20)
+        internal val BlackOpacity75Color = Color(0xBF000000)
+    }
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
@@ -113,7 +118,7 @@ class ProductsWidget : GlanceAppWidget() {
                     name = products.value.shoppingList.name,
                     completed = products.value.isCompleted(),
                     widgetItems = products.value.getProductWidgetItems(),
-                    fontSize = products.value.preferences.fontSize
+                    preferences = products.value.preferences
                 ) {
                     coroutineScope.launch(entryPoint.dispatchers().io) {
                         if (it.completed) {
@@ -267,7 +272,7 @@ private fun ProductsWidgetProducts(
     name: String,
     completed: Boolean,
     widgetItems: List<ProductWidgetItem>,
-    fontSize: FontSize,
+    preferences: AppPreferences,
     onCheckedChange: (ProductWidgetItem) -> Unit
 ) {
     LazyColumn(
@@ -279,34 +284,40 @@ private fun ProductsWidgetProducts(
         item {
             ProductsWidgetName(
                 name = name,
-                fontSize = fontSize,
+                fontSize = preferences.fontSize,
                 completed = completed
             )
         }
         items(widgetItems) {
             val backgroundColorResId = if (it.completed) R.color.gray_200 else R.color.white
+            val rowModifier = GlanceModifier
+                .fillMaxWidth()
+                .background(ColorProvider(backgroundColorResId))
+                .padding(all = ProductsWidgetMediumSize)
+
+            val rowModifierWithChecked = if (preferences.completedWithCheckbox) {
+                rowModifier
+            } else {
+                rowModifier.clickable { onCheckedChange(it) }
+            }
 
             Row(
-                modifier = GlanceModifier
-                    .fillMaxWidth()
-                    .background(ColorProvider(backgroundColorResId))
-                    .padding(all = ProductsWidgetMediumSize),
+                modifier = rowModifierWithChecked,
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalAlignment = Alignment.Start
             ) {
-                CheckBox(
+                ProductsWidgetCheckbox(
                     checked = it.completed,
-                    onCheckedChange = { onCheckedChange(it) },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Black,
-                        uncheckedColor = Color.Black
-                    )
+                    checkedWithCheckbox = preferences.completedWithCheckbox,
+                    highlightCheckbox = preferences.highlightCheckbox,
+                    onCheckedChange = { onCheckedChange(it) }
                 )
+
                 Text(
                     text = it.body,
                     style = TextDefaults.defaultTextStyle.copy(
                         color = ColorProvider(R.color.black),
-                        fontSize = fontSize.toWidgetBody().sp
+                        fontSize = preferences.fontSize.toWidgetBody().sp
                     )
                 )
             }
@@ -314,6 +325,44 @@ private fun ProductsWidgetProducts(
     }
 }
 
+@Composable
+private fun ProductsWidgetCheckbox(
+    checked: Boolean,
+    checkedWithCheckbox: Boolean,
+    highlightCheckbox: Boolean,
+    onCheckedChange: () -> Unit
+) {
+    val color = if (highlightCheckbox) {
+        if (checked) ProductsWidget.GreenColor else Color.Red
+    } else {
+        ProductsWidget.BlackOpacity75Color
+    }
+
+    val imageResId = if (checked) {
+        R.drawable.ic_all_check_box
+    } else {
+        R.drawable.ic_all_check_box_outline
+    }
+
+    val imageModifier = GlanceModifier
+        .size(ProductsWidgetCheckedSize)
+        .padding(horizontal = ProductsWidgetSmallSize)
+    val imageModifierWithClickable = if (checkedWithCheckbox) {
+        imageModifier.clickable { onCheckedChange() }
+    } else {
+        imageModifier
+    }
+
+    Image(
+        modifier = imageModifierWithClickable,
+        provider = ImageProvider(imageResId),
+        contentDescription = null,
+        colorFilter = ColorFilter.tint(ColorProvider(color))
+    )
+}
+
+private val ProductsWidgetSmallSize = 2.dp
 private val ProductsWidgetMediumSize = 4.dp
 private val ProductsWidgetLargeSize = 8.dp
 private val ProductsWidgetSpacerHeight = 1.dp
+private val ProductsWidgetCheckedSize = 28.dp

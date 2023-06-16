@@ -61,7 +61,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
         repository.editCurrencySymbol(symbol)
 
         withContext(dispatchers.main) {
-            _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreen)
+            _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
         }
     }
 

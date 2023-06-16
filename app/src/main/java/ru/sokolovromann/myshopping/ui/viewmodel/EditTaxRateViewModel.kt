@@ -61,7 +61,7 @@ class EditTaxRateViewModel @Inject constructor(
         repository.editTaxRate(taxRate)
 
         withContext(dispatchers.main) {
-            _screenEventFlow.emit(EditTaxRateScreenEvent.ShowBackScreen)
+            _screenEventFlow.emit(EditTaxRateScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
         }
     }
 

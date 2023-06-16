@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -20,6 +21,7 @@ import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.toTextField
+import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.EditTaxRateViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
 
@@ -31,11 +33,18 @@ fun EditTaxRateScreen(
     val screenData = viewModel.editTaxRateState.screenData
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
                 EditTaxRateScreenEvent.ShowBackScreen -> {
+                    focusManager.clearFocus(force = true)
+                    navController.popBackStack()
+                }
+
+                EditTaxRateScreenEvent.ShowBackScreenAndUpdateProductsWidgets -> {
+                    updateProductsWidgets(context)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }

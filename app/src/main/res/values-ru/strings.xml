@@ -366,12 +366,13 @@
     <string name="settings_action_selectTinyFontSize">Очень маленький</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
-    <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования</string>
+    <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования (кроме виджетов)</string>
     <string name="settings_body_email">Нажмите, чтобы написать</string>
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
     <string name="settings_body_highlightCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_migrateFromAppVersion14">Данные из старой версии приложения автоматически переносятся в новую. Но если, данные не перенеслись, то вы можете принудительно их перенести в новую версию приложения. При этом все данные, созданные после обновления будут удалены.</string>
+    <string name="settings_body_nightTheme">Кроме виджетов</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
     <string name="settings_body_terms_and_conditions">Нажмите, чтобы прочитать</string>

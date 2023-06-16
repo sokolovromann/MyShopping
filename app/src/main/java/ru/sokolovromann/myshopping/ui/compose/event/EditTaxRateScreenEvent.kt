@@ -4,5 +4,7 @@ sealed class EditTaxRateScreenEvent {
 
     object ShowBackScreen : EditTaxRateScreenEvent()
 
+    object ShowBackScreenAndUpdateProductsWidgets : EditTaxRateScreenEvent()
+
     object ShowKeyboard : EditTaxRateScreenEvent()
 }

@@ -301,12 +301,13 @@
     <string name="settings_action_selectTinyFontSize">Winzig</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
-    <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet</string>
+    <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet (Außer Widgets)</string>
     <string name="settings_body_email">Zum Schreiben tippen</string>
     <string name="settings_body_enterToSaveProduct">Wenn aktiviert, kann ein Produkt durch Tippen auf die Eingabetaste gespeichert werden</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
     <string name="settings_body_highlightCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_migrateFromAppVersion14">Die Daten werden automatisch in eine neue Version der App übertragen. Wenn die Daten jedoch nicht übertragen wurden, können Sie die Übertragung auf die neue Version der App erzwingen. Alle nach dem Update erstellten Daten werden gelöscht.</string>
+    <string name="settings_body_nightTheme">Außer Widgets</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>

@@ -27,6 +27,7 @@ private fun Settings.getGeneralSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.NightTheme,
             titleText = UiText.FromResources(R.string.settings_title_nightTheme),
+            bodyText = UiText.FromResources(R.string.settings_body_nightTheme),
             checked = preferences.nightTheme
         ),
         SettingsItem(
