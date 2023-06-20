@@ -300,6 +300,7 @@
     <string name="productsWidget_text_productsNotFound">Список покупок пуст</string>
 
     <string name="products_action_addShoppingListTotal">Добавить итого</string>
+    <string name="products_action_automaticSorting">Сохранять сортировку</string>
     <string name="products_action_calculateChange">Посчитать сдачу</string>
     <string name="products_action_disableProductsMultiColumns">Один столбец</string>
     <string name="products_action_displayActiveTotal">Не купленные товары</string>

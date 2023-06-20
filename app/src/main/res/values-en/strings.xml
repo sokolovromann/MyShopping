@@ -306,6 +306,7 @@
     <string name="productsWidget_text_productsNotFound">Shopping list is empty</string>
 
     <string name="products_action_addShoppingListTotal">Add total</string>
+    <string name="products_action_automaticSorting">Automatic sorting</string>
     <string name="products_action_calculateChange">Calculate change</string>
     <string name="products_action_disableProductsMultiColumns">One column</string>
     <string name="products_action_displayActiveTotal">Active</string>

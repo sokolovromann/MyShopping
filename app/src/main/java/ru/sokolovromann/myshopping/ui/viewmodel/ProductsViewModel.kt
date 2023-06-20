@@ -102,6 +102,8 @@ class ProductsViewModel @Inject constructor(
             ProductsEvent.CalculateChange -> calculateChange()
 
             ProductsEvent.InvertProductsMultiColumns -> invertProductsMultiColumns()
+
+            ProductsEvent.InvertAutomaticSorting -> invertAutomaticSorting()
         }
     }
 
@@ -315,12 +317,20 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun sortProducts(event: ProductsEvent.SortProducts) = viewModelScope.launch {
-        val products = productsState.sortProductsResult(event.sortBy).getOrElse {
-            withContext(dispatchers.main) { hideProductsSort() }
-            return@launch
-        }
+        if (productsState.screenData.automaticSorting) {
+            repository.sortProductsBy(
+                shoppingUid = shoppingUid,
+                sortBy = event.sortBy,
+                lastModified = System.currentTimeMillis()
+            )
+        } else {
+            val products = productsState.sortProductsResult(event.sortBy).getOrElse {
+                withContext(dispatchers.main) { hideProductsSort() }
+                return@launch
+            }
 
-        repository.swapProducts(products)
+            repository.swapProducts(products)
+        }
 
         withContext(dispatchers.main) {
             hideProductsSort()
@@ -328,12 +338,20 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun reverseSortProducts() = viewModelScope.launch {
-        val products = productsState.reverseSortProductsResult().getOrElse {
-            withContext(dispatchers.main) { hideProductsSort() }
-            return@launch
-        }
+        if (productsState.screenData.automaticSorting) {
+            repository.sortProductsAscending(
+                shoppingUid = shoppingUid,
+                ascending = !(productsState.screenData.sort.ascending),
+                lastModified = System.currentTimeMillis()
+            )
+        } else {
+            val products = productsState.reverseSortProductsResult().getOrElse {
+                withContext(dispatchers.main) { hideProductsSort() }
+                return@launch
+            }
 
-        repository.swapProducts(products)
+            repository.swapProducts(products)
+        }
 
         withContext(dispatchers.main) {
             hideProductsSort()
@@ -382,6 +400,28 @@ class ProductsViewModel @Inject constructor(
 
     private fun invertProductsMultiColumns() = viewModelScope.launch {
         repository.invertProductsMultiColumns()
+    }
+
+    private fun invertAutomaticSorting() = viewModelScope.launch {
+        if (productsState.screenData.automaticSorting) {
+            repository.disableProductsAutomaticSorting(
+                shoppingUid = shoppingUid,
+                sort = productsState.screenData.sort.copy(sortBy = SortBy.POSITION),
+                lastModified = System.currentTimeMillis()
+            )
+
+            val products = productsState.sortProductsResult(productsState.screenData.sort.sortBy)
+                .getOrElse {
+                    withContext(dispatchers.main) { hideProductsSort() }
+                    return@launch
+                }
+            repository.swapProducts(products)
+        } else {
+            repository.enableProductsAutomaticSorting(
+                shoppingUid = shoppingUid,
+                lastModified = System.currentTimeMillis()
+            )
+        }
     }
 
     private fun uidsToString(uids: List<String>): String {

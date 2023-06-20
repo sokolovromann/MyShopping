@@ -49,6 +49,8 @@ sealed class ProductsEvent {
 
     object ReverseSortProducts : ProductsEvent()
 
+    object InvertAutomaticSorting : ProductsEvent()
+
     data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ProductsEvent()
 
     object DisplayHiddenProducts : ProductsEvent()

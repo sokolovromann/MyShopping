@@ -39,6 +39,18 @@ interface ProductsDao {
     @Update
     fun updateProducts(products: List<ProductEntity>)
 
+    @Query("UPDATE shoppings SET sort_by = :sortBy, last_modified = :lastModified WHERE uid = :shoppingUid")
+    fun sortProductsBy(shoppingUid: String, sortBy: String, lastModified: Long)
+
+    @Query("UPDATE shoppings SET sort_ascending = :sortAscending, last_modified = :lastModified WHERE uid = :shoppingUid")
+    fun sortProductsAscending(shoppingUid: String, sortAscending: Boolean, lastModified: Long)
+
+    @Query("UPDATE shoppings SET sort_formatted = 1, last_modified = :lastModified WHERE uid = :shoppingUid")
+    fun enableProductsAutomaticSorting(shoppingUid: String, lastModified: Long)
+
+    @Query("UPDATE shoppings SET sort_by = :sortBy, sort_ascending = :sortAscending, sort_formatted = 0, last_modified = :lastModified WHERE uid = :shoppingUid")
+    fun disableProductsAutomaticSorting(shoppingUid: String, sortBy: String, sortAscending: Boolean, lastModified: Long)
+
     @Query("DELETE FROM products WHERE product_uid = :uid")
     fun deleteProduct(uid: String)
 }

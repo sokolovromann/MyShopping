@@ -253,6 +253,7 @@
     <string name="productsWidget_text_productsNotFound">Список покупок порожній</string>
 
     <string name="products_action_addShoppingListTotal">Додати разом</string>
+    <string name="products_action_automaticSorting">Зберігати сортування</string>
     <string name="products_action_calculateChange">Порахувати здачу</string>
     <string name="products_action_disableProductsMultiColumns">Один стовпець</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>

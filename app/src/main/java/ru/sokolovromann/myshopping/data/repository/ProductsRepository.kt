@@ -3,6 +3,8 @@ package ru.sokolovromann.myshopping.data.repository
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.Products
+import ru.sokolovromann.myshopping.data.repository.model.Sort
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
 
 interface ProductsRepository {
 
@@ -31,4 +33,12 @@ interface ProductsRepository {
     suspend fun displayActivePurchasesTotal()
 
     suspend fun invertProductsMultiColumns()
+
+    suspend fun sortProductsBy(shoppingUid: String, sortBy: SortBy, lastModified: Long)
+
+    suspend fun sortProductsAscending(shoppingUid: String, ascending: Boolean, lastModified: Long)
+
+    suspend fun enableProductsAutomaticSorting(shoppingUid: String, lastModified: Long)
+
+    suspend fun disableProductsAutomaticSorting(shoppingUid: String, sort: Sort, lastModified: Long)
 }

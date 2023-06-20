@@ -235,6 +235,7 @@
     <string name="productsWidget_text_productsNotFound">Einkaufsliste ist leer</string>
 
     <string name="products_action_addShoppingListTotal">Gesamt addieren</string>
+    <string name="products_action_automaticSorting">Automatische Sortierung</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_disableProductsMultiColumns">Eine Spalte</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>

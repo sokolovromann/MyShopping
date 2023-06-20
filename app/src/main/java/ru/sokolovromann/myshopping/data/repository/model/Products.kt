@@ -20,7 +20,12 @@ data class Products(
     fun formatProducts(
         displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
     ): List<Product> {
-        val sorted = shoppingList.products.sortProducts()
+        val sort = if (shoppingList.sortFormatted) {
+            shoppingList.sort
+        } else {
+            Sort()
+        }
+        val sorted = shoppingList.products.sortProducts(sort)
         return if (displayCompleted == null) {
             sorted
         } else {
@@ -83,5 +88,9 @@ data class Products(
 
     fun hasHiddenProducts(): Boolean {
         return shoppingList.products.splitProducts(DisplayCompleted.FIRST).first().completed
+    }
+
+    fun isAutomaticSorting(): Boolean {
+        return shoppingList.sortFormatted
     }
 }

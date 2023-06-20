@@ -22,8 +22,8 @@ class RepositoryMapping @Inject constructor() {
             budget = toMoneyValue(shoppingList.budget),
             archived = shoppingList.archived,
             deleted = shoppingList.deleted,
-            sortBy = toSortByName(shoppingList.sort.sortBy),
-            sortAscending = shoppingList.sort.ascending,
+            sortBy = toSortName(shoppingList.sort),
+            sortAscending = toSortAscending(shoppingList.sort),
             sortFormatted = shoppingList.sortFormatted,
             pinned = shoppingList.pinned
         )
@@ -433,6 +433,10 @@ class RepositoryMapping @Inject constructor() {
         return displayProducts.name
     }
 
+    fun toSortByName(sortBy: SortBy): String {
+        return sortBy.name
+    }
+
     private fun toShoppingList(
         shoppingListEntity: ShoppingListEntity,
         preferencesEntity: AppPreferencesEntity
@@ -680,8 +684,12 @@ class RepositoryMapping @Inject constructor() {
         return Sort(SortBy.valueOfOrDefault(sortBy), ascending)
     }
 
-    private fun toSortByName(sortBy: SortBy): String {
-        return sortBy.name
+    private fun toSortName(sort: Sort): String {
+        return sort.sortBy.name
+    }
+
+    private fun toSortAscending(sort: Sort): Boolean {
+        return sort.ascending
     }
 
     private fun toReminder(reminder: Long): Long? {

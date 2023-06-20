@@ -111,4 +111,37 @@ class ProductsRepositoryImpl @Inject constructor(
     override suspend fun invertProductsMultiColumns(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertProductsMultiColumns()
     }
+
+    override suspend fun sortProductsBy(
+        shoppingUid: String,
+        sortBy: SortBy,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        val sortByName = mapping.toSortByName(sortBy)
+        productsDao.sortProductsBy(shoppingUid, sortByName, lastModified)
+    }
+
+    override suspend fun sortProductsAscending(
+        shoppingUid: String,
+        ascending: Boolean,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        productsDao.sortProductsAscending(shoppingUid, ascending, lastModified)
+    }
+
+    override suspend fun enableProductsAutomaticSorting(
+        shoppingUid: String,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        productsDao.enableProductsAutomaticSorting(shoppingUid, lastModified)
+    }
+
+    override suspend fun disableProductsAutomaticSorting(
+        shoppingUid: String,
+        sort: Sort,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        val sortBy = mapping.toSortByName(sort.sortBy)
+        productsDao.disableProductsAutomaticSorting(shoppingUid, sortBy, sort.ascending, lastModified)
+    }
 }

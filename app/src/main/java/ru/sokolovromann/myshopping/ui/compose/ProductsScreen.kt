@@ -290,24 +290,34 @@ fun ProductsScreen(
                                 ) {
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.CREATED)) },
-                                        text = { Text(text = stringResource(R.string.products_action_sortByCreated)) }
+                                        text = { Text(text = stringResource(R.string.products_action_sortByCreated)) },
+                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.CREATED) }
                                     )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.LAST_MODIFIED)) },
-                                        text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) }
+                                        text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) },
+                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.LAST_MODIFIED) }
                                     )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.NAME)) },
-                                        text = { Text(text = stringResource(R.string.products_action_sortByName)) }
+                                        text = { Text(text = stringResource(R.string.products_action_sortByName)) },
+                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.NAME) }
                                     )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.TOTAL)) },
-                                        text = { Text(text = stringResource(R.string.products_action_sortByTotal)) }
+                                        text = { Text(text = stringResource(R.string.products_action_sortByTotal)) },
+                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.TOTAL) }
                                     )
                                     Divider()
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.ReverseSortProducts) },
                                         text = { Text(text = stringResource(R.string.products_action_reverseSort)) }
+                                    )
+                                    Divider()
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.InvertAutomaticSorting) },
+                                        text = { Text(text = stringResource(R.string.products_action_automaticSorting)) },
+                                        right = { AppSwitch(checked = screenData.automaticSorting) }
                                     )
                                 }
                             }
@@ -384,21 +394,23 @@ fun ProductsScreen(
                     properties = PopupProperties(focusable = false)
                 ) {
                     Row {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductUp(it)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_arrow_up),
-                                contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUp),
-                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
-                            )
+                        if (!screenData.automaticSorting) {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductUp(it)) }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_all_arrow_up),
+                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUp),
+                                    tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                                )
+                            }
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductDown(it)) }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_all_arrow_down),
+                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
+                                    tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                                )
+                            }
+                            AppVerticalDivider()
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductDown(it)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_arrow_down),
-                                contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
-                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
-                            )
-                        }
-                        AppVerticalDivider()
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditProduct(it)) }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,

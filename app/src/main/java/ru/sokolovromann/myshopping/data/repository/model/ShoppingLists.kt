@@ -10,7 +10,7 @@ data class ShoppingLists(
         displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
     ): List<ShoppingList> {
         val sorted = shoppingLists
-            .map { it.copy(products = formatProducts(it.products, displayCompleted)) }
+            .map { it.copy(products = formatProducts(it.products, displayCompleted, it.sort, it.sortFormatted)) }
             .sortShoppingLists()
 
         return if (displayCompleted == null) {
@@ -53,9 +53,16 @@ data class ShoppingLists(
 
     private fun formatProducts(
         product: List<Product>,
-        displayCompleted: DisplayCompleted?
+        displayCompleted: DisplayCompleted?,
+        shoppingSort: Sort,
+        shoppingSortFormatted: Boolean
     ): List<Product> {
-        val sorted = product.sortProducts()
+        val sort = if (shoppingSortFormatted) {
+            shoppingSort
+        } else {
+            Sort()
+        }
+        val sorted = product.sortProducts(sort)
 
         return if (displayCompleted == null) {
             sorted
