@@ -219,6 +219,7 @@
     <string name="editTaxRate_label_taxRate">Rate in Prozent</string>
     <string name="editTaxRate_message_taxRateError">Steuersatz hinzufügen</string>
 
+    <string name="moveProduct_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
     <string name="moveProduct_contentDescription_navigationIcon">Absagen</string>
     <string name="moveProduct_header">Wählen Sie eine Liste aus</string>
     <string name="moveProduct_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>

@@ -4,6 +4,8 @@ import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 
 sealed class MoveProductEvent {
 
+    object AddShoppingList : MoveProductEvent()
+
     data class MoveProduct(val uid: String) : MoveProductEvent()
 
     object SelectShoppingListLocation : MoveProductEvent()

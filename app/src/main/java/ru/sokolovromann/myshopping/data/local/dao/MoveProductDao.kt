@@ -4,6 +4,7 @@ import androidx.room.*
 import androidx.room.OnConflictStrategy
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
+import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
 
 @Dao
@@ -20,8 +21,14 @@ interface MoveProductDao {
     @Query("SELECT * FROM products WHERE product_uid IN (:uids)")
     fun getProducts(uids: List<String>): Flow<List<ProductEntity>>
 
+    @Query("SELECT position FROM shoppings ORDER BY position DESC LIMIT 1")
+    fun getShoppingsLastPosition(): Flow<Int?>
+
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
     fun getProductsLastPosition(shoppingUid: String): Flow<Int?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertShopping(shoppingEntity: ShoppingEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(productEntities: List<ProductEntity>)

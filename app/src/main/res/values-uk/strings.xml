@@ -237,6 +237,7 @@
     <string name="editTaxRate_label_taxRate">Ставка у відсотках</string>
     <string name="editTaxRate_message_taxRateError">Додайте податкову ставку</string>
 
+    <string name="moveProduct_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
     <string name="moveProduct_contentDescription_navigationIcon">Скасування</string>
     <string name="moveProduct_header">Виберіть список</string>
     <string name="moveProduct_text_shoppingListsNotFound">У вас немає покупок</string>

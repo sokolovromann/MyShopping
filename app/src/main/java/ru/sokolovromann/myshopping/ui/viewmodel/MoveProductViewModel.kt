@@ -37,6 +37,8 @@ class MoveProductViewModel @Inject constructor(
 
     override fun onEvent(event: MoveProductEvent) {
         when (event) {
+            MoveProductEvent.AddShoppingList -> addShoppingList()
+
             is MoveProductEvent.MoveProduct -> moveProduct(event)
 
             MoveProductEvent.SelectShoppingListLocation -> selectShoppingListLocation()
@@ -100,6 +102,12 @@ class MoveProductViewModel @Inject constructor(
                 moveProductState.saveProducts(products)
             }
         }
+    }
+
+    private fun addShoppingList() = viewModelScope.launch {
+        val shoppingList = moveProductState.getShoppingListResult()
+            .getOrElse { return@launch }
+        repository.addShoppingList(shoppingList)
     }
 
     private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
