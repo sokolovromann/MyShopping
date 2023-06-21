@@ -101,6 +101,12 @@ class CopyProductState {
             Result.success(success)
         }
     }
+
+    fun getShoppingListResult(): Result<ShoppingList> {
+        val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
+        val success = ShoppingList(position = position)
+        return Result.success(success)
+    }
 }
 
 data class CopyProductScreenData(

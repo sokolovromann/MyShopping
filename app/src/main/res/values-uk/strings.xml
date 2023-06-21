@@ -75,6 +75,7 @@
     <string name="calendar_text_yesterday">Вчора</string>
     <string name="calendar_text_yesterdayAt">Вчора о %tH:%tM</string>
 
+    <string name="copyProduct_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
     <string name="copyProduct_contentDescription_navigationIcon">Скасування</string>
     <string name="copyProduct_header">Виберіть список</string>
     <string name="copyProduct_text_shoppingListsNotFound">У вас немає покупок</string>

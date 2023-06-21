@@ -4,6 +4,8 @@ import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 
 sealed class CopyProductEvent {
 
+    object AddShoppingList : CopyProductEvent()
+
     data class CopyProduct(val uid: String) : CopyProductEvent()
 
     object SelectShoppingListLocation : CopyProductEvent()

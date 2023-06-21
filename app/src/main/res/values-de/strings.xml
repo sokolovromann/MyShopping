@@ -75,6 +75,7 @@
     <string name="calendar_text_yesterday">Gestern</string>
     <string name="calendar_text_yesterdayAt">Gestern um %tH:%tM</string>
 
+    <string name="copyProduct_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
     <string name="copyProduct_contentDescription_navigationIcon">Absagen</string>
     <string name="copyProduct_header">Wählen Sie eine Liste aus</string>
     <string name="copyProduct_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>

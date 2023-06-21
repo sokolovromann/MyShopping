@@ -75,6 +75,7 @@
     <string name="calendar_text_yesterday">Yesterday</string>
     <string name="calendar_text_yesterdayAt">Yesterday at %tH:%tM</string>
 
+    <string name="copyProduct_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="copyProduct_contentDescription_navigationIcon">Cancel</string>
     <string name="copyProduct_header">Select a list</string>
     <string name="copyProduct_text_shoppingListsNotFound">You have no shopping lists</string>

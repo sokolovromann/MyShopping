@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.CopyProductDao
 import ru.sokolovromann.myshopping.data.local.dao.CopyProductPreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.Product
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import javax.inject.Inject
 
@@ -18,19 +19,23 @@ class CopyProductRepositoryImpl @Inject constructor(
 ) : CopyProductRepository {
 
     override suspend fun getPurchases(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext productDao.getPurchases().combine(
-            flow = preferencesDao.getAppPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, null, preferencesEntity)
+        return@withContext combine(
+            flow = productDao.getPurchases(),
+            flow2 = productDao.getShoppingsLastPosition(),
+            flow3 = preferencesDao.getAppPreferences(),
+            transform = { entity, lastPosition, preferencesEntity ->
+                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
             }
         )
     }
 
     override suspend fun getArchive(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext productDao.getArchive().combine(
-            flow = preferencesDao.getAppPreferences(),
-            transform = { entity, preferencesEntity ->
-                mapping.toShoppingLists(entity, null, preferencesEntity)
+        return@withContext combine(
+            flow = productDao.getArchive(),
+            flow2 = productDao.getShoppingsLastPosition(),
+            flow3 = preferencesDao.getAppPreferences(),
+            transform = { entity, lastPosition, preferencesEntity ->
+                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
             }
         )
     }
@@ -44,6 +49,11 @@ class CopyProductRepositoryImpl @Inject constructor(
                 mapping.toProducts(entities, preferencesEntity)
             }
         )
+    }
+
+    override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatchers.io) {
+        val entity = mapping.toShoppingEntity(shoppingList)
+        productDao.insertShopping(entity)
     }
 
     override suspend fun addProducts(products: List<Product>): Unit = withContext(dispatchers.io) {

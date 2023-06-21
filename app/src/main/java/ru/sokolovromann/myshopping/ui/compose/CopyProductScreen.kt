@@ -1,9 +1,12 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -72,22 +75,32 @@ fun CopyProductScreen(
             displayProducts = screenData.displayProducts,
             highlightCheckbox = screenData.highlightCheckbox,
             topBar = {
-                ShoppingListsLocationContent(
-                    location = screenData.location,
-                    fontSize = screenData.fontSize.toButton().sp,
-                    expanded = screenData.showLocation,
-                    onExpanded = {
-                        if (it) {
-                            viewModel.onEvent(CopyProductEvent.SelectShoppingListLocation)
-                        } else {
-                            viewModel.onEvent(CopyProductEvent.HideShoppingListsLocation)
+                Row {
+                    ShoppingListsLocationContent(
+                        location = screenData.location,
+                        fontSize = screenData.fontSize.toButton().sp,
+                        expanded = screenData.showLocation,
+                        onExpanded = {
+                            if (it) {
+                                viewModel.onEvent(CopyProductEvent.SelectShoppingListLocation)
+                            } else {
+                                viewModel.onEvent(CopyProductEvent.HideShoppingListsLocation)
+                            }
+                        },
+                        onSelected = {
+                            val event = CopyProductEvent.ShowShoppingLists(it)
+                            viewModel.onEvent(event)
                         }
-                    },
-                    onSelected = {
-                        val event = CopyProductEvent.ShowShoppingLists(it)
-                        viewModel.onEvent(event)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.AddShoppingList) }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.copyProduct_contentDescription_addShoppingListIcon),
+                            tint = MaterialTheme.colors.onBackground.copy(ContentAlpha.medium)
+                        )
                     }
-                )
+                }
             },
             bottomBar = {
                 if (screenData.showHiddenShoppingLists) {
