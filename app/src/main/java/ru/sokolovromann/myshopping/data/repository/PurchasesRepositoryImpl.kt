@@ -27,6 +27,10 @@ class PurchasesRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getShoppingListsLastPosition(): Flow<Int?> = withContext(dispatchers.io) {
+        return@withContext purchasesDao.getShoppingsLastPosition()
+    }
+
     override suspend fun addShoppingList(
         shoppingList: ShoppingList
     ): Unit = withContext(dispatchers.io) {

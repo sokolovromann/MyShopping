@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -105,9 +106,13 @@ class CopyProductViewModel @Inject constructor(
     }
 
     private fun addShoppingList() = viewModelScope.launch {
-        val shoppingList = copyProductState.getShoppingListResult()
-            .getOrElse { return@launch }
-        repository.addShoppingList(shoppingList)
+        copyProductState.getShoppingListResult()
+            .onSuccess { repository.addShoppingList(it) }
+            .onFailure {
+                val lastPosition = repository.getShoppingListsLastPosition().first() ?: 0
+                val shoppingList = ShoppingList(position = lastPosition.plus(1))
+                repository.addShoppingList(shoppingList)
+            }
     }
 
     private fun copyProduct(event: CopyProductEvent.CopyProduct) = viewModelScope.launch {

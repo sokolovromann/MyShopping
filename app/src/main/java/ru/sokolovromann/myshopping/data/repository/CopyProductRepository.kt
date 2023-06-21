@@ -13,6 +13,8 @@ interface CopyProductRepository {
 
     suspend fun getProducts(uids: List<String>): Flow<List<Product>>
 
+    suspend fun getShoppingListsLastPosition(): Flow<Int?>
+
     suspend fun addShoppingList(shoppingList: ShoppingList)
 
     suspend fun addProducts(products: List<Product>)

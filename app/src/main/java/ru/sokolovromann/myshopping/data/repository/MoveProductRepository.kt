@@ -13,6 +13,8 @@ interface MoveProductRepository {
 
     suspend fun getProducts(uids: List<String>): Flow<List<Product>>
 
+    suspend fun getShoppingListsLastPosition(): Flow<Int?>
+
     suspend fun addShoppingList(shoppingList: ShoppingList)
 
     suspend fun editProducts(products: List<Product>)

@@ -51,6 +51,10 @@ class MoveProductRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getShoppingListsLastPosition(): Flow<Int?> = withContext(dispatchers.io) {
+        return@withContext productDao.getShoppingsLastPosition()
+    }
+
     override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatchers.io) {
         val entity = mapping.toShoppingEntity(shoppingList)
         productDao.insertShopping(entity)

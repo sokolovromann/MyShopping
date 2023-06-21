@@ -97,9 +97,13 @@ class MoveProductState {
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
-        val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
-        val success = ShoppingList(position = position)
-        return Result.success(success)
+        return if (shoppingLists.shoppingListsLastPosition == null) {
+            Result.failure(Exception())
+        } else {
+            val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
+            val success = ShoppingList(position = position)
+            Result.success(success)
+        }
     }
 }
 

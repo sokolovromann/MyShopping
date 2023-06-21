@@ -8,6 +8,8 @@ interface PurchasesRepository {
 
     suspend fun getShoppingLists(): Flow<ShoppingLists>
 
+    suspend fun getShoppingListsLastPosition(): Flow<Int?>
+
     suspend fun addShoppingList(shoppingList: ShoppingList)
 
     suspend fun moveShoppingListsToArchive(uids: List<String>, lastModified: Long)

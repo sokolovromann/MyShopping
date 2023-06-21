@@ -6,11 +6,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.MoveProductRepository
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
@@ -105,9 +107,13 @@ class MoveProductViewModel @Inject constructor(
     }
 
     private fun addShoppingList() = viewModelScope.launch {
-        val shoppingList = moveProductState.getShoppingListResult()
-            .getOrElse { return@launch }
-        repository.addShoppingList(shoppingList)
+        moveProductState.getShoppingListResult()
+            .onSuccess { repository.addShoppingList(it) }
+            .onFailure {
+                val lastPosition = repository.getShoppingListsLastPosition().first() ?: 0
+                val shoppingList = ShoppingList(position = lastPosition.plus(1))
+                repository.addShoppingList(shoppingList)
+            }
     }
 
     private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
