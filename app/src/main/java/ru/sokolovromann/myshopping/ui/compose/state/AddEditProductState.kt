@@ -26,6 +26,11 @@ class AddEditProductState {
         val preferences = addEditProduct.preferences
 
         val name = product.name
+        val uid = product.productUid
+        val brand = product.brand
+        val size = product.size
+        val color = product.color
+        val manufacturer = product.manufacturer
         val quantity = if (product.quantity.isEmpty()) "" else product.quantity.valueToString()
         val quantitySymbol = product.quantity.symbol
         val price = if (product.price.isEmpty()) "" else product.price.valueToString()
@@ -38,6 +43,9 @@ class AddEditProductState {
         }
         val total = if (product.total.isEmpty()) "" else product.formatTotal().valueToString()
         val note = product.note
+        val showNameOtherFields = brand.isNotEmpty() || size.isNotEmpty() ||
+                color.isNotEmpty() || manufacturer.isNotEmpty()
+        val showPriceOtherFields = discount.isNotEmpty()
         screenData = AddEditProductScreenData(
             screenState = ScreenState.Showing,
             nameValue = TextFieldValue(
@@ -46,6 +54,31 @@ class AddEditProductState {
                 composition = TextRange(name.length)
             ),
             showNameError = false,
+            uidValue = TextFieldValue(
+                text = uid,
+                selection = TextRange(uid.length),
+                composition = TextRange(uid.length)
+            ),
+            brandValue = TextFieldValue(
+                text = brand,
+                selection = TextRange(brand.length),
+                composition = TextRange(brand.length)
+            ),
+            sizeValue = TextFieldValue(
+                text = size,
+                selection = TextRange(size.length),
+                composition = TextRange(size.length)
+            ),
+            colorValue = TextFieldValue(
+                text = color,
+                selection = TextRange(color.length),
+                composition = TextRange(color.length)
+            ),
+            manufacturerValue = TextFieldValue(
+                text = manufacturer,
+                selection = TextRange(manufacturer.length),
+                composition = TextRange(manufacturer.length)
+            ),
             quantityValue = TextFieldValue(
                 text = quantity,
                 selection = TextRange(quantity.length),
@@ -82,7 +115,9 @@ class AddEditProductState {
             showDiscountAsPercent = false,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney,
-            enterToSaveProduct = preferences.enterToSaveProduct
+            enterToSaveProduct = preferences.enterToSaveProduct,
+            showNameOtherFields = showNameOtherFields,
+            showPriceOtherFields = showPriceOtherFields
         )
 
         selectedAutocomplete = null
@@ -93,6 +128,26 @@ class AddEditProductState {
             nameValue = nameValue,
             showNameError = false
         )
+    }
+
+    fun changeUidValue(uidValue: TextFieldValue) {
+        screenData = screenData.copy(uidValue = uidValue)
+    }
+
+    fun changeBrandValue(brandValue: TextFieldValue) {
+        screenData = screenData.copy(brandValue = brandValue)
+    }
+
+    fun changeSizeValue(sizeValue: TextFieldValue) {
+        screenData = screenData.copy(sizeValue = sizeValue)
+    }
+
+    fun changeColorValue(colorValue: TextFieldValue) {
+        screenData = screenData.copy(colorValue = colorValue)
+    }
+
+    fun changeManufacturerValue(manufacturerValue: TextFieldValue) {
+        screenData = screenData.copy(manufacturerValue = manufacturerValue)
     }
 
     fun changeQuantityValue(quantityValue: TextFieldValue) {
@@ -152,6 +207,50 @@ class AddEditProductState {
         )
 
         selectedAutocomplete = autocomplete
+    }
+
+    fun selectAutocompleteBrand(brand: String) {
+        screenData = screenData.copy(
+            brandValue = TextFieldValue(
+                text = brand,
+                selection = TextRange(brand.length),
+                composition = TextRange(brand.length)
+            ),
+            autocompleteBrands = listOf()
+        )
+    }
+
+    fun selectAutocompleteSize(size: String) {
+        screenData = screenData.copy(
+            sizeValue = TextFieldValue(
+                text = size,
+                selection = TextRange(size.length),
+                composition = TextRange(size.length)
+            ),
+            autocompleteSizes = listOf()
+        )
+    }
+
+    fun selectAutocompleteColor(color: String) {
+        screenData = screenData.copy(
+            colorValue = TextFieldValue(
+                text = color,
+                selection = TextRange(color.length),
+                composition = TextRange(color.length)
+            ),
+            autocompleteColors = listOf()
+        )
+    }
+
+    fun selectAutocompleteManufacturer(manufacturer: String) {
+        screenData = screenData.copy(
+            manufacturerValue = TextFieldValue(
+                text = manufacturer,
+                selection = TextRange(manufacturer.length),
+                composition = TextRange(manufacturer.length)
+            ),
+            autocompleteManufacturers = listOf()
+        )
     }
 
     fun selectAutocompleteQuantity(quantity: Quantity) {
@@ -326,6 +425,10 @@ class AddEditProductState {
     }
 
     fun showAutocompleteElements(
+        brands: List<String>,
+        sizes: List<String>,
+        colors: List<String>,
+        manufacturers: List<String>,
         quantities: List<Quantity>,
         quantitySymbols: List<Quantity>,
         prices: List<Money>,
@@ -334,6 +437,10 @@ class AddEditProductState {
     ) {
         val showDefaultQuantitySymbols = quantitySymbols.isEmpty() && screenData.quantitySymbolValue.isEmpty()
         screenData = screenData.copy(
+            autocompleteBrands = brands,
+            autocompleteSizes = sizes,
+            autocompleteColors = colors,
+            autocompleteManufacturers = manufacturers,
             autocompleteQuantities = quantities,
             autocompleteQuantitySymbols = quantitySymbols,
             showDefaultQuantitySymbols = showDefaultQuantitySymbols,
@@ -345,6 +452,16 @@ class AddEditProductState {
 
     fun showDiscountAsPercent() {
         screenData = screenData.copy(showDiscountAsPercent = true)
+    }
+
+    fun invertNameOtherFields() {
+        val showFields = screenData.showNameOtherFields
+        screenData = screenData.copy(showNameOtherFields = !showFields)
+    }
+
+    fun invertPriceOtherFields() {
+        val showFields = screenData.showPriceOtherFields
+        screenData = screenData.copy(showPriceOtherFields = !showFields)
     }
 
     fun selectLockProductElement() {
@@ -359,6 +476,10 @@ class AddEditProductState {
     fun hideAutocompletes() {
         screenData = screenData.copy(
             autocompleteNames = listOf(),
+            autocompleteBrands = listOf(),
+            autocompleteSizes = listOf(),
+            autocompleteColors = listOf(),
+            autocompleteManufacturers = listOf(),
             autocompleteQuantities = listOf(),
             autocompleteQuantitySymbols = listOf(),
             showDefaultQuantitySymbols = screenData.quantitySymbolValue.isEmpty(),
@@ -410,6 +531,7 @@ class AddEditProductState {
         } ?: 0
 
         return (addEditProduct.product ?: Product()).copy(
+            productUid = screenData.uidValue.text.trim(),
             position = position,
             lastModified = System.currentTimeMillis(),
             name = screenData.nameValue.text.trim(),
@@ -430,7 +552,11 @@ class AddEditProductState {
                 currency = preferences.currency
             ),
             totalFormatted = screenData.lockProductElement != LockProductElement.TOTAL,
-            note = screenData.noteValue.text.trim()
+            note = screenData.noteValue.text.trim(),
+            manufacturer = screenData.manufacturerValue.text.trim(),
+            brand = screenData.brandValue.text.trim(),
+            size = screenData.sizeValue.text.trim(),
+            color = screenData.colorValue.text.trim()
         )
     }
 
@@ -449,7 +575,11 @@ class AddEditProductState {
             discount = product.discount,
             taxRate = product.taxRate,
             total = product.total,
-            personal = personal
+            personal = personal,
+            manufacturer = product.manufacturer,
+            brand = product.brand,
+            size = product.size,
+            color = product.color
         )
     }
 
@@ -516,6 +646,11 @@ data class AddEditProductScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val nameValue: TextFieldValue = TextFieldValue(),
     val showNameError: Boolean = false,
+    val uidValue: TextFieldValue = TextFieldValue(),
+    val brandValue: TextFieldValue = TextFieldValue(),
+    val sizeValue: TextFieldValue = TextFieldValue(),
+    val colorValue: TextFieldValue = TextFieldValue(),
+    val manufacturerValue: TextFieldValue = TextFieldValue(),
     val quantityValue: TextFieldValue = TextFieldValue(),
     val quantitySymbolValue: TextFieldValue = TextFieldValue(),
     val priceValue: TextFieldValue = TextFieldValue(),
@@ -528,6 +663,10 @@ data class AddEditProductScreenData(
     val showLockProductElement: Boolean = false,
     val noteValue: TextFieldValue = TextFieldValue(),
     val autocompleteNames: List<Autocomplete> = listOf(),
+    val autocompleteBrands: List<String> = listOf(),
+    val autocompleteSizes: List<String> = listOf(),
+    val autocompleteColors: List<String> = listOf(),
+    val autocompleteManufacturers: List<String> = listOf(),
     val autocompleteQuantities: List<Quantity> = listOf(),
     val autocompleteQuantitySymbols: List<Quantity> = listOf(),
     val showDefaultQuantitySymbols: Boolean = true,
@@ -536,5 +675,7 @@ data class AddEditProductScreenData(
     val autocompleteTotals: List<Money> = listOf(),
     val fontSize: FontSize = FontSize.MEDIUM,
     val displayMoney: Boolean = true,
-    val enterToSaveProduct: Boolean = true
+    val enterToSaveProduct: Boolean = true,
+    val showNameOtherFields: Boolean = false,
+    val showPriceOtherFields: Boolean = false
 )

@@ -11,6 +11,16 @@ sealed class AddEditProductEvent {
 
     data class ProductNameChanged(val value: TextFieldValue) : AddEditProductEvent()
 
+    data class ProductUidChanged(val value: TextFieldValue) : AddEditProductEvent()
+
+    data class ProductBrandChanged(val value: TextFieldValue) : AddEditProductEvent()
+
+    data class ProductSizeChanged(val value: TextFieldValue) : AddEditProductEvent()
+
+    data class ProductColorChanged(val value: TextFieldValue) : AddEditProductEvent()
+
+    data class ProductManufacturerChanged(val value: TextFieldValue) : AddEditProductEvent()
+
     data class ProductQuantityChanged(val value: TextFieldValue) : AddEditProductEvent()
 
     data class ProductQuantitySymbolChanged(val value: TextFieldValue) : AddEditProductEvent()
@@ -29,6 +39,14 @@ sealed class AddEditProductEvent {
 
     data class AutocompleteNameSelected(val autocomplete: Autocomplete) : AddEditProductEvent()
 
+    data class AutocompleteBrandSelected(val brand: String) : AddEditProductEvent()
+
+    data class AutocompleteSizeSelected(val size: String) : AddEditProductEvent()
+
+    data class AutocompleteColorSelected(val color: String) : AddEditProductEvent()
+
+    data class AutocompleteManufacturerSelected(val manufacturer: String) : AddEditProductEvent()
+
     object AutocompleteMinusOneQuantitySelected : AddEditProductEvent()
 
     object AutocompletePlusOneQuantitySelected : AddEditProductEvent()
@@ -46,6 +64,10 @@ sealed class AddEditProductEvent {
     data class ProductNoteChanged(val value: TextFieldValue) : AddEditProductEvent()
 
     object ShowProductDiscountAsPercentMenu : AddEditProductEvent()
+
+    object InvertNameOtherFields : AddEditProductEvent()
+
+    object InvertPriceOtherFields : AddEditProductEvent()
 
     object SelectLockProductElement : AddEditProductEvent()
 

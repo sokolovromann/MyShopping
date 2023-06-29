@@ -16,14 +16,21 @@
     <string name="addEditProduct_action_selectProductLockQuantity">Количество</string>
     <string name="addEditProduct_action_selectProductLockTotal">Стоимость</string>
     <string name="addEditProduct_contentDescription_navigationIcon">Назад</string>
+    <string name="addEditProduct_contentDescription_showNameOtherFields">Показать или скрыть другие поля</string>
+    <string name="addEditProduct_contentDescription_showPriceOtherFields">Показать или скрыть другие поля</string>
     <string name="addEditProduct_header_productLock">Заблокировать</string>
+    <string name="addEditProduct_label_brand">Марка</string>
+    <string name="addEditProduct_label_color">Цвет</string>
     <string name="addEditProduct_label_discount">Скидка</string>
+    <string name="addEditProduct_label_manufacturer">Изготовитель</string>
     <string name="addEditProduct_label_name">Название</string>
     <string name="addEditProduct_label_note">Заметка</string>
     <string name="addEditProduct_label_price">Цена за единицу</string>
     <string name="addEditProduct_label_quantity">Количество</string>
     <string name="addEditProduct_label_quantitySymbol">Символ</string>
+    <string name="addEditProduct_label_size">Размер</string>
     <string name="addEditProduct_label_total">Стоимость</string>
+    <string name="addEditProduct_label_uid">ID</string>
     <string name="addEditProduct_message_nameError">Добавьте название</string>
 
     <string name="all_header_appName">Мои покупки</string>

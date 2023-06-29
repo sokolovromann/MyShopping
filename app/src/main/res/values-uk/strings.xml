@@ -16,14 +16,21 @@
     <string name="addEditProduct_action_selectProductLockQuantity">Кількість</string>
     <string name="addEditProduct_action_selectProductLockTotal">Вартість</string>
     <string name="addEditProduct_contentDescription_navigationIcon">Назад</string>
+    <string name="addEditProduct_contentDescription_showNameOtherFields">Показати або сховати інші поля</string>
+    <string name="addEditProduct_contentDescription_showPriceOtherFields">Показати або сховати інші поля</string>
     <string name="addEditProduct_header_productLock">Заблокувати</string>
+    <string name="addEditProduct_label_brand">Марка</string>
+    <string name="addEditProduct_label_color">Колір</string>
     <string name="addEditProduct_label_discount">Знижка</string>
+    <string name="addEditProduct_label_manufacturer">Виробник</string>
     <string name="addEditProduct_label_name">Назва</string>
     <string name="addEditProduct_label_note">Нотатка</string>
     <string name="addEditProduct_label_price">Ціна за одиницю</string>
     <string name="addEditProduct_label_quantity">Кількість</string>
     <string name="addEditProduct_label_quantitySymbol">Символ</string>
+    <string name="addEditProduct_label_size">Розмір</string>
     <string name="addEditProduct_label_total">Вартість</string>
+    <string name="addEditProduct_label_uid">ID</string>
     <string name="addEditProduct_message_nameError">Додайте назву</string>
 
     <string name="all_header_appName">Мої покупки</string>

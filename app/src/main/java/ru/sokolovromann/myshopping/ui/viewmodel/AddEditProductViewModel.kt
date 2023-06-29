@@ -47,6 +47,16 @@ class AddEditProductViewModel @Inject constructor(
 
             is AddEditProductEvent.ProductNameChanged -> productNameChanged(event)
 
+            is AddEditProductEvent.ProductUidChanged -> productUidChanged(event)
+
+            is AddEditProductEvent.ProductBrandChanged -> productBrandChanged(event)
+
+            is AddEditProductEvent.ProductSizeChanged -> productSizeChanged(event)
+
+            is AddEditProductEvent.ProductColorChanged -> productColorChanged(event)
+
+            is AddEditProductEvent.ProductManufacturerChanged -> productManufacturerChanged(event)
+
             is AddEditProductEvent.ProductQuantityChanged -> productQuantityChanged(event)
 
             is AddEditProductEvent.ProductQuantitySymbolChanged -> productQuantitySymbolChanged(event)
@@ -64,6 +74,14 @@ class AddEditProductViewModel @Inject constructor(
             is AddEditProductEvent.LockProductElementSelected -> lockProductElementSelected(event)
 
             is AddEditProductEvent.AutocompleteNameSelected -> autocompleteNameSelected(event)
+
+            is AddEditProductEvent.AutocompleteBrandSelected -> autocompleteBrandSelected(event)
+
+            is AddEditProductEvent.AutocompleteSizeSelected -> autocompleteSizeSelected(event)
+
+            is AddEditProductEvent.AutocompleteColorSelected -> autocompleteColorSelected(event)
+
+            is AddEditProductEvent.AutocompleteManufacturerSelected -> autocompleteManufacturerSelected(event)
 
             is AddEditProductEvent.AutocompleteQuantitySelected -> autocompleteQuantitySelected(event)
 
@@ -84,6 +102,10 @@ class AddEditProductViewModel @Inject constructor(
             AddEditProductEvent.SelectLockProductElement -> selectLockProductElement()
 
             AddEditProductEvent.ShowProductDiscountAsPercentMenu -> showProductDiscountAsPercentMenu()
+
+            AddEditProductEvent.InvertNameOtherFields -> invertNameOtherFields()
+
+            AddEditProductEvent.InvertPriceOtherFields -> invertPriceOtherFields()
 
             AddEditProductEvent.HideProductDiscountAsPercentMenu -> hideProductDiscountAsPercentMenu()
 
@@ -138,6 +160,10 @@ class AddEditProductViewModel @Inject constructor(
         }
 
         addEditProductState.showAutocompleteElements(
+            brands = autocompletes.brands(),
+            sizes = autocompletes.sizes(),
+            colors = autocompletes.colors(),
+            manufacturers = autocompletes.manufacturers(),
             quantities = autocompletes.quantities(),
             quantitySymbols = autocompletes.quantitySymbols(),
             prices = autocompletes.prices(),
@@ -177,6 +203,18 @@ class AddEditProductViewModel @Inject constructor(
         _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
     }
 
+    private fun productBrandChanged(event: AddEditProductEvent.ProductBrandChanged) {
+        addEditProductState.changeBrandValue(event.value)
+    }
+
+    private fun productSizeChanged(event: AddEditProductEvent.ProductSizeChanged) {
+        addEditProductState.changeSizeValue(event.value)
+    }
+
+    private fun productColorChanged(event: AddEditProductEvent.ProductColorChanged) {
+        addEditProductState.changeColorValue(event.value)
+    }
+
     private fun productNameChanged(event: AddEditProductEvent.ProductNameChanged) {
         addEditProductState.changeNameValue(event.value)
 
@@ -187,6 +225,14 @@ class AddEditProductViewModel @Inject constructor(
         } else {
             addEditProductState.hideAutocompletes()
         }
+    }
+
+    private fun productUidChanged(event: AddEditProductEvent.ProductUidChanged) {
+        addEditProductState.changeUidValue(event.value)
+    }
+
+    private fun productManufacturerChanged(event: AddEditProductEvent.ProductManufacturerChanged) {
+        addEditProductState.changeManufacturerValue(event.value)
     }
 
     private fun productQuantityChanged(event: AddEditProductEvent.ProductQuantityChanged) {
@@ -226,6 +272,22 @@ class AddEditProductViewModel @Inject constructor(
         getAutocompletes(event.autocomplete.name)
     }
 
+    private fun autocompleteBrandSelected(event: AddEditProductEvent.AutocompleteBrandSelected) {
+        addEditProductState.selectAutocompleteBrand(event.brand)
+    }
+
+    private fun autocompleteSizeSelected(event: AddEditProductEvent.AutocompleteSizeSelected) {
+        addEditProductState.selectAutocompleteSize(event.size)
+    }
+
+    private fun autocompleteColorSelected(event: AddEditProductEvent.AutocompleteColorSelected) {
+        addEditProductState.selectAutocompleteColor(event.color)
+    }
+
+    private fun autocompleteManufacturerSelected(event: AddEditProductEvent.AutocompleteManufacturerSelected) {
+        addEditProductState.selectAutocompleteManufacturer(event.manufacturer)
+    }
+
     private fun autocompleteQuantitySelected(event: AddEditProductEvent.AutocompleteQuantitySelected) {
         addEditProductState.selectAutocompleteQuantity(event.quantity)
     }
@@ -260,6 +322,14 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun showProductDiscountAsPercentMenu() {
         addEditProductState.showDiscountAsPercent()
+    }
+
+    private fun invertNameOtherFields() {
+        addEditProductState.invertNameOtherFields()
+    }
+
+    private fun invertPriceOtherFields() {
+        addEditProductState.invertPriceOtherFields()
     }
 
     private fun selectLockProductElement() {

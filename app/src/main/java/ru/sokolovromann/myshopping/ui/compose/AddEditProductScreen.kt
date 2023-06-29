@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -102,27 +104,55 @@ fun AddEditProductScreen(
                 ImeAction.Next
             }
 
-            OutlinedAppTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AddEditProductElementPaddings)
-                    .focusRequester(focusRequester),
-                value = screenData.nameValue,
-                valueFontSize = screenData.fontSize.toTextField().sp,
-                onValueChange = {
-                    val event = AddEditProductEvent.ProductNameChanged(it)
-                    viewModel.onEvent(event)
-                },
-                label = { Text(text = stringResource(R.string.addEditProduct_label_name)) },
-                error = { Text(text = stringResource(R.string.addEditProduct_message_nameError)) },
-                showError = screenData.showNameError,
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Sentences,
-                    keyboardType = KeyboardType.Text,
-                    imeAction = imeAction
-                ),
-                keyboardActions = keyboardActions
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(AddEditProductElementPaddings)
+            ) {
+                OutlinedAppTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(focusRequester),
+                    value = screenData.nameValue,
+                    valueFontSize = screenData.fontSize.toTextField().sp,
+                    onValueChange = {
+                        val event = AddEditProductEvent.ProductNameChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.addEditProduct_label_name)) },
+                    error = { Text(text = stringResource(R.string.addEditProduct_message_nameError)) },
+                    showError = screenData.showNameError,
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = imeAction
+                    ),
+                    keyboardActions = keyboardActions
+                )
+
+                Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
+
+                IconButton(
+                    modifier = Modifier
+                        .height(AddEditProductButtonHeight)
+                        .padding(AddEditProductButtonPaddings)
+                        .border(
+                            border = getButtonBorderStroke(),
+                            shape = MaterialTheme.shapes.small
+                        ),
+                    onClick = { viewModel.onEvent(AddEditProductEvent.InvertNameOtherFields) }
+                ) {
+                    Icon(
+                        imageVector = if (screenData.showNameOtherFields) {
+                            Icons.Default.KeyboardArrowUp
+                        } else {
+                            Icons.Default.KeyboardArrowDown
+                        },
+                        contentDescription = stringResource(R.string.addEditProduct_contentDescription_showNameOtherFields),
+                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                    )
+                }
+            }
 
             AddEditProductAutocompleteNames(
                 names = screenData.autocompleteNames,
@@ -132,6 +162,145 @@ fun AddEditProductScreen(
                     viewModel.onEvent(event)
                 }
             )
+
+            if (screenData.showNameOtherFields) {
+                OutlinedAppTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AddEditProductElementPaddings)
+                        .focusRequester(focusRequester),
+                    value = screenData.brandValue,
+                    valueFontSize = screenData.fontSize.toTextField().sp,
+                    onValueChange = {
+                        val event = AddEditProductEvent.ProductBrandChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.addEditProduct_label_brand)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = imeAction
+                    ),
+                    keyboardActions = keyboardActions
+                )
+
+                AddEditProductAutocompleteStrings(
+                    list = screenData.autocompleteBrands,
+                    fontSize = screenData.fontSize,
+                    onClick = {
+                        val event = AddEditProductEvent.AutocompleteBrandSelected(it)
+                        viewModel.onEvent(event)
+                    }
+                )
+
+                OutlinedAppTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AddEditProductElementPaddings)
+                        .focusRequester(focusRequester),
+                    value = screenData.sizeValue,
+                    valueFontSize = screenData.fontSize.toTextField().sp,
+                    onValueChange = {
+                        val event = AddEditProductEvent.ProductSizeChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.addEditProduct_label_size)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = imeAction
+                    ),
+                    keyboardActions = keyboardActions
+                )
+
+                AddEditProductAutocompleteStrings(
+                    list = screenData.autocompleteSizes,
+                    fontSize = screenData.fontSize,
+                    onClick = {
+                        val event = AddEditProductEvent.AutocompleteSizeSelected(it)
+                        viewModel.onEvent(event)
+                    }
+                )
+
+                OutlinedAppTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AddEditProductElementPaddings)
+                        .focusRequester(focusRequester),
+                    value = screenData.colorValue,
+                    valueFontSize = screenData.fontSize.toTextField().sp,
+                    onValueChange = {
+                        val event = AddEditProductEvent.ProductColorChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.addEditProduct_label_color)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = imeAction
+                    ),
+                    keyboardActions = keyboardActions
+                )
+
+                AddEditProductAutocompleteStrings(
+                    list = screenData.autocompleteColors,
+                    fontSize = screenData.fontSize,
+                    onClick = {
+                        val event = AddEditProductEvent.AutocompleteColorSelected(it)
+                        viewModel.onEvent(event)
+                    }
+                )
+
+                OutlinedAppTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AddEditProductElementPaddings)
+                        .focusRequester(focusRequester),
+                    value = screenData.manufacturerValue,
+                    valueFontSize = screenData.fontSize.toTextField().sp,
+                    onValueChange = {
+                        val event = AddEditProductEvent.ProductManufacturerChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.addEditProduct_label_manufacturer)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = imeAction
+                    ),
+                    keyboardActions = keyboardActions
+                )
+
+                AddEditProductAutocompleteStrings(
+                    list = screenData.autocompleteManufacturers,
+                    fontSize = screenData.fontSize,
+                    onClick = {
+                        val event = AddEditProductEvent.AutocompleteManufacturerSelected(it)
+                        viewModel.onEvent(event)
+                    }
+                )
+
+                OutlinedAppTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AddEditProductElementPaddings)
+                        .focusRequester(focusRequester),
+                    value = screenData.uidValue,
+                    valueFontSize = screenData.fontSize.toTextField().sp,
+                    onValueChange = {
+                        val event = AddEditProductEvent.ProductUidChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    enabled = false,
+                    label = { Text(text = stringResource(R.string.addEditProduct_label_uid)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = imeAction
+                    ),
+                    keyboardActions = keyboardActions
+                )
+            }
 
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -233,24 +402,51 @@ fun AddEditProductScreen(
             )
 
             if (screenData.displayMoney) {
-                OutlinedAppTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(AddEditProductElementPaddings),
-                    value = screenData.priceValue,
-                    valueFontSize = screenData.fontSize.toTextField().sp,
-                    onValueChange = {
-                        val event = AddEditProductEvent.ProductPriceChanged(it)
-                        viewModel.onEvent(event)
-                    },
-                    enabled = screenData.lockProductElement != LockProductElement.PRICE,
-                    label = { Text(text = stringResource(R.string.addEditProduct_label_price)) },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Decimal,
-                        imeAction = imeAction
-                    ),
-                    keyboardActions = keyboardActions
-                )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(AddEditProductElementPaddings)
+                ) {
+                    OutlinedAppTextField(
+                        modifier = Modifier.weight(1f),
+                        value = screenData.priceValue,
+                        valueFontSize = screenData.fontSize.toTextField().sp,
+                        onValueChange = {
+                            val event = AddEditProductEvent.ProductPriceChanged(it)
+                            viewModel.onEvent(event)
+                        },
+                        enabled = screenData.lockProductElement != LockProductElement.PRICE,
+                        label = { Text(text = stringResource(R.string.addEditProduct_label_price)) },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Decimal,
+                            imeAction = imeAction
+                        ),
+                        keyboardActions = keyboardActions
+                    )
+
+                    Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
+
+                    IconButton(
+                        modifier = Modifier
+                            .height(AddEditProductButtonHeight)
+                            .padding(AddEditProductButtonPaddings)
+                            .border(
+                                border = getButtonBorderStroke(),
+                                shape = MaterialTheme.shapes.small
+                            ),
+                        onClick = { viewModel.onEvent(AddEditProductEvent.InvertPriceOtherFields) }
+                    ) {
+                        Icon(
+                            imageVector = if (screenData.showPriceOtherFields) {
+                                Icons.Default.KeyboardArrowUp
+                            } else {
+                                Icons.Default.KeyboardArrowDown
+                            },
+                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_showPriceOtherFields),
+                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                        )
+                    }
+                }
 
                 AddEditProductAutocompletePrices(
                     prices = screenData.autocompletePrices,
@@ -262,68 +458,70 @@ fun AddEditProductScreen(
                     }
                 )
 
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(AddEditProductElementPaddings)
-                ) {
-                    OutlinedAppTextField(
-                        modifier = Modifier.weight(0.6f),
-                        value = screenData.discountValue,
-                        valueFontSize = screenData.fontSize.toTextField().sp,
-                        onValueChange = {
-                            val event = AddEditProductEvent.ProductDiscountChanged(it)
-                            viewModel.onEvent(event)
-                        },
-                        enabled = screenData.lockProductElement == LockProductElement.TOTAL,
-                        label = { Text(text = stringResource(R.string.addEditProduct_label_discount)) },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal,
-                            imeAction = imeAction
-                        ),
-                        keyboardActions = keyboardActions
-                    )
-
-                    Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
-
-                    AddEditProductDiscountAsPercentButton(
-                        modifier = Modifier.weight(0.4f),
-                        onClick = { viewModel.onEvent(AddEditProductEvent.ShowProductDiscountAsPercentMenu) },
-                        enabled = screenData.lockProductElement == LockProductElement.TOTAL
+                if (screenData.showPriceOtherFields) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(AddEditProductElementPaddings)
                     ) {
-                        Text(
-                            text = screenData.discountAsPercentText.asCompose(),
-                            color = MaterialTheme.colors.onSurface,
-                            fontSize = screenData.fontSize.toButton().sp
+                        OutlinedAppTextField(
+                            modifier = Modifier.weight(0.6f),
+                            value = screenData.discountValue,
+                            valueFontSize = screenData.fontSize.toTextField().sp,
+                            onValueChange = {
+                                val event = AddEditProductEvent.ProductDiscountChanged(it)
+                                viewModel.onEvent(event)
+                            },
+                            enabled = screenData.lockProductElement == LockProductElement.TOTAL,
+                            label = { Text(text = stringResource(R.string.addEditProduct_label_discount)) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Decimal,
+                                imeAction = imeAction
+                            ),
+                            keyboardActions = keyboardActions
                         )
 
-                        AppDropdownMenu(
-                            expanded = screenData.showDiscountAsPercent,
-                            onDismissRequest = { viewModel.onEvent(AddEditProductEvent.HideProductDiscountAsPercentMenu) }
+                        Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
+
+                        AddEditProductDiscountAsPercentButton(
+                            modifier = Modifier.weight(0.4f),
+                            onClick = { viewModel.onEvent(AddEditProductEvent.ShowProductDiscountAsPercentMenu) },
+                            enabled = screenData.lockProductElement == LockProductElement.TOTAL
                         ) {
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsPercentSelected) },
-                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsPercents)) },
-                                right = { CheckmarkAppCheckbox(checked = screenData.discountAsPercent) }
+                            Text(
+                                text = screenData.discountAsPercentText.asCompose(),
+                                color = MaterialTheme.colors.onSurface,
+                                fontSize = screenData.fontSize.toButton().sp
                             )
-                            AppDropdownMenuItem(
-                                onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
-                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsMoney)) },
-                                right = { CheckmarkAppCheckbox(checked = !screenData.discountAsPercent) }
-                            )
+
+                            AppDropdownMenu(
+                                expanded = screenData.showDiscountAsPercent,
+                                onDismissRequest = { viewModel.onEvent(AddEditProductEvent.HideProductDiscountAsPercentMenu) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsPercentSelected) },
+                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsPercents)) },
+                                    right = { CheckmarkAppCheckbox(checked = screenData.discountAsPercent) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
+                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsMoney)) },
+                                    right = { CheckmarkAppCheckbox(checked = !screenData.discountAsPercent) }
+                                )
+                            }
                         }
                     }
-                }
 
-                AddEditProductAutocompleteDiscounts(
-                    discounts = screenData.autocompleteDiscounts,
-                    fontSize = screenData.fontSize,
-                    enabled = screenData.lockProductElement == LockProductElement.TOTAL,
-                    onClick = {
-                        val event = AddEditProductEvent.AutocompleteDiscountSelected(it)
-                        viewModel.onEvent(event)
-                    }
-                )
+                    AddEditProductAutocompleteDiscounts(
+                        discounts = screenData.autocompleteDiscounts,
+                        fontSize = screenData.fontSize,
+                        enabled = screenData.lockProductElement == LockProductElement.TOTAL,
+                        onClick = {
+                            val event = AddEditProductEvent.AutocompleteDiscountSelected(it)
+                            viewModel.onEvent(event)
+                        }
+                    )
+                }
 
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -444,9 +642,11 @@ private fun AddEditProductContent(
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(scaffoldPaddings)
-            .padding(AddEditProductContentPaddings),
-        content = content
-    )
+            .padding(AddEditProductContentPaddings)
+    ) {
+        content()
+        Spacer(modifier = Modifier.height(AddEditProductSpacerHeight))
+    }
 }
 
 @Composable
@@ -467,6 +667,33 @@ private fun AddEditProductAutocompleteNames(
             onClick = { onClick(it) },
             backgroundColor = MaterialTheme.colors.background
         )
+    }
+}
+
+@Composable
+private fun AddEditProductAutocompleteStrings(
+    list: List<String>,
+    fontSize: FontSize,
+    onClick: (String) -> Unit
+) {
+    val scrollState = rememberScrollState()
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(AddEditProductElementPaddings)
+            .horizontalScroll(scrollState)
+    ) {
+        list.forEach {
+            AppChip(onClick = { onClick(it) }) {
+                Text(
+                    text = it,
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
+        }
     }
 }
 
@@ -696,3 +923,4 @@ private val AddEditProductSpacerLargeSize = 8.dp
 private val AddEditProductButtonHeight = 64.dp
 private val AddEditProductButtonPaddings = PaddingValues(top = 8.dp)
 private val AddEditProductButtonNoContentPadding = PaddingValues(0.dp)
+private val AddEditProductSpacerHeight = 128.dp

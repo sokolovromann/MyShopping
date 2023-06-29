@@ -16,14 +16,21 @@
     <string name="addEditProduct_action_selectProductLockQuantity">Menge</string>
     <string name="addEditProduct_action_selectProductLockTotal">Gesamt</string>
     <string name="addEditProduct_contentDescription_navigationIcon">Zurück</string>
+    <string name="addEditProduct_contentDescription_showNameOtherFields">Andere Felder ein oder ausblenden</string>
+    <string name="addEditProduct_contentDescription_showPriceOtherFields">Andere Felder ein oder ausblenden</string>
     <string name="addEditProduct_header_productLock">Block</string>
+    <string name="addEditProduct_label_brand">Marke</string>
+    <string name="addEditProduct_label_color">Farbe</string>
     <string name="addEditProduct_label_discount">Rabatt</string>
+    <string name="addEditProduct_label_manufacturer">Herstellerin</string>
     <string name="addEditProduct_label_name">Name</string>
     <string name="addEditProduct_label_note">Notiz</string>
     <string name="addEditProduct_label_price">Preis pro einheit</string>
     <string name="addEditProduct_label_quantity">Menge</string>
     <string name="addEditProduct_label_quantitySymbol">Symbol</string>
+    <string name="addEditProduct_label_size">Größe</string>
     <string name="addEditProduct_label_total">Gesamt</string>
+    <string name="addEditProduct_label_uid">ID</string>
     <string name="addEditProduct_message_nameError">Name hinzufügen</string>
 
     <string name="all_header_appName">My Shopping List</string>

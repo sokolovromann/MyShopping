@@ -127,7 +127,7 @@ class RepositoryMapping @Inject constructor() {
             brand = entity.brand,
             size = entity.size,
             color = entity.color,
-            provider = entity.color,
+            provider = entity.provider,
             completed = entity.completed,
             pinned = entity.pinned
         )

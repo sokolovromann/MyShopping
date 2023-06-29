@@ -8,6 +8,7 @@ data class Autocompletes(
     private val defaultNamesLimit: Int = 10
     private val defaultQuantitiesLimit: Int = 5
     private val defaultMoneyLimit: Int = 3
+    private val defaultOtherFieldsLimit: Int = 3
 
     fun formatAutocompletes(): List<Autocomplete> {
         return autocompletes.sortAutocompletes()
@@ -39,6 +40,46 @@ data class Autocompletes(
             }
             .filterIndexed { index, autocomplete ->
                 autocomplete.name.isNotEmpty() && index <= defaultNamesLimit
+            }
+    }
+
+    fun brands(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+        return filteredAutocompletes(displayDefault)
+            .sortedByDescending { it.lastModified }
+            .map { it.brand }
+            .distinct()
+            .filterIndexed { index, brand ->
+                brand.isNotEmpty() && index <= defaultOtherFieldsLimit
+            }
+    }
+
+    fun sizes(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+        return filteredAutocompletes(displayDefault)
+            .sortedByDescending { it.lastModified }
+            .map { it.size }
+            .distinct()
+            .filterIndexed { index, size ->
+                size.isNotEmpty() && index <= defaultOtherFieldsLimit
+            }
+    }
+
+    fun colors(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+        return filteredAutocompletes(displayDefault)
+            .sortedByDescending { it.lastModified }
+            .map { it.color }
+            .distinct()
+            .filterIndexed { index, color ->
+                color.isNotEmpty() && index <= defaultOtherFieldsLimit
+            }
+    }
+
+    fun manufacturers(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+        return filteredAutocompletes(displayDefault)
+            .sortedByDescending { it.lastModified }
+            .map { it.manufacturer }
+            .distinct()
+            .filterIndexed { index, manufacturer ->
+                manufacturer.isNotEmpty() && index <= defaultOtherFieldsLimit
             }
     }
 
