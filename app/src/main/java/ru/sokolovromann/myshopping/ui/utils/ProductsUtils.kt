@@ -39,14 +39,27 @@ fun Products.getProductsItems(
         val displayQuantity = it.quantity.isNotEmpty()
         val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
 
-        var body = if (displayPrice) {
+        val brand = if (it.brand.isEmpty()) "" else " ${it.brand}"
+        val manufacturer = if (it.manufacturer.isEmpty()) "" else " • ${it.manufacturer}"
+        val nameText: UiText = UiText.FromString("${it.name}$brand$manufacturer")
+
+        var otherName = it.size
+        otherName += if (it.color.isEmpty()) {
+            ""
+        } else {
+            if (it.size.isEmpty()) it.color else " • ${it.color}"
+        }
+
+        var body = otherName
+        val otherDivider = if (otherName.isEmpty()) "" else " • "
+        body += if (displayPrice) {
             if (displayQuantity) {
-                "${it.quantity} • ${it.formatTotal()}"
+                "$otherDivider${it.quantity} • ${it.formatTotal()}"
             } else {
-                "${it.formatTotal()}"
+                "$otherDivider${it.formatTotal()}"
             }
         } else {
-            if (displayQuantity) "${it.quantity}" else ""
+            if (displayQuantity) "$otherDivider${it.quantity}" else ""
         }
 
         if (it.note.isNotEmpty()) {
@@ -57,7 +70,7 @@ fun Products.getProductsItems(
 
         ProductItem(
             uid = it.productUid,
-            nameText = UiText.FromString(it.name),
+            nameText = nameText,
             bodyText = bodyText,
             completed = it.completed
         )

@@ -48,10 +48,14 @@
 
     <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
     <string name="autocompletes_action_selectPersonalLocation">Личные</string>
+    <string name="autocompletes_body_brands">Марки: %s</string>
+    <string name="autocompletes_body_colors">Цвета: %s</string>
     <string name="autocompletes_body_dataNotFound">Нет данных</string>
     <string name="autocompletes_body_discounts">Скидки: %s</string>
+    <string name="autocompletes_body_manufacturers">Изготовители: %s</string>
     <string name="autocompletes_body_prices">Цены: %s</string>
     <string name="autocompletes_body_quantities">Количества: %s</string>
+    <string name="autocompletes_body_sizes">Размеры: %s</string>
     <string name="autocompletes_body_totals">Стоимости: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
     <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Отменить выбор</string>

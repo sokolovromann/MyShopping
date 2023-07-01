@@ -48,10 +48,14 @@
 
     <string name="autocompletes_action_selectDefaultLocation">Standard</string>
     <string name="autocompletes_action_selectPersonalLocation">Persönliche</string>
+    <string name="autocompletes_body_brands">Marken: %s</string>
+    <string name="autocompletes_body_colors">Farben: %s</string>
     <string name="autocompletes_body_dataNotFound">Keine Daten</string>
     <string name="autocompletes_body_discounts">Rabatte: %s</string>
+    <string name="autocompletes_body_manufacturers">Hersteller: %s</string>
     <string name="autocompletes_body_prices">Preise: %s</string>
     <string name="autocompletes_body_quantities">Mengen: %s</string>
+    <string name="autocompletes_body_sizes">Größen: %s</string>
     <string name="autocompletes_body_totals">Gesamten: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Autovervollständigung hinzufügen</string>
     <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Auswahl abbrechen</string>

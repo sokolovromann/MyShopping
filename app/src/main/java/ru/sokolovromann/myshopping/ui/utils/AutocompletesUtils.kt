@@ -21,10 +21,43 @@ private fun toAutocompleteItems(
     autocompletes: List<Autocomplete>,
     preferences: AppPreferences
 ): AutocompleteItems {
+    val otherLimit = 3
     val quantitiesLimit = 5
     val pricesLimit = 3
     val discountsLimit = 3
     val totalsLimit = 3
+
+    val brandsList: List<UiText> = autocompletes
+        .sortedByDescending { it.lastModified }
+        .distinctBy { it.brand }
+        .filterIndexed { index, autocomplete ->
+            autocomplete.brand.isNotEmpty() && index < otherLimit
+        }
+        .map { UiText.FromString(it.brand) }
+
+    val sizesList: List<UiText> = autocompletes
+        .sortedByDescending { it.lastModified }
+        .distinctBy { it.size }
+        .filterIndexed { index, autocomplete ->
+            autocomplete.size.isNotEmpty() && index < otherLimit
+        }
+        .map { UiText.FromString(it.size) }
+
+    val colorsList: List<UiText> = autocompletes
+        .sortedByDescending { it.lastModified }
+        .distinctBy { it.color }
+        .filterIndexed { index, autocomplete ->
+            autocomplete.color.isNotEmpty() && index < otherLimit
+        }
+        .map { UiText.FromString(it.color) }
+
+    val manufacturersList: List<UiText> = autocompletes
+        .sortedByDescending { it.lastModified }
+        .distinctBy { it.manufacturer }
+        .filterIndexed { index, autocomplete ->
+            autocomplete.manufacturer.isNotEmpty() && index < otherLimit
+        }
+        .map { UiText.FromString(it.manufacturer) }
 
     val quantitiesList: List<UiText> = autocompletes
         .sortedByDescending { it.lastModified }
@@ -71,6 +104,10 @@ private fun toAutocompleteItems(
     }
 
     return AutocompleteItems(
+        brandsList = brandsList,
+        sizesList = sizesList,
+        colorsList = colorsList,
+        manufacturersList = manufacturersList,
         quantitiesList = quantitiesList,
         pricesList = pricesList,
         discountsList = discountsList,

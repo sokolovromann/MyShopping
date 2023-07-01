@@ -52,6 +52,10 @@
     <string name="autocompletes_body_discounts">Discounts: %s</string>
     <string name="autocompletes_body_prices">Prices: %s</string>
     <string name="autocompletes_body_quantities">Quantities: %s</string>
+    <string name="autocompletes_body_brands">Brands: %s</string>
+    <string name="autocompletes_body_sizes">Sizes: %s</string>
+    <string name="autocompletes_body_colors">Colors: %s</string>
+    <string name="autocompletes_body_manufacturers">Manufacturers: %s</string>
     <string name="autocompletes_body_totals">Totals: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
     <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Cancel selection</string>

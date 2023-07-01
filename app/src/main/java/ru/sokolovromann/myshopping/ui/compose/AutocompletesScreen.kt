@@ -328,12 +328,36 @@ private fun getAutocompleteItemBodyOrNull(
     fontSize: FontSize
 ) = itemOrNull(enabled = true) {
     Column {
-        if (autocompleteItems.inEmpty()) {
+        if (autocompleteItems.isEmpty()) {
             Text(
                 text = stringResource(R.string.autocompletes_body_dataNotFound),
                 fontSize = fontSize.toItemBody().sp
             )
         } else {
+            if (autocompleteItems.brandsToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.brandsToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            if (autocompleteItems.sizesToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.sizesToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            if (autocompleteItems.colorsToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.colorsToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
+            if (autocompleteItems.manufacturersToText() != UiText.Nothing) {
+                Text(
+                    text = autocompleteItems.manufacturersToText().asCompose(),
+                    fontSize = fontSize.toItemBody().sp
+                )
+            }
             if (autocompleteItems.quantitiesToText() != UiText.Nothing) {
                 Text(
                     text = autocompleteItems.quantitiesToText().asCompose(),
