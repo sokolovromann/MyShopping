@@ -278,6 +278,7 @@
     <string name="products_contentDescription_moveProductUp">Nach oben verschieben</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Ziehen nach…</string>
     <string name="products_contentDescription_navigationIcon">Zurück</string>
+    <string name="products_contentDescription_pinOrUnpinProduct">Produkt anheften oder loslösen</string>
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
     <string name="products_contentDescription_selectAllProducts">Wählen Sie alle Produkte aus</string>
     <string name="products_header_displayTotal">Gesamt</string>
@@ -286,6 +287,8 @@
     <string name="products_text_archiveProductsNotFound">Einkaufsliste ist leer</string>
     <string name="products_text_completedTotal">Fertige: %s</string>
     <string name="products_text_hiddenProducts">Sie haben versteckte Produkte</string>
+    <string name="products_text_otherProducts">Andere</string>
+    <string name="products_text_pinnedProducts">Angepinnte</string>
     <string name="products_text_purchasesProductsNotFound">Klicken Sie auf \"+\" um ein neues Produkt hinzuzufügen</string>
     <string name="products_text_selectedTotal">Ausgewählt: %s</string>
     <string name="products_text_totalFormatted">Bearbeitet: %s</string>

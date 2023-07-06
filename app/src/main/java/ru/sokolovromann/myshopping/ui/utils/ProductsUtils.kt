@@ -4,77 +4,28 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.Money
+import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.ui.compose.state.ProductItem
 import ru.sokolovromann.myshopping.ui.compose.state.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
-fun Products.getProductWidgetItems(): List<ProductWidgetItem> {
-    return formatProducts().map {
-        val displayQuantity = it.quantity.isNotEmpty()
-        val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
-
-        val body = if (displayPrice) {
-            if (displayQuantity) {
-                "${it.name} • ${it.quantity} • ${it.formatTotal()}"
-            } else {
-                "${it.name} • ${it.formatTotal()}"
-            }
-        } else {
-            if (displayQuantity) "${it.name} • ${it.quantity}" else it.name
-        }
-
-        ProductWidgetItem(
-            uid = it.productUid,
-            body = body,
-            completed = it.completed
-        )
-    }
+fun Products.getActivePinnedProductWidgetItems(): List<ProductWidgetItem> {
+    return getActivePinnedProducts().map { toProductWidgetItem(it) }
 }
 
-fun Products.getProductsItems(
+fun Products.getOtherProductWidgetItems(): List<ProductWidgetItem> {
+    return getOtherProducts().map { toProductWidgetItem(it) }
+}
+
+fun Products.getActivePinnedProductItems(): List<ProductItem> {
+    return getActivePinnedProducts().map { toProductItem(it) }
+}
+
+fun Products.getOtherProductItems(
     displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
 ): List<ProductItem> {
-    return formatProducts(displayCompleted).map {
-        val displayQuantity = it.quantity.isNotEmpty()
-        val displayPrice = it.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
-
-        val brand = if (it.brand.isEmpty()) "" else " ${it.brand}"
-        val manufacturer = if (it.manufacturer.isEmpty()) "" else " • ${it.manufacturer}"
-        val nameText: UiText = UiText.FromString("${it.name}$brand$manufacturer")
-
-        var otherName = it.size
-        otherName += if (it.color.isEmpty()) {
-            ""
-        } else {
-            if (it.size.isEmpty()) it.color else " • ${it.color}"
-        }
-
-        var body = otherName
-        val otherDivider = if (otherName.isEmpty()) "" else " • "
-        body += if (displayPrice) {
-            if (displayQuantity) {
-                "$otherDivider${it.quantity} • ${it.formatTotal()}"
-            } else {
-                "$otherDivider${it.formatTotal()}"
-            }
-        } else {
-            if (displayQuantity) "$otherDivider${it.quantity}" else ""
-        }
-
-        if (it.note.isNotEmpty()) {
-            body += if (body.isEmpty()) it.note else "\n${it.note}"
-        }
-
-        val bodyText: UiText = if (body.isEmpty()) UiText.Nothing else UiText.FromString(body)
-
-        ProductItem(
-            uid = it.productUid,
-            nameText = nameText,
-            bodyText = bodyText,
-            completed = it.completed
-        )
-    }
+    return getOtherProducts(displayCompleted).map { toProductItem(it) }
 }
 
 fun Products.calculateTotalToText(): UiText {
@@ -97,4 +48,66 @@ private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted
         }
         UiText.FromResourcesWithArgs(id, total.toString())
     }
+}
+
+private fun Products.toProductItem(product: Product): ProductItem {
+    val displayQuantity = product.quantity.isNotEmpty()
+    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
+
+    val brand = if (product.brand.isEmpty()) "" else " ${product.brand}"
+    val manufacturer = if (product.manufacturer.isEmpty()) "" else " • ${product.manufacturer}"
+    val nameText: UiText = UiText.FromString("${product.name}$brand$manufacturer")
+
+    var otherName = product.size
+    otherName += if (product.color.isEmpty()) {
+        ""
+    } else {
+        if (product.size.isEmpty()) product.color else " • ${product.color}"
+    }
+
+    var body = otherName
+    val otherDivider = if (otherName.isEmpty()) "" else " • "
+    body += if (displayPrice) {
+        if (displayQuantity) {
+            "$otherDivider${product.quantity} • ${product.formatTotal()}"
+        } else {
+            "$otherDivider${product.formatTotal()}"
+        }
+    } else {
+        if (displayQuantity) "$otherDivider${product.quantity}" else ""
+    }
+
+    if (product.note.isNotEmpty()) {
+        body += if (body.isEmpty()) product.note else "\n${product.note}"
+    }
+
+    val bodyText: UiText = if (body.isEmpty()) UiText.Nothing else UiText.FromString(body)
+
+    return ProductItem(
+        uid = product.productUid,
+        nameText = nameText,
+        bodyText = bodyText,
+        completed = product.completed
+    )
+}
+
+private fun Products.toProductWidgetItem(product: Product): ProductWidgetItem {
+    val displayQuantity = product.quantity.isNotEmpty()
+    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
+
+    val body = if (displayPrice) {
+        if (displayQuantity) {
+            "${product.name} • ${product.quantity} • ${product.formatTotal()}"
+        } else {
+            "${product.name} • ${product.formatTotal()}"
+        }
+    } else {
+        if (displayQuantity) "${product.name} • ${product.quantity}" else product.name
+    }
+
+    return ProductWidgetItem(
+        uid = product.productUid,
+        body = body,
+        completed = product.completed
+    )
 }

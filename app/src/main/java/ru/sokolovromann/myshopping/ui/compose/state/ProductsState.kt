@@ -99,13 +99,13 @@ class ProductsState {
                 && preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && products.hasHiddenProducts()
 
-        val productsItems = if (location == ShoppingListLocation.TRASH) {
+        val otherProducts = if (location == ShoppingListLocation.TRASH) {
             when (preferences.displayCompletedPurchases) {
-                DisplayCompleted.FIRST, DisplayCompleted.LAST -> products.getProductsItems()
-                else -> products.getProductsItems(DisplayCompleted.LAST)
+                DisplayCompleted.FIRST, DisplayCompleted.LAST -> products.getOtherProductItems()
+                else -> products.getOtherProductItems(DisplayCompleted.LAST)
             }
         } else {
-            products.getProductsItems()
+            products.getOtherProductItems()
         }
 
         val selectedUids = if (savedSelectedUid.isEmpty()) {
@@ -119,7 +119,8 @@ class ProductsState {
             shoppingListName = shoppingListName,
             shoppingListLocation = location,
             shoppingListCompleted = products.isCompleted(),
-            products = productsItems,
+            pinnedProducts = products.getActivePinnedProductItems(),
+            otherProducts = otherProducts,
             productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
             reminderText = toReminderText(products.shoppingList.reminder),
@@ -155,7 +156,7 @@ class ProductsState {
 
     fun displayHiddenProducts() {
         screenData = screenData.copy(
-            products = products.getProductsItems(DisplayCompleted.LAST),
+            otherProducts = products.getOtherProductItems(DisplayCompleted.LAST),
             showHiddenProducts = false
         )
     }
@@ -251,7 +252,7 @@ class ProductsState {
             ""
         }
 
-        screenData.products.forEach {
+        screenData.otherProducts.forEach {
             if (!it.completed) {
                 val name = if (it.nameText is UiText.FromString) it.nameText.value else ""
                 val body = if (it.bodyText is UiText.FromString) " • ${it.bodyText.value}" else ""
@@ -272,7 +273,9 @@ class ProductsState {
     }
 
     fun getProductsUpResult(uid: String): Result<Pair<Product, Product>> {
-        val formatProducts = products.formatProducts()
+        val pinned = products.isProductPinned(uid)
+        val formatProducts = if (pinned) products.getActivePinnedProducts() else products.getOtherProducts()
+
         return if (formatProducts.size < 2) {
             Result.failure(Exception())
         } else {
@@ -308,7 +311,8 @@ class ProductsState {
     }
 
     fun getProductsDownResult(uid: String): Result<Pair<Product, Product>> {
-        val formatProducts = products.formatProducts()
+        val pinned = products.isProductPinned(uid)
+        val formatProducts = if (pinned) products.getActivePinnedProducts() else products.getOtherProducts()
         return if (formatProducts.size < 2) {
             Result.failure(Exception())
         } else {
@@ -360,15 +364,19 @@ class ProductsState {
     }
 
     fun reverseSortProductsResult(): Result<List<Product>> {
-        val sortProducts = products.formatProducts().reversed()
-        return if (sortProducts.isEmpty()) {
+        val sortPinnedProducts = products.getActivePinnedProducts().reversed()
+        val sortOtherProducts = products.getOtherProducts().reversed()
+        return if (sortPinnedProducts.isEmpty() && sortOtherProducts.isEmpty()) {
             Result.failure(Exception())
         } else {
-            val success = sortProducts.mapIndexed { index, product ->
-                product.copy(
-                    position = index,
-                    lastModified = System.currentTimeMillis()
-                )
+            val success = sortPinnedProducts
+                .toMutableList()
+                .apply { addAll(sortOtherProducts) }
+                .mapIndexed { index, product ->
+                    product.copy(
+                        position = index,
+                        lastModified = System.currentTimeMillis()
+                    )
             }
             Result.success(success)
         }
@@ -402,7 +410,8 @@ data class ProductsScreenData(
     val shoppingListName: UiText = UiText.Nothing,
     val shoppingListLocation: ShoppingListLocation? = null,
     val shoppingListCompleted: Boolean = false,
-    val products: List<ProductItem> = listOf(),
+    val pinnedProducts: List<ProductItem> = listOf(),
+    val otherProducts: List<ProductItem> = listOf(),
     val productsNotFoundText: UiText = UiText.Nothing,
     val showProductsMenu: Boolean = false,
     val totalText: UiText = UiText.Nothing,
@@ -422,4 +431,16 @@ data class ProductsScreenData(
     val displayMoney: Boolean = true,
     val completedWithCheckbox: Boolean = false,
     val selectedUids: List<String>? = null
-)
+) {
+
+    fun isOnlyPinned(): Boolean {
+        var notPinned = false
+        selectedUids?.forEach { uid ->
+            if (otherProducts.find { it.uid == uid } != null) {
+                notPinned = true
+                return@forEach
+            }
+        }
+        return pinnedProducts.isNotEmpty() && !notPinned
+    }
+}

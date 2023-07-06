@@ -104,6 +104,10 @@ class ProductsViewModel @Inject constructor(
             ProductsEvent.InvertProductsMultiColumns -> invertProductsMultiColumns()
 
             ProductsEvent.InvertAutomaticSorting -> invertAutomaticSorting()
+
+            ProductsEvent.PinProducts -> pinProducts()
+
+            ProductsEvent.UnpinProducts -> unpinProducts()
         }
     }
 
@@ -421,6 +425,28 @@ class ProductsViewModel @Inject constructor(
                 shoppingUid = shoppingUid,
                 lastModified = System.currentTimeMillis()
             )
+        }
+    }
+
+    private fun pinProducts() = viewModelScope.launch {
+        productsState.screenData.selectedUids?.let {
+            repository.pinProducts(it, System.currentTimeMillis())
+            updateProductsWidget()
+        }
+
+        withContext(dispatchers.main) {
+            unselectAllProducts()
+        }
+    }
+
+    private fun unpinProducts() = viewModelScope.launch {
+        productsState.screenData.selectedUids?.let {
+            repository.unpinProducts(it, System.currentTimeMillis())
+            updateProductsWidget()
+        }
+
+        withContext(dispatchers.main) {
+            unselectAllProducts()
         }
     }
 

@@ -296,6 +296,7 @@
     <string name="products_contentDescription_moveProductUp">Перемістити вгору</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Перемістити в…</string>
     <string name="products_contentDescription_navigationIcon">Назад</string>
+    <string name="products_contentDescription_pinOrUnpinProduct">Закріпити чи відкріпити товари</string>
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
     <string name="products_contentDescription_selectAllProducts">Вибрати всі товари</string>
     <string name="products_header_displayTotal">Разом</string>
@@ -304,6 +305,8 @@
     <string name="products_text_archiveProductsNotFound">Список покупок порожній</string>
     <string name="products_text_completedTotal">Куплено: %s</string>
     <string name="products_text_hiddenProducts">У вас є приховані товари</string>
+    <string name="products_text_otherProducts">Інші</string>
+    <string name="products_text_pinnedProducts">Закріплені</string>
     <string name="products_text_purchasesProductsNotFound">Натисніть \"+\", щоб додати товар</string>
     <string name="products_text_selectedTotal">Вибрано: %s</string>
     <string name="products_text_totalFormatted">Змінено: %s</string>

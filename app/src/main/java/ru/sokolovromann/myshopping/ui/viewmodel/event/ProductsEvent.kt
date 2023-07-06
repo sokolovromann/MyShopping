@@ -72,4 +72,8 @@ sealed class ProductsEvent {
     object CalculateChange : ProductsEvent()
 
     object InvertProductsMultiColumns : ProductsEvent()
+
+    object PinProducts : ProductsEvent()
+
+    object UnpinProducts : ProductsEvent()
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -155,6 +156,25 @@ fun ProductsScreen(
                         }
                     },
                     actions = {
+                        IconButton(
+                            onClick = {
+                                if (screenData.isOnlyPinned()) {
+                                    viewModel.onEvent(ProductsEvent.UnpinProducts)
+                                } else {
+                                    viewModel.onEvent(ProductsEvent.PinProducts)
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = if (screenData.isOnlyPinned()) {
+                                    painterResource(R.drawable.ic_all_pin)
+                                } else {
+                                    painterResource(R.drawable.ic_all_unpin)
+                                },
+                                contentDescription = stringResource(R.string.products_contentDescription_pinOrUnpinProduct),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.CopyProductsToShoppingList) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_copy_to),
@@ -333,7 +353,8 @@ fun ProductsScreen(
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
             highlightCheckbox = screenData.highlightCheckbox,
-            items = screenData.products,
+            pinnedItems = screenData.pinnedProducts,
+            otherItems = screenData.otherProducts,
             topBar = {
                 if (screenData.shoppingListName != UiText.Nothing || screenData.reminderText != UiText.Nothing) {
                     val backgroundColor = if (screenData.shoppingListCompleted) {
@@ -561,7 +582,8 @@ private fun ProductsGrid(
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     highlightCheckbox: Boolean,
-    items: List<ProductItem>,
+    pinnedItems: List<ProductItem>,
+    otherItems: List<ProductItem>,
     topBar: @Composable RowScope.() -> Unit,
     bottomBar: @Composable RowScope.() -> Unit,
     notFound: @Composable ColumnScope.() -> Unit,
@@ -582,7 +604,64 @@ private fun ProductsGrid(
         bottomBar = bottomBar,
         notFound = notFound
     ) {
-        items(items) { item ->
+        if (pinnedItems.isNotEmpty()) {
+            item {
+                Text(
+                    modifier = Modifier.padding(ProductsPinnedTextPaddings),
+                    text = stringResource(R.string.products_text_pinnedProducts),
+                    fontSize = fontSize.toItemTitle().sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            items(pinnedItems) { item ->
+                val selected = selectedUids?.contains(item.uid) ?: false
+
+                val leftOnClickEnabled = selectedUids == null &&
+                        location != ShoppingListLocation.TRASH &&
+                        completedWithCheckbox
+                val leftOnClick: ((Boolean) -> Unit)? = if (leftOnClickEnabled) {
+                    { onClick(item.uid, item.completed) }
+                } else {
+                    null
+                }
+
+                val clickableEnabled = if (selectedUids == null) {
+                    location != ShoppingListLocation.TRASH && !completedWithCheckbox
+                } else {
+                    true
+                }
+
+                val longClickableEnabled = location != ShoppingListLocation.TRASH
+
+                AppMultiColumnsItem(
+                    multiColumns = multiColumns,
+                    left = getProductItemLeft(highlightCheckbox, item.completed, leftOnClick),
+                    title = getProductItemTitleOrNull(item.nameText, fontSize),
+                    body = getProductItemBodyOrNull(item.bodyText, fontSize),
+                    right = getProductItemRightOrNull(selected),
+                    dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                    clickableEnabled = clickableEnabled,
+                    longClickableEnabled = longClickableEnabled,
+                    onClick = { onClick(item.uid, item.completed) },
+                    onLongClick = { onLongClick(item.uid) },
+                    backgroundColor = getAppItemBackgroundColor(selected, item.completed)
+                )
+            }
+
+            if (otherItems.isNotEmpty()) {
+                item {
+                    Text(
+                        modifier = Modifier.padding(ProductsPinnedTextPaddings),
+                        text = stringResource(R.string.products_text_otherProducts),
+                        fontSize = fontSize.toItemTitle().sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+
+        items(otherItems) { item ->
             val selected = selectedUids?.contains(item.uid) ?: false
 
             val leftOnClickEnabled = selectedUids == null &&
@@ -713,3 +792,7 @@ private val ProductsHiddenProductsPaddings = PaddingValues(
 )
 private val ProductsNamePaddings = PaddingValues(horizontal = 8.dp)
 private val ProductsGridBarPaddings = PaddingValues(all = 8.dp)
+private val ProductsPinnedTextPaddings = PaddingValues(
+    horizontal = 16.dp,
+    vertical = 8.dp
+)

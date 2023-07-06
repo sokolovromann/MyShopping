@@ -349,6 +349,7 @@
     <string name="products_contentDescription_moveProductUp">Move up</string>
     <string name="products_contentDescription_moveProductsToShoppingList">Move to…</string>
     <string name="products_contentDescription_navigationIcon">Back</string>
+    <string name="products_contentDescription_pinOrUnpinProduct">Pin or unpin product</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_contentDescription_selectAllProducts">Select all products</string>
     <string name="products_header_displayTotal">Display total</string>
@@ -357,6 +358,8 @@
     <string name="products_text_archiveProductsNotFound">Shopping list is empty</string>
     <string name="products_text_completedTotal">Completed: %s</string>
     <string name="products_text_hiddenProducts">You have hidden products</string>
+    <string name="products_text_otherProducts">Other</string>
+    <string name="products_text_pinnedProducts">Pinned</string>
     <string name="products_text_purchasesProductsNotFound">Tap \"+\" to add new product</string>
     <string name="products_text_selectedTotal">Selected: %s</string>
     <string name="products_text_totalFormatted">Edited: %s</string>

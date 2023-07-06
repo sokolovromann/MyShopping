@@ -26,6 +26,10 @@ interface ProductsRepository {
 
     suspend fun deleteProducts(uids: List<String>,shoppingUid: String, lastModified: Long)
 
+    suspend fun pinProducts(uids: List<String>, lastModified: Long)
+
+    suspend fun unpinProducts(uids: List<String>, lastModified: Long)
+
     suspend fun displayAllPurchasesTotal()
 
     suspend fun displayCompletedPurchasesTotal()
