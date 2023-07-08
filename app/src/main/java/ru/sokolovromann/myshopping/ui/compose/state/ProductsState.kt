@@ -147,6 +147,10 @@ class ProductsState {
         screenData = screenData.copy(showProductsMenu = true)
     }
 
+    fun showSelectedMenu() {
+        screenData = screenData.copy(showSelectedMenu = true)
+    }
+
     fun showSort() {
         screenData = screenData.copy(
             showSort = true,
@@ -192,7 +196,8 @@ class ProductsState {
 
         screenData = screenData.copy(
             totalText = totalText,
-            selectedUids = uids
+            selectedUids = uids,
+            showSelectedMenu = false
         )
     }
 
@@ -235,6 +240,10 @@ class ProductsState {
 
     fun hideProductsMenu() {
         screenData = screenData.copy(showProductsMenu = false)
+    }
+
+    fun hideSelectedMenu() {
+        screenData = screenData.copy(showSelectedMenu = false)
     }
 
     fun hideSort() {
@@ -430,7 +439,8 @@ data class ProductsScreenData(
     val fontSize: FontSize = FontSize.MEDIUM,
     val displayMoney: Boolean = true,
     val completedWithCheckbox: Boolean = false,
-    val selectedUids: List<String>? = null
+    val selectedUids: List<String>? = null,
+    val showSelectedMenu: Boolean = false
 ) {
 
     fun isOnlyPinned(): Boolean {

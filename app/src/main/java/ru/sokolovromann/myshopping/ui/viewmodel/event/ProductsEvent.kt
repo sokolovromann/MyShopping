@@ -63,7 +63,11 @@ sealed class ProductsEvent {
 
     object ShowProductsMenu : ProductsEvent()
 
+    object ShowSelectedMenu : ProductsEvent()
+
     object HideProductsMenu : ProductsEvent()
+
+    object HideSelectedMenu : ProductsEvent()
 
     object HideProductsSort : ProductsEvent()
 

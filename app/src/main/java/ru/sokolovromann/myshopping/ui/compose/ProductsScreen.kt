@@ -175,20 +175,6 @@ fun ProductsScreen(
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.CopyProductsToShoppingList) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_copy_to),
-                                contentDescription = stringResource(R.string.products_contentDescription_copyProductsToShoppingList),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                            )
-                        }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductsToShoppingList) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_move_to),
-                                contentDescription = stringResource(R.string.products_contentDescription_moveProductsToShoppingList),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
-                            )
-                        }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -196,12 +182,29 @@ fun ProductsScreen(
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.SelectAllProducts) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowSelectedMenu) }) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.products_contentDescription_selectAllProducts),
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "",
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
                             )
+                            AppDropdownMenu(
+                                expanded = screenData.showSelectedMenu,
+                                onDismissRequest = { viewModel.onEvent(ProductsEvent.HideSelectedMenu) },
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.CopyProductsToShoppingList) },
+                                    text = { Text(text = stringResource(R.string.products_action_copyProductsToShoppingList)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.MoveProductsToShoppingList) },
+                                    text = { Text(text = stringResource(R.string.products_action_moveProductsToShoppingList)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ProductsEvent.SelectAllProducts) },
+                                    text = { Text(text = stringResource(R.string.products_action_selectAllProducts)) }
+                                )
+                            }
                         }
                     }
                 )

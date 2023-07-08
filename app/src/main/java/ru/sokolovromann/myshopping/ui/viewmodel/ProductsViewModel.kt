@@ -93,7 +93,11 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.ShowProductsMenu -> showProductsMenu()
 
+            ProductsEvent.ShowSelectedMenu -> showSelectedMenu()
+
             ProductsEvent.HideProductsMenu -> hideProductsMenu()
+
+            ProductsEvent.HideSelectedMenu -> hideSelectedMenu()
 
             ProductsEvent.HideProductsSort -> hideProductsSort()
 
@@ -215,6 +219,7 @@ class ProductsViewModel @Inject constructor(
         }
 
         withContext(dispatchers.main) {
+            hideSelectedMenu()
             unselectAllProducts()
         }
     }
@@ -226,6 +231,7 @@ class ProductsViewModel @Inject constructor(
         }
 
         withContext(dispatchers.main) {
+            hideSelectedMenu()
             unselectAllProducts()
         }
     }
@@ -386,12 +392,20 @@ class ProductsViewModel @Inject constructor(
         productsState.showProductsMenu()
     }
 
+    private fun showSelectedMenu() {
+        productsState.showSelectedMenu()
+    }
+
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
     }
 
     private fun hideProductsMenu() {
         productsState.hideProductsMenu()
+    }
+
+    private fun hideSelectedMenu() {
+        productsState.hideSelectedMenu()
     }
 
     private fun hideProductsSort() {
