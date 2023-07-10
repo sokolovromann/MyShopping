@@ -25,8 +25,6 @@ interface SettingsRepository {
 
     suspend fun displayShoppingsProductsRow()
 
-    suspend fun tinyFontSizeSelected()
-
     suspend fun smallFontSizeSelected()
 
     suspend fun mediumFontSizeSelected()
@@ -34,6 +32,10 @@ interface SettingsRepository {
     suspend fun largeFontSizeSelected()
 
     suspend fun hugeFontSizeSelected()
+
+    suspend fun huge2FontSizeSelected()
+
+    suspend fun huge3FontSizeSelected()
 
     suspend fun invertNightTheme()
 

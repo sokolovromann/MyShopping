@@ -290,11 +290,6 @@ private fun SettingsFontSizeMenu(
         onDismissRequest = onDismissRequest
     ) {
         AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.TINY) },
-            text = { Text(text = stringResource(R.string.settings_action_selectTinyFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.TINY) }
-        )
-        AppDropdownMenuItem(
             onClick = { onSelected(FontSize.SMALL) },
             text = { Text(text = stringResource(R.string.settings_action_selectSmallFontSize)) },
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.SMALL) }
@@ -313,6 +308,16 @@ private fun SettingsFontSizeMenu(
             onClick = { onSelected(FontSize.HUGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(FontSize.HUGE_2) },
+            text = { Text(text = stringResource(R.string.settings_action_selectHuge2FontSize)) },
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE_2) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(FontSize.HUGE_3) },
+            text = { Text(text = stringResource(R.string.settings_action_selectHuge3FontSize)) },
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE_3) }
         )
     }
 }

@@ -378,11 +378,12 @@
     <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
     <string name="settings_action_hideShoppingsProducts">Скрывать</string>
-    <string name="settings_action_selectHugeFontSize">Огромный</string>
+    <string name="settings_action_selectHuge2FontSize">Огромный 2</string>
+    <string name="settings_action_selectHuge3FontSize">Огромный 3</string>
+    <string name="settings_action_selectHugeFontSize">Огромный 1</string>
     <string name="settings_action_selectLargeFontSize">Большой</string>
     <string name="settings_action_selectMediumFontSize">Средний</string>
     <string name="settings_action_selectSmallFontSize">Маленький</string>
-    <string name="settings_action_selectTinyFontSize">Очень маленький</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования (кроме виджетов)</string>

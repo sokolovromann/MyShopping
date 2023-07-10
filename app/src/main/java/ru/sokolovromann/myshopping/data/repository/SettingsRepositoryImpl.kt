@@ -93,11 +93,6 @@ class SettingsRepositoryImpl @Inject constructor(
         preferencesDao.displayShoppingsProducts(displayProducts)
     }
 
-    override suspend fun tinyFontSizeSelected(): Unit = withContext(dispatchers.io) {
-        val fontSize = mapping.toFontSizeName(FontSize.TINY)
-        preferencesDao.saveFontSize(fontSize)
-    }
-
     override suspend fun smallFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.SMALL)
         preferencesDao.saveFontSize(fontSize)
@@ -115,6 +110,16 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun hugeFontSizeSelected(): Unit = withContext(dispatchers.io) {
         val fontSize = mapping.toFontSizeName(FontSize.HUGE)
+        preferencesDao.saveFontSize(fontSize)
+    }
+
+    override suspend fun huge2FontSizeSelected(): Unit = withContext(dispatchers.io) {
+        val fontSize = mapping.toFontSizeName(FontSize.HUGE_2)
+        preferencesDao.saveFontSize(fontSize)
+    }
+
+    override suspend fun huge3FontSizeSelected(): Unit = withContext(dispatchers.io) {
+        val fontSize = mapping.toFontSizeName(FontSize.HUGE_3)
         preferencesDao.saveFontSize(fontSize)
     }
 

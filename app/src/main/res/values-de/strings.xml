@@ -313,11 +313,12 @@
     <string name="settings_action_displayShoppingsProductsRow">Horizontal</string>
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
     <string name="settings_action_hideShoppingsProducts">Verstecken</string>
-    <string name="settings_action_selectHugeFontSize">Riesig</string>
+    <string name="settings_action_selectHuge2FontSize">Riesig 2</string>
+    <string name="settings_action_selectHuge3FontSize">Riesig 3</string>
+    <string name="settings_action_selectHugeFontSize">Riesig 1</string>
     <string name="settings_action_selectLargeFontSize">Groß</string>
     <string name="settings_action_selectMediumFontSize">Mittel</string>
     <string name="settings_action_selectSmallFontSize">Klein</string>
-    <string name="settings_action_selectTinyFontSize">Winzig</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet (Außer Widgets)</string>

@@ -158,11 +158,12 @@ class SettingsViewModel @Inject constructor(
         event: SettingsEvent.FontSizeSelected
     ) = viewModelScope.launch {
         when (event.fontSize) {
-            FontSize.TINY -> repository.tinyFontSizeSelected()
             FontSize.SMALL -> repository.smallFontSizeSelected()
             FontSize.MEDIUM -> repository.mediumFontSizeSelected()
             FontSize.LARGE -> repository.largeFontSizeSelected()
             FontSize.HUGE -> repository.hugeFontSizeSelected()
+            FontSize.HUGE_2 -> repository.huge2FontSizeSelected()
+            FontSize.HUGE_3 -> repository.huge3FontSizeSelected()
         }
 
         withContext(dispatchers.main) {

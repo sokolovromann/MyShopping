@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 enum class FontSize {
 
-    TINY, SMALL, MEDIUM, LARGE, HUGE;
+    SMALL, MEDIUM, LARGE, HUGE, HUGE_2, HUGE_3;
 
     companion object {
         val DefaultValue: FontSize = MEDIUM

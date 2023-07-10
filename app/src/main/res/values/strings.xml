@@ -225,11 +225,12 @@
     <string name="settings_action_displayShoppingsProductsRow">Horizontally</string>
     <string name="settings_action_hideCompletedPurchases">Hide</string>
     <string name="settings_action_hideShoppingsProducts">Hide</string>
-    <string name="settings_action_selectHugeFontSize">Huge</string>
+    <string name="settings_action_selectHuge2FontSize">Huge 2</string>
+    <string name="settings_action_selectHuge3FontSize">Huge 3</string>
+    <string name="settings_action_selectHugeFontSize">Huge 1</string>
     <string name="settings_action_selectLargeFontSize">Large</string>
     <string name="settings_action_selectMediumFontSize">Medium</string>
     <string name="settings_action_selectSmallFontSize">Small</string>
-    <string name="settings_action_selectTinyFontSize">Tiny</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_editProductAfterCompleted">Will be open screen to edit (except widgets)</string>

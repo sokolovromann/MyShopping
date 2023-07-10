@@ -644,9 +644,7 @@ class RepositoryMapping @Inject constructor() {
     }
 
     private fun toFontSize(value: Int): FontSize {
-        return if (value <= 12) {
-            FontSize.TINY
-        } else if (value <= 14) {
+        return if (value <= 14) {
             FontSize.SMALL
         } else if (value <= 16) {
             FontSize.MEDIUM
@@ -654,6 +652,10 @@ class RepositoryMapping @Inject constructor() {
             FontSize.LARGE
         } else if (value <= 20) {
             FontSize.HUGE
+        } else if (value <= 22) {
+            FontSize.HUGE_2
+        } else if (value <= 24) {
+            FontSize.HUGE_3
         } else {
             FontSize.MEDIUM
         }
