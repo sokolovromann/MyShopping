@@ -5,6 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -608,7 +609,7 @@ private fun ProductsGrid(
         notFound = notFound
     ) {
         if (pinnedItems.isNotEmpty()) {
-            item {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     modifier = Modifier.padding(ProductsPinnedTextPaddings),
                     text = stringResource(R.string.products_text_pinnedProducts),
@@ -653,7 +654,7 @@ private fun ProductsGrid(
             }
 
             if (otherItems.isNotEmpty()) {
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     Text(
                         modifier = Modifier.padding(ProductsPinnedTextPaddings),
                         text = stringResource(R.string.products_text_otherProducts),
