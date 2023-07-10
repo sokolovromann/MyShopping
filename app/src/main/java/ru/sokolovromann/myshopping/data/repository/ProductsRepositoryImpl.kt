@@ -145,9 +145,11 @@ class ProductsRepositoryImpl @Inject constructor(
 
     override suspend fun enableProductsAutomaticSorting(
         shoppingUid: String,
+        sort: Sort,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.enableProductsAutomaticSorting(shoppingUid, lastModified)
+        val sortBy = mapping.toSortByName(sort.sortBy)
+        productsDao.enableProductsAutomaticSorting(shoppingUid, sortBy, sort.ascending, lastModified)
     }
 
     override suspend fun disableProductsAutomaticSorting(

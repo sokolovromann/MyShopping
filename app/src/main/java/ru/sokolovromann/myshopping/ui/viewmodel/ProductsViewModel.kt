@@ -422,21 +422,22 @@ class ProductsViewModel @Inject constructor(
 
     private fun invertAutomaticSorting() = viewModelScope.launch {
         if (productsState.screenData.automaticSorting) {
-            repository.disableProductsAutomaticSorting(
-                shoppingUid = shoppingUid,
-                sort = productsState.screenData.sort.copy(sortBy = SortBy.POSITION),
-                lastModified = System.currentTimeMillis()
-            )
-
             val products = productsState.sortProductsResult(productsState.screenData.sort.sortBy)
                 .getOrElse {
                     withContext(dispatchers.main) { hideProductsSort() }
                     return@launch
                 }
             repository.swapProducts(products)
+
+            repository.disableProductsAutomaticSorting(
+                shoppingUid = shoppingUid,
+                sort = Sort(),
+                lastModified = System.currentTimeMillis()
+            )
         } else {
             repository.enableProductsAutomaticSorting(
                 shoppingUid = shoppingUid,
+                sort = Sort(sortBy = SortBy.CREATED),
                 lastModified = System.currentTimeMillis()
             )
         }

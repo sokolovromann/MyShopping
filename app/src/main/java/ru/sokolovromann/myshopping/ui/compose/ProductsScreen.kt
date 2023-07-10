@@ -335,7 +335,8 @@ fun ProductsScreen(
                                     Divider()
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.ReverseSortProducts) },
-                                        text = { Text(text = stringResource(R.string.products_action_reverseSort)) }
+                                        text = { Text(text = stringResource(R.string.products_action_reverseSort)) },
+                                        right = { CheckmarkAppCheckbox(checked = !screenData.sort.ascending) }
                                     )
                                     Divider()
                                     AppDropdownMenuItem(

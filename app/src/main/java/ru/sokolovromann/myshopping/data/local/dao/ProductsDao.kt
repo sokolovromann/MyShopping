@@ -51,8 +51,8 @@ interface ProductsDao {
     @Query("UPDATE shoppings SET sort_ascending = :sortAscending, last_modified = :lastModified WHERE uid = :shoppingUid")
     fun sortProductsAscending(shoppingUid: String, sortAscending: Boolean, lastModified: Long)
 
-    @Query("UPDATE shoppings SET sort_formatted = 1, last_modified = :lastModified WHERE uid = :shoppingUid")
-    fun enableProductsAutomaticSorting(shoppingUid: String, lastModified: Long)
+    @Query("UPDATE shoppings SET sort_by = :sortBy, sort_ascending = :sortAscending, sort_formatted = 1, last_modified = :lastModified WHERE uid = :shoppingUid")
+    fun enableProductsAutomaticSorting(shoppingUid: String, sortBy: String, sortAscending: Boolean, lastModified: Long)
 
     @Query("UPDATE shoppings SET sort_by = :sortBy, sort_ascending = :sortAscending, sort_formatted = 0, last_modified = :lastModified WHERE uid = :shoppingUid")
     fun disableProductsAutomaticSorting(shoppingUid: String, sortBy: String, sortAscending: Boolean, lastModified: Long)

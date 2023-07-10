@@ -42,7 +42,7 @@ interface ProductsRepository {
 
     suspend fun sortProductsAscending(shoppingUid: String, ascending: Boolean, lastModified: Long)
 
-    suspend fun enableProductsAutomaticSorting(shoppingUid: String, lastModified: Long)
+    suspend fun enableProductsAutomaticSorting(shoppingUid: String, sort: Sort, lastModified: Long)
 
     suspend fun disableProductsAutomaticSorting(shoppingUid: String, sort: Sort, lastModified: Long)
 }

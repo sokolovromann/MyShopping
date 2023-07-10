@@ -358,7 +358,8 @@ class ProductsState {
     }
 
     fun sortProductsResult(sortBy: SortBy): Result<List<Product>> {
-        val sortProducts = products.shoppingList.products.sortProducts(sort = Sort(sortBy))
+        val sort = screenData.sort.copy(sortBy = sortBy)
+        val sortProducts = products.shoppingList.products.sortProducts(sort)
         return if (sortProducts.isEmpty()) {
             Result.failure(Exception())
         } else {
