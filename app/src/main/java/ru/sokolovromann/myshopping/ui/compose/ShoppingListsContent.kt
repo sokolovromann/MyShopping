@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -245,22 +244,25 @@ private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,
     displayProducts: DisplayProducts
-) = itemOrNull(enabled = highlightCheckbox) {
-    val height = if (displayProducts == DisplayProducts.HIDE) {
-        ShoppingListItemHideProductsHeight
-    } else {
-        ShoppingListItemShowProductsHeight
-    }
-
-    val color = if (checked) {
+) = itemOrNull(enabled = displayProducts == DisplayProducts.HIDE) {
+    val checkedColor = if (highlightCheckbox) {
         MaterialTheme.colors.primary.copy(alpha = ContentAlpha.medium)
     } else {
-        MaterialTheme.colors.error.copy(alpha = ContentAlpha.medium)
+        MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
     }
 
-    Spacer(modifier = Modifier
-        .size(width = ShoppingListItemSpacerMediumSize, height = height)
-        .background(color = color)
+    val uncheckedColor = if (highlightCheckbox) {
+        MaterialTheme.colors.error.copy(alpha = ContentAlpha.medium)
+    } else {
+        MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+    }
+
+    AppCheckbox(
+        checked = checked,
+        colors = CheckboxDefaults.colors(
+            checkedColor = checkedColor,
+            uncheckedColor = uncheckedColor
+        )
     )
 }
 
@@ -426,8 +428,6 @@ private val ShoppingListsLocationPaddings = PaddingValues(
     horizontal = 8.dp
 )
 
-private val ShoppingListItemHideProductsHeight = 48.dp
-private val ShoppingListItemShowProductsHeight = 64.dp
 private val ShoppingListItemPinnedTextPaddings = PaddingValues(
     horizontal = 16.dp,
     vertical = 8.dp
