@@ -300,6 +300,7 @@
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Archivieren</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Löschen</string>
     <string name="purchases_contentDescription_navigationIcon">Navigation öffnen</string>
+    <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Einkaufslisten anheften oder loslösen</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
     <string name="purchases_text_moreProducts">…</string>
@@ -384,6 +385,8 @@
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
     <string name="shoppingLists_text_nameNotFound">Unbenannt</string>
+    <string name="shoppingLists_text_otherShoppingLists">Andere</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">Angepinnte</string>
     <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 

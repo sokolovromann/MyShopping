@@ -83,6 +83,10 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.FinishApp -> finishApp()
 
             PurchasesEvent.InvertShoppingsMultiColumns -> invertShoppingListsMultiColumns()
+
+            PurchasesEvent.PinShoppingLists -> pinShoppingLists()
+
+            PurchasesEvent.UnpinShoppingLists -> unpinShoppingLists()
         }
     }
 
@@ -286,5 +290,25 @@ class PurchasesViewModel @Inject constructor(
 
     private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
         repository.invertShoppingListsMultiColumns()
+    }
+
+    private fun pinShoppingLists() = viewModelScope.launch {
+        purchasesState.screenData.selectedUids?.let {
+            repository.pinShoppingLists(it, System.currentTimeMillis())
+        }
+
+        withContext(dispatchers.main) {
+            unselectAllShoppingList()
+        }
+    }
+
+    private fun unpinShoppingLists() = viewModelScope.launch {
+        purchasesState.screenData.selectedUids?.let {
+            repository.unpinShoppingLists(it, System.currentTimeMillis())
+        }
+
+        withContext(dispatchers.main) {
+            unselectAllShoppingList()
+        }
     }
 }

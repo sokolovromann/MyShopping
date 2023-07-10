@@ -71,6 +71,20 @@ class PurchasesRepositoryImpl @Inject constructor(
         purchasesDao.updateShoppings(entities)
     }
 
+    override suspend fun pinShoppingLists(
+        uids: List<String>,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        uids.forEach { purchasesDao.pinShopping(it, lastModified) }
+    }
+
+    override suspend fun unpinShoppingLists(
+        uids: List<String>,
+        lastModified: Long
+    ): Unit = withContext(dispatchers.io) {
+        uids.forEach { purchasesDao.unpinShopping(it, lastModified) }
+    }
+
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
         preferencesDao.displayPurchasesTotal(displayTotal)

@@ -19,58 +19,21 @@ fun ShoppingList.getShoppingListLocation(): ShoppingListLocation {
     }
 }
 
-fun ShoppingLists.getShoppingListItems(
+fun ShoppingLists.getAllShoppingListItems(
+    splitByPinned: Boolean = true,
     displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
 ): List<ShoppingListItem> {
-    val defaultProductsLimit = 10
-    return formatShoppingLists(displayCompleted).map {
-        val name: UiText = if (preferences.displayShoppingsProducts == DisplayProducts.HIDE && it.name.isEmpty()) {
-            UiText.FromResources(R.string.shoppingLists_text_nameNotFound)
-        } else {
-            UiText.FromString(it.name)
-        }
+    return getAllShoppingLists(splitByPinned, displayCompleted).map { toShoppingListItems(it) }
+}
 
-        val totalFormatted = it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL
+fun ShoppingLists.getActivePinnedShoppingListItems(): List<ShoppingListItem> {
+    return getActivePinnedShoppingLists().map { toShoppingListItems(it) }
+}
 
-        val productsList = if (it.products.isEmpty()) {
-            val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
-            listOf(pair)
-        } else {
-            val products: MutableList<Pair<Boolean?, UiText>> = it.products
-                .filterIndexed { index, _ -> index < defaultProductsLimit}
-                .map { product -> productsToPair(product, preferences, totalFormatted) }
-                .toMutableList()
-
-            if (it.products.size > defaultProductsLimit) {
-                products.add(Pair(null, UiText.FromResources(R.string.purchases_text_moreProducts)))
-            }
-
-            products.toList()
-        }
-
-        val totalText: UiText = if (preferences.displayMoney) {
-            it.calculateTotalToText(totalFormatted)
-        } else {
-            UiText.Nothing
-        }
-
-        val reminderText: UiText = if (it.reminder == null) {
-            UiText.Nothing
-        } else {
-            Calendar.getInstance()
-                .apply { timeInMillis = it.reminder }
-                .getDisplayDateAndTime()
-        }
-
-        ShoppingListItem(
-            uid = it.uid,
-            nameText = name,
-            productsList = productsList,
-            totalText = totalText,
-            reminderText = reminderText,
-            completed = it.completed
-        )
-    }
+fun ShoppingLists.getOtherShoppingListItems(
+    displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+): List<ShoppingListItem> {
+    return getOtherShoppingLists(displayCompleted).map { toShoppingListItems(it) }
 }
 
 fun ShoppingLists.calculateTotalToText(): UiText {
@@ -84,6 +47,56 @@ fun ShoppingLists.calculateTotalToText(uids: List<String>): UiText {
 
 private fun ShoppingList.calculateTotalToText(totalFormatted: Boolean): UiText {
     return totalToText(calculateTotal(!totalFormatted), displayTotal, totalFormatted)
+}
+
+private fun ShoppingLists.toShoppingListItems(shoppingList: ShoppingList): ShoppingListItem {
+    val defaultProductsLimit = 10
+    val name: UiText = if (preferences.displayShoppingsProducts == DisplayProducts.HIDE && shoppingList.name.isEmpty()) {
+        UiText.FromResources(R.string.shoppingLists_text_nameNotFound)
+    } else {
+        UiText.FromString(shoppingList.name)
+    }
+
+    val totalFormatted = shoppingList.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL
+
+    val productsList = if (shoppingList.products.isEmpty()) {
+        val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
+        listOf(pair)
+    } else {
+        val products: MutableList<Pair<Boolean?, UiText>> = shoppingList.products
+            .filterIndexed { index, _ -> index < defaultProductsLimit}
+            .map { product -> productsToPair(product, preferences, totalFormatted) }
+            .toMutableList()
+
+        if (shoppingList.products.size > defaultProductsLimit) {
+            products.add(Pair(null, UiText.FromResources(R.string.purchases_text_moreProducts)))
+        }
+
+        products.toList()
+    }
+
+    val totalText: UiText = if (preferences.displayMoney) {
+        shoppingList.calculateTotalToText(totalFormatted)
+    } else {
+        UiText.Nothing
+    }
+
+    val reminderText: UiText = if (shoppingList.reminder == null) {
+        UiText.Nothing
+    } else {
+        Calendar.getInstance()
+            .apply { timeInMillis = shoppingList.reminder }
+            .getDisplayDateAndTime()
+    }
+
+    return ShoppingListItem(
+        uid = shoppingList.uid,
+        nameText = name,
+        productsList = productsList,
+        totalText = totalText,
+        reminderText = reminderText,
+        completed = shoppingList.completed
+    )
 }
 
 private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted: Boolean): UiText {

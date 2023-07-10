@@ -212,6 +212,7 @@
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Delete</string>
     <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
+    <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Pin or unpin shopping lists</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
     <string name="purchases_header">Purchases</string>
     <string name="purchases_text_moreProducts">…</string>
@@ -296,6 +297,8 @@
     <string name="shoppingLists_text_completedTotal">Completed: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
     <string name="shoppingLists_text_nameNotFound">Unnamed</string>
+    <string name="shoppingLists_text_otherShoppingLists">Other</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">Pinned</string>
     <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 

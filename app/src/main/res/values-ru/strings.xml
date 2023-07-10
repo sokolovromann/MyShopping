@@ -365,6 +365,7 @@
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Архивировать</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Удалить</string>
     <string name="purchases_contentDescription_navigationIcon">Открыть навигацию</string>
+    <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закрепить или открепить списки покупок</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Открыть меню покупок</string>
     <string name="purchases_header">Покупки</string>
     <string name="purchases_text_moreProducts">…</string>
@@ -449,6 +450,8 @@
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
     <string name="shoppingLists_text_nameNotFound">Без названия</string>
+    <string name="shoppingLists_text_otherShoppingLists">Другие</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">Закреплённые</string>
     <string name="shoppingLists_text_selectedTotal">Выбрано: %s</string>
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
 

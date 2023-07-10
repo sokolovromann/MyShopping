@@ -241,7 +241,7 @@ fun ArchiveScreen(
             screenState = screenData.screenState,
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
-            items = screenData.shoppingLists,
+            otherItems = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
             highlightCheckbox = screenData.highlightCheckbox,
             bottomBar = {

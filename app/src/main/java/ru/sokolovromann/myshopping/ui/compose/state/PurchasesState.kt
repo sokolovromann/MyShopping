@@ -6,7 +6,8 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
 
 class PurchasesState {
 
@@ -75,7 +76,8 @@ class PurchasesState {
 
         screenData = PurchasesScreenData(
             screenState = ScreenState.Showing,
-            shoppingLists = shoppingLists.getShoppingListItems(),
+            pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
+            otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
             displayProducts = preferences.displayShoppingsProducts,
             highlightCheckbox = preferences.highlightCheckbox,
             totalText = totalText,
@@ -102,7 +104,7 @@ class PurchasesState {
 
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
-            shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
+            otherShoppingLists = shoppingLists.getOtherShoppingListItems(DisplayCompleted.LAST),
             showHiddenShoppingLists = false
         )
     }
@@ -207,7 +209,7 @@ class PurchasesState {
     }
 
     fun reverseSortShoppingListsResult(): Result<List<ShoppingList>> {
-        val sortShoppingLists = shoppingLists.formatShoppingLists().reversed()
+        val sortShoppingLists = shoppingLists.getAllShoppingLists().reversed()
         return if (sortShoppingLists.isEmpty()) {
             Result.failure(Exception())
         } else {
@@ -232,16 +234,16 @@ class PurchasesState {
     }
 
     fun getShoppingListsUpResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
-        val formatShoppingList = shoppingLists.formatShoppingLists()
-        return if (formatShoppingList.size < 2) {
+        val allShoppingList = shoppingLists.getAllShoppingLists()
+        return if (allShoppingList.size < 2) {
             Result.failure(Exception())
         } else {
             savedSelectedUid = uid
 
             var previousIndex = 0
             var currentIndex = 0
-            for (index in formatShoppingList.indices) {
-                val shoppingList = formatShoppingList[index]
+            for (index in allShoppingList.indices) {
+                val shoppingList = allShoppingList[index]
                 if (currentIndex > 0) {
                     previousIndex = index - 1
                 }
@@ -253,12 +255,12 @@ class PurchasesState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentShoppingList = formatShoppingList[currentIndex].copy(
-                position = formatShoppingList[previousIndex].position,
+            val currentShoppingList = allShoppingList[currentIndex].copy(
+                position = allShoppingList[previousIndex].position,
                 lastModified = lastModified
             )
-            val previousShoppingList = formatShoppingList[previousIndex].copy(
-                position = formatShoppingList[currentIndex].position,
+            val previousShoppingList = allShoppingList[previousIndex].copy(
+                position = allShoppingList[currentIndex].position,
                 lastModified = lastModified
             )
 
@@ -268,19 +270,19 @@ class PurchasesState {
     }
 
     fun getShoppingListsDownResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
-        val formatShoppingList = shoppingLists.formatShoppingLists()
-        return if (formatShoppingList.size < 2) {
+        val allShoppingList = shoppingLists.getAllShoppingLists()
+        return if (allShoppingList.size < 2) {
             Result.failure(Exception())
         } else {
             savedSelectedUid = uid
 
             var currentIndex = 0
             var nextIndex = 0
-            for (index in formatShoppingList.indices) {
-                val shoppingList = formatShoppingList[index]
+            for (index in allShoppingList.indices) {
+                val shoppingList = allShoppingList[index]
 
                 currentIndex = index
-                if (index < formatShoppingList.lastIndex) {
+                if (index < allShoppingList.lastIndex) {
                     nextIndex = index + 1
                 }
 
@@ -290,12 +292,12 @@ class PurchasesState {
             }
 
             val lastModified = System.currentTimeMillis()
-            val currentShoppingList = formatShoppingList[currentIndex].copy(
-                position = formatShoppingList[nextIndex].position,
+            val currentShoppingList = allShoppingList[currentIndex].copy(
+                position = allShoppingList[nextIndex].position,
                 lastModified = lastModified
             )
-            val nextShoppingList = formatShoppingList[nextIndex].copy(
-                position = formatShoppingList[currentIndex].position,
+            val nextShoppingList = allShoppingList[nextIndex].copy(
+                position = allShoppingList[currentIndex].position,
                 lastModified = lastModified
             )
 
@@ -307,7 +309,8 @@ class PurchasesState {
 
 data class PurchasesScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
-    val shoppingLists: List<ShoppingListItem> = listOf(),
+    val pinnedShoppingLists: List<ShoppingListItem> = listOf(),
+    val otherShoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val totalText: UiText = UiText.Nothing,
@@ -321,4 +324,16 @@ data class PurchasesScreenData(
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false,
     val selectedUids: List<String>? = null
-)
+) {
+
+    fun isOnlyPinned(): Boolean {
+        var notPinned = false
+        selectedUids?.forEach { uid ->
+            if (otherShoppingLists.find { it.uid == uid } != null) {
+                notPinned = true
+                return@forEach
+            }
+        }
+        return pinnedShoppingLists.isNotEmpty() && !notPinned
+    }
+}

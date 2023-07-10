@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getAllShoppingListItems
 
 class ArchiveState {
 
@@ -67,7 +67,7 @@ class ArchiveState {
 
         screenData = ArchiveScreenData(
             screenState = ScreenState.Showing,
-            shoppingLists = shoppingLists.getShoppingListItems(),
+            shoppingLists = shoppingLists.getAllShoppingListItems(splitByPinned = false),
             displayProducts = preferences.displayShoppingsProducts,
             highlightCheckbox = preferences.highlightCheckbox,
             totalText = totalText,
@@ -93,7 +93,7 @@ class ArchiveState {
 
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
-            shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
+            shoppingLists = shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST),
             showHiddenShoppingLists = false
         )
     }
@@ -195,7 +195,7 @@ class ArchiveState {
     }
 
     fun reverseSortShoppingListsResult(): Result<List<ShoppingList>> {
-        val sortShoppingLists = shoppingLists.formatShoppingLists().reversed()
+        val sortShoppingLists = shoppingLists.getAllShoppingLists(false).reversed()
         return if (sortShoppingLists.isEmpty()) {
             Result.failure(Exception())
         } else {

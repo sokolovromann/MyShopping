@@ -71,7 +71,8 @@ fun MoveProductScreen(
             screenState = screenData.screenState,
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
-            items = screenData.shoppingLists,
+            pinnedItems = screenData.pinnedShoppingLists,
+            otherItems = screenData.otherShoppingLists,
             displayProducts = screenData.displayProducts,
             highlightCheckbox = screenData.highlightCheckbox,
             topBar = {

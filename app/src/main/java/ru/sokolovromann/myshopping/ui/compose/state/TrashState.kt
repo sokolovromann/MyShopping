@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getAllShoppingListItems
 
 class TrashState {
 
@@ -35,8 +35,8 @@ class TrashState {
         val preferences = shoppingLists.preferences
 
         val shoppingListItems = when (preferences.displayCompletedPurchases) {
-            DisplayCompleted.FIRST, DisplayCompleted.LAST -> shoppingLists.getShoppingListItems()
-            else -> shoppingLists.getShoppingListItems(DisplayCompleted.LAST)
+            DisplayCompleted.FIRST, DisplayCompleted.LAST -> shoppingLists.getAllShoppingListItems(splitByPinned = false)
+            else -> shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST)
         }
 
         screenData = TrashScreenData(

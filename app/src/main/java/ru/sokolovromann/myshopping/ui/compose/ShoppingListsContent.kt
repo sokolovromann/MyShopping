@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,8 @@ fun ShoppingListsGrid(
     screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
-    items: List<ShoppingListItem>,
+    pinnedItems: List<ShoppingListItem> = listOf(),
+    otherItems: List<ShoppingListItem>,
     displayProducts: DisplayProducts,
     highlightCheckbox: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
@@ -52,7 +55,57 @@ fun ShoppingListsGrid(
         bottomBar = bottomBar,
         notFound = notFound
     ) {
-        items(items) { item ->
+        if (pinnedItems.isNotEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Text(
+                    modifier = Modifier.padding(ShoppingListItemPinnedTextPaddings),
+                    text = stringResource(R.string.shoppingLists_text_pinnedShoppingLists),
+                    fontSize = fontSize.toItemTitle().sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            items(pinnedItems) { item ->
+                val selected = selectedUids?.contains(item.uid) ?: false
+
+                AppSurfaceItem(
+                    title = getShoppingListItemTitleOrNull(item.nameText, fontSize),
+                    body = {
+                        ShoppingListItemBody(
+                            hasName = item.nameText.asCompose().isNotEmpty(),
+                            products = item.productsList,
+                            displayProducts = displayProducts,
+                            total = item.totalText,
+                            reminder = item.reminderText,
+                            fontSize = fontSize
+                        )
+                    },
+                    left = getShoppingListItemLeftOrNull(
+                        highlightCheckbox = highlightCheckbox,
+                        checked = item.completed,
+                        displayProducts = displayProducts
+                    ),
+                    right = getShoppingListItemRightOrNull(selected),
+                    dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                    onClick = { onClick(item.uid) },
+                    onLongClick = { onLongClick(item.uid) },
+                    backgroundColor = getAppItemBackgroundColor(selected, item.completed)
+                )
+            }
+
+            if (otherItems.isNotEmpty()) {
+                item(span = StaggeredGridItemSpan.FullLine) {
+                    Text(
+                        modifier = Modifier.padding(ShoppingListItemPinnedTextPaddings),
+                        text = stringResource(R.string.shoppingLists_text_otherShoppingLists),
+                        fontSize = fontSize.toItemTitle().sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+
+        items(otherItems) { item ->
             val selected = selectedUids?.contains(item.uid) ?: false
 
             AppSurfaceItem(
@@ -375,3 +428,7 @@ private val ShoppingListsLocationPaddings = PaddingValues(
 
 private val ShoppingListItemHideProductsHeight = 48.dp
 private val ShoppingListItemShowProductsHeight = 64.dp
+private val ShoppingListItemPinnedTextPaddings = PaddingValues(
+    horizontal = 16.dp,
+    vertical = 8.dp
+)

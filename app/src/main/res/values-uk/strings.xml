@@ -318,6 +318,7 @@
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Архівувати</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Видалити</string>
     <string name="purchases_contentDescription_navigationIcon">Показати навігацію</string>
+    <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закріпити або відкріпити списки покупок</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Відкрити меню покупок</string>
     <string name="purchases_header">Покупки</string>
     <string name="purchases_text_moreProducts">…</string>
@@ -402,6 +403,8 @@
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас є приховані покупки</string>
     <string name="shoppingLists_text_nameNotFound">Без назви</string>
+    <string name="shoppingLists_text_otherShoppingLists">Інші</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">Закріплені</string>
     <string name="shoppingLists_text_selectedTotal">Вибрано: %s</string>
     <string name="shoppingLists_text_totalFormatted">Разом (змінено): %s</string>
 

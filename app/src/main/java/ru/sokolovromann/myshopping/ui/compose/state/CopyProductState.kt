@@ -4,7 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getAllShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
 
 class CopyProductState {
 
@@ -38,9 +40,22 @@ class CopyProductState {
         val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
+        val pinnedShoppingLists = if (location == ShoppingListLocation.PURCHASES) {
+            shoppingLists.getActivePinnedShoppingListItems()
+        } else {
+            listOf()
+        }
+
+        val otherShoppingLists = if (location == ShoppingListLocation.PURCHASES) {
+            shoppingLists.getOtherShoppingListItems()
+        } else {
+            shoppingLists.getAllShoppingListItems(splitByPinned = false)
+        }
+
         screenData = CopyProductScreenData(
             screenState = ScreenState.Showing,
-            shoppingLists = shoppingLists.getShoppingListItems(),
+            pinnedShoppingLists = pinnedShoppingLists,
+            otherShoppingLists = otherShoppingLists,
             displayProducts = preferences.displayShoppingsProducts,
             highlightCheckbox = preferences.highlightCheckbox,
             multiColumns = preferences.shoppingsMultiColumns,
@@ -60,8 +75,21 @@ class CopyProductState {
     }
 
     fun displayHiddenShoppingLists() {
+        val pinnedShoppingLists = if (screenData.location == ShoppingListLocation.PURCHASES) {
+            shoppingLists.getActivePinnedShoppingListItems()
+        } else {
+            listOf()
+        }
+
+        val otherShoppingLists = if (screenData.location == ShoppingListLocation.PURCHASES) {
+            shoppingLists.getOtherShoppingListItems()
+        } else {
+            shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST)
+        }
+
         screenData = screenData.copy(
-            shoppingLists = shoppingLists.getShoppingListItems(DisplayCompleted.LAST),
+            pinnedShoppingLists = pinnedShoppingLists,
+            otherShoppingLists = otherShoppingLists,
             showHiddenShoppingLists = false
         )
     }
@@ -82,7 +110,7 @@ class CopyProductState {
             Result.failure(Exception())
         } else {
             val shoppingUid = screenData.shoppingListSelectedUid!!
-            val position = shoppingLists.formatShoppingLists()
+            val position = shoppingLists.getAllShoppingLists(splitByPinned = false)
                 .find { it.uid == shoppingUid }?.nextProductsPosition() ?: 0
             val success = products.mapIndexed { index, product ->
                 val newPosition = position + index
@@ -115,7 +143,8 @@ class CopyProductState {
 
 data class CopyProductScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
-    val shoppingLists: List<ShoppingListItem> = listOf(),
+    val pinnedShoppingLists: List<ShoppingListItem> = listOf(),
+    val otherShoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val shoppingListSelectedUid: String? = null,

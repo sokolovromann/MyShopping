@@ -20,6 +20,10 @@ interface PurchasesRepository {
 
     suspend fun swapShoppingLists(shoppingLists: List<ShoppingList>)
 
+    suspend fun pinShoppingLists(uids: List<String>, lastModified: Long)
+
+    suspend fun unpinShoppingLists(uids: List<String>, lastModified: Long)
+
     suspend fun displayAllPurchasesTotal()
 
     suspend fun displayCompletedPurchasesTotal()

@@ -55,4 +55,8 @@ sealed class PurchasesEvent {
     object FinishApp : PurchasesEvent()
 
     object InvertShoppingsMultiColumns : PurchasesEvent()
+
+    object PinShoppingLists : PurchasesEvent()
+
+    object UnpinShoppingLists : PurchasesEvent()
 }

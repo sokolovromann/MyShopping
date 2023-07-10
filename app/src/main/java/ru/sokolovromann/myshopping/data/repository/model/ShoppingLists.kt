@@ -6,10 +6,46 @@ data class ShoppingLists(
     val preferences: AppPreferences = AppPreferences()
 ) {
 
-    fun formatShoppingLists(
+    fun getAllShoppingLists(
+        splitByPinned: Boolean = true,
         displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
     ): List<ShoppingList> {
-        val sorted = shoppingLists
+        val list = if (splitByPinned) {
+            getActivePinnedShoppingLists()
+                .toMutableList()
+                .apply { addAll(getOtherShoppingLists(displayCompleted)) }
+                .toList()
+        } else {
+            val sorted = shoppingLists
+                .map {
+                    val sortedProducts = getSortedProducts(it.products, displayCompleted, it.sort, it.sortFormatted)
+                    it.copy(products = sortedProducts)
+                }
+                .sortShoppingLists()
+
+            if (displayCompleted == null) {
+                sorted
+            } else {
+                sorted.splitShoppingLists(displayCompleted)
+            }
+        }
+
+        return list
+    }
+
+    fun getActivePinnedShoppingLists(): List<ShoppingList> {
+        return getPinnedAndOtherShoppingLists().first
+            .map {
+                val sortedProducts = getSortedProducts(it.products, null, it.sort, it.sortFormatted)
+                it.copy(products = sortedProducts)
+            }
+            .sortShoppingLists()
+    }
+
+    fun getOtherShoppingLists(
+        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases)
+            : List<ShoppingList> {
+        val sorted = getPinnedAndOtherShoppingLists().second
             .map {
                 val sortedProducts = getSortedProducts(it.products, displayCompleted, it.sort, it.sortFormatted)
                 it.copy(products = sortedProducts)
@@ -52,6 +88,10 @@ data class ShoppingLists(
 
     fun hasHiddenShoppingLists(): Boolean {
         return shoppingLists.splitShoppingLists(DisplayCompleted.FIRST).first().completed
+    }
+
+    private fun getPinnedAndOtherShoppingLists(): Pair<List<ShoppingList>, List<ShoppingList>> {
+        return shoppingLists.partition { it.pinned && !it.completed }
     }
 
     private fun getSortedProducts(

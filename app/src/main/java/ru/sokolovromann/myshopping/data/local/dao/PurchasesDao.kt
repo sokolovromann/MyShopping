@@ -25,6 +25,12 @@ interface PurchasesDao {
     @Update
     fun updateShoppings(shoppingEntities: List<ShoppingEntity>)
 
+    @Query("UPDATE shoppings SET pinned = 1, last_modified = :lastModified WHERE uid = :uid")
+    fun pinShopping(uid: String, lastModified: Long)
+
+    @Query("UPDATE shoppings SET pinned = 0, last_modified = :lastModified WHERE uid = :uid")
+    fun unpinShopping(uid: String, lastModified: Long)
+
     @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToArchive(uid: String, lastModified: Long)
 

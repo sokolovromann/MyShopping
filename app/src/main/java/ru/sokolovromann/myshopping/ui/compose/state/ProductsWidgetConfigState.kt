@@ -9,7 +9,8 @@ import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
-import ru.sokolovromann.myshopping.ui.utils.getShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
+import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
 
 class ProductsWidgetConfigState {
 
@@ -56,7 +57,8 @@ class ProductsWidgetConfigState {
 
         screenData = ProductsWidgetConfigScreenData(
             screenState = ScreenState.Showing,
-            shoppingLists = shoppingLists.getShoppingListItems(),
+            pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
+            otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
             displayProducts = preferences.displayShoppingsProducts,
             highlightCheckbox = preferences.highlightCheckbox,
             multiColumns = preferences.shoppingsMultiColumns,
@@ -77,7 +79,8 @@ class ProductsWidgetConfigState {
 
 data class ProductsWidgetConfigScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
-    val shoppingLists: List<ShoppingListItem> = listOf(),
+    val pinnedShoppingLists: List<ShoppingListItem> = listOf(),
+    val otherShoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val multiColumns: Boolean = false,

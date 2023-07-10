@@ -115,6 +115,25 @@ fun PurchasesScreen(
                         }
                     },
                     actions = {
+                        IconButton(
+                            onClick = {
+                                if (screenData.isOnlyPinned()) {
+                                    viewModel.onEvent(PurchasesEvent.UnpinShoppingLists)
+                                } else {
+                                    viewModel.onEvent(PurchasesEvent.PinShoppingLists)
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = if (screenData.isOnlyPinned()) {
+                                    painterResource(R.drawable.ic_all_pin)
+                                } else {
+                                    painterResource(R.drawable.ic_all_unpin)
+                                },
+                                contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists),
+                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            )
+                        }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToArchive) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_archive),
@@ -246,7 +265,8 @@ fun PurchasesScreen(
             screenState = screenData.screenState,
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
-            items = screenData.shoppingLists,
+            pinnedItems = screenData.pinnedShoppingLists,
+            otherItems = screenData.otherShoppingLists,
             displayProducts = screenData.displayProducts,
             highlightCheckbox = screenData.highlightCheckbox,
             bottomBar = {
