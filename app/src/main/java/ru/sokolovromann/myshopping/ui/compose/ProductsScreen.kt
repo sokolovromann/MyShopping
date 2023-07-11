@@ -719,10 +719,12 @@ fun ProductsHiddenContent(
             color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
             style = MaterialTheme.typography.body1
         )
-        TextButton(onClick = onClick) {
-            Text(
-                text = stringResource(R.string.products_action_displayCompletedPurchases),
-                fontSize = fontSize.toButton().sp,
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = stringResource(R.string.products_contentDescription_displayCompletedPurchases),
+                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
         }
     }
@@ -791,7 +793,7 @@ private fun getProductItemBodyOrNull(
 private val ProductsReminderSpacerSize = 4.dp
 private val ProductsNameWithoutReminderSpacerSize = 8.dp
 private val ProductsHiddenProductsPaddings = PaddingValues(
-    start = 8.dp,
+    start = 16.dp,
     top = 8.dp,
     end = 8.dp
 )

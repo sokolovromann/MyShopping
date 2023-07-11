@@ -272,7 +272,6 @@
     <string name="products_action_disableProductsMultiColumns">Один стовпець</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
-    <string name="products_action_displayCompletedPurchases">Показувати</string>
     <string name="products_action_displayCompletedTotal">Куплені товари</string>
     <string name="products_action_editShoppingListTotal">Редагувати разом</string>
     <string name="products_action_enableProductsMultiColumns">Декілька стовпців</string>
@@ -291,6 +290,7 @@
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
     <string name="products_contentDescription_cancelSelectingProducts">Скасувати вибір</string>
     <string name="products_contentDescription_deleteProducts">Видалити</string>
+    <string name="products_contentDescription_displayCompletedPurchases">Показати куплені товари</string>
     <string name="products_contentDescription_editProduct">Редагувати</string>
     <string name="products_contentDescription_editShoppingListName">Редагувати назву списку покупок</string>
     <string name="products_contentDescription_editShoppingListReminder">Редагувати нагадування</string>
@@ -382,7 +382,6 @@
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Один стовпець</string>
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
-    <string name="shoppingLists_action_displayCompletedPurchases">Показувати</string>
     <string name="shoppingLists_action_displayCompletedTotal">Куплені товари</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Декілька стовпців</string>
     <string name="shoppingLists_action_reverseSort">У зворотному порядку</string>
@@ -394,6 +393,7 @@
     <string name="shoppingLists_action_sortByLastModified">За редагуванням</string>
     <string name="shoppingLists_action_sortByName">За назвою</string>
     <string name="shoppingLists_action_sortByTotal">За сумою</string>
+    <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
     <string name="shoppingLists_contentDescription_selectAllShoppingLists">Вибрати усі списки</string>

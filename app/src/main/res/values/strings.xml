@@ -166,7 +166,6 @@
     <string name="products_action_disableProductsMultiColumns">One column</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
-    <string name="products_action_displayCompletedPurchases">Display</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
     <string name="products_action_editShoppingListTotal">Edit total</string>
     <string name="products_action_enableProductsMultiColumns">Multi-columns</string>
@@ -185,6 +184,7 @@
     <string name="products_contentDescription_addProductIcon">Add product</string>
     <string name="products_contentDescription_cancelSelectingProducts">Cancel selection</string>
     <string name="products_contentDescription_deleteProducts">Delete</string>
+    <string name="products_contentDescription_displayCompletedPurchases">Display completed products</string>
     <string name="products_contentDescription_editProduct">Edit</string>
     <string name="products_contentDescription_editShoppingListName">Edit shopping list name</string>
     <string name="products_contentDescription_editShoppingListReminder">Edit reminder</string>
@@ -276,7 +276,6 @@
     <string name="shoppingLists_action_disableShoppingsMultiColumns">One column</string>
     <string name="shoppingLists_action_displayActiveTotal">Active</string>
     <string name="shoppingLists_action_displayAllTotal">All</string>
-    <string name="shoppingLists_action_displayCompletedPurchases">Display</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Multi-columns</string>
     <string name="shoppingLists_action_reverseSort">Reverse</string>
@@ -288,6 +287,7 @@
     <string name="shoppingLists_action_sortByLastModified">By last modified</string>
     <string name="shoppingLists_action_sortByName">By name</string>
     <string name="shoppingLists_action_sortByTotal">By total</string>
+    <string name="shoppingLists_contentDescription_displayCompletedPurchases">Display completed shopping lists</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Move down</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Move up</string>
     <string name="shoppingLists_contentDescription_selectAllShoppingLists">Select all shopping lists</string>

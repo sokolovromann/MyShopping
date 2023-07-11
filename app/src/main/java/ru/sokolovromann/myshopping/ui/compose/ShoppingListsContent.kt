@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -230,10 +232,12 @@ fun ShoppingListsHiddenContent(
             color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
             style = MaterialTheme.typography.body1
         )
-        TextButton(onClick = onClick) {
-            Text(
-                text = stringResource(R.string.shoppingLists_action_displayCompletedPurchases),
-                fontSize = fontSize.toButton().sp,
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedPurchases),
+                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
         }
     }
