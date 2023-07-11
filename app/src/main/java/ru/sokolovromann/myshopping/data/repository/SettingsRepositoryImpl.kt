@@ -165,6 +165,11 @@ class SettingsRepositoryImpl @Inject constructor(
         preferencesDao.displayShoppingsProducts(displayProducts)
     }
 
+    override suspend fun hideShoppingsProductsIfHasTitle(): Unit = withContext(dispatchers.io) {
+        val displayProducts = mapping.toDisplayProductsName(DisplayProducts.HIDE_IF_HAS_TITLE)
+        preferencesDao.displayShoppingsProducts(displayProducts)
+    }
+
     override suspend fun invertHighlightCheckbox(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertHighlightCheckbox()
     }

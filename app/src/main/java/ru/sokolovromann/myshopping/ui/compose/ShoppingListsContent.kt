@@ -243,7 +243,7 @@ private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,
     displayProducts: DisplayProducts
-) = itemOrNull(enabled = displayProducts == DisplayProducts.HIDE) {
+) = itemOrNull(enabled = displayProducts == DisplayProducts.HIDE || displayProducts == DisplayProducts.HIDE_IF_HAS_TITLE) {
     val checkedColor = if (highlightCheckbox) {
         MaterialTheme.colors.primary.copy(alpha = ContentAlpha.medium)
     } else {
@@ -338,6 +338,14 @@ private fun ShoppingListItemBody(
             }
 
             DisplayProducts.HIDE -> {}
+
+            DisplayProducts.HIDE_IF_HAS_TITLE -> {
+                if (!hasName) {
+                    Row {
+                        ShoppingsListsItemProducts(products, false, fontSize, false)
+                    }
+                }
+            }
         }
 
         val totalAsCompose = total.asCompose()
@@ -360,6 +368,7 @@ private fun ShoppingsListsItemProducts(
     products: List<Pair<Boolean?, UiText>>,
     spacerAfterIcon: Boolean,
     fontSize: FontSize,
+    showCheckbox: Boolean = true
 ) {
     val itemFontSize = fontSize.toItemBody()
 
@@ -370,6 +379,10 @@ private fun ShoppingsListsItemProducts(
             modifier = Modifier.padding(ShoppingListItemTextSmallPaddings)
         ) {
             it.first?.let { completed ->
+                if (!showCheckbox) {
+                    return@let
+                }
+
                 val painter: Painter = if (completed) {
                     painterResource(R.drawable.ic_all_check_box)
                 } else {

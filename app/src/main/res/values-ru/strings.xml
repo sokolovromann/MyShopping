@@ -378,7 +378,8 @@
     <string name="settings_action_displayShoppingsProductsColumns">Вертикально</string>
     <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
-    <string name="settings_action_hideShoppingsProducts">Скрывать</string>
+    <string name="settings_action_hideShoppingsProducts">Всегда скрывать</string>
+    <string name="settings_action_hideShoppingsProductsIfHasTitle">Скрывать, если есть заголовок</string>
     <string name="settings_action_selectHuge2FontSize">Огромный 2</string>
     <string name="settings_action_selectHuge3FontSize">Огромный 3</string>
     <string name="settings_action_selectHugeFontSize">Огромный 1</string>

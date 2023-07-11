@@ -2,10 +2,20 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 enum class DisplayProducts {
 
-    COLUMNS, ROW, HIDE;
+    /** Display vertically */
+    COLUMNS,
+
+    /** Display horizontally */
+    ROW,
+
+    /** Always hide */
+    HIDE,
+
+    /** Hide if shopping list has name */
+    HIDE_IF_HAS_TITLE;
 
     companion object {
-        val DefaultValue: DisplayProducts = ROW
+        val DefaultValue: DisplayProducts = HIDE_IF_HAS_TITLE
 
         fun valueOfOrDefault(value: String): DisplayProducts = try {
             valueOf(value)

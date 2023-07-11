@@ -377,6 +377,11 @@ private fun SettingsDisplayShoppingsProductsMenu(
             text = { Text(text = stringResource(R.string.settings_action_hideShoppingsProducts)) },
             right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE) }
         )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.HIDE_IF_HAS_TITLE) },
+            text = { Text(text = stringResource(R.string.settings_action_hideShoppingsProductsIfHasTitle)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE_IF_HAS_TITLE) }
+        )
     }
 }
 

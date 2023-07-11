@@ -331,7 +331,8 @@
     <string name="settings_action_displayShoppingsProductsColumns">Вертикально</string>
     <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Приховувати</string>
-    <string name="settings_action_hideShoppingsProducts">Приховувати</string>
+    <string name="settings_action_hideShoppingsProducts">Завжди приховувати</string>
+    <string name="settings_action_hideShoppingsProductsIfHasTitle">Приховувати, якщо є заголовок</string>
     <string name="settings_action_selectHuge2FontSize">Величезний 2</string>
     <string name="settings_action_selectHuge3FontSize">Величезний 3</string>
     <string name="settings_action_selectHugeFontSize">Величезний 1</string>

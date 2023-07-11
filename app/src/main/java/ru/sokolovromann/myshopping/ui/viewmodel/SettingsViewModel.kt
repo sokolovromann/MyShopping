@@ -194,6 +194,7 @@ class SettingsViewModel @Inject constructor(
             DisplayProducts.COLUMNS -> repository.displayShoppingsProductsColumns()
             DisplayProducts.ROW -> repository.displayShoppingsProductsRow()
             DisplayProducts.HIDE -> repository.hideShoppingsProducts()
+            DisplayProducts.HIDE_IF_HAS_TITLE -> repository.hideShoppingsProductsIfHasTitle()
         }
     }
 
