@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -58,11 +57,9 @@ fun ShoppingListsGrid(
     ) {
         if (pinnedItems.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {
-                Text(
-                    modifier = Modifier.padding(ShoppingListItemPinnedTextPaddings),
+                AppTextGridHeader(
                     text = stringResource(R.string.shoppingLists_text_pinnedShoppingLists),
-                    fontSize = fontSize.toItemTitle().sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = fontSize
                 )
             }
 
@@ -96,11 +93,9 @@ fun ShoppingListsGrid(
 
             if (otherItems.isNotEmpty()) {
                 item(span = StaggeredGridItemSpan.FullLine) {
-                    Text(
-                        modifier = Modifier.padding(ShoppingListItemPinnedTextPaddings),
+                    AppTextGridHeader(
                         text = stringResource(R.string.shoppingLists_text_otherShoppingLists),
-                        fontSize = fontSize.toItemTitle().sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = fontSize
                     )
                 }
             }
@@ -430,9 +425,4 @@ private val ShoppingListsHiddenProductsPaddings = PaddingValues(
 )
 private val ShoppingListsLocationPaddings = PaddingValues(
     horizontal = 8.dp
-)
-
-private val ShoppingListItemPinnedTextPaddings = PaddingValues(
-    horizontal = 16.dp,
-    vertical = 8.dp
 )

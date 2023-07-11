@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -611,11 +610,9 @@ private fun ProductsGrid(
     ) {
         if (pinnedItems.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {
-                Text(
-                    modifier = Modifier.padding(ProductsPinnedTextPaddings),
+                AppTextGridHeader(
                     text = stringResource(R.string.products_text_pinnedProducts),
-                    fontSize = fontSize.toItemTitle().sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = fontSize
                 )
             }
 
@@ -656,11 +653,9 @@ private fun ProductsGrid(
 
             if (otherItems.isNotEmpty()) {
                 item(span = StaggeredGridItemSpan.FullLine) {
-                    Text(
-                        modifier = Modifier.padding(ProductsPinnedTextPaddings),
+                    AppTextGridHeader(
                         text = stringResource(R.string.products_text_otherProducts),
-                        fontSize = fontSize.toItemTitle().sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = fontSize
                     )
                 }
             }
@@ -799,7 +794,3 @@ private val ProductsHiddenProductsPaddings = PaddingValues(
 )
 private val ProductsNamePaddings = PaddingValues(horizontal = 8.dp)
 private val ProductsGridBarPaddings = PaddingValues(all = 8.dp)
-private val ProductsPinnedTextPaddings = PaddingValues(
-    horizontal = 16.dp,
-    vertical = 8.dp
-)
