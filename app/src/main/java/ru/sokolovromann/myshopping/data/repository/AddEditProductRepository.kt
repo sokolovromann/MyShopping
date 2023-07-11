@@ -9,6 +9,8 @@ interface AddEditProductRepository {
 
     suspend fun getAutocompletes(search: String, language: String): Flow<Autocompletes>
 
+    suspend fun checkIfProductUidExists(uid: String): Flow<Boolean>
+
     suspend fun addProduct(product: Product)
 
     suspend fun editProduct(product: Product)

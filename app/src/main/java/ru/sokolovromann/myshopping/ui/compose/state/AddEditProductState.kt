@@ -59,6 +59,7 @@ class AddEditProductState {
                 selection = TextRange(uid.length),
                 composition = TextRange(uid.length)
             ),
+            showUidError = false,
             brandValue = TextFieldValue(
                 text = brand,
                 selection = TextRange(brand.length),
@@ -131,7 +132,10 @@ class AddEditProductState {
     }
 
     fun changeUidValue(uidValue: TextFieldValue) {
-        screenData = screenData.copy(uidValue = uidValue)
+        screenData = screenData.copy(
+            uidValue = uidValue,
+            showUidError = false
+        )
     }
 
     fun changeBrandValue(brandValue: TextFieldValue) {
@@ -454,6 +458,10 @@ class AddEditProductState {
         screenData = screenData.copy(showDiscountAsPercent = true)
     }
 
+    fun showUidError() {
+        screenData = screenData.copy(showUidError = true)
+    }
+
     fun invertNameOtherFields() {
         val showFields = screenData.showNameOtherFields
         screenData = screenData.copy(showNameOtherFields = !showFields)
@@ -504,8 +512,13 @@ class AddEditProductState {
             screenData = screenData.copy(showNameError = true)
             Result.failure(Exception())
         } else {
-            screenData = screenData.copy(screenState = ScreenState.Saving)
-            Result.success(getSavableProduct(newProduct))
+            if (screenData.uidValue.isEmpty()) {
+                screenData = screenData.copy(showUidError = true)
+                Result.failure(Exception())
+            } else {
+                screenData = screenData.copy(screenState = ScreenState.Saving)
+                Result.success(getSavableProduct(newProduct))
+            }
         }
     }
 
@@ -647,6 +660,7 @@ data class AddEditProductScreenData(
     val nameValue: TextFieldValue = TextFieldValue(),
     val showNameError: Boolean = false,
     val uidValue: TextFieldValue = TextFieldValue(),
+    val showUidError: Boolean = false,
     val brandValue: TextFieldValue = TextFieldValue(),
     val sizeValue: TextFieldValue = TextFieldValue(),
     val colorValue: TextFieldValue = TextFieldValue(),

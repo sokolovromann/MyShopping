@@ -23,6 +23,9 @@ interface AddEditProductDao {
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
     fun getProductsLastPosition(shoppingUid: String): Flow<Int?>
 
+    @Query("SELECT EXISTS (SELECT 1 FROM products WHERE product_uid = :uid)")
+    fun checkIfProductUidExists(uid: String): Flow<Int>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(productEntity: ProductEntity)
 

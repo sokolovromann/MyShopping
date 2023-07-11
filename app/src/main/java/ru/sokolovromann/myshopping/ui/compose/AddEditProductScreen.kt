@@ -291,8 +291,9 @@ fun AddEditProductScreen(
                         val event = AddEditProductEvent.ProductUidChanged(it)
                         viewModel.onEvent(event)
                     },
-                    enabled = false,
                     label = { Text(text = stringResource(R.string.addEditProduct_label_uid)) },
+                    error = { Text(text = stringResource(R.string.addEditProduct_message_uidError)) },
+                    showError = screenData.showUidError,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences,
                         keyboardType = KeyboardType.Text,

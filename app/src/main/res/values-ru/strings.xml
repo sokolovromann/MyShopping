@@ -32,6 +32,7 @@
     <string name="addEditProduct_label_total">Стоимость</string>
     <string name="addEditProduct_label_uid">ID</string>
     <string name="addEditProduct_message_nameError">Добавьте название</string>
+    <string name="addEditProduct_message_uidError">Добавьте корректный ID</string>
 
     <string name="all_header_appName">Мои покупки</string>
 

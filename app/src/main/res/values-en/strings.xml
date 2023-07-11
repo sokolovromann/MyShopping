@@ -32,6 +32,7 @@
     <string name="addEditProduct_label_total">Total</string>
     <string name="addEditProduct_label_uid">ID</string>
     <string name="addEditProduct_message_nameError">Add name</string>
+    <string name="addEditProduct_message_uidError">Add correct ID</string>
 
     <string name="all_header_appName">My Shopping List</string>
 

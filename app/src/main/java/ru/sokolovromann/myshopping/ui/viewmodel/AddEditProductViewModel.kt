@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -175,6 +176,12 @@ class AddEditProductViewModel @Inject constructor(
     private fun saveProduct() = viewModelScope.launch {
         val product = addEditProductState.getProductResult(productUid == null)
             .getOrElse { return@launch }
+
+        val productUidExists = repository.checkIfProductUidExists(product.productUid).first()
+        if (productUidExists) {
+            addEditProductState.showUidError()
+            return@launch
+        }
 
         if (productUid == null) {
             repository.addProduct(product)
