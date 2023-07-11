@@ -178,7 +178,7 @@ class AddEditProductViewModel @Inject constructor(
             .getOrElse { return@launch }
 
         val productUidExists = repository.checkIfProductUidExists(product.productUid).first()
-        if (productUidExists) {
+        if (productUidExists != null && product.productUid != productUid) {
             addEditProductState.showUidError()
             return@launch
         }

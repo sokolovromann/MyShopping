@@ -437,10 +437,6 @@ class RepositoryMapping @Inject constructor() {
         return sortBy.name
     }
 
-    fun toBoolean(value: Int): Boolean {
-        return value == 1
-    }
-
     private fun toShoppingList(
         shoppingListEntity: ShoppingListEntity,
         preferencesEntity: AppPreferencesEntity

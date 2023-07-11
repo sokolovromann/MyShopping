@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AddEditProductDao
@@ -56,9 +55,8 @@ class AddEditProductRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun checkIfProductUidExists(uid: String): Flow<Boolean> = withContext(dispatchers.io) {
+    override suspend fun checkIfProductUidExists(uid: String): Flow<String?> = withContext(dispatchers.io) {
         return@withContext productDao.checkIfProductUidExists(uid)
-            .map { mapping.toBoolean(it) }
     }
 
     override suspend fun addProduct(product: Product): Unit = withContext(dispatchers.io) {
