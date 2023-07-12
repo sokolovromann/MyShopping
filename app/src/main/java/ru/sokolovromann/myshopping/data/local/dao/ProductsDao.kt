@@ -59,4 +59,7 @@ interface ProductsDao {
 
     @Query("DELETE FROM products WHERE product_uid = :uid")
     fun deleteProduct(uid: String)
+
+    @Query("UPDATE shoppings SET total = 0, total_formatted = 0, last_modified = :lastModified WHERE uid = :uid")
+    fun deleteShoppingTotal(uid: String, lastModified: Long)
 }

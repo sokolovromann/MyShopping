@@ -313,15 +313,16 @@
     <string name="productsWidget_text_loading">Загрузка…</string>
     <string name="productsWidget_text_productsNotFound">Список покупок пуст</string>
 
-    <string name="products_action_addShoppingListTotal">Добавить итого</string>
+    <string name="products_action_addShoppingListTotal">Добавить</string>
     <string name="products_action_automaticSorting">Сохранять сортировку</string>
     <string name="products_action_calculateChange">Посчитать сдачу</string>
     <string name="products_action_copyProductsToShoppingList">Копировать в…</string>
+    <string name="products_action_deleteShoppingListTotal">Удалить</string>
     <string name="products_action_disableProductsMultiColumns">Один столбец</string>
     <string name="products_action_displayActiveTotal">Не купленные товары</string>
     <string name="products_action_displayAllTotal">Все товары</string>
     <string name="products_action_displayCompletedTotal">Купленные товары</string>
-    <string name="products_action_editShoppingListTotal">Редактировать итого</string>
+    <string name="products_action_editShoppingListTotal">Редактировать</string>
     <string name="products_action_enableProductsMultiColumns">Несколько столбцов</string>
     <string name="products_action_moveProductsToShoppingList">Переместить в…</string>
     <string name="products_action_moveShoppingListToArchive">Архивировать</string>

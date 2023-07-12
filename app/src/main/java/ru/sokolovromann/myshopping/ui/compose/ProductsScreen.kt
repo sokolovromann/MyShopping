@@ -232,7 +232,8 @@ fun ProductsScreen(
                                     val event = ProductsEvent.DisplayPurchasesTotal(it)
                                     viewModel.onEvent(event)
                                 },
-                                onEditTotal = { viewModel.onEvent(ProductsEvent.EditShoppingListTotal) }
+                                onEditTotal = { viewModel.onEvent(ProductsEvent.EditShoppingListTotal) },
+                                onDeleteTotal = { viewModel.onEvent(ProductsEvent.DeleteShoppingListTotal) }
                             )
                         }
                     },
@@ -531,7 +532,8 @@ private fun ProductsTotalContent(
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
     onSelected: (DisplayTotal) -> Unit,
-    onEditTotal: () -> Unit
+    onEditTotal: () -> Unit,
+    onDeleteTotal: () -> Unit
 ) {
     TextButton(
         modifier = modifier,
@@ -551,6 +553,10 @@ private fun ProductsTotalContent(
                 AppDropdownMenuItem(
                     onClick = onEditTotal,
                     text = { Text(text = stringResource(R.string.products_action_editShoppingListTotal)) }
+                )
+                AppDropdownMenuItem(
+                    onClick = onDeleteTotal,
+                    text = { Text(text = stringResource(R.string.products_action_deleteShoppingListTotal)) }
                 )
             } else {
                 AppDropdownMenuItem(

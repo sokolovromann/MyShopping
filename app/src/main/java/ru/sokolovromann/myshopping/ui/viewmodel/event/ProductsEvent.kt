@@ -15,6 +15,8 @@ sealed class ProductsEvent {
 
     object EditShoppingListTotal : ProductsEvent()
 
+    object DeleteShoppingListTotal : ProductsEvent()
+
     object CopyProductsToShoppingList : ProductsEvent()
 
     object MoveProductsToShoppingList : ProductsEvent()

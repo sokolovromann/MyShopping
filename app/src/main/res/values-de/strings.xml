@@ -248,15 +248,16 @@
     <string name="productsWidget_text_loading">Wird geladen…</string>
     <string name="productsWidget_text_productsNotFound">Einkaufsliste ist leer</string>
 
-    <string name="products_action_addShoppingListTotal">Gesamt addieren</string>
+    <string name="products_action_addShoppingListTotal">Hinzufügen</string>
     <string name="products_action_automaticSorting">Automatische Sortierung</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_copyProductsToShoppingList">Kopieren nach…</string>
+    <string name="products_action_deleteShoppingListTotal">Löschen</string>
     <string name="products_action_disableProductsMultiColumns">Eine Spalte</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
     <string name="products_action_displayAllTotal">Alle produkte</string>
     <string name="products_action_displayCompletedTotal">Fertige produkte</string>
-    <string name="products_action_editShoppingListTotal">Gesamt bearbeiten</string>
+    <string name="products_action_editShoppingListTotal">Bearbeiten</string>
     <string name="products_action_enableProductsMultiColumns">Mehrspaltig</string>
     <string name="products_action_moveProductsToShoppingList">Ziehen nach…</string>
     <string name="products_action_moveShoppingListToArchive">Archivieren</string>

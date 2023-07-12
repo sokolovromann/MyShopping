@@ -319,15 +319,16 @@
     <string name="productsWidget_text_loading">Loading…</string>
     <string name="productsWidget_text_productsNotFound">Shopping list is empty</string>
 
-    <string name="products_action_addShoppingListTotal">Add total</string>
+    <string name="products_action_addShoppingListTotal">Add</string>
     <string name="products_action_automaticSorting">Automatic sorting</string>
     <string name="products_action_calculateChange">Calculate change</string>
     <string name="products_action_copyProductsToShoppingList">Copy to…</string>
+    <string name="products_action_deleteShoppingListTotal">Delete</string>
     <string name="products_action_disableProductsMultiColumns">One column</string>
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
-    <string name="products_action_editShoppingListTotal">Edit total</string>
+    <string name="products_action_editShoppingListTotal">Edit</string>
     <string name="products_action_enableProductsMultiColumns">Multi-columns</string>
     <string name="products_action_moveProductsToShoppingList">Move to…</string>
     <string name="products_action_moveShoppingListToArchive">Archive</string>

@@ -47,6 +47,8 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.EditShoppingListTotal -> editShoppingListTotal()
 
+            ProductsEvent.DeleteShoppingListTotal -> deleteShoppingListTotal()
+
             ProductsEvent.CopyProductsToShoppingList -> copyProductsToShoppingList()
 
             ProductsEvent.MoveProductsToShoppingList -> moveProductsToShoppingList()
@@ -172,6 +174,17 @@ class ProductsViewModel @Inject constructor(
     private fun editShoppingListTotal() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListTotal(shoppingUid))
         hideDisplayPurchasesTotal()
+    }
+
+    private fun deleteShoppingListTotal() = viewModelScope.launch {
+        repository.deleteShoppingListTotal(
+            uid = shoppingUid,
+            lastModified = System.currentTimeMillis()
+        )
+
+        withContext(dispatchers.main) {
+            hideDisplayPurchasesTotal()
+        }
     }
 
     private fun moveProductUp(event: ProductsEvent.MoveProductUp) = viewModelScope.launch {
