@@ -16,6 +16,9 @@ class AddEditProductState {
 
     private var selectedAutocomplete: Autocomplete? by mutableStateOf(null)
 
+    var productNameFocus by mutableStateOf(false)
+        private set
+
     var screenData by mutableStateOf(AddEditProductScreenData())
         private set
 
@@ -129,6 +132,10 @@ class AddEditProductState {
             nameValue = nameValue,
             showNameError = false
         )
+    }
+
+    fun changeNameFocus(focused: Boolean) {
+        productNameFocus = focused
     }
 
     fun changeUidValue(uidValue: TextFieldValue) {
@@ -451,6 +458,40 @@ class AddEditProductState {
             autocompletePrices = prices,
             autocompleteDiscounts = discounts,
             autocompleteTotals = totals
+        )
+    }
+
+    fun showAutocompleteElementsIf(
+        brands: List<String>,
+        sizes: List<String>,
+        colors: List<String>,
+        manufacturers: List<String>,
+        quantities: List<Quantity>,
+        quantitySymbols: List<Quantity>,
+        prices: List<Money>,
+        discounts: List<Discount>,
+        totals: List<Money>
+    ) {
+        val brandsIf = if (screenData.brandValue.isEmpty()) brands else listOf()
+        val sizesIf = if (screenData.sizeValue.isEmpty()) sizes else listOf()
+        val colorsIf = if (screenData.colorValue.isEmpty()) colors else listOf()
+        val manufacturersIf = if (screenData.manufacturerValue.isEmpty()) manufacturers else listOf()
+        val quantitiesIf = if (screenData.quantityValue.isEmpty()) quantities else listOf()
+        val quantitySymbolsIf = if (screenData.quantitySymbolValue.isEmpty()) quantitySymbols else listOf()
+        val pricesIf = if (screenData.priceValue.isEmpty()) prices else listOf()
+        val discountsIf = if (screenData.discountValue.isEmpty()) discounts else listOf()
+        val totalsIf = if (screenData.totalValue.isEmpty()) totals else listOf()
+
+        showAutocompleteElements(
+            brands = brandsIf,
+            sizes = sizesIf,
+            colors = colorsIf,
+            manufacturers = manufacturersIf,
+            quantities = quantitiesIf,
+            quantitySymbols = quantitySymbolsIf,
+            prices = pricesIf,
+            discounts = discountsIf,
+            totals = totalsIf
         )
     }
 

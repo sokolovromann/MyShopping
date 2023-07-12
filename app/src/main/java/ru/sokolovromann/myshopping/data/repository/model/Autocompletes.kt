@@ -14,7 +14,7 @@ data class Autocompletes(
         return autocompletes.sortAutocompletes()
     }
 
-    fun names(
+    fun getNames(
         search: String = "",
         displayDefault: Boolean = preferences.displayDefaultAutocompletes
     ): List<Autocomplete> {
@@ -43,7 +43,7 @@ data class Autocompletes(
             }
     }
 
-    fun brands(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+    fun getBrands(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.brand }
@@ -53,7 +53,7 @@ data class Autocompletes(
             }
     }
 
-    fun sizes(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+    fun getSizes(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.size }
@@ -63,7 +63,7 @@ data class Autocompletes(
             }
     }
 
-    fun colors(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+    fun getColors(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.color }
@@ -73,7 +73,7 @@ data class Autocompletes(
             }
     }
 
-    fun manufacturers(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
+    fun getManufacturers(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<String> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.manufacturer }
@@ -83,7 +83,7 @@ data class Autocompletes(
             }
     }
 
-    fun quantities(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Quantity> {
+    fun getQuantities(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Quantity> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
@@ -93,7 +93,7 @@ data class Autocompletes(
             }
     }
 
-    fun quantitySymbols(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Quantity> {
+    fun getQuantitySymbols(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Quantity> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
@@ -103,7 +103,7 @@ data class Autocompletes(
             }
     }
 
-    fun prices(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
+    fun getPrices(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.price }
@@ -113,7 +113,7 @@ data class Autocompletes(
             }
     }
 
-    fun discounts(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Discount> {
+    fun getDiscounts(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Discount> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.discount }
@@ -123,7 +123,7 @@ data class Autocompletes(
             }
     }
 
-    fun totals(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
+    fun getTotals(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.total }

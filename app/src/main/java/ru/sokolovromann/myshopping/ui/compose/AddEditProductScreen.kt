@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringArrayResource
@@ -112,7 +113,11 @@ fun AddEditProductScreen(
                 OutlinedAppTextField(
                     modifier = Modifier
                         .weight(1f)
-                        .focusRequester(focusRequester),
+                        .focusRequester(focusRequester)
+                        .onFocusChanged {
+                            val event = AddEditProductEvent.ProductNameFocusChanged(it.isFocused)
+                            viewModel.onEvent(event)
+                        },
                     value = screenData.nameValue,
                     valueFontSize = screenData.fontSize.toTextField().sp,
                     onValueChange = {

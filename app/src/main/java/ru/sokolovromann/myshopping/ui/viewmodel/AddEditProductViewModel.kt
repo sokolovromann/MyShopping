@@ -48,6 +48,8 @@ class AddEditProductViewModel @Inject constructor(
 
             is AddEditProductEvent.ProductNameChanged -> productNameChanged(event)
 
+            is AddEditProductEvent.ProductNameFocusChanged -> productNameFocusChanged(event)
+
             is AddEditProductEvent.ProductUidChanged -> productUidChanged(event)
 
             is AddEditProductEvent.ProductBrandChanged -> productBrandChanged(event)
@@ -146,7 +148,7 @@ class AddEditProductViewModel @Inject constructor(
         autocompletes: Autocompletes
     ) = withContext(dispatchers.main) {
         val currentName = addEditProductState.screenData.nameValue.text
-        val names = autocompletes.names(search = currentName)
+        val names = autocompletes.getNames(search = currentName)
         if (names.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
@@ -160,17 +162,31 @@ class AddEditProductViewModel @Inject constructor(
             addEditProductState.hideAutocompleteNames(containsAutocomplete)
         }
 
-        addEditProductState.showAutocompleteElements(
-            brands = autocompletes.brands(),
-            sizes = autocompletes.sizes(),
-            colors = autocompletes.colors(),
-            manufacturers = autocompletes.manufacturers(),
-            quantities = autocompletes.quantities(),
-            quantitySymbols = autocompletes.quantitySymbols(),
-            prices = autocompletes.prices(),
-            discounts = autocompletes.discounts(),
-            totals = autocompletes.totals()
-        )
+        if (productUid == null || addEditProductState.productNameFocus) {
+            addEditProductState.showAutocompleteElements(
+                brands = autocompletes.getBrands(),
+                sizes = autocompletes.getSizes(),
+                colors = autocompletes.getColors(),
+                manufacturers = autocompletes.getManufacturers(),
+                quantities = autocompletes.getQuantities(),
+                quantitySymbols = autocompletes.getQuantitySymbols(),
+                prices = autocompletes.getPrices(),
+                discounts = autocompletes.getDiscounts(),
+                totals = autocompletes.getTotals()
+            )
+        } else {
+            addEditProductState.showAutocompleteElementsIf(
+                brands = autocompletes.getBrands(),
+                sizes = autocompletes.getSizes(),
+                colors = autocompletes.getColors(),
+                manufacturers = autocompletes.getManufacturers(),
+                quantities = autocompletes.getQuantities(),
+                quantitySymbols = autocompletes.getQuantitySymbols(),
+                prices = autocompletes.getPrices(),
+                discounts = autocompletes.getDiscounts(),
+                totals = autocompletes.getTotals()
+            )
+        }
     }
 
     private fun saveProduct() = viewModelScope.launch {
@@ -232,6 +248,10 @@ class AddEditProductViewModel @Inject constructor(
         } else {
             addEditProductState.hideAutocompletes()
         }
+    }
+
+    private fun productNameFocusChanged(event: AddEditProductEvent.ProductNameFocusChanged) {
+        addEditProductState.changeNameFocus(event.focused)
     }
 
     private fun productUidChanged(event: AddEditProductEvent.ProductUidChanged) {
