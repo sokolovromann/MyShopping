@@ -52,14 +52,13 @@ fun CopyProductScreen(
 
     AppScaffold(
         topBar = {
-            TopAppBar(
+            AppTopAppBar(
                 title = { Text(text = stringResource(R.string.copyProduct_header)) },
                 navigationIcon = {
                     IconButton(onClick = { viewModel.onEvent(CopyProductEvent.CancelCopingProduct) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.copyProduct_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            contentDescription = stringResource(R.string.copyProduct_contentDescription_navigationIcon)
                         )
                     }
                 }

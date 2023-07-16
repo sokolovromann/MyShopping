@@ -92,27 +92,25 @@ fun ArchiveScreen(
         scaffoldState = scaffoldState,
         topBar = {
             if (screenData.selectedUids == null) {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = stringResource(R.string.archive_header)) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.ShowNavigationDrawer) }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.archive_contentDescription_navigationIcon),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.archive_contentDescription_navigationIcon)
                             )
                         }
                     }
                 )
             } else {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = screenData.selectedUids.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.CancelSelectingShoppingLists) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.archive_contentDescription_cancelSelectingShoppingLists),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.archive_contentDescription_cancelSelectingShoppingLists)
                             )
                         }
                     },
@@ -120,22 +118,19 @@ fun ArchiveScreen(
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.MoveShoppingListsToPurchases) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_unarchive),
-                                contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToPurchases),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToPurchases)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.MoveShoppingListsToTrash) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToTrash),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToTrash)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.SelectAllShoppingLists) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists)
                             )
                         }
                     }

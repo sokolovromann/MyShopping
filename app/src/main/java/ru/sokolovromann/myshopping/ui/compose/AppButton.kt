@@ -26,20 +26,3 @@ fun AppDialogActionButton(
         )
     }
 }
-
-@Composable
-fun AppTopAppBarButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    colors: ButtonColors = ButtonDefaults.textButtonColors(
-        contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
-    ),
-    content: @Composable RowScope.() -> Unit
-) {
-    TextButton(
-        onClick = onClick,
-        modifier = modifier,
-        colors = colors,
-        content = content
-    )
-}

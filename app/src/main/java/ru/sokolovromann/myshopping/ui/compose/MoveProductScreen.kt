@@ -52,14 +52,13 @@ fun MoveProductScreen(
 
     AppScaffold(
         topBar = {
-            TopAppBar(
+            AppTopAppBar(
                 title = { Text(text = stringResource(R.string.moveProduct_header)) },
                 navigationIcon = {
                     IconButton(onClick = { viewModel.onEvent(MoveProductEvent.CancelMovingProduct) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.moveProduct_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            contentDescription = stringResource(R.string.moveProduct_contentDescription_navigationIcon)
                         )
                     }
                 }

@@ -98,27 +98,25 @@ fun AutocompletesScreen(
         scaffoldState = scaffoldState,
         topBar = {
             if (screenData.selectedNames == null) {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ShowNavigationDrawer) }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon)
                             )
                         }
                     }
                 )
             } else {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = screenData.selectedNames.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.CancelSelectingAutocompletes) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelectingAutocompletes),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelectingAutocompletes)
                             )
                         }
                     },
@@ -126,8 +124,7 @@ fun AutocompletesScreen(
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ClearAutocompletes) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_autocompletes_clear),
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_clearAutocompletes),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_clearAutocompletes)
                             )
                         }
 
@@ -135,8 +132,7 @@ fun AutocompletesScreen(
                             IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.DeleteAutocompletes) }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
-                                    contentDescription = stringResource(R.string.autocompletes_contentDescription_deleteAutocompletes),
-                                    tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                    contentDescription = stringResource(R.string.autocompletes_contentDescription_deleteAutocompletes)
                                 )
                             }
                         }
@@ -144,8 +140,7 @@ fun AutocompletesScreen(
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.SelectAllAutocompletes) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_selectAllAutocompletes),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.autocompletes_contentDescription_selectAllAutocompletes)
                             )
                         }
                     }

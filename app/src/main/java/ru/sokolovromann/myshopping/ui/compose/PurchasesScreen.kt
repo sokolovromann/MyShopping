@@ -90,27 +90,25 @@ fun PurchasesScreen(
         scaffoldState = scaffoldState,
         topBar = {
             if (screenData.selectedUids == null) {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = stringResource(R.string.purchases_header)) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowNavigationDrawer) }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon)
                             )
                         }
                     }
                 )
             } else {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = screenData.selectedUids.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_cancelSelectingShoppingLists),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_cancelSelectingShoppingLists)
                             )
                         }
                     },
@@ -130,29 +128,25 @@ fun PurchasesScreen(
                                 } else {
                                     painterResource(R.drawable.ic_all_unpin)
                                 },
-                                contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToArchive) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_archive),
-                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToTrash) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists)
                             )
                         }
                     }

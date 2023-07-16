@@ -72,19 +72,18 @@ fun AddEditProductScreen(
 
     AppScaffold(
         topBar = {
-            TopAppBar(
+            AppTopAppBar(
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = { viewModel.onEvent(AddEditProductEvent.CancelSavingProduct) }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_navigationIcon)
                         )
                     }
                 },
                 actions = {
-                    AppTopAppBarButton(onClick = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }) {
+                    TextButton(onClick = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }) {
                         Text(text = stringResource(R.string.addEditProduct_action_saveProduct).uppercase())
                     }
                 }

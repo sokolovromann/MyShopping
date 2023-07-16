@@ -108,14 +108,13 @@ fun ProductsScreen(
     AppScaffold(
         topBar = {
             if (screenData.selectedUids == null) {
-                TopAppBar(
+                AppTopAppBar(
                     title = {},
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowBackScreen) }) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.products_contentDescription_navigationIcon),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.products_contentDescription_navigationIcon)
                             )
                         }
                     },
@@ -126,15 +125,13 @@ fun ProductsScreen(
                                     IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) }) {
                                         Icon(
                                             painter = painterResource(R.drawable.ic_all_rename),
-                                            contentDescription = stringResource(R.string.products_contentDescription_editShoppingListName),
-                                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                            contentDescription = stringResource(R.string.products_contentDescription_editShoppingListName)
                                         )
                                     }
                                     IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }) {
                                         Icon(
                                             painter = painterResource(R.drawable.ic_all_reminder),
-                                            contentDescription = stringResource(R.string.products_contentDescription_editShoppingListReminder),
-                                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                            contentDescription = stringResource(R.string.products_contentDescription_editShoppingListReminder)
                                         )
                                     }
                                 }
@@ -144,14 +141,13 @@ fun ProductsScreen(
                     }
                 )
             } else {
-                TopAppBar(
+                AppTopAppBar(
                     title = { Text(text = screenData.selectedUids.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.CancelSelectingProducts) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.products_contentDescription_cancelSelectingProducts),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.products_contentDescription_cancelSelectingProducts)
                             )
                         }
                     },
@@ -171,22 +167,19 @@ fun ProductsScreen(
                                 } else {
                                     painterResource(R.drawable.ic_all_unpin)
                                 },
-                                contentDescription = stringResource(R.string.products_contentDescription_pinOrUnpinProduct),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.products_contentDescription_pinOrUnpinProduct)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.products_contentDescription_deleteProducts),
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.products_contentDescription_deleteProducts)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowSelectedMenu) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = "",
-                                tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                                contentDescription = ""
                             )
                             AppDropdownMenu(
                                 expanded = screenData.showSelectedMenu,

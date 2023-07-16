@@ -130,14 +130,13 @@ fun SettingsScreen(
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(
+            AppTopAppBar(
                 title = { Text(text = stringResource(R.string.settings_header_settings)) },
                 navigationIcon = {
                     IconButton(onClick = { viewModel.onEvent(SettingsEvent.ShowNavigationDrawer) }) {
                         Icon(
                             imageVector = Icons.Default.Menu,
-                            contentDescription = stringResource(R.string.settings_contentDescription_navigationIcon),
-                            tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(ContentAlpha.medium)
+                            contentDescription = stringResource(R.string.settings_contentDescription_navigationIcon)
                         )
                     }
                 }
