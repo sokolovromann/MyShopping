@@ -181,15 +181,13 @@ fun PurchasesScreen(
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon),
-                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowPurchasesMenu) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon),
-                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon)
                             )
                             AppDropdownMenu(
                                 expanded = screenData.showPurchasesMenu,

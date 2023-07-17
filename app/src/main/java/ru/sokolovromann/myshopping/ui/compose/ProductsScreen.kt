@@ -235,15 +235,13 @@ fun ProductsScreen(
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.AddProduct) }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(R.string.products_contentDescription_addProductIcon),
-                                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                                    contentDescription = stringResource(R.string.products_contentDescription_addProductIcon)
                                 )
                             }
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowProductsMenu) }) {
                                 Icon(
                                     imageVector = Icons.Default.MoreVert,
-                                    contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon),
-                                    tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                                    contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon)
                                 )
                                 AppDropdownMenu(
                                     expanded = screenData.showProductsMenu,

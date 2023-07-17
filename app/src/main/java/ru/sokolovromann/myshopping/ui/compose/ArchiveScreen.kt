@@ -165,8 +165,7 @@ fun ArchiveScreen(
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.ShowArchiveMenu) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.archive_contentDescription_archiveMenuIcon),
-                                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                                contentDescription = stringResource(R.string.archive_contentDescription_archiveMenuIcon)
                             )
                             AppDropdownMenu(
                                 expanded = screenData.showArchiveMenu,
