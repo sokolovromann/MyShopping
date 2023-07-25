@@ -11,11 +11,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.AppJson
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDataStore
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatabase
+import ru.sokolovromann.myshopping.data.local.files.BackupFiles
 import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
 import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
@@ -478,6 +480,22 @@ object AppModule {
     }
 
     @Provides
+    fun providesBackupRepository(repository: BackupRepositoryImpl): BackupRepository {
+        return repository
+    }
+
+    @Provides
+    fun providesBackupRepositoryImpl(
+        localDatabase: LocalDatabase,
+        files: BackupFiles,
+        preferencesDao: SettingsPreferencesDao,
+        mapping: RepositoryMapping,
+        dispatchers: AppDispatchers
+    ): BackupRepositoryImpl {
+        return BackupRepositoryImpl(localDatabase.backupDao(), files, preferencesDao, mapping, dispatchers)
+    }
+
+    @Provides
     fun providesPurchasesAlarmManager(
         @ApplicationContext context: Context
     ): PurchasesAlarmManager {
@@ -489,5 +507,19 @@ object AppModule {
         @ApplicationContext context: Context
     ): PurchasesNotificationManager {
         return PurchasesNotificationManager(context)
+    }
+
+    @Provides
+    fun providesBackupFiles(
+        @ApplicationContext context: Context,
+        json: AppJson,
+        dispatchers: AppDispatchers
+    ): BackupFiles {
+        return BackupFiles(context, json, dispatchers)
+    }
+
+    @Provides
+    fun providesAppJson(): AppJson {
+        return AppJson()
     }
 }

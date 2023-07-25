@@ -3,7 +3,9 @@ package ru.sokolovromann.myshopping.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity(tableName = "products")
 data class ProductEntity(
     @PrimaryKey(autoGenerate = true)

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
@@ -85,4 +86,6 @@ dependencies {
 
     implementation "androidx.glance:glance:$glance_version"
     implementation "androidx.glance:glance-appwidget:$glance_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$json_version"
 }

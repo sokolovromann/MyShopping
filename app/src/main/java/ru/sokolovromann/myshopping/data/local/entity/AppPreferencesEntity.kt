@@ -1,5 +1,8 @@
 package ru.sokolovromann.myshopping.data.local.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AppPreferencesEntity(
     val appFirstTime: String = "",
     val firstAppVersion: Int = 0,

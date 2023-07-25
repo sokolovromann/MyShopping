@@ -397,6 +397,51 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toBackupEntity(backup: Backup): BackupFileEntity {
+        return BackupFileEntity(
+            shoppingEntities = backup.shoppingLists.map { toShoppingEntity(it) },
+            productEntities = backup.products.map { toProductEntity(it) },
+            autocompleteEntities = backup.autocompletes.map { toAutocompleteEntity(it) },
+            preferencesEntity = toAppPreferencesEntity(backup.preferences)
+        )
+    }
+
+    fun toBackup(
+        shoppingListEntities: List<ShoppingEntity>,
+        productEntities: List<ProductEntity>,
+        autocompleteEntities: List<AutocompleteEntity>,
+        preferencesEntity: AppPreferencesEntity
+    ): Backup {
+        return Backup(
+            shoppingLists = shoppingListEntities.map { toShoppingList(it, preferencesEntity) },
+            products = productEntities.map { toProduct(it, preferencesEntity) },
+            autocompletes = autocompleteEntities.map { toAutocomplete(it, preferencesEntity) },
+            preferences = toAppPreferences(preferencesEntity)
+        )
+    }
+
+    fun toBackup(entity: BackupFileEntity): Backup {
+        val preferencesEntity = entity.preferencesEntity
+        return Backup(
+            shoppingLists = entity.shoppingEntities.map { toShoppingList(it, preferencesEntity) },
+            products = entity.productEntities.map { toProduct(it, preferencesEntity) },
+            autocompletes = entity.autocompleteEntities.map { toAutocomplete(it, preferencesEntity) },
+            preferences = toAppPreferences(preferencesEntity)
+        )
+    }
+
+    fun toShoppingEntities(backup: Backup): List<ShoppingEntity> {
+        return backup.shoppingLists.map { toShoppingEntity(it) }
+    }
+
+    fun toProductEntities(backup: Backup): List<ProductEntity> {
+        return backup.products.map { toProductEntity(it) }
+    }
+
+    fun toAutocompleteEntities(backup: Backup): List<AutocompleteEntity> {
+        return backup.autocompletes.map { toAutocompleteEntity(it) }
+    }
+
     fun toCurrency(symbol: String, displayToLeft: Boolean): Currency {
         return Currency(symbol, displayToLeft)
     }
@@ -463,6 +508,37 @@ class RepositoryMapping @Inject constructor() {
             deleted = entity.deleted,
             completed = toCompleted(shoppingListEntity.productEntities),
             products = shoppingListEntity.productEntities.map { toProduct(it, preferencesEntity) },
+            currency = toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft),
+            displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal),
+            sort = toSort(entity.sortBy, entity.sortAscending),
+            sortFormatted = entity.sortFormatted,
+            pinned = entity.pinned
+        )
+    }
+
+    private fun toShoppingList(
+        entity: ShoppingEntity,
+        preferencesEntity: AppPreferencesEntity
+    ): ShoppingList {
+        return ShoppingList(
+            id = entity.id,
+            position = entity.position,
+            uid = entity.uid,
+            created = entity.created,
+            lastModified = entity.lastModified,
+            name = entity.name,
+            reminder = toReminder(entity.reminder),
+            total = toMoney(
+                entity.total,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
+            totalFormatted = entity.totalFormatted,
+            budget = toMoney(
+                entity.budget,
+                toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft)
+            ),
+            archived = entity.archived,
+            deleted = entity.deleted,
             currency = toCurrency(preferencesEntity.currency, preferencesEntity.displayCurrencyToLeft),
             displayTotal = toDisplayTotal(preferencesEntity.displayPurchasesTotal),
             sort = toSort(entity.sortBy, entity.sortAscending),
