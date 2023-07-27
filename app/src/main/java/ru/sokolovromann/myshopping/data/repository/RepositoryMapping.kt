@@ -402,7 +402,8 @@ class RepositoryMapping @Inject constructor() {
             shoppingEntities = backup.shoppingLists.map { toShoppingEntity(it) },
             productEntities = backup.products.map { toProductEntity(it) },
             autocompleteEntities = backup.autocompletes.map { toAutocompleteEntity(it) },
-            preferencesEntity = toAppPreferencesEntity(backup.preferences)
+            preferencesEntity = toAppPreferencesEntity(backup.preferences),
+            appVersion = backup.appVersion
         )
     }
 
@@ -410,13 +411,15 @@ class RepositoryMapping @Inject constructor() {
         shoppingListEntities: List<ShoppingEntity>,
         productEntities: List<ProductEntity>,
         autocompleteEntities: List<AutocompleteEntity>,
-        preferencesEntity: AppPreferencesEntity
+        preferencesEntity: AppPreferencesEntity,
+        currentAppVersion: Int
     ): Backup {
         return Backup(
             shoppingLists = shoppingListEntities.map { toShoppingList(it, preferencesEntity) },
             products = productEntities.map { toProduct(it, preferencesEntity) },
             autocompletes = autocompleteEntities.map { toAutocomplete(it, preferencesEntity) },
-            preferences = toAppPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity),
+            appVersion = currentAppVersion
         )
     }
 
@@ -426,7 +429,8 @@ class RepositoryMapping @Inject constructor() {
             shoppingLists = entity.shoppingEntities.map { toShoppingList(it, preferencesEntity) },
             products = entity.productEntities.map { toProduct(it, preferencesEntity) },
             autocompletes = entity.autocompleteEntities.map { toAutocomplete(it, preferencesEntity) },
-            preferences = toAppPreferences(preferencesEntity)
+            preferences = toAppPreferences(preferencesEntity),
+            appVersion = entity.appVersion
         )
     }
 

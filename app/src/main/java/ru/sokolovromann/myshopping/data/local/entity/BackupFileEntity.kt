@@ -4,5 +4,6 @@ data class BackupFileEntity(
     val shoppingEntities: List<ShoppingEntity> = listOf(),
     val productEntities: List<ProductEntity> = listOf(),
     val autocompleteEntities: List<AutocompleteEntity> = listOf(),
-    val preferencesEntity: AppPreferencesEntity = AppPreferencesEntity()
+    val preferencesEntity: AppPreferencesEntity = AppPreferencesEntity(),
+    val appVersion: Int = 0
 )

@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.BackupDao
 import ru.sokolovromann.myshopping.data.local.dao.SettingsPreferencesDao
 import ru.sokolovromann.myshopping.data.local.files.BackupFiles
+import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
 import ru.sokolovromann.myshopping.data.repository.model.Backup
 import javax.inject.Inject
 
@@ -19,6 +20,12 @@ class BackupRepositoryImpl @Inject constructor(
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : BackupRepository {
+
+    override suspend fun getPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
+        return@withContext preferencesDao.getAppPreferences().map {
+            mapping.toAppPreferences(it)
+        }
+    }
 
     override suspend fun getReminderUids(): Flow<List<String>> = withContext(dispatchers.io) {
         return@withContext backupDao.getReminderUids()
@@ -31,14 +38,16 @@ class BackupRepositoryImpl @Inject constructor(
         return@withContext Result.success(Unit)
     }
 
-    override suspend fun createBackup(): Flow<Backup> = withContext(dispatchers.io) {
+    override suspend fun createBackup(
+        currentAppVersion: Int
+    ): Flow<Backup> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = backupDao.getShoppings(),
             flow2 = backupDao.getProducts(),
             flow3 = backupDao.getAutocompletes(),
             flow4 = preferencesDao.getAppPreferences(),
             transform = { shoppingListEntities, productEntities, autocompleteEntities, preferencesEntity ->
-                mapping.toBackup(shoppingListEntities, productEntities, autocompleteEntities, preferencesEntity)
+                mapping.toBackup(shoppingListEntities, productEntities, autocompleteEntities, preferencesEntity, currentAppVersion)
             }
         )
     }
