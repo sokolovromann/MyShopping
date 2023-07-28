@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
 import ru.sokolovromann.myshopping.data.repository.*
+import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import javax.inject.Singleton
@@ -516,6 +517,11 @@ object AppModule {
         dispatchers: AppDispatchers
     ): BackupFiles {
         return BackupFiles(context, json, dispatchers)
+    }
+
+    @Provides
+    fun providesBackupMediaStore(@ApplicationContext context: Context): BackupMediaStore {
+        return BackupMediaStore(context)
     }
 
     @Provides
