@@ -34,6 +34,11 @@ private fun Settings.getGeneralSettingsItems(): List<SettingsItem> {
             uid = SettingsUid.FontSize,
             titleText = UiText.FromResources(R.string.settings_title_fontSize),
             bodyText = preferences.fontSize.toSettingsText()
+        ),
+        SettingsItem(
+            uid = SettingsUid.Backup,
+            titleText = UiText.FromResources(R.string.settings_title_backup),
+            bodyText = UiText.FromResources(R.string.settings_body_backup)
         )
     )
 }

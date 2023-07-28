@@ -13,6 +13,10 @@ class SettingsPreferencesDao @Inject constructor(
         return localDataStore.getAppPreferences()
     }
 
+    suspend fun saveAppPreferences(entity: AppPreferencesEntity) {
+        localDataStore.saveAppPreferences(entity)
+    }
+
     suspend fun displayCompletedPurchases(displayCompleted: String) {
         localDataStore.displayCompletedPurchases(displayCompleted)
     }

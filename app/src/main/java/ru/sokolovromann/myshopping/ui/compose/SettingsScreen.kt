@@ -67,6 +67,10 @@ fun SettingsScreen(
                     }
                 )
 
+                SettingsScreenEvent.ShowBackup -> navController.navigate(
+                    route = UiRoute.Settings.backupScreen
+                )
+
                 SettingsScreenEvent.ShowBackScreen -> navController.popBackStack()
 
                 SettingsScreenEvent.ShowPurchases -> {

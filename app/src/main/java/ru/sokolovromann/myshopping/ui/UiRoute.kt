@@ -75,6 +75,7 @@ sealed class UiRoute(val graph: String) {
         const val settingsScreen = "settings"
         const val editCurrencySymbolScreen = "edit-currency-symbol"
         const val editTaxRateScreen = "edit-tax-rate"
+        const val backupScreen = "backup-screen"
     }
 }
 
@@ -194,6 +195,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         }
         dialog(route = UiRoute.Settings.editTaxRateScreen) {
             EditTaxRateScreen(navController)
+        }
+        dialog(route = UiRoute.Settings.backupScreen) {
+            BackupScreen(navController)
         }
     }
 }

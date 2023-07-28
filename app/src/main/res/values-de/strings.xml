@@ -68,6 +68,18 @@
     <string name="autocompletes_header_location">Anzeige</string>
     <string name="autocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
+    <string name="backup_action_closeBackup">Zurück</string>
+    <string name="backup_action_export">Exportieren</string>
+    <string name="backup_action_import">Importieren</string>
+    <string name="backup_action_showPermissions">Öffnen Sie Berechtigungen</string>
+    <string name="backup_header">Sicherung</string>
+    <string name="backup_message_exportError">Datenexport fehlgeschlagen</string>
+    <string name="backup_message_exportLocation">Standort: %s</string>
+    <string name="backup_message_exportSuccessful">Daten erfolgreich exportiert</string>
+    <string name="backup_message_importError">Datenimport fehlgeschlagen</string>
+    <string name="backup_message_importSuccessful">Daten erfolgreich importiert</string>
+    <string name="backup_message_permissionError">Sie haben keine Berechtigung zum Exportieren von Daten</string>
+
     <string name="calculateChange_action_closeCalculatingChange">Zurück</string>
     <string name="calculateChange_header">Veränderung berechnen</string>
     <string name="calculateChange_label_userMoney">Geld</string>
@@ -322,6 +334,7 @@
     <string name="settings_action_selectLargeFontSize">Groß</string>
     <string name="settings_action_selectMediumFontSize">Mittel</string>
     <string name="settings_action_selectSmallFontSize">Klein</string>
+    <string name="settings_body_backup">Alle App-Daten exportieren/importieren</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet (Außer Widgets)</string>
@@ -343,6 +356,7 @@
     <string name="settings_header_purchases">Einkäufe</string>
     <string name="settings_header_settings">Einstellungen</string>
     <string name="settings_title_appVersion">App version</string>
+    <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_completedWithCheckbox">Abgeschlossen mit Kontrollkästchen</string>
     <string name="settings_title_currencySymbol">Währung</string>
     <string name="settings_title_developer">Entwickler</string>

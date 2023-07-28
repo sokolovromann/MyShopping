@@ -8,6 +8,8 @@ sealed class SettingsScreenEvent {
 
     data class SendEmailToDeveloper(val email: String) : SettingsScreenEvent()
 
+    object ShowBackup : SettingsScreenEvent()
+
     object ShowBackScreen : SettingsScreenEvent()
 
     object ShowPurchases : SettingsScreenEvent()

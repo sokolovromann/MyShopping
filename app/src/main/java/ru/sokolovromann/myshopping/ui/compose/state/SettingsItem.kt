@@ -11,6 +11,7 @@ enum class SettingsUid {
     NoUId,
     NightTheme,
     FontSize,
+    Backup,
     DisplayMoney,
     Currency,
     DisplayCurrencyToLeft,

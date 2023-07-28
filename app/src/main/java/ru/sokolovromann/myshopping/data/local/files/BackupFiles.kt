@@ -42,7 +42,9 @@ class BackupFiles @Inject constructor(
         return@withContext try {
             val entityJson = encodeBackupFileEntity(entity)
             val displayName = createDisplayName()
-            val path = "/$relativePath/$displayName"
+
+            val extension = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ".txt" else ""
+            val resultPath = "/$relativePath/$displayName$extension"
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val values = ContentValues().apply {
@@ -57,17 +59,17 @@ class BackupFiles @Inject constructor(
                         write(entityJson.toByteArray())
                     }
                 }
-                Result.success(path)
+                Result.success(resultPath)
             } else {
                 val file = File("$pathname/$displayName")
                 val parentFile = file.parentFile
                 if (parentFile?.exists() == true) {
                     file.writeText(entityJson)
-                    Result.success(path)
+                    Result.success(resultPath)
                 } else {
                     if (parentFile?.mkdirs() == true) {
                         file.writeText(entityJson)
-                        Result.success(path)
+                        Result.success(resultPath)
                     } else {
                         val exception = Exception("Parent files not created")
                         Result.failure(exception)

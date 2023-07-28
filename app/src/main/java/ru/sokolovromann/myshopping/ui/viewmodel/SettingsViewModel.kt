@@ -94,6 +94,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.FontSize -> selectFontSize()
 
+            SettingsUid.Backup -> backup()
+
             SettingsUid.DisplayMoney -> invertDisplayMoney()
 
             SettingsUid.Currency -> editCurrencySymbol()
@@ -132,6 +134,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectFontSize() {
         settingsState.showFontSize()
+    }
+
+    private fun backup() = viewModelScope.launch(dispatchers.main) {
+        _screenEventFlow.emit(SettingsScreenEvent.ShowBackup)
     }
 
     private fun selectShoppingsProducts() {
