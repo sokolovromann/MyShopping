@@ -64,4 +64,8 @@ class SettingsPreferencesDao @Inject constructor(
     suspend fun invertHighlightCheckbox() {
         localDataStore.invertHighlightCheckbox()
     }
+
+    suspend fun invertDisplayOtherFields() {
+        localDataStore.invertDisplayOtherFields()
+    }
 }

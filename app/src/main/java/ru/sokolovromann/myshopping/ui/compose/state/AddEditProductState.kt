@@ -120,7 +120,8 @@ class AddEditProductState {
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney,
             enterToSaveProduct = preferences.enterToSaveProduct,
-            showNameOtherFields = showNameOtherFields,
+            displayOtherFields = preferences.displayOtherFields,
+            showNameOtherFields = preferences.displayOtherFields && showNameOtherFields,
             showPriceOtherFields = showPriceOtherFields
         )
 
@@ -731,6 +732,7 @@ data class AddEditProductScreenData(
     val fontSize: FontSize = FontSize.MEDIUM,
     val displayMoney: Boolean = true,
     val enterToSaveProduct: Boolean = true,
+    val displayOtherFields: Boolean = true,
     val showNameOtherFields: Boolean = false,
     val showPriceOtherFields: Boolean = false
 )

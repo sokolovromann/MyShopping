@@ -54,12 +54,12 @@ private fun Products.toProductItem(product: Product): ProductItem {
     val displayQuantity = product.quantity.isNotEmpty()
     val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
 
-    val brand = if (product.brand.isEmpty()) "" else " ${product.brand}"
-    val manufacturer = if (product.manufacturer.isEmpty()) "" else " • ${product.manufacturer}"
+    val brand = if (product.brand.isEmpty() || !preferences.displayOtherFields) "" else " ${product.brand}"
+    val manufacturer = if (product.manufacturer.isEmpty() || !preferences.displayOtherFields) "" else " • ${product.manufacturer}"
     val nameText: UiText = UiText.FromString("${product.name}$brand$manufacturer")
 
     var otherName = product.size
-    otherName += if (product.color.isEmpty()) {
+    otherName += if (product.color.isEmpty() || !preferences.displayOtherFields) {
         ""
     } else {
         if (product.size.isEmpty()) product.color else " • ${product.color}"

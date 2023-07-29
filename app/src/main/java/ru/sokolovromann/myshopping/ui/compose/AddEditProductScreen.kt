@@ -134,27 +134,29 @@ fun AddEditProductScreen(
                     keyboardActions = keyboardActions
                 )
 
-                Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
+                if (screenData.displayOtherFields) {
+                    Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
 
-                IconButton(
-                    modifier = Modifier
-                        .height(AddEditProductButtonHeight)
-                        .padding(AddEditProductButtonPaddings)
-                        .border(
-                            border = getButtonBorderStroke(),
-                            shape = MaterialTheme.shapes.small
-                        ),
-                    onClick = { viewModel.onEvent(AddEditProductEvent.InvertNameOtherFields) }
-                ) {
-                    Icon(
-                        imageVector = if (screenData.showNameOtherFields) {
-                            Icons.Default.KeyboardArrowUp
-                        } else {
-                            Icons.Default.KeyboardArrowDown
-                        },
-                        contentDescription = stringResource(R.string.addEditProduct_contentDescription_showNameOtherFields),
-                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                    )
+                    IconButton(
+                        modifier = Modifier
+                            .height(AddEditProductButtonHeight)
+                            .padding(AddEditProductButtonPaddings)
+                            .border(
+                                border = getButtonBorderStroke(),
+                                shape = MaterialTheme.shapes.small
+                            ),
+                        onClick = { viewModel.onEvent(AddEditProductEvent.InvertNameOtherFields) }
+                    ) {
+                        Icon(
+                            imageVector = if (screenData.showNameOtherFields) {
+                                Icons.Default.KeyboardArrowUp
+                            } else {
+                                Icons.Default.KeyboardArrowDown
+                            },
+                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_showNameOtherFields),
+                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                        )
+                    }
                 }
             }
 

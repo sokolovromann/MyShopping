@@ -173,4 +173,8 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun invertHighlightCheckbox(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertHighlightCheckbox()
     }
+
+    override suspend fun invertDisplayOtherFields(): Unit = withContext(dispatchers.io) {
+        preferencesDao.invertDisplayOtherFields()
+    }
 }

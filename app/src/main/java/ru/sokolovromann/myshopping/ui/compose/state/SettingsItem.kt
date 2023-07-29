@@ -21,6 +21,7 @@ enum class SettingsUid {
     EditProductAfterCompleted,
     CompletedWithCheckbox,
     DisplayShoppingsProducts,
+    DisplayOtherFields,
     EnterToSaveProducts,
     HighlightCheckbox,
     SaveProductToAutocompletes,

@@ -60,4 +60,6 @@ interface SettingsRepository {
     suspend fun hideShoppingsProductsIfHasTitle()
 
     suspend fun invertHighlightCheckbox()
+
+    suspend fun invertDisplayOtherFields()
 }

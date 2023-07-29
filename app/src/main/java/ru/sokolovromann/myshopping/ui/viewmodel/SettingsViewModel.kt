@@ -108,6 +108,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.DisplayCompletedPurchases -> selectDisplayCompletedPurchases()
 
+            SettingsUid.DisplayOtherFields -> invertDisplayOtherFields()
+
             SettingsUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
 
             SettingsUid.CompletedWithCheckbox -> invertCompletedWithCheckbox()
@@ -233,6 +235,10 @@ class SettingsViewModel @Inject constructor(
 
     private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
         repository.invertDisplayDefaultAutocompletes()
+    }
+
+    private fun invertDisplayOtherFields() = viewModelScope.launch {
+        repository.invertDisplayOtherFields()
     }
 
     private fun enterToSaveProducts() = viewModelScope.launch {

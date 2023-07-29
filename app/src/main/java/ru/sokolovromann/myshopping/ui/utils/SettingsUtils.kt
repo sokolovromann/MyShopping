@@ -102,6 +102,12 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
             bodyText = preferences.displayShoppingsProducts.toPurchasesSettingsText()
         ),
         SettingsItem(
+            uid = SettingsUid.DisplayOtherFields,
+            titleText = UiText.FromResources(R.string.settings_title_displayOtherFields),
+            bodyText = UiText.FromResources(R.string.settings_body_displayOtherFields),
+            checked = preferences.displayOtherFields
+        ),
+        SettingsItem(
             uid = SettingsUid.EnterToSaveProducts,
             titleText = UiText.FromResources(R.string.settings_title_enterToSaveProduct),
             bodyText = UiText.FromResources(R.string.settings_body_enterToSaveProduct),

@@ -120,7 +120,7 @@ private fun productsToPair(
     val displayQuantity = product.quantity.isNotEmpty()
     val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted
 
-    var productsText = if (product.brand.isEmpty()) "" else " ${product.brand}"
+    var productsText = if (product.brand.isEmpty() || !preferences.displayOtherFields) "" else " ${product.brand}"
     productsText += if (displayPrice) {
         if (displayQuantity) {
             " • ${product.quantity} • ${product.formatTotal()}"

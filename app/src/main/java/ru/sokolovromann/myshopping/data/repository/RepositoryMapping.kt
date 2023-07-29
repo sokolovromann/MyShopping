@@ -259,7 +259,8 @@ class RepositoryMapping @Inject constructor() {
             completedWithCheckbox = entity.completedWithCheckbox,
             displayShoppingsProducts = toDisplayProducts(entity.displayShoppingsProducts),
             enterToSaveProduct = entity.enterToSaveProduct,
-            highlightCheckbox = entity.highlightCheckbox
+            highlightCheckbox = entity.highlightCheckbox,
+            displayOtherFields = entity.displayOtherFields
         )
     }
 
@@ -286,7 +287,8 @@ class RepositoryMapping @Inject constructor() {
             completedWithCheckbox = appPreferences.completedWithCheckbox,
             displayShoppingsProducts = toDisplayProductsName(appPreferences.displayShoppingsProducts),
             enterToSaveProduct = appPreferences.enterToSaveProduct,
-            highlightCheckbox = appPreferences.highlightCheckbox
+            highlightCheckbox = appPreferences.highlightCheckbox,
+            displayOtherFields = appPreferences.displayOtherFields
         )
     }
 
