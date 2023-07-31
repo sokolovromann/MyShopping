@@ -351,6 +351,11 @@ private fun SettingsDisplayCompletedMenu(
             text = { Text(text = stringResource(R.string.settings_action_hideCompletedPurchases)) },
             right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
         )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayCompleted.NO_SPLIT) },
+            text = { Text(text = stringResource(R.string.settings_action_noSplitCompletedPurchases)) },
+            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.NO_SPLIT) }
+        )
     }
 }
 

@@ -15,11 +15,14 @@ data class ShoppingListNotification(
 
     fun body(): String {
         var body = ""
-        shoppingList.products
-            .sortProducts()
-            .splitProducts(preferences.displayCompletedPurchases)
-            .forEach { body += "${it.name}, " }
+        val sorted = shoppingList.products.sortProducts()
+        val products = if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+            sorted
+        } else {
+            sorted.splitProducts(preferences.displayCompletedPurchases)
+        }
 
+        products.forEach { body += "${it.name}, " }
         return body.dropLast(2)
     }
 }

@@ -35,8 +35,8 @@ class TrashState {
         val preferences = shoppingLists.preferences
 
         val shoppingListItems = when (preferences.displayCompletedPurchases) {
-            DisplayCompleted.FIRST, DisplayCompleted.LAST -> shoppingLists.getAllShoppingListItems(splitByPinned = false)
-            else -> shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST)
+            DisplayCompleted.HIDE -> shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST)
+            else -> shoppingLists.getAllShoppingListItems(splitByPinned = false)
         }
 
         screenData = TrashScreenData(

@@ -187,6 +187,7 @@ class SettingsViewModel @Inject constructor(
             DisplayCompleted.FIRST -> repository.displayCompletedPurchasesFirst()
             DisplayCompleted.LAST -> repository.displayCompletedPurchasesLast()
             DisplayCompleted.HIDE -> repository.hideCompletedPurchases()
+            DisplayCompleted.NO_SPLIT -> repository.noSplitCompletedPurchases()
         }
 
         withContext(dispatchers.main) {

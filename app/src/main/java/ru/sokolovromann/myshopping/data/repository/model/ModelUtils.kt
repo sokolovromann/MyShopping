@@ -102,6 +102,7 @@ fun List<ShoppingList>.splitShoppingLists(displayCompleted: DisplayCompleted): L
             DisplayCompleted.HIDE -> {
                 addAll(partition.second)
             }
+            DisplayCompleted.NO_SPLIT -> {}
         }
     }
 }
@@ -121,6 +122,7 @@ fun List<Product>.splitProducts(displayCompleted: DisplayCompleted): List<Produc
             DisplayCompleted.HIDE -> {
                 addAll(partition.second)
             }
+            DisplayCompleted.NO_SPLIT -> {}
         }
     }
 }

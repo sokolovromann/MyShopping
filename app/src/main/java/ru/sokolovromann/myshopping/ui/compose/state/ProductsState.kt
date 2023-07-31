@@ -101,8 +101,8 @@ class ProductsState {
 
         val otherProducts = if (location == ShoppingListLocation.TRASH) {
             when (preferences.displayCompletedPurchases) {
-                DisplayCompleted.FIRST, DisplayCompleted.LAST -> products.getOtherProductItems()
-                else -> products.getOtherProductItems(DisplayCompleted.LAST)
+                DisplayCompleted.HIDE -> products.getOtherProductItems(DisplayCompleted.LAST)
+                else -> products.getOtherProductItems()
             }
         } else {
             products.getOtherProductItems()

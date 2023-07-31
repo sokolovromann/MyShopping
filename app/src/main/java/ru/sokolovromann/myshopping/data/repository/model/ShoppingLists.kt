@@ -23,7 +23,7 @@ data class ShoppingLists(
                 }
                 .sortShoppingLists()
 
-            if (displayCompleted == null) {
+            if (displayCompleted == null || displayCompleted == DisplayCompleted.NO_SPLIT) {
                 sorted
             } else {
                 sorted.splitShoppingLists(displayCompleted)
@@ -33,18 +33,26 @@ data class ShoppingLists(
         return list
     }
 
-    fun getActivePinnedShoppingLists(): List<ShoppingList> {
-        return getPinnedAndOtherShoppingLists().first
+    fun getActivePinnedShoppingLists(
+        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+    ): List<ShoppingList> {
+        val sorted = getPinnedAndOtherShoppingLists().first
             .map {
-                val sortedProducts = getSortedProducts(it.products, null, it.sort, it.sortFormatted)
+                val sortedProducts = getSortedProducts(it.products, displayCompleted, it.sort, it.sortFormatted)
                 it.copy(products = sortedProducts)
             }
             .sortShoppingLists()
+
+        return if (displayCompleted == null || displayCompleted == DisplayCompleted.NO_SPLIT) {
+            sorted
+        } else {
+            sorted.splitShoppingLists(displayCompleted)
+        }
     }
 
     fun getOtherShoppingLists(
-        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases)
-            : List<ShoppingList> {
+        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+    ): List<ShoppingList> {
         val sorted = getPinnedAndOtherShoppingLists().second
             .map {
                 val sortedProducts = getSortedProducts(it.products, displayCompleted, it.sort, it.sortFormatted)
@@ -52,7 +60,7 @@ data class ShoppingLists(
             }
             .sortShoppingLists()
 
-        return if (displayCompleted == null) {
+        return if (displayCompleted == null || displayCompleted == DisplayCompleted.NO_SPLIT) {
             sorted
         } else {
             sorted.splitShoppingLists(displayCompleted)
@@ -91,7 +99,13 @@ data class ShoppingLists(
     }
 
     private fun getPinnedAndOtherShoppingLists(): Pair<List<ShoppingList>, List<ShoppingList>> {
-        return shoppingLists.partition { it.pinned && !it.completed }
+        return shoppingLists.partition {
+            if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+                it.pinned
+            } else {
+                it.pinned && !it.completed
+            }
+        }
     }
 
     private fun getSortedProducts(
@@ -104,12 +118,18 @@ data class ShoppingLists(
 
         val productsPartition = product
             .sortProducts(sort)
-            .partition { it.pinned }
+            .partition {
+                if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+                    it.pinned
+                } else {
+                    it.pinned && !it.completed
+                }
+            }
 
         val sorted = productsPartition.first.toMutableList()
             .apply { addAll(productsPartition.second) }
 
-        return if (displayCompleted == null) {
+        return if (displayCompleted == null || displayCompleted == DisplayCompleted.NO_SPLIT) {
             sorted
         } else {
             sorted.splitProducts(displayCompleted)

@@ -17,9 +17,16 @@ data class Products(
         return shoppingList.totalFormatted
     }
 
-    fun getActivePinnedProducts(): List<Product> {
+    fun getActivePinnedProducts(
+        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+    ): List<Product> {
         val sort = if (shoppingList.sortFormatted) shoppingList.sort else Sort()
-        return getPinnedAndOtherProducts().first.sortProducts(sort)
+        val sorted = getPinnedAndOtherProducts().first.sortProducts(sort)
+        return if (displayCompleted == null || displayCompleted == DisplayCompleted.NO_SPLIT) {
+            sorted
+        } else {
+            sorted.splitProducts(displayCompleted)
+        }
     }
 
     fun getOtherProducts(
@@ -27,7 +34,7 @@ data class Products(
     ): List<Product> {
         val sort = if (shoppingList.sortFormatted) shoppingList.sort else Sort()
         val sorted = getPinnedAndOtherProducts().second.sortProducts(sort)
-        return if (displayCompleted == null) {
+        return if (displayCompleted == null || displayCompleted == DisplayCompleted.NO_SPLIT) {
             sorted
         } else {
             sorted.splitProducts(displayCompleted)
@@ -104,6 +111,12 @@ data class Products(
     }
 
     private fun getPinnedAndOtherProducts(): Pair<List<Product>, List<Product>> {
-        return shoppingList.products.partition { it.pinned && !it.completed }
+        return shoppingList.products.partition {
+            if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+                it.pinned
+            } else {
+                it.pinned && !it.completed
+            }
+        }
     }
 }

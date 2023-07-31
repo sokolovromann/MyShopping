@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 enum class DisplayCompleted {
 
-    FIRST, LAST, HIDE;
+    FIRST, LAST, HIDE, NO_SPLIT;
 
     companion object {
         val DefaultValue: DisplayCompleted = LAST

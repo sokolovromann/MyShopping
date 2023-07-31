@@ -240,6 +240,7 @@
     <string name="settings_action_hideCompletedPurchases">Hide</string>
     <string name="settings_action_hideShoppingsProducts">Always hide</string>
     <string name="settings_action_hideShoppingsProductsIfHasTitle">Hide if there is a title</string>
+    <string name="settings_action_noSplitCompletedPurchases">No split</string>
     <string name="settings_action_selectHuge2FontSize">Huge 2</string>
     <string name="settings_action_selectHuge3FontSize">Huge 3</string>
     <string name="settings_action_selectHugeFontSize">Huge 1</string>

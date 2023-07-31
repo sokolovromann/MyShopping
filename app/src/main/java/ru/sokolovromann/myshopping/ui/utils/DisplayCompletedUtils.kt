@@ -8,4 +8,5 @@ fun DisplayCompleted.toPurchasesSettingsText(): UiText = when (this) {
     DisplayCompleted.FIRST -> UiText.FromResources(R.string.settings_action_displayCompletedPurchasesFirst)
     DisplayCompleted.LAST -> UiText.FromResources(R.string.settings_action_displayCompletedPurchasesLast)
     DisplayCompleted.HIDE -> UiText.FromResources(R.string.settings_action_hideCompletedPurchases)
+    DisplayCompleted.NO_SPLIT -> UiText.FromResources(R.string.settings_action_noSplitCompletedPurchases)
 }

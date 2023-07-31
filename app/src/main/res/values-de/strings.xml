@@ -328,6 +328,7 @@
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
     <string name="settings_action_hideShoppingsProducts">Verstecken</string>
     <string name="settings_action_hideShoppingsProductsIfHasTitle">Nicht mit Titel anzeigen</string>
+    <string name="settings_action_noSplitCompletedPurchases">Keine Trennung</string>
     <string name="settings_action_selectHuge2FontSize">Riesig 2</string>
     <string name="settings_action_selectHuge3FontSize">Riesig 3</string>
     <string name="settings_action_selectHugeFontSize">Riesig 1</string>

@@ -177,4 +177,9 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun invertDisplayOtherFields(): Unit = withContext(dispatchers.io) {
         preferencesDao.invertDisplayOtherFields()
     }
+
+    override suspend fun noSplitCompletedPurchases(): Unit = withContext(dispatchers.io) {
+        val displayCompleted = mapping.toDisplayCompletedName(DisplayCompleted.NO_SPLIT)
+        preferencesDao.displayCompletedPurchases(displayCompleted)
+    }
 }

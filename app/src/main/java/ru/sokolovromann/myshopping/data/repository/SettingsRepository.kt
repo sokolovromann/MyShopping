@@ -62,4 +62,6 @@ interface SettingsRepository {
     suspend fun invertHighlightCheckbox()
 
     suspend fun invertDisplayOtherFields()
+
+    suspend fun noSplitCompletedPurchases()
 }
