@@ -26,6 +26,7 @@ class MoveProductState {
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             smartphoneScreen = preferences.smartphoneScreen,
             location = location,
@@ -57,6 +58,7 @@ class MoveProductState {
             pinnedShoppingLists = pinnedShoppingLists,
             otherShoppingLists = otherShoppingLists,
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -140,6 +142,7 @@ data class MoveProductScreenData(
     val pinnedShoppingLists: List<ShoppingListItem> = listOf(),
     val otherShoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
+    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val shoppingListSelectedUid: String? = null,
     val multiColumns: Boolean = false,

@@ -121,6 +121,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 pinnedItems = screenData.pinnedShoppingLists,
                 otherItems = screenData.otherShoppingLists,
                 displayProducts = screenData.displayProducts,
+                displayCompleted = screenData.displayCompleted,
                 highlightCheckbox = screenData.highlightCheckbox,
                 fontSize = screenData.fontSize,
                 onClick = {

@@ -22,6 +22,7 @@ class TrashState {
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             showBottomBar = false,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -43,6 +44,7 @@ class TrashState {
             screenState = ScreenState.Showing,
             shoppingLists = shoppingListItems,
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.shoppingsMultiColumns,
@@ -87,6 +89,7 @@ data class TrashScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
+    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,

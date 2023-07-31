@@ -35,6 +35,7 @@ fun ShoppingListsGrid(
     pinnedItems: List<ShoppingListItem> = listOf(),
     otherItems: List<ShoppingListItem>,
     displayProducts: DisplayProducts,
+    displayCompleted: DisplayCompleted,
     highlightCheckbox: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
@@ -87,7 +88,7 @@ fun ShoppingListsGrid(
                     dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                     onClick = { onClick(item.uid) },
                     onLongClick = { onLongClick(item.uid) },
-                    backgroundColor = getAppItemBackgroundColor(selected, item.completed)
+                    backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
                 )
             }
 
@@ -125,7 +126,7 @@ fun ShoppingListsGrid(
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 onClick = { onClick(item.uid) },
                 onLongClick = { onLongClick(item.uid) },
-                backgroundColor = getAppItemBackgroundColor(selected, item.completed)
+                backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
             )
         }
     }

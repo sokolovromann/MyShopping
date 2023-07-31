@@ -158,6 +158,7 @@ fun TrashScreen(
             smartphoneScreen = screenData.smartphoneScreen,
             otherItems = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
+            displayCompleted = screenData.displayCompleted,
             highlightCheckbox = screenData.highlightCheckbox,
             topBar = {
                 TextButton(

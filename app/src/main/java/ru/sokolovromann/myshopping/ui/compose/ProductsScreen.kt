@@ -349,14 +349,19 @@ fun ProductsScreen(
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
             highlightCheckbox = screenData.highlightCheckbox,
+            displayCompleted = screenData.displayCompleted,
             pinnedItems = screenData.pinnedProducts,
             otherItems = screenData.otherProducts,
             topBar = {
                 if (screenData.shoppingListName != UiText.Nothing || screenData.reminderText != UiText.Nothing) {
-                    val backgroundColor = if (screenData.shoppingListCompleted) {
-                        MaterialTheme.colors.background
-                    } else {
+                    val backgroundColor = if (screenData.displayCompleted == DisplayCompleted.NO_SPLIT) {
                         MaterialTheme.colors.surface
+                    } else {
+                        if (screenData.shoppingListCompleted) {
+                            MaterialTheme.colors.background
+                        } else {
+                            MaterialTheme.colors.surface
+                        }
                     }
                     val shape = if (screenData.multiColumns) MaterialTheme.shapes.medium else RectangleShape
                     Column(modifier = Modifier
@@ -583,6 +588,7 @@ private fun ProductsGrid(
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
     highlightCheckbox: Boolean,
+    displayCompleted: DisplayCompleted,
     pinnedItems: List<ProductItem>,
     otherItems: List<ProductItem>,
     topBar: @Composable RowScope.() -> Unit,
@@ -644,7 +650,7 @@ private fun ProductsGrid(
                     longClickableEnabled = longClickableEnabled,
                     onClick = { onClick(item.uid, item.completed) },
                     onLongClick = { onLongClick(item.uid) },
-                    backgroundColor = getAppItemBackgroundColor(selected, item.completed)
+                    backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
                 )
             }
 
@@ -689,7 +695,7 @@ private fun ProductsGrid(
                 longClickableEnabled = longClickableEnabled,
                 onClick = { onClick(item.uid, item.completed) },
                 onLongClick = { onLongClick(item.uid) },
-                backgroundColor = getAppItemBackgroundColor(selected, item.completed)
+                backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
             )
         }
     }

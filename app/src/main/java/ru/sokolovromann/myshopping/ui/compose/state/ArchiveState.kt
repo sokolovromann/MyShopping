@@ -37,6 +37,7 @@ class ArchiveState {
         screenData = ArchiveScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             totalText = totalText,
             multiColumnsText = multiColumnsText,
@@ -69,6 +70,7 @@ class ArchiveState {
             screenState = ScreenState.Showing,
             shoppingLists = shoppingLists.getAllShoppingListItems(splitByPinned = false),
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
@@ -214,6 +216,7 @@ data class ArchiveScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val shoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
+    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val totalText: UiText = UiText.Nothing,
     val multiColumns: Boolean = false,

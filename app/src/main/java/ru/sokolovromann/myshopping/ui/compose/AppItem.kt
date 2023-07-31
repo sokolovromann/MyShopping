@@ -184,14 +184,18 @@ fun itemOrNull(enabled: Boolean, content: @Composable () -> Unit): @Composable (
 }
 
 @Composable
-fun getAppItemBackgroundColor(selected: Boolean, completed: Boolean): Color {
+fun getAppItemBackgroundColor(selected: Boolean, completed: Boolean, noSplit: Boolean): Color {
     return if (selected) {
         MaterialTheme.colors.primary.copy(alpha = ContentAlpha.disabled)
     } else {
-        if (completed) {
-            MaterialTheme.colors.background
-        } else {
+        if (noSplit) {
             MaterialTheme.colors.surface
+        } else {
+            if (completed) {
+                MaterialTheme.colors.background
+            } else {
+                MaterialTheme.colors.surface
+            }
         }
     }
 }

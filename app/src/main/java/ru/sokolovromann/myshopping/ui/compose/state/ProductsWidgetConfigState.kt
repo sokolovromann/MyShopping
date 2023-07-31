@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
@@ -42,6 +43,7 @@ class ProductsWidgetConfigState {
         screenData = ProductsWidgetConfigScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             smartphoneScreen = preferences.smartphoneScreen,
             fontSize = preferences.fontSize
@@ -60,6 +62,7 @@ class ProductsWidgetConfigState {
             pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
             otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
             displayProducts = preferences.displayShoppingsProducts,
+            displayCompleted = preferences.displayCompletedPurchases,
             highlightCheckbox = preferences.highlightCheckbox,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
@@ -82,6 +85,7 @@ data class ProductsWidgetConfigScreenData(
     val pinnedShoppingLists: List<ShoppingListItem> = listOf(),
     val otherShoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
+    val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val highlightCheckbox: Boolean = false,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
