@@ -49,6 +49,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ProductsWidgetRepository
 import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.ui.MainActivity
@@ -105,7 +106,8 @@ class ProductsWidget : GlanceAppWidget() {
                 ProductsWidgetName(
                     name = products.value.shoppingList.name,
                     fontSize = products.value.preferences.fontSize,
-                    completed = products.value.isCompleted()
+                    completed = products.value.isCompleted(),
+                    noSplit = products.value.preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT
                 )
 
                 ProductsWidgetNotFound(
@@ -186,16 +188,21 @@ private fun createAction(uid: String): String {
 private fun ProductsWidgetName(
     name: String,
     fontSize: FontSize,
-    completed: Boolean
+    completed: Boolean,
+    noSplit: Boolean
 ) {
     if (name.isEmpty()) {
         return
     }
 
-    val background = if (completed) {
-        R.color.gray_200
-    } else {
+    val background = if (noSplit) {
         R.color.white
+    } else {
+        if (completed) {
+            R.color.gray_200
+        } else {
+            R.color.white
+        }
     }
 
     Column(
@@ -288,7 +295,8 @@ private fun ProductsWidgetProducts(
             ProductsWidgetName(
                 name = name,
                 fontSize = preferences.fontSize,
-                completed = completed
+                completed = completed,
+                noSplit = preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT
             )
         }
         items(pinnedItems) {
@@ -314,7 +322,12 @@ private fun ProductsWidgetItem(
     preferences: AppPreferences,
     onCheckedChange: (ProductWidgetItem) -> Unit
 ) {
-    val backgroundColorResId = if (widgetItem.completed) R.color.gray_200 else R.color.white
+    val backgroundColorResId = if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+        R.color.white
+    } else {
+        if (widgetItem.completed) R.color.gray_200 else R.color.white
+    }
+
     val rowModifier = GlanceModifier
         .fillMaxWidth()
         .background(ColorProvider(backgroundColorResId))
