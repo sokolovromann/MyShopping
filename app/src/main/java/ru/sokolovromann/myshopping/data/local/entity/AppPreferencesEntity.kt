@@ -25,6 +25,6 @@ data class AppPreferencesEntity(
     val completedWithCheckbox: Boolean = true,
     val displayShoppingsProducts: String = "",
     val enterToSaveProduct: Boolean = true,
-    val highlightCheckbox: Boolean = false,
+    val coloredCheckbox: Boolean = false,
     val displayOtherFields: Boolean = true
 )

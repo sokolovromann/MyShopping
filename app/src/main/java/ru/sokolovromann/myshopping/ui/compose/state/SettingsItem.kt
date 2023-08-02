@@ -23,7 +23,7 @@ enum class SettingsUid {
     DisplayShoppingsProducts,
     DisplayOtherFields,
     EnterToSaveProducts,
-    HighlightCheckbox,
+    ColoredCheckbox,
     SaveProductToAutocompletes,
     MigrateFromAppVersion14,
     Email,

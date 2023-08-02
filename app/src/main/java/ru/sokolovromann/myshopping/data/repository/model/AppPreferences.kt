@@ -20,6 +20,6 @@ data class AppPreferences(
     val completedWithCheckbox: Boolean = true,
     val displayShoppingsProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val enterToSaveProduct: Boolean = true,
-    val highlightCheckbox: Boolean = false,
+    val coloredCheckbox: Boolean = false,
     val displayOtherFields: Boolean = true
 )

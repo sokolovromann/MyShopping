@@ -118,7 +118,7 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.EnterToSaveProducts -> enterToSaveProducts()
 
-            SettingsUid.HighlightCheckbox -> highlightCheckbox()
+            SettingsUid.ColoredCheckbox -> invertColoredCheckbox()
 
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
@@ -246,8 +246,8 @@ class SettingsViewModel @Inject constructor(
         repository.invertEnterToSaveProduct()
     }
 
-    private fun highlightCheckbox() = viewModelScope.launch {
-        repository.invertHighlightCheckbox()
+    private fun invertColoredCheckbox() = viewModelScope.launch {
+        repository.invertColoredCheckbox()
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 

@@ -159,7 +159,7 @@ fun TrashScreen(
             otherItems = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
             displayCompleted = screenData.displayCompleted,
-            highlightCheckbox = screenData.highlightCheckbox,
+            coloredCheckbox = screenData.coloredCheckbox,
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),

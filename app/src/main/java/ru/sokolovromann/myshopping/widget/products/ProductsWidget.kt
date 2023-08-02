@@ -347,7 +347,7 @@ private fun ProductsWidgetItem(
         ProductsWidgetCheckbox(
             checked = widgetItem.completed,
             checkedWithCheckbox = preferences.completedWithCheckbox,
-            highlightCheckbox = preferences.highlightCheckbox,
+            coloredCheckbox = preferences.coloredCheckbox,
             onCheckedChange = { onCheckedChange(widgetItem) }
         )
 
@@ -365,10 +365,10 @@ private fun ProductsWidgetItem(
 private fun ProductsWidgetCheckbox(
     checked: Boolean,
     checkedWithCheckbox: Boolean,
-    highlightCheckbox: Boolean,
+    coloredCheckbox: Boolean,
     onCheckedChange: () -> Unit
 ) {
-    val color = if (highlightCheckbox) {
+    val color = if (coloredCheckbox) {
         if (checked) ProductsWidget.GreenColor else Color.Red
     } else {
         ProductsWidget.BlackOpacity75Color

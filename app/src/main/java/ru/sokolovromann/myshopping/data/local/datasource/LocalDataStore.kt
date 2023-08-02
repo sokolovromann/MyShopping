@@ -39,7 +39,7 @@ class LocalDataStore @Inject constructor(
     private val completedWithCheckboxKey = booleanPreferencesKey("completed_with_checkbox")
     private val displayShoppingsProductsKey = stringPreferencesKey("display_shoppings_products")
     private val enterToSaveProductKey = booleanPreferencesKey("enter_to_save_product")
-    private val highlightCheckboxKey = booleanPreferencesKey("highlight_checkbox")
+    private val coloredCheckboxKey = booleanPreferencesKey("highlight_checkbox")
     private val displayOtherFieldsKey = booleanPreferencesKey("display_other_fields")
 
     suspend fun getAppPreferences(): Flow<AppPreferencesEntity> = withContext(dispatchers.io) {
@@ -66,7 +66,7 @@ class LocalDataStore @Inject constructor(
                 completedWithCheckbox = it[completedWithCheckboxKey] ?: true,
                 displayShoppingsProducts = it[displayShoppingsProductsKey] ?: "",
                 enterToSaveProduct = it[enterToSaveProductKey] ?: true,
-                highlightCheckbox = it[highlightCheckboxKey] ?: false,
+                coloredCheckbox = it[coloredCheckboxKey] ?: false,
                 displayOtherFields = it[displayOtherFieldsKey] ?: true
             )
         }
@@ -95,7 +95,7 @@ class LocalDataStore @Inject constructor(
             it[completedWithCheckboxKey] = entity.completedWithCheckbox
             it[displayShoppingsProductsKey] = entity.displayShoppingsProducts
             it[enterToSaveProductKey] = entity.enterToSaveProduct
-            it[highlightCheckboxKey] = entity.highlightCheckbox
+            it[coloredCheckboxKey] = entity.coloredCheckbox
             it[displayOtherFieldsKey] = entity.displayOtherFields
         }
     }
@@ -202,10 +202,10 @@ class LocalDataStore @Inject constructor(
         }
     }
 
-    suspend fun invertHighlightCheckbox() = withContext(dispatchers.io) {
+    suspend fun invertColoredCheckbox() = withContext(dispatchers.io) {
         dataStore.edit {
-            val highlightCheckbox = it[highlightCheckboxKey] ?: false
-            it[highlightCheckboxKey] = !highlightCheckbox
+            val coloredCheckbox = it[coloredCheckboxKey] ?: false
+            it[coloredCheckboxKey] = !coloredCheckbox
         }
     }
 

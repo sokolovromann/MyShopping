@@ -74,7 +74,7 @@ fun CopyProductScreen(
             otherItems = screenData.otherShoppingLists,
             displayProducts = screenData.displayProducts,
             displayCompleted = screenData.displayCompleted,
-            highlightCheckbox = screenData.highlightCheckbox,
+            coloredCheckbox = screenData.coloredCheckbox,
             topBar = {
                 Row {
                     ShoppingListsLocationContent(

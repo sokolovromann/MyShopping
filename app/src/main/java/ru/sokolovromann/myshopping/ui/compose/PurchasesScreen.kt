@@ -261,7 +261,7 @@ fun PurchasesScreen(
             otherItems = screenData.otherShoppingLists,
             displayProducts = screenData.displayProducts,
             displayCompleted = screenData.displayCompleted,
-            highlightCheckbox = screenData.highlightCheckbox,
+            coloredCheckbox = screenData.coloredCheckbox,
             bottomBar = {
                 if (screenData.showHiddenShoppingLists) {
                     ShoppingListsHiddenContent(

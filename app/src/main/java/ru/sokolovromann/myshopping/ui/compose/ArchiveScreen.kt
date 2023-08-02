@@ -238,7 +238,7 @@ fun ArchiveScreen(
             otherItems = screenData.shoppingLists,
             displayProducts = screenData.displayProducts,
             displayCompleted = screenData.displayCompleted,
-            highlightCheckbox = screenData.highlightCheckbox,
+            coloredCheckbox = screenData.coloredCheckbox,
             bottomBar = {
                 if (screenData.showHiddenShoppingLists) {
                     ShoppingListsHiddenContent(

@@ -44,7 +44,7 @@ class ProductsWidgetConfigState {
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
             displayCompleted = preferences.displayCompletedPurchases,
-            highlightCheckbox = preferences.highlightCheckbox,
+            coloredCheckbox = preferences.coloredCheckbox,
             smartphoneScreen = preferences.smartphoneScreen,
             fontSize = preferences.fontSize
         )
@@ -63,7 +63,7 @@ class ProductsWidgetConfigState {
             otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
             displayProducts = preferences.displayShoppingsProducts,
             displayCompleted = preferences.displayCompletedPurchases,
-            highlightCheckbox = preferences.highlightCheckbox,
+            coloredCheckbox = preferences.coloredCheckbox,
             multiColumns = preferences.shoppingsMultiColumns,
             smartphoneScreen = preferences.smartphoneScreen,
             fontSize = preferences.fontSize
@@ -86,7 +86,7 @@ data class ProductsWidgetConfigScreenData(
     val otherShoppingLists: List<ShoppingListItem> = listOf(),
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
-    val highlightCheckbox: Boolean = false,
+    val coloredCheckbox: Boolean = false,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
     val fontSize: FontSize = FontSize.MEDIUM

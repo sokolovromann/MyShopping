@@ -255,7 +255,7 @@
     <string name="settings_body_email">Tap to write email</string>
     <string name="settings_body_enterToSaveProduct">If enabled, a product can be saved by tapping Enter</string>
     <string name="settings_body_github">Tap to open</string>
-    <string name="settings_body_highlightCheckbox">If enabled, checkboxes will be colored red or green</string>
+    <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_migrateFromAppVersion14">Data is automatically transferred to a new version of the app. But if the data was not transferred, then you can force it to be transferred to the new version of the app. All data created after update will be deleted.</string>
     <string name="settings_body_nightTheme">Except widgets</string>
     <string name="settings_body_privacy_policy">Tap to read</string>
@@ -285,7 +285,7 @@
     <string name="settings_title_enterToSaveProduct">Enter to save product</string>
     <string name="settings_title_fontSize">Font size</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_highlightCheckbox">Colored checkboxes</string>
+    <string name="settings_title_coloredCheckbox">Colored checkboxes</string>
     <string name="settings_title_migrateFromAppVersion14">Migrate from version 1.3.5 and down</string>
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_privacy_policy">Privacy policy</string>

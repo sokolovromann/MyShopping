@@ -348,7 +348,7 @@ fun ProductsScreen(
             screenState = screenData.screenState,
             multiColumns = screenData.multiColumns,
             smartphoneScreen = screenData.smartphoneScreen,
-            highlightCheckbox = screenData.highlightCheckbox,
+            coloredCheckbox = screenData.coloredCheckbox,
             displayCompleted = screenData.displayCompleted,
             pinnedItems = screenData.pinnedProducts,
             otherItems = screenData.otherProducts,
@@ -587,7 +587,7 @@ private fun ProductsGrid(
     screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
-    highlightCheckbox: Boolean,
+    coloredCheckbox: Boolean,
     displayCompleted: DisplayCompleted,
     pinnedItems: List<ProductItem>,
     otherItems: List<ProductItem>,
@@ -641,7 +641,7 @@ private fun ProductsGrid(
 
                 AppMultiColumnsItem(
                     multiColumns = multiColumns,
-                    left = getProductItemLeft(highlightCheckbox, item.completed, leftOnClick),
+                    left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
                     title = getProductItemTitleOrNull(item.nameText, fontSize),
                     body = getProductItemBodyOrNull(item.bodyText, fontSize),
                     right = getProductItemRightOrNull(selected),
@@ -686,7 +686,7 @@ private fun ProductsGrid(
 
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
-                left = getProductItemLeft(highlightCheckbox, item.completed, leftOnClick),
+                left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
                 title = getProductItemTitleOrNull(item.nameText, fontSize),
                 body = getProductItemBodyOrNull(item.bodyText, fontSize),
                 right = getProductItemRightOrNull(selected),

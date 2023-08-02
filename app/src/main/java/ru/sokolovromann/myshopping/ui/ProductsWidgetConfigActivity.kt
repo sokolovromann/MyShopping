@@ -122,7 +122,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 otherItems = screenData.otherShoppingLists,
                 displayProducts = screenData.displayProducts,
                 displayCompleted = screenData.displayCompleted,
-                highlightCheckbox = screenData.highlightCheckbox,
+                coloredCheckbox = screenData.coloredCheckbox,
                 fontSize = screenData.fontSize,
                 onClick = {
                     val event = ProductsWidgetConfigEvent.SelectShoppingList(it)

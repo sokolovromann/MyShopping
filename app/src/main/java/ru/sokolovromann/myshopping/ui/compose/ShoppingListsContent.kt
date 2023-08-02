@@ -36,7 +36,7 @@ fun ShoppingListsGrid(
     otherItems: List<ShoppingListItem>,
     displayProducts: DisplayProducts,
     displayCompleted: DisplayCompleted,
-    highlightCheckbox: Boolean,
+    coloredCheckbox: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
@@ -80,7 +80,7 @@ fun ShoppingListsGrid(
                         )
                     },
                     left = getShoppingListItemLeftOrNull(
-                        highlightCheckbox = highlightCheckbox,
+                        highlightCheckbox = coloredCheckbox,
                         checked = item.completed,
                         displayProducts = displayProducts
                     ),
@@ -118,7 +118,7 @@ fun ShoppingListsGrid(
                     )
                 },
                 left = getShoppingListItemLeftOrNull(
-                    highlightCheckbox = highlightCheckbox,
+                    highlightCheckbox = coloredCheckbox,
                     checked = item.completed,
                     displayProducts = displayProducts
                 ),
