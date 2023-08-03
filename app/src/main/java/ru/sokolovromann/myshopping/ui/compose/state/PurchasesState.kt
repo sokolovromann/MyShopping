@@ -8,6 +8,7 @@ import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
 import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
+import java.util.UUID
 
 class PurchasesState {
 
@@ -104,6 +105,10 @@ class PurchasesState {
         )
     }
 
+    fun showSelectedMenu() {
+        screenData = screenData.copy(showSelectedMenu = true)
+    }
+
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
             otherShoppingLists = shoppingLists.getOtherShoppingListItems(DisplayCompleted.LAST),
@@ -142,7 +147,8 @@ class PurchasesState {
 
         screenData = screenData.copy(
             totalText = totalText,
-            selectedUids = uids
+            selectedUids = uids,
+            showSelectedMenu = false
         )
     }
 
@@ -195,6 +201,10 @@ class PurchasesState {
         screenData = screenData.copy(showSort = false)
     }
 
+    fun hideSelectedMenu() {
+        screenData = screenData.copy(showSelectedMenu = false)
+    }
+
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
         val sortShoppingLists = shoppingLists.shoppingLists.sortShoppingLists(sort = Sort(sortBy))
         return if (sortShoppingLists.isEmpty()) {
@@ -231,6 +241,37 @@ class PurchasesState {
         } else {
             val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
             val success = ShoppingList(position = position)
+            Result.success(success)
+        }
+    }
+
+    fun getCopyShoppingListsResult(): Result<List<ShoppingList>> {
+        return if (screenData.selectedUids == null) {
+            Result.failure(Exception())
+        } else {
+            val success = mutableListOf<ShoppingList>()
+            screenData.selectedUids?.forEach { uid ->
+                val shoppingUid = UUID.randomUUID().toString()
+                val created = System.currentTimeMillis()
+                val selectedShoppingList = shoppingLists.shoppingLists.find { it.uid == uid } ?: ShoppingList()
+                val newShoppingList = selectedShoppingList.copy(
+                    id = 0,
+                    position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0,
+                    uid = shoppingUid,
+                    created = created,
+                    lastModified = created,
+                    products = selectedShoppingList.products.map {
+                        it.copy(
+                            id = 0,
+                            shoppingUid = shoppingUid,
+                            productUid = UUID.randomUUID().toString(),
+                            created = created,
+                            lastModified = created
+                        )
+                    }
+                )
+                success.add(newShoppingList)
+            }
             Result.success(success)
         }
     }
@@ -326,7 +367,8 @@ data class PurchasesScreenData(
     val showSort: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false,
-    val selectedUids: List<String>? = null
+    val selectedUids: List<String>? = null,
+    val showSelectedMenu: Boolean = false
 ) {
 
     fun isOnlyPinned(): Boolean {

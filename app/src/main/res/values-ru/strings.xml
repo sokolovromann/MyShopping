@@ -329,6 +329,7 @@
     <string name="products_action_automaticSorting">Сохранять сортировку</string>
     <string name="products_action_calculateChange">Посчитать сдачу</string>
     <string name="products_action_copyProductsToShoppingList">Копировать в…</string>
+    <string name="products_action_copyShoppingList">Копировать</string>
     <string name="products_action_deleteShoppingListTotal">Удалить</string>
     <string name="products_action_disableProductsMultiColumns">Один столбец</string>
     <string name="products_action_displayActiveTotal">Не купленные товары</string>
@@ -343,6 +344,7 @@
     <string name="products_action_reverseSort">В обратном порядке</string>
     <string name="products_action_selectAllProducts">Выбрать всё</string>
     <string name="products_action_shareProducts">Поделиться</string>
+    <string name="products_action_showShoppingListMenu">Список покупок</string>
     <string name="products_action_sort">Сортировать</string>
     <string name="products_action_sortByCreated">По созданию</string>
     <string name="products_action_sortByLastModified">По редактированию</string>
@@ -401,6 +403,7 @@
     <string name="settings_action_selectMediumFontSize">Средний</string>
     <string name="settings_action_selectSmallFontSize">Маленький</string>
     <string name="settings_body_backup">Экспорт/импорт всех данных приложения</string>
+    <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_displayOtherFields">Марка, размер, цвет и т.д.</string>
@@ -408,7 +411,6 @@
     <string name="settings_body_email">Нажмите, чтобы написать</string>
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
-    <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_migrateFromAppVersion14">Данные из старой версии приложения автоматически переносятся в новую. Но если, данные не перенеслись, то вы можете принудительно их перенести в новую версию приложения. При этом все данные, созданные после обновления будут удалены.</string>
     <string name="settings_body_nightTheme">Кроме виджетов</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
@@ -424,6 +426,7 @@
     <string name="settings_header_settings">Настройки</string>
     <string name="settings_title_appVersion">Версия приложения</string>
     <string name="settings_title_backup">Резервное копирование</string>
+    <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>
     <string name="settings_title_completedWithCheckbox">Покупка товара нажатием на чекбокс</string>
     <string name="settings_title_currencySymbol">Валюта</string>
     <string name="settings_title_developer">Разработчик</string>
@@ -438,7 +441,6 @@
     <string name="settings_title_enterToSaveProduct">Enter для сохранения товара</string>
     <string name="settings_title_fontSize">Размер текста</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>
     <string name="settings_title_migrateFromAppVersion14">Обновление с версии 1.3.5 и ниже</string>
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>
@@ -446,12 +448,14 @@
     <string name="settings_title_taxRate">Налоговая ставка</string>
     <string name="settings_title_terms_and_conditions">Условия использования</string>
 
+    <string name="shoppingLists_action_copyShoppingLists">Копировать</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Один столбец</string>
     <string name="shoppingLists_action_displayActiveTotal">Не купленные товары</string>
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
     <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Несколько столбцов</string>
     <string name="shoppingLists_action_reverseSort">В обратном порядке</string>
+    <string name="shoppingLists_action_selectAllShoppingLists">Выбрать всё</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
     <string name="shoppingLists_action_selectTrashLocation">Корзина</string>
@@ -463,7 +467,6 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показать купленные списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
-    <string name="shoppingLists_contentDescription_selectAllShoppingLists">Выбрать все списки</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>

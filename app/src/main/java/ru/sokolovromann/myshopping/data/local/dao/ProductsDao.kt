@@ -1,11 +1,14 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
+import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
 
 @Dao
@@ -14,6 +17,9 @@ interface ProductsDao {
     @Transaction
     @Query("SELECT * FROM shoppings WHERE uid = :uid")
     fun getShoppingList(uid: String): Flow<ShoppingListEntity?>
+
+    @Query("SELECT position FROM shoppings ORDER BY position DESC LIMIT 1")
+    fun getShoppingsLastPosition(): Flow<Int?>
 
     @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveShoppingToPurchases(uid: String, lastModified: Long)
@@ -41,6 +47,12 @@ interface ProductsDao {
 
     @Query("UPDATE products SET position = :position, last_modified = :lastModified WHERE product_uid = :uid")
     fun updateProductPosition(uid: String, position: Int, lastModified: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertShopping(shoppingEntity: ShoppingEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertProduct(productEntity: ProductEntity)
 
     @Update
     fun updateProducts(products: List<ProductEntity>)

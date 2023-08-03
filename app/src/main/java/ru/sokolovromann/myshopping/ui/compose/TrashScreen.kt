@@ -134,7 +134,7 @@ fun TrashScreen(
                         IconButton(onClick = { viewModel.onEvent(TrashEvent.SelectAllShoppingLists) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists)
+                                contentDescription = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)
                             )
                         }
                     }

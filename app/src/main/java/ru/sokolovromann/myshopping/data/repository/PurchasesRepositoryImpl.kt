@@ -56,6 +56,20 @@ class PurchasesRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun copyShoppingLists(
+        shoppingLists: List<ShoppingList>
+    ): Unit = withContext(dispatchers.io) {
+        shoppingLists.forEach { shoppingList ->
+            val shoppingEntity = mapping.toShoppingEntity(shoppingList)
+            purchasesDao.insertShopping(shoppingEntity)
+
+            shoppingList.products.forEach { product ->
+                val productEntity = mapping.toProductEntity(product)
+                purchasesDao.insertProduct(productEntity)
+            }
+        }
+    }
+
     override suspend fun swapShoppingLists(
         first: ShoppingList,
         second: ShoppingList

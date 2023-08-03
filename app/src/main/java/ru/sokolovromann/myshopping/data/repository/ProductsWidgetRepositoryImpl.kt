@@ -34,7 +34,7 @@ class ProductsWidgetRepositoryImpl @Inject constructor(
                     return@combine null
                 }
 
-                mapping.toProducts(entity, preferencesEntity)
+                mapping.toProducts(entity, null, preferencesEntity)
             }
         )
     }

@@ -16,6 +16,8 @@ interface PurchasesRepository {
 
     suspend fun moveShoppingListsToTrash(uids: List<String>, lastModified: Long)
 
+    suspend fun copyShoppingLists(shoppingLists: List<ShoppingList>)
+
     suspend fun swapShoppingLists(first: ShoppingList, second: ShoppingList)
 
     suspend fun swapShoppingLists(shoppingLists: List<ShoppingList>)

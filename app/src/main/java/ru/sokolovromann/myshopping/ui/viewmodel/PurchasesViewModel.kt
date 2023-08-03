@@ -40,6 +40,8 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.MoveShoppingListsToTrash -> moveShoppingListsToTrash()
 
+            PurchasesEvent.CopyShoppingLists -> copyShoppingLists()
+
             is PurchasesEvent.MoveShoppingListUp -> moveShoppingListUp(event)
 
             is PurchasesEvent.MoveShoppingListDown -> moveShoppingListDown(event)
@@ -72,6 +74,8 @@ class PurchasesViewModel @Inject constructor(
 
             PurchasesEvent.ShowPurchasesMenu -> showPurchasesMenu()
 
+            PurchasesEvent.ShowSelectedMenu -> showSelectedMenu()
+
             PurchasesEvent.HideNavigationDrawer -> hideNavigationDrawer()
 
             PurchasesEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
@@ -79,6 +83,8 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.HidePurchasesMenu -> hidePurchasesMenu()
 
             PurchasesEvent.HideShoppingListsSort -> hideShoppingListsSort()
+
+            PurchasesEvent.HideSelectedMenu -> hideSelectedMenu()
 
             PurchasesEvent.FinishApp -> finishApp()
 
@@ -153,6 +159,15 @@ class PurchasesViewModel @Inject constructor(
 
         withContext(dispatchers.main) {
             unselectAllShoppingList()
+        }
+    }
+
+    private fun copyShoppingLists() = viewModelScope.launch {
+        purchasesState.getCopyShoppingListsResult()
+            .onSuccess { repository.copyShoppingLists(it) }
+
+        withContext(dispatchers.main) {
+            hideSelectedMenu()
         }
     }
 
@@ -268,6 +283,10 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.showPurchasesMenu()
     }
 
+    private fun showSelectedMenu() {
+        purchasesState.showSelectedMenu()
+    }
+
     private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(PurchasesScreenEvent.HideNavigationDrawer)
     }
@@ -282,6 +301,10 @@ class PurchasesViewModel @Inject constructor(
 
     private fun hideShoppingListsSort() {
         purchasesState.hideSort()
+    }
+
+    private fun hideSelectedMenu() {
+        purchasesState.hideSelectedMenu()
     }
 
     private fun finishApp() = viewModelScope.launch(dispatchers.main) {

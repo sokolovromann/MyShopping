@@ -17,14 +17,16 @@ class ProductsRepositoryImpl @Inject constructor(
 ) : ProductsRepository {
 
     override suspend fun getProducts(shoppingUid: String): Flow<Products?> = withContext(dispatchers.io) {
-        return@withContext productsDao.getShoppingList(shoppingUid).combine(
-            flow = preferencesDao.getAppPreferences(),
-            transform = { entity, preferencesEntity ->
+        return@withContext combine(
+            flow = productsDao.getShoppingList(shoppingUid),
+            flow2 = productsDao.getShoppingsLastPosition(),
+            flow3 = preferencesDao.getAppPreferences(),
+            transform = { entity, lastPosition, preferencesEntity ->
                 if (entity == null) {
                     return@combine null
                 }
 
-                mapping.toProducts(entity, preferencesEntity)
+                mapping.toProducts(entity, lastPosition, preferencesEntity)
             }
         )
     }
@@ -48,6 +50,18 @@ class ProductsRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         productsDao.moveShoppingToTrash(uid, lastModified)
+    }
+
+    override suspend fun copyShoppingList(
+        shoppingList: ShoppingList
+    ): Unit = withContext(dispatchers.io) {
+        val shoppingEntity = mapping.toShoppingEntity(shoppingList)
+        productsDao.insertShopping(shoppingEntity)
+
+        shoppingList.products.forEach { product ->
+            val productEntity = mapping.toProductEntity(product)
+            productsDao.insertProduct(productEntity)
+        }
     }
 
     override suspend fun completeProduct(

@@ -27,6 +27,8 @@ sealed class ProductsEvent {
 
     object MoveShoppingListToTrash : ProductsEvent()
 
+    object CopyShoppingList : ProductsEvent()
+
     data class MoveProductUp(val uid: String) : ProductsEvent()
 
     data class MoveProductDown(val uid: String) : ProductsEvent()
@@ -67,11 +69,15 @@ sealed class ProductsEvent {
 
     object ShowSelectedMenu : ProductsEvent()
 
+    object ShowShoppingListMenu : ProductsEvent()
+
     object HideProductsMenu : ProductsEvent()
 
     object HideSelectedMenu : ProductsEvent()
 
     object HideProductsSort : ProductsEvent()
+
+    object HideShoppingListMenu : ProductsEvent()
 
     object HideDisplayPurchasesTotal : ProductsEvent()
 

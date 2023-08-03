@@ -282,6 +282,7 @@
     <string name="products_action_automaticSorting">Зберігати сортування</string>
     <string name="products_action_calculateChange">Порахувати здачу</string>
     <string name="products_action_copyProductsToShoppingList">Копіювати в…</string>
+    <string name="products_action_copyShoppingList">Копіювати</string>
     <string name="products_action_deleteShoppingListTotal">Видалити</string>
     <string name="products_action_disableProductsMultiColumns">Один стовпець</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
@@ -296,6 +297,7 @@
     <string name="products_action_reverseSort">У зворотному порядку</string>
     <string name="products_action_selectAllProducts">Вибрати все</string>
     <string name="products_action_shareProducts">Поділитися</string>
+    <string name="products_action_showShoppingListMenu">Список покупок</string>
     <string name="products_action_sort">Сортувати</string>
     <string name="products_action_sortByCreated">За створеним</string>
     <string name="products_action_sortByLastModified">За редагуванням</string>
@@ -354,6 +356,7 @@
     <string name="settings_action_selectMediumFontSize">Середній</string>
     <string name="settings_action_selectSmallFontSize">Маленький</string>
     <string name="settings_body_backup">Експорт/імпорт усіх даних програми</string>
+    <string name="settings_body_coloredCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_displayOtherFields">Марка, розмір, колір і т.д.</string>
@@ -361,7 +364,6 @@
     <string name="settings_body_email">Натисніть, щоб написати</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
-    <string name="settings_body_coloredCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>
     <string name="settings_body_migrateFromAppVersion14">Дані зі старої версії програми автоматично переносяться до нової. Але якщо дані не перенеслися, то ви можете примусово їх перенести в нову версію програми. При цьому всі дані, створені після оновлення, будуть видалені.</string>
     <string name="settings_body_nightTheme">Окрім віджетів</string>
     <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
@@ -377,6 +379,7 @@
     <string name="settings_header_settings">Налаштування</string>
     <string name="settings_title_appVersion">Версія програми</string>
     <string name="settings_title_backup">Резервне копіювання</string>
+    <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>
     <string name="settings_title_completedWithCheckbox">Купівля товару натисканням на чекбокс</string>
     <string name="settings_title_currencySymbol">Валюта</string>
     <string name="settings_title_developer">Розробник</string>
@@ -391,7 +394,6 @@
     <string name="settings_title_enterToSaveProduct">Enter для збереження товару</string>
     <string name="settings_title_fontSize">Розмір тексту</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>
     <string name="settings_title_migrateFromAppVersion14">Оновлення з версії 1.3.5 та нижче</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_privacy_policy">Політика конфіденційності</string>
@@ -399,12 +401,14 @@
     <string name="settings_title_taxRate">Податкова ставка</string>
     <string name="settings_title_terms_and_conditions">Умови використання</string>
 
+    <string name="shoppingLists_action_copyShoppingLists">Копіювати</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Один стовпець</string>
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
     <string name="shoppingLists_action_displayCompletedTotal">Куплені товари</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Декілька стовпців</string>
     <string name="shoppingLists_action_reverseSort">У зворотному порядку</string>
+    <string name="shoppingLists_action_selectAllShoppingLists">Вибрати усі</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архів</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
     <string name="shoppingLists_action_selectTrashLocation">Кошик</string>
@@ -416,7 +420,6 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
-    <string name="shoppingLists_contentDescription_selectAllShoppingLists">Вибрати усі списки</string>
     <string name="shoppingLists_header_displayTotal">Разом</string>
     <string name="shoppingLists_header_location">Показувати</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>

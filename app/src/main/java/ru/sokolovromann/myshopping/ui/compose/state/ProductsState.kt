@@ -160,6 +160,13 @@ class ProductsState {
         )
     }
 
+    fun showShoppingMenu() {
+        screenData = screenData.copy(
+            showShoppingMenu = true,
+            showProductsMenu = false
+        )
+    }
+
     fun displayHiddenProducts() {
         screenData = screenData.copy(
             otherProducts = products.getOtherProductItems(DisplayCompleted.LAST),
@@ -250,6 +257,10 @@ class ProductsState {
 
     fun hideSort() {
         screenData = screenData.copy(showSort = false)
+    }
+
+    fun hideShoppingMenu() {
+        screenData = screenData.copy(showShoppingMenu = false)
     }
 
     fun hideDisplayPurchasesTotal() {
@@ -398,6 +409,30 @@ class ProductsState {
         return Result.success(products.shoppingList)
     }
 
+    fun getCopyShoppingListResult(): Result<ShoppingList> {
+        val shoppingUid = UUID.randomUUID().toString()
+        val created = System.currentTimeMillis()
+        val selectedShoppingList = products.shoppingList
+        val success = selectedShoppingList.copy(
+            id = 0,
+            position = products.shoppingListsLastPosition?.plus(1) ?: 0,
+            uid = shoppingUid,
+            created = created,
+            lastModified = created,
+            products = selectedShoppingList.products.map {
+                it.copy(
+                    id = 0,
+                    shoppingUid = shoppingUid,
+                    productUid = UUID.randomUUID().toString(),
+                    created = created,
+                    lastModified = created
+                )
+            }
+        )
+
+        return Result.success(success)
+    }
+
     private fun toReminderText(reminder: Long?): UiText {
         return if (reminder == null) {
             UiText.Nothing
@@ -444,7 +479,8 @@ data class ProductsScreenData(
     val displayMoney: Boolean = true,
     val completedWithCheckbox: Boolean = false,
     val selectedUids: List<String>? = null,
-    val showSelectedMenu: Boolean = false
+    val showSelectedMenu: Boolean = false,
+    val showShoppingMenu: Boolean = false
 ) {
 
     fun isOnlyPinned(): Boolean {

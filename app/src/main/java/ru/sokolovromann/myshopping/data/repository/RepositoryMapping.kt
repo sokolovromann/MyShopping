@@ -133,9 +133,14 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toProducts(entity: ShoppingListEntity, preferencesEntity: AppPreferencesEntity): Products {
+    fun toProducts(
+        entity: ShoppingListEntity,
+        lastPosition: Int?,
+        preferencesEntity: AppPreferencesEntity
+    ): Products {
         return Products(
             shoppingList = toShoppingList(entity, preferencesEntity),
+            shoppingListsLastPosition = lastPosition,
             preferences = toAppPreferences(preferencesEntity)
         )
     }

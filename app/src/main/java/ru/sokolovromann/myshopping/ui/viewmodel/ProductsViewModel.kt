@@ -59,6 +59,8 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.MoveShoppingListToTrash -> moveShoppingListToTrash()
 
+            ProductsEvent.CopyShoppingList -> copyShoppingList()
+
             is ProductsEvent.MoveProductUp -> moveProductUp(event)
 
             is ProductsEvent.MoveProductDown -> moveProductDown(event)
@@ -97,9 +99,13 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.ShowSelectedMenu -> showSelectedMenu()
 
+            ProductsEvent.ShowShoppingListMenu -> showShoppingListMenu()
+
             ProductsEvent.HideProductsMenu -> hideProductsMenu()
 
             ProductsEvent.HideSelectedMenu -> hideSelectedMenu()
+
+            ProductsEvent.HideShoppingListMenu -> hideShoppingListMenu()
 
             ProductsEvent.HideProductsSort -> hideProductsSort()
 
@@ -282,6 +288,15 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
+    private fun copyShoppingList() = viewModelScope.launch {
+        productsState.getCopyShoppingListResult()
+            .onSuccess { repository.copyShoppingList(it) }
+
+        withContext(dispatchers.main) {
+            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
+        }
+    }
+
     private fun completeProduct(
         event: ProductsEvent.CompleteProduct
     ) = viewModelScope.launch {
@@ -409,6 +424,10 @@ class ProductsViewModel @Inject constructor(
         productsState.showSelectedMenu()
     }
 
+    private fun showShoppingListMenu() {
+        productsState.showShoppingMenu()
+    }
+
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
         _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
     }
@@ -419,6 +438,10 @@ class ProductsViewModel @Inject constructor(
 
     private fun hideSelectedMenu() {
         productsState.hideSelectedMenu()
+    }
+
+    private fun hideShoppingListMenu() {
+        productsState.hideShoppingMenu()
     }
 
     private fun hideProductsSort() {

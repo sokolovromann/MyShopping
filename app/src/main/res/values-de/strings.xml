@@ -264,6 +264,7 @@
     <string name="products_action_automaticSorting">Automatische Sortierung</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_copyProductsToShoppingList">Kopieren nach…</string>
+    <string name="products_action_copyShoppingList">Kopieren</string>
     <string name="products_action_deleteShoppingListTotal">Löschen</string>
     <string name="products_action_disableProductsMultiColumns">Eine Spalte</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
@@ -278,6 +279,7 @@
     <string name="products_action_reverseSort">Umgekehrte</string>
     <string name="products_action_selectAllProducts">Wählen Sie Alle</string>
     <string name="products_action_shareProducts">Teilen</string>
+    <string name="products_action_showShoppingListMenu">Einkaufsliste</string>
     <string name="products_action_sort">Sortieren</string>
     <string name="products_action_sortByCreated">Nach Erstellt</string>
     <string name="products_action_sortByLastModified">Nach zuletzt bearbeitet</string>
@@ -336,6 +338,7 @@
     <string name="settings_action_selectMediumFontSize">Mittel</string>
     <string name="settings_action_selectSmallFontSize">Klein</string>
     <string name="settings_body_backup">Alle App-Daten exportieren/importieren</string>
+    <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_displayOtherFields">Marke, Größe, Farbe usw.</string>
@@ -343,7 +346,6 @@
     <string name="settings_body_email">Zum Schreiben tippen</string>
     <string name="settings_body_enterToSaveProduct">Wenn aktiviert, kann ein Produkt durch Tippen auf die Eingabetaste gespeichert werden</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
-    <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_migrateFromAppVersion14">Die Daten werden automatisch in eine neue Version der App übertragen. Wenn die Daten jedoch nicht übertragen wurden, können Sie die Übertragung auf die neue Version der App erzwingen. Alle nach dem Update erstellten Daten werden gelöscht.</string>
     <string name="settings_body_nightTheme">Außer Widgets</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
@@ -359,6 +361,7 @@
     <string name="settings_header_settings">Einstellungen</string>
     <string name="settings_title_appVersion">App version</string>
     <string name="settings_title_backup">Sicherung</string>
+    <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>
     <string name="settings_title_completedWithCheckbox">Abgeschlossen mit Kontrollkästchen</string>
     <string name="settings_title_currencySymbol">Währung</string>
     <string name="settings_title_developer">Entwickler</string>
@@ -373,7 +376,6 @@
     <string name="settings_title_enterToSaveProduct">Geben Sie ein, um Produkt zu speichern</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>
     <string name="settings_title_migrateFromAppVersion14">Migrieren Sie von Version 1.3.5 und niedriger</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
@@ -381,12 +383,14 @@
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 
+    <string name="shoppingLists_action_copyShoppingLists">Kopieren</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Eine Spalte</string>
     <string name="shoppingLists_action_displayActiveTotal">Aktive produkte</string>
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
     <string name="shoppingLists_action_displayCompletedTotal">Fertige produkte</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Mehrspaltig</string>
     <string name="shoppingLists_action_reverseSort">Umgekehrte</string>
+    <string name="shoppingLists_action_selectAllShoppingLists">Wählen Sie Alle</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
     <string name="shoppingLists_action_selectTrashLocation">Müll</string>
@@ -398,7 +402,6 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
-    <string name="shoppingLists_contentDescription_selectAllShoppingLists">Wählen Sie alle Listen aus</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
     <string name="shoppingLists_text_activeTotal">Aktive: %s</string>

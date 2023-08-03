@@ -143,11 +143,24 @@ fun PurchasesScreen(
                                 contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowSelectedMenu) }) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_selectAllShoppingLists)
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = ""
                             )
+                            AppDropdownMenu(
+                                expanded = screenData.showSelectedMenu,
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideSelectedMenu) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.CopyShoppingLists) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_copyShoppingLists)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)) }
+                                )
+                            }
                         }
                     }
                 )

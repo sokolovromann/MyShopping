@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 data class Products(
     val shoppingList: ShoppingList = ShoppingList(),
+    val shoppingListsLastPosition: Int? = null,
     val preferences: AppPreferences = AppPreferences()
 ) {
 

@@ -12,6 +12,8 @@ sealed class PurchasesEvent {
 
     object MoveShoppingListsToTrash : PurchasesEvent()
 
+    object CopyShoppingLists : PurchasesEvent()
+
     data class MoveShoppingListUp(val uid: String) : PurchasesEvent()
 
     data class MoveShoppingListDown(val uid: String) : PurchasesEvent()
@@ -44,6 +46,8 @@ sealed class PurchasesEvent {
 
     object ShowPurchasesMenu : PurchasesEvent()
 
+    object ShowSelectedMenu : PurchasesEvent()
+
     object HideNavigationDrawer : PurchasesEvent()
 
     object HideDisplayPurchasesTotal : PurchasesEvent()
@@ -51,6 +55,8 @@ sealed class PurchasesEvent {
     object HidePurchasesMenu : PurchasesEvent()
 
     object HideShoppingListsSort : PurchasesEvent()
+
+    object HideSelectedMenu : PurchasesEvent()
 
     object FinishApp : PurchasesEvent()
 

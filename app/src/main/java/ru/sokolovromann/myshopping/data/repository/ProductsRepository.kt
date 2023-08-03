@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.Products
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
 
@@ -15,6 +16,8 @@ interface ProductsRepository {
     suspend fun moveShoppingListToArchive(uid: String, lastModified: Long)
 
     suspend fun moveShoppingListToTrash(uid: String, lastModified: Long)
+
+    suspend fun copyShoppingList(shoppingList: ShoppingList)
 
     suspend fun completeProduct(uid: String, lastModified: Long)
 

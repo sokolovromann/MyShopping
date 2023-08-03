@@ -247,30 +247,17 @@ fun ProductsScreen(
                                     expanded = screenData.showProductsMenu,
                                     onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsMenu) }
                                 ) {
-                                    when (screenData.shoppingListLocation) {
-                                        ShoppingListLocation.PURCHASES -> {
-                                            AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) },
-                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToArchive)) }
+                                    AppDropdownMenuItem(
+                                        text = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) },
+                                        right = {
+                                            Icon(
+                                                imageVector = Icons.Default.KeyboardArrowRight,
+                                                contentDescription = "",
+                                                tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                                             )
-                                            AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
-                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
-                                            )
-                                        }
-                                        ShoppingListLocation.ARCHIVE -> {
-                                            AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) },
-                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToPurchases)) }
-                                            )
-                                            AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
-                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
-                                            )
-                                        }
-                                        else -> {}
-                                    }
-                                    Divider()
+                                        },
+                                        onClick = { viewModel.onEvent(ProductsEvent.ShowShoppingListMenu) }
+                                    )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.InvertProductsMultiColumns) },
                                         text = { Text(text = screenData.multiColumnsText.asCompose()) }
@@ -296,6 +283,40 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.ShareProducts) },
                                         text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
                                     )
+                                }
+
+                                AppDropdownMenu(
+                                    expanded = screenData.showShoppingMenu,
+                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.HideShoppingListMenu) },
+                                    header = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) }
+                                ) {
+                                    when (screenData.shoppingListLocation) {
+                                        ShoppingListLocation.PURCHASES -> {
+                                            AppDropdownMenuItem(
+                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) },
+                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToArchive)) }
+                                            )
+                                            AppDropdownMenuItem(
+                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
+                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
+                                            )
+                                            AppDropdownMenuItem(
+                                                onClick = { viewModel.onEvent(ProductsEvent.CopyShoppingList) },
+                                                text = { Text(text = stringResource(R.string.products_action_copyShoppingList)) }
+                                            )
+                                        }
+                                        ShoppingListLocation.ARCHIVE -> {
+                                            AppDropdownMenuItem(
+                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) },
+                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToPurchases)) }
+                                            )
+                                            AppDropdownMenuItem(
+                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
+                                                text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
+                                            )
+                                        }
+                                        else -> {}
+                                    }
                                 }
 
                                 AppDropdownMenu(
