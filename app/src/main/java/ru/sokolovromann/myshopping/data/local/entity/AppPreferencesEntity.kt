@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.local.entity
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class AppPreferencesEntity(
@@ -8,7 +9,11 @@ data class AppPreferencesEntity(
     val firstAppVersion: Int = 0,
     val nightTheme: Boolean = false,
     val fontSize: String = "",
+
+    @Transient
+    @Deprecated(message = "Use deviceConfigEntity")
     val smartphoneScreen: Boolean = true,
+
     val currency: String = "",
     val displayCurrencyToLeft: Boolean = false,
     val taxRate: Float = 0f,
@@ -26,5 +31,8 @@ data class AppPreferencesEntity(
     val displayShoppingsProducts: String = "",
     val enterToSaveProduct: Boolean = true,
     val coloredCheckbox: Boolean = false,
-    val displayOtherFields: Boolean = true
+    val displayOtherFields: Boolean = true,
+
+    @Transient
+    val deviceConfigEntity: DeviceConfigEntity = DeviceConfigEntity()
 )

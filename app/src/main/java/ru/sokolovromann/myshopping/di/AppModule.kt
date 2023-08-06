@@ -38,8 +38,12 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesLocalDataStore(@ApplicationContext context: Context, dispatchers: AppDispatchers): LocalDataStore {
-        return LocalDataStore(context.dataStore, dispatchers)
+    fun providesLocalDataStore(
+        @ApplicationContext context: Context,
+        resources: Resources,
+        dispatchers: AppDispatchers
+    ): LocalDataStore {
+        return LocalDataStore(context.dataStore, resources, dispatchers)
     }
 
     @Singleton

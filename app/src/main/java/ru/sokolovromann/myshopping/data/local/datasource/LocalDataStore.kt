@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.local.datasource
 
+import android.content.res.Resources
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 class LocalDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>,
+    private val resources: Resources,
     private val dispatchers: AppDispatchers
 ) {
 
@@ -67,7 +69,11 @@ class LocalDataStore @Inject constructor(
                 displayShoppingsProducts = it[displayShoppingsProductsKey] ?: "",
                 enterToSaveProduct = it[enterToSaveProductKey] ?: true,
                 coloredCheckbox = it[coloredCheckboxKey] ?: false,
-                displayOtherFields = it[displayOtherFieldsKey] ?: true
+                displayOtherFields = it[displayOtherFieldsKey] ?: true,
+                deviceConfigEntity = DeviceConfigEntity(
+                    screenWidthDp = resources.configuration.screenWidthDp,
+                    screenHeightDp = resources.configuration.screenHeightDp
+                )
             )
         }
     }

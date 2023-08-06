@@ -265,7 +265,8 @@ class RepositoryMapping @Inject constructor() {
             displayShoppingsProducts = toDisplayProducts(entity.displayShoppingsProducts),
             enterToSaveProduct = entity.enterToSaveProduct,
             coloredCheckbox = entity.coloredCheckbox,
-            displayOtherFields = entity.displayOtherFields
+            displayOtherFields = entity.displayOtherFields,
+            deviceConfig = toDeviceConfig(entity.deviceConfigEntity)
         )
     }
 
@@ -293,7 +294,8 @@ class RepositoryMapping @Inject constructor() {
             displayShoppingsProducts = toDisplayProductsName(appPreferences.displayShoppingsProducts),
             enterToSaveProduct = appPreferences.enterToSaveProduct,
             coloredCheckbox = appPreferences.coloredCheckbox,
-            displayOtherFields = appPreferences.displayOtherFields
+            displayOtherFields = appPreferences.displayOtherFields,
+            deviceConfigEntity = toDeviceConfigEntity(appPreferences.deviceConfig)
         )
     }
 
@@ -666,6 +668,20 @@ class RepositoryMapping @Inject constructor() {
             displayTotal = toDisplayTotal(entity.displayTotal),
             editProductAfterCompleted = entity.editProductAfterCompleted,
             saveProductToAutocompletes = entity.saveProductToAutocompletes
+        )
+    }
+
+    private fun toDeviceConfig(entity: DeviceConfigEntity): DeviceConfig {
+        return DeviceConfig(
+            screenWidthDp = entity.screenWidthDp,
+            screenHeightDp = entity.screenHeightDp
+        )
+    }
+
+    private fun toDeviceConfigEntity(deviceConfig: DeviceConfig): DeviceConfigEntity {
+        return DeviceConfigEntity(
+            screenWidthDp = deviceConfig.screenWidthDp,
+            screenHeightDp = deviceConfig.screenHeightDp
         )
     }
 

@@ -5,7 +5,7 @@ data class AppPreferences(
     val firstAppVersion: Int = 0,
     val nightTheme: Boolean = false,
     val fontSize: FontSize = FontSize.DefaultValue,
-    val smartphoneScreen: Boolean = true,
+    @Deprecated(message = "Use deviceConfigEntity") val smartphoneScreen: Boolean = true,
     val currency: Currency = Currency(),
     val taxRate: TaxRate = TaxRate(),
     val shoppingsMultiColumns: Boolean = false,
@@ -21,5 +21,6 @@ data class AppPreferences(
     val displayShoppingsProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val enterToSaveProduct: Boolean = true,
     val coloredCheckbox: Boolean = false,
-    val displayOtherFields: Boolean = true
+    val displayOtherFields: Boolean = true,
+    val deviceConfig: DeviceConfig = DeviceConfig()
 )
