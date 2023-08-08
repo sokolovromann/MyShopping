@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AddEditAutocompleteDao
-import ru.sokolovromann.myshopping.data.local.dao.AddEditAutocompletePreferencesDao
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import javax.inject.Inject
 
 class AddEditAutocompleteRepositoryImpl @Inject constructor(
     private val autocompleteDao: AddEditAutocompleteDao,
-    private val preferencesDao: AddEditAutocompletePreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : AddEditAutocompleteRepository {
@@ -22,15 +22,15 @@ class AddEditAutocompleteRepositoryImpl @Inject constructor(
         uid: String?
     ): Flow<AddEditAutocomplete> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getAppPreferences().transform {
+            appConfigDao.getAppConfig().transform {
                 val value = mapping.toAddEditAutocomplete(null, it)
                 emit(value)
             }
         } else {
             autocompleteDao.getAutocomplete(uid).combine(
-                flow = preferencesDao.getAppPreferences(),
-                transform = { entity, preferencesEntity ->
-                    mapping.toAddEditAutocomplete(entity, preferencesEntity)
+                flow = appConfigDao.getAppConfig(),
+                transform = { entity, appConfigEntity ->
+                    mapping.toAddEditAutocomplete(entity, appConfigEntity)
                 }
             )
         }

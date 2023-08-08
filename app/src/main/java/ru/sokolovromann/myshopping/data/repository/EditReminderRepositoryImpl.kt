@@ -5,29 +5,29 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.EditReminderDao
-import ru.sokolovromann.myshopping.data.local.dao.ProductsPreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import javax.inject.Inject
 
 class EditReminderRepositoryImpl @Inject constructor(
     private val reminderDao: EditReminderDao,
-    private val preferencesDao: ProductsPreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ): EditReminderRepository {
 
     override suspend fun getEditReminder(uid: String?): Flow<EditReminder> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getAppPreferences().transform {
+            appConfigDao.getAppConfig().transform {
                 val value = mapping.toEditReminder(null, it)
                 emit(value)
             }
         } else {
             reminderDao.getShoppingList(uid).combine(
-                flow = preferencesDao.getAppPreferences(),
-                transform = { entity, preferencesEntity ->
-                    mapping.toEditReminder(entity, preferencesEntity)
+                flow = appConfigDao.getAppConfig(),
+                transform = { entity, appConfigEntity ->
+                    mapping.toEditReminder(entity, appConfigEntity)
                 }
             )
         }

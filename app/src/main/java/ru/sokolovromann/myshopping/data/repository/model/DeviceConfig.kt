@@ -6,7 +6,7 @@ data class DeviceConfig(
 ) {
 
     companion object {
-        private const val UNKNOWN_SIZE_DP = 0
+        const val UNKNOWN_SIZE_DP = 0
     }
 
     fun getDeviceSize(): DeviceSize {

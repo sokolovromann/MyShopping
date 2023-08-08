@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.MainDao
-import ru.sokolovromann.myshopping.data.local.dao.MainPreferencesDao
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
 import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
     private val mainDao: MainDao,
-    private val preferencesDao: MainPreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mainResources: MainResources,
     private val autocompletesResources: AutocompletesResources,
     private val appVersion14LocalDatabase: AppVersion14LocalDatabase,
@@ -26,7 +26,7 @@ class MainRepositoryImpl @Inject constructor(
 ) : MainRepository {
 
     override suspend fun getAppPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
-        return@withContext preferencesDao.getAppPreferences().transform {
+        return@withContext appConfigDao.getAppConfig().transform {
             val value = mapping.toAppPreferences(
                 it,
                 appVersion14Preferences.isMigrateFromAppVersion14()
@@ -76,7 +76,7 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun addPreferences(
         appPreferences: AppPreferences
     ): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toAppPreferencesEntity(appPreferences)
-        preferencesDao.saveAppPreferences(entity)
+        val entity = mapping.toAppConfigEntity(appPreferences)
+        appConfigDao.saveAppConfig(entity)
     }
 }

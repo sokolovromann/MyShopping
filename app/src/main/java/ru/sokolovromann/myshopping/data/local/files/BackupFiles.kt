@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.AppJson
-import ru.sokolovromann.myshopping.data.local.entity.AppPreferencesEntity
+import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
 import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
@@ -36,7 +36,7 @@ class BackupFiles @Inject constructor(
     private val shoppingPrefix = "ru.sokolovromann.myshopping.BACKUP_SHOPPING_PREFIX_"
     private val productPrefix = "ru.sokolovromann.myshopping.BACKUP_PRODUCT_PREFIX_"
     private val autocompletePrefix = "ru.sokolovromann.myshopping.BACKUP_AUTOCOMPLETE_PREFIX_"
-    private val preferencesPrefix = "ru.sokolovromann.myshopping.BACKUP_PREFERENCES_PREFIX_"
+    private val appConfigPrefix = "ru.sokolovromann.myshopping.BACKUP_APP_CONFIG_PREFIX_"
 
     suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(dispatchers.io) {
         return@withContext try {
@@ -108,8 +108,8 @@ class BackupFiles @Inject constructor(
             val autocompletesJsons = encodeAutocompleteEntities(entity.autocompleteEntities)
             addAll(autocompletesJsons)
 
-            val preferencesJson = encodePreferencesEntity(entity.preferencesEntity)
-            add(preferencesJson)
+            val appConfigJson = encodeAppConfigEntity(entity.appConfigEntity)
+            add(appConfigJson)
         }
 
         var jsonsText = "$appVersionPrefix${entity.appVersion}\n"
@@ -130,8 +130,8 @@ class BackupFiles @Inject constructor(
         return entities.map { "$autocompletePrefix${json.encodeToString(it)}" }
     }
 
-    private fun encodePreferencesEntity(entity: AppPreferencesEntity): String {
-        return "$preferencesPrefix${json.encodeToString(entity)}"
+    private fun encodeAppConfigEntity(entity: AppConfigEntity): String {
+        return "$appConfigPrefix${json.encodeToString(entity)}"
     }
 
     private fun decodeBackupFileEntity(inputStream: InputStream): BackupFileEntity {
@@ -139,7 +139,7 @@ class BackupFiles @Inject constructor(
         val shoppingEntities = mutableListOf<ShoppingEntity>()
         val productEntities = mutableListOf<ProductEntity>()
         val autocompleteEntities = mutableListOf<AutocompleteEntity>()
-        var appPreferencesEntity = AppPreferencesEntity()
+        var appConfigEntity = AppConfigEntity()
 
         BufferedReader(InputStreamReader(inputStream)).use { reader ->
             var line: String? = reader.readLine()
@@ -163,9 +163,9 @@ class BackupFiles @Inject constructor(
                     autocompleteEntities.add(autocompleteEntity)
                 }
 
-                if (line.contains(preferencesPrefix)) {
-                    val preferencesEntity = decodePreferencesEntity(line)
-                    appPreferencesEntity = preferencesEntity
+                if (line.contains(appConfigPrefix)) {
+                    val appConfig = decodeAppConfigEntity(line)
+                    appConfigEntity = appConfig
                 }
 
                 line = reader.readLine()
@@ -176,7 +176,7 @@ class BackupFiles @Inject constructor(
             shoppingEntities = shoppingEntities,
             productEntities = productEntities,
             autocompleteEntities = autocompleteEntities,
-            preferencesEntity = appPreferencesEntity,
+            appConfigEntity = appConfigEntity,
             appVersion = appVersion
         )
     }
@@ -196,8 +196,8 @@ class BackupFiles @Inject constructor(
         return json.decodeFromString(entityJson)
     }
 
-    private fun decodePreferencesEntity(value: String): AppPreferencesEntity {
-        val entityJson = value.replace(preferencesPrefix, "")
+    private fun decodeAppConfigEntity(value: String): AppConfigEntity {
+        val entityJson = value.replace(appConfigPrefix, "")
         return json.decodeFromString(entityJson)
     }
 

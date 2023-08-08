@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.BackupDao
-import ru.sokolovromann.myshopping.data.local.dao.SettingsPreferencesDao
 import ru.sokolovromann.myshopping.data.local.files.BackupFiles
 import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
 import ru.sokolovromann.myshopping.data.repository.model.Backup
@@ -16,13 +16,13 @@ import javax.inject.Inject
 class BackupRepositoryImpl @Inject constructor(
     private val backupDao: BackupDao,
     private val files: BackupFiles,
-    private val preferencesDao: SettingsPreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : BackupRepository {
 
     override suspend fun getPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
-        return@withContext preferencesDao.getAppPreferences().map {
+        return@withContext appConfigDao.getAppConfig().map {
             mapping.toAppPreferences(it)
         }
     }
@@ -45,9 +45,9 @@ class BackupRepositoryImpl @Inject constructor(
             flow = backupDao.getShoppings(),
             flow2 = backupDao.getProducts(),
             flow3 = backupDao.getAutocompletes(),
-            flow4 = preferencesDao.getAppPreferences(),
-            transform = { shoppingListEntities, productEntities, autocompleteEntities, preferencesEntity ->
-                mapping.toBackup(shoppingListEntities, productEntities, autocompleteEntities, preferencesEntity, currentAppVersion)
+            flow4 = appConfigDao.getAppConfig(),
+            transform = { shoppingListEntities, productEntities, autocompleteEntities, appConfigEntity ->
+                mapping.toBackup(shoppingListEntities, productEntities, autocompleteEntities, appConfigEntity, currentAppVersion)
             }
         )
     }
@@ -62,8 +62,8 @@ class BackupRepositoryImpl @Inject constructor(
         val autocompleteEntities = mapping.toAutocompleteEntities(backup)
         backupDao.addAutocompletes(autocompleteEntities)
 
-        val preferencesEntity = mapping.toAppPreferencesEntity(backup.preferences)
-        preferencesDao.saveAppPreferences(preferencesEntity)
+        val appConfigEntity = mapping.toAppConfigEntity(backup.preferences)
+        appConfigDao.saveAppConfig(appConfigEntity)
     }
 
     override suspend fun importBackup(uri: Uri): Result<Flow<Backup>> = withContext(dispatchers.io) {

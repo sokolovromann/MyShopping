@@ -5,14 +5,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.EditShoppingListNameDao
-import ru.sokolovromann.myshopping.data.local.dao.ProductsPreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import javax.inject.Inject
 
 class EditShoppingListNameRepositoryImpl @Inject constructor(
     private val shoppingListDao: EditShoppingListNameDao,
-    private val preferencesDao: ProductsPreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : EditShoppingListNameRepository {
@@ -21,15 +21,15 @@ class EditShoppingListNameRepositoryImpl @Inject constructor(
         uid: String?
     ): Flow<EditShoppingListName> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
-            preferencesDao.getAppPreferences().transform {
+            appConfigDao.getAppConfig().transform {
                 val value = mapping.toEditShoppingListName(null, it)
                 emit(value)
             }
         } else {
             shoppingListDao.getShoppingList(uid).combine(
-                flow = preferencesDao.getAppPreferences(),
-                transform = { entity, preferencesEntity ->
-                    mapping.toEditShoppingListName(entity, preferencesEntity)
+                flow = appConfigDao.getAppConfig(),
+                transform = { entity, appConfigEntity ->
+                    mapping.toEditShoppingListName(entity, appConfigEntity)
                 }
             )
         }

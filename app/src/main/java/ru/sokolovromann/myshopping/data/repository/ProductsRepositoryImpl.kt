@@ -4,14 +4,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.ProductsDao
-import ru.sokolovromann.myshopping.data.local.dao.ProductsPreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(
     private val productsDao: ProductsDao,
-    private val preferencesDao: ProductsPreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : ProductsRepository {
@@ -20,13 +20,13 @@ class ProductsRepositoryImpl @Inject constructor(
         return@withContext combine(
             flow = productsDao.getShoppingList(shoppingUid),
             flow2 = productsDao.getShoppingsLastPosition(),
-            flow3 = preferencesDao.getAppPreferences(),
-            transform = { entity, lastPosition, preferencesEntity ->
+            flow3 = appConfigDao.getAppConfig(),
+            transform = { entity, lastPosition, appConfigEntity ->
                 if (entity == null) {
                     return@combine null
                 }
 
-                mapping.toProducts(entity, lastPosition, preferencesEntity)
+                mapping.toProducts(entity, lastPosition, appConfigEntity)
             }
         )
     }
@@ -130,21 +130,21 @@ class ProductsRepositoryImpl @Inject constructor(
 
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ALL)
-        preferencesDao.displayPurchasesTotal(displayTotal)
+        appConfigDao.displayTotal(displayTotal)
     }
 
     override suspend fun displayCompletedPurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.COMPLETED)
-        preferencesDao.displayPurchasesTotal(displayTotal)
+        appConfigDao.displayTotal(displayTotal)
     }
 
     override suspend fun displayActivePurchasesTotal(): Unit = withContext(dispatchers.io) {
         val displayTotal = mapping.toDisplayTotalName(DisplayTotal.ACTIVE)
-        preferencesDao.displayPurchasesTotal(displayTotal)
+        appConfigDao.displayTotal(displayTotal)
     }
 
     override suspend fun invertProductsMultiColumns(): Unit = withContext(dispatchers.io) {
-        preferencesDao.invertProductsMultiColumns()
+        appConfigDao.invertProductsMultiColumns()
     }
 
     override suspend fun sortProductsBy(

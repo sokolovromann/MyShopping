@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.CopyProductDao
-import ru.sokolovromann.myshopping.data.local.dao.CopyProductPreferencesDao
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class CopyProductRepositoryImpl @Inject constructor(
     private val productDao: CopyProductDao,
-    private val preferencesDao: CopyProductPreferencesDao,
+    private val appConfigDao: AppConfigDao,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : CopyProductRepository {
@@ -22,9 +22,9 @@ class CopyProductRepositoryImpl @Inject constructor(
         return@withContext combine(
             flow = productDao.getPurchases(),
             flow2 = productDao.getShoppingsLastPosition(),
-            flow3 = preferencesDao.getAppPreferences(),
-            transform = { entity, lastPosition, preferencesEntity ->
-                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
+            flow3 = appConfigDao.getAppConfig(),
+            transform = { entity, lastPosition, appConfigEntity ->
+                mapping.toShoppingLists(entity, lastPosition, appConfigEntity)
             }
         )
     }
@@ -33,9 +33,9 @@ class CopyProductRepositoryImpl @Inject constructor(
         return@withContext combine(
             flow = productDao.getArchive(),
             flow2 = productDao.getShoppingsLastPosition(),
-            flow3 = preferencesDao.getAppPreferences(),
-            transform = { entity, lastPosition, preferencesEntity ->
-                mapping.toShoppingLists(entity, lastPosition, preferencesEntity)
+            flow3 = appConfigDao.getAppConfig(),
+            transform = { entity, lastPosition, appConfigEntity ->
+                mapping.toShoppingLists(entity, lastPosition, appConfigEntity)
             }
         )
     }
@@ -44,9 +44,9 @@ class CopyProductRepositoryImpl @Inject constructor(
         uids: List<String>
     ): Flow<List<Product>> = withContext(dispatchers.io) {
         return@withContext productDao.getProducts(uids).combine(
-            flow = preferencesDao.getAppPreferences(),
-            transform = { entities, preferencesEntity ->
-                mapping.toProducts(entities, preferencesEntity)
+            flow = appConfigDao.getAppConfig(),
+            transform = { entities, appConfigEntity ->
+                mapping.toProducts(entities, appConfigEntity)
             }
         )
     }
