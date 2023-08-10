@@ -1,14 +1,13 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.MainDao
-import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
-import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
+import ru.sokolovromann.myshopping.data.local.datasource.CodeVersion14LocalDatabase
 import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.repository.model.*
@@ -19,18 +18,14 @@ class MainRepositoryImpl @Inject constructor(
     private val appConfigDao: AppConfigDao,
     private val mainResources: MainResources,
     private val autocompletesResources: AutocompletesResources,
-    private val appVersion14LocalDatabase: AppVersion14LocalDatabase,
-    private val appVersion14Preferences: AppVersion14LocalPreferences,
+    private val codeVersion14LocalDatabase: CodeVersion14LocalDatabase,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : MainRepository {
 
     override suspend fun getAppPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
         return@withContext appConfigDao.getAppConfig().transform {
-            val value = mapping.toAppPreferences(
-                it,
-                appVersion14Preferences.isMigrateFromAppVersion14()
-            )
+            val value = mapping.toAppPreferences(it)
             emit(value)
         }
     }
@@ -42,16 +37,19 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAppVersion14(): Flow<AppVersion14> = withContext(dispatchers.io) {
-        return@withContext autocompletesResources.getDefaultAutocompleteNames().map {
-            mapping.toAppVersion14(
-                shoppingListsCursor = appVersion14LocalDatabase.getShoppings(),
-                productsCursor = appVersion14LocalDatabase.getProducts(),
-                autocompletesCursor = appVersion14LocalDatabase.getAutocompletes(),
-                defaultAutocompleteNames = it,
-                preferences = appVersion14Preferences.getAppVersion14Preferences()
-            )
-        }
+    override suspend fun getCodeVersion14(): Flow<CodeVersion14> = withContext(dispatchers.io) {
+        return@withContext autocompletesResources.getDefaultAutocompleteNames().combine(
+            flow = appConfigDao.getCodeVersion14Preferences(),
+            transform = { names, preferences ->
+                mapping.toCodeVersion14(
+                    shoppingListsCursor = codeVersion14LocalDatabase.getShoppings(),
+                    productsCursor = codeVersion14LocalDatabase.getProducts(),
+                    autocompletesCursor = codeVersion14LocalDatabase.getAutocompletes(),
+                    defaultAutocompleteNames = names,
+                    preferences = preferences
+                )
+            }
+        )
     }
 
     override suspend fun addShoppingList(

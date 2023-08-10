@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.AppVersion14
+import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsItem
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
@@ -14,7 +14,7 @@ fun Settings.getSettingsItems(): Map<UiText, List<SettingsItem>> {
     map[UiText.FromResources(R.string.settings_header_money)] = getMoneySettingsItems()
     map[UiText.FromResources(R.string.settings_header_purchases)] = getPurchasesSettingsItems()
     map[UiText.FromResources(R.string.settings_header_autocompletes)] = getAutocompletesSettingsItems()
-    if (preferences.firstAppVersion == AppVersion14.APP_VERSION) {
+    if (preferences.firstAppVersion == CodeVersion14.CODE_VERSION) {
         map[UiText.FromResources(R.string.settings_header_migration)] = getMigrationSettingsItems()
     }
     map[UiText.FromResources(R.string.settings_header_aboutApp)] = getAboutSettingsItems()
@@ -140,9 +140,9 @@ private fun Settings.getAutocompletesSettingsItems(): List<SettingsItem> {
 private fun Settings.getMigrationSettingsItems(): List<SettingsItem> {
     return listOf(
         SettingsItem(
-            uid = SettingsUid.MigrateFromAppVersion14,
-            titleText = UiText.FromResources(R.string.settings_title_migrateFromAppVersion14),
-            bodyText = UiText.FromResources(R.string.settings_body_migrateFromAppVersion14)
+            uid = SettingsUid.MigrateFromCodeVersion14,
+            titleText = UiText.FromResources(R.string.settings_title_migrateFromCodeVersion14),
+            bodyText = UiText.FromResources(R.string.settings_body_migrateFromCodeVersion14)
         )
     )
 }

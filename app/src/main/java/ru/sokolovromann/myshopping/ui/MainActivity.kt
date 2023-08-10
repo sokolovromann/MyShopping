@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
                 when (it) {
                     MainScreenEvent.GetDefaultPreferences -> addDefaultPreferences()
 
-                    MainScreenEvent.GetScreenSize -> migrateFromAppVersion14()
+                    MainScreenEvent.GetScreenSize -> migrateFromCodeVersion14()
                 }
             }
         }
@@ -102,8 +102,8 @@ class MainActivity : ComponentActivity() {
         viewModel.onEvent(event)
     }
 
-    private fun migrateFromAppVersion14() {
-        val event = MainEvent.MigrateFromAppVersion14(
+    private fun migrateFromCodeVersion14() {
+        val event = MainEvent.MigrateFromCodeVersion14(
             screenWidth = resources.configuration.screenWidthDp,
             screenHeight = resources.configuration.screenHeightDp
         )

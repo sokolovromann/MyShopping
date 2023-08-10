@@ -10,10 +10,9 @@ import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.AppJson
 import ru.sokolovromann.myshopping.data.local.dao.*
-import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalDatabase
-import ru.sokolovromann.myshopping.data.local.datasource.AppVersion14LocalPreferences
 import ru.sokolovromann.myshopping.data.local.datasource.LocalAppConfigDatasource
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatabase
+import ru.sokolovromann.myshopping.data.local.datasource.CodeVersion14LocalDatabase
 import ru.sokolovromann.myshopping.data.local.files.BackupFiles
 import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
 import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
@@ -45,20 +44,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesAppVersion14LocalPreferences(@ApplicationContext context: Context): AppVersion14LocalPreferences {
-        return AppVersion14LocalPreferences(context)
-    }
-
-    @Singleton
-    @Provides
     fun providesLocalDatabase(@ApplicationContext context: Context): LocalDatabase {
         return LocalDatabase.build(context)
     }
 
     @Singleton
     @Provides
-    fun providesAppVersion14LocalDatabase(@ApplicationContext context: Context): AppVersion14LocalDatabase {
-        return AppVersion14LocalDatabase(context)
+    fun providesCodeVersion14LocalDatabase(@ApplicationContext context: Context): CodeVersion14LocalDatabase {
+        return CodeVersion14LocalDatabase(context)
     }
 
     @Singleton
@@ -204,13 +197,12 @@ object AppModule {
         appConfigDao: AppConfigDao,
         settingsResources: SettingsResources,
         autocompletesResources: AutocompletesResources,
-        appVersion14LocalDatabase: AppVersion14LocalDatabase,
-        appVersion14Preferences: AppVersion14LocalPreferences,
+        codeVersion14LocalDatabase: CodeVersion14LocalDatabase,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(localDatabase.settingsDao(),appConfigDao, settingsResources,
-            autocompletesResources, appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
+            autocompletesResources, codeVersion14LocalDatabase, mapping, dispatchers)
     }
 
     @Provides
@@ -314,13 +306,12 @@ object AppModule {
         appConfigDao: AppConfigDao,
         mainResources: MainResources,
         autocompletesResources: AutocompletesResources,
-        appVersion14LocalDatabase: AppVersion14LocalDatabase,
-        appVersion14Preferences: AppVersion14LocalPreferences,
+        codeVersion14LocalDatabase: CodeVersion14LocalDatabase,
         mapping: RepositoryMapping,
         dispatchers: AppDispatchers
     ): MainRepositoryImpl {
         return MainRepositoryImpl(localDatabase.mainDao(), appConfigDao, mainResources,
-            autocompletesResources, appVersion14LocalDatabase, appVersion14Preferences, mapping, dispatchers)
+            autocompletesResources, codeVersion14LocalDatabase, mapping, dispatchers)
     }
 
     @Provides

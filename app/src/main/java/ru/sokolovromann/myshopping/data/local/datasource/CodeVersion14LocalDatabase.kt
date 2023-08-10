@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import javax.inject.Inject
 
-class AppVersion14LocalDatabase @Inject constructor(
+class CodeVersion14LocalDatabase @Inject constructor(
     private val context: Context
 ) {
 

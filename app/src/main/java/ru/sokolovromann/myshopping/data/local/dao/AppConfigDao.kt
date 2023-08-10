@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
+import android.content.SharedPreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -15,6 +16,7 @@ import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
+import ru.sokolovromann.myshopping.data.local.entity.CodeVersion14UserPreferencesEntity
 import javax.inject.Inject
 
 class AppConfigDao @Inject constructor(
@@ -27,6 +29,10 @@ class AppConfigDao @Inject constructor(
 
     suspend fun getAppConfig(): Flow<AppConfigEntity> = withContext(dispatchers.io) {
         return@withContext preferences.data.map { toAppConfigEntity(it) }
+    }
+
+    suspend fun getCodeVersion14Preferences(): Flow<CodeVersion14UserPreferencesEntity> = withContext(dispatchers.io) {
+        return@withContext preferences.data.map { toVer14UserPreferences() }
     }
 
     suspend fun saveAppConfig(appConfig: AppConfigEntity) = withContext(dispatchers.io) {
@@ -284,8 +290,12 @@ class AppConfigDao @Inject constructor(
     }
 
     private fun toAppBuildConfig(preferences: Preferences): AppBuildConfigEntity {
+        val codeVersion14 = datasource.getCodeVersion14firstOpenedPreferences()
+            .contains(DatasourceKey.CodeVersion14.firstOpened)
+
         return AppBuildConfigEntity(
             appFirstTime = preferences[DatasourceKey.Build.appFirstTime],
+            codeVersion14 = codeVersion14,
             userCodeVersion = preferences[DatasourceKey.Build.userCodeVersion]
         )
     }
@@ -322,6 +332,42 @@ class AppConfigDao @Inject constructor(
             maxMoneyFractionDigits = preferences[DatasourceKey.User.maxMoneyFractionDigits],
             maxQuantityFractionDigits = preferences[DatasourceKey.User.maxQuantityFractionDigits]
         )
+    }
+
+    private fun toVer14UserPreferences(): CodeVersion14UserPreferencesEntity {
+        val ver14Preferences = datasource.getCodeVersion14Preferences()
+        val ver14FirstOpenedPreferences = datasource.getCodeVersion14firstOpenedPreferences()
+        return CodeVersion14UserPreferencesEntity(
+            firstOpened = ver14FirstOpenedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstOpened),
+            currency = ver14Preferences.getStringOrNull(DatasourceKey.CodeVersion14.currency),
+            displayCurrencyToLeft = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayCurrencyToLeft),
+            taxRate = ver14Preferences.getFloatOrNull(DatasourceKey.CodeVersion14.taxRate),
+            titleFontSize = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.titleFontSize),
+            bodyFontSize = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.bodyFontSize),
+            firstLetterUppercase = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstLetterUppercase),
+            columnCount = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.columnCount),
+            sort = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.sort),
+            displayMoney = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayMoney),
+            displayTotal = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.displayTotal),
+            editProductAfterCompleted = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.editProductAfterCompleted),
+            saveProductToAutocompletes = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.saveProductToAutocompletes)
+        )
+    }
+
+    private fun SharedPreferences.getStringOrNull(key: String): String? {
+        return if (contains(key)) getString(key, "") else null
+    }
+
+    private fun SharedPreferences.getIntOrNull(key: String): Int? {
+        return if (contains(key)) getInt(key, Int.MIN_VALUE) else null
+    }
+
+    private fun SharedPreferences.getFloatOrNull(key: String): Float? {
+        return if (contains(key)) getFloat(key, Float.MIN_VALUE) else null
+    }
+
+    private fun SharedPreferences.getBooleanOrNull(key: String): Boolean? {
+        return if (contains(key)) getBoolean(key, false) else null
     }
 }
 
@@ -361,5 +407,21 @@ private object DatasourceKey {
         val minQuantityFractionDigits = intPreferencesKey("min_quantity_fraction_digits")
         val maxMoneyFractionDigits = intPreferencesKey("max_money_fraction_digits")
         val maxQuantityFractionDigits = intPreferencesKey("max_quantity_fraction_digits")
+    }
+
+    object CodeVersion14 {
+        const val firstOpened = "pref_first"
+        const val currency = "currency"
+        const val displayCurrencyToLeft = "show_currency"
+        const val taxRate = "tax_rate"
+        const val titleFontSize = "size_main_text"
+        const val bodyFontSize = "size_dop_text"
+        const val firstLetterUppercase = "capital_text"
+        const val columnCount = "cell_text"
+        const val sort = "sort_default"
+        const val displayMoney = "show_price"
+        const val displayTotal = "sum_default"
+        const val editProductAfterCompleted = "edit_after_buy"
+        const val saveProductToAutocompletes = "auto_text"
     }
 }

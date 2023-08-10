@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
-data class AppVersion14Preferences(
+data class CodeVersion14Preferences(
     val firstOpened: Boolean = false,
     val currency: Currency = Currency(),
     val taxRate: TaxRate = TaxRate(),

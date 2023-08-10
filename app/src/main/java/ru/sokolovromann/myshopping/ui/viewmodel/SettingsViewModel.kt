@@ -122,7 +122,7 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
-            SettingsUid.MigrateFromAppVersion14 -> migrateFromAppVersion14()
+            SettingsUid.MigrateFromCodeVersion14 -> migrateFromCodeVersion14()
 
             SettingsUid.Email -> sendEmailToDeveloper()
 
@@ -251,7 +251,7 @@ class SettingsViewModel @Inject constructor(
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
-    private fun migrateFromAppVersion14() = viewModelScope.launch {
+    private fun migrateFromCodeVersion14() = viewModelScope.launch {
         withContext(dispatchers.main) {
             settingsState.showLoading()
         }
@@ -262,11 +262,11 @@ class SettingsViewModel @Inject constructor(
 
         repository.deleteAppData()
             .onSuccess {
-                val appVersion14 = repository.getAppVersion14().firstOrNull() ?: AppVersion14()
+                val codeVersion14 = repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
 
                 val migrates = listOf(
-                    viewModelScope.async { migrateShoppings(appVersion14.shoppingLists) },
-                    viewModelScope.async { migrateAutocompletes(appVersion14.autocompletes) }
+                    viewModelScope.async { migrateShoppings(codeVersion14.shoppingLists) },
+                    viewModelScope.async { migrateAutocompletes(codeVersion14.autocompletes) }
                 )
                 migrates.awaitAll()
 
@@ -285,7 +285,7 @@ class SettingsViewModel @Inject constructor(
         list.forEach {
             repository.addShoppingList(it)
             if (it.reminder != null) {
-                alarmManager.deleteAppVersion14Reminder(it.id)
+                alarmManager.deleteCodeVersion14Reminder(it.id)
                 alarmManager.createReminder(it.uid, it.reminder)
             }
         }

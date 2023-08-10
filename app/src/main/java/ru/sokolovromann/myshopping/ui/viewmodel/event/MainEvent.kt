@@ -10,5 +10,5 @@ sealed class MainEvent {
 
     data class AddDefaultPreferences(val screenWidth: Int, val screenHeight: Int) : MainEvent()
 
-    data class MigrateFromAppVersion14(val screenWidth: Int, val screenHeight: Int) : MainEvent()
+    data class MigrateFromCodeVersion14(val screenWidth: Int, val screenHeight: Int) : MainEvent()
 }

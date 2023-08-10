@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.local.datasource
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -19,6 +20,12 @@ class LocalAppConfigDatasource @Inject constructor(
     fun getPreferences(): DataStore<Preferences> {
         return context.preferencesDataStore
     }
+
+    fun getCodeVersion14Preferences(): SharedPreferences = context
+        .getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+
+    fun getCodeVersion14firstOpenedPreferences(): SharedPreferences = context
+        .getSharedPreferences("First", Context.MODE_PRIVATE)
 
     fun getResources(): Resources {
         return context.resources

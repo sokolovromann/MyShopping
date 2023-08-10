@@ -9,7 +9,7 @@ interface SettingsRepository {
 
     suspend fun getReminderUids(): Flow<List<String>>
 
-    suspend fun getAppVersion14(): Flow<AppVersion14>
+    suspend fun getCodeVersion14(): Flow<CodeVersion14>
 
     suspend fun addShoppingList(shoppingList: ShoppingList)
 

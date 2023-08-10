@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
 
             is MainEvent.AddDefaultPreferences -> addDefaultPreferences(event)
 
-            is MainEvent.MigrateFromAppVersion14 -> migrateFromAppVersion14(event)
+            is MainEvent.MigrateFromCodeVersion14 -> migrateFromCodeVersion14(event)
         }
     }
 
@@ -88,19 +88,19 @@ class MainViewModel @Inject constructor(
         _screenEventFlow.emit(MainScreenEvent.GetScreenSize)
     }
 
-    private fun migrateFromAppVersion14(
-        event: MainEvent.MigrateFromAppVersion14
+    private fun migrateFromCodeVersion14(
+        event: MainEvent.MigrateFromCodeVersion14
     ) = viewModelScope.launch {
         notificationManager.createNotificationChannel()
 
-        val appVersion14 = repository.getAppVersion14().firstOrNull() ?: AppVersion14()
+        val codeVersion14 = repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
 
         val migrates = listOf(
-            viewModelScope.async { migrateShoppings(appVersion14.shoppingLists) },
-            viewModelScope.async { migrateAutocompletes(appVersion14.autocompletes) },
+            viewModelScope.async { migrateShoppings(codeVersion14.shoppingLists) },
+            viewModelScope.async { migrateAutocompletes(codeVersion14.autocompletes) },
             viewModelScope.async {
                 migrateSettings(
-                    appVersion14.preferences,
+                    codeVersion14.preferences,
                     toSmartphoneScreen(event.screenWidth)
                 )
             }
@@ -114,7 +114,7 @@ class MainViewModel @Inject constructor(
         list.forEach {
             repository.addShoppingList(it)
             if (it.reminder != null) {
-                alarmManager.deleteAppVersion14Reminder(it.id)
+                alarmManager.deleteCodeVersion14Reminder(it.id)
                 alarmManager.createReminder(it.uid, it.reminder)
             }
         }
@@ -125,12 +125,12 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun migrateSettings(
-        preferences: AppVersion14Preferences,
+        preferences: CodeVersion14Preferences,
         smartphoneScreen: Boolean
     ) {
         val appPreferences = AppPreferences(
             appFirstTime = AppFirstTime.NOTHING,
-            firstAppVersion = AppVersion14.APP_VERSION,
+            firstAppVersion = CodeVersion14.CODE_VERSION,
             fontSize = preferences.fontSize,
             smartphoneScreen = smartphoneScreen,
             currency = preferences.currency,
