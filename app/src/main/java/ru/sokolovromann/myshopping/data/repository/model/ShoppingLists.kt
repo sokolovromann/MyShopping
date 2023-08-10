@@ -3,7 +3,8 @@ package ru.sokolovromann.myshopping.data.repository.model
 data class ShoppingLists(
     val shoppingLists: List<ShoppingList> = listOf(),
     val shoppingListsLastPosition: Int? = null,
-    val preferences: AppPreferences = AppPreferences()
+    val preferences: AppPreferences = AppPreferences(),
+    val appConfig: AppConfig = AppConfig()
 ) {
 
     fun getAllShoppingLists(

@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+@Deprecated("Use AppConfig")
 data class AppPreferences(
     val appFirstTime: AppFirstTime = AppFirstTime.DefaultValue,
     val firstAppVersion: Int = 0,

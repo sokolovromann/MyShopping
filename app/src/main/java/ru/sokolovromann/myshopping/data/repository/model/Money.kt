@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
+@Deprecated("Use AppFloat")
 data class Money(
     val value: Float = 0f,
     val currency: Currency = Currency(),

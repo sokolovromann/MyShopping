@@ -7,10 +7,15 @@ enum class DisplayCompleted {
     companion object {
         val DefaultValue: DisplayCompleted = LAST
 
-        fun valueOfOrDefault(value: String): DisplayCompleted = try {
+        fun valueOfOrDefault(name: String?): DisplayCompleted = try {
+            val value = name ?: throw NullPointerException()
             valueOf(value)
         } catch (e: Exception) {
             DefaultValue
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

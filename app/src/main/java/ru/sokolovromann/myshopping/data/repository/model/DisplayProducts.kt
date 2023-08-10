@@ -17,10 +17,15 @@ enum class DisplayProducts {
     companion object {
         val DefaultValue: DisplayProducts = HIDE_IF_HAS_TITLE
 
-        fun valueOfOrDefault(value: String): DisplayProducts = try {
+        fun valueOfOrDefault(name: String?): DisplayProducts = try {
+            val value = name ?: throw NullPointerException()
             valueOf(value)
         } catch (e: Exception) {
             DefaultValue
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

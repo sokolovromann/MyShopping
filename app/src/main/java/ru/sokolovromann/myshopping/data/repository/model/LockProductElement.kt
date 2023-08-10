@@ -7,10 +7,15 @@ enum class LockProductElement {
     companion object {
         val DefaultValue: LockProductElement = TOTAL
 
-        fun valueOfOrDefault(value: String): LockProductElement = try {
+        fun valueOfOrDefault(name: String?): LockProductElement = try {
+            val value = name ?: throw NullPointerException()
             valueOf(value)
         } catch (e: Exception) {
             DefaultValue
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

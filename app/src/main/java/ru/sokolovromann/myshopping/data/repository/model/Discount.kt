@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
+@Deprecated("Use AppFloat")
 data class Discount(
     val value: Float = 0f,
     val asPercent: Boolean = false,

@@ -7,10 +7,15 @@ enum class FontSize {
     companion object {
         val DefaultValue: FontSize = MEDIUM
 
-        fun valueOfOrDefault(value: String): FontSize = try {
+        fun valueOfOrDefault(name: String?): FontSize = try {
+            val value = name ?: throw NullPointerException()
             valueOf(value)
         } catch (e: Exception) {
             DefaultValue
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

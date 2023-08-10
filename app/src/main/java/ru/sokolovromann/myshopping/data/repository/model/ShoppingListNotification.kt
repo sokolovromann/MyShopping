@@ -2,7 +2,8 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 data class ShoppingListNotification(
     val shoppingList: ShoppingList = ShoppingList(),
-    val preferences: AppPreferences = AppPreferences()
+    val preferences: AppPreferences = AppPreferences(),
+    val appConfig: AppConfig = AppConfig()
 ) {
 
     fun id(): Int {

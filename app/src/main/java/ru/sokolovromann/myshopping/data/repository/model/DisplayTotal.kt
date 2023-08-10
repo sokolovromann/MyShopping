@@ -7,10 +7,15 @@ enum class DisplayTotal {
     companion object {
         val DefaultValue: DisplayTotal = ALL
 
-        fun valueOfOrDefault(value: String): DisplayTotal = try {
+        fun valueOfOrDefault(name: String?): DisplayTotal = try {
+            val value = name ?: throw NullPointerException()
             valueOf(value)
         } catch (e: Exception) {
             DefaultValue
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

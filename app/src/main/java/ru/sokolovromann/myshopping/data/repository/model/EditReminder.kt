@@ -4,7 +4,8 @@ import java.util.Calendar
 
 data class EditReminder(
     val shoppingList: ShoppingList? = null,
-    val preferences: AppPreferences = AppPreferences()
+    val preferences: AppPreferences = AppPreferences(),
+    val appConfig: AppConfig = AppConfig()
 ) {
 
     fun hasReminder(): Boolean {
