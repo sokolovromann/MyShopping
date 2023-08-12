@@ -15,7 +15,7 @@ class EditCurrencySymbolState {
         private set
 
     fun populate(editCurrencySymbol: EditCurrencySymbol) {
-        val preferences = editCurrencySymbol.preferences
+        val preferences = editCurrencySymbol.appConfig.userPreferences
         val symbol = preferences.currency.symbol
 
         screenData = EditCurrencySymbolScreenData(

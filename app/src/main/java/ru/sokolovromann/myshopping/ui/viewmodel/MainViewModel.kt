@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
 
             MainEvent.OnStop -> onStop()
 
-            is MainEvent.AddDefaultPreferences -> addDefaultPreferences(event)
+            is MainEvent.AddDefaultDeviceConfig -> addAppConfig(event)
 
             is MainEvent.MigrateFromCodeVersion14 -> migrateFromCodeVersion14(event)
         }
@@ -53,8 +53,8 @@ class MainViewModel @Inject constructor(
             mainState.showLoading()
         }
 
-        repository.getAppPreferences().collect {
-            applyAppPreferences(it)
+        repository.getAppConfig().collect {
+            applyAppConfig(it)
         }
     }
 
@@ -68,20 +68,28 @@ class MainViewModel @Inject constructor(
         mainState.clearShoppingUid()
     }
 
-    private suspend fun applyAppPreferences(appPreferences: AppPreferences) = withContext(dispatchers.main) {
-        mainState.applyPreferences(appPreferences)
+    private suspend fun applyAppConfig(appConfig: AppConfig) = withContext(dispatchers.main) {
+        mainState.applyAppConfig(appConfig)
 
-        when (appPreferences.appFirstTime) {
-            AppFirstTime.NOTHING -> mainState.hideLoading()
+        when (appConfig.appBuildConfig.getOpenHelper()) {
+            AppOpenHelper.Create -> getDefaultDeviceConfig()
 
-            AppFirstTime.FIRST_TIME -> getDefaultPreferences()
+            AppOpenHelper.Open -> mainState.hideLoading()
 
-            AppFirstTime.FIRST_TIME_FROM_APP_VERSION_14 -> getScreenSize()
+            AppOpenHelper.Migrate -> migrate(appConfig)
+
+            is AppOpenHelper.Error -> {}
         }
     }
 
-    private fun getDefaultPreferences() = viewModelScope.launch(dispatchers.main) {
-        _screenEventFlow.emit(MainScreenEvent.GetDefaultPreferences)
+    private fun getDefaultDeviceConfig() = viewModelScope.launch(dispatchers.main) {
+        _screenEventFlow.emit(MainScreenEvent.GetDefaultDeviceConfig)
+    }
+
+    private fun migrate(appConfig: AppConfig) {
+        if (appConfig.appBuildConfig.userCodeVersion == AppBuildConfig.CODE_VERSION_14) {
+            getScreenSize()
+        }
     }
 
     private fun getScreenSize() = viewModelScope.launch(dispatchers.main) {
@@ -101,7 +109,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.async {
                 migrateSettings(
                     codeVersion14.preferences,
-                    toSmartphoneScreen(event.screenWidth)
+                    event
                 )
             }
         )
@@ -126,38 +134,62 @@ class MainViewModel @Inject constructor(
 
     private suspend fun migrateSettings(
         preferences: CodeVersion14Preferences,
-        smartphoneScreen: Boolean
+        event: MainEvent.MigrateFromCodeVersion14
     ) {
-        val appPreferences = AppPreferences(
-            appFirstTime = AppFirstTime.NOTHING,
-            firstAppVersion = CodeVersion14.CODE_VERSION,
+        val deviceConfig = DeviceConfig(
+            screenWidthDp = event.screenWidth,
+            screenHeightDp = event.screenHeight
+        )
+
+        val appBuildConfig = AppBuildConfig(
+            userCodeVersion = BuildConfig.VERSION_CODE
+        )
+
+        val userPreferences = UserPreferences(
             fontSize = preferences.fontSize,
-            smartphoneScreen = smartphoneScreen,
             currency = preferences.currency,
             taxRate = preferences.taxRate,
             shoppingsMultiColumns = preferences.multiColumns,
             productsMultiColumns = preferences.multiColumns,
-            displayPurchasesTotal = preferences.displayTotal,
+            displayTotal = preferences.displayTotal,
             editProductAfterCompleted = preferences.editProductAfterCompleted,
             saveProductToAutocompletes = preferences.saveProductToAutocompletes,
             displayMoney = preferences.displayMoney,
             completedWithCheckbox = false
         )
-        repository.addPreferences(appPreferences)
+
+        val appConfig = AppConfig(
+            deviceConfig = deviceConfig,
+            appBuildConfig = appBuildConfig,
+            userPreferences = userPreferences
+        )
+
+        repository.addAppConfig(appConfig)
     }
 
-    private fun addDefaultPreferences(
-        event: MainEvent.AddDefaultPreferences
+    private fun addAppConfig(
+        event: MainEvent.AddDefaultDeviceConfig
     ) = viewModelScope.launch(dispatchers.io) {
-        val appPreferences = AppPreferences(
-            appFirstTime = AppFirstTime.NOTHING,
-            firstAppVersion = BuildConfig.VERSION_CODE,
-            smartphoneScreen = toSmartphoneScreen(event.screenWidth),
-            currency = repository.getDefaultCurrency().firstOrNull() ?: Currency(),
-            shoppingsMultiColumns = event.screenWidth >= 550,
-            productsMultiColumns = event.screenWidth >= 720
+        val deviceConfig = DeviceConfig(
+            screenWidthDp = event.screenWidth,
+            screenHeightDp = event.screenHeight
         )
-        repository.addPreferences(appPreferences)
+
+        val appBuildConfig = AppBuildConfig(
+            userCodeVersion = BuildConfig.VERSION_CODE
+        )
+
+        val userPreferences = UserPreferences(
+            currency = repository.getDefaultCurrency().firstOrNull() ?: Currency()
+        )
+
+        val appConfig = AppConfig(
+            deviceConfig = deviceConfig,
+            appBuildConfig = appBuildConfig,
+            userPreferences = userPreferences
+        )
+
+        repository.addAppConfig(appConfig)
 
         notificationManager.createNotificationChannel()
     }

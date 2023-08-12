@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
         LaunchedEffect(Unit) {
             viewModel.screenEventFlow.collect {
                 when (it) {
-                    MainScreenEvent.GetDefaultPreferences -> addDefaultPreferences()
+                    MainScreenEvent.GetDefaultDeviceConfig -> addDefaultDeviceConfig()
 
                     MainScreenEvent.GetScreenSize -> migrateFromCodeVersion14()
                 }
@@ -94,8 +94,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun addDefaultPreferences() {
-        val event = MainEvent.AddDefaultPreferences(
+    private fun addDefaultDeviceConfig() {
+        val event = MainEvent.AddDefaultDeviceConfig(
             screenWidth = resources.configuration.screenWidthDp,
             screenHeight = resources.configuration.screenHeightDp
         )

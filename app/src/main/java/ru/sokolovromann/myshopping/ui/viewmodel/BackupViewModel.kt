@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
-import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -35,7 +35,7 @@ class BackupViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<BackupScreenEvent> = _screenEventFlow
 
     init {
-        getPreferences()
+        getAppConfig()
     }
 
     override fun onEvent(event: BackupEvent) {
@@ -52,17 +52,17 @@ class BackupViewModel @Inject constructor(
         }
     }
 
-    private fun getPreferences() = viewModelScope.launch {
-        repository.getPreferences().collect {
-            preferencesLoaded(it)
+    private fun getAppConfig() = viewModelScope.launch {
+        repository.getAppConfig().collect {
+            appConfigLoaded(it)
         }
     }
 
-    private suspend fun preferencesLoaded(
-        preferences: AppPreferences
+    private suspend fun appConfigLoaded(
+        appConfig: AppConfig
     ) = withContext(dispatchers.main) {
         backupState.onCreate(
-            preferences = preferences,
+            appConfig = appConfig,
             correctWriteFilesPermission = mediaStore.checkCorrectWriteFilesPermissions()
         )
     }

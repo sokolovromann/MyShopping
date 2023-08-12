@@ -110,7 +110,7 @@ class PurchasesViewModel @Inject constructor(
         shoppingLists: ShoppingLists
     ) = withContext(dispatchers.main) {
         if (shoppingLists.shoppingLists.isEmpty()) {
-            purchasesState.showNotFound(shoppingLists.preferences)
+            purchasesState.showNotFound(shoppingLists.appConfig)
         } else {
             purchasesState.showShoppingLists(shoppingLists)
         }

@@ -1,22 +1,12 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
-import java.math.RoundingMode
 import java.text.DecimalFormat
 
-@Deprecated("Use AppFloat")
 data class Quantity(
     val value: Float = 0f,
     val symbol: String = "",
-    private val decimalFormat: DecimalFormat = DefaultDecimalFormat
+    val decimalFormat: DecimalFormat = UserPreferencesDefaults.QUANTITY_DECIMAL_FORMAT
 ) {
-
-    companion object {
-        val DefaultDecimalFormat = DecimalFormat().apply {
-            minimumFractionDigits = 0
-            maximumFractionDigits = 3
-            roundingMode = RoundingMode.HALF_UP
-        }
-    }
 
     fun valueToString(): String {
         val format = decimalFormat

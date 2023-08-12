@@ -21,7 +21,7 @@ fun ShoppingList.getShoppingListLocation(): ShoppingListLocation {
 
 fun ShoppingLists.getAllShoppingListItems(
     splitByPinned: Boolean = true,
-    displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+    displayCompleted: DisplayCompleted = appConfig.userPreferences.displayCompleted
 ): List<ShoppingListItem> {
     return getAllShoppingLists(splitByPinned, displayCompleted).map { toShoppingListItems(it) }
 }
@@ -31,13 +31,13 @@ fun ShoppingLists.getActivePinnedShoppingListItems(): List<ShoppingListItem> {
 }
 
 fun ShoppingLists.getOtherShoppingListItems(
-    displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+    displayCompleted: DisplayCompleted = appConfig.userPreferences.displayCompleted
 ): List<ShoppingListItem> {
     return getOtherShoppingLists(displayCompleted).map { toShoppingListItems(it) }
 }
 
 fun ShoppingLists.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), preferences.displayPurchasesTotal, false)
+    return totalToText(calculateTotal(), appConfig.userPreferences.displayTotal, false)
 }
 
 fun ShoppingLists.calculateTotalToText(uids: List<String>): UiText {
@@ -51,13 +51,13 @@ private fun ShoppingList.calculateTotalToText(totalFormatted: Boolean): UiText {
 
 private fun ShoppingLists.toShoppingListItems(shoppingList: ShoppingList): ShoppingListItem {
     val defaultProductsLimit = 10
-    val name: UiText = if (preferences.displayShoppingsProducts == DisplayProducts.HIDE && shoppingList.name.isEmpty()) {
+    val name: UiText = if (appConfig.userPreferences.displayShoppingsProducts == DisplayProducts.HIDE && shoppingList.name.isEmpty()) {
         UiText.FromResources(R.string.shoppingLists_text_nameNotFound)
     } else {
         UiText.FromString(shoppingList.name)
     }
 
-    val totalFormatted = shoppingList.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL
+    val totalFormatted = shoppingList.totalFormatted && appConfig.userPreferences.displayTotal == DisplayTotal.ALL
 
     val productsList = if (shoppingList.products.isEmpty()) {
         val pair = Pair(null, UiText.FromResources(R.string.purchases_text_productsNotFound))
@@ -65,7 +65,7 @@ private fun ShoppingLists.toShoppingListItems(shoppingList: ShoppingList): Shopp
     } else {
         val products: MutableList<Pair<Boolean?, UiText>> = shoppingList.products
             .filterIndexed { index, _ -> index < defaultProductsLimit}
-            .map { product -> productsToPair(product, preferences, totalFormatted) }
+            .map { product -> productsToPair(product, appConfig, totalFormatted) }
             .toMutableList()
 
         if (shoppingList.products.size > defaultProductsLimit) {
@@ -75,7 +75,7 @@ private fun ShoppingLists.toShoppingListItems(shoppingList: ShoppingList): Shopp
         products.toList()
     }
 
-    val totalText: UiText = if (preferences.displayMoney) {
+    val totalText: UiText = if (appConfig.userPreferences.displayMoney) {
         shoppingList.calculateTotalToText(totalFormatted)
     } else {
         UiText.Nothing
@@ -114,13 +114,13 @@ private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted
 
 private fun productsToPair(
     product: Product,
-    preferences: AppPreferences,
+    appConfig: AppConfig,
     totalFormatted: Boolean
 ): Pair<Boolean, UiText> {
     val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted
+    val displayPrice = product.formatTotal().isNotEmpty() && appConfig.userPreferences.displayMoney && !totalFormatted
 
-    var productsText = if (product.brand.isEmpty() || !preferences.displayOtherFields) "" else " ${product.brand}"
+    var productsText = if (product.brand.isEmpty() || !appConfig.userPreferences.displayOtherFields) "" else " ${product.brand}"
     productsText += if (displayPrice) {
         if (displayQuantity) {
             " • ${product.quantity} • ${product.formatTotal()}"
@@ -135,12 +135,12 @@ private fun productsToPair(
         productsText += " • ${product.note}"
     }
 
-    val shortText = preferences.shoppingsMultiColumns && preferences.smartphoneScreen
+    val shortText = appConfig.userPreferences.shoppingsMultiColumns && appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
 
     val text: UiText = if (shortText) {
         UiText.FromString(product.name)
     } else {
-        val str = if (preferences.displayShoppingsProducts == DisplayProducts.COLUMNS) {
+        val str = if (appConfig.userPreferences.displayShoppingsProducts == DisplayProducts.COLUMNS) {
             "${product.name}$productsText"
         } else {
             product.name

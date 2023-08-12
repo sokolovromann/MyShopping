@@ -32,7 +32,7 @@ class CalculateChangeState {
             userMoneyValue = TextFieldValue(),
             totalText = totalText,
             changeText = changeText,
-            fontSize = calculateChange.preferences.fontSize
+            fontSize = calculateChange.appConfig.userPreferences.fontSize
         )
     }
 
@@ -40,7 +40,7 @@ class CalculateChangeState {
         val change: Float = userMoneyValue.toFloatOrZero() - calculateChange.calculateTotal().value
         val changeMoney = Money(
             value = change,
-            currency = calculateChange.preferences.currency
+            currency = calculateChange.appConfig.userPreferences.currency
         )
         val changeText: UiText = if (changeMoney.isEmpty()) {
             UiText.FromResources(R.string.calculateChange_text_noChange)

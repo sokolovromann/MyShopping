@@ -3,9 +3,10 @@ package ru.sokolovromann.myshopping.data.repository.model
 data class Products(
     val shoppingList: ShoppingList = ShoppingList(),
     val shoppingListsLastPosition: Int? = null,
-    val preferences: AppPreferences = AppPreferences(),
     val appConfig: AppConfig = AppConfig()
 ) {
+
+    private val preferences = appConfig.userPreferences
 
     fun formatName(): String {
         return shoppingList.name
@@ -20,7 +21,7 @@ data class Products(
     }
 
     fun getActivePinnedProducts(
-        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+        displayCompleted: DisplayCompleted? = preferences.displayCompleted
     ): List<Product> {
         val sort = if (shoppingList.sortFormatted) shoppingList.sort else Sort()
         val sorted = getPinnedAndOtherProducts().first.sortProducts(sort)
@@ -32,7 +33,7 @@ data class Products(
     }
 
     fun getOtherProducts(
-        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+        displayCompleted: DisplayCompleted? = preferences.displayCompleted
     ): List<Product> {
         val sort = if (shoppingList.sortFormatted) shoppingList.sort else Sort()
         val sorted = getPinnedAndOtherProducts().second.sortProducts(sort)
@@ -44,7 +45,7 @@ data class Products(
     }
 
     fun calculateTotal(
-        displayTotal: DisplayTotal = preferences.displayPurchasesTotal,
+        displayTotal: DisplayTotal = preferences.displayTotal,
         forceCalculate: Boolean = !totalFormatted()
     ): Money {
         return if (forceCalculate) {
@@ -53,7 +54,7 @@ data class Products(
             var active = 0f
 
             shoppingList.products.forEach { product ->
-                val totalValue = product.formatTotal().valueToString().toFloat()
+                val totalValue = product.formatTotal().getFormattedValueWithoutSeparators().toFloat()
 
                 all += totalValue
                 if (product.completed) {
@@ -79,7 +80,7 @@ data class Products(
         var total = 0f
 
         shoppingList.products.forEach { product ->
-            val totalValue = product.formatTotal().valueToString().toFloat()
+            val totalValue = product.formatTotal().getFormattedValueWithoutSeparators().toFloat()
             if (uids.contains(product.productUid)) {
                 total += totalValue
             }
@@ -114,7 +115,7 @@ data class Products(
 
     private fun getPinnedAndOtherProducts(): Pair<List<Product>, List<Product>> {
         return shoppingList.products.partition {
-            if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+            if (preferences.displayCompleted == DisplayCompleted.NO_SPLIT) {
                 it.pinned
             } else {
                 it.pinned && !it.completed

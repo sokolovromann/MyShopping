@@ -3,13 +3,14 @@ package ru.sokolovromann.myshopping.data.repository.model
 data class ShoppingLists(
     val shoppingLists: List<ShoppingList> = listOf(),
     val shoppingListsLastPosition: Int? = null,
-    val preferences: AppPreferences = AppPreferences(),
     val appConfig: AppConfig = AppConfig()
 ) {
 
+    private val preferences = appConfig.userPreferences
+
     fun getAllShoppingLists(
         splitByPinned: Boolean = true,
-        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+        displayCompleted: DisplayCompleted? = preferences.displayCompleted
     ): List<ShoppingList> {
         val list = if (splitByPinned) {
             getActivePinnedShoppingLists()
@@ -35,7 +36,7 @@ data class ShoppingLists(
     }
 
     fun getActivePinnedShoppingLists(
-        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+        displayCompleted: DisplayCompleted? = preferences.displayCompleted
     ): List<ShoppingList> {
         val sorted = getPinnedAndOtherShoppingLists().first
             .map {
@@ -52,7 +53,7 @@ data class ShoppingLists(
     }
 
     fun getOtherShoppingLists(
-        displayCompleted: DisplayCompleted? = preferences.displayCompletedPurchases
+        displayCompleted: DisplayCompleted? = preferences.displayCompleted
     ): List<ShoppingList> {
         val sorted = getPinnedAndOtherShoppingLists().second
             .map {
@@ -71,7 +72,7 @@ data class ShoppingLists(
     fun calculateTotal(): Money {
         var total = 0f
         shoppingLists.forEach {
-            total += if (it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL) {
+            total += if (it.totalFormatted && preferences.displayTotal == DisplayTotal.ALL) {
                 it.calculateTotal(false).value
             } else {
                 it.calculateTotal(true).value
@@ -84,7 +85,7 @@ data class ShoppingLists(
         var total = 0f
         shoppingLists.forEach {
             if (uids.contains(it.uid)) {
-                total += if (it.totalFormatted && preferences.displayPurchasesTotal == DisplayTotal.ALL) {
+                total += if (it.totalFormatted && preferences.displayTotal == DisplayTotal.ALL) {
                     it.calculateTotal(false).value
                 } else {
                     it.calculateTotal(true).value
@@ -101,7 +102,7 @@ data class ShoppingLists(
 
     private fun getPinnedAndOtherShoppingLists(): Pair<List<ShoppingList>, List<ShoppingList>> {
         return shoppingLists.partition {
-            if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+            if (preferences.displayCompleted == DisplayCompleted.NO_SPLIT) {
                 it.pinned
             } else {
                 it.pinned && !it.completed
@@ -120,7 +121,7 @@ data class ShoppingLists(
         val productsPartition = product
             .sortProducts(sort)
             .partition {
-                if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+                if (preferences.displayCompleted == DisplayCompleted.NO_SPLIT) {
                     it.pinned
                 } else {
                     it.pinned && !it.completed

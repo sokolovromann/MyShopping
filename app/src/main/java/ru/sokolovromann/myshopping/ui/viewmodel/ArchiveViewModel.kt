@@ -94,7 +94,7 @@ class ArchiveViewModel @Inject constructor(
         shoppingLists: ShoppingLists
     ) = withContext(dispatchers.main) {
         if (shoppingLists.shoppingLists.isEmpty()) {
-            archiveState.showNotFound(shoppingLists.preferences)
+            archiveState.showNotFound(shoppingLists.appConfig)
         } else {
             archiveState.showShoppingLists(shoppingLists)
         }

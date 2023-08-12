@@ -19,15 +19,16 @@ class AutocompletesState {
         screenData = AutocompletesScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: AppPreferences, location: AutocompleteLocation) {
-        autocompletes = Autocompletes(preferences = preferences)
+    fun showNotFound(appConfig: AppConfig, location: AutocompleteLocation) {
+        autocompletes = Autocompletes(appConfig = appConfig)
+        val preferences = autocompletes.appConfig.userPreferences
 
         val locationEnabled = Locale.getDefault().isSupported() &&
                 preferences.displayDefaultAutocompletes
 
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
-            smartphoneScreen = preferences.smartphoneScreen,
+            smartphoneScreen = appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
             location = location,
             locationEnabled = locationEnabled,
             fontSize = preferences.fontSize
@@ -36,16 +37,18 @@ class AutocompletesState {
 
     fun showAutocompletes(autocompletes: Autocompletes, location: AutocompleteLocation) {
         this.autocompletes = autocompletes
-        val preferences = autocompletes.preferences
+        val preferences = autocompletes.appConfig.userPreferences
 
         val locationEnabled = Locale.getDefault().isSupported() &&
                 preferences.displayDefaultAutocompletes
 
+        val smartphoneScreen = autocompletes.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
+
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Showing,
             autocompletes = autocompletes.getAutocompleteItems(),
-            multiColumns = !preferences.smartphoneScreen,
-            smartphoneScreen = preferences.smartphoneScreen,
+            multiColumns = !smartphoneScreen,
+            smartphoneScreen = smartphoneScreen,
             location = location,
             locationEnabled = locationEnabled,
             fontSize = preferences.fontSize

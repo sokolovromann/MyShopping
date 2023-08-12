@@ -23,8 +23,9 @@ class PurchasesState {
         screenData = PurchasesScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: AppPreferences) {
-        shoppingLists = ShoppingLists(preferences = preferences)
+    fun showNotFound(appConfig: AppConfig) {
+        shoppingLists = ShoppingLists(appConfig = appConfig)
+        val preferences = shoppingLists.appConfig.userPreferences
 
         val totalText: UiText = if (preferences.displayMoney) {
             shoppingLists.calculateTotalToText()
@@ -41,19 +42,19 @@ class PurchasesState {
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             coloredCheckbox = preferences.coloredCheckbox,
             totalText = totalText,
             multiColumnsText = multiColumnsText,
-            smartphoneScreen = preferences.smartphoneScreen,
-            displayTotal = preferences.displayPurchasesTotal,
+            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
+            displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         this.shoppingLists = shoppingLists
-        val preferences = shoppingLists.preferences
+        val preferences = shoppingLists.appConfig.userPreferences
 
         val totalText: UiText = if (preferences.displayMoney) {
             shoppingLists.calculateTotalToText()
@@ -67,7 +68,7 @@ class PurchasesState {
             UiText.FromResources(R.string.shoppingLists_action_enableShoppingsMultiColumns)
         }
 
-        val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
+        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         val selectedUids = if (savedSelectedUid.isEmpty()) {
@@ -81,13 +82,13 @@ class PurchasesState {
             pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
             otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
             displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             coloredCheckbox = preferences.coloredCheckbox,
             totalText = totalText,
             multiColumns = preferences.shoppingsMultiColumns,
             multiColumnsText = multiColumnsText,
-            smartphoneScreen = preferences.smartphoneScreen,
-            displayTotal = preferences.displayPurchasesTotal,
+            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
+            displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists,
             selectedUids = selectedUids
@@ -124,7 +125,7 @@ class PurchasesState {
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { add(uid) }
 
-        val totalText = if (shoppingLists.preferences.displayMoney) {
+        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
             shoppingLists.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -139,7 +140,7 @@ class PurchasesState {
     fun selectAllShoppingLists() {
         val uids = shoppingLists.shoppingLists.map { it.uid }
 
-        val totalText = if (shoppingLists.preferences.displayMoney) {
+        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
             shoppingLists.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -159,7 +160,7 @@ class PurchasesState {
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
 
-        val totalText = if (shoppingLists.preferences.displayMoney) {
+        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
             if (checkedUids == null) {
                 shoppingLists.calculateTotalToText()
             } else {
@@ -176,7 +177,7 @@ class PurchasesState {
     }
 
     fun unselectAllShoppingLists() {
-        val totalText = if (shoppingLists.preferences.displayMoney) {
+        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
             shoppingLists.calculateTotalToText()
         } else {
             UiText.Nothing

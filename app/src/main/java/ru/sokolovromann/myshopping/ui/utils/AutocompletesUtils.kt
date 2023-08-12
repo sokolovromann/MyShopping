@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.ui.utils
 
-import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 import ru.sokolovromann.myshopping.data.repository.model.formatFirst
@@ -11,7 +11,7 @@ fun Autocompletes.getAutocompleteItems(): Map<UiText, AutocompleteItems> {
     val items: MutableMap<UiText, AutocompleteItems> = mutableMapOf()
     formatAutocompletes().groupBy { it.name.lowercase() }.forEach {
         val name: UiText = UiText.FromString(it.key.formatFirst(true))
-        val autocompletes = toAutocompleteItems(it.value, preferences)
+        val autocompletes = toAutocompleteItems(it.value, appConfig)
         items[name] = autocompletes
     }
     return items
@@ -19,7 +19,7 @@ fun Autocompletes.getAutocompleteItems(): Map<UiText, AutocompleteItems> {
 
 private fun toAutocompleteItems(
     autocompletes: List<Autocomplete>,
-    preferences: AppPreferences
+    appConfig: AppConfig
 ): AutocompleteItems {
     val otherLimit = 3
     val quantitiesLimit = 5
@@ -67,10 +67,10 @@ private fun toAutocompleteItems(
         }
         .map { UiText.FromString(it.quantity.toString()) }
 
-    val pricesList: List<UiText> = if (preferences.displayMoney) {
+    val pricesList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
-            .distinctBy { it.price.formatValue() }
+            .distinctBy { it.price.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
                 autocomplete.price.isNotEmpty() && index < pricesLimit
             }
@@ -79,7 +79,7 @@ private fun toAutocompleteItems(
         listOf()
     }
 
-    val discountsList: List<UiText> = if (preferences.displayMoney) {
+    val discountsList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
             .distinctBy { it.discount.formatValue() }
@@ -91,10 +91,10 @@ private fun toAutocompleteItems(
         listOf()
     }
 
-    val totalsList: List<UiText> = if (preferences.displayMoney) {
+    val totalsList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
-            .distinctBy { it.total.formatValue() }
+            .distinctBy { it.total.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
                 autocomplete.total.isNotEmpty() && index < totalsLimit
             }

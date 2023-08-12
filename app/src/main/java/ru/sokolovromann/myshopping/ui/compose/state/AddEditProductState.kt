@@ -26,7 +26,7 @@ class AddEditProductState {
         this.addEditProduct = addEditProduct
 
         val product = addEditProduct.product ?: Product()
-        val preferences = addEditProduct.preferences
+        val preferences = addEditProduct.appConfig.userPreferences
 
         val name = product.name
         val uid = product.productUid
@@ -36,7 +36,7 @@ class AddEditProductState {
         val manufacturer = product.manufacturer
         val quantity = if (product.quantity.isEmpty()) "" else product.quantity.valueToString()
         val quantitySymbol = product.quantity.symbol
-        val price = if (product.price.isEmpty()) "" else product.price.valueToString()
+        val price = if (product.price.isEmpty()) "" else product.price.getFormattedValueWithoutSeparators()
         val discount = if (product.discount.isEmpty()) "" else product.discount.valueToString()
         val discountAsPercent = product.discount.asPercent
         val discountAsPercentText: UiText = if (discountAsPercent) {
@@ -44,7 +44,7 @@ class AddEditProductState {
         } else {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)
         }
-        val total = if (product.total.isEmpty()) "" else product.formatTotal().valueToString()
+        val total = if (product.total.isEmpty()) "" else product.formatTotal().getFormattedValueWithoutSeparators()
         val note = product.note
         val showNameOtherFields = brand.isNotEmpty() || size.isNotEmpty() ||
                 color.isNotEmpty() || manufacturer.isNotEmpty()
@@ -305,7 +305,7 @@ class AddEditProductState {
     }
 
     fun selectAutocompletePrice(price: Money) {
-        val priceText = price.valueToString()
+        val priceText = price.getFormattedValueWithoutSeparators()
         screenData = screenData.copy(
             priceValue = TextFieldValue(
                 text = priceText,
@@ -372,7 +372,7 @@ class AddEditProductState {
     }
 
     fun selectAutocompleteTotal(total: Money) {
-        val totalText = total.valueToString()
+        val totalText = total.getFormattedValueWithoutSeparators()
         screenData = screenData.copy(
             totalValue = TextFieldValue(
                 text = totalText,
@@ -565,7 +565,7 @@ class AddEditProductState {
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
-        return if (addEditProduct.preferences.saveProductToAutocompletes) {
+        return if (addEditProduct.appConfig.userPreferences.saveProductToAutocompletes) {
             Result.success(getSavableAutocomplete())
         } else {
             Result.failure(Exception())
@@ -578,7 +578,7 @@ class AddEditProductState {
     }
 
     private fun getSavableProduct(newProduct: Boolean = true): Product {
-        val preferences = addEditProduct.preferences
+        val preferences = addEditProduct.appConfig.userPreferences
         val position = if (newProduct) {
             addEditProduct.productsLastPosition?.plus(1)
         } else {
@@ -658,7 +658,7 @@ class AddEditProductState {
         val total = screenData.totalValue.toFloatOrZero()
         val calculate = quantity > 0f && total > 0f
 
-        val text = if (calculate) Money(value = total / quantity).valueToString() else ""
+        val text = if (calculate) Money(value = total / quantity).getFormattedValueWithoutSeparators() else ""
         screenData = screenData.copy(
             priceValue = TextFieldValue(
                 text = text,
@@ -675,14 +675,14 @@ class AddEditProductState {
             value = screenData.discountValue.toFloatOrZero(),
             asPercent = screenData.discountAsPercent
         )
-        val taxRate = addEditProduct.preferences.taxRate
+        val taxRate = addEditProduct.appConfig.userPreferences.taxRate
         val calculate = quantity > 0f && price > 0f
 
         val text = if (calculate) {
             val totalValue = quantity * price
             val totalWithDiscountAndTaxRate = totalValue - discount.calculate(totalValue) +
-                    taxRate.calculate(totalValue)
-            Money(value = totalWithDiscountAndTaxRate).valueToString()
+                    taxRate.calculateValueFromPercent(totalValue)
+            Money(value = totalWithDiscountAndTaxRate).getFormattedValueWithoutSeparators()
         } else {
             ""
         }

@@ -23,13 +23,13 @@ fun Products.getActivePinnedProductItems(): List<ProductItem> {
 }
 
 fun Products.getOtherProductItems(
-    displayCompleted: DisplayCompleted = preferences.displayCompletedPurchases
+    displayCompleted: DisplayCompleted = appConfig.userPreferences.displayCompleted
 ): List<ProductItem> {
     return getOtherProducts(displayCompleted).map { toProductItem(it) }
 }
 
 fun Products.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), preferences.displayPurchasesTotal, totalFormatted())
+    return totalToText(calculateTotal(), appConfig.userPreferences.displayTotal, totalFormatted())
 }
 
 fun Products.calculateTotalToText(uids: List<String>): UiText {
@@ -52,14 +52,14 @@ private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted
 
 private fun Products.toProductItem(product: Product): ProductItem {
     val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
+    val displayPrice = product.formatTotal().isNotEmpty() && appConfig.userPreferences.displayMoney && !totalFormatted()
 
-    val brand = if (product.brand.isEmpty() || !preferences.displayOtherFields) "" else " ${product.brand}"
-    val manufacturer = if (product.manufacturer.isEmpty() || !preferences.displayOtherFields) "" else " • ${product.manufacturer}"
+    val brand = if (product.brand.isEmpty() || !appConfig.userPreferences.displayOtherFields) "" else " ${product.brand}"
+    val manufacturer = if (product.manufacturer.isEmpty() || !appConfig.userPreferences.displayOtherFields) "" else " • ${product.manufacturer}"
     val nameText: UiText = UiText.FromString("${product.name}$brand$manufacturer")
 
     var otherName = product.size
-    otherName += if (product.color.isEmpty() || !preferences.displayOtherFields) {
+    otherName += if (product.color.isEmpty() || !appConfig.userPreferences.displayOtherFields) {
         ""
     } else {
         if (product.size.isEmpty()) product.color else " • ${product.color}"
@@ -93,7 +93,7 @@ private fun Products.toProductItem(product: Product): ProductItem {
 
 private fun Products.toProductWidgetItem(product: Product): ProductWidgetItem {
     val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.formatTotal().isNotEmpty() && preferences.displayMoney && !totalFormatted()
+    val displayPrice = product.formatTotal().isNotEmpty() && appConfig.userPreferences.displayMoney && !totalFormatted()
 
     val body = if (displayPrice) {
         if (displayQuantity) {

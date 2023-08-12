@@ -37,9 +37,9 @@ object UserPreferencesDefaults {
         maximumFractionDigits = 3
         roundingMode = RoundingMode.HALF_UP
     }
-    val TAX_RATE = AppFloat(
+    val TAX_RATE = Money(
         value = 0f,
-        type = AppFloatType.Percent,
+        asPercent = true,
         decimalFormat = MONEY_DECIMAL_FORMAT
     )
 }

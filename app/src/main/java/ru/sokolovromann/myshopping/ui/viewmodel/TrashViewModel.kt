@@ -84,7 +84,7 @@ class TrashViewModel @Inject constructor(
         shoppingLists: ShoppingLists
     ) = withContext(dispatchers.main) {
         if (shoppingLists.shoppingLists.isEmpty()) {
-            trashState.showNotFound(shoppingLists.preferences)
+            trashState.showNotFound(shoppingLists.appConfig)
         } else {
             trashState.showShoppingLists(shoppingLists)
         }

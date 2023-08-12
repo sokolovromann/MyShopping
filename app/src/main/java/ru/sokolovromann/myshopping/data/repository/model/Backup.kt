@@ -4,7 +4,6 @@ data class Backup(
     val shoppingLists: List<ShoppingList> = listOf(),
     val products: List<Product> = listOf(),
     val autocompletes: List<Autocomplete> = listOf(),
-    val preferences: AppPreferences = AppPreferences(),
     val appConfig: AppConfig = AppConfig(),
     val appVersion: Int = 0
 )

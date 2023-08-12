@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 data class Autocompletes(
     val autocompletes: List<Autocomplete> = listOf(),
-    val preferences: AppPreferences = AppPreferences(),
     val appConfig: AppConfig = AppConfig()
 ) {
 
@@ -10,6 +9,8 @@ data class Autocompletes(
     private val defaultQuantitiesLimit: Int = 5
     private val defaultMoneyLimit: Int = 3
     private val defaultOtherFieldsLimit: Int = 3
+
+    private val preferences = appConfig.userPreferences
 
     fun formatAutocompletes(): List<Autocomplete> {
         return autocompletes.sortAutocompletes()
@@ -108,7 +109,7 @@ data class Autocompletes(
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.price }
-            .distinctBy { it.formatValue() }
+            .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, price ->
                 price.isNotEmpty() && index <= defaultMoneyLimit
             }
@@ -128,7 +129,7 @@ data class Autocompletes(
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.total }
-            .distinctBy { it.formatValue() }
+            .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, total ->
                 total.isNotEmpty() && index <= defaultMoneyLimit
             }

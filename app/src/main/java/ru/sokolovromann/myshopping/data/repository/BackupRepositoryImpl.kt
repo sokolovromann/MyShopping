@@ -9,7 +9,7 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.BackupDao
 import ru.sokolovromann.myshopping.data.local.files.BackupFiles
-import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Backup
 import javax.inject.Inject
 
@@ -21,9 +21,9 @@ class BackupRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : BackupRepository {
 
-    override suspend fun getPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
+    override suspend fun getAppConfig(): Flow<AppConfig> = withContext(dispatchers.io) {
         return@withContext appConfigDao.getAppConfig().map {
-            mapping.toAppPreferences(it)
+            mapping.toAppConfig(it)
         }
     }
 
@@ -62,7 +62,7 @@ class BackupRepositoryImpl @Inject constructor(
         val autocompleteEntities = mapping.toAutocompleteEntities(backup)
         backupDao.addAutocompletes(autocompleteEntities)
 
-        val appConfigEntity = mapping.toAppConfigEntity(backup.preferences)
+        val appConfigEntity = mapping.toAppConfigEntity(backup.appConfig)
         appConfigDao.saveAppConfig(appConfigEntity)
     }
 

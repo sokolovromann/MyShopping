@@ -29,7 +29,7 @@ class ProductsState {
 
     fun showNotFound(products: Products) {
         this.products = products
-        val preferences = products.preferences
+        val preferences = products.appConfig.userPreferences
         val totalText = if (preferences.displayMoney) {
             products.calculateTotalToText()
         } else {
@@ -57,12 +57,12 @@ class ProductsState {
             totalText = totalText,
             multiColumnsText = multiColumnsText,
             reminderText = toReminderText(products.shoppingList.reminder),
-            smartphoneScreen = preferences.smartphoneScreen,
+            smartphoneScreen = products.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
             coloredCheckbox = preferences.coloredCheckbox,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             sort = products.shoppingList.sort,
             automaticSorting = products.isAutomaticSorting(),
-            displayTotal = preferences.displayPurchasesTotal,
+            displayTotal = preferences.displayTotal,
             totalFormatted = products.shoppingList.totalFormatted,
             fontSize = preferences.fontSize,
             displayMoney = preferences.displayMoney,
@@ -75,7 +75,7 @@ class ProductsState {
 
     fun showProducts(products: Products) {
         this.products = products
-        val preferences = products.preferences
+        val preferences = products.appConfig.userPreferences
         val totalText = if (preferences.displayMoney) {
             products.calculateTotalToText()
         } else {
@@ -97,11 +97,11 @@ class ProductsState {
         val location = products.shoppingList.getShoppingListLocation()
 
         val showHiddenProducts = location != ShoppingListLocation.TRASH
-                && preferences.displayCompletedPurchases == DisplayCompleted.HIDE
+                && preferences.displayCompleted == DisplayCompleted.HIDE
                 && products.hasHiddenProducts()
 
         val otherProducts = if (location == ShoppingListLocation.TRASH) {
-            when (preferences.displayCompletedPurchases) {
+            when (preferences.displayCompleted) {
                 DisplayCompleted.HIDE -> products.getOtherProductItems(DisplayCompleted.LAST)
                 else -> products.getOtherProductItems()
             }
@@ -127,12 +127,12 @@ class ProductsState {
             reminderText = toReminderText(products.shoppingList.reminder),
             multiColumns = preferences.productsMultiColumns,
             multiColumnsText = multiColumnsText,
-            smartphoneScreen = preferences.smartphoneScreen,
+            smartphoneScreen = products.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
             coloredCheckbox = preferences.coloredCheckbox,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             sort = products.shoppingList.sort,
             automaticSorting = products.isAutomaticSorting(),
-            displayTotal = preferences.displayPurchasesTotal,
+            displayTotal = preferences.displayTotal,
             totalFormatted = products.shoppingList.totalFormatted,
             showHiddenProducts = showHiddenProducts,
             fontSize = preferences.fontSize,
@@ -182,7 +182,7 @@ class ProductsState {
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { add(uid) }
 
-        val totalText = if (products.preferences.displayMoney) {
+        val totalText = if (products.appConfig.userPreferences.displayMoney) {
             products.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -197,7 +197,7 @@ class ProductsState {
     fun selectAllProducts() {
         val uids = products.shoppingList.products.map { it.productUid }
 
-        val totalText = if (products.preferences.displayMoney) {
+        val totalText = if (products.appConfig.userPreferences.displayMoney) {
             products.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -217,7 +217,7 @@ class ProductsState {
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
 
-        val totalText = if (products.preferences.displayMoney) {
+        val totalText = if (products.appConfig.userPreferences.displayMoney) {
             if (checkedUids == null) {
                 products.calculateTotalToText()
             } else {
@@ -234,7 +234,7 @@ class ProductsState {
     }
 
     fun unselectAllProducts() {
-        val totalText = if (products.preferences.displayMoney) {
+        val totalText = if (products.appConfig.userPreferences.displayMoney) {
             products.calculateTotalToText()
         } else {
             UiText.Nothing
@@ -283,7 +283,7 @@ class ProductsState {
         }
 
         val total = products.calculateTotal(DisplayTotal.COMPLETED)
-        if (products.preferences.displayMoney && total.isNotEmpty()) {
+        if (products.appConfig.userPreferences.displayMoney && total.isNotEmpty()) {
             shareText += "\n= $total"
         } else {
             if (shareText.isNotEmpty()) {

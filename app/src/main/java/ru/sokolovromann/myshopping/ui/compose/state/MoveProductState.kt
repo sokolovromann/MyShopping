@@ -21,14 +21,16 @@ class MoveProductState {
         screenData = MoveProductScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: AppPreferences, location: ShoppingListLocation) {
-        shoppingLists = ShoppingLists(preferences = preferences)
+    fun showNotFound(appConfig: AppConfig, location: ShoppingListLocation) {
+        shoppingLists = ShoppingLists(appConfig = appConfig)
+        val preferences = shoppingLists.appConfig.userPreferences
+
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             coloredCheckbox = preferences.coloredCheckbox,
-            smartphoneScreen = preferences.smartphoneScreen,
+            smartphoneScreen = appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
             location = location,
             fontSize = preferences.fontSize
         )
@@ -36,9 +38,9 @@ class MoveProductState {
 
     fun showShoppingLists(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
         this.shoppingLists = shoppingLists
-        val preferences = shoppingLists.preferences
+        val preferences = shoppingLists.appConfig.userPreferences
 
-        val showHiddenShoppingLists = preferences.displayCompletedPurchases == DisplayCompleted.HIDE
+        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
                 && shoppingLists.hasHiddenShoppingLists()
 
         val pinnedShoppingLists = if (location == ShoppingListLocation.PURCHASES) {
@@ -58,10 +60,10 @@ class MoveProductState {
             pinnedShoppingLists = pinnedShoppingLists,
             otherShoppingLists = otherShoppingLists,
             displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             coloredCheckbox = preferences.coloredCheckbox,
             multiColumns = preferences.shoppingsMultiColumns,
-            smartphoneScreen = preferences.smartphoneScreen,
+            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
             location = location,
             fontSize = preferences.fontSize,
             showHiddenShoppingLists = showHiddenShoppingLists

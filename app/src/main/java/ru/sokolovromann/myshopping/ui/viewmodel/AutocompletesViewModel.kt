@@ -90,7 +90,7 @@ class AutocompletesViewModel @Inject constructor(
         location: AutocompleteLocation
     ) = withContext(dispatchers.main) {
         if (autocompletes.autocompletes.isEmpty()) {
-            autocompletesState.showNotFound(autocompletes.preferences, location)
+            autocompletesState.showNotFound(autocompletes.appConfig, location)
         } else {
             autocompletesState.showAutocompletes(autocompletes, location)
         }

@@ -32,7 +32,7 @@ class EditShoppingListTotalState {
         val totalText: String = if (editShoppingListTotal.total().isEmpty()) {
             ""
         } else {
-            editShoppingListTotal.total().valueToString()
+            editShoppingListTotal.total().getFormattedValueWithoutSeparators()
         }
 
         screenData = EditShoppingListTotalScreenData(
@@ -43,7 +43,7 @@ class EditShoppingListTotalState {
                 selection = TextRange(totalText.length),
                 composition = TextRange(totalText.length)
             ),
-            fontSize = editShoppingListTotal.preferences.fontSize
+            fontSize = editShoppingListTotal.appConfig.userPreferences.fontSize
         )
     }
 
@@ -56,7 +56,7 @@ class EditShoppingListTotalState {
 
         val total = Money(
             value = screenData.totalValue.toFloatOrZero(),
-            currency = editShoppingListTotal.preferences.currency
+            currency = editShoppingListTotal.appConfig.userPreferences.currency
         )
 
         val success = (editShoppingListTotal.shoppingList ?: ShoppingList()).copy(

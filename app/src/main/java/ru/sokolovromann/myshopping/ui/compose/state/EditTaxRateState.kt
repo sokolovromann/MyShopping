@@ -7,7 +7,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.TaxRate
+import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 
@@ -20,9 +20,9 @@ class EditTaxRateState {
 
     fun populate(editTaxRate: EditTaxRate) {
         this.editTaxRate = editTaxRate
-        val preferences = editTaxRate.preferences
+        val preferences = editTaxRate.appConfig.userPreferences
 
-        val taxRateText = preferences.taxRate.valueToString()
+        val taxRateText = preferences.taxRate.getFormattedValueWithoutSeparators()
 
         screenData = EditTaxRateScreenData(
             screenState = ScreenState.Showing,
@@ -43,13 +43,13 @@ class EditTaxRateState {
         )
     }
 
-    fun getTaxRateResult(): Result<TaxRate> {
+    fun getTaxRateResult(): Result<Money> {
         return if (screenData.taxRateValue.isEmpty()) {
             screenData = screenData.copy(showTaxRateError = true)
             Result.failure(Exception())
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
-            val success = editTaxRate.preferences.taxRate.copy(
+            val success = editTaxRate.appConfig.userPreferences.taxRate.copy(
                 value = screenData.taxRateValue.toFloatOrZero()
             )
             Result.success(success)

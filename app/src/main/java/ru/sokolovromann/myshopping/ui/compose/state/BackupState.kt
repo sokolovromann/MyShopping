@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 
 class BackupState {
@@ -16,11 +16,11 @@ class BackupState {
         screenData = BackupScreenData(screenState = ScreenState.Showing)
     }
 
-    fun onCreate(preferences: AppPreferences, correctWriteFilesPermission: Boolean) {
+    fun onCreate(appConfig: AppConfig, correctWriteFilesPermission: Boolean) {
         screenData = BackupScreenData(
             screenState = ScreenState.Showing,
             showPermissionError = !correctWriteFilesPermission,
-            fontSize = preferences.fontSize
+            fontSize = appConfig.userPreferences.fontSize
         )
     }
 

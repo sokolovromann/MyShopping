@@ -35,7 +35,7 @@ class EditShoppingListNameState {
                 selection = TextRange(name.length),
                 composition = TextRange(name.length)
             ),
-            fontSize = editShoppingListName.preferences.fontSize
+            fontSize = editShoppingListName.appConfig.userPreferences.fontSize
         )
     }
 

@@ -17,25 +17,27 @@ class TrashState {
         screenData = TrashScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(preferences: AppPreferences) {
-        shoppingLists = ShoppingLists(preferences = preferences)
+    fun showNotFound(appConfig: AppConfig) {
+        shoppingLists = ShoppingLists(appConfig = appConfig)
+        val preferences = shoppingLists.appConfig.userPreferences
+
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             coloredCheckbox = preferences.coloredCheckbox,
             showBottomBar = false,
-            smartphoneScreen = preferences.smartphoneScreen,
-            displayTotal = preferences.displayPurchasesTotal,
+            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
+            displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         this.shoppingLists = shoppingLists
-        val preferences = shoppingLists.preferences
+        val preferences = shoppingLists.appConfig.userPreferences
 
-        val shoppingListItems = when (preferences.displayCompletedPurchases) {
+        val shoppingListItems = when (preferences.displayCompleted) {
             DisplayCompleted.HIDE -> shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST)
             else -> shoppingLists.getAllShoppingListItems(splitByPinned = false)
         }
@@ -44,12 +46,12 @@ class TrashState {
             screenState = ScreenState.Showing,
             shoppingLists = shoppingListItems,
             displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompletedPurchases,
+            displayCompleted = preferences.displayCompleted,
             coloredCheckbox = preferences.coloredCheckbox,
             showBottomBar = preferences.displayMoney,
             multiColumns = preferences.shoppingsMultiColumns,
-            smartphoneScreen = preferences.smartphoneScreen,
-            displayTotal = preferences.displayPurchasesTotal,
+            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
+            displayTotal = preferences.displayTotal,
             fontSize = preferences.fontSize
         )
     }

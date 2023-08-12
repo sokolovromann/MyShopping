@@ -5,7 +5,7 @@ import ru.sokolovromann.myshopping.data.repository.model.*
 
 interface MainRepository {
 
-    suspend fun getAppPreferences(): Flow<AppPreferences>
+    suspend fun getAppConfig(): Flow<AppConfig>
 
     suspend fun getDefaultCurrency(): Flow<Currency>
 
@@ -15,5 +15,5 @@ interface MainRepository {
 
     suspend fun addAutocomplete(autocomplete: Autocomplete)
 
-    suspend fun addPreferences(appPreferences: AppPreferences)
+    suspend fun addAppConfig(appConfig: AppConfig)
 }

@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsItem
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
@@ -14,9 +13,6 @@ fun Settings.getSettingsItems(): Map<UiText, List<SettingsItem>> {
     map[UiText.FromResources(R.string.settings_header_money)] = getMoneySettingsItems()
     map[UiText.FromResources(R.string.settings_header_purchases)] = getPurchasesSettingsItems()
     map[UiText.FromResources(R.string.settings_header_autocompletes)] = getAutocompletesSettingsItems()
-    if (preferences.firstAppVersion == CodeVersion14.CODE_VERSION) {
-        map[UiText.FromResources(R.string.settings_header_migration)] = getMigrationSettingsItems()
-    }
     map[UiText.FromResources(R.string.settings_header_aboutApp)] = getAboutSettingsItems()
 
     return map.toMap()
@@ -28,12 +24,12 @@ private fun Settings.getGeneralSettingsItems(): List<SettingsItem> {
             uid = SettingsUid.NightTheme,
             titleText = UiText.FromResources(R.string.settings_title_nightTheme),
             bodyText = UiText.FromResources(R.string.settings_body_nightTheme),
-            checked = preferences.nightTheme
+            checked = appConfig.userPreferences.nightTheme
         ),
         SettingsItem(
             uid = SettingsUid.FontSize,
             titleText = UiText.FromResources(R.string.settings_title_fontSize),
-            bodyText = preferences.fontSize.toSettingsText()
+            bodyText = appConfig.userPreferences.fontSize.toSettingsText()
         ),
         SettingsItem(
             uid = SettingsUid.Backup,
@@ -48,25 +44,25 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.DisplayMoney,
             titleText = UiText.FromResources(R.string.settings_title_displayMoney),
-            checked = preferences.displayMoney
+            checked = appConfig.userPreferences.displayMoney
         ),
         SettingsItem(
             uid = SettingsUid.Currency,
             titleText = UiText.FromResources(R.string.settings_title_currencySymbol),
             bodyText = UiText.FromResourcesWithArgs(
                 R.string.settings_body_currencySymbol,
-                preferences.currency.symbol
+                appConfig.userPreferences.currency.symbol
             )
         ),
         SettingsItem(
             uid = SettingsUid.DisplayCurrencyToLeft,
             titleText = UiText.FromResources(R.string.settings_title_displayCurrencySymbolToLeft),
-            checked = preferences.currency.displayToLeft
+            checked = appConfig.userPreferences.currency.displayToLeft
         ),
         SettingsItem(
             uid = SettingsUid.TaxRate,
             titleText = UiText.FromResources(R.string.settings_title_taxRate),
-            bodyText = UiText.FromString(preferences.taxRate.toString())
+            bodyText = UiText.FromString(appConfig.userPreferences.taxRate.toString())
         )
     )
 }
@@ -76,42 +72,42 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.DisplayCompletedPurchases,
             titleText = UiText.FromResources(R.string.settings_title_displayCompletedPurchases),
-            bodyText = preferences.displayCompletedPurchases.toPurchasesSettingsText()
+            bodyText = appConfig.userPreferences.displayCompleted.toPurchasesSettingsText()
         ),
         SettingsItem(
             uid = SettingsUid.EditProductAfterCompleted,
             titleText = UiText.FromResources(R.string.settings_title_editProductAfterCompleted),
             bodyText = UiText.FromResources(R.string.settings_body_editProductAfterCompleted),
-            checked = preferences.editProductAfterCompleted
+            checked = appConfig.userPreferences.editProductAfterCompleted
         ),
         SettingsItem(
             uid = SettingsUid.CompletedWithCheckbox,
             titleText = UiText.FromResources(R.string.settings_title_completedWithCheckbox),
             bodyText = UiText.FromResources(R.string.settings_body_completedWithCheckbox),
-            checked = preferences.completedWithCheckbox,
+            checked = appConfig.userPreferences.completedWithCheckbox,
         ),
         SettingsItem(
             uid = SettingsUid.ColoredCheckbox,
             titleText = UiText.FromResources(R.string.settings_title_coloredCheckbox),
             bodyText = UiText.FromResources(R.string.settings_body_coloredCheckbox),
-            checked = preferences.coloredCheckbox
+            checked = appConfig.userPreferences.coloredCheckbox
         ),
         SettingsItem(
             uid = SettingsUid.DisplayShoppingsProducts,
             titleText = UiText.FromResources(R.string.settings_title_displayShoppingsProducts),
-            bodyText = preferences.displayShoppingsProducts.toPurchasesSettingsText()
+            bodyText = appConfig.userPreferences.displayShoppingsProducts.toPurchasesSettingsText()
         ),
         SettingsItem(
             uid = SettingsUid.DisplayOtherFields,
             titleText = UiText.FromResources(R.string.settings_title_displayOtherFields),
             bodyText = UiText.FromResources(R.string.settings_body_displayOtherFields),
-            checked = preferences.displayOtherFields
+            checked = appConfig.userPreferences.displayOtherFields
         ),
         SettingsItem(
             uid = SettingsUid.EnterToSaveProducts,
             titleText = UiText.FromResources(R.string.settings_title_enterToSaveProduct),
             bodyText = UiText.FromResources(R.string.settings_body_enterToSaveProduct),
-            checked = preferences.enterToSaveProduct
+            checked = appConfig.userPreferences.enterToSaveProduct
         )
     )
 }
@@ -120,14 +116,14 @@ private fun Settings.getAutocompletesSettingsItems(): List<SettingsItem> {
     val displayDefaultAutocompletes = SettingsItem(
         uid = SettingsUid.DisplayDefaultAutocomplete,
         titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocompletes),
-        checked = preferences.displayDefaultAutocompletes
+        checked = appConfig.userPreferences.displayDefaultAutocompletes
     )
 
     val saveProductsToAutocompletes = SettingsItem(
         uid = SettingsUid.SaveProductToAutocompletes,
         titleText = UiText.FromResources(R.string.settings_title_saveProductToAutocompletes),
         bodyText = UiText.FromResources(R.string.settings_body_saveProductToAutocompletes),
-        checked = preferences.saveProductToAutocompletes
+        checked = appConfig.userPreferences.saveProductToAutocompletes
     )
 
     return if (Locale.getDefault().isSupported()) {

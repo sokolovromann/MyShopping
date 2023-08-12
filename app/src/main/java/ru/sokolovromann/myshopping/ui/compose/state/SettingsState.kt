@@ -19,16 +19,17 @@ class SettingsState {
 
     fun showSetting(settings: Settings) {
         this.settings = settings
-        val preferences = settings.preferences
+        val preferences = settings.appConfig.userPreferences
+        val smartphoneScreen = settings.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
 
         screenData = SettingsScreenData(
             screenState = ScreenState.Showing,
             settings = settings.getSettingsItems(),
             fontSize = preferences.fontSize,
-            displayCompletedPurchases = preferences.displayCompletedPurchases,
+            displayCompletedPurchases = preferences.displayCompleted,
             displayShoppingsProducts = preferences.displayShoppingsProducts,
-            multiColumns = !preferences.smartphoneScreen,
-            smartphoneScreen = preferences.smartphoneScreen
+            multiColumns = !smartphoneScreen,
+            smartphoneScreen = smartphoneScreen
         )
     }
 

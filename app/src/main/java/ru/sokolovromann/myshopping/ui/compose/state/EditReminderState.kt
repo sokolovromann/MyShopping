@@ -50,7 +50,7 @@ class EditReminderState {
             showDeleteButton = editReminder.hasReminder(),
             showDateDialog = false,
             showTimeDialog = false,
-            fontSize = editReminder.preferences.fontSize
+            fontSize = editReminder.appConfig.userPreferences.fontSize
         )
     }
 

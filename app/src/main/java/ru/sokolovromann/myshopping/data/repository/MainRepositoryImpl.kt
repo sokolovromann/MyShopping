@@ -23,9 +23,9 @@ class MainRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : MainRepository {
 
-    override suspend fun getAppPreferences(): Flow<AppPreferences> = withContext(dispatchers.io) {
+    override suspend fun getAppConfig(): Flow<AppConfig> = withContext(dispatchers.io) {
         return@withContext appConfigDao.getAppConfig().transform {
-            val value = mapping.toAppPreferences(it)
+            val value = mapping.toAppConfig(it)
             emit(value)
         }
     }
@@ -71,10 +71,10 @@ class MainRepositoryImpl @Inject constructor(
         mainDao.insertAutocomplete(entity)
     }
 
-    override suspend fun addPreferences(
-        appPreferences: AppPreferences
+    override suspend fun addAppConfig(
+        appConfig: AppConfig
     ): Unit = withContext(dispatchers.io) {
-        val entity = mapping.toAppConfigEntity(appPreferences)
+        val entity = mapping.toAppConfigEntity(appConfig)
         appConfigDao.saveAppConfig(entity)
     }
 }

@@ -37,7 +37,7 @@ class AddEditAutocompleteState {
                 composition = TextRange(name.length)
             ),
             showNameError = false,
-            fontSize = addEditAutocomplete.preferences.fontSize
+            fontSize = addEditAutocomplete.appConfig.userPreferences.fontSize
         )
     }
 

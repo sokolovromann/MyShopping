@@ -2,12 +2,12 @@ package ru.sokolovromann.myshopping.data.repository
 
 import android.net.Uri
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.repository.model.AppPreferences
+import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Backup
 
 interface BackupRepository {
 
-    suspend fun getPreferences(): Flow<AppPreferences>
+    suspend fun getAppConfig(): Flow<AppConfig>
 
     suspend fun getReminderUids(): Flow<List<String>>
 

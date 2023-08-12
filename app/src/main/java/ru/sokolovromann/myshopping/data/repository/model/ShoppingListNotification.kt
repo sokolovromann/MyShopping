@@ -2,9 +2,10 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 data class ShoppingListNotification(
     val shoppingList: ShoppingList = ShoppingList(),
-    val preferences: AppPreferences = AppPreferences(),
     val appConfig: AppConfig = AppConfig()
 ) {
+
+    private val preferences = appConfig.userPreferences
 
     fun id(): Int {
         return shoppingList.id
@@ -17,10 +18,10 @@ data class ShoppingListNotification(
     fun body(): String {
         var body = ""
         val sorted = shoppingList.products.sortProducts()
-        val products = if (preferences.displayCompletedPurchases == DisplayCompleted.NO_SPLIT) {
+        val products = if (preferences.displayCompleted == DisplayCompleted.NO_SPLIT) {
             sorted
         } else {
-            sorted.splitProducts(preferences.displayCompletedPurchases)
+            sorted.splitProducts(preferences.displayCompleted)
         }
 
         products.forEach { body += "${it.name}, " }

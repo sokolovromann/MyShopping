@@ -3,7 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-@Deprecated("Use AppFloat")
+@Deprecated("Use Money")
 data class TaxRate(
     val value: Float = 0f,
     val asPercent: Boolean = true,

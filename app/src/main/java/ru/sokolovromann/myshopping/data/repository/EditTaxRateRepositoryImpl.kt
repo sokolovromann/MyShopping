@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
-import ru.sokolovromann.myshopping.data.repository.model.TaxRate
+import ru.sokolovromann.myshopping.data.repository.model.Money
 import javax.inject.Inject
 
 class EditTaxRateRepositoryImpl @Inject constructor(
@@ -22,7 +22,7 @@ class EditTaxRateRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun editTaxRate(taxRate: TaxRate): Unit = withContext(dispatchers.io) {
+    override suspend fun editTaxRate(taxRate: Money): Unit = withContext(dispatchers.io) {
         val value = mapping.toTaxRateValue(taxRate)
         appConfigDao.saveTaxRate(value)
 
