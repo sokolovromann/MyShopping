@@ -18,10 +18,14 @@ data class Money(
     }
 
     fun getDisplayValue(): String {
-        return if (currency.displayToLeft) {
-            "${currency.symbol}${getFormattedValue()}"
+        return if (asPercent) {
+            "${getFormattedValue()} %"
         } else {
-            "${getFormattedValue()}${currency.symbol}"
+            if (currency.displayToLeft) {
+                "${currency.symbol}${getFormattedValue()}"
+            } else {
+                "${getFormattedValue()}${currency.symbol}"
+            }
         }
     }
 
