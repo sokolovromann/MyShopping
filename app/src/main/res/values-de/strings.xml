@@ -369,6 +369,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
     <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
     <string name="settings_title_displayMoney">Geld anzeigen</string>
+    <string name="settings_title_displayMoneyZeros">Nullen nach dem Dezimalpunkt anzeigen</string>
     <string name="settings_title_displayOtherFields">Andere Felder anzeigen</string>
     <string name="settings_title_displayShoppingsProducts">Produkte anzeigen in Einkäufe</string>
     <string name="settings_title_editProductAfterCompleted">Bearbeiten sie das produkt nach abschluss</string>

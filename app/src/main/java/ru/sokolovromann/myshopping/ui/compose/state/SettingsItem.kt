@@ -15,6 +15,7 @@ enum class SettingsUid {
     DisplayMoney,
     Currency,
     DisplayCurrencyToLeft,
+    DisplayMoneyZeros,
     TaxRate,
     DisplayDefaultAutocomplete,
     DisplayCompletedPurchases,

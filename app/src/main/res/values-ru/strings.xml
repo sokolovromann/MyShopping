@@ -434,6 +434,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
     <string name="settings_title_displayDefaultAutocompletes">Показывать подсказки по-умолчанию</string>
     <string name="settings_title_displayMoney">Показывать деньги</string>
+    <string name="settings_title_displayMoneyZeros">Показывать нули после запятой</string>
     <string name="settings_title_displayOtherFields">Показывать дополнительные поля</string>
     <string name="settings_title_displayShoppingsProducts">Показывать товары в Покупках</string>
     <string name="settings_title_editProductAfterCompleted">Редактировать товар после покупки</string>

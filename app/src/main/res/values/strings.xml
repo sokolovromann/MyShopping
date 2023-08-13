@@ -281,6 +281,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
     <string name="settings_title_displayMoney">Display money</string>
+    <string name="settings_title_displayMoneyZeros">Display zeros after decimal point</string>
     <string name="settings_title_displayOtherFields">Display other fields</string>
     <string name="settings_title_displayShoppingsProducts">Display products in Purchases</string>
     <string name="settings_title_editProductAfterCompleted">Edit product after completed</string>

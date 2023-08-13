@@ -42,4 +42,12 @@ object UserPreferencesDefaults {
         asPercent = true,
         decimalFormat = MONEY_DECIMAL_FORMAT
     )
+
+    fun getMoneyDecimalFormat(): DecimalFormat {
+        return DecimalFormat().apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+            roundingMode = RoundingMode.HALF_UP
+        }
+    }
 }

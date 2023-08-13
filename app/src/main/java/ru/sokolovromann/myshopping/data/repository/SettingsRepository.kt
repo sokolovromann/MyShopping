@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.repository.model.*
+import java.text.DecimalFormat
 
 interface SettingsRepository {
 
@@ -64,4 +65,6 @@ interface SettingsRepository {
     suspend fun invertDisplayOtherFields()
 
     suspend fun noSplitCompletedPurchases()
+
+    suspend fun saveMoneyFractionDigits(decimalFormat: DecimalFormat)
 }

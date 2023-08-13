@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.*
+import java.text.DecimalFormat
 
 class SettingsState {
 
@@ -81,6 +82,28 @@ class SettingsState {
             Result.failure(Exception())
         } else {
             Result.success(link)
+        }
+    }
+
+    fun getMoneyFractionDigitsResult(): Result<DecimalFormat> {
+        var displayZeros: Boolean? = null
+        screenData.settings.values.forEach { items ->
+            val item = items.find { it.uid == SettingsUid.DisplayMoneyZeros }
+            if (item != null) {
+                displayZeros = item.checked
+                return@forEach
+            }
+        }
+
+        return if (displayZeros == null) {
+            Result.failure(NullPointerException())
+        } else {
+            val success = UserPreferencesDefaults.getMoneyDecimalFormat().apply {
+                if (displayZeros == true) {
+                    minimumFractionDigits = 0
+                }
+            }
+            return Result.success(success)
         }
     }
 }

@@ -102,6 +102,8 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.DisplayCurrencyToLeft -> invertDisplayCurrencyToLeft()
 
+            SettingsUid.DisplayMoneyZeros -> invertDisplayMoneyZeros()
+
             SettingsUid.TaxRate -> editTaxRate()
 
             SettingsUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
@@ -219,6 +221,11 @@ class SettingsViewModel @Inject constructor(
     private fun invertDisplayCurrencyToLeft() = viewModelScope.launch {
         repository.invertDisplayCurrencyToLeft()
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
+    }
+
+    private fun invertDisplayMoneyZeros() = viewModelScope.launch {
+        settingsState.getMoneyFractionDigitsResult()
+            .onSuccess { repository.saveMoneyFractionDigits(it) }
     }
 
     private fun invertEditProductAfterCompleted() = viewModelScope.launch {

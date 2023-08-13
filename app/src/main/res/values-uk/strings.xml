@@ -387,6 +387,7 @@
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
     <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>
     <string name="settings_title_displayMoney">Показувати гроші</string>
+    <string name="settings_title_displayMoneyZeros">Показувати нулі після коми</string>
     <string name="settings_title_displayOtherFields">Показувати додаткові поля</string>
     <string name="settings_title_displayShoppingsProducts">Показувати товари в Покупках</string>
     <string name="settings_title_editProductAfterCompleted">Редагувати товар після покупки</string>

@@ -27,6 +27,10 @@ fun DecimalFormat.valueToString(value: Float): String {
         .replace(" ", "")
 }
 
+fun DecimalFormat.isDisplayZeros(): Boolean {
+    return minimumFractionDigits > 0
+}
+
 fun List<ShoppingList>.sortShoppingLists(sort: Sort = Sort()): List<ShoppingList> {
     return if (sort.ascending) {
         when (sort.sortBy) {

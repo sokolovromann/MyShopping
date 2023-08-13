@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.Settings
+import ru.sokolovromann.myshopping.data.repository.model.isDisplayZeros
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsItem
 import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
@@ -58,6 +59,11 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
             uid = SettingsUid.DisplayCurrencyToLeft,
             titleText = UiText.FromResources(R.string.settings_title_displayCurrencySymbolToLeft),
             checked = appConfig.userPreferences.currency.displayToLeft
+        ),
+        SettingsItem(
+            uid = SettingsUid.DisplayMoneyZeros,
+            titleText = UiText.FromResources(R.string.settings_title_displayMoneyZeros),
+            checked = appConfig.userPreferences.moneyDecimalFormat.isDisplayZeros()
         ),
         SettingsItem(
             uid = SettingsUid.TaxRate,
