@@ -61,7 +61,7 @@ sealed class AddEditProductEvent {
 
     data class AutocompleteTotalSelected(val total: Money) : AddEditProductEvent()
 
-    data class AutocompleteDiscountSelected(val discount: Discount) : AddEditProductEvent()
+    data class AutocompleteDiscountSelected(val discount: Money) : AddEditProductEvent()
 
     data class ProductNoteChanged(val value: TextFieldValue) : AddEditProductEvent()
 

@@ -113,8 +113,8 @@ class AutocompletesViewModel @Inject constructor(
                             lastModified = System.currentTimeMillis(),
                             quantity = Quantity(),
                             price = Money(),
-                            discount = Discount(),
-                            taxRate = TaxRate(),
+                            discount = Money(),
+                            taxRate = Money(),
                             total = Money()
                         )
                     }

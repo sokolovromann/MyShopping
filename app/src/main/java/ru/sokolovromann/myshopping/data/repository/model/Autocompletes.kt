@@ -115,11 +115,11 @@ data class Autocompletes(
             }
     }
 
-    fun getDiscounts(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Discount> {
+    fun getDiscounts(displayDefault: Boolean = preferences.displayDefaultAutocompletes): List<Money> {
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.discount }
-            .distinctBy { it.formatValue() }
+            .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, discount ->
                 discount.isNotEmpty() && index <= defaultMoneyLimit
             }

@@ -47,7 +47,7 @@ data class ShoppingList(
                 DisplayTotal.ACTIVE -> active
             }
 
-            Money(total, currency)
+            Money(total, currency, false, this.total.decimalFormat)
         } else {
             total
         }

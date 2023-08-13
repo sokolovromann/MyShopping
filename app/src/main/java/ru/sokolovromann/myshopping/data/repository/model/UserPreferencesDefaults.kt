@@ -27,26 +27,20 @@ object UserPreferencesDefaults {
     val DISPLAY_SHOPPINGS_PRODUCTS = DisplayProducts.DefaultValue
     val LOCK_PRODUCT_ELEMENT = LockProductElement.DefaultValue
     val CURRENCY = Currency(symbol = "", displayToLeft = false)
-    val MONEY_DECIMAL_FORMAT = DecimalFormat().apply {
-        minimumFractionDigits = 2
-        maximumFractionDigits = 2
-        roundingMode = RoundingMode.HALF_UP
-    }
-    val QUANTITY_DECIMAL_FORMAT = DecimalFormat().apply {
-        minimumFractionDigits = 0
-        maximumFractionDigits = 3
-        roundingMode = RoundingMode.HALF_UP
-    }
-    val TAX_RATE = Money(
-        value = 0f,
-        asPercent = true,
-        decimalFormat = MONEY_DECIMAL_FORMAT
-    )
+    val TAX_RATE = Money(value = 0f, asPercent = true)
 
     fun getMoneyDecimalFormat(): DecimalFormat {
         return DecimalFormat().apply {
             minimumFractionDigits = 2
             maximumFractionDigits = 2
+            roundingMode = RoundingMode.HALF_UP
+        }
+    }
+
+    fun getQuantityDecimalFormat(): DecimalFormat {
+        return DecimalFormat().apply {
+            minimumFractionDigits = 0
+            maximumFractionDigits = 3
             roundingMode = RoundingMode.HALF_UP
         }
     }

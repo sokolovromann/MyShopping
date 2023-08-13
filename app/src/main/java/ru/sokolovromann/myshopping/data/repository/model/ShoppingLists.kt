@@ -78,7 +78,7 @@ data class ShoppingLists(
                 it.calculateTotal(true).value
             }
         }
-        return Money(total, preferences.currency)
+        return Money(total, preferences.currency, false, preferences.moneyDecimalFormat)
     }
 
     fun calculateTotal(uids: List<String>): Money {
@@ -93,7 +93,7 @@ data class ShoppingLists(
             }
         }
 
-        return Money(total, preferences.currency)
+        return Money(total, preferences.currency, false, preferences.moneyDecimalFormat)
     }
 
     fun hasHiddenShoppingLists(): Boolean {

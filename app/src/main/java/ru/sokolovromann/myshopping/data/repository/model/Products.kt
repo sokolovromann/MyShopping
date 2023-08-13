@@ -70,7 +70,7 @@ data class Products(
                 DisplayTotal.ACTIVE -> active
             }
 
-            Money(total, preferences.currency)
+            Money(total, preferences.currency, false, preferences.moneyDecimalFormat)
         } else {
             total()
         }
@@ -86,7 +86,7 @@ data class Products(
             }
         }
 
-        return Money(total, preferences.currency)
+        return Money(total, preferences.currency, false, preferences.moneyDecimalFormat)
     }
 
     fun isCompleted(): Boolean {

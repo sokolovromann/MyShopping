@@ -82,7 +82,7 @@ private fun toAutocompleteItems(
     val discountsList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
         autocompletes
             .sortedByDescending { it.lastModified }
-            .distinctBy { it.discount.formatValue() }
+            .distinctBy { it.discount.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
                 autocomplete.discount.isNotEmpty() && index < discountsLimit
             }

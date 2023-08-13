@@ -37,7 +37,7 @@ class AddEditProductState {
         val quantity = if (product.quantity.isEmpty()) "" else product.quantity.valueToString()
         val quantitySymbol = product.quantity.symbol
         val price = if (product.price.isEmpty()) "" else product.price.getFormattedValueWithoutSeparators()
-        val discount = if (product.discount.isEmpty()) "" else product.discount.valueToString()
+        val discount = if (product.discount.isEmpty()) "" else product.discount.getFormattedValueWithoutSeparators()
         val discountAsPercent = product.discount.asPercent
         val discountAsPercentText: UiText = if (discountAsPercent) {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)
@@ -322,8 +322,8 @@ class AddEditProductState {
         }
     }
 
-    fun selectAutocompleteDiscount(discount: Discount) {
-        val discountText = discount.valueToString()
+    fun selectAutocompleteDiscount(discount: Money) {
+        val discountText = discount.getFormattedValueWithoutSeparators()
         val discountAsPercentText: UiText = if (discount.asPercent) {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)
         } else {
@@ -444,7 +444,7 @@ class AddEditProductState {
         quantities: List<Quantity>,
         quantitySymbols: List<Quantity>,
         prices: List<Money>,
-        discounts: List<Discount>,
+        discounts: List<Money>,
         totals: List<Money>
     ) {
         val showDefaultQuantitySymbols = quantitySymbols.isEmpty() && screenData.quantitySymbolValue.isEmpty()
@@ -470,7 +470,7 @@ class AddEditProductState {
         quantities: List<Quantity>,
         quantitySymbols: List<Quantity>,
         prices: List<Money>,
-        discounts: List<Discount>,
+        discounts: List<Money>,
         totals: List<Money>
     ) {
         val brandsIf = if (screenData.brandValue.isEmpty()) brands else listOf()
@@ -598,7 +598,7 @@ class AddEditProductState {
                 value = screenData.priceValue.toFloatOrZero(),
                 currency = preferences.currency
             ),
-            discount = Discount(
+            discount = Money(
                 value = screenData.discountValue.toFloatOrZero(),
                 asPercent = screenData.discountAsPercent
             ),
@@ -671,7 +671,7 @@ class AddEditProductState {
     private fun setProductTotalLock() {
         val quantity = screenData.quantityValue.toFloatOrZero()
         val price = screenData.priceValue.toFloatOrZero()
-        val discount = Discount(
+        val discount = Money(
             value = screenData.discountValue.toFloatOrZero(),
             asPercent = screenData.discountAsPercent
         )
@@ -680,7 +680,7 @@ class AddEditProductState {
 
         val text = if (calculate) {
             val totalValue = quantity * price
-            val totalWithDiscountAndTaxRate = totalValue - discount.calculate(totalValue) +
+            val totalWithDiscountAndTaxRate = totalValue - discount.calculateValueFromPercent(totalValue) +
                     taxRate.calculateValueFromPercent(totalValue)
             Money(value = totalWithDiscountAndTaxRate).getFormattedValueWithoutSeparators()
         } else {
@@ -727,7 +727,7 @@ data class AddEditProductScreenData(
     val autocompleteQuantitySymbols: List<Quantity> = listOf(),
     val showDefaultQuantitySymbols: Boolean = true,
     val autocompletePrices: List<Money> = listOf(),
-    val autocompleteDiscounts: List<Discount> = listOf(),
+    val autocompleteDiscounts: List<Money> = listOf(),
     val autocompleteTotals: List<Money> = listOf(),
     val fontSize: FontSize = FontSize.MEDIUM,
     val displayMoney: Boolean = true,

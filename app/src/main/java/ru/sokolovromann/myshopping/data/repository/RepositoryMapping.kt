@@ -4,7 +4,6 @@ import android.database.Cursor
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.local.entity.*
 import ru.sokolovromann.myshopping.data.repository.model.*
-import java.math.RoundingMode
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -118,28 +117,22 @@ class RepositoryMapping @Inject constructor() {
                 )
             ),
             price = toMoney(
-                entity.price,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.price,
+                userPreferences = userPreferences
             ),
-            discount = toDiscount(
-                entity.discount,
-                entity.discountAsPercent,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft)
+            discount = toMoney(
+                value = entity.discount,
+                asPercent = entity.discountAsPercent,
+                userPreferences = userPreferences
             ),
-            taxRate = toTaxRate(userPreferences.taxRate, userPreferences.taxRateAsPercent),
+            taxRate = toMoney(
+                value = userPreferences.taxRate,
+                asPercent = userPreferences.taxRateAsPercent,
+                userPreferences = userPreferences
+            ),
             total = toMoney(
-                entity.total,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.total,
+                userPreferences = userPreferences
             ),
             totalFormatted = entity.totalFormatted,
             note = entity.note,
@@ -351,14 +344,6 @@ class RepositoryMapping @Inject constructor() {
         return backup.autocompletes.map { toAutocompleteEntity(it) }
     }
 
-    fun toTaxRateValue(taxRate: TaxRate): Float {
-        return taxRate.value
-    }
-
-    fun toTaxRateAsPercent(taxRate: TaxRate): Boolean {
-        return taxRate.asPercent
-    }
-
     fun toFontSizeName(fontSize: FontSize): String {
         return fontSize.name
     }
@@ -402,23 +387,13 @@ class RepositoryMapping @Inject constructor() {
             name = entity.name,
             reminder = toReminder(entity.reminder),
             total = toMoney(
-                entity.total,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.total,
+                userPreferences = userPreferences
             ),
             totalFormatted = entity.totalFormatted,
             budget = toMoney(
-                entity.budget,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.budget,
+                userPreferences = userPreferences
             ),
             archived = entity.archived,
             deleted = entity.deleted,
@@ -446,23 +421,13 @@ class RepositoryMapping @Inject constructor() {
             name = entity.name,
             reminder = toReminder(entity.reminder),
             total = toMoney(
-                entity.total,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.total,
+                userPreferences = userPreferences
             ),
             totalFormatted = entity.totalFormatted,
             budget = toMoney(
-                entity.budget,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.budget,
+                userPreferences = userPreferences
             ),
             archived = entity.archived,
             deleted = entity.deleted,
@@ -501,7 +466,11 @@ class RepositoryMapping @Inject constructor() {
             symbol = numberMeasure.replace(".", "")
         )
         val price = Money(value = priceMeasure)
-        val taxRate = toTaxRate(preferences.taxRate, true)
+        val taxRate = toMoney(
+            value = preferences.taxRate,
+            asPercent = true,
+            userPreferences = preferences
+        )
         val total = Money(value = quantity.value * price.value)
 
         return Product(
@@ -539,19 +508,6 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    private fun toMoney(
-        value: Float?,
-        currency: Currency,
-        asPercent: Boolean?,
-        decimalFormat: DecimalFormat
-    ): Money {
-        return if (value == null || asPercent == null) {
-            Money()
-        } else {
-            Money(value, currency, asPercent, decimalFormat)
-        }
-    }
-
     private fun toQuantity(value: Float, symbol: String, decimalFormat: DecimalFormat): Quantity {
         return Quantity(value, symbol, decimalFormat)
     }
@@ -562,26 +518,6 @@ class RepositoryMapping @Inject constructor() {
 
     private fun toQuantitySymbol(quantity: Quantity): String {
         return quantity.symbol
-    }
-
-    private fun toDiscount(value: Float, asPercent: Boolean, currency: Currency): Discount {
-        return Discount(
-            value = value,
-            asPercent = asPercent,
-            currency = currency
-        )
-    }
-
-    private fun toDiscountValue(discount: Discount): Float {
-        return discount.value
-    }
-
-    private fun toDiscountAsPercent(discount: Discount): Boolean {
-        return discount.asPercent
-    }
-
-    private fun toTaxRate(value: Float?, asPercent: Boolean?): TaxRate {
-        return TaxRate(value ?: 0f, asPercent ?: true)
     }
 
     private fun toFontSize(value: Int): FontSize {
@@ -692,6 +628,44 @@ class RepositoryMapping @Inject constructor() {
         }
     }
 
+    // -----
+    // MONEY
+    // -----
+
+    fun toMoney(
+        value: Float?,
+        asPercent: Boolean? = null,
+        userPreferences: UserPreferencesEntity
+    ): Money {
+        return Money(
+            value = value ?: 0f,
+            currency = toCurrency(
+                userPreferences.currency,
+                userPreferences.displayCurrencyToLeft
+            ),
+            asPercent = asPercent ?: false,
+            decimalFormat = toMoneyDecimalFormat(
+                userPreferences.minMoneyFractionDigits,
+                userPreferences.maxMoneyFractionDigits
+            )
+        )
+    }
+
+    fun toMoney(
+        value: Float?,
+        asPercent: Boolean? = null,
+        userPreferences: CodeVersion14UserPreferencesEntity
+    ): Money {
+        return Money(
+            value = value ?: 0f,
+            currency = toCurrency(
+                userPreferences.currency,
+                userPreferences.displayCurrencyToLeft
+            ),
+            asPercent = asPercent ?: false
+        )
+    }
+
     //
     // AUTOCOMPLETES
     //
@@ -723,28 +697,22 @@ class RepositoryMapping @Inject constructor() {
                 )
             ),
             price = toMoney(
-                entity.price,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.price,
+                userPreferences = userPreferences
             ),
-            discount = toDiscount(
-                entity.discount,
-                entity.discountAsPercent,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft)
+            discount = toMoney(
+                value = entity.discount,
+                asPercent = entity.discountAsPercent,
+                userPreferences = userPreferences
             ),
-            taxRate = toTaxRate(entity.taxRate, entity.taxRateAsPercent),
+            taxRate = toMoney(
+                value = entity.taxRate,
+                asPercent = entity.taxRateAsPercent,
+                userPreferences = userPreferences
+            ),
             total = toMoney(
-                entity.total,
-                toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
-                false,
-                toMoneyDecimalFormat(
-                    userPreferences.minMoneyFractionDigits,
-                    userPreferences.maxMoneyFractionDigits
-                )
+                value = entity.total,
+                userPreferences = userPreferences
             ),
             manufacturer = entity.manufacturer,
             brand = entity.brand,
@@ -848,11 +816,10 @@ class RepositoryMapping @Inject constructor() {
             saveProductToAutocompletes = toSaveProductToAutocompletes(entity.saveProductToAutocompletes),
             displayMoney = toDisplayMoney(entity.displayMoney),
             currency = toCurrency(entity.currency, entity.displayCurrencyToLeft),
-            taxRate = toTaxRate(
-                entity.taxRate,
-                toCurrency(entity.currency, entity.displayCurrencyToLeft),
-                entity.taxRateAsPercent,
-                toMoneyDecimalFormat(entity.minMoneyFractionDigits, entity.maxMoneyFractionDigits)
+            taxRate = toMoney(
+                value = entity.taxRate,
+                asPercent = entity.taxRateAsPercent,
+                userPreferences = entity
             ),
             moneyDecimalFormat = toMoneyDecimalFormat(entity.minMoneyFractionDigits, entity.maxMoneyFractionDigits),
             quantityDecimalFormat = toQuantityDecimalFormat(entity.minQuantityFractionDigits, entity.maxQuantityFractionDigits)
@@ -1009,24 +976,6 @@ class RepositoryMapping @Inject constructor() {
         return value.displayToLeft
     }
 
-    fun toTaxRate(
-        value: Float?,
-        currency: Currency,
-        asPercent: Boolean?,
-        decimalFormat: DecimalFormat
-    ): Money {
-        return if (value == null || asPercent == null) {
-            UserPreferencesDefaults.TAX_RATE
-        } else {
-            Money(
-                value = value,
-                currency = currency,
-                asPercent = asPercent,
-                decimalFormat = decimalFormat
-            )
-        }
-    }
-
     fun toTaxRateValue(value: Money): Float {
         return value.value
     }
@@ -1035,15 +984,18 @@ class RepositoryMapping @Inject constructor() {
         return value.asPercent
     }
 
+    fun toDiscountValue(value: Money): Float {
+        return value.value
+    }
+
+    fun toDiscountAsPercent(value: Money): Boolean {
+        return value.asPercent
+    }
+
     fun toMoneyDecimalFormat(minFractionDigits: Int?, maxFractionDigits: Int?): DecimalFormat {
-        return if (minFractionDigits == null || maxFractionDigits == null) {
-            UserPreferencesDefaults.MONEY_DECIMAL_FORMAT
-        } else {
-            DecimalFormat().apply {
-                minimumFractionDigits = minFractionDigits
-                maximumFractionDigits = maxFractionDigits
-                roundingMode = RoundingMode.HALF_UP
-            }
+        return UserPreferencesDefaults.getMoneyDecimalFormat().apply {
+            minFractionDigits?.let { minimumFractionDigits = it }
+            maxFractionDigits?.let { maximumFractionDigits = it }
         }
     }
 
@@ -1056,14 +1008,9 @@ class RepositoryMapping @Inject constructor() {
     }
 
     fun toQuantityDecimalFormat(minFractionDigits: Int?, maxFractionDigits: Int?): DecimalFormat {
-        return if (minFractionDigits == null || maxFractionDigits == null) {
-            UserPreferencesDefaults.QUANTITY_DECIMAL_FORMAT
-        } else {
-            DecimalFormat().apply {
-                minimumFractionDigits = minFractionDigits
-                maximumFractionDigits = maxFractionDigits
-                roundingMode = RoundingMode.HALF_UP
-            }
+        return UserPreferencesDefaults.getQuantityDecimalFormat().apply {
+            minFractionDigits?.let { minimumFractionDigits = it }
+            maxFractionDigits?.let { maximumFractionDigits = it }
         }
     }
 
@@ -1138,11 +1085,10 @@ class RepositoryMapping @Inject constructor() {
         return CodeVersion14Preferences(
             firstOpened = entity.firstOpened ?: false,
             currency = toCurrency(entity.currency, entity.displayCurrencyToLeft),
-            taxRate = toTaxRate(
-                entity.taxRate,
-                toCurrency(entity.currency, entity.displayCurrencyToLeft),
-                true,
-                UserPreferencesDefaults.MONEY_DECIMAL_FORMAT
+            taxRate = toMoney(
+                value = entity.taxRate,
+                asPercent = true,
+                userPreferences = entity
             ),
             fontSize = toFontSize(entity.titleFontSize ?: 18),
             multiColumns = toMultiColumns(entity.columnCount ?: 1),

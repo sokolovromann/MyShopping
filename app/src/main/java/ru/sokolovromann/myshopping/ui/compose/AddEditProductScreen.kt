@@ -814,10 +814,10 @@ private fun AddEditProductAutocompletePrices(
 
 @Composable
 private fun AddEditProductAutocompleteDiscounts(
-    discounts: List<Discount>,
+    discounts: List<Money>,
     fontSize: FontSize,
     enabled: Boolean,
-    onClick: (Discount) -> Unit
+    onClick: (Money) -> Unit
 ) {
     if (!enabled) {
         return

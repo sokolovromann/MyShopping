@@ -5,7 +5,7 @@ import java.text.DecimalFormat
 data class Quantity(
     val value: Float = 0f,
     val symbol: String = "",
-    val decimalFormat: DecimalFormat = UserPreferencesDefaults.QUANTITY_DECIMAL_FORMAT
+    val decimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat()
 ) {
 
     fun valueToString(): String {

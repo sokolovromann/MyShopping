@@ -6,7 +6,7 @@ data class Money(
     val value: Float = 0f,
     val currency: Currency = Currency(),
     val asPercent: Boolean = false,
-    val decimalFormat: DecimalFormat = UserPreferencesDefaults.MONEY_DECIMAL_FORMAT
+    val decimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
 ) {
 
     fun getFormattedValue(): String {
