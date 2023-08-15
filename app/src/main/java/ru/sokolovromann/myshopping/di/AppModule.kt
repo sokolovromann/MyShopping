@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.AppBase64
 import ru.sokolovromann.myshopping.data.AppJson
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.LocalAppConfigDatasource
@@ -431,9 +432,10 @@ object AppModule {
     fun providesBackupFiles(
         @ApplicationContext context: Context,
         json: AppJson,
+        base64: AppBase64,
         dispatchers: AppDispatchers
     ): BackupFiles {
-        return BackupFiles(context, json, dispatchers)
+        return BackupFiles(context, json, base64, dispatchers)
     }
 
     @Provides
@@ -444,5 +446,10 @@ object AppModule {
     @Provides
     fun providesAppJson(): AppJson {
         return AppJson()
+    }
+
+    @Provides
+    fun providesAppBase64(): AppBase64 {
+        return AppBase64()
     }
 }

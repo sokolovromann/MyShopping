@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.AppBase64
 import ru.sokolovromann.myshopping.data.AppJson
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
@@ -26,17 +27,18 @@ import javax.inject.Inject
 class BackupFiles @Inject constructor(
     private val context: Context,
     private val json: AppJson,
+    private val base64: AppBase64,
     private val dispatchers: AppDispatchers
 ) {
 
     private val relativePath = "${Environment.DIRECTORY_DOCUMENTS}/MyShopping"
     private val pathname = "${Environment.getExternalStorageDirectory()}/$relativePath"
 
-    private val appVersionPrefix = "ru.sokolovromann.myshopping.APP_VERSION:"
-    private val shoppingPrefix = "ru.sokolovromann.myshopping.BACKUP_SHOPPING_PREFIX_"
-    private val productPrefix = "ru.sokolovromann.myshopping.BACKUP_PRODUCT_PREFIX_"
-    private val autocompletePrefix = "ru.sokolovromann.myshopping.BACKUP_AUTOCOMPLETE_PREFIX_"
-    private val appConfigPrefix = "ru.sokolovromann.myshopping.BACKUP_APP_CONFIG_PREFIX_"
+    private val codeVersionPrefix = "ru.sokolovromann.myshopping.CODE_VERSION:"
+    private val shoppingPrefix = "ru.sokolovromann.myshopping.BACKUP_SHOPPING_PREFIX:"
+    private val productPrefix = "ru.sokolovromann.myshopping.BACKUP_PRODUCT_PREFIX:"
+    private val autocompletePrefix = "ru.sokolovromann.myshopping.BACKUP_AUTOCOMPLETE_PREFIX:"
+    private val appConfigPrefix = "ru.sokolovromann.myshopping.BACKUP_APP_CONFIG_PREFIX:"
 
     suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(dispatchers.io) {
         return@withContext try {
@@ -112,10 +114,10 @@ class BackupFiles @Inject constructor(
             add(appConfigJson)
         }
 
-        var jsonsText = "$appVersionPrefix${entity.appVersion}\n"
+        var jsonsText = "$codeVersionPrefix${entity.appVersion}\n"
         jsons.forEach { text -> jsonsText += "$text\n" }
 
-        return jsonsText.dropLast(1)
+        return base64.encode(jsonsText.dropLast(1))
     }
 
     private fun encodeShoppingEntities(entities: List<ShoppingEntity>): List<String> {
@@ -142,33 +144,31 @@ class BackupFiles @Inject constructor(
         var appConfigEntity = AppConfigEntity()
 
         BufferedReader(InputStreamReader(inputStream)).use { reader ->
-            var line: String? = reader.readLine()
-            while (line != null) {
-                if (line.contains(appVersionPrefix)) {
-                    appVersion = line.replace(appVersionPrefix, "").toIntOrNull() ?: 0
+            val line: String = reader.readLine() ?: return@use
+            base64.decode(line).split("\n").forEach {
+                if (it.startsWith(codeVersionPrefix)) {
+                    appVersion = it.replace(codeVersionPrefix, "").toIntOrNull() ?: 0
                 }
 
-                if (line.contains(shoppingPrefix)) {
-                    val shoppingEntity = decodeShoppingEntity(line)
+                if (it.startsWith(shoppingPrefix)) {
+                    val shoppingEntity = decodeShoppingEntity(it)
                     shoppingEntities.add(shoppingEntity)
                 }
 
-                if (line.contains(productPrefix)) {
-                    val productEntity = decodeProductEntity(line)
+                if (it.startsWith(productPrefix)) {
+                    val productEntity = decodeProductEntity(it)
                     productEntities.add(productEntity)
                 }
 
-                if (line.contains(autocompletePrefix)) {
-                    val autocompleteEntity = decodeAutocompleteEntity(line)
+                if (it.startsWith(autocompletePrefix)) {
+                    val autocompleteEntity = decodeAutocompleteEntity(it)
                     autocompleteEntities.add(autocompleteEntity)
                 }
 
-                if (line.contains(appConfigPrefix)) {
-                    val appConfig = decodeAppConfigEntity(line)
+                if (it.startsWith(appConfigPrefix)) {
+                    val appConfig = decodeAppConfigEntity(it)
                     appConfigEntity = appConfig
                 }
-
-                line = reader.readLine()
             }
         }
 
