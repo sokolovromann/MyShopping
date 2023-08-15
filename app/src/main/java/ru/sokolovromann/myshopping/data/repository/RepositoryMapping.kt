@@ -778,16 +778,17 @@ class RepositoryMapping @Inject constructor() {
         return userCodeVersion ?: if (appFirstTime == "NOTHING") {
             AppBuildConfig.CODE_VERSION_18
         } else {
-            if (fromCodeVersion14 == null) {
-                AppBuildConfig.UNKNOWN_CODE_VERSION
-            } else {
+            if (fromCodeVersion14 == true) {
                 AppBuildConfig.CODE_VERSION_14
+            } else {
+                AppBuildConfig.UNKNOWN_CODE_VERSION
             }
         }
     }
 
     fun toAppBuildConfigEntity(appBuildConfig: AppBuildConfig): AppBuildConfigEntity {
         return AppBuildConfigEntity(
+            appFirstTime = "",
             userCodeVersion = appBuildConfig.userCodeVersion
         )
     }

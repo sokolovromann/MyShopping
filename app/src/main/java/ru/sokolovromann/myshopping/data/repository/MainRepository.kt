@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import ru.sokolovromann.myshopping.data.repository.model.*
+import java.text.DecimalFormat
 
 interface MainRepository {
 
@@ -16,4 +17,8 @@ interface MainRepository {
     suspend fun addAutocomplete(autocomplete: Autocomplete)
 
     suspend fun addAppConfig(appConfig: AppConfig)
+
+    suspend fun addMoneyDecimalFormat(decimalFormat: DecimalFormat)
+
+    suspend fun addDisplayOtherFields(displayOtherFields: Boolean)
 }

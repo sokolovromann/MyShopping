@@ -87,8 +87,10 @@ class MainViewModel @Inject constructor(
     }
 
     private fun migrate(appConfig: AppConfig) {
-        if (appConfig.appBuildConfig.userCodeVersion == AppBuildConfig.CODE_VERSION_14) {
-            getScreenSize()
+        when (appConfig.appBuildConfig.userCodeVersion) {
+            AppBuildConfig.CODE_VERSION_14 -> getScreenSize()
+            AppBuildConfig.CODE_VERSION_18 -> migrateFromCodeVersion18()
+            else -> {}
         }
     }
 
@@ -167,6 +169,11 @@ class MainViewModel @Inject constructor(
         repository.addAppConfig(appConfig)
     }
 
+    private fun migrateFromCodeVersion18() = viewModelScope.launch {
+        repository.addDisplayOtherFields(UserPreferencesDefaults.DISPLAY_OTHER_FIELDS)
+        repository.addMoneyDecimalFormat(UserPreferencesDefaults.getMoneyDecimalFormat())
+    }
+
     private fun addAppConfig(
         event: MainEvent.AddDefaultDeviceConfig
     ) = viewModelScope.launch(dispatchers.io) {
@@ -192,9 +199,5 @@ class MainViewModel @Inject constructor(
         repository.addAppConfig(appConfig)
 
         notificationManager.createNotificationChannel()
-    }
-
-    private fun toSmartphoneScreen(screenWidth: Int): Boolean {
-        return screenWidth < 600
     }
 }

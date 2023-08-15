@@ -46,6 +46,12 @@ class AppConfigDao @Inject constructor(
         }
     }
 
+    suspend fun saveDisplayOtherFields(value: Boolean) = withContext(dispatchers.io) {
+        preferences.edit {
+            it[DatasourceKey.User.displayOtherFields] = value
+        }
+    }
+
     suspend fun saveCurrency(value: String) = withContext(dispatchers.io) {
         preferences.edit {
             it[DatasourceKey.User.currency] = value
