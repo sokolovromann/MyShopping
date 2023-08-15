@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import java.text.DecimalFormat
 import java.util.UUID
 
 data class Product(
@@ -36,7 +37,7 @@ data class Product(
             val taxRateValue = taxRate.calculateValueFromPercent(total)
 
             val totalWithDiscountAndTaxRate = total - discountValue + taxRateValue
-            Money(totalWithDiscountAndTaxRate, price.currency, false, price.decimalFormat)
+            Money(totalWithDiscountAndTaxRate, price.currency, false, getDecimalFormat())
         }
     }
 
@@ -52,5 +53,13 @@ data class Product(
 
     private fun calculateTotalWithoutDiscountAndTaxRate(): Float {
         return quantity.value * price.value
+    }
+
+    private fun getDecimalFormat(): DecimalFormat {
+        return DecimalFormat().apply {
+            minimumFractionDigits = price.decimalFormat.minimumFractionDigits
+            maximumFractionDigits = price.decimalFormat.maximumFractionDigits
+            roundingMode = price.decimalFormat.roundingMode
+        }
     }
 }
