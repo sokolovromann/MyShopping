@@ -28,14 +28,16 @@ class BackupState {
         screenData = screenData.copy(
             screenState = ScreenState.Showing,
             messageText = UiText.FromResources(R.string.backup_message_exportSuccessful),
-            locationText = UiText.FromResourcesWithArgs(R.string.backup_message_exportLocation, fileName)
+            locationText = UiText.FromResourcesWithArgs(R.string.backup_message_exportLocation, fileName),
+            warningText = UiText.FromResources(R.string.backup_message_warning)
         )
     }
 
     fun showExportError() {
         screenData = screenData.copy(
             screenState = ScreenState.Showing,
-            messageText = UiText.FromResources(R.string.backup_message_exportError)
+            messageText = UiText.FromResources(R.string.backup_message_exportError),
+            warningText = UiText.Nothing
         )
     }
 
@@ -46,14 +48,16 @@ class BackupState {
     fun showImportSuccessful() {
         screenData = screenData.copy(
             screenState = ScreenState.Showing,
-            messageText = UiText.FromResources(R.string.backup_message_importSuccessful)
+            messageText = UiText.FromResources(R.string.backup_message_importSuccessful),
+            warningText = UiText.Nothing
         )
     }
 
     fun showImportError() {
         screenData = screenData.copy(
             screenState = ScreenState.Showing,
-            messageText = UiText.FromResources(R.string.backup_message_importError)
+            messageText = UiText.FromResources(R.string.backup_message_importError),
+            warningText = UiText.Nothing
         )
     }
 
@@ -66,6 +70,7 @@ data class BackupScreenData(
     val screenState: ScreenState = ScreenState.Nothing,
     val messageText: UiText = UiText.Nothing,
     val locationText: UiText = UiText.Nothing,
+    val warningText: UiText = UiText.Nothing,
     val showPermissionError: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM
 )

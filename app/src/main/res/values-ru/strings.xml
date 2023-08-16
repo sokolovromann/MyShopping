@@ -79,6 +79,7 @@
     <string name="backup_message_importError">Импортировать данные не удалось</string>
     <string name="backup_message_importSuccessful">Данные успешно импортированы</string>
     <string name="backup_message_permissionError">У вас нет разрешения на экспорт данных</string>
+    <string name="backup_message_warning">Не редактируйте файл. Это может привести к полной потере данных!</string>
 
     <string name="calculateChange_action_closeCalculatingChange">Назад</string>
     <string name="calculateChange_header">Посчитать сдачу</string>

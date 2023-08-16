@@ -176,6 +176,17 @@ fun BackupScreen(
                         )
                     )
                 }
+
+                if (screenData.warningText != UiText.Nothing) {
+                    Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
+                    Text(
+                        text = screenData.warningText.asCompose(),
+                        fontSize = screenData.fontSize.toItemBody().sp,
+                        style = MaterialTheme.typography.body1.copy(
+                            color = MaterialTheme.colors.onSurface
+                        )
+                    )
+                }
             }
         }
     }
