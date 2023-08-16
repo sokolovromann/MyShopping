@@ -20,4 +20,6 @@ interface BackupRepository {
     suspend fun importBackup(uri: Uri): Result<Flow<Backup>>
 
     suspend fun exportBackup(backup: Backup): Result<String>
+
+    suspend fun checkFile(uri: Uri): Result<Unit>
 }

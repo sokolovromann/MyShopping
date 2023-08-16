@@ -94,12 +94,18 @@ class BackupViewModel @Inject constructor(
             backupState.showImportProgress()
         }
 
+        repository.checkFile(event.uri)
+            .onSuccess { transferDataFromBackup(event.uri) }
+            .onFailure { backupState.showImportError() }
+    }
+
+    private suspend fun transferDataFromBackup(uri: Uri) {
         repository.getReminderUids().firstOrNull()?.let { ids ->
             ids.forEach { alarmManager.deleteReminder(it) }
         }
 
         repository.deleteAppData()
-            .onSuccess { importBackup(event.uri) }
+            .onSuccess { importBackup(uri) }
             .onFailure { backupState.showImportError() }
     }
 

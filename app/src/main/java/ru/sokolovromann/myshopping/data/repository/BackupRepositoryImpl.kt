@@ -76,4 +76,8 @@ class BackupRepositoryImpl @Inject constructor(
         val entity = mapping.toBackupEntity(backup)
         return@withContext files.writeBackup(entity)
     }
+
+    override suspend fun checkFile(uri: Uri): Result<Unit> {
+        return files.checkFile(uri)
+    }
 }

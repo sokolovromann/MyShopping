@@ -20,6 +20,7 @@ import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.InputStreamReader
 import javax.inject.Inject
@@ -34,6 +35,7 @@ class BackupFiles @Inject constructor(
     private val relativePath = "${Environment.DIRECTORY_DOCUMENTS}/MyShopping"
     private val pathname = "${Environment.getExternalStorageDirectory()}/$relativePath"
 
+    private val packageNamePrefix = "ru.sokolovromann.myshopping"
     private val codeVersionPrefix = "ru.sokolovromann.myshopping.CODE_VERSION:"
     private val shoppingPrefix = "ru.sokolovromann.myshopping.BACKUP_SHOPPING_PREFIX:"
     private val productPrefix = "ru.sokolovromann.myshopping.BACKUP_PRODUCT_PREFIX:"
@@ -99,6 +101,24 @@ class BackupFiles @Inject constructor(
         }
     }
 
+    suspend fun checkFile(uri: Uri): Result<Unit> = withContext(dispatchers.io) {
+        return@withContext try {
+            val contentResolver = context.contentResolver
+            var correctPackageName = false
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                correctPackageName = decodePackageName(inputStream)
+            }
+
+            if (correctPackageName) {
+                Result.success(Unit)
+            } else {
+                Result.failure(FileNotFoundException())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private fun encodeBackupFileEntity(entity: BackupFileEntity): String {
         val jsons = mutableListOf<String>().apply {
             val shoppingListJsons = encodeShoppingEntities(entity.shoppingEntities)
@@ -134,6 +154,17 @@ class BackupFiles @Inject constructor(
 
     private fun encodeAppConfigEntity(entity: AppConfigEntity): String {
         return "$appConfigPrefix${json.encodeToString(entity)}"
+    }
+
+    private fun decodePackageName(inputStream: InputStream): Boolean {
+        var correctPackageName = false
+        BufferedReader(InputStreamReader(inputStream)).use { reader ->
+            val line: String = reader.readLine() ?: return@use
+            val codeVersionWithPackageName = base64.decode(line).split("\n")[0]
+            correctPackageName = codeVersionWithPackageName.startsWith(packageNamePrefix)
+        }
+
+        return correctPackageName
     }
 
     private fun decodeBackupFileEntity(inputStream: InputStream): BackupFileEntity {
