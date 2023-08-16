@@ -153,10 +153,12 @@ class ProductsWidget : GlanceAppWidget() {
                     .background(ColorProvider(R.color.gray_200)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ProductsWidgetTotal(
-                    products.value.shoppingList.calculateTotal().toString(),
-                    products.value.appConfig.userPreferences.fontSize
-                )
+                if (products.value.appConfig.userPreferences.displayMoney) {
+                    ProductsWidgetTotal(
+                        products.value.shoppingList.calculateTotal().toString(),
+                        products.value.appConfig.userPreferences.fontSize
+                    )
+                }
                 Spacer(modifier = GlanceModifier.defaultWeight())
                 Image(
                     modifier = GlanceModifier.clickable { startMainActivity(context, shoppingUid) },
