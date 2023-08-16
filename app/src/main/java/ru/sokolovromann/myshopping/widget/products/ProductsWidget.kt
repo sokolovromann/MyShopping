@@ -64,7 +64,8 @@ import ru.sokolovromann.myshopping.widget.WidgetKey
 class ProductsWidget : GlanceAppWidget() {
 
     companion object {
-        internal val GreenColor = Color(0xFF1B5E20)
+        internal val GreenOpacity75Color = Color(0xBF1B5E20)
+        internal val RedOpacity75Color = Color(0xBFFF0000)
         internal val BlackOpacity75Color = Color(0xBF000000)
     }
 
@@ -371,7 +372,7 @@ private fun ProductsWidgetCheckbox(
     onCheckedChange: () -> Unit
 ) {
     val color = if (coloredCheckbox) {
-        if (checked) ProductsWidget.GreenColor else Color.Red
+        if (checked) ProductsWidget.GreenOpacity75Color else ProductsWidget.RedOpacity75Color
     } else {
         ProductsWidget.BlackOpacity75Color
     }
