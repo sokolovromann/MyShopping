@@ -9,17 +9,26 @@ data class Money(
     val decimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
 ) {
 
+    private val _decimalFormat = if (value % 1f == 0f) {
+        decimalFormat
+    } else {
+        decimalFormat.apply {
+            minimumFractionDigits = UserPreferencesDefaults
+                .getMoneyDecimalFormat().minimumFractionDigits
+        }
+    }
+
     fun getFormattedValue(): String {
-        return decimalFormat.format(value)
+        return _decimalFormat.format(value)
     }
 
     fun getFormattedValueWithoutSeparators(): String {
-        return decimalFormat.valueToString(value)
+        return _decimalFormat.valueToString(value)
     }
 
     fun getDisplayValue(): String {
         return if (asPercent) {
-            "${getFormattedValue()} %"
+            "${getFormattedValue()}%"
         } else {
             if (currency.displayToLeft) {
                 "${currency.symbol}${getFormattedValue()}"
