@@ -63,6 +63,7 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.DisplayMoneyZeros,
             titleText = UiText.FromResources(R.string.settings_title_displayMoneyZeros),
+            bodyText = UiText.FromResources(R.string.settings_body_displayMoneyZeros),
             checked = appConfig.userPreferences.moneyDecimalFormat.isDisplayZeros()
         ),
         SettingsItem(

@@ -413,6 +413,7 @@
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
+    <string name="settings_body_displayMoneyZeros">If enabled, zeros will always be displayed</string>
     <string name="settings_body_displayOtherFields">Brand, size, color, etc.</string>
     <string name="settings_body_editProductAfterCompleted">Will be open screen to edit (except widgets)</string>
     <string name="settings_body_email">Tap to write email</string>

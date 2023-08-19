@@ -407,6 +407,7 @@
     <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
+    <string name="settings_body_displayMoneyZeros">Если включено, то нули будут всегда отображаться</string>
     <string name="settings_body_displayOtherFields">Марка, размер, цвет и т.д.</string>
     <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования (кроме виджетов)</string>
     <string name="settings_body_email">Нажмите, чтобы написать</string>
