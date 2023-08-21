@@ -32,7 +32,7 @@ class BackupFiles @Inject constructor(
     private val dispatchers: AppDispatchers
 ) {
 
-    private val relativePath = "${Environment.DIRECTORY_DOCUMENTS}/MyShopping"
+    private val relativePath = "${Environment.DIRECTORY_DOCUMENTS}/MyShoppingList"
     private val pathname = "${Environment.getExternalStorageDirectory()}/$relativePath"
 
     private val packageNamePrefix = "ru.sokolovromann.myshopping"
@@ -234,7 +234,12 @@ class BackupFiles @Inject constructor(
 
     private fun createDisplayName(): String {
         val currentTime = System.currentTimeMillis()
+        val currentTimeFormat= String.format(
+            "%tY%tm%td_%tH%tM%tS",
+            currentTime, currentTime, currentTime, currentTime, currentTime, currentTime
+        )
+
         val extension = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) "" else ".txt"
-        return "MyShoppingBackup_$currentTime$extension"
+        return "Backup_$currentTimeFormat$extension"
     }
 }
