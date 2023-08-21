@@ -120,10 +120,20 @@ class BackupViewModel @Inject constructor(
     private suspend fun importBackup(uri: Uri) {
         repository.importBackup(uri)
             .onSuccess { backupFlow ->
-                val backup = backupFlow.firstOrNull()
-                if (backup == null) {
+                val importedBackup = backupFlow.firstOrNull()
+                if (importedBackup == null) {
                     backupState.showImportError()
                 } else {
+                    val appBuildConfig = importedBackup.appConfig.appBuildConfig.copy(
+                        userCodeVersion = BuildConfig.VERSION_CODE
+                    )
+                    val appConfig = importedBackup.appConfig.copy(
+                        appBuildConfig = appBuildConfig
+                    )
+                    val backup = importedBackup.copy(
+                        appConfig = appConfig
+                    )
+
                     repository.addBackup(backup)
                     backupState.showImportSuccessful()
                 }

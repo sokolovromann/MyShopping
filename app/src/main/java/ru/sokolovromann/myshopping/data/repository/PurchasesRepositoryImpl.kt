@@ -115,6 +115,8 @@ class PurchasesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invertShoppingListsMultiColumns(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertShoppingsMultiColumns()
+        appConfigDao.invertShoppingsMultiColumns(
+            valueIfNull = !UserPreferencesDefaults.MULTI_COLUMNS
+        )
     }
 }

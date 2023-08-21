@@ -46,12 +46,6 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun saveDisplayOtherFields(value: Boolean) = withContext(dispatchers.io) {
-        preferences.edit {
-            it[DatasourceKey.User.displayOtherFields] = value
-        }
-    }
-
     suspend fun saveCurrency(value: String) = withContext(dispatchers.io) {
         preferences.edit {
             it[DatasourceKey.User.currency] = value
@@ -148,94 +142,107 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertNightTheme() = withContext(dispatchers.io) {
+    suspend fun invertNightTheme(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.nightTheme]
-            it[DatasourceKey.User.nightTheme] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.nightTheme]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.nightTheme] = newValue
         }
     }
 
-    suspend fun invertDisplayMoney() = withContext(dispatchers.io) {
+    suspend fun invertDisplayMoney(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.displayMoney]
-            it[DatasourceKey.User.displayMoney] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.displayMoney]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayMoney] = newValue
         }
     }
 
-    suspend fun invertDisplayCurrencyToLeft() = withContext(dispatchers.io) {
+    suspend fun invertDisplayCurrencyToLeft(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.displayCurrencyToLeft]
-            it[DatasourceKey.User.displayCurrencyToLeft] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.displayCurrencyToLeft]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayCurrencyToLeft] = newValue
         }
     }
 
-    suspend fun invertTaxRateAsPercent() = withContext(dispatchers.io) {
+    suspend fun invertTaxRateAsPercent(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.taxRateAsPercent]
-            it[DatasourceKey.User.taxRateAsPercent] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.taxRateAsPercent]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.taxRateAsPercent] = newValue
         }
     }
 
-    suspend fun invertShoppingsMultiColumns() = withContext(dispatchers.io) {
+    suspend fun invertShoppingsMultiColumns(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.shoppingsMultiColumns]
-            it[DatasourceKey.User.shoppingsMultiColumns] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.shoppingsMultiColumns]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.shoppingsMultiColumns] = newValue
         }
     }
 
-    suspend fun invertProductsMultiColumns() = withContext(dispatchers.io) {
+    suspend fun invertProductsMultiColumns(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.productsMultiColumns]
-            it[DatasourceKey.User.productsMultiColumns] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.productsMultiColumns]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.productsMultiColumns] = newValue
         }
     }
 
-    suspend fun invertDisplayOtherFields() = withContext(dispatchers.io) {
+    suspend fun invertDisplayOtherFields(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.displayOtherFields]
-            it[DatasourceKey.User.displayOtherFields] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.displayOtherFields]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayOtherFields] = newValue
         }
     }
 
-    suspend fun invertColoredCheckbox() = withContext(dispatchers.io) {
+    suspend fun invertColoredCheckbox(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.coloredCheckbox]
-            it[DatasourceKey.User.coloredCheckbox] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.coloredCheckbox]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.coloredCheckbox] = newValue
         }
     }
 
-    suspend fun invertEditProductAfterCompleted() = withContext(dispatchers.io) {
+    suspend fun invertEditProductAfterCompleted(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.editProductAfterCompleted]
-            it[DatasourceKey.User.editProductAfterCompleted] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.editProductAfterCompleted]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.editProductAfterCompleted] = newValue
         }
     }
 
-    suspend fun invertCompletedWithCheckbox() = withContext(dispatchers.io) {
+    suspend fun invertCompletedWithCheckbox(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.completedWithCheckbox]
-            it[DatasourceKey.User.completedWithCheckbox] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.completedWithCheckbox]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.completedWithCheckbox] = newValue
         }
     }
 
-    suspend fun invertEnterToSaveProduct() = withContext(dispatchers.io) {
+    suspend fun invertEnterToSaveProduct(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.enterToSaveProduct]
-            it[DatasourceKey.User.enterToSaveProduct] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.enterToSaveProduct]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.enterToSaveProduct] = newValue
         }
     }
 
-    suspend fun invertDisplayDefaultAutocompletes() = withContext(dispatchers.io) {
+    suspend fun invertDisplayDefaultAutocompletes(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.displayDefaultAutocompletes]
-            it[DatasourceKey.User.displayDefaultAutocompletes] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.displayDefaultAutocompletes]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayDefaultAutocompletes] = newValue
         }
     }
 
-    suspend fun invertSaveProductToAutocompletes() = withContext(dispatchers.io) {
+    suspend fun invertSaveProductToAutocompletes(valueIfNull: Boolean) = withContext(dispatchers.io) {
         preferences.edit {
-            val value = it[DatasourceKey.User.saveProductToAutocompletes]
-            it[DatasourceKey.User.saveProductToAutocompletes] = !requireNotNull(value)
+            val oldValue = it[DatasourceKey.User.saveProductToAutocompletes]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.saveProductToAutocompletes] = newValue
         }
     }
 

@@ -11,7 +11,6 @@ import ru.sokolovromann.myshopping.data.local.datasource.CodeVersion14LocalDatab
 import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
 import ru.sokolovromann.myshopping.data.local.resources.MainResources
 import ru.sokolovromann.myshopping.data.repository.model.*
-import java.text.DecimalFormat
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -77,17 +76,5 @@ class MainRepositoryImpl @Inject constructor(
     ): Unit = withContext(dispatchers.io) {
         val entity = mapping.toAppConfigEntity(appConfig)
         appConfigDao.saveAppConfig(entity)
-    }
-
-    override suspend fun addMoneyDecimalFormat(decimalFormat: DecimalFormat) {
-        val minFractionDigits = mapping.toMinMoneyFractionDigits(decimalFormat)
-        appConfigDao.saveMinMoneyFractionDigits(minFractionDigits)
-
-        val maxFractionDigits = mapping.toMaxMoneyFractionDigits(decimalFormat)
-        appConfigDao.saveMaxMoneyFractionDigits(maxFractionDigits)
-    }
-
-    override suspend fun addDisplayOtherFields(displayOtherFields: Boolean) {
-        appConfigDao.saveDisplayOtherFields(displayOtherFields)
     }
 }

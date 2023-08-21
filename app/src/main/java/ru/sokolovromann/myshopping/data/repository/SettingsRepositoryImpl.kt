@@ -125,35 +125,51 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invertNightTheme(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertNightTheme()
+        appConfigDao.invertNightTheme(
+            valueIfNull = !UserPreferencesDefaults.NIGHT_THEME
+        )
     }
 
     override suspend fun invertDisplayMoney(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertDisplayMoney()
+        appConfigDao.invertDisplayMoney(
+            valueIfNull = !UserPreferencesDefaults.DISPLAY_MONEY
+        )
     }
 
     override suspend fun invertDisplayCurrencyToLeft(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertDisplayCurrencyToLeft()
+        appConfigDao.invertDisplayCurrencyToLeft(
+            valueIfNull = !UserPreferencesDefaults.CURRENCY.displayToLeft
+        )
     }
 
     override suspend fun invertEditProductAfterCompleted(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertEditProductAfterCompleted()
+        appConfigDao.invertEditProductAfterCompleted(
+            valueIfNull = !UserPreferencesDefaults.EDIT_PRODUCT_AFTER_COMPLETED
+        )
     }
 
     override suspend fun invertSaveProductToAutocompletes(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertSaveProductToAutocompletes()
+        appConfigDao.invertSaveProductToAutocompletes(
+            valueIfNull = !UserPreferencesDefaults.SAVE_PRODUCT_TO_AUTOCOMPLETES
+        )
     }
 
     override suspend fun invertDisplayDefaultAutocompletes(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertDisplayDefaultAutocompletes()
+        appConfigDao.invertDisplayDefaultAutocompletes(
+            valueIfNull = !UserPreferencesDefaults.DISPLAY_DEFAULT_AUTOCOMPLETES
+        )
     }
 
     override suspend fun invertCompletedWithCheckbox(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertCompletedWithCheckbox()
+        appConfigDao.invertCompletedWithCheckbox(
+            valueIfNull = !UserPreferencesDefaults.COMPLETED_WITH_CHECKBOX
+        )
     }
 
     override suspend fun invertEnterToSaveProduct(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertEnterToSaveProduct()
+        appConfigDao.invertEnterToSaveProduct(
+            valueIfNull = !UserPreferencesDefaults.ENTER_TO_SAVE_PRODUCTS
+        )
     }
 
     override suspend fun hideCompletedPurchases(): Unit = withContext(dispatchers.io) {
@@ -172,11 +188,15 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invertColoredCheckbox(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertColoredCheckbox()
+        appConfigDao.invertColoredCheckbox(
+            valueIfNull = !UserPreferencesDefaults.COLORED_CHECKBOX
+        )
     }
 
     override suspend fun invertDisplayOtherFields(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertDisplayOtherFields()
+        appConfigDao.invertDisplayOtherFields(
+            valueIfNull = !UserPreferencesDefaults.DISPLAY_OTHER_FIELDS
+        )
     }
 
     override suspend fun noSplitCompletedPurchases(): Unit = withContext(dispatchers.io) {

@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.data.local.dao.ArchiveDao
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.UserPreferencesDefaults
 import javax.inject.Inject
 
 class ArchiveRepositoryImpl @Inject constructor(
@@ -70,6 +71,8 @@ class ArchiveRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invertShoppingListsMultiColumns(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertShoppingsMultiColumns()
+        appConfigDao.invertShoppingsMultiColumns(
+            valueIfNull = !UserPreferencesDefaults.MULTI_COLUMNS
+        )
     }
 }

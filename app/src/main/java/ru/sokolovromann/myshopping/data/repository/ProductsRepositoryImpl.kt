@@ -144,7 +144,9 @@ class ProductsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun invertProductsMultiColumns(): Unit = withContext(dispatchers.io) {
-        appConfigDao.invertProductsMultiColumns()
+        appConfigDao.invertProductsMultiColumns(
+            valueIfNull = !UserPreferencesDefaults.MULTI_COLUMNS
+        )
     }
 
     override suspend fun sortProductsBy(

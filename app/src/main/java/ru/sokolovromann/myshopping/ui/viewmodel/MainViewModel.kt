@@ -89,8 +89,7 @@ class MainViewModel @Inject constructor(
     private fun migrate(appConfig: AppConfig) {
         when (appConfig.appBuildConfig.userCodeVersion) {
             AppBuildConfig.CODE_VERSION_14 -> getScreenSize()
-            AppBuildConfig.CODE_VERSION_18 -> migrateFromCodeVersion18()
-            else -> {}
+            else -> mainState.hideLoading()
         }
     }
 
@@ -167,11 +166,6 @@ class MainViewModel @Inject constructor(
         )
 
         repository.addAppConfig(appConfig)
-    }
-
-    private fun migrateFromCodeVersion18() = viewModelScope.launch {
-        repository.addDisplayOtherFields(UserPreferencesDefaults.DISPLAY_OTHER_FIELDS)
-        repository.addMoneyDecimalFormat(UserPreferencesDefaults.getMoneyDecimalFormat())
     }
 
     private fun addAppConfig(
