@@ -1,10 +1,9 @@
-package ru.sokolovromann.myshopping.data
+package ru.sokolovromann.myshopping.app
 
-import javax.inject.Inject
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-class AppBase64 @Inject constructor() {
+object AppBase64 {
 
     @OptIn(ExperimentalEncodingApi::class)
     fun encode(value: String): String {

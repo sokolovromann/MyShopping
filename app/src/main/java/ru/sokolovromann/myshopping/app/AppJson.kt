@@ -1,10 +1,9 @@
-package ru.sokolovromann.myshopping.data
+package ru.sokolovromann.myshopping.app
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
 
-class AppJson @Inject constructor() {
+object AppJson {
 
     inline fun <reified T> encodeToString(value: T): String {
         return Json.encodeToString(value)
