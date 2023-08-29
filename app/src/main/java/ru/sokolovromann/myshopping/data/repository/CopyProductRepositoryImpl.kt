@@ -3,7 +3,7 @@ package ru.sokolovromann.myshopping.data.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
@@ -12,15 +12,14 @@ import javax.inject.Inject
 
 class CopyProductRepositoryImpl @Inject constructor(
     localDatasource: LocalDatasource,
-    private val mapping: RepositoryMapping,
-    private val dispatchers: AppDispatchers
+    private val mapping: RepositoryMapping
 ) : CopyProductRepository {
 
     private val shoppingListsDao = localDatasource.getShoppingListsDao()
     private val productDao = localDatasource.getProductsDao()
     private val appConfigDao = localDatasource.getAppConfigDao()
 
-    override suspend fun getPurchases(): Flow<ShoppingLists> = withContext(dispatchers.io) {
+    override suspend fun getPurchases(): Flow<ShoppingLists> = withContext(AppDispatchers.IO) {
         return@withContext combine(
             flow = shoppingListsDao.getPurchases(),
             flow2 = shoppingListsDao.getLastPosition(),
@@ -31,7 +30,7 @@ class CopyProductRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getArchive(): Flow<ShoppingLists> = withContext(dispatchers.io) {
+    override suspend fun getArchive(): Flow<ShoppingLists> = withContext(AppDispatchers.IO) {
         return@withContext combine(
             flow = shoppingListsDao.getArchive(),
             flow2 = shoppingListsDao.getLastPosition(),
@@ -44,7 +43,7 @@ class CopyProductRepositoryImpl @Inject constructor(
 
     override suspend fun getProducts(
         uids: List<String>
-    ): Flow<List<Product>> = withContext(dispatchers.io) {
+    ): Flow<List<Product>> = withContext(AppDispatchers.IO) {
         return@withContext productDao.getProducts(uids).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entities, appConfigEntity ->
@@ -53,16 +52,16 @@ class CopyProductRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getShoppingListsLastPosition(): Flow<Int?> = withContext(dispatchers.io) {
+    override suspend fun getShoppingListsLastPosition(): Flow<Int?> = withContext(AppDispatchers.IO) {
         return@withContext shoppingListsDao.getLastPosition()
     }
 
-    override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatchers.io) {
+    override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(AppDispatchers.IO) {
         val entity = mapping.toShoppingEntity(shoppingList)
         shoppingListsDao.insertShopping(entity)
     }
 
-    override suspend fun addProducts(products: List<Product>): Unit = withContext(dispatchers.io) {
+    override suspend fun addProducts(products: List<Product>): Unit = withContext(AppDispatchers.IO) {
         val entities = mapping.toProductEntities(products)
         productDao.insertProducts(entities)
         shoppingListsDao.updateLastModified(

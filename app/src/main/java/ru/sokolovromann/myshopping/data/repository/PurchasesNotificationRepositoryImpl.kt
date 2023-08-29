@@ -3,7 +3,7 @@ package ru.sokolovromann.myshopping.data.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
@@ -11,14 +11,13 @@ import javax.inject.Inject
 
 class PurchasesNotificationRepositoryImpl @Inject constructor(
     localDatasource: LocalDatasource,
-    private val mapping: RepositoryMapping,
-    private val dispatchers: AppDispatchers
+    private val mapping: RepositoryMapping
 ): PurchasesNotificationRepository {
 
     private val shoppingListsDao = localDatasource.getShoppingListsDao()
     private val appConfigDao = localDatasource.getAppConfigDao()
 
-    override suspend fun getShoppingLists(): Flow<ShoppingListNotifications> = withContext(dispatchers.io) {
+    override suspend fun getShoppingLists(): Flow<ShoppingListNotifications> = withContext(AppDispatchers.IO) {
         return@withContext shoppingListsDao.getReminders().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entities, appConfigEntity ->
@@ -29,7 +28,7 @@ class PurchasesNotificationRepositoryImpl @Inject constructor(
 
     override suspend fun getShoppingList(
         uid: String
-    ): Flow<ShoppingListNotification?> = withContext(dispatchers.io) {
+    ): Flow<ShoppingListNotification?> = withContext(AppDispatchers.IO) {
         return@withContext shoppingListsDao.getShoppingList(uid).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entity, appConfigEntity ->
@@ -45,7 +44,7 @@ class PurchasesNotificationRepositoryImpl @Inject constructor(
     override suspend fun deleteReminder(
         uid: String,
         lastModified: Long
-    ): Unit = withContext(dispatchers.io) {
+    ): Unit = withContext(AppDispatchers.IO) {
         shoppingListsDao.deleteReminder(uid, lastModified)
     }
 }

@@ -69,10 +69,9 @@ object AppModule {
     @Provides
     fun providesPurchasesRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): PurchasesRepositoryImpl {
-        return PurchasesRepositoryImpl(localDatasource, mapping, dispatchers)
+        return PurchasesRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -83,10 +82,9 @@ object AppModule {
     @Provides
     fun providesProductsRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): ProductsRepositoryImpl {
-        return ProductsRepositoryImpl(localDatasource, mapping, dispatchers)
+        return ProductsRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -99,10 +97,9 @@ object AppModule {
     @Provides
     fun providesProductsWidgetRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): ProductsWidgetRepositoryImpl {
-        return ProductsWidgetRepositoryImpl(localDatasource, mapping, dispatchers)
+        return ProductsWidgetRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -113,10 +110,9 @@ object AppModule {
     @Provides
     fun providesAddEditProductRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): AddEditProductRepositoryImpl {
-        return AddEditProductRepositoryImpl(localDatasource, mapping, dispatchers)
+        return AddEditProductRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -127,10 +123,9 @@ object AppModule {
     @Provides
     fun providesAutocompletesRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): AutocompletesRepositoryImpl {
-        return AutocompletesRepositoryImpl(localDatasource, mapping, dispatchers)
+        return AutocompletesRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -143,10 +138,9 @@ object AppModule {
     @Provides
     fun providesAddEditAutocompleteRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): AddEditAutocompleteRepositoryImpl {
-        return AddEditAutocompleteRepositoryImpl(localDatasource, mapping, dispatchers)
+        return AddEditAutocompleteRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -157,10 +151,9 @@ object AppModule {
     @Provides
     fun providesSettingsRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): SettingsRepositoryImpl {
-        return SettingsRepositoryImpl(localDatasource, mapping, dispatchers)
+        return SettingsRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -173,10 +166,9 @@ object AppModule {
     @Provides
     fun providesEditCurrencySymbolRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ) : EditCurrencySymbolRepositoryImpl {
-        return EditCurrencySymbolRepositoryImpl(localDatasource, mapping, dispatchers)
+        return EditCurrencySymbolRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -187,10 +179,9 @@ object AppModule {
     @Provides
     fun providesEditTaxRateRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): EditTaxRateRepositoryImpl {
-        return EditTaxRateRepositoryImpl(localDatasource, mapping, dispatchers)
+        return EditTaxRateRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -201,10 +192,9 @@ object AppModule {
     @Provides
     fun providesArchiveRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): ArchiveRepositoryImpl {
-        return ArchiveRepositoryImpl(localDatasource, mapping, dispatchers)
+        return ArchiveRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -215,10 +205,9 @@ object AppModule {
     @Provides
     fun providesTrashRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): TrashRepositoryImpl {
-        return TrashRepositoryImpl(localDatasource, mapping, dispatchers)
+        return TrashRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -229,10 +218,9 @@ object AppModule {
     @Provides
     fun providesCopyProductRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): CopyProductRepositoryImpl {
-        return CopyProductRepositoryImpl(localDatasource, mapping, dispatchers)
+        return CopyProductRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -243,10 +231,9 @@ object AppModule {
     @Provides
     fun providesMoveProductRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): MoveProductRepositoryImpl {
-        return MoveProductRepositoryImpl(localDatasource, mapping, dispatchers)
+        return MoveProductRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -257,10 +244,9 @@ object AppModule {
     @Provides
     fun providesMainRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): MainRepositoryImpl {
-        return MainRepositoryImpl(localDatasource, mapping, dispatchers)
+        return MainRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -273,10 +259,9 @@ object AppModule {
     @Provides
     fun providesPurchasesNotificationRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): PurchasesNotificationRepositoryImpl {
-        return PurchasesNotificationRepositoryImpl(localDatasource, mapping, dispatchers)
+        return PurchasesNotificationRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -287,10 +272,9 @@ object AppModule {
     @Provides
     fun providesEditReminderRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): EditReminderRepositoryImpl {
-        return EditReminderRepositoryImpl(localDatasource, mapping, dispatchers)
+        return EditReminderRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -303,10 +287,9 @@ object AppModule {
     @Provides
     fun providesEditShoppingListNameRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): EditShoppingListNameRepositoryImpl {
-        return EditShoppingListNameRepositoryImpl(localDatasource, mapping, dispatchers)
+        return EditShoppingListNameRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -319,10 +302,9 @@ object AppModule {
     @Provides
     fun providesEditShoppingListTotalRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): EditShoppingListTotalRepositoryImpl {
-        return EditShoppingListTotalRepositoryImpl(localDatasource, mapping, dispatchers)
+        return EditShoppingListTotalRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -335,10 +317,9 @@ object AppModule {
     @Provides
     fun providesCalculateChangeRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): CalculateChangeRepositoryImpl {
-        return CalculateChangeRepositoryImpl(localDatasource, mapping, dispatchers)
+        return CalculateChangeRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
@@ -349,10 +330,9 @@ object AppModule {
     @Provides
     fun providesBackupRepositoryImpl(
         localDatasource: LocalDatasource,
-        mapping: RepositoryMapping,
-        dispatchers: AppDispatchers
+        mapping: RepositoryMapping
     ): BackupRepositoryImpl {
-        return BackupRepositoryImpl(localDatasource, mapping, dispatchers)
+        return BackupRepositoryImpl(localDatasource, mapping)
     }
 
     @Provides
