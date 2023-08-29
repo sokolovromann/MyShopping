@@ -1,18 +1,16 @@
-package ru.sokolovromann.myshopping.data.local.files
+package ru.sokolovromann.myshopping.data.local.dao
 
 import android.content.ContentValues
-import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
-import android.provider.MediaStore.Files
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.AppBase64
-import ru.sokolovromann.myshopping.data.AppJson
+import ru.sokolovromann.myshopping.app.AppBase64
+import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppJson
+import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
@@ -23,17 +21,10 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.InputStreamReader
-import javax.inject.Inject
 
-class BackupFiles @Inject constructor(
-    private val context: Context,
-    private val json: AppJson,
-    private val base64: AppBase64,
-    private val dispatchers: AppDispatchers
-) {
+class FilesDao(appContent: AppContent) {
 
-    private val relativePath = "${Environment.DIRECTORY_DOCUMENTS}/MyShoppingList"
-    private val pathname = "${Environment.getExternalStorageDirectory()}/$relativePath"
+    private val contentResolver = appContent.getContentResolver()
 
     private val packageNamePrefix = "ru.sokolovromann.myshopping"
     private val codeVersionPrefix = "ru.sokolovromann.myshopping.CODE_VERSION:"
@@ -42,30 +33,29 @@ class BackupFiles @Inject constructor(
     private val autocompletePrefix = "ru.sokolovromann.myshopping.BACKUP_AUTOCOMPLETE_PREFIX:"
     private val appConfigPrefix = "ru.sokolovromann.myshopping.BACKUP_APP_CONFIG_PREFIX:"
 
-    suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(dispatchers.io) {
+    suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(AppDispatchers.IO) {
         return@withContext try {
             val entityJson = encodeBackupFileEntity(entity)
             val displayName = createDisplayName()
 
             val extension = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ".txt" else ""
-            val resultPath = "/$relativePath/$displayName$extension"
+            val resultPath = "/${AppContent.getAppFolderRelativePath()}/$displayName$extension"
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val values = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
                     put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath)
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, AppContent.getAppFolderRelativePath())
                 }
 
-                val contentResolver = context.contentResolver
-                contentResolver.insert(Files.getContentUri("external"), values)?.let {
+                contentResolver.insert(MediaStore.Files.getContentUri("external"), values)?.let {
                     contentResolver.openOutputStream(it)?.apply {
                         write(entityJson.toByteArray())
                     }
                 }
                 Result.success(resultPath)
             } else {
-                val file = File("$pathname/$displayName")
+                val file = File("${AppContent.getAppFolderAbsolutePath()}/$displayName")
                 val parentFile = file.parentFile
                 if (parentFile?.exists() == true) {
                     file.writeText(entityJson)
@@ -85,10 +75,8 @@ class BackupFiles @Inject constructor(
         }
     }
 
-    suspend fun readBackup(uri: Uri): Result<Flow<BackupFileEntity>> = withContext(dispatchers.io) {
+    suspend fun readBackup(uri: Uri): Result<Flow<BackupFileEntity>> = withContext(AppDispatchers.IO) {
         return@withContext try {
-            val contentResolver = context.contentResolver
-
             var backupFileEntity = BackupFileEntity()
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 backupFileEntity = decodeBackupFileEntity(inputStream)
@@ -101,9 +89,8 @@ class BackupFiles @Inject constructor(
         }
     }
 
-    suspend fun checkFile(uri: Uri): Result<Unit> = withContext(dispatchers.io) {
+    suspend fun checkFile(uri: Uri): Result<Unit> = withContext(AppDispatchers.IO) {
         return@withContext try {
-            val contentResolver = context.contentResolver
             var correctPackageName = false
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 correctPackageName = decodePackageName(inputStream)
@@ -137,30 +124,30 @@ class BackupFiles @Inject constructor(
         var jsonsText = "$codeVersionPrefix${entity.appVersion}\n"
         jsons.forEach { text -> jsonsText += "$text\n" }
 
-        return base64.encode(jsonsText.dropLast(1))
+        return AppBase64.encode(jsonsText.dropLast(1))
     }
 
     private fun encodeShoppingEntities(entities: List<ShoppingEntity>): List<String> {
-        return entities.map { "$shoppingPrefix${json.encodeToString(it)}" }
+        return entities.map { "$shoppingPrefix${AppJson.encodeToString(it)}" }
     }
 
     private fun encodeProductEntities(entities: List<ProductEntity>): List<String> {
-        return entities.map { "$productPrefix${json.encodeToString(it)}" }
+        return entities.map { "$productPrefix${AppJson.encodeToString(it)}" }
     }
 
     private fun encodeAutocompleteEntities(entities: List<AutocompleteEntity>): List<String> {
-        return entities.map { "$autocompletePrefix${json.encodeToString(it)}" }
+        return entities.map { "$autocompletePrefix${AppJson.encodeToString(it)}" }
     }
 
     private fun encodeAppConfigEntity(entity: AppConfigEntity): String {
-        return "$appConfigPrefix${json.encodeToString(entity)}"
+        return "$appConfigPrefix${AppJson.encodeToString(entity)}"
     }
 
     private fun decodePackageName(inputStream: InputStream): Boolean {
         var correctPackageName = false
         BufferedReader(InputStreamReader(inputStream)).use { reader ->
             val line: String = reader.readLine() ?: return@use
-            val codeVersionWithPackageName = base64.decode(line).split("\n")[0]
+            val codeVersionWithPackageName = AppBase64.decode(line).split("\n")[0]
             correctPackageName = codeVersionWithPackageName.startsWith(packageNamePrefix)
         }
 
@@ -176,7 +163,7 @@ class BackupFiles @Inject constructor(
 
         BufferedReader(InputStreamReader(inputStream)).use { reader ->
             val line: String = reader.readLine() ?: return@use
-            base64.decode(line).split("\n").forEach {
+            AppBase64.decode(line).split("\n").forEach {
                 if (it.startsWith(codeVersionPrefix)) {
                     appVersion = it.replace(codeVersionPrefix, "").toIntOrNull() ?: 0
                 }
@@ -214,22 +201,22 @@ class BackupFiles @Inject constructor(
 
     private fun decodeShoppingEntity(value: String): ShoppingEntity {
         val entityJson = value.replace(shoppingPrefix, "")
-        return json.decodeFromString(entityJson)
+        return AppJson.decodeFromString(entityJson)
     }
 
     private fun decodeProductEntity(value: String): ProductEntity {
         val entityJson = value.replace(productPrefix, "")
-        return json.decodeFromString(entityJson)
+        return AppJson.decodeFromString(entityJson)
     }
 
     private fun decodeAutocompleteEntity(value: String): AutocompleteEntity {
         val entityJson = value.replace(autocompletePrefix, "")
-        return json.decodeFromString(entityJson)
+        return AppJson.decodeFromString(entityJson)
     }
 
     private fun decodeAppConfigEntity(value: String): AppConfigEntity {
         val entityJson = value.replace(appConfigPrefix, "")
-        return json.decodeFromString(entityJson)
+        return AppJson.decodeFromString(entityJson)
     }
 
     private fun createDisplayName(): String {

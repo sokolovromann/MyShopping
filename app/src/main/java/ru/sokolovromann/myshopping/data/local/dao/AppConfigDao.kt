@@ -10,139 +10,137 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.datasource.LocalAppConfigDatasource
+import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.local.entity.CodeVersion14UserPreferencesEntity
-import javax.inject.Inject
 
-class AppConfigDao @Inject constructor(
-    private val datasource: LocalAppConfigDatasource,
-    private val dispatchers: AppDispatchers
-) {
+class AppConfigDao(appContent: AppContent) {
 
-    private val preferences = datasource.getPreferences()
-    private val resources = datasource.getResources()
+    private val preferences = appContent.getPreferences()
+    private val userSharedPreferences = appContent.getUserSharedPreferences()
+    private val openedSharedPreferences = appContent.getOpenedSharedPreferences()
+    private val resources = appContent.getResources()
 
-    suspend fun getAppConfig(): Flow<AppConfigEntity> = withContext(dispatchers.io) {
+    suspend fun getAppConfig(): Flow<AppConfigEntity> = withContext(AppDispatchers.IO) {
         return@withContext preferences.data.map { toAppConfigEntity(it) }
     }
 
-    suspend fun getCodeVersion14Preferences(): Flow<CodeVersion14UserPreferencesEntity> = withContext(dispatchers.io) {
+    suspend fun getCodeVersion14Preferences(): Flow<CodeVersion14UserPreferencesEntity> = withContext(AppDispatchers.IO) {
         return@withContext preferences.data.map { toVer14UserPreferences() }
     }
 
-    suspend fun saveAppConfig(appConfig: AppConfigEntity) = withContext(dispatchers.io) {
+    suspend fun saveAppConfig(appConfig: AppConfigEntity) = withContext(AppDispatchers.IO) {
         saveBuildConfig(appConfig.appBuildConfig)
         saveUserPreferences(appConfig.userPreferences)
     }
 
-    suspend fun saveFontSize(value: String) = withContext(dispatchers.io) {
+    suspend fun saveFontSize(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.fontSize] = value
         }
     }
 
-    suspend fun saveCurrency(value: String) = withContext(dispatchers.io) {
+    suspend fun saveCurrency(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.currency] = value
         }
     }
 
-    suspend fun saveTaxRate(value: Float) = withContext(dispatchers.io) {
+    suspend fun saveTaxRate(value: Float) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.taxRate] = value
         }
     }
 
-    suspend fun saveTaxRateAsPercent(value: Boolean) = withContext(dispatchers.io) {
+    suspend fun saveTaxRateAsPercent(value: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.taxRateAsPercent] = value
         }
     }
 
-    suspend fun savePurchasesSeparator(value: String) = withContext(dispatchers.io) {
+    suspend fun savePurchasesSeparator(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.purchasesSeparator] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteNames(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMaxAutocompleteNames(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesNames] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteQuantities(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMaxAutocompleteQuantities(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesQuantities] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteMoneys(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMaxAutocompleteMoneys(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesMoneys] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteOthers(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMaxAutocompleteOthers(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesOthers] = value
         }
     }
 
-    suspend fun saveMinMoneyFractionDigits(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMinMoneyFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.minMoneyFractionDigits] = value
         }
     }
 
-    suspend fun saveMinQuantityFractionDigits(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMinQuantityFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.minQuantityFractionDigits] = value
         }
     }
 
-    suspend fun saveMaxMoneyFractionDigits(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMaxMoneyFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxMoneyFractionDigits] = value
         }
     }
 
-    suspend fun saveMaxQuantityFractionDigits(value: Int) = withContext(dispatchers.io) {
+    suspend fun saveMaxQuantityFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxQuantityFractionDigits] = value
         }
     }
 
-    suspend fun displayCompleted(value: String) = withContext(dispatchers.io) {
+    suspend fun displayCompleted(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.displayCompleted] = value
         }
     }
 
-    suspend fun displayTotal(value: String) = withContext(dispatchers.io) {
+    suspend fun displayTotal(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.displayTotal] = value
         }
     }
 
-    suspend fun displayShoppingsProducts(value: String) = withContext(dispatchers.io) {
+    suspend fun displayShoppingsProducts(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.displayShoppingsProducts] = value
         }
     }
 
-    suspend fun lockProductElement(value: String) = withContext(dispatchers.io) {
+    suspend fun lockProductElement(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.lockProductElement] = value
         }
     }
 
-    suspend fun invertNightTheme(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertNightTheme(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.nightTheme]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -150,7 +148,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertDisplayMoney(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertDisplayMoney(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayMoney]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -158,7 +156,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertDisplayCurrencyToLeft(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertDisplayCurrencyToLeft(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayCurrencyToLeft]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -166,7 +164,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertTaxRateAsPercent(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertTaxRateAsPercent(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.taxRateAsPercent]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -174,7 +172,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertShoppingsMultiColumns(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertShoppingsMultiColumns(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.shoppingsMultiColumns]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -182,7 +180,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertProductsMultiColumns(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertProductsMultiColumns(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.productsMultiColumns]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -190,7 +188,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertDisplayOtherFields(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertDisplayOtherFields(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayOtherFields]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -198,7 +196,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertColoredCheckbox(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertColoredCheckbox(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.coloredCheckbox]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -206,7 +204,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertEditProductAfterCompleted(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertEditProductAfterCompleted(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.editProductAfterCompleted]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -214,7 +212,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertCompletedWithCheckbox(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertCompletedWithCheckbox(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.completedWithCheckbox]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -222,7 +220,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertEnterToSaveProduct(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertEnterToSaveProduct(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.enterToSaveProduct]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -230,7 +228,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertDisplayDefaultAutocompletes(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertDisplayDefaultAutocompletes(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayDefaultAutocompletes]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -238,7 +236,7 @@ class AppConfigDao @Inject constructor(
         }
     }
 
-    suspend fun invertSaveProductToAutocompletes(valueIfNull: Boolean) = withContext(dispatchers.io) {
+    suspend fun invertSaveProductToAutocompletes(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.saveProductToAutocompletes]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -303,8 +301,7 @@ class AppConfigDao @Inject constructor(
     }
 
     private fun toAppBuildConfig(preferences: Preferences): AppBuildConfigEntity {
-        val codeVersion14 = datasource.getCodeVersion14firstOpenedPreferences()
-            .contains(DatasourceKey.CodeVersion14.firstOpened)
+        val codeVersion14 = openedSharedPreferences.contains(DatasourceKey.CodeVersion14.firstOpened)
 
         return AppBuildConfigEntity(
             appFirstTime = preferences[DatasourceKey.Build.appFirstTime],
@@ -348,22 +345,20 @@ class AppConfigDao @Inject constructor(
     }
 
     private fun toVer14UserPreferences(): CodeVersion14UserPreferencesEntity {
-        val ver14Preferences = datasource.getCodeVersion14Preferences()
-        val ver14FirstOpenedPreferences = datasource.getCodeVersion14firstOpenedPreferences()
         return CodeVersion14UserPreferencesEntity(
-            firstOpened = ver14FirstOpenedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstOpened),
-            currency = ver14Preferences.getStringOrNull(DatasourceKey.CodeVersion14.currency),
-            displayCurrencyToLeft = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayCurrencyToLeft),
-            taxRate = ver14Preferences.getFloatOrNull(DatasourceKey.CodeVersion14.taxRate),
-            titleFontSize = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.titleFontSize),
-            bodyFontSize = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.bodyFontSize),
-            firstLetterUppercase = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstLetterUppercase),
-            columnCount = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.columnCount),
-            sort = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.sort),
-            displayMoney = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayMoney),
-            displayTotal = ver14Preferences.getIntOrNull(DatasourceKey.CodeVersion14.displayTotal),
-            editProductAfterCompleted = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.editProductAfterCompleted),
-            saveProductToAutocompletes = ver14Preferences.getBooleanOrNull(DatasourceKey.CodeVersion14.saveProductToAutocompletes)
+            firstOpened = openedSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstOpened),
+            currency = userSharedPreferences.getStringOrNull(DatasourceKey.CodeVersion14.currency),
+            displayCurrencyToLeft = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayCurrencyToLeft),
+            taxRate = userSharedPreferences.getFloatOrNull(DatasourceKey.CodeVersion14.taxRate),
+            titleFontSize = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.titleFontSize),
+            bodyFontSize = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.bodyFontSize),
+            firstLetterUppercase = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstLetterUppercase),
+            columnCount = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.columnCount),
+            sort = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.sort),
+            displayMoney = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayMoney),
+            displayTotal = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.displayTotal),
+            editProductAfterCompleted = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.editProductAfterCompleted),
+            saveProductToAutocompletes = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.saveProductToAutocompletes)
         )
     }
 
