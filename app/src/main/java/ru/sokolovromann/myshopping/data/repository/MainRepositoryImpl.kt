@@ -1,27 +1,26 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.MainDao
-import ru.sokolovromann.myshopping.data.local.datasource.CodeVersion14LocalDatabase
-import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
-import ru.sokolovromann.myshopping.data.local.resources.MainResources
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
-    private val mainDao: MainDao,
-    private val appConfigDao: AppConfigDao,
-    private val mainResources: MainResources,
-    private val autocompletesResources: AutocompletesResources,
-    private val codeVersion14LocalDatabase: CodeVersion14LocalDatabase,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : MainRepository {
+
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val productsDao = localDatasource.getProductsDao()
+    private val autocompletesDao = localDatasource.getAutocompletesDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+    private val codeVersion14Dao = localDatasource.getCodeVersion14Dao()
+    private val resourcesDao = localDatasource.getResourcesDao()
 
     override suspend fun getAppConfig(): Flow<AppConfig> = withContext(dispatchers.io) {
         return@withContext appConfigDao.getAppConfig().transform {
@@ -31,36 +30,32 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDefaultCurrency(): Flow<Currency> = withContext(dispatchers.io) {
-        return@withContext mainResources.getCurrencyResources().transform {
-            val value = mapping.toCurrency(it.defaultCurrency, it.displayDefaultCurrencyToLeft)
-            emit(value)
-        }
+        val currency = resourcesDao.getCurrency()
+        val value = mapping.toCurrency(currency.defaultCurrency, currency.displayDefaultCurrencyToLeft)
+        return@withContext flowOf(value)
     }
 
     override suspend fun getCodeVersion14(): Flow<CodeVersion14> = withContext(dispatchers.io) {
-        return@withContext autocompletesResources.getDefaultAutocompleteNames().combine(
-            flow = appConfigDao.getCodeVersion14Preferences(),
-            transform = { names, preferences ->
-                mapping.toCodeVersion14(
-                    shoppingListsCursor = codeVersion14LocalDatabase.getShoppings(),
-                    productsCursor = codeVersion14LocalDatabase.getProducts(),
-                    autocompletesCursor = codeVersion14LocalDatabase.getAutocompletes(),
-                    defaultAutocompleteNames = names,
-                    preferences = preferences
-                )
-            }
-        )
+        return@withContext appConfigDao.getCodeVersion14Preferences().transform {
+            mapping.toCodeVersion14(
+                shoppingListsCursor = codeVersion14Dao.getShoppingsCursor(),
+                productsCursor = codeVersion14Dao.getProductsCursor(),
+                autocompletesCursor = codeVersion14Dao.getAutocompletesCursor(),
+                defaultAutocompleteNames = resourcesDao.getAutocompleteNames(),
+                preferences = it
+            )
+        }
     }
 
     override suspend fun addShoppingList(
         shoppingList: ShoppingList
     ): Unit = withContext(dispatchers.io) {
         val shoppingEntity = mapping.toShoppingEntity(shoppingList)
-        mainDao.insertShopping(shoppingEntity)
+        shoppingListsDao.insertShopping(shoppingEntity)
 
         shoppingList.products.forEach {
             val productEntity = mapping.toProductEntity(it)
-            mainDao.insertProduct(productEntity)
+            productsDao.insertProduct(productEntity)
         }
     }
 
@@ -68,7 +63,7 @@ class MainRepositoryImpl @Inject constructor(
         autocomplete: Autocomplete
     ): Unit = withContext(dispatchers.io) {
         val entity = mapping.toAutocompleteEntity(autocomplete)
-        mainDao.insertAutocomplete(entity)
+        autocompletesDao.insertAutocomplete(entity)
     }
 
     override suspend fun addAppConfig(

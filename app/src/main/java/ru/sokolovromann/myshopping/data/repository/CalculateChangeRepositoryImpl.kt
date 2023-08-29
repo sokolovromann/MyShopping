@@ -5,17 +5,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.CalculateChangeDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import javax.inject.Inject
 
 class CalculateChangeRepositoryImpl @Inject constructor(
-    private val calculateChangeDao: CalculateChangeDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ): CalculateChangeRepository {
+
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
 
     override suspend fun getCalculateChange(
         uid: String?
@@ -26,7 +27,7 @@ class CalculateChangeRepositoryImpl @Inject constructor(
                 emit(value)
             }
         } else {
-            calculateChangeDao.getShoppingList(uid).combine(
+            shoppingListsDao.getShoppingList(uid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { entity, appConfigEntity ->
                     mapping.toCalculateChange(entity, appConfigEntity)

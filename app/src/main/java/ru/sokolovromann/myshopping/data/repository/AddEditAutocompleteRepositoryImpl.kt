@@ -5,18 +5,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AddEditAutocompleteDao
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import javax.inject.Inject
 
 class AddEditAutocompleteRepositoryImpl @Inject constructor(
-    private val autocompleteDao: AddEditAutocompleteDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : AddEditAutocompleteRepository {
+
+    private val autocompleteDao = localDatasource.getAutocompletesDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
 
     override suspend fun getAddEditAutocomplete(
         uid: String?

@@ -4,21 +4,23 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.ProductsWidgetDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import javax.inject.Inject
 
 class ProductsWidgetRepositoryImpl @Inject constructor(
-    private val widgetDao: ProductsWidgetDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : ProductsWidgetRepository {
 
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val productsDao = localDatasource.getProductsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+
     override suspend fun getShoppingLists(): Flow<ShoppingLists> = withContext(dispatchers.io) {
-        return@withContext widgetDao.getShoppingLists().combine(
+        return@withContext shoppingListsDao.getPurchases().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entity, appConfigEntity ->
                 mapping.toShoppingLists(entity, null, appConfigEntity)
@@ -27,7 +29,7 @@ class ProductsWidgetRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getProducts(shoppingUid: String): Flow<Products?> = withContext(dispatchers.io) {
-        return@withContext widgetDao.getShoppingList(shoppingUid).combine(
+        return@withContext shoppingListsDao.getShoppingList(shoppingUid).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entity, appConfigEntity ->
                 if (entity == null) {
@@ -40,10 +42,10 @@ class ProductsWidgetRepositoryImpl @Inject constructor(
     }
 
     override suspend fun completeProduct(productUid: String, lastModified: Long) = withContext(dispatchers.io) {
-        widgetDao.completeProduct(productUid, lastModified)
+        productsDao.completeProduct(productUid, lastModified)
     }
 
     override suspend fun activeProduct(productUid: String, lastModified: Long) = withContext(dispatchers.io) {
-        widgetDao.activeProduct(productUid, lastModified)
+        productsDao.activeProduct(productUid, lastModified)
     }
 }

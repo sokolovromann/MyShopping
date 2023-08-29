@@ -5,17 +5,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.EditReminderDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import javax.inject.Inject
 
 class EditReminderRepositoryImpl @Inject constructor(
-    private val reminderDao: EditReminderDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ): EditReminderRepository {
+
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
 
     override suspend fun getEditReminder(uid: String?): Flow<EditReminder> = withContext(dispatchers.io) {
         return@withContext if (uid == null) {
@@ -24,7 +25,7 @@ class EditReminderRepositoryImpl @Inject constructor(
                 emit(value)
             }
         } else {
-            reminderDao.getShoppingList(uid).combine(
+            shoppingListsDao.getShoppingList(uid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { entity, appConfigEntity ->
                     mapping.toEditReminder(entity, appConfigEntity)
@@ -38,13 +39,13 @@ class EditReminderRepositoryImpl @Inject constructor(
         reminder: Long,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        reminderDao.updateReminder(uid, reminder, lastModified)
+        shoppingListsDao.updateReminder(uid, reminder, lastModified)
     }
 
     override suspend fun deleteReminder(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        reminderDao.deleteReminder(uid, lastModified)
+        shoppingListsDao.deleteReminder(uid, lastModified)
     }
 }

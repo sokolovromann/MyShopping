@@ -4,22 +4,24 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.ProductsDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(
-    private val productsDao: ProductsDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : ProductsRepository {
 
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val productsDao = localDatasource.getProductsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+
     override suspend fun getProducts(shoppingUid: String): Flow<Products?> = withContext(dispatchers.io) {
         return@withContext combine(
-            flow = productsDao.getShoppingList(shoppingUid),
-            flow2 = productsDao.getShoppingsLastPosition(),
+            flow = shoppingListsDao.getShoppingList(shoppingUid),
+            flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { entity, lastPosition, appConfigEntity ->
                 if (entity == null) {
@@ -35,28 +37,28 @@ class ProductsRepositoryImpl @Inject constructor(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.moveShoppingToPurchases(uid, lastModified)
+        shoppingListsDao.moveToPurchases(uid, lastModified)
     }
 
     override suspend fun moveShoppingListToArchive(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.moveShoppingToArchive(uid, lastModified)
+        shoppingListsDao.moveToArchive(uid, lastModified)
     }
 
     override suspend fun moveShoppingListToTrash(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.moveShoppingToTrash(uid, lastModified)
+        shoppingListsDao.moveToTrash(uid, lastModified)
     }
 
     override suspend fun copyShoppingList(
         shoppingList: ShoppingList
     ): Unit = withContext(dispatchers.io) {
         val shoppingEntity = mapping.toShoppingEntity(shoppingList)
-        productsDao.insertShopping(shoppingEntity)
+        shoppingListsDao.insertShopping(shoppingEntity)
 
         shoppingList.products.forEach { product ->
             val productEntity = mapping.toProductEntity(product)
@@ -82,17 +84,17 @@ class ProductsRepositoryImpl @Inject constructor(
         first: Product,
         second: Product
     ): Unit = withContext(dispatchers.io) {
-        productsDao.updateProductPosition(first.productUid, first.position, first.lastModified)
-        productsDao.updateProductPosition(second.productUid, second.position, second.lastModified)
-        productsDao.updateShoppingLastModified(first.shoppingUid, first.lastModified)
+        productsDao.updatePosition(first.productUid, first.position, first.lastModified)
+        productsDao.updatePosition(second.productUid, second.position, second.lastModified)
+        shoppingListsDao.updateLastModified(first.shoppingUid, first.lastModified)
     }
 
     override suspend fun swapProducts(products: List<Product>): Unit = withContext(dispatchers.io) {
         val entities = mapping.toProductEntities(products)
-        productsDao.updateProducts(entities)
+        productsDao.insertProducts(entities)
 
         val firstProduct = products.first()
-        productsDao.updateShoppingLastModified(
+        shoppingListsDao.updateLastModified(
             uid = firstProduct.shoppingUid,
             lastModified = firstProduct.lastModified
         )
@@ -104,28 +106,28 @@ class ProductsRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         uids.forEach { productsDao.deleteProduct(it) }
-        productsDao.updateShoppingLastModified(shoppingUid, lastModified)
+        shoppingListsDao.updateLastModified(shoppingUid, lastModified)
     }
 
     override suspend fun deleteShoppingListTotal(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.deleteShoppingTotal(uid, lastModified)
+        shoppingListsDao.deleteTotal(uid, lastModified)
     }
 
     override suspend fun pinProducts(
         uids: List<String>,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        uids.forEach { productsDao.pinProduct(it, lastModified) }
+        productsDao.pinProducts(uids, lastModified)
     }
 
     override suspend fun unpinProducts(
         uids: List<String>,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        uids.forEach { productsDao.unpinProduct(it, lastModified) }
+        productsDao.unpinProducts(uids, lastModified)
     }
 
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {
@@ -155,7 +157,7 @@ class ProductsRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         val sortByName = mapping.toSortByName(sortBy)
-        productsDao.sortProductsBy(shoppingUid, sortByName, lastModified)
+        shoppingListsDao.sortBy(shoppingUid, sortByName, lastModified)
     }
 
     override suspend fun sortProductsAscending(
@@ -163,7 +165,7 @@ class ProductsRepositoryImpl @Inject constructor(
         ascending: Boolean,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        productsDao.sortProductsAscending(shoppingUid, ascending, lastModified)
+        shoppingListsDao.sortAscending(shoppingUid, ascending, lastModified)
     }
 
     override suspend fun enableProductsAutomaticSorting(
@@ -172,7 +174,7 @@ class ProductsRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         val sortBy = mapping.toSortByName(sort.sortBy)
-        productsDao.enableProductsAutomaticSorting(shoppingUid, sortBy, sort.ascending, lastModified)
+        shoppingListsDao.enableAutomaticSorting(shoppingUid, sortBy, sort.ascending, lastModified)
     }
 
     override suspend fun disableProductsAutomaticSorting(
@@ -181,6 +183,6 @@ class ProductsRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         val sortBy = mapping.toSortByName(sort.sortBy)
-        productsDao.disableProductsAutomaticSorting(shoppingUid, sortBy, sort.ascending, lastModified)
+        shoppingListsDao.disableAutomaticSorting(shoppingUid, sortBy, sort.ascending, lastModified)
     }
 }

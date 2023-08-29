@@ -5,18 +5,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.EditShoppingListTotalDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import javax.inject.Inject
 
 class EditShoppingListTotalRepositoryImpl @Inject constructor(
-    private val shoppingListDao: EditShoppingListTotalDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : EditShoppingListTotalRepository {
+
+    private val shoppingListDao = localDatasource.getShoppingListsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
 
     override suspend fun getEditShoppingListTotal(
         uid: String?
@@ -42,13 +43,13 @@ class EditShoppingListTotalRepositoryImpl @Inject constructor(
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
         val totalToFloat = mapping.toMoneyValue(total)
-        shoppingListDao.updateShoppingTotal(uid, totalToFloat, lastModified)
+        shoppingListDao.updateTotal(uid, totalToFloat, lastModified)
     }
 
     override suspend fun deleteShoppingListTotal(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        shoppingListDao.deleteShoppingTotal(uid, lastModified)
+        shoppingListDao.deleteTotal(uid, lastModified)
     }
 }

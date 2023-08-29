@@ -5,17 +5,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.EditShoppingListNameDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import javax.inject.Inject
 
 class EditShoppingListNameRepositoryImpl @Inject constructor(
-    private val shoppingListDao: EditShoppingListNameDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : EditShoppingListNameRepository {
+
+    private val shoppingListDao = localDatasource.getShoppingListsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
 
     override suspend fun getEditShoppingListName(
         uid: String?
@@ -40,6 +41,6 @@ class EditShoppingListNameRepositoryImpl @Inject constructor(
         name: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        shoppingListDao.updateShoppingName(uid, name, lastModified)
+        shoppingListDao.updateName(uid, name, lastModified)
     }
 }

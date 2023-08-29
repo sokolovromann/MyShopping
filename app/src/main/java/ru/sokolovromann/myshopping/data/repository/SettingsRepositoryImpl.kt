@@ -1,76 +1,70 @@
 package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.SettingsDao
-import ru.sokolovromann.myshopping.data.local.datasource.CodeVersion14LocalDatabase
-import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
-import ru.sokolovromann.myshopping.data.local.resources.SettingsResources
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.*
 import java.text.DecimalFormat
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
-    private val settingsDao: SettingsDao,
-    private val appConfigDao: AppConfigDao,
-    private val settingsResources: SettingsResources,
-    private val autocompletesResources: AutocompletesResources,
-    private val codeVersion14LocalDatabase: CodeVersion14LocalDatabase,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : SettingsRepository {
 
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val productsDao = localDatasource.getProductsDao()
+    private val autocompletesDao = localDatasource.getAutocompletesDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+    private val codeVersion14Dao = localDatasource.getCodeVersion14Dao()
+    private val resourcesDao = localDatasource.getResourcesDao()
+
     override suspend fun getSettings(): Flow<Settings> = withContext(dispatchers.io) {
-        return@withContext combine(
-            flow = appConfigDao.getAppConfig(),
-            flow2 = settingsResources.getSettingsResources(),
-            transform = { appConfigEntity, resourcesEntity ->
-                mapping.toSettings(appConfigEntity, resourcesEntity)
-            }
-        )
+        return@withContext appConfigDao.getAppConfig().map {
+            val settings = resourcesDao.getSettings()
+            mapping.toSettings(it, settings)
+        }
     }
 
     override suspend fun getReminderUids(): Flow<List<String>> = withContext(dispatchers.io) {
-        return@withContext settingsDao.getReminderUids()
+        return@withContext shoppingListsDao.getReminderUids()
     }
 
     override suspend fun getCodeVersion14(): Flow<CodeVersion14> = withContext(dispatchers.io) {
-        return@withContext autocompletesResources.getDefaultAutocompleteNames().combine(
-            flow = appConfigDao.getCodeVersion14Preferences(),
-            transform = { names, preferences ->
-                mapping.toCodeVersion14(
-                    shoppingListsCursor = codeVersion14LocalDatabase.getShoppings(),
-                    productsCursor = codeVersion14LocalDatabase.getProducts(),
-                    autocompletesCursor = codeVersion14LocalDatabase.getAutocompletes(),
-                    defaultAutocompleteNames = names,
-                    preferences = preferences
-                )
-            }
-        )
+        return@withContext appConfigDao.getCodeVersion14Preferences().map {
+            mapping.toCodeVersion14(
+                shoppingListsCursor = codeVersion14Dao.getShoppingsCursor(),
+                productsCursor = codeVersion14Dao.getProductsCursor(),
+                autocompletesCursor = codeVersion14Dao.getAutocompletesCursor(),
+                defaultAutocompleteNames = resourcesDao.getAutocompleteNames(),
+                preferences = it
+            )
+        }
     }
 
     override suspend fun addShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatchers.io) {
         val shoppingEntity = mapping.toShoppingEntity(shoppingList)
-        settingsDao.insertShopping(shoppingEntity)
+        shoppingListsDao.insertShopping(shoppingEntity)
 
         shoppingList.products.forEach {
             val productEntity = mapping.toProductEntity(it)
-            settingsDao.insertProduct(productEntity)
+            productsDao.insertProduct(productEntity)
         }
     }
 
     override suspend fun addAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatchers.io) {
         val entity = mapping.toAutocompleteEntity(autocomplete)
-        settingsDao.insertAutocomplete(entity)
+        autocompletesDao.insertAutocomplete(entity)
     }
 
     override suspend fun deleteAppData(): Result<Unit> = withContext(dispatchers.io) {
-        settingsDao.deleteShoppings()
-        settingsDao.deleteProducts()
-        settingsDao.deleteAutocompletes()
+        shoppingListsDao.deleteAllShoppings()
+        productsDao.deleteAllProducts()
+        autocompletesDao.deleteAllAutocompletes()
         return@withContext Result.success(Unit)
     }
 

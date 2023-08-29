@@ -4,26 +4,28 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AddEditProductDao
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.resources.AddEditProductsResources
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.*
 import javax.inject.Inject
 
 class AddEditProductRepositoryImpl @Inject constructor(
-    private val productDao: AddEditProductDao,
-    private val resources: AddEditProductsResources,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : AddEditProductRepository {
+
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val productDao = localDatasource.getProductsDao()
+    private val autocompletesDao = localDatasource.getAutocompletesDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+    private val resourcesDao = localDatasource.getResourcesDao()
 
     override suspend fun getAddEditProduct(
         shoppingUid: String,
         productUid: String?
     ): Flow<AddEditProduct> = withContext(dispatchers.io) {
         return@withContext if (productUid == null) {
-            productDao.getProductsLastPosition(shoppingUid).combine(
+            productDao.getLastPosition(shoppingUid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { lastPosition, appConfigEntity ->
                     mapping.toAddEditProduct(null, lastPosition, appConfigEntity)
@@ -32,7 +34,7 @@ class AddEditProductRepositoryImpl @Inject constructor(
         } else {
             combine(
                 flow = productDao.getProduct(productUid),
-                flow2 = productDao.getProductsLastPosition(shoppingUid),
+                flow2 = productDao.getLastPosition(shoppingUid),
                 flow3 = appConfigDao.getAppConfig(),
                 transform = { entity, lastPosition, appConfigEntity ->
                     mapping.toAddEditProduct(entity, lastPosition, appConfigEntity)
@@ -46,34 +48,34 @@ class AddEditProductRepositoryImpl @Inject constructor(
         language: String
     ): Flow<Autocompletes> = withContext(dispatchers.io) {
         return@withContext combine(
-            flow = productDao.getAutocompletes(search),
-            flow2 = resources.getDefaultAutocompleteNames(search),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { entities, resources, appConfigEntity ->
+            flow = autocompletesDao.searchAutocompletesLikeName(search),
+            flow2 = appConfigDao.getAppConfig(),
+            transform = { entities, appConfigEntity ->
+                val resources = resourcesDao.searchAutocompleteNames(search)
                 mapping.toAutocompletes(entities, resources, appConfigEntity, language)
             }
         )
     }
 
     override suspend fun checkIfProductUidExists(uid: String): Flow<String?> = withContext(dispatchers.io) {
-        return@withContext productDao.checkIfProductUidExists(uid)
+        return@withContext productDao.checkIfProductExists(uid)
     }
 
     override suspend fun addProduct(product: Product): Unit = withContext(dispatchers.io) {
         val entity = mapping.toProductEntity(product)
         productDao.insertProduct(entity)
-        productDao.updateShoppingLastModified(entity.shoppingUid, entity.lastModified)
+        shoppingListsDao.updateLastModified(entity.shoppingUid, entity.lastModified)
     }
 
     override suspend fun editProduct(product: Product): Unit = withContext(dispatchers.io) {
         val entity = mapping.toProductEntity(product)
         productDao.insertProduct(entity)
-        productDao.updateShoppingLastModified(entity.shoppingUid, entity.lastModified)
+        shoppingListsDao.updateLastModified(entity.shoppingUid, entity.lastModified)
     }
 
     override suspend fun addAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatchers.io) {
         val entity = mapping.toAutocompleteEntity(autocomplete)
-        productDao.insertAutocomplete(entity)
+        autocompletesDao.insertAutocomplete(entity)
     }
 
     override suspend fun lockProductQuantity(): Unit = withContext(dispatchers.io) {

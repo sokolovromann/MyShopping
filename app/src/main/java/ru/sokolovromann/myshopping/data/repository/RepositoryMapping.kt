@@ -306,15 +306,15 @@ class RepositoryMapping @Inject constructor() {
     }
 
     fun toBackup(
-        shoppingListEntities: List<ShoppingEntity>,
-        productEntities: List<ProductEntity>,
+        shoppingLists: List<ShoppingListEntity>,
         autocompleteEntities: List<AutocompleteEntity>,
         appConfigEntity: AppConfigEntity,
         currentAppVersion: Int
     ): Backup {
+        val products = shoppingLists.map { it.productEntities }.single()
         return Backup(
-            shoppingLists = shoppingListEntities.map { toShoppingList(it, appConfigEntity) },
-            products = productEntities.map { toProduct(it, appConfigEntity) },
+            shoppingLists = shoppingLists.map { toShoppingList(it, appConfigEntity) },
+            products = products.map { toProduct(it, appConfigEntity) },
             autocompletes = autocompleteEntities.map { toAutocomplete(it, appConfigEntity) },
             appConfig = toAppConfig(appConfigEntity),
             appVersion = currentAppVersion

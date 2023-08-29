@@ -4,23 +4,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.TrashDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import javax.inject.Inject
 
 class TrashRepositoryImpl @Inject constructor(
-    private val trashDao: TrashDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : TrashRepository {
 
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val productsDao = localDatasource.getProductsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+
     override suspend fun getShoppingLists(): Flow<ShoppingLists> = withContext(dispatchers.io) {
         return@withContext combine(
-            flow = trashDao.getShoppingLists(),
-            flow2 = trashDao.getShoppingsLastPosition(),
+            flow = shoppingListsDao.getTrash(),
+            flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { entity, lastPosition, appConfigEntity ->
                 mapping.toShoppingLists(entity, lastPosition, appConfigEntity)
@@ -32,21 +34,19 @@ class TrashRepositoryImpl @Inject constructor(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        trashDao.moveShoppingToPurchases(uid, lastModified)
+        shoppingListsDao.moveToPurchases(uid, lastModified)
     }
 
     override suspend fun moveShoppingListToArchive(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        trashDao.moveShoppingToArchive(uid, lastModified)
+        shoppingListsDao.moveToArchive(uid, lastModified)
     }
 
     override suspend fun deleteShoppingLists(uids: List<String>): Unit = withContext(dispatchers.io) {
-        uids.forEach {
-            trashDao.deleteShoppingList(it)
-            trashDao.deleteProducts(it)
-        }
+        shoppingListsDao.deleteShoppingsByUids(uids)
+        productsDao.deleteProductsByShoppingUids(uids)
     }
 
     override suspend fun displayAllPurchasesTotal(): Unit = withContext(dispatchers.io) {

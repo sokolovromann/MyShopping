@@ -4,29 +4,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.AutocompletesDao
-import ru.sokolovromann.myshopping.data.local.resources.AutocompletesResources
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 import javax.inject.Inject
 
 class AutocompletesRepositoryImpl @Inject constructor(
-    private val autocompletesDao: AutocompletesDao,
-    private val resources: AutocompletesResources,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ) : AutocompletesRepository {
+
+    private val autocompletesDao = localDatasource.getAutocompletesDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+    private val resourcesDao = localDatasource.getResourcesDao()
 
     override suspend fun getDefaultAutocompletes(
         language: String
     ): Flow<Autocompletes> = withContext(dispatchers.io) {
         return@withContext combine(
             flow = autocompletesDao.getDefaultAutocompletes(),
-            flow2 = resources.getDefaultAutocompleteNames(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { entities, names, appConfigEntity ->
+            flow2 = appConfigDao.getAppConfig(),
+            transform = { entities, appConfigEntity ->
+                val names = resourcesDao.getAutocompleteNames()
                 mapping.toAutocompletes(entities, names, appConfigEntity, language)
             }
         )
@@ -42,10 +42,8 @@ class AutocompletesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearAutocompletes(autocompletes: List<Autocomplete>): Unit = withContext(dispatchers.io) {
-        autocompletes.forEach {
-            val entity = mapping.toAutocompleteEntity(it)
-            autocompletesDao.insertAutocomplete(entity)
-        }
+        val uids = autocompletes.map { it.uid }
+        autocompletesDao.clearAutocompletes(uids)
     }
 
     override suspend fun deleteAutocompletes(uids: List<String>): Unit = withContext(dispatchers.io) {

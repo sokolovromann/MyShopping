@@ -4,21 +4,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.PurchasesNotificationDao
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 import javax.inject.Inject
 
 class PurchasesNotificationRepositoryImpl @Inject constructor(
-    private val notificationDao: PurchasesNotificationDao,
-    private val appConfigDao: AppConfigDao,
+    localDatasource: LocalDatasource,
     private val mapping: RepositoryMapping,
     private val dispatchers: AppDispatchers
 ): PurchasesNotificationRepository {
 
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+
     override suspend fun getShoppingLists(): Flow<ShoppingListNotifications> = withContext(dispatchers.io) {
-        return@withContext notificationDao.getShoppingLists().combine(
+        return@withContext shoppingListsDao.getReminders().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entities, appConfigEntity ->
                 mapping.toShoppingListNotifications(entities, appConfigEntity)
@@ -29,7 +30,7 @@ class PurchasesNotificationRepositoryImpl @Inject constructor(
     override suspend fun getShoppingList(
         uid: String
     ): Flow<ShoppingListNotification?> = withContext(dispatchers.io) {
-        return@withContext notificationDao.getShoppingList(uid).combine(
+        return@withContext shoppingListsDao.getShoppingList(uid).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { entity, appConfigEntity ->
                 if (entity == null) {
@@ -45,6 +46,6 @@ class PurchasesNotificationRepositoryImpl @Inject constructor(
         uid: String,
         lastModified: Long
     ): Unit = withContext(dispatchers.io) {
-        notificationDao.deleteReminder(uid, lastModified)
+        shoppingListsDao.deleteReminder(uid, lastModified)
     }
 }
