@@ -32,6 +32,7 @@ interface AutocompletesDao {
     fun insertAutocomplete(autocomplete: AutocompleteEntity)
 
     @Query("UPDATE autocompletes SET " +
+            "last_modified = :lastModifier," +
             "quantity = 0, " +
             "quantity_symbol = '', " +
             "price = 0, " +
@@ -46,7 +47,7 @@ interface AutocompletesDao {
             "color = '', " +
             "provider = '' " +
             "WHERE uid IN (:uids)")
-    fun clearAutocompletes(uids: List<String>)
+    fun clearAutocompletes(uids: List<String>, lastModifier: Long)
 
     @Query("DELETE FROM autocompletes")
     fun deleteAllAutocompletes()
