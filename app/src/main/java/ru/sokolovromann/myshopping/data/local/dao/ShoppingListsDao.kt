@@ -34,10 +34,6 @@ interface ShoppingListsDao {
     fun getReminders(): Flow<List<ShoppingListEntity>>
 
     @Transaction
-    @Query("SELECT uid FROM shoppings WHERE reminder > 0")
-    fun getReminderUids(): Flow<List<String>>
-
-    @Transaction
     @Query("SELECT * FROM shoppings WHERE uid = :uid")
     fun getShoppingList(uid: String): Flow<ShoppingListEntity?>
 
