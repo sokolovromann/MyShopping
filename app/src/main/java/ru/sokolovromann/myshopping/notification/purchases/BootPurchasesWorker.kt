@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.PurchasesNotificationRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 
 class BootPurchasesWorker(
@@ -21,7 +21,7 @@ class BootPurchasesWorker(
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface BootPurchasesWorkerEntryPoint {
-        fun repository(): PurchasesNotificationRepository
+        fun repository(): ShoppingListsRepository
         fun dispatchers(): AppDispatchers
         fun alarmManager(): PurchasesAlarmManager
     }
@@ -43,7 +43,7 @@ class BootPurchasesWorker(
     }
 
     private suspend fun getShoppingLists(): ShoppingListNotifications? {
-        return entryPoint.repository().getShoppingLists().firstOrNull()
+        return entryPoint.repository().getNotifications().firstOrNull()
     }
 
     private suspend fun createReminders(

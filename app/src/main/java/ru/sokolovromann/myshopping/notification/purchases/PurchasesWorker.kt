@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.PurchasesNotificationRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 
 class PurchasesWorker(
@@ -28,7 +28,7 @@ class PurchasesWorker(
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface PurchasesWorkerEntryPoint {
-        fun repository(): PurchasesNotificationRepository
+        fun repository(): ShoppingListsRepository
         fun dispatchers(): AppDispatchers
         fun notificationManager(): PurchasesNotificationManager
     }
@@ -53,7 +53,7 @@ class PurchasesWorker(
         val uid = inputData.getString(UID_KEY) ?: return null
 
         entryPoint.repository().deleteReminder(uid, System.currentTimeMillis())
-        return entryPoint.repository().getShoppingList(uid).firstOrNull()
+        return entryPoint.repository().getNotification(uid).firstOrNull()
     }
 
     private suspend fun showNotification(
