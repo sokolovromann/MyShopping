@@ -79,28 +79,14 @@ class FilesDao(appContent: AppContent) {
         return@withContext try {
             var backupFileEntity = BackupFileEntity()
             contentResolver.openInputStream(uri)?.use { inputStream ->
+                if (!decodePackageName(inputStream)) {
+                    throw FileNotFoundException()
+                }
                 backupFileEntity = decodeBackupFileEntity(inputStream)
             }
 
             val flow = flowOf(backupFileEntity)
             Result.success(flow)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    suspend fun checkFile(uri: Uri): Result<Unit> = withContext(AppDispatchers.IO) {
-        return@withContext try {
-            var correctPackageName = false
-            contentResolver.openInputStream(uri)?.use { inputStream ->
-                correctPackageName = decodePackageName(inputStream)
-            }
-
-            if (correctPackageName) {
-                Result.success(Unit)
-            } else {
-                Result.failure(FileNotFoundException())
-            }
         } catch (e: Exception) {
             Result.failure(e)
         }
