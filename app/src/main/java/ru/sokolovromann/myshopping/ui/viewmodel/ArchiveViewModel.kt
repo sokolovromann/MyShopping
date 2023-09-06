@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.ArchiveRepository
-import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
@@ -19,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArchiveViewModel @Inject constructor(
-    private val repository: ArchiveRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
+    private val appConfigRepository: AppConfigRepository,
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<ArchiveEvent> {
 
@@ -85,7 +86,7 @@ class ArchiveViewModel @Inject constructor(
             archiveState.showLoading()
         }
 
-        repository.getShoppingLists().collect {
+        shoppingListsRepository.getArchive().collect {
             shoppingListsLoaded(it)
         }
     }
@@ -102,7 +103,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun moveShoppingListsToPurchases() = viewModelScope.launch {
         archiveState.screenData.selectedUids?.let {
-            repository.moveShoppingListsToPurchases(
+            shoppingListsRepository.moveShoppingListsToPurchases(
                 uids = it,
                 lastModified = System.currentTimeMillis()
             )
@@ -115,7 +116,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun moveShoppingListsToTrash() = viewModelScope.launch {
         archiveState.screenData.selectedUids?.let {
-            repository.moveShoppingListsToTrash(
+            shoppingListsRepository.moveShoppingListsToTrash(
                 uids = it,
                 lastModified = System.currentTimeMillis()
             )
@@ -172,7 +173,7 @@ class ArchiveViewModel @Inject constructor(
             return@launch
         }
 
-        repository.swapShoppingLists(shoppingLists)
+        shoppingListsRepository.swapShoppingLists(shoppingLists)
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
@@ -185,7 +186,7 @@ class ArchiveViewModel @Inject constructor(
             return@launch
         }
 
-        repository.swapShoppingLists(shoppingLists)
+        shoppingListsRepository.swapShoppingLists(shoppingLists)
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
@@ -195,11 +196,7 @@ class ArchiveViewModel @Inject constructor(
     private fun displayPurchasesTotal(
         event: ArchiveEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
-        when (event.displayTotal) {
-            DisplayTotal.ALL -> repository.displayAllPurchasesTotal()
-            DisplayTotal.COMPLETED -> repository.displayCompletedPurchasesTotal()
-            DisplayTotal.ACTIVE -> repository.displayActivePurchasesTotal()
-        }
+        appConfigRepository.displayTotal(event.displayTotal)
 
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()
@@ -243,6 +240,6 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
-        repository.invertShoppingListsMultiColumns()
+        appConfigRepository.invertShoppingListsMultiColumns()
     }
 }

@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.ProductsRepository
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val repository: ProductsRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
+    private val appConfigRepository: AppConfigRepository,
     private val dispatchers: AppDispatchers,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<ProductsEvent> {
@@ -128,7 +130,7 @@ class ProductsViewModel @Inject constructor(
             productsState.showLoading()
         }
 
-        repository.getProducts(shoppingUid).collect {
+        shoppingListsRepository.getProducts(shoppingUid).collect {
             productsLoaded(it)
         }
     }
@@ -183,7 +185,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun deleteShoppingListTotal() = viewModelScope.launch {
-        repository.deleteShoppingListTotal(
+        shoppingListsRepository.deleteShoppingListTotal(
             uid = shoppingUid,
             lastModified = System.currentTimeMillis()
         )
@@ -195,22 +197,22 @@ class ProductsViewModel @Inject constructor(
 
     private fun moveProductUp(event: ProductsEvent.MoveProductUp) = viewModelScope.launch {
         productsState.getProductsUpResult(event.uid).onSuccess {
-            repository.swapProducts(it.first, it.second)
+            shoppingListsRepository.swapProducts(it.first, it.second)
             updateProductsWidget()
         }
     }
 
     private fun moveProductDown(event: ProductsEvent.MoveProductDown) = viewModelScope.launch {
         productsState.getProductsDownResult(event.uid).onSuccess {
-            repository.swapProducts(it.first, it.second)
+            shoppingListsRepository.swapProducts(it.first, it.second)
             updateProductsWidget()
         }
     }
 
     private fun deleteProducts() = viewModelScope.launch {
         productsState.screenData.selectedUids?.let {
-            repository.deleteProducts(
-                uids = it,
+            shoppingListsRepository.deleteProductsByProductUids(
+                productsUids = it,
                 shoppingUid = shoppingUid,
                 lastModified = System.currentTimeMillis()
             )
@@ -256,7 +258,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun moveShoppingListToPurchases() = viewModelScope.launch {
-        repository.moveShoppingListToPurchases(
+        shoppingListsRepository.moveShoppingListToPurchases(
             uid = productsState.shoppingListUid,
             lastModified = System.currentTimeMillis()
         )
@@ -267,7 +269,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun moveShoppingListToArchive() = viewModelScope.launch {
-        repository.moveShoppingListToArchive(
+        shoppingListsRepository.moveShoppingListToArchive(
             uid = productsState.shoppingListUid,
             lastModified = System.currentTimeMillis()
         )
@@ -278,7 +280,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun moveShoppingListToTrash() = viewModelScope.launch {
-        repository.moveShoppingListToTrash(
+        shoppingListsRepository.moveShoppingListToTrash(
             uid = productsState.shoppingListUid,
             lastModified = System.currentTimeMillis()
         )
@@ -290,7 +292,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun copyShoppingList() = viewModelScope.launch {
         productsState.getCopyShoppingListResult()
-            .onSuccess { repository.copyShoppingList(it) }
+            .onSuccess { shoppingListsRepository.copyShoppingList(it) }
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
@@ -300,8 +302,8 @@ class ProductsViewModel @Inject constructor(
     private fun completeProduct(
         event: ProductsEvent.CompleteProduct
     ) = viewModelScope.launch {
-        repository.completeProduct(
-            uid = event.uid,
+        shoppingListsRepository.completeProduct(
+            productUid = event.uid,
             lastModified = System.currentTimeMillis()
         )
 
@@ -315,8 +317,8 @@ class ProductsViewModel @Inject constructor(
     private fun activeProduct(
         event: ProductsEvent.ActiveProduct
     ) = viewModelScope.launch {
-        repository.activeProduct(
-            uid = event.uid,
+        shoppingListsRepository.activeProduct(
+            productUid = event.uid,
             lastModified = System.currentTimeMillis()
         )
     }
@@ -356,7 +358,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun sortProducts(event: ProductsEvent.SortProducts) = viewModelScope.launch {
         if (productsState.screenData.automaticSorting) {
-            repository.sortProductsBy(
+            shoppingListsRepository.sortProductsBy(
                 shoppingUid = shoppingUid,
                 sortBy = event.sortBy,
                 lastModified = System.currentTimeMillis()
@@ -367,7 +369,7 @@ class ProductsViewModel @Inject constructor(
                 return@launch
             }
 
-            repository.swapProducts(products)
+            shoppingListsRepository.swapProducts(products)
         }
 
         withContext(dispatchers.main) {
@@ -377,9 +379,9 @@ class ProductsViewModel @Inject constructor(
 
     private fun reverseSortProducts() = viewModelScope.launch {
         if (productsState.screenData.automaticSorting) {
-            repository.sortProductsAscending(
+            shoppingListsRepository.sortProductsAscending(
                 shoppingUid = shoppingUid,
-                ascending = !(productsState.screenData.sort.ascending),
+                sortAscending = !(productsState.screenData.sort.ascending),
                 lastModified = System.currentTimeMillis()
             )
         } else {
@@ -388,7 +390,7 @@ class ProductsViewModel @Inject constructor(
                 return@launch
             }
 
-            repository.swapProducts(products)
+            shoppingListsRepository.swapProducts(products)
         }
 
         withContext(dispatchers.main) {
@@ -399,11 +401,7 @@ class ProductsViewModel @Inject constructor(
     private fun displayPurchasesTotal(
         event: ProductsEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
-        when (event.displayTotal) {
-            DisplayTotal.ALL -> repository.displayAllPurchasesTotal()
-            DisplayTotal.COMPLETED -> repository.displayCompletedPurchasesTotal()
-            DisplayTotal.ACTIVE -> repository.displayActivePurchasesTotal()
-        }
+        appConfigRepository.displayTotal(event.displayTotal)
 
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()
@@ -453,7 +451,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun invertProductsMultiColumns() = viewModelScope.launch {
-        repository.invertProductsMultiColumns()
+        appConfigRepository.invertProductsMultiColumns()
     }
 
     private fun invertAutomaticSorting() = viewModelScope.launch {
@@ -463,15 +461,15 @@ class ProductsViewModel @Inject constructor(
                     withContext(dispatchers.main) { hideProductsSort() }
                     return@launch
                 }
-            repository.swapProducts(products)
+            shoppingListsRepository.swapProducts(products)
 
-            repository.disableProductsAutomaticSorting(
+            shoppingListsRepository.disableAutomaticSorting(
                 shoppingUid = shoppingUid,
                 sort = Sort(),
                 lastModified = System.currentTimeMillis()
             )
         } else {
-            repository.enableProductsAutomaticSorting(
+            shoppingListsRepository.enableAutomaticSorting(
                 shoppingUid = shoppingUid,
                 sort = Sort(sortBy = SortBy.CREATED),
                 lastModified = System.currentTimeMillis()
@@ -481,7 +479,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun pinProducts() = viewModelScope.launch {
         productsState.screenData.selectedUids?.let {
-            repository.pinProducts(it, System.currentTimeMillis())
+            shoppingListsRepository.pinProducts(it, System.currentTimeMillis())
             updateProductsWidget()
         }
 
@@ -492,7 +490,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun unpinProducts() = viewModelScope.launch {
         productsState.screenData.selectedUids?.let {
-            repository.unpinProducts(it, System.currentTimeMillis())
+            shoppingListsRepository.unpinProducts(it, System.currentTimeMillis())
             updateProductsWidget()
         }
 

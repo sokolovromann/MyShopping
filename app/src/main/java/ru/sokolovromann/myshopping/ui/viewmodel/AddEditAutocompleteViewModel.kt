@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.AddEditAutocompleteRepository
+import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditAutocompleteViewModel @Inject constructor(
-    private val repository: AddEditAutocompleteRepository,
+    private val autocompletesRepository: AutocompletesRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditAutocompleteEvent> {
@@ -47,7 +47,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
     }
 
     private fun getAddEditAutocomplete() = viewModelScope.launch {
-        repository.getAddEditAutocomplete(uid).firstOrNull()?.let {
+        autocompletesRepository.getAddEditAutocomplete(uid).firstOrNull()?.let {
             addEditAutocompleteLoaded(it)
         }
     }
@@ -63,11 +63,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
         val autocomplete = addEditAutocompleteState.getAutocompleteResult()
             .getOrElse { return@launch }
 
-        if (uid == null) {
-            repository.addAutocomplete(autocomplete)
-        } else {
-            repository.editAutocomplete(autocomplete)
-        }
+        autocompletesRepository.saveAutocomplete(autocomplete)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)

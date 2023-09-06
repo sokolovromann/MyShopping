@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.EditTaxRateRepository
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditTaxRateState
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditTaxRateViewModel @Inject constructor(
-    private val repository: EditTaxRateRepository,
+    private val appConfigRepository: AppConfigRepository,
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<EditTaxRateEvent> {
 
@@ -42,7 +42,7 @@ class EditTaxRateViewModel @Inject constructor(
     }
 
     private fun getEditTaxRate() = viewModelScope.launch {
-        repository.getEditTaxRate().firstOrNull()?.let {
+        appConfigRepository.getEditTaxRate().firstOrNull()?.let {
             editTaxRateLoaded(it)
         }
     }
@@ -58,7 +58,7 @@ class EditTaxRateViewModel @Inject constructor(
         val taxRate = editTaxRateState.getTaxRateResult()
             .getOrElse { return@launch }
 
-        repository.editTaxRate(taxRate)
+        appConfigRepository.saveTaxRate(taxRate)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(EditTaxRateScreenEvent.ShowBackScreenAndUpdateProductsWidgets)

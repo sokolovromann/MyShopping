@@ -12,7 +12,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
-import ru.sokolovromann.myshopping.data.repository.MainRepository
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
+import ru.sokolovromann.myshopping.data.repository.CodeVersion14Repository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
@@ -23,7 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: MainRepository,
+    private val appConfigRepository: AppConfigRepository,
+    private val codeVersion14Repository: CodeVersion14Repository,
+    private val shoppingListsRepository: ShoppingListsRepository,
+    private val autocompletesRepository: AutocompletesRepository,
     private val dispatchers: AppDispatchers,
     private val notificationManager: PurchasesNotificationManager,
     private val alarmManager: PurchasesAlarmManager
@@ -53,7 +59,7 @@ class MainViewModel @Inject constructor(
             mainState.showLoading()
         }
 
-        repository.getAppConfig().collect {
+        appConfigRepository.getAppConfig().collect {
             applyAppConfig(it)
         }
     }
@@ -102,7 +108,7 @@ class MainViewModel @Inject constructor(
     ) = viewModelScope.launch {
         notificationManager.createNotificationChannel()
 
-        val codeVersion14 = repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
+        val codeVersion14 = codeVersion14Repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
 
         val migrates = listOf(
             viewModelScope.async { migrateShoppings(codeVersion14.shoppingLists) },
@@ -121,7 +127,7 @@ class MainViewModel @Inject constructor(
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
         list.forEach {
-            repository.addShoppingList(it)
+            shoppingListsRepository.saveShoppingList(it)
             if (it.reminder != null) {
                 alarmManager.deleteCodeVersion14Reminder(it.id)
                 alarmManager.createReminder(it.uid, it.reminder)
@@ -130,7 +136,7 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun migrateAutocompletes(list: List<Autocomplete>) {
-        list.forEach { repository.addAutocomplete(it) }
+        autocompletesRepository.saveAutocompletes(list)
     }
 
     private suspend fun migrateSettings(
@@ -165,7 +171,7 @@ class MainViewModel @Inject constructor(
             userPreferences = userPreferences
         )
 
-        repository.addAppConfig(appConfig)
+        appConfigRepository.saveAppConfig(appConfig)
     }
 
     private fun addAppConfig(
@@ -181,7 +187,7 @@ class MainViewModel @Inject constructor(
         )
 
         val userPreferences = UserPreferences(
-            currency = repository.getDefaultCurrency().firstOrNull() ?: Currency()
+            currency = appConfigRepository.getDefaultCurrency().firstOrNull() ?: Currency()
         )
 
         val appConfig = AppConfig(
@@ -190,7 +196,7 @@ class MainViewModel @Inject constructor(
             userPreferences = userPreferences
         )
 
-        repository.addAppConfig(appConfig)
+        appConfigRepository.saveAppConfig(appConfig)
 
         notificationManager.createNotificationChannel()
     }

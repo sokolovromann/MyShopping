@@ -62,277 +62,43 @@ object AppModule {
     }
 
     @Provides
-    fun providesPurchasesRepository(repository: PurchasesRepositoryImpl): PurchasesRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesPurchasesRepositoryImpl(
+    fun providesAppConfigRepository(
         localDatasource: LocalDatasource,
         mapping: RepositoryMapping
-    ): PurchasesRepositoryImpl {
-        return PurchasesRepositoryImpl(localDatasource, mapping)
+    ): AppConfigRepository {
+        return AppConfigRepository(localDatasource, mapping)
     }
 
     @Provides
-    fun providesProductsRepository(repository: ProductsRepositoryImpl): ProductsRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesProductsRepositoryImpl(
+    fun providesAutocompletesRepository(
         localDatasource: LocalDatasource,
         mapping: RepositoryMapping
-    ): ProductsRepositoryImpl {
-        return ProductsRepositoryImpl(localDatasource, mapping)
+    ): AutocompletesRepository {
+        return AutocompletesRepository(localDatasource, mapping)
     }
 
     @Provides
-    fun providesProductsWidgetRepository(
-        repository: ProductsWidgetRepositoryImpl
-    ): ProductsWidgetRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesProductsWidgetRepositoryImpl(
+    fun providesBackupRepository(
         localDatasource: LocalDatasource,
         mapping: RepositoryMapping
-    ): ProductsWidgetRepositoryImpl {
-        return ProductsWidgetRepositoryImpl(localDatasource, mapping)
+    ): BackupRepository {
+        return BackupRepository(localDatasource, mapping)
     }
 
     @Provides
-    fun providesAddEditProductRepository(repository: AddEditProductRepositoryImpl): AddEditProductRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesAddEditProductRepositoryImpl(
+    fun providesCodeVersion14Repository(
         localDatasource: LocalDatasource,
         mapping: RepositoryMapping
-    ): AddEditProductRepositoryImpl {
-        return AddEditProductRepositoryImpl(localDatasource, mapping)
+    ): CodeVersion14Repository {
+        return CodeVersion14Repository(localDatasource, mapping)
     }
 
     @Provides
-    fun providesAutocompletesRepository(repository: AutocompletesRepositoryImpl): AutocompletesRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesAutocompletesRepositoryImpl(
+    fun providesShoppingListsRepository(
         localDatasource: LocalDatasource,
         mapping: RepositoryMapping
-    ): AutocompletesRepositoryImpl {
-        return AutocompletesRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesAddEditAutocompleteRepository(
-        repository: AddEditAutocompleteRepositoryImpl
-    ): AddEditAutocompleteRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesAddEditAutocompleteRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): AddEditAutocompleteRepositoryImpl {
-        return AddEditAutocompleteRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesSettingsRepository(repository: SettingsRepositoryImpl): SettingsRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesSettingsRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): SettingsRepositoryImpl {
-        return SettingsRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesEditCurrencySymbolRepository(
-        repository: EditCurrencySymbolRepositoryImpl
-    ): EditCurrencySymbolRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesEditCurrencySymbolRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ) : EditCurrencySymbolRepositoryImpl {
-        return EditCurrencySymbolRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesEditTaxRateRepository(repository: EditTaxRateRepositoryImpl): EditTaxRateRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesEditTaxRateRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): EditTaxRateRepositoryImpl {
-        return EditTaxRateRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesArchiveRepository(repository: ArchiveRepositoryImpl): ArchiveRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesArchiveRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): ArchiveRepositoryImpl {
-        return ArchiveRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesTrashRepository(repository: TrashRepositoryImpl): TrashRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesTrashRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): TrashRepositoryImpl {
-        return TrashRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesCopyProductRepository(repository: CopyProductRepositoryImpl): CopyProductRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesCopyProductRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): CopyProductRepositoryImpl {
-        return CopyProductRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesMoveProductRepository(repository: MoveProductRepositoryImpl): MoveProductRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesMoveProductRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): MoveProductRepositoryImpl {
-        return MoveProductRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesMainRepository(repository: MainRepositoryImpl): MainRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesMainRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): MainRepositoryImpl {
-        return MainRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesPurchasesNotificationRepository(
-        repository: PurchasesNotificationRepositoryImpl
-    ): PurchasesNotificationRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesPurchasesNotificationRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): PurchasesNotificationRepositoryImpl {
-        return PurchasesNotificationRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesEditReminderRepository(repository: EditReminderRepositoryImpl): EditReminderRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesEditReminderRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): EditReminderRepositoryImpl {
-        return EditReminderRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesEditShoppingListNameRepository(
-        repository: EditShoppingListNameRepositoryImpl
-    ): EditShoppingListNameRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesEditShoppingListNameRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): EditShoppingListNameRepositoryImpl {
-        return EditShoppingListNameRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesEditShoppingListTotalRepository(
-        repository: EditShoppingListTotalRepositoryImpl
-    ): EditShoppingListTotalRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesEditShoppingListTotalRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): EditShoppingListTotalRepositoryImpl {
-        return EditShoppingListTotalRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesCalculateChangeRepository(
-        repository: CalculateChangeRepositoryImpl
-    ): CalculateChangeRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesCalculateChangeRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): CalculateChangeRepositoryImpl {
-        return CalculateChangeRepositoryImpl(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesBackupRepository(repository: BackupRepositoryImpl): BackupRepository {
-        return repository
-    }
-
-    @Provides
-    fun providesBackupRepositoryImpl(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): BackupRepositoryImpl {
-        return BackupRepositoryImpl(localDatasource, mapping)
+    ): ShoppingListsRepository {
+        return ShoppingListsRepository(localDatasource, mapping)
     }
 
     @Provides

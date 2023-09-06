@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.TrashRepository
-import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrashViewModel @Inject constructor(
-    private val repository: TrashRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
+    private val appConfigRepository: AppConfigRepository,
     private val dispatchers: AppDispatchers,
     private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<TrashEvent> {
@@ -75,7 +76,7 @@ class TrashViewModel @Inject constructor(
             trashState.showLoading()
         }
 
-        repository.getShoppingLists().collect {
+        shoppingListsRepository.getTrash().collect {
             shoppingListsLoaded(it)
         }
     }
@@ -92,7 +93,7 @@ class TrashViewModel @Inject constructor(
 
     private fun deleteShoppingLists() = viewModelScope.launch {
         val uids = trashState.screenData.selectedUids
-        uids?.let { repository.deleteShoppingLists(it) }
+        uids?.let { shoppingListsRepository.deleteShoppingListsByUids(it) }
 
         withContext(dispatchers.main) {
             uids?.forEach { uid -> alarmManager.deleteReminder(uid) }
@@ -102,7 +103,7 @@ class TrashViewModel @Inject constructor(
 
     private fun emptyTrash() = viewModelScope.launch {
         val uids = trashState.screenData.shoppingLists.map { it.uid }
-        repository.deleteShoppingLists(uids)
+        shoppingListsRepository.deleteShoppingListsByUids(uids)
 
         withContext(dispatchers.main) {
             uids.forEach { alarmManager.deleteReminder(it) }
@@ -111,7 +112,7 @@ class TrashViewModel @Inject constructor(
 
     private fun moveShoppingListsToPurchases() = viewModelScope.launch {
         trashState.screenData.selectedUids?.forEach {
-            repository.moveShoppingListToPurchases(
+            shoppingListsRepository.moveShoppingListToPurchases(
                 uid = it,
                 lastModified = System.currentTimeMillis()
             )
@@ -124,7 +125,7 @@ class TrashViewModel @Inject constructor(
 
     private fun moveShoppingListsToArchive() = viewModelScope.launch {
         trashState.screenData.selectedUids?.forEach {
-            repository.moveShoppingListToArchive(
+            shoppingListsRepository.moveShoppingListToArchive(
                 uid = it,
                 lastModified = System.currentTimeMillis()
             )
@@ -174,11 +175,7 @@ class TrashViewModel @Inject constructor(
     private fun displayPurchasesTotal(
         event: TrashEvent.DisplayPurchasesTotal
     ) = viewModelScope.launch {
-        when (event.displayTotal) {
-            DisplayTotal.ALL -> repository.displayAllPurchasesTotal()
-            DisplayTotal.COMPLETED -> repository.displayCompletedPurchasesTotal()
-            DisplayTotal.ACTIVE -> repository.displayActivePurchasesTotal()
-        }
+        appConfigRepository.displayTotal(event.displayTotal)
 
         withContext(dispatchers.main) {
             hideDisplayPurchasesTotal()

@@ -3,17 +3,14 @@ package ru.sokolovromann.myshopping.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.SettingsRepository
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -22,9 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val repository: SettingsRepository,
-    private val dispatchers: AppDispatchers,
-    private val alarmManager: PurchasesAlarmManager
+    private val appConfigRepository: AppConfigRepository,
+    private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<SettingsEvent> {
 
     val settingsState: SettingsState = SettingsState()
@@ -69,7 +65,7 @@ class SettingsViewModel @Inject constructor(
             settingsState.showLoading()
         }
 
-        repository.getSettings().collect {
+        appConfigRepository.getSettings().collect {
             settingsLoaded(it)
         }
     }
@@ -124,7 +120,7 @@ class SettingsViewModel @Inject constructor(
 
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
-            SettingsUid.MigrateFromCodeVersion14 -> migrateFromCodeVersion14()
+            SettingsUid.MigrateFromCodeVersion14 -> {}
 
             SettingsUid.Email -> sendEmailToDeveloper()
 
@@ -167,14 +163,7 @@ class SettingsViewModel @Inject constructor(
     private fun fontSizeSelected(
         event: SettingsEvent.FontSizeSelected
     ) = viewModelScope.launch {
-        when (event.fontSize) {
-            FontSize.SMALL -> repository.smallFontSizeSelected()
-            FontSize.MEDIUM -> repository.mediumFontSizeSelected()
-            FontSize.LARGE -> repository.largeFontSizeSelected()
-            FontSize.HUGE -> repository.hugeFontSizeSelected()
-            FontSize.HUGE_2 -> repository.huge2FontSizeSelected()
-            FontSize.HUGE_3 -> repository.huge3FontSizeSelected()
-        }
+        appConfigRepository.saveFontSize(event.fontSize)
 
         withContext(dispatchers.main) {
             hideFontSize()
@@ -185,12 +174,7 @@ class SettingsViewModel @Inject constructor(
     private fun displayCompletedPurchasesSelected(
         event: SettingsEvent.DisplayCompletedPurchasesSelected
     ) = viewModelScope.launch {
-        when (event.displayCompleted) {
-            DisplayCompleted.FIRST -> repository.displayCompletedPurchasesFirst()
-            DisplayCompleted.LAST -> repository.displayCompletedPurchasesLast()
-            DisplayCompleted.HIDE -> repository.hideCompletedPurchases()
-            DisplayCompleted.NO_SPLIT -> repository.noSplitCompletedPurchases()
-        }
+        appConfigRepository.displayCompleted(event.displayCompleted)
 
         withContext(dispatchers.main) {
             hideDisplayCompletedPurchases()
@@ -201,109 +185,60 @@ class SettingsViewModel @Inject constructor(
     private fun displayShoppingsProductsSelected(
         event: SettingsEvent.DisplayShoppingsProductsSelected
     ) = viewModelScope.launch {
-        when (event.displayProducts) {
-            DisplayProducts.COLUMNS -> repository.displayShoppingsProductsColumns()
-            DisplayProducts.ROW -> repository.displayShoppingsProductsRow()
-            DisplayProducts.HIDE -> repository.hideShoppingsProducts()
-            DisplayProducts.HIDE_IF_HAS_TITLE -> repository.hideShoppingsProductsIfHasTitle()
-        }
+        appConfigRepository.displayShoppingsProducts(event.displayProducts)
     }
 
     private fun invertNightTheme() = viewModelScope.launch {
-        repository.invertNightTheme()
+        appConfigRepository.invertNightTheme()
     }
 
     private fun invertDisplayMoney() = viewModelScope.launch {
-        repository.invertDisplayMoney()
+        appConfigRepository.invertDisplayMoney()
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun invertDisplayCurrencyToLeft() = viewModelScope.launch {
-        repository.invertDisplayCurrencyToLeft()
+        appConfigRepository.invertDisplayCurrencyToLeft()
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun invertDisplayMoneyZeros() = viewModelScope.launch {
         settingsState.getMoneyFractionDigitsResult()
-            .onSuccess { repository.saveMoneyFractionDigits(it) }
+            .onSuccess { appConfigRepository.saveMoneyFractionDigits(it) }
     }
 
     private fun invertEditProductAfterCompleted() = viewModelScope.launch {
-        repository.invertEditProductAfterCompleted()
+        appConfigRepository.invertEditProductAfterCompleted()
     }
 
     private fun invertCompletedWithCheckbox() = viewModelScope.launch {
-        repository.invertCompletedWithCheckbox()
+        appConfigRepository.invertCompletedWithCheckbox()
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
     private fun invertSaveProductToAutocompletes() = viewModelScope.launch {
-        repository.invertSaveProductToAutocompletes()
+        appConfigRepository.invertSaveProductToAutocompletes()
     }
 
     private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
-        repository.invertDisplayDefaultAutocompletes()
+        appConfigRepository.invertDisplayDefaultAutocompletes()
     }
 
     private fun invertDisplayOtherFields() = viewModelScope.launch {
-        repository.invertDisplayOtherFields()
+        appConfigRepository.invertDisplayOtherFields()
     }
 
     private fun enterToSaveProducts() = viewModelScope.launch {
-        repository.invertEnterToSaveProduct()
+        appConfigRepository.invertEnterToSaveProduct()
     }
 
     private fun invertColoredCheckbox() = viewModelScope.launch {
-        repository.invertColoredCheckbox()
+        appConfigRepository.invertColoredCheckbox()
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
-    private fun migrateFromCodeVersion14() = viewModelScope.launch {
-        withContext(dispatchers.main) {
-            settingsState.showLoading()
-        }
-
-        repository.getReminderUids().firstOrNull()?.let { ids ->
-            ids.forEach { alarmManager.deleteReminder(it) }
-        }
-
-        repository.deleteAppData()
-            .onSuccess {
-                val codeVersion14 = repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
-
-                val migrates = listOf(
-                    viewModelScope.async { migrateShoppings(codeVersion14.shoppingLists) },
-                    viewModelScope.async { migrateAutocompletes(codeVersion14.autocompletes) }
-                )
-                migrates.awaitAll()
-
-                withContext(dispatchers.main) {
-                    _screenEventFlow.emit(SettingsScreenEvent.ShowPurchases)
-                }
-            }
-            .onFailure {
-                withContext(dispatchers.main) {
-                    _screenEventFlow.emit(SettingsScreenEvent.ShowPurchases)
-                }
-            }
-    }
-
-    private suspend fun migrateShoppings(list: List<ShoppingList>) {
-        list.forEach {
-            repository.addShoppingList(it)
-            if (it.reminder != null) {
-                alarmManager.deleteCodeVersion14Reminder(it.id)
-                alarmManager.createReminder(it.uid, it.reminder)
-            }
-        }
-    }
-
-    private suspend fun migrateAutocompletes(list: List<Autocomplete>) {
-        list.forEach { repository.addAutocomplete(it) }
-    }
-
     private fun sendEmailToDeveloper() = viewModelScope.launch {
-        repository.getSettings().firstOrNull()?.let {
+        appConfigRepository.getSettings().firstOrNull()?.let {
             withContext(dispatchers.main) {
                 val event = SettingsScreenEvent.SendEmailToDeveloper(it.developerEmail)
                 _screenEventFlow.emit(event)

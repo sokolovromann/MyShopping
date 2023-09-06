@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.CopyProductRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CopyProductScreenEvent
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CopyProductViewModel @Inject constructor(
-    private val repository: CopyProductRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<CopyProductEvent> {
@@ -59,7 +59,7 @@ class CopyProductViewModel @Inject constructor(
             copyProductState.showLoading()
         }
 
-        repository.getPurchases().collect {
+        shoppingListsRepository.getPurchases().collect {
             shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.PURCHASES
@@ -72,7 +72,7 @@ class CopyProductViewModel @Inject constructor(
             copyProductState.showLoading()
         }
 
-        repository.getArchive().collect {
+        shoppingListsRepository.getArchive().collect {
             shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.ARCHIVE
@@ -94,7 +94,7 @@ class CopyProductViewModel @Inject constructor(
     private fun getProducts() = viewModelScope.launch {
         val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
         val uids = productUid.split(",")
-        val products = repository.getProducts(uids).firstOrNull()
+        val products = shoppingListsRepository.getProducts(uids).firstOrNull()
 
         if (products == null) {
             cancelCopingProduct()
@@ -107,11 +107,11 @@ class CopyProductViewModel @Inject constructor(
 
     private fun addShoppingList() = viewModelScope.launch {
         copyProductState.getShoppingListResult()
-            .onSuccess { repository.addShoppingList(it) }
+            .onSuccess { shoppingListsRepository.saveShoppingList(it) }
             .onFailure {
-                val lastPosition = repository.getShoppingListsLastPosition().first() ?: 0
+                val lastPosition = shoppingListsRepository.getShoppingListsLastPosition().first() ?: 0
                 val shoppingList = ShoppingList(position = lastPosition.plus(1))
-                repository.addShoppingList(shoppingList)
+                shoppingListsRepository.saveShoppingList(shoppingList)
             }
     }
 
@@ -120,7 +120,7 @@ class CopyProductViewModel @Inject constructor(
         val products = copyProductState.getProductsResult()
             .getOrElse { return@launch }
 
-        repository.addProducts(products)
+        shoppingListsRepository.saveProducts(products)
 
         withContext(dispatchers.main) {
             val screenEvent = CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets

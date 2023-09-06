@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.EditShoppingListNameRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditShoppingListNameViewModel @Inject constructor(
-    private val repository: EditShoppingListNameRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel(), ViewModelEvent<EditShoppingListNameEvent> {
@@ -46,7 +46,7 @@ class EditShoppingListNameViewModel @Inject constructor(
 
     private fun getEditShoppingListName() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        repository.getEditShoppingListName(uid).firstOrNull()?.let {
+        shoppingListsRepository.getEditShoppingListName(uid).firstOrNull()?.let {
             editShoppingListNameLoaded(it)
         }
     }
@@ -62,7 +62,7 @@ class EditShoppingListNameViewModel @Inject constructor(
         val shoppingList = editShoppingListNameState.getShoppingListResult()
             .getOrElse { return@launch }
 
-        repository.saveShoppingListName(
+        shoppingListsRepository.saveShoppingListName(
             uid = shoppingList.uid,
             name = shoppingList.name,
             lastModified = shoppingList.lastModified

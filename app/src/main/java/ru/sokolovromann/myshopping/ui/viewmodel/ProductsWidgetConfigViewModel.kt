@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.ProductsWidgetRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ProductsWidgetConfigState
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsWidgetConfigViewModel @Inject constructor(
-    private val repository: ProductsWidgetRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
     val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<ProductsWidgetConfigEvent> {
 
@@ -44,7 +44,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
                 productsWidgetConfigState.onCreate(event.widgetId)
             }
 
-            repository.getShoppingLists().collect {
+            shoppingListsRepository.getPurchases().collect {
                 shoppingListsLoaded(it)
             }
         }

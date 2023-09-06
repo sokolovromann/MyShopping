@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.EditShoppingListTotalRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditShoppingListTotalViewModel @Inject constructor(
-    private val repository: EditShoppingListTotalRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel(), ViewModelEvent<EditShoppingListTotalEvent> {
@@ -46,7 +46,7 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
     private fun getEditShoppingListTotal() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        repository.getEditShoppingListTotal(uid).firstOrNull()?.let {
+        shoppingListsRepository.getEditShoppingListTotal(uid).firstOrNull()?.let {
             editShoppingListTotalLoaded(it)
         }
     }
@@ -63,13 +63,13 @@ class EditShoppingListTotalViewModel @Inject constructor(
             .getOrElse { return@launch }
 
         if (shoppingList.totalFormatted) {
-            repository.saveShoppingListTotal(
+            shoppingListsRepository.saveShoppingListTotal(
                 uid = shoppingList.uid,
                 total = shoppingList.total,
                 lastModified = shoppingList.lastModified
             )
         } else {
-            repository.deleteShoppingListTotal(
+            shoppingListsRepository.deleteShoppingListTotal(
                 uid = shoppingList.uid,
                 lastModified = shoppingList.lastModified
             )

@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.AddEditProductRepository
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
@@ -22,7 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditProductViewModel @Inject constructor(
-    private val repository: AddEditProductRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
+    private val autocompletesRepository: AutocompletesRepository,
+    private val appConfigRepository: AppConfigRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditProductEvent> {
@@ -117,7 +121,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun getAddEditProduct() = viewModelScope.launch {
-        repository.getAddEditProduct(shoppingUid, productUid).firstOrNull()?.let {
+        shoppingListsRepository.getAddEditProduct(shoppingUid, productUid).firstOrNull()?.let {
             addEditProductLoaded(it)
         }
     }
@@ -137,7 +141,7 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun getAutocompletes(name: String) = viewModelScope.launch {
         val search = name.trim()
-        val autocompletes = repository.getAutocompletes(
+        val autocompletes = autocompletesRepository.searchAutocompletesLikeName(
             search = search,
             language = Locale.getDefault().language
         ).firstOrNull() ?: Autocompletes()
@@ -193,27 +197,19 @@ class AddEditProductViewModel @Inject constructor(
         val product = addEditProductState.getProductResult(productUid == null)
             .getOrElse { return@launch }
 
-        val productUidExists = repository.checkIfProductUidExists(product.productUid).first()
+        val productUidExists = shoppingListsRepository.checkIfProductExists(product.productUid).first()
         if (productUidExists != null && product.productUid != productUid) {
             addEditProductState.showUidError()
             return@launch
         }
 
-        if (productUid == null) {
-            repository.addProduct(product)
-        } else {
-            repository.editProduct(product)
-        }
+        shoppingListsRepository.saveProduct(product)
 
         addEditProductState.getAutocompleteResult()
-            .onSuccess { repository.addAutocomplete(it) }
+            .onSuccess { autocompletesRepository.saveAutocomplete(it) }
 
         addEditProductState.getProductLockResult().onSuccess {
-            when (it) {
-                LockProductElement.QUANTITY -> repository.lockProductQuantity()
-                LockProductElement.PRICE -> repository.lockProductPrice()
-                LockProductElement.TOTAL -> repository.lockProductTotal()
-            }
+            appConfigRepository.lockProductElement(it)
         }
 
         withContext(dispatchers.main) {

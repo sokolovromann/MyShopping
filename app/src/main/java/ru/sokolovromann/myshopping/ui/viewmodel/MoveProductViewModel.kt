@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.MoveProductRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoveProductViewModel @Inject constructor(
-    private val repository: MoveProductRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<MoveProductEvent> {
@@ -60,7 +60,7 @@ class MoveProductViewModel @Inject constructor(
             moveProductState.showLoading()
         }
 
-        repository.getPurchases().collect {
+        shoppingListsRepository.getPurchases().collect {
             shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.PURCHASES
@@ -73,7 +73,7 @@ class MoveProductViewModel @Inject constructor(
             moveProductState.showLoading()
         }
 
-        repository.getArchive().collect {
+        shoppingListsRepository.getArchive().collect {
             shoppingListsLoaded(
                 shoppingLists = it,
                 location = ShoppingListLocation.ARCHIVE
@@ -95,7 +95,7 @@ class MoveProductViewModel @Inject constructor(
     private fun getProducts() = viewModelScope.launch {
         val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
         val uids = productUid.split(",")
-        val products = repository.getProducts(uids).firstOrNull()
+        val products = shoppingListsRepository.getProducts(uids).firstOrNull()
 
         if (products == null) {
             cancelMovingProduct()
@@ -108,11 +108,11 @@ class MoveProductViewModel @Inject constructor(
 
     private fun addShoppingList() = viewModelScope.launch {
         moveProductState.getShoppingListResult()
-            .onSuccess { repository.addShoppingList(it) }
+            .onSuccess { shoppingListsRepository.saveShoppingList(it) }
             .onFailure {
-                val lastPosition = repository.getShoppingListsLastPosition().first() ?: 0
+                val lastPosition = shoppingListsRepository.getShoppingListsLastPosition().first() ?: 0
                 val shoppingList = ShoppingList(position = lastPosition.plus(1))
-                repository.addShoppingList(shoppingList)
+                shoppingListsRepository.saveShoppingList(shoppingList)
             }
     }
 
@@ -121,7 +121,7 @@ class MoveProductViewModel @Inject constructor(
         val products = moveProductState.getProductsResult()
             .getOrElse { return@launch }
 
-        repository.editProducts(products)
+        shoppingListsRepository.saveProducts(products)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets)

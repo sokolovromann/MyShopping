@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.EditCurrencySymbolRepository
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditCurrencySymbolState
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditCurrencySymbolViewModel @Inject constructor(
-    private val repository: EditCurrencySymbolRepository,
+    private val appConfigRepository: AppConfigRepository,
     private val dispatchers: AppDispatchers,
 ) : ViewModel(), ViewModelEvent<EditCurrencySymbolEvent> {
 
@@ -42,7 +42,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
     }
 
     private fun getEditCurrencySymbol() = viewModelScope.launch(dispatchers.io) {
-        repository.getEditCurrencySymbol().firstOrNull()?.let {
+        appConfigRepository.getEditCurrencySymbol().firstOrNull()?.let {
             editCurrencySymbolLoaded(it)
         }
     }
@@ -58,7 +58,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
         val symbol = editCurrencySymbolState.getSymbolResult()
             .getOrElse { return@launch }
 
-        repository.editCurrencySymbol(symbol)
+        appConfigRepository.saveCurrencySymbol(symbol)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreenAndUpdateProductsWidgets)

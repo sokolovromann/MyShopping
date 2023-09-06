@@ -1,9 +1,10 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -11,8 +12,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.AppConfig
+import ru.sokolovromann.myshopping.data.repository.model.Backup
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -23,7 +28,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BackupViewModel @Inject constructor(
-    private val repository: BackupRepository,
+    private val backupRepository: BackupRepository,
+    private val appConfigRepository: AppConfigRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
+    private val autocompletesRepository: AutocompletesRepository,
     private val dispatchers: AppDispatchers,
     private val alarmManager: PurchasesAlarmManager,
     private val mediaStore: BackupMediaStore
@@ -53,7 +61,7 @@ class BackupViewModel @Inject constructor(
     }
 
     private fun getAppConfig() = viewModelScope.launch {
-        repository.getAppConfig().collect {
+        appConfigRepository.getAppConfig().collect {
             appConfigLoaded(it)
         }
     }
@@ -72,11 +80,11 @@ class BackupViewModel @Inject constructor(
             backupState.showExportProgress()
         }
 
-        val backup = repository.createBackup(BuildConfig.VERSION_CODE).firstOrNull()
+        val backup = backupRepository.createBackup(BuildConfig.VERSION_CODE).firstOrNull()
         if (backup == null) {
             backupState.showExportError()
         } else {
-            repository.exportBackup(backup)
+            backupRepository.exportBackup(backup)
                 .onSuccess { fileName ->
                     createReminderIfExists(backup.shoppingLists)
                     backupState.showExportSuccessful(fileName)
@@ -94,19 +102,51 @@ class BackupViewModel @Inject constructor(
             backupState.showImportProgress()
         }
 
-        repository.checkFile(event.uri)
-            .onSuccess { transferDataFromBackup(event.uri) }
+        backupRepository.importBackup(event.uri)
+            .onSuccess {
+                val backup = it.firstOrNull()
+                if (backup == null) {
+                    backupState.showImportError()
+                } else {
+                    transferDataFromBackup(backup)
+                }
+            }
             .onFailure { backupState.showImportError() }
     }
 
-    private suspend fun transferDataFromBackup(uri: Uri) {
-        repository.getReminderUids().firstOrNull()?.let { ids ->
-            ids.forEach { alarmManager.deleteReminder(it) }
-        }
+    private suspend fun transferDataFromBackup(importedBackup: Backup) {
+        val appConfig = createAppConfigFromBackup(importedBackup)
 
-        repository.deleteAppData()
-            .onSuccess { importBackup(uri) }
-            .onFailure { backupState.showImportError() }
+        listOf(
+            viewModelScope.async { deleteReminders() },
+            viewModelScope.async { shoppingListsRepository.deleteAllShoppingLists() },
+            viewModelScope.async { shoppingListsRepository.saveShoppingLists(importedBackup.shoppingLists) },
+            viewModelScope.async { shoppingListsRepository.saveProducts(importedBackup.products) },
+            viewModelScope.async { autocompletesRepository.deleteAllAutocompletes() },
+            viewModelScope.async { autocompletesRepository.saveAutocompletes(importedBackup.autocompletes) },
+            viewModelScope.async { appConfigRepository.saveAppConfig(appConfig) }
+        ).awaitAll()
+
+        backupState.showImportSuccessful()
+    }
+
+    private fun createAppConfigFromBackup(backup: Backup): AppConfig {
+        val appBuildConfig = backup.appConfig.appBuildConfig.copy(
+            userCodeVersion = BuildConfig.VERSION_CODE
+        )
+        return backup.appConfig.copy(appBuildConfig = appBuildConfig)
+    }
+
+    private suspend fun deleteReminders() {
+        shoppingListsRepository.getReminders().firstOrNull()?.let { shoppingLists ->
+            shoppingLists.shoppingLists
+                .map { it.uid }
+                .forEach { uid ->
+                    withContext(dispatchers.main) {
+                        alarmManager.deleteReminder(uid)
+                    }
+                }
+        }
     }
 
     private fun createReminderIfExists(shoppingLists: List<ShoppingList>) {
@@ -115,30 +155,6 @@ class BackupViewModel @Inject constructor(
                 alarmManager.createReminder(shoppingList.uid, reminder)
             }
         }
-    }
-
-    private suspend fun importBackup(uri: Uri) {
-        repository.importBackup(uri)
-            .onSuccess { backupFlow ->
-                val importedBackup = backupFlow.firstOrNull()
-                if (importedBackup == null) {
-                    backupState.showImportError()
-                } else {
-                    val appBuildConfig = importedBackup.appConfig.appBuildConfig.copy(
-                        userCodeVersion = BuildConfig.VERSION_CODE
-                    )
-                    val appConfig = importedBackup.appConfig.copy(
-                        appBuildConfig = appBuildConfig
-                    )
-                    val backup = importedBackup.copy(
-                        appConfig = appConfig
-                    )
-
-                    repository.addBackup(backup)
-                    backupState.showImportSuccessful()
-                }
-            }
-            .onFailure { backupState.showImportError() }
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {

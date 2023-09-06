@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.CalculateChangeRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CalculateChangeScreenEvent
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalculateChangeViewModel @Inject constructor(
-    private val repository: CalculateChangeRepository,
+    private val shoppingListsRepository: ShoppingListsRepository,
     private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<CalculateChangeEvent> {
@@ -44,7 +44,7 @@ class CalculateChangeViewModel @Inject constructor(
 
     private fun getCalculateChange() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        repository.getCalculateChange(uid).firstOrNull()?.let {
+        shoppingListsRepository.getCalculateChange(uid).firstOrNull()?.let {
             calculateChangeLoaded(it)
         }
     }

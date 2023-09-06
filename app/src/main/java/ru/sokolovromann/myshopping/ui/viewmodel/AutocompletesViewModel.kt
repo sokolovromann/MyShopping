@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AutocompletesViewModel @Inject constructor(
-    private val repository: AutocompletesRepository,
+    private val autocompletesRepository: AutocompletesRepository,
     private val dispatchers: AppDispatchers
 ) : ViewModel(), ViewModelEvent<AutocompletesEvent> {
 
@@ -70,7 +70,7 @@ class AutocompletesViewModel @Inject constructor(
             autocompletesState.showLoading()
         }
 
-        repository.getDefaultAutocompletes(getCurrentLanguage()).collect {
+        autocompletesRepository.getDefaultAutocompletes(getCurrentLanguage()).collect {
             autocompletesLoaded(it, AutocompleteLocation.DEFAULT)
         }
     }
@@ -80,7 +80,7 @@ class AutocompletesViewModel @Inject constructor(
             autocompletesState.showLoading()
         }
 
-        repository.getPersonalAutocompletes().collect {
+        autocompletesRepository.getPersonalAutocompletes().collect {
             autocompletesLoaded(it, AutocompleteLocation.PERSONAL)
         }
     }
@@ -102,23 +102,17 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun clearAutocompletes() = viewModelScope.launch {
         when (autocompletesState.screenData.location) {
-            AutocompleteLocation.DEFAULT -> repository.getDefaultAutocompletes(getCurrentLanguage())
-            AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
+            AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes(getCurrentLanguage())
+            AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
             autocompletesState.screenData.selectedNames?.let { names ->
-                val clear = autocompletes.autocompletes
+                val uids = autocompletes.autocompletes
                     .filter { names.contains(it.name.lowercase()) }
-                    .map {
-                        it.copy(
-                            lastModified = System.currentTimeMillis(),
-                            quantity = Quantity(),
-                            price = Money(),
-                            discount = Money(),
-                            taxRate = Money(),
-                            total = Money()
-                        )
-                    }
-                repository.clearAutocompletes(clear)
+                    .map { it.uid }
+                autocompletesRepository.clearAutocompletes(
+                    uids = uids,
+                    lastModified = System.currentTimeMillis()
+                )
             }
         }
 
@@ -130,13 +124,13 @@ class AutocompletesViewModel @Inject constructor(
     private fun deleteAutocompletes() = viewModelScope.launch {
         when (autocompletesState.screenData.location) {
             AutocompleteLocation.DEFAULT -> return@launch
-            AutocompleteLocation.PERSONAL -> repository.getPersonalAutocompletes()
+            AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
             autocompletesState.screenData.selectedNames?.let { names ->
                 val uids = autocompletes.autocompletes
                     .filter { names.contains(it.name.lowercase()) }
                     .map { it.uid }
-                repository.deleteAutocompletes(uids)
+                autocompletesRepository.deleteAutocompletes(uids)
             }
         }
 
