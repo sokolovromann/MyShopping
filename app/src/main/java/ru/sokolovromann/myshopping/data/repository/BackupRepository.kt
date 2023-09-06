@@ -2,24 +2,45 @@ package ru.sokolovromann.myshopping.data.repository
 
 import android.net.Uri
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.Backup
+import javax.inject.Inject
 
-interface BackupRepository {
+class BackupRepository @Inject constructor(
+    localDatasource: LocalDatasource,
+    private val mapping: RepositoryMapping
+) {
 
-    suspend fun getAppConfig(): Flow<AppConfig>
+    private val shoppingListsDao = localDatasource.getShoppingListsDao()
+    private val autocompletesDao = localDatasource.getAutocompletesDao()
+    private val appConfigDao = localDatasource.getAppConfigDao()
+    private val backupFiles = localDatasource.getBackupFiles()
 
-    suspend fun getReminderUids(): Flow<List<String>>
+    private val dispatcher = AppDispatchers.IO
 
-    suspend fun deleteAppData(): Result<Unit>
+    suspend fun createBackup(currentAppVersion: Int): Flow<Backup> = withContext(dispatcher) {
+        return@withContext combine(
+            flow = shoppingListsDao.getAllShoppingLists(),
+            flow2 = autocompletesDao.getAllAutocompletes(),
+            flow3 = appConfigDao.getAppConfig(),
+            transform = { shoppingLists, autocompletes, appConfig ->
+                mapping.toBackup(shoppingLists, autocompletes, appConfig, currentAppVersion)
+            }
+        )
+    }
 
-    suspend fun createBackup(currentAppVersion: Int): Flow<Backup>
+    suspend fun importBackup(uri: Uri): Result<Flow<Backup>> = withContext(dispatcher) {
+        return@withContext backupFiles.readBackup(uri).map {
+            it.map { entity -> mapping.toBackup(entity) }
+        }
+    }
 
-    suspend fun addBackup(backup: Backup)
-
-    suspend fun importBackup(uri: Uri): Result<Flow<Backup>>
-
-    suspend fun exportBackup(backup: Backup): Result<String>
-
-    suspend fun checkFile(uri: Uri): Result<Unit>
+    suspend fun exportBackup(backup: Backup): Result<String> = withContext(dispatcher) {
+        val entity = mapping.toBackupEntity(backup)
+        return@withContext backupFiles.writeBackup(entity)
+    }
 }

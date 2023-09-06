@@ -65,6 +65,10 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toShoppingUids(shoppingLists: List<ShoppingList>): List<String> {
+        return shoppingLists.map { it.uid }
+    }
+
     fun toProductEntity(product: Product): ProductEntity {
         return ProductEntity(
             id = product.id,
@@ -94,8 +98,13 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toProductEntities(products: List<Product>): List<ProductEntity> {
+    fun toProductEntitiesFromProducts(products: List<Product>): List<ProductEntity> {
         return products.map { toProductEntity(it) }
+    }
+
+    fun toProductEntitiesFromShoppingLists(shoppingLists: List<ShoppingList>): List<ProductEntity> {
+        val products = shoppingLists.map { it.products }
+        return products.flatten().map { toProductEntity(it) }
     }
 
     fun toProduct(entity: ProductEntity, appConfigEntity: AppConfigEntity): Product {
@@ -342,6 +351,10 @@ class RepositoryMapping @Inject constructor() {
 
     fun toAutocompleteEntities(backup: Backup): List<AutocompleteEntity> {
         return backup.autocompletes.map { toAutocompleteEntity(it) }
+    }
+
+    fun toAutocompleteEntities(autocompletes: List<Autocomplete>): List<AutocompleteEntity> {
+        return autocompletes.map { toAutocompleteEntity(it) }
     }
 
     fun toFontSizeName(fontSize: FontSize): String {
