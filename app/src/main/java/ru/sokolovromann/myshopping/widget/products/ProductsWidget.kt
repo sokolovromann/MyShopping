@@ -45,7 +45,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.ProductsWidgetRepository
+import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
@@ -70,7 +70,7 @@ class ProductsWidget : GlanceAppWidget() {
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface ProductsWidgetEntryPoint {
-        fun productsWidgetRepository(): ProductsWidgetRepository
+        fun shoppingListsRepository(): ShoppingListsRepository
         fun dispatchers(): AppDispatchers
     }
 
@@ -92,7 +92,7 @@ class ProductsWidget : GlanceAppWidget() {
 
         LaunchedEffect(shoppingUid, Unit) {
             coroutineScope.launch {
-                entryPoint.productsWidgetRepository().getProducts(shoppingUid).collect {
+                entryPoint.shoppingListsRepository().getProducts(shoppingUid).collect {
                     it?.let { productsFlow.emit(it) }
                 }
             }
@@ -126,11 +126,11 @@ class ProductsWidget : GlanceAppWidget() {
                 ) {
                     coroutineScope.launch(entryPoint.dispatchers().io) {
                         if (it.completed) {
-                            entryPoint.productsWidgetRepository().activeProduct(
+                            entryPoint.shoppingListsRepository().activeProduct(
                                 it.uid, System.currentTimeMillis()
                             )
                         } else {
-                            entryPoint.productsWidgetRepository().completeProduct(
+                            entryPoint.shoppingListsRepository().completeProduct(
                                 it.uid, System.currentTimeMillis()
                             )
                         }
