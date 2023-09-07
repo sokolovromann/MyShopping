@@ -8,17 +8,17 @@ data class Quantity(
     val decimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat()
 ) {
 
-    fun valueToString(): String {
-        val format = decimalFormat
-        return format.valueToString(value)
-    }
-
-    fun formatValue(): String {
+    fun getFormattedValue(): String {
         return decimalFormat.format(value)
     }
 
-    fun formatValueWithSymbol(): String {
-        return "${formatValue()} $symbol"
+    fun getFormattedValueWithoutSeparators(): String {
+        val format = decimalFormat
+        return format.formatValueWithoutSeparators(value)
+    }
+
+    fun getDisplayValue(): String {
+        return "${getFormattedValue()} $symbol"
     }
 
     fun isEmpty(): Boolean {
@@ -30,6 +30,6 @@ data class Quantity(
     }
 
     override fun toString(): String {
-        return formatValueWithSymbol()
+        return getDisplayValue()
     }
 }

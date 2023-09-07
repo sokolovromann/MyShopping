@@ -34,7 +34,7 @@ class AddEditProductState {
         val size = product.size
         val color = product.color
         val manufacturer = product.manufacturer
-        val quantity = if (product.quantity.isEmpty()) "" else product.quantity.valueToString()
+        val quantity = if (product.quantity.isEmpty()) "" else product.quantity.getFormattedValueWithoutSeparators()
         val quantitySymbol = product.quantity.symbol
         val price = if (product.price.isEmpty()) "" else product.price.getFormattedValueWithoutSeparators()
         val discount = if (product.discount.isEmpty()) "" else product.discount.getFormattedValueWithoutSeparators()
@@ -266,7 +266,7 @@ class AddEditProductState {
     }
 
     fun selectAutocompleteQuantity(quantity: Quantity) {
-        val quantityText = quantity.valueToString()
+        val quantityText = quantity.getFormattedValueWithoutSeparators()
         val quantitySymbol = quantity.symbol
 
         screenData = screenData.copy(
@@ -398,7 +398,7 @@ class AddEditProductState {
 
     fun plusOneQuantity() {
         val quantity = Quantity(value = screenData.quantityValue.toFloatOrZero() + 1)
-        val quantityText = quantity.valueToString()
+        val quantityText = quantity.getFormattedValueWithoutSeparators()
         val quantityValue = TextFieldValue(
             text = quantityText,
             selection = TextRange(quantityText.length),
@@ -416,7 +416,7 @@ class AddEditProductState {
 
     fun minusOneQuantity() {
         val quantity = Quantity(value = screenData.quantityValue.toFloatOrZero() - 1)
-        val quantityText = if (quantity.isEmpty()) "" else quantity.valueToString()
+        val quantityText = if (quantity.isEmpty()) "" else quantity.getFormattedValueWithoutSeparators()
         val quantityValue = TextFieldValue(
             text = quantityText,
             selection = TextRange(quantityText.length),
@@ -643,7 +643,7 @@ class AddEditProductState {
         val total = screenData.totalValue.toFloatOrZero()
         val calculate = price > 0f && total > 0f
 
-        val text = if (calculate) Quantity(value = total / price).valueToString() else ""
+        val text = if (calculate) Quantity(value = total / price).getFormattedValueWithoutSeparators() else ""
         screenData = screenData.copy(
             quantityValue = TextFieldValue(
                 text = text,

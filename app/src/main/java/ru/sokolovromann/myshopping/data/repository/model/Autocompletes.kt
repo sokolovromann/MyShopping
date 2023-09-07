@@ -89,7 +89,7 @@ data class Autocompletes(
         return filteredAutocompletes(displayDefault)
             .sortedByDescending { it.lastModified }
             .map { it.quantity }
-            .distinctBy { it.formatValue() }
+            .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, quantity ->
                 quantity.isNotEmpty() && index <= defaultQuantitiesLimit
             }

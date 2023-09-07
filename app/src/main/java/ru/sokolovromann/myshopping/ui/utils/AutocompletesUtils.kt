@@ -61,7 +61,7 @@ private fun toAutocompleteItems(
 
     val quantitiesList: List<UiText> = autocompletes
         .sortedByDescending { it.lastModified }
-        .distinctBy { it.quantity.formatValue() }
+        .distinctBy { it.quantity.getFormattedValue() }
         .filterIndexed { index, autocomplete ->
             autocomplete.quantity.isNotEmpty() && index < quantitiesLimit
         }
