@@ -13,7 +13,7 @@ fun String.formatFirst(uppercase: Boolean): String {
     }
 }
 
-fun DecimalFormat.valueToString(value: Float): String {
+fun DecimalFormat.formatValueWithoutSeparators(value: Float): String {
     val spaceCode = 32
     val periodCode = 46
     val formatSymbols = decimalFormatSymbols.apply {

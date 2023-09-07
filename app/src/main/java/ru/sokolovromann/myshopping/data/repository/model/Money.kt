@@ -23,7 +23,7 @@ data class Money(
     }
 
     fun getFormattedValueWithoutSeparators(): String {
-        return _decimalFormat.valueToString(value)
+        return _decimalFormat.formatValueWithoutSeparators(value)
     }
 
     fun getDisplayValue(): String {
