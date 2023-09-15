@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
+
 data class AddEditAutocomplete(
     private val autocomplete: Autocomplete? = null,
     private val appConfig: AppConfig = AppConfig()
@@ -10,7 +12,7 @@ data class AddEditAutocomplete(
 
     fun createAutocomplete(name: String?): Result<Autocomplete> {
         return if (name.isNullOrEmpty()) {
-            val exception = IllegalArgumentException("Name must not be null or empty")
+            val exception = InvalidNameException("Name must not be null or empty")
             Result.failure(exception)
         } else {
             val success = _autocomplete.copy(
