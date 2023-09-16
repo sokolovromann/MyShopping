@@ -135,7 +135,7 @@ class AddEditProductViewModel @Inject constructor(
             showKeyboard()
         } else {
             addEditProductState.populate(addEditProduct)
-            getAutocompletes(addEditProduct.formatName())
+            getAutocompletes(addEditProduct.getSearchName())
         }
     }
 

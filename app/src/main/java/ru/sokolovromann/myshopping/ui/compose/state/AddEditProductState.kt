@@ -6,9 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
+import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
+import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class AddEditProductState {
 
@@ -25,104 +28,37 @@ class AddEditProductState {
     fun populate(addEditProduct: AddEditProduct) {
         this.addEditProduct = addEditProduct
 
-        val product = addEditProduct.product ?: Product()
-        val preferences = addEditProduct.appConfig.userPreferences
-
-        val name = product.name
-        val uid = product.productUid
-        val brand = product.brand
-        val size = product.size
-        val color = product.color
-        val manufacturer = product.manufacturer
-        val quantity = if (product.quantity.isEmpty()) "" else product.quantity.getFormattedValueWithoutSeparators()
-        val quantitySymbol = product.quantity.symbol
-        val price = if (product.price.isEmpty()) "" else product.price.getFormattedValueWithoutSeparators()
-        val discount = if (product.discount.isEmpty()) "" else product.discount.getFormattedValueWithoutSeparators()
-        val discountAsPercent = product.discount.asPercent
-        val discountAsPercentText: UiText = if (discountAsPercent) {
+        val discountAsPercentText: UiText = if (addEditProduct.isDiscountAsPercent()) {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsPercents)
         } else {
             UiText.FromResources(R.string.addEditProduct_action_selectDiscountAsMoney)
         }
-        val total = if (product.total.isEmpty()) "" else product.formatTotal().getFormattedValueWithoutSeparators()
-        val note = product.note
-        val showNameOtherFields = brand.isNotEmpty() || size.isNotEmpty() ||
-                color.isNotEmpty() || manufacturer.isNotEmpty()
-        val showPriceOtherFields = discount.isNotEmpty()
         screenData = AddEditProductScreenData(
             screenState = ScreenState.Showing,
-            nameValue = TextFieldValue(
-                text = name,
-                selection = TextRange(name.length),
-                composition = TextRange(name.length)
-            ),
+            nameValue = addEditProduct.getFieldName().toTextFieldValue(),
             showNameError = false,
-            uidValue = TextFieldValue(
-                text = uid,
-                selection = TextRange(uid.length),
-                composition = TextRange(uid.length)
-            ),
+            uidValue = addEditProduct.getFieldUid().toTextFieldValue(),
             showUidError = false,
-            brandValue = TextFieldValue(
-                text = brand,
-                selection = TextRange(brand.length),
-                composition = TextRange(brand.length)
-            ),
-            sizeValue = TextFieldValue(
-                text = size,
-                selection = TextRange(size.length),
-                composition = TextRange(size.length)
-            ),
-            colorValue = TextFieldValue(
-                text = color,
-                selection = TextRange(color.length),
-                composition = TextRange(color.length)
-            ),
-            manufacturerValue = TextFieldValue(
-                text = manufacturer,
-                selection = TextRange(manufacturer.length),
-                composition = TextRange(manufacturer.length)
-            ),
-            quantityValue = TextFieldValue(
-                text = quantity,
-                selection = TextRange(quantity.length),
-                composition = TextRange(quantity.length)
-            ),
-            lockProductElement = preferences.lockProductElement,
-            quantitySymbolValue = TextFieldValue(
-                text = quantitySymbol,
-                selection = TextRange(quantitySymbol.length),
-                composition = TextRange(quantitySymbol.length)
-            ),
-            priceValue = TextFieldValue(
-                text = price,
-                selection = TextRange(price.length),
-                composition = TextRange(price.length)
-            ),
-            discountValue = TextFieldValue(
-                text = discount,
-                selection = TextRange(discount.length),
-                composition = TextRange(discount.length)
-            ),
-            totalValue = TextFieldValue(
-                text = total,
-                selection = TextRange(total.length),
-                composition = TextRange(total.length)
-            ),
-            noteValue = TextFieldValue(
-                text = note,
-                selection = TextRange(note.length),
-                composition = TextRange(note.length)
-            ),
-            discountAsPercent = discountAsPercent,
+            brandValue = addEditProduct.getFieldBrand().toTextFieldValue(),
+            sizeValue = addEditProduct.getFieldSize().toTextFieldValue(),
+            colorValue = addEditProduct.getFieldColor().toTextFieldValue(),
+            manufacturerValue = addEditProduct.getFieldManufacturer().toTextFieldValue(),
+            quantityValue = addEditProduct.getFieldQuantity().toTextFieldValue(),
+            lockProductElement = addEditProduct.getLockProductElement(),
+            quantitySymbolValue = addEditProduct.getFieldQuantitySymbol().toTextFieldValue(),
+            priceValue = addEditProduct.getFieldPrice().toTextFieldValue(),
+            discountValue = addEditProduct.getFieldDiscount().toTextFieldValue(),
+            totalValue = addEditProduct.getFieldTotal().toTextFieldValue(),
+            noteValue = addEditProduct.getFieldNote().toTextFieldValue(),
+            discountAsPercent = addEditProduct.isDiscountAsPercent(),
             discountAsPercentText = discountAsPercentText,
             showDiscountAsPercent = false,
-            fontSize = preferences.fontSize,
-            displayMoney = preferences.displayMoney,
-            enterToSaveProduct = preferences.enterToSaveProduct,
-            displayOtherFields = preferences.displayOtherFields,
-            showNameOtherFields = preferences.displayOtherFields && showNameOtherFields,
-            showPriceOtherFields = showPriceOtherFields
+            fontSize = addEditProduct.getFontSize(),
+            displayMoney = addEditProduct.isDisplayMoney(),
+            enterToSaveProduct = addEditProduct.isEnterToSaveProduct(),
+            displayOtherFields = addEditProduct.isDisplayOtherFields(),
+            showNameOtherFields = addEditProduct.isDisplayNameOtherFields(),
+            showPriceOtherFields = addEditProduct.isDisplayPriceOtherFields()
         )
 
         selectedAutocomplete = null
@@ -397,15 +333,12 @@ class AddEditProductState {
     }
 
     fun plusOneQuantity() {
-        val quantity = Quantity(value = screenData.quantityValue.toFloatOrZero() + 1)
-        val quantityText = quantity.getFormattedValueWithoutSeparators()
-        val quantityValue = TextFieldValue(
-            text = quantityText,
-            selection = TextRange(quantityText.length),
-            composition = TextRange(quantityText.length)
+        screenData = screenData.copy(
+            quantityValue = addEditProduct.plusFieldQuantity(
+                quantity = screenData.quantityValue.toFloatOrNull(),
+                plus = 1
+            ).toTextFieldValue()
         )
-
-        screenData = screenData.copy(quantityValue = quantityValue)
 
         when (screenData.lockProductElement) {
             LockProductElement.PRICE -> setProductPriceLock()
@@ -415,15 +348,12 @@ class AddEditProductState {
     }
 
     fun minusOneQuantity() {
-        val quantity = Quantity(value = screenData.quantityValue.toFloatOrZero() - 1)
-        val quantityText = if (quantity.isEmpty()) "" else quantity.getFormattedValueWithoutSeparators()
-        val quantityValue = TextFieldValue(
-            text = quantityText,
-            selection = TextRange(quantityText.length),
-            composition = TextRange(quantityText.length)
+        screenData = screenData.copy(
+            quantityValue = addEditProduct.minusFieldQuantity(
+                quantity = screenData.quantityValue.toFloatOrNull(),
+                minus = 1
+            ).toTextFieldValue()
         )
-
-        screenData = screenData.copy(quantityValue = quantityValue)
 
         when (screenData.lockProductElement) {
             LockProductElement.PRICE -> setProductPriceLock()
@@ -548,27 +478,54 @@ class AddEditProductState {
     }
 
     fun getProductResult(newProduct: Boolean): Result<Product> {
-        screenData = screenData.copy(screenState = ScreenState.Saving)
-
-        return if (screenData.nameValue.isEmpty()) {
-            screenData = screenData.copy(showNameError = true)
-            Result.failure(Exception())
-        } else {
-            if (screenData.uidValue.isEmpty()) {
-                screenData = screenData.copy(showUidError = true)
-                Result.failure(Exception())
-            } else {
-                screenData = screenData.copy(screenState = ScreenState.Saving)
-                Result.success(getSavableProduct(newProduct))
+        return addEditProduct.createProduct(
+            productUid = screenData.uidValue.text,
+            name = screenData.nameValue.text,
+            quantity = screenData.quantityValue.toFloatOrNull(),
+            quantitySymbol = screenData.quantitySymbolValue.text,
+            price = screenData.priceValue.toFloatOrNull(),
+            discount = screenData.discountValue.toFloatOrNull(),
+            discountAsPercent = screenData.discountAsPercent,
+            total = screenData.totalValue.toFloatOrNull(),
+            totalFormatted = screenData.lockProductElement != LockProductElement.TOTAL,
+            note = screenData.noteValue.text,
+            manufacturer = screenData.manufacturerValue.text,
+            brand = screenData.brandValue.text,
+            size = screenData.sizeValue.text,
+            color = screenData.colorValue.text
+        ).onFailure {
+            when (it) {
+                is InvalidNameException -> screenData = screenData.copy(showNameError = true)
+                is InvalidUidException -> screenData = screenData.copy(showUidError = true)
+                else -> {}
             }
+
+            Result.failure<Product>(it)
+        }.onSuccess {
+            screenData = screenData.copy(screenState = ScreenState.Saving)
+            Result.success(it)
         }
     }
 
     fun getAutocompleteResult(): Result<Autocomplete> {
-        return if (addEditProduct.appConfig.userPreferences.saveProductToAutocompletes) {
-            Result.success(getSavableAutocomplete())
-        } else {
-            Result.failure(Exception())
+        return addEditProduct.createAutocomplete(
+            selectedName = selectedAutocomplete?.name,
+            selectedPersonal = selectedAutocomplete?.personal,
+            productName = screenData.nameValue.text,
+            quantity = screenData.quantityValue.toFloatOrNull(),
+            quantitySymbol = screenData.quantitySymbolValue.text,
+            price = screenData.priceValue.toFloatOrNull(),
+            discount = screenData.discountValue.toFloatOrNull(),
+            discountAsPercent = screenData.discountAsPercent,
+            total = screenData.totalValue.toFloatOrNull(),
+            manufacturer = screenData.manufacturerValue.text,
+            brand = screenData.brandValue.text,
+            size = screenData.sizeValue.text,
+            color = screenData.colorValue.text
+        ).onFailure {
+            Result.failure<Autocomplete>(it)
+        }.onSuccess {
+            Result.success(it)
         }
     }
 
@@ -577,122 +534,32 @@ class AddEditProductState {
         return Result.success(success)
     }
 
-    private fun getSavableProduct(newProduct: Boolean = true): Product {
-        val preferences = addEditProduct.appConfig.userPreferences
-        val position = if (newProduct) {
-            addEditProduct.productsLastPosition?.plus(1)
-        } else {
-            addEditProduct.product?.position ?: 0
-        } ?: 0
-
-        return (addEditProduct.product ?: Product()).copy(
-            productUid = screenData.uidValue.text.trim(),
-            position = position,
-            lastModified = System.currentTimeMillis(),
-            name = screenData.nameValue.text.trim(),
-            quantity = Quantity(
-                value = screenData.quantityValue.toFloatOrZero(),
-                symbol = screenData.quantitySymbolValue.text.trim()
-            ),
-            price = Money(
-                value = screenData.priceValue.toFloatOrZero(),
-                currency = preferences.currency
-            ),
-            discount = Money(
-                value = screenData.discountValue.toFloatOrZero(),
-                asPercent = screenData.discountAsPercent
-            ),
-            total = Money(
-                value = screenData.totalValue.toFloatOrZero(),
-                currency = preferences.currency
-            ),
-            totalFormatted = screenData.lockProductElement != LockProductElement.TOTAL,
-            note = screenData.noteValue.text.trim(),
-            manufacturer = screenData.manufacturerValue.text.trim(),
-            brand = screenData.brandValue.text.trim(),
-            size = screenData.sizeValue.text.trim(),
-            color = screenData.colorValue.text.trim()
-        )
-    }
-
-    private fun getSavableAutocomplete(): Autocomplete {
-        val product = getSavableProduct()
-        val namesEquals = (selectedAutocomplete?.name?.lowercase() ?: "") == product.name.lowercase()
-        val personal = if (namesEquals) {
-            selectedAutocomplete?.personal ?: true
-        } else {
-            true
-        }
-        return Autocomplete(
-            name = product.name,
-            quantity = product.quantity,
-            price = product.price,
-            discount = product.discount,
-            taxRate = product.taxRate,
-            total = product.total,
-            personal = personal,
-            manufacturer = product.manufacturer,
-            brand = product.brand,
-            size = product.size,
-            color = product.color
-        )
-    }
-
     private fun setProductQuantityLock() {
-        val price = screenData.priceValue.toFloatOrZero()
-        val total = screenData.totalValue.toFloatOrZero()
-        val calculate = price > 0f && total > 0f
-
-        val text = if (calculate) Quantity(value = total / price).getFormattedValueWithoutSeparators() else ""
         screenData = screenData.copy(
-            quantityValue = TextFieldValue(
-                text = text,
-                selection = TextRange(text.length),
-                composition = TextRange(text.length)
-            )
+            quantityValue = addEditProduct.calculateFieldQuantity(
+                price = screenData.priceValue.toFloatOrNull(),
+                total = screenData.totalValue.toFloatOrNull()
+            ).toTextFieldValue()
         )
     }
 
     private fun setProductPriceLock() {
-        val quantity = screenData.quantityValue.toFloatOrZero()
-        val total = screenData.totalValue.toFloatOrZero()
-        val calculate = quantity > 0f && total > 0f
-
-        val text = if (calculate) Money(value = total / quantity).getFormattedValueWithoutSeparators() else ""
         screenData = screenData.copy(
-            priceValue = TextFieldValue(
-                text = text,
-                selection = TextRange(text.length),
-                composition = TextRange(text.length)
-            )
+            priceValue = addEditProduct.calculateFieldPrice(
+                quantity = screenData.quantityValue.toFloatOrNull(),
+                total = screenData.totalValue.toFloatOrNull()
+            ).toTextFieldValue()
         )
     }
 
     private fun setProductTotalLock() {
-        val quantity = screenData.quantityValue.toFloatOrZero()
-        val price = screenData.priceValue.toFloatOrZero()
-        val discount = Money(
-            value = screenData.discountValue.toFloatOrZero(),
-            asPercent = screenData.discountAsPercent
-        )
-        val taxRate = addEditProduct.appConfig.userPreferences.taxRate
-        val calculate = quantity > 0f && price > 0f
-
-        val text = if (calculate) {
-            val totalValue = quantity * price
-            val totalWithDiscountAndTaxRate = totalValue - discount.calculateValueFromPercent(totalValue) +
-                    taxRate.calculateValueFromPercent(totalValue)
-            Money(value = totalWithDiscountAndTaxRate).getFormattedValueWithoutSeparators()
-        } else {
-            ""
-        }
-
         screenData = screenData.copy(
-            totalValue = TextFieldValue(
-                text = text,
-                selection = TextRange(text.length),
-                composition = TextRange(text.length)
-            )
+            totalValue = addEditProduct.calculateFieldTotal(
+                quantity = screenData.quantityValue.toFloatOrNull(),
+                price = screenData.priceValue.toFloatOrNull(),
+                discount = screenData.discountValue.toFloatOrNull(),
+                discountAsPercent = screenData.discountAsPercent
+            ).toTextFieldValue()
         )
     }
 }
