@@ -237,6 +237,32 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
+    fun toAutocompletesList(
+        entities: List<AutocompleteEntity>,
+        resources: List<String>?,
+        appConfigEntity: AppConfigEntity,
+        language: String?
+    ): List<Autocomplete> {
+        val autocompletes = if (language == null) { entities } else {
+            val default = entities.filter { !it.personal && it.language == language }
+            val personal = entities.filter { it.personal }
+
+            mutableListOf<AutocompleteEntity>().apply {
+                addAll(default)
+                addAll(personal)
+            }
+        }
+            .map { toAutocomplete(it, appConfigEntity) }
+            .toMutableList()
+
+        resources?.forEach {
+            val autocomplete = Autocomplete(name = it, personal = false)
+            autocompletes.add(autocomplete)
+        }
+
+        return autocompletes.toList()
+    }
+
     fun toSettings(
         appConfigEntity: AppConfigEntity,
         resourcesEntity: SettingsResourcesEntity

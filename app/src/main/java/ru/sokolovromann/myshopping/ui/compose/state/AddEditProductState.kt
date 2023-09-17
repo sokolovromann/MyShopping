@@ -15,9 +15,9 @@ import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class AddEditProductState {
 
-    private var addEditProduct by mutableStateOf(AddEditProduct())
-
     private var selectedAutocomplete: Autocomplete? by mutableStateOf(null)
+
+    var addEditProduct by mutableStateOf(AddEditProduct())
 
     var productNameFocus by mutableStateOf(false)
         private set

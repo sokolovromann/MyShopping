@@ -144,15 +144,17 @@ class AddEditProductViewModel @Inject constructor(
         val autocompletes = autocompletesRepository.searchAutocompletesLikeName(
             search = search,
             language = Locale.getDefault().language
-        ).firstOrNull() ?: Autocompletes()
+        ).firstOrNull() ?: listOf()
         autocompletesLoaded(autocompletes)
     }
 
     private suspend fun autocompletesLoaded(
-        autocompletes: Autocompletes
+        autocompletes: List<Autocomplete>
     ) = withContext(dispatchers.main) {
         val currentName = addEditProductState.screenData.nameValue.text
-        val names = autocompletes.getNames(search = currentName)
+        val addEditProduct = addEditProductState.addEditProduct
+
+        val names = addEditProduct.searchAutocompletesLikeName(autocompletes, currentName)
         if (names.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
@@ -168,27 +170,27 @@ class AddEditProductViewModel @Inject constructor(
 
         if (productUid == null || addEditProductState.productNameFocus) {
             addEditProductState.showAutocompleteElements(
-                brands = autocompletes.getBrands(),
-                sizes = autocompletes.getSizes(),
-                colors = autocompletes.getColors(),
-                manufacturers = autocompletes.getManufacturers(),
-                quantities = autocompletes.getQuantities(),
-                quantitySymbols = autocompletes.getQuantitySymbols(),
-                prices = autocompletes.getPrices(),
-                discounts = autocompletes.getDiscounts(),
-                totals = autocompletes.getTotals()
+                brands = addEditProduct.filterAutocompleteBrands(autocompletes),
+                sizes = addEditProduct.filterAutocompleteSizes(autocompletes),
+                colors = addEditProduct.filterAutocompleteColors(autocompletes),
+                manufacturers = addEditProduct.filterAutocompletesManufacturers(autocompletes),
+                quantities = addEditProduct.filterAutocompletesQuantities(autocompletes),
+                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(autocompletes),
+                prices = addEditProduct.filterAutocompletesPrices(autocompletes),
+                discounts = addEditProduct.filterAutocompletesDiscounts(autocompletes),
+                totals = addEditProduct.filterAutocompletesTotals(autocompletes)
             )
         } else {
             addEditProductState.showAutocompleteElementsIf(
-                brands = autocompletes.getBrands(),
-                sizes = autocompletes.getSizes(),
-                colors = autocompletes.getColors(),
-                manufacturers = autocompletes.getManufacturers(),
-                quantities = autocompletes.getQuantities(),
-                quantitySymbols = autocompletes.getQuantitySymbols(),
-                prices = autocompletes.getPrices(),
-                discounts = autocompletes.getDiscounts(),
-                totals = autocompletes.getTotals()
+                brands = addEditProduct.filterAutocompleteBrands(autocompletes),
+                sizes = addEditProduct.filterAutocompleteSizes(autocompletes),
+                colors = addEditProduct.filterAutocompleteColors(autocompletes),
+                manufacturers = addEditProduct.filterAutocompletesManufacturers(autocompletes),
+                quantities = addEditProduct.filterAutocompletesQuantities(autocompletes),
+                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(autocompletes),
+                prices = addEditProduct.filterAutocompletesPrices(autocompletes),
+                discounts = addEditProduct.filterAutocompletesDiscounts(autocompletes),
+                totals = addEditProduct.filterAutocompletesTotals(autocompletes)
             )
         }
     }

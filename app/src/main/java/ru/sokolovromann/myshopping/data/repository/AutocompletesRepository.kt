@@ -69,13 +69,13 @@ class AutocompletesRepository @Inject constructor(
     suspend fun searchAutocompletesLikeName(
         search: String,
         language: String
-    ): Flow<Autocompletes> = withContext(dispatcher) {
-        return@withContext combine(
+    ): Flow<List<Autocomplete>> = withContext(dispatcher) {
+         combine(
             flow = autocompletesDao.searchAutocompletesLikeName(search),
             flow2 = appConfigDao.getAppConfig(),
             transform = { entities, appConfigEntity ->
                 val resources = resourcesDao.searchAutocompleteNames(search)
-                mapping.toAutocompletes(entities, resources, appConfigEntity, language)
+                mapping.toAutocompletesList(entities, resources, appConfigEntity, language)
             }
         )
     }

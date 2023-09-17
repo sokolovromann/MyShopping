@@ -225,6 +225,117 @@ data class AddEditProduct(
         return _product.note
     }
 
+    fun searchAutocompletesLikeName(
+        autocompletes: List<Autocomplete>,
+        search: String
+    ): List<Autocomplete>  {
+        val endIndex = search.length - 1
+        val partition = filterAutocompletesByPersonal(autocompletes)
+            .partition {
+                val charsName = it.name.toSearch().toCharArray(endIndex = endIndex)
+                val charsSearch = search.toSearch().toCharArray(endIndex = endIndex)
+                charsName.contentEquals(charsSearch)
+            }
+        val searchAutocompletes = partition.first
+            .sortAutocompletes()
+            .distinctBy { it.name.lowercase() }
+
+        val otherAutocompletes = partition.second
+            .sortAutocompletes()
+            .distinctBy { it.name.lowercase() }
+
+        val bothAutocompletes = mutableListOf<Autocomplete>()
+        return bothAutocompletes
+            .apply {
+                addAll(searchAutocompletes)
+                addAll(otherAutocompletes)
+            }
+            .filterIndexed { index, autocomplete ->
+                autocomplete.name.isNotEmpty() && index <= userPreferences.maxAutocompletesNames
+            }
+    }
+
+    fun filterAutocompleteBrands(autocompletes: List<Autocomplete>): List<String> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.brand }
+            .distinct()
+            .filterIndexed { index, brand ->
+                brand.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
+            }
+    }
+
+    fun filterAutocompleteSizes(autocompletes: List<Autocomplete>): List<String> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.size }
+            .distinct()
+            .filterIndexed { index, size ->
+                size.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
+            }
+    }
+
+    fun filterAutocompleteColors(autocompletes: List<Autocomplete>): List<String> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.color }
+            .distinct()
+            .filterIndexed { index, color ->
+                color.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
+            }
+    }
+
+    fun filterAutocompletesManufacturers(autocompletes: List<Autocomplete>): List<String> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.manufacturer }
+            .distinct()
+            .filterIndexed { index, manufacturer ->
+                manufacturer.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
+            }
+    }
+
+    fun filterAutocompletesQuantities(autocompletes: List<Autocomplete>): List<Quantity> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.quantity }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, quantity ->
+                quantity.isNotEmpty() && index <= userPreferences.maxAutocompletesQuantities
+            }
+    }
+
+    fun filterAutocompletesQuantitySymbols(autocompletes: List<Autocomplete>): List<Quantity> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.quantity }
+            .distinctBy { it.symbol }
+            .filterIndexed { index, quantity ->
+                quantity.value > 0 && quantity.symbol.isNotEmpty() && index <= userPreferences.maxAutocompletesQuantities
+            }
+    }
+
+    fun filterAutocompletesPrices(autocompletes: List<Autocomplete>): List<Money> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.price }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, price ->
+                price.isNotEmpty() && index <= userPreferences.maxAutocompletesMoneys
+            }
+    }
+
+    fun filterAutocompletesDiscounts(autocompletes: List<Autocomplete>): List<Money> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.discount }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, discount ->
+                discount.isNotEmpty() && index <= userPreferences.maxAutocompletesMoneys
+            }
+    }
+
+    fun filterAutocompletesTotals(autocompletes: List<Autocomplete>): List<Money> {
+        return filterAutocompletesElements(autocompletes)
+            .map { it.total }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, total ->
+                total.isNotEmpty() && index <= userPreferences.maxAutocompletesMoneys
+            }
+    }
+
     fun getLockProductElement(): LockProductElement {
         return userPreferences.lockProductElement
     }
@@ -267,5 +378,18 @@ data class AddEditProduct(
         } else {
             _product.position
         }
+    }
+
+    private fun filterAutocompletesByPersonal(autocompletes: List<Autocomplete>): List<Autocomplete> {
+        return if (userPreferences.displayDefaultAutocompletes) {
+            autocompletes
+        } else {
+            autocompletes.filter { it.personal }
+        }
+    }
+
+    private fun filterAutocompletesElements(autocompletes: List<Autocomplete>): List<Autocomplete> {
+        return filterAutocompletesByPersonal(autocompletes)
+            .sortedByDescending { it.lastModified }
     }
 }
