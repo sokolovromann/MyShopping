@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.getAutocompleteItems
-import ru.sokolovromann.myshopping.ui.utils.isSupported
-import java.util.Locale
 
 class AutocompletesState {
 
@@ -19,39 +17,29 @@ class AutocompletesState {
         screenData = AutocompletesScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(appConfig: AppConfig, location: AutocompleteLocation) {
-        autocompletes = Autocompletes(appConfig = appConfig)
-        val preferences = autocompletes.appConfig.userPreferences
-
-        val locationEnabled = Locale.getDefault().isSupported() &&
-                preferences.displayDefaultAutocompletes
+    fun showNotFound(autocompletes: Autocompletes, location: AutocompleteLocation) {
+        this.autocompletes = autocompletes
 
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
-            smartphoneScreen = appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
+            smartphoneScreen = autocompletes.isSmartphoneScreen(),
             location = location,
-            locationEnabled = locationEnabled,
-            fontSize = preferences.fontSize
+            locationEnabled = autocompletes.isLocationEnabled(),
+            fontSize = autocompletes.getFontSize()
         )
     }
 
     fun showAutocompletes(autocompletes: Autocompletes, location: AutocompleteLocation) {
         this.autocompletes = autocompletes
-        val preferences = autocompletes.appConfig.userPreferences
-
-        val locationEnabled = Locale.getDefault().isSupported() &&
-                preferences.displayDefaultAutocompletes
-
-        val smartphoneScreen = autocompletes.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
 
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Showing,
             autocompletes = autocompletes.getAutocompleteItems(),
-            multiColumns = !smartphoneScreen,
-            smartphoneScreen = smartphoneScreen,
+            multiColumns = autocompletes.isMultiColumns(),
+            smartphoneScreen = autocompletes.isSmartphoneScreen(),
             location = location,
-            locationEnabled = locationEnabled,
-            fontSize = preferences.fontSize
+            locationEnabled = autocompletes.isLocationEnabled(),
+            fontSize = autocompletes.getFontSize()
         )
     }
 
@@ -64,8 +52,7 @@ class AutocompletesState {
     }
 
     fun selectAllAutocompletes() {
-        val names = autocompletes.formatAutocompletes().groupBy { it.name.lowercase() }
-        screenData = screenData.copy(selectedNames = names.keys.toList())
+        screenData = screenData.copy(selectedNames = autocompletes.getNames())
     }
 
     fun selectAutocomplete(name: String) {

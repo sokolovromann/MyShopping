@@ -89,8 +89,8 @@ class AutocompletesViewModel @Inject constructor(
         autocompletes: Autocompletes,
         location: AutocompleteLocation
     ) = withContext(dispatchers.main) {
-        if (autocompletes.autocompletes.isEmpty()) {
-            autocompletesState.showNotFound(autocompletes.appConfig, location)
+        if (autocompletes.isAutocompletesEmpty()) {
+            autocompletesState.showNotFound(autocompletes, location)
         } else {
             autocompletesState.showAutocompletes(autocompletes, location)
         }
@@ -106,9 +106,7 @@ class AutocompletesViewModel @Inject constructor(
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
             autocompletesState.screenData.selectedNames?.let { names ->
-                val uids = autocompletes.autocompletes
-                    .filter { names.contains(it.name.lowercase()) }
-                    .map { it.uid }
+                val uids = autocompletes.getUidsByNames(names)
                 autocompletesRepository.clearAutocompletes(
                     uids = uids,
                     lastModified = System.currentTimeMillis()
@@ -127,9 +125,7 @@ class AutocompletesViewModel @Inject constructor(
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
             autocompletesState.screenData.selectedNames?.let { names ->
-                val uids = autocompletes.autocompletes
-                    .filter { names.contains(it.name.lowercase()) }
-                    .map { it.uid }
+                val uids = autocompletes.getUidsByNames(names)
                 autocompletesRepository.deleteAutocompletes(uids)
             }
         }

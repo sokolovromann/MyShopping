@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.utils
 
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 import ru.sokolovromann.myshopping.data.repository.model.formatFirst
@@ -9,29 +8,23 @@ import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
 fun Autocompletes.getAutocompleteItems(): Map<UiText, AutocompleteItems> {
     val items: MutableMap<UiText, AutocompleteItems> = mutableMapOf()
-    formatAutocompletes().groupBy { it.name.lowercase() }.forEach {
+    groupAutocompletesByName().forEach {
         val name: UiText = UiText.FromString(it.key.formatFirst(true))
-        val autocompletes = toAutocompleteItems(it.value, appConfig)
+        val autocompletes = toAutocompleteItems(it.value)
         items[name] = autocompletes
     }
     return items
 }
 
-private fun toAutocompleteItems(
-    autocompletes: List<Autocomplete>,
-    appConfig: AppConfig
+private fun Autocompletes.toAutocompleteItems(
+    autocompletes: List<Autocomplete>
 ): AutocompleteItems {
-    val otherLimit = 3
-    val quantitiesLimit = 5
-    val pricesLimit = 3
-    val discountsLimit = 3
-    val totalsLimit = 3
 
     val brandsList: List<UiText> = autocompletes
         .sortedByDescending { it.lastModified }
         .distinctBy { it.brand }
         .filterIndexed { index, autocomplete ->
-            autocomplete.brand.isNotEmpty() && index < otherLimit
+            autocomplete.brand.isNotEmpty() && index < getMaxAutocompletesOthers()
         }
         .map { UiText.FromString(it.brand) }
 
@@ -39,7 +32,7 @@ private fun toAutocompleteItems(
         .sortedByDescending { it.lastModified }
         .distinctBy { it.size }
         .filterIndexed { index, autocomplete ->
-            autocomplete.size.isNotEmpty() && index < otherLimit
+            autocomplete.size.isNotEmpty() && index < getMaxAutocompletesOthers()
         }
         .map { UiText.FromString(it.size) }
 
@@ -47,7 +40,7 @@ private fun toAutocompleteItems(
         .sortedByDescending { it.lastModified }
         .distinctBy { it.color }
         .filterIndexed { index, autocomplete ->
-            autocomplete.color.isNotEmpty() && index < otherLimit
+            autocomplete.color.isNotEmpty() && index < getMaxAutocompletesOthers()
         }
         .map { UiText.FromString(it.color) }
 
@@ -55,7 +48,7 @@ private fun toAutocompleteItems(
         .sortedByDescending { it.lastModified }
         .distinctBy { it.manufacturer }
         .filterIndexed { index, autocomplete ->
-            autocomplete.manufacturer.isNotEmpty() && index < otherLimit
+            autocomplete.manufacturer.isNotEmpty() && index < getMaxAutocompletesOthers()
         }
         .map { UiText.FromString(it.manufacturer) }
 
@@ -63,40 +56,40 @@ private fun toAutocompleteItems(
         .sortedByDescending { it.lastModified }
         .distinctBy { it.quantity.getFormattedValue() }
         .filterIndexed { index, autocomplete ->
-            autocomplete.quantity.isNotEmpty() && index < quantitiesLimit
+            autocomplete.quantity.isNotEmpty() && index < getMaxAutocompletesQuantities()
         }
         .map { UiText.FromString(it.quantity.toString()) }
 
-    val pricesList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
+    val pricesList: List<UiText> = if (isDisplayMoney()) {
         autocompletes
             .sortedByDescending { it.lastModified }
             .distinctBy { it.price.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
-                autocomplete.price.isNotEmpty() && index < pricesLimit
+                autocomplete.price.isNotEmpty() && index < getMaxAutocompletesMoneys()
             }
             .map { UiText.FromString(it.price.toString()) }
     } else {
         listOf()
     }
 
-    val discountsList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
+    val discountsList: List<UiText> = if (isDisplayMoney()) {
         autocompletes
             .sortedByDescending { it.lastModified }
             .distinctBy { it.discount.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
-                autocomplete.discount.isNotEmpty() && index < discountsLimit
+                autocomplete.discount.isNotEmpty() && index < getMaxAutocompletesMoneys()
             }
             .map { UiText.FromString(it.discount.toString()) }
     } else {
         listOf()
     }
 
-    val totalsList: List<UiText> = if (appConfig.userPreferences.displayMoney) {
+    val totalsList: List<UiText> = if (isDisplayMoney()) {
         autocompletes
             .sortedByDescending { it.lastModified }
             .distinctBy { it.total.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
-                autocomplete.total.isNotEmpty() && index < totalsLimit
+                autocomplete.total.isNotEmpty() && index < getMaxAutocompletesMoneys()
             }
             .map { UiText.FromString(it.total.toString()) }
     } else {
