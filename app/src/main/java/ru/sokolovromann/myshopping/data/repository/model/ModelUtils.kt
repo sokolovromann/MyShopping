@@ -13,6 +13,10 @@ fun String.formatFirst(uppercase: Boolean): String {
     }
 }
 
+fun String.toSearch(): String {
+    return this.lowercase()
+}
+
 fun DecimalFormat.formatValueWithoutSeparators(value: Float): String {
     val spaceCode = 32
     val periodCode = 46
