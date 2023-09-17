@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
-import java.util.Locale
+import ru.sokolovromann.myshopping.app.AppLocale
 import java.util.UUID
 
 data class Autocomplete(
@@ -20,5 +20,5 @@ data class Autocomplete(
     val color: String = "",
     val provider: String = "",
     val personal: Boolean = true,
-    val language: String = Locale.getDefault().language
+    val language: String = AppLocale.getCurrentLanguage()
 )
