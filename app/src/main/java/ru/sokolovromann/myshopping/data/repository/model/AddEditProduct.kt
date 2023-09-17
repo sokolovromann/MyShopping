@@ -40,6 +40,7 @@ data class AddEditProduct(
                 val success = _product.copy(
                     productUid = trimProductUid,
                     position = nextProductsLastPosition(),
+                    lastModified = System.currentTimeMillis(),
                     name = name.trim(),
                     quantity = _product.quantity.copy(
                         value = quantity ?: _product.quantity.value,
