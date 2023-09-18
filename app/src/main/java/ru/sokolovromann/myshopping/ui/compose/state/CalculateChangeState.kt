@@ -7,8 +7,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
 
 class CalculateChangeState {
 
@@ -22,7 +21,7 @@ class CalculateChangeState {
 
         val totalText: UiText = UiText.FromResourcesWithArgs(
             R.string.calculateChange_text_total,
-            calculateChange.calculateTotal().toString()
+            calculateChange.getDisplayTotal()
         )
 
         val changeText: UiText = UiText.FromResources(R.string.calculateChange_text_noChange)
@@ -32,20 +31,19 @@ class CalculateChangeState {
             userMoneyValue = TextFieldValue(),
             totalText = totalText,
             changeText = changeText,
-            fontSize = calculateChange.appConfig.userPreferences.fontSize
+            fontSize = calculateChange.getFontSize()
         )
     }
 
     fun changeUserMoneyValue(userMoneyValue: TextFieldValue) {
-        val change: Float = userMoneyValue.toFloatOrZero() - calculateChange.calculateTotal().value
-        val changeMoney = Money(
-            value = change,
-            currency = calculateChange.appConfig.userPreferences.currency
+        val change = calculateChange.calculateChange(
+            userMoney = userMoneyValue.toFloatOrNull()
         )
-        val changeText: UiText = if (changeMoney.isEmpty()) {
+
+        val changeText: UiText = if (change.isEmpty()) {
             UiText.FromResources(R.string.calculateChange_text_noChange)
         } else {
-            UiText.FromResourcesWithArgs(R.string.calculateChange_text_change, changeMoney)
+            UiText.FromResourcesWithArgs(R.string.calculateChange_text_change, change)
         }
 
         screenData = screenData.copy(
