@@ -14,13 +14,10 @@ import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
 import ru.sokolovromann.myshopping.ui.utils.getDisplayTime
-import java.util.*
 
 class EditReminderState {
 
     private var editReminder by mutableStateOf(EditReminder())
-
-    private var reminderCalendar by mutableStateOf(Calendar.getInstance())
 
     var screenData by mutableStateOf(EditReminderScreenData())
         private set
@@ -34,53 +31,44 @@ class EditReminderState {
             UiText.FromResources(R.string.editReminder_header_addReminder)
         }
 
-        reminderCalendar = editReminder.reminderToCalendar()
-
         screenData = EditReminderScreenData(
             screenState = ScreenState.Showing,
             headerText = headerText,
-            dateText = reminderCalendar.getDisplayDate(),
-            dateYear = reminderCalendar.get(Calendar.YEAR),
-            dateMonth = reminderCalendar.get(Calendar.MONTH),
-            dateDayOfMonth = reminderCalendar.get(Calendar.DAY_OF_MONTH),
-            timeText = reminderCalendar.getDisplayTime(),
-            timeHourOfDay = reminderCalendar.get(Calendar.HOUR_OF_DAY),
-            timeMinute = reminderCalendar.get(Calendar.MINUTE),
+            dateText = editReminder.reminder.getDisplayDate(),
+            dateYear = editReminder.getYear(),
+            dateMonth = editReminder.getMonth(),
+            dateDayOfMonth = editReminder.getDayOfMonth(),
+            timeText = editReminder.reminder.getDisplayTime(),
+            timeHourOfDay = editReminder.getHourOfDay(),
+            timeMinute = editReminder.getMinute(),
             showPermissionError = !correctReminderPermission,
-            showDeleteButton = editReminder.hasReminder(),
+            showDeleteButton = editReminder.isDisplayDeleteReminder(),
             showDateDialog = false,
             showTimeDialog = false,
-            fontSize = editReminder.appConfig.userPreferences.fontSize
+            fontSize = editReminder.getFontSize()
         )
     }
 
     fun changeReminderDate(year: Int, month: Int, dayOfMonth: Int) {
-        reminderCalendar = reminderCalendar.apply {
-            set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month)
-            set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        }
+        editReminder.changeReminderDate(year, month, dayOfMonth)
 
         screenData = screenData.copy(
-            dateText = reminderCalendar.getDisplayDate(),
-            dateYear = reminderCalendar.get(Calendar.YEAR),
-            dateMonth = reminderCalendar.get(Calendar.MONTH),
-            dateDayOfMonth = reminderCalendar.get(Calendar.DAY_OF_MONTH),
+            dateText = editReminder.reminder.getDisplayDate(),
+            dateYear = editReminder.getYear(),
+            dateMonth = editReminder.getMonth(),
+            dateDayOfMonth = editReminder.getDayOfMonth(),
             showDateDialog = false,
             showTimeDialog = false
         )
     }
 
     fun changeReminderTime(hourOfDay: Int, minute: Int) {
-        reminderCalendar = reminderCalendar.apply {
-            set(Calendar.HOUR_OF_DAY, hourOfDay)
-            set(Calendar.MINUTE, minute)
-        }
+        editReminder.changeReminderTime(hourOfDay, minute)
 
         screenData = screenData.copy(
-            timeText = reminderCalendar.getDisplayTime(),
-            timeHourOfDay = reminderCalendar.get(Calendar.HOUR_OF_DAY),
-            timeMinute = reminderCalendar.get(Calendar.MINUTE),
+            timeText = editReminder.reminder.getDisplayTime(),
+            timeHourOfDay = editReminder.getHourOfDay(),
+            timeMinute = editReminder.getMinute(),
             showDateDialog = false,
             showTimeDialog = false
         )
@@ -116,11 +104,12 @@ class EditReminderState {
 
     fun getShoppingListResult(): Result<ShoppingList> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
-        val success = (editReminder.shoppingList ?: ShoppingList()).copy(
-            reminder = reminderCalendar.timeInMillis,
-            lastModified = System.currentTimeMillis()
-        )
-        return Result.success(success)
+        val shoppingList = editReminder.createShoppingList().getOrNull()
+        return if (shoppingList == null) {
+            Result.failure(Exception())
+        } else {
+            Result.success(shoppingList)
+        }
     }
 }
 
