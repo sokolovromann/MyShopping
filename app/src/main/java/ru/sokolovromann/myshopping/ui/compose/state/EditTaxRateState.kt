@@ -3,13 +3,12 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.ui.utils.isEmpty
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
+import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditTaxRateState {
 
@@ -20,19 +19,12 @@ class EditTaxRateState {
 
     fun populate(editTaxRate: EditTaxRate) {
         this.editTaxRate = editTaxRate
-        val preferences = editTaxRate.appConfig.userPreferences
-
-        val taxRateText = preferences.taxRate.getFormattedValueWithoutSeparators()
 
         screenData = EditTaxRateScreenData(
             screenState = ScreenState.Showing,
-            taxRateValue = TextFieldValue(
-                text = taxRateText,
-                selection = TextRange(taxRateText.length),
-                composition = TextRange(taxRateText.length)
-            ),
+            taxRateValue = editTaxRate.getFieldTaxRate().toTextFieldValue(),
             showTaxRateError = false,
-            fontSize = preferences.fontSize
+            fontSize = editTaxRate.getFontSize()
         )
     }
 
@@ -44,15 +36,15 @@ class EditTaxRateState {
     }
 
     fun getTaxRateResult(): Result<Money> {
-        return if (screenData.taxRateValue.isEmpty()) {
+        val taxRate = editTaxRate.createTaxRate(
+            taxRate = screenData.taxRateValue.toFloatOrNull()
+        ).getOrNull()
+
+        return if (taxRate == null) {
             screenData = screenData.copy(showTaxRateError = true)
             Result.failure(Exception())
         } else {
-            screenData = screenData.copy(screenState = ScreenState.Saving)
-            val success = editTaxRate.appConfig.userPreferences.taxRate.copy(
-                value = screenData.taxRateValue.toFloatOrZero()
-            )
-            Result.success(success)
+            Result.success(taxRate)
         }
     }
 }
