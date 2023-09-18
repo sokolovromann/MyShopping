@@ -3,30 +3,26 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.repository.model.EditCurrencySymbol
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.ui.utils.isEmpty
+import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditCurrencySymbolState {
+
+    private var editCurrencySymbol by mutableStateOf(EditCurrencySymbol())
 
     var screenData by mutableStateOf(EditCurrencySymbolScreenData())
         private set
 
     fun populate(editCurrencySymbol: EditCurrencySymbol) {
-        val preferences = editCurrencySymbol.appConfig.userPreferences
-        val symbol = preferences.currency.symbol
+        this.editCurrencySymbol = editCurrencySymbol
 
         screenData = EditCurrencySymbolScreenData(
             screenState = ScreenState.Showing,
-            symbolValue = TextFieldValue(
-                text = symbol,
-                selection = TextRange(symbol.length),
-                composition = TextRange(symbol.length)
-            ),
+            symbolValue = editCurrencySymbol.getFieldSymbol().toTextFieldValue(),
             showSymbolError = false,
-            fontSize = preferences.fontSize
+            fontSize = editCurrencySymbol.getFontSize()
         )
     }
 
@@ -40,12 +36,16 @@ class EditCurrencySymbolState {
     fun getSymbolResult(): Result<String> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
 
-        return if (screenData.symbolValue.isEmpty()) {
+        val symbol = editCurrencySymbol.createSymbol(
+            symbol = screenData.symbolValue.text
+        ).getOrNull()
+
+        return if (symbol == null) {
             screenData = screenData.copy(showSymbolError = true)
             Result.failure(Exception())
         } else {
             screenData = screenData.copy(screenState = ScreenState.Saving)
-            Result.success(screenData.symbolValue.text)
+            Result.success(symbol)
         }
     }
 }
