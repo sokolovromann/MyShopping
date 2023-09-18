@@ -3,15 +3,13 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
-import ru.sokolovromann.myshopping.ui.utils.isNotEmpty
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditShoppingListTotalState {
 
@@ -23,27 +21,17 @@ class EditShoppingListTotalState {
     fun populate(editShoppingListTotal: EditShoppingListTotal) {
         this.editShoppingListTotal = editShoppingListTotal
 
-        val headerText: UiText = if (editShoppingListTotal.totalFormatted()) {
+        val headerText: UiText = if (editShoppingListTotal.isTotalFormatted()) {
             UiText.FromResources(R.string.editShoppingListTotal_header_editShoppingListTotal)
         } else {
             UiText.FromResources(R.string.editShoppingListTotal_header_addShoppingListTotal)
         }
 
-        val totalText: String = if (editShoppingListTotal.total().isEmpty()) {
-            ""
-        } else {
-            editShoppingListTotal.total().getFormattedValueWithoutSeparators()
-        }
-
         screenData = EditShoppingListTotalScreenData(
             screenState = ScreenState.Showing,
             headerText = headerText,
-            totalValue = TextFieldValue(
-                text = totalText,
-                selection = TextRange(totalText.length),
-                composition = TextRange(totalText.length)
-            ),
-            fontSize = editShoppingListTotal.appConfig.userPreferences.fontSize
+            totalValue = editShoppingListTotal.getFieldTotal().toTextFieldValue(),
+            fontSize = editShoppingListTotal.getFontSize()
         )
     }
 
@@ -53,19 +41,15 @@ class EditShoppingListTotalState {
 
     fun getShoppingListResult(): Result<ShoppingList> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
+        val shoppingList = editShoppingListTotal.createShoppingList(
+            total = screenData.totalValue.toFloatOrZero()
+        ).getOrNull()
 
-        val total = Money(
-            value = screenData.totalValue.toFloatOrZero(),
-            currency = editShoppingListTotal.appConfig.userPreferences.currency
-        )
-
-        val success = (editShoppingListTotal.shoppingList ?: ShoppingList()).copy(
-            total = total,
-            totalFormatted = screenData.totalValue.isNotEmpty(),
-            lastModified = System.currentTimeMillis()
-        )
-
-        return Result.success(success)
+        return if (shoppingList == null) {
+            Result.failure(Exception())
+        } else {
+            Result.success(shoppingList)
+        }
     }
 }
 
