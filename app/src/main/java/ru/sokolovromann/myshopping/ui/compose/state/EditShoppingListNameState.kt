@@ -3,12 +3,12 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
+import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditShoppingListNameState {
 
@@ -20,22 +20,17 @@ class EditShoppingListNameState {
     fun populate(editShoppingListName: EditShoppingListName) {
         this.editShoppingListName = editShoppingListName
 
-        val headerText: UiText = if (editShoppingListName.shoppingList == null) {
-            UiText.FromResources(R.string.editShoppingListName_header_addShoppingListName)
-        } else {
+        val headerText: UiText = if (editShoppingListName.hasName()) {
             UiText.FromResources(R.string.editShoppingListName_header_editShoppingListName)
+        } else {
+            UiText.FromResources(R.string.editShoppingListName_header_addShoppingListName)
         }
-        val name = editShoppingListName.name()
 
         screenData = EditShoppingListNameScreenData(
             screenState = ScreenState.Showing,
             headerText = headerText,
-            nameValue = TextFieldValue(
-                text = name,
-                selection = TextRange(name.length),
-                composition = TextRange(name.length)
-            ),
-            fontSize = editShoppingListName.appConfig.userPreferences.fontSize
+            nameValue = editShoppingListName.getFieldName().toTextFieldValue(),
+            fontSize = editShoppingListName.getFontSize()
         )
     }
 
@@ -45,12 +40,15 @@ class EditShoppingListNameState {
 
     fun getShoppingListResult(): Result<ShoppingList> {
         screenData = screenData.copy(screenState = ScreenState.Saving)
-        val success = (editShoppingListName.shoppingList ?: ShoppingList()).copy(
-            name = screenData.nameValue.text.trim(),
-            lastModified = System.currentTimeMillis()
-        )
+        val shoppingList = editShoppingListName.createShoppingList(
+            name = screenData.nameValue.text
+        ).getOrNull()
 
-        return Result.success(success)
+        return if (shoppingList == null) {
+            Result.failure(Exception())
+        } else {
+            Result.success(shoppingList)
+        }
     }
 }
 

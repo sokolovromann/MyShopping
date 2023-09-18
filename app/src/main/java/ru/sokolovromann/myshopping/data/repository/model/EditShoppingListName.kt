@@ -1,11 +1,37 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
+
 data class EditShoppingListName(
-    val shoppingList: ShoppingList? = null,
-    val appConfig: AppConfig = AppConfig()
+    private val shoppingList: ShoppingList? = null,
+    private val appConfig: AppConfig = AppConfig()
 ) {
 
-    fun name(): String {
-        return shoppingList?.name ?: ""
+    private val _shoppingList = shoppingList ?: ShoppingList()
+    private val userPreferences = appConfig.userPreferences
+
+    fun createShoppingList(name: String?): Result<ShoppingList> {
+        return if (name == null) {
+            val exception = InvalidNameException("Name must not be null")
+            Result.failure(exception)
+        } else {
+            val success = _shoppingList.copy(
+                name = name.trim(),
+                lastModified = System.currentTimeMillis()
+            )
+            Result.success(success)
+        }
+    }
+
+    fun getFieldName(): String {
+        return _shoppingList.name
+    }
+
+    fun getFontSize(): FontSize {
+        return userPreferences.fontSize
+    }
+
+    fun hasName(): Boolean {
+        return _shoppingList.name.isNotEmpty()
     }
 }
