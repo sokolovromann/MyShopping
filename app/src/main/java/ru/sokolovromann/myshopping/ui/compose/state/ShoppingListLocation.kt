@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.state
 
 import ru.sokolovromann.myshopping.R
 
+@Deprecated("Use ShoppingLocation")
 enum class ShoppingListLocation {
 
     PURCHASES, ARCHIVE, TRASH;

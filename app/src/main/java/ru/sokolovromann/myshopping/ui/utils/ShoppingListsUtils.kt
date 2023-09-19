@@ -7,15 +7,11 @@ import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import java.util.*
 
-fun ShoppingList.getShoppingListLocation(): ShoppingListLocation {
-    return if (deleted) {
-        ShoppingListLocation.TRASH
-    } else {
-        if (archived) {
-            ShoppingListLocation.ARCHIVE
-        } else {
-            ShoppingListLocation.PURCHASES
-        }
+fun ShoppingLocation.toShoppingListLocation(): ShoppingListLocation {
+    return when (this) {
+        ShoppingLocation.PURCHASES -> ShoppingListLocation.PURCHASES
+        ShoppingLocation.ARCHIVE -> ShoppingListLocation.ARCHIVE
+        ShoppingLocation.TRASH -> ShoppingListLocation.TRASH
     }
 }
 
