@@ -5,6 +5,7 @@ enum class ShoppingLocation {
     PURCHASES, ARCHIVE, TRASH;
 
     companion object {
+        val DefaultValue = PURCHASES
 
         fun create(archived: Boolean, deleted: Boolean): ShoppingLocation {
             return if (deleted) {

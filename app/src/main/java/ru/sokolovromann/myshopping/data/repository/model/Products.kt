@@ -269,7 +269,7 @@ data class Products(
     }
 
     fun getShoppingLocation(): ShoppingLocation {
-        return ShoppingLocation.create(shoppingList.archived, shoppingList.deleted)
+        return shoppingList.location
     }
 
     fun isTotalFormatted(): Boolean {

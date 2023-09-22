@@ -21,8 +21,8 @@ class RepositoryMapping @Inject constructor() {
             total = toMoneyValue(shoppingList.total),
             totalFormatted = shoppingList.totalFormatted,
             budget = toMoneyValue(shoppingList.budget),
-            archived = shoppingList.archived,
-            deleted = shoppingList.deleted,
+            archived = shoppingList.location == ShoppingLocation.ARCHIVE,
+            deleted = shoppingList.location == ShoppingLocation.TRASH,
             sortBy = toSortName(shoppingList.sort),
             sortAscending = toSortAscending(shoppingList.sort),
             sortFormatted = shoppingList.sortFormatted,
@@ -434,8 +434,7 @@ class RepositoryMapping @Inject constructor() {
                 value = entity.budget,
                 userPreferences = userPreferences
             ),
-            archived = entity.archived,
-            deleted = entity.deleted,
+            location = toShoppingLocation(entity.archived, entity.deleted),
             completed = toCompleted(shoppingListEntity.productEntities),
             products = shoppingListEntity.productEntities.map { toProduct(it, appConfigEntity) },
             currency = toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
@@ -468,8 +467,7 @@ class RepositoryMapping @Inject constructor() {
                 value = entity.budget,
                 userPreferences = userPreferences
             ),
-            archived = entity.archived,
-            deleted = entity.deleted,
+            location = toShoppingLocation(entity.archived, entity.deleted),
             currency = toCurrency(userPreferences.currency, userPreferences.displayCurrencyToLeft),
             displayTotal = toDisplayTotal(userPreferences.displayTotal),
             sort = toSort(entity.sortBy, entity.sortAscending),
@@ -545,6 +543,10 @@ class RepositoryMapping @Inject constructor() {
             provider = product.provider,
             personal = personal
         )
+    }
+
+    private fun toShoppingLocation(archived: Boolean, deleted: Boolean): ShoppingLocation {
+        return ShoppingLocation.create(archived, deleted)
     }
 
     private fun toQuantity(value: Float, symbol: String, decimalFormat: DecimalFormat): Quantity {
