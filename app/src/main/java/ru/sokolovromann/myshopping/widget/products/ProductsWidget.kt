@@ -46,7 +46,6 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.Products
@@ -100,29 +99,31 @@ class ProductsWidget : GlanceAppWidget() {
 
         Column(modifier = GlanceModifier.fillMaxSize()) {
             val products = productsFlow.collectAsState().value
-            val appConfig = productsFlow.collectAsState().value.appConfig
 
-            if (products.isEmpty()) {
+            if (products.isProductsEmpty()) {
                 ProductsWidgetName(
-                    name = products.shoppingList.name,
-                    fontSize = products.appConfig.userPreferences.fontSize,
+                    name = products.getDisplayName(),
+                    fontSize = products.getFontSize(),
                     completed = products.isCompleted(),
-                    noSplit = appConfig.userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT
+                    noSplit = products.getDisplayCompleted() == DisplayCompleted.NO_SPLIT
                 )
 
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
-                    fontSize = appConfig.userPreferences.fontSize
+                    fontSize = products.getFontSize()
                 )
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),
-                    name = products.shoppingList.name,
+                    name = products.getDisplayName(),
                     completed = products.isCompleted(),
                     pinnedItems = products.getActivePinnedProductWidgetItems(),
                     otherItems = products.getOtherProductWidgetItems(),
-                    appConfig = appConfig
+                    displayCompleted = products.getDisplayCompleted(),
+                    fontSize = products.getFontSize(),
+                    coloredCheckbox = products.isColoredCheckbox(),
+                    completedWithCheckbox = products.isCompletedWithCheckbox()
                 ) {
                     coroutineScope.launch(entryPoint.dispatchers().io) {
                         if (it.completed) {
@@ -153,10 +154,10 @@ class ProductsWidget : GlanceAppWidget() {
                     .background(ColorProvider(R.color.gray_200)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (appConfig.userPreferences.displayMoney) {
+                if (products.displayMoney()) {
                     ProductsWidgetTotal(
-                        products.shoppingList.calculateTotal().toString(),
-                        appConfig.userPreferences.fontSize
+                        products.calculateTotal().toString(),
+                        products.getFontSize()
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())
@@ -284,7 +285,10 @@ private fun ProductsWidgetProducts(
     completed: Boolean,
     pinnedItems: List<ProductWidgetItem>,
     otherItems: List<ProductWidgetItem>,
-    appConfig: AppConfig,
+    displayCompleted: DisplayCompleted,
+    fontSize: FontSize,
+    coloredCheckbox: Boolean,
+    completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
 ) {
     LazyColumn(
@@ -296,22 +300,28 @@ private fun ProductsWidgetProducts(
         item {
             ProductsWidgetName(
                 name = name,
-                fontSize = appConfig.userPreferences.fontSize,
+                fontSize = fontSize,
                 completed = completed,
-                noSplit = appConfig.userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT
+                noSplit = displayCompleted == DisplayCompleted.NO_SPLIT
             )
         }
         items(pinnedItems) {
             ProductsWidgetItem(
                 widgetItem = it,
-                appConfig = appConfig,
+                displayCompleted = displayCompleted,
+                fontSize = fontSize,
+                coloredCheckbox = coloredCheckbox,
+                completedWithCheckbox = completedWithCheckbox,
                 onCheckedChange = onCheckedChange
             )
         }
         items(otherItems) {
             ProductsWidgetItem(
                 widgetItem = it,
-                appConfig = appConfig,
+                displayCompleted = displayCompleted,
+                fontSize = fontSize,
+                coloredCheckbox = coloredCheckbox,
+                completedWithCheckbox = completedWithCheckbox,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -321,10 +331,13 @@ private fun ProductsWidgetProducts(
 @Composable
 private fun ProductsWidgetItem(
     widgetItem: ProductWidgetItem,
-    appConfig: AppConfig,
+    displayCompleted: DisplayCompleted,
+    fontSize: FontSize,
+    coloredCheckbox: Boolean,
+    completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
 ) {
-    val backgroundColorResId = if (appConfig.userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT) {
+    val backgroundColorResId = if (displayCompleted == DisplayCompleted.NO_SPLIT) {
         R.color.white
     } else {
         if (widgetItem.completed) R.color.gray_200 else R.color.white
@@ -335,7 +348,7 @@ private fun ProductsWidgetItem(
         .background(ColorProvider(backgroundColorResId))
         .padding(all = ProductsWidgetMediumSize)
 
-    val rowModifierWithChecked = if (appConfig.userPreferences.completedWithCheckbox) {
+    val rowModifierWithChecked = if (completedWithCheckbox) {
         rowModifier
     } else {
         rowModifier.clickable { onCheckedChange(widgetItem) }
@@ -348,8 +361,8 @@ private fun ProductsWidgetItem(
     ) {
         ProductsWidgetCheckbox(
             checked = widgetItem.completed,
-            checkedWithCheckbox = appConfig.userPreferences.completedWithCheckbox,
-            coloredCheckbox = appConfig.userPreferences.coloredCheckbox,
+            checkedWithCheckbox = completedWithCheckbox,
+            coloredCheckbox = coloredCheckbox,
             onCheckedChange = { onCheckedChange(widgetItem) }
         )
 
@@ -357,7 +370,7 @@ private fun ProductsWidgetItem(
             text = widgetItem.body,
             style = TextDefaults.defaultTextStyle.copy(
                 color = ColorProvider(R.color.black),
-                fontSize = appConfig.userPreferences.fontSize.toWidgetBody().sp
+                fontSize = fontSize.toWidgetBody().sp
             )
         )
     }

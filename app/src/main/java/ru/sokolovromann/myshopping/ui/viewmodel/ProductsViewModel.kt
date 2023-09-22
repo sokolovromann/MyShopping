@@ -140,7 +140,7 @@ class ProductsViewModel @Inject constructor(
             return@withContext
         }
 
-        if (products.shoppingList.products.isEmpty()) {
+        if (products.isProductsEmpty()) {
             productsState.showNotFound(products)
         } else {
             productsState.showProducts(products)
@@ -148,10 +148,8 @@ class ProductsViewModel @Inject constructor(
     }
 
     private suspend fun updateProductsWidget() = withContext(dispatchers.main) {
-        val shoppingList = productsState.getShoppingListResult().getOrElse {
-            return@withContext
-        }
-        val event = ProductsScreenEvent.UpdateProductsWidget(shoppingList.uid)
+        val uid = productsState.getShoppingListUid()
+        val event = ProductsScreenEvent.UpdateProductsWidget(uid)
         _screenEventFlow.emit(event)
     }
 
@@ -259,7 +257,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun moveShoppingListToPurchases() = viewModelScope.launch {
         shoppingListsRepository.moveShoppingListToPurchases(
-            uid = productsState.shoppingListUid,
+            uid = productsState.getShoppingListUid(),
             lastModified = System.currentTimeMillis()
         )
 
@@ -270,7 +268,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun moveShoppingListToArchive() = viewModelScope.launch {
         shoppingListsRepository.moveShoppingListToArchive(
-            uid = productsState.shoppingListUid,
+            uid = productsState.getShoppingListUid(),
             lastModified = System.currentTimeMillis()
         )
 
@@ -281,7 +279,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun moveShoppingListToTrash() = viewModelScope.launch {
         shoppingListsRepository.moveShoppingListToTrash(
-            uid = productsState.shoppingListUid,
+            uid = productsState.getShoppingListUid(),
             lastModified = System.currentTimeMillis()
         )
 
@@ -307,7 +305,7 @@ class ProductsViewModel @Inject constructor(
             lastModified = System.currentTimeMillis()
         )
 
-        if (productsState.editCompleted) {
+        if (productsState.isEditProductAfterCompleted()) {
             withContext(dispatchers.main) {
                 _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
             }

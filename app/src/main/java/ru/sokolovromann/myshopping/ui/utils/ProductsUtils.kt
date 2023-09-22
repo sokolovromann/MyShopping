@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Product
@@ -22,14 +21,12 @@ fun Products.getActivePinnedProductItems(): List<ProductItem> {
     return getActivePinnedProducts().map { toProductItem(it) }
 }
 
-fun Products.getOtherProductItems(
-    displayCompleted: DisplayCompleted = appConfig.userPreferences.displayCompleted
-): List<ProductItem> {
-    return getOtherProducts(displayCompleted).map { toProductItem(it) }
+fun Products.getOtherProductItems(): List<ProductItem> {
+    return getOtherProducts().map { toProductItem(it) }
 }
 
 fun Products.calculateTotalToText(): UiText {
-    return totalToText(calculateTotal(), appConfig.userPreferences.displayTotal, totalFormatted())
+    return totalToText(calculateTotal(), getDisplayTotal(), isTotalFormatted())
 }
 
 fun Products.calculateTotalToText(uids: List<String>): UiText {
@@ -51,36 +48,9 @@ private fun totalToText(total: Money, displayTotal: DisplayTotal, totalFormatted
 }
 
 private fun Products.toProductItem(product: Product): ProductItem {
-    val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.formatTotal().isNotEmpty() && appConfig.userPreferences.displayMoney && !totalFormatted()
+    val nameText: UiText = UiText.FromString(productToTitle(product))
 
-    val brand = if (product.brand.isEmpty() || !appConfig.userPreferences.displayOtherFields) "" else " ${product.brand}"
-    val manufacturer = if (product.manufacturer.isEmpty() || !appConfig.userPreferences.displayOtherFields) "" else " • ${product.manufacturer}"
-    val nameText: UiText = UiText.FromString("${product.name}$brand$manufacturer")
-
-    var otherName = product.size
-    otherName += if (product.color.isEmpty() || !appConfig.userPreferences.displayOtherFields) {
-        ""
-    } else {
-        if (product.size.isEmpty()) product.color else " • ${product.color}"
-    }
-
-    var body = otherName
-    val otherDivider = if (otherName.isEmpty()) "" else " • "
-    body += if (displayPrice) {
-        if (displayQuantity) {
-            "$otherDivider${product.quantity} • ${product.formatTotal()}"
-        } else {
-            "$otherDivider${product.formatTotal()}"
-        }
-    } else {
-        if (displayQuantity) "$otherDivider${product.quantity}" else ""
-    }
-
-    if (product.note.isNotEmpty()) {
-        body += if (body.isEmpty()) product.note else "\n${product.note}"
-    }
-
+    val body = productToBody(product)
     val bodyText: UiText = if (body.isEmpty()) UiText.Nothing else UiText.FromString(body)
 
     return ProductItem(
@@ -93,7 +63,7 @@ private fun Products.toProductItem(product: Product): ProductItem {
 
 private fun Products.toProductWidgetItem(product: Product): ProductWidgetItem {
     val displayQuantity = product.quantity.isNotEmpty()
-    val displayPrice = product.formatTotal().isNotEmpty() && appConfig.userPreferences.displayMoney && !totalFormatted()
+    val displayPrice = product.formatTotal().isNotEmpty() && displayMoney() && !isTotalFormatted()
 
     val body = if (displayPrice) {
         if (displayQuantity) {

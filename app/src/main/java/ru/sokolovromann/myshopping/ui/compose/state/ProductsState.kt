@@ -17,97 +17,74 @@ class ProductsState {
     var screenData by mutableStateOf(ProductsScreenData())
         private set
 
-    var editCompleted by mutableStateOf(false)
-        private set
-
-    var shoppingListUid by mutableStateOf("")
-        private set
-
     fun showLoading() {
         screenData = ProductsScreenData(screenState = ScreenState.Loading)
     }
 
     fun showNotFound(products: Products) {
         this.products = products
-        val preferences = products.appConfig.userPreferences
-        val totalText = if (preferences.displayMoney) {
+
+        val totalText = if (products.displayMoney()) {
             products.calculateTotalToText()
         } else {
             UiText.Nothing
         }
 
-        val multiColumnsText: UiText = if (preferences.productsMultiColumns) {
+        val multiColumnsText: UiText = if (products.isMultiColumns()) {
             UiText.FromResources(R.string.products_action_disableProductsMultiColumns)
         } else {
             UiText.FromResources(R.string.products_action_enableProductsMultiColumns)
         }
 
-        val shoppingListName: UiText = if (products.formatName().isEmpty()) {
+        val shoppingListName: UiText = if (products.getDisplayName().isEmpty()) {
             UiText.Nothing
         } else {
-            UiText.FromString(products.formatName())
+            UiText.FromString(products.getDisplayName())
         }
-        val location = products.shoppingList.getShoppingListLocation()
+        val location = products.getShoppingLocation()
         screenData = ProductsScreenData(
             screenState = ScreenState.Nothing,
             shoppingListName = shoppingListName,
-            shoppingListLocation = location,
+            shoppingListLocation = location.toShoppingListLocation(),
             shoppingListCompleted = products.isCompleted(),
             productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
             multiColumnsText = multiColumnsText,
-            reminderText = toReminderText(products.shoppingList.reminder),
-            smartphoneScreen = products.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            coloredCheckbox = preferences.coloredCheckbox,
-            displayCompleted = preferences.displayCompleted,
-            sort = products.shoppingList.sort,
+            reminderText = toReminderText(products.getCalendarReminder()),
+            smartphoneScreen = products.isSmartphoneScreen(),
+            coloredCheckbox = products.isColoredCheckbox(),
+            displayCompleted = products.getDisplayCompleted(),
+            sort = products.getSort(),
             automaticSorting = products.isAutomaticSorting(),
-            displayTotal = preferences.displayTotal,
-            totalFormatted = products.shoppingList.totalFormatted,
-            fontSize = preferences.fontSize,
-            displayMoney = preferences.displayMoney,
-            completedWithCheckbox = preferences.completedWithCheckbox
+            displayTotal = products.getDisplayTotal(),
+            totalFormatted = products.isTotalFormatted(),
+            fontSize = products.getFontSize(),
+            displayMoney = products.displayMoney(),
+            completedWithCheckbox = products.isCompletedWithCheckbox()
         )
-
-        editCompleted = preferences.editProductAfterCompleted
-        shoppingListUid = products.shoppingList.uid
     }
 
     fun showProducts(products: Products) {
         this.products = products
-        val preferences = products.appConfig.userPreferences
-        val totalText = if (preferences.displayMoney) {
+        val totalText = if (products.displayMoney()) {
             products.calculateTotalToText()
         } else {
             UiText.Nothing
         }
 
-        val multiColumnsText: UiText = if (preferences.productsMultiColumns) {
+        val multiColumnsText: UiText = if (products.isMultiColumns()) {
             UiText.FromResources(R.string.products_action_disableProductsMultiColumns)
         } else {
             UiText.FromResources(R.string.products_action_enableProductsMultiColumns)
         }
 
-        val shoppingListName: UiText = if (products.formatName().isEmpty()) {
+        val shoppingListName: UiText = if (products.getDisplayName().isEmpty()) {
             UiText.Nothing
         } else {
-            UiText.FromString(products.formatName())
+            UiText.FromString(products.getDisplayName())
         }
 
-        val location = products.shoppingList.getShoppingListLocation()
-
-        val showHiddenProducts = location != ShoppingListLocation.TRASH
-                && preferences.displayCompleted == DisplayCompleted.HIDE
-                && products.hasHiddenProducts()
-
-        val otherProducts = if (location == ShoppingListLocation.TRASH) {
-            when (preferences.displayCompleted) {
-                DisplayCompleted.HIDE -> products.getOtherProductItems(DisplayCompleted.LAST)
-                else -> products.getOtherProductItems()
-            }
-        } else {
-            products.getOtherProductItems()
-        }
+        val location = products.getShoppingLocation()
 
         val selectedUids = if (savedSelectedUid.isEmpty()) {
             null
@@ -118,31 +95,28 @@ class ProductsState {
         screenData = ProductsScreenData(
             screenState = ScreenState.Showing,
             shoppingListName = shoppingListName,
-            shoppingListLocation = location,
+            shoppingListLocation = location.toShoppingListLocation(),
             shoppingListCompleted = products.isCompleted(),
             pinnedProducts = products.getActivePinnedProductItems(),
-            otherProducts = otherProducts,
+            otherProducts = products.getOtherProductItems(),
             productsNotFoundText = toProductNotFoundText(location),
             totalText = totalText,
-            reminderText = toReminderText(products.shoppingList.reminder),
-            multiColumns = preferences.productsMultiColumns,
+            reminderText = toReminderText(products.getCalendarReminder()),
+            multiColumns = products.isMultiColumns(),
             multiColumnsText = multiColumnsText,
-            smartphoneScreen = products.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            coloredCheckbox = preferences.coloredCheckbox,
-            displayCompleted = preferences.displayCompleted,
-            sort = products.shoppingList.sort,
+            smartphoneScreen = products.isSmartphoneScreen(),
+            coloredCheckbox = products.isColoredCheckbox(),
+            displayCompleted = products.getDisplayCompleted(),
+            sort = products.getSort(),
             automaticSorting = products.isAutomaticSorting(),
-            displayTotal = preferences.displayTotal,
-            totalFormatted = products.shoppingList.totalFormatted,
-            showHiddenProducts = showHiddenProducts,
-            fontSize = preferences.fontSize,
-            displayMoney = preferences.displayMoney,
-            completedWithCheckbox = preferences.completedWithCheckbox,
+            displayTotal = products.getDisplayTotal(),
+            totalFormatted = products.isTotalFormatted(),
+            showHiddenProducts = products.isDisplayHiddenProducts(),
+            fontSize = products.getFontSize(),
+            displayMoney = products.displayMoney(),
+            completedWithCheckbox = products.isCompletedWithCheckbox(),
             selectedUids = selectedUids
         )
-
-        editCompleted = preferences.editProductAfterCompleted
-        shoppingListUid = products.shoppingList.uid
     }
 
     fun showProductsMenu() {
@@ -169,7 +143,7 @@ class ProductsState {
 
     fun displayHiddenProducts() {
         screenData = screenData.copy(
-            otherProducts = products.getOtherProductItems(DisplayCompleted.LAST),
+            otherProducts = products.getOtherProductItems(),
             showHiddenProducts = false
         )
     }
@@ -182,7 +156,7 @@ class ProductsState {
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { add(uid) }
 
-        val totalText = if (products.appConfig.userPreferences.displayMoney) {
+        val totalText = if (products.displayMoney()) {
             products.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -195,9 +169,9 @@ class ProductsState {
     }
 
     fun selectAllProducts() {
-        val uids = products.shoppingList.products.map { it.productUid }
+        val uids = products.getProductUids()
 
-        val totalText = if (products.appConfig.userPreferences.displayMoney) {
+        val totalText = if (products.displayMoney()) {
             products.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -217,7 +191,7 @@ class ProductsState {
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
 
-        val totalText = if (products.appConfig.userPreferences.displayMoney) {
+        val totalText = if (products.displayMoney()) {
             if (checkedUids == null) {
                 products.calculateTotalToText()
             } else {
@@ -234,7 +208,7 @@ class ProductsState {
     }
 
     fun unselectAllProducts() {
-        val totalText = if (products.appConfig.userPreferences.displayMoney) {
+        val totalText = if (products.displayMoney()) {
             products.calculateTotalToText()
         } else {
             UiText.Nothing
@@ -268,187 +242,52 @@ class ProductsState {
     }
 
     fun getShareProductsResult(): Result<String> {
-        var shareText = if (screenData.shoppingListName is UiText.FromString) {
-            "${(screenData.shoppingListName as UiText.FromString).value}:\n"
-        } else {
-            ""
-        }
-
-        screenData.otherProducts.forEach {
-            if (!it.completed) {
-                val name = if (it.nameText is UiText.FromString) it.nameText.value else ""
-                val body = if (it.bodyText is UiText.FromString) " • ${it.bodyText.value}" else ""
-                shareText += "- $name$body\n"
-            }
-        }
-
-        val total = products.calculateTotal(DisplayTotal.COMPLETED)
-        if (products.appConfig.userPreferences.displayMoney && total.isNotEmpty()) {
-            shareText += "\n= $total"
-        } else {
-            if (shareText.isNotEmpty()) {
-                shareText = shareText.dropLast(1)
-            }
-        }
-
-        return Result.success(shareText)
+        return products.getShareText()
     }
 
     fun getProductsUpResult(uid: String): Result<Pair<Product, Product>> {
-        val pinned = products.isProductPinned(uid)
-        val formatProducts = if (pinned) products.getActivePinnedProducts() else products.getOtherProducts()
-
-        return if (formatProducts.size < 2) {
-            Result.failure(Exception())
-        } else {
+        return products.moveProductUp(uid).onSuccess {
             savedSelectedUid = uid
-
-            var previousIndex = 0
-            var currentIndex = 0
-            for (index in formatProducts.indices) {
-                val product = formatProducts[index]
-                if (currentIndex > 0) {
-                    previousIndex = index - 1
-                }
-                currentIndex = index
-
-                if (product.productUid == uid) {
-                    break
-                }
-            }
-
-            val lastModified = System.currentTimeMillis()
-            val currentProduct = formatProducts[currentIndex].copy(
-                position = formatProducts[previousIndex].position,
-                lastModified = lastModified
-            )
-            val previousProduct = formatProducts[previousIndex].copy(
-                position = formatProducts[currentIndex].position,
-                lastModified = lastModified
-            )
-
-            val success = Pair(currentProduct, previousProduct)
-            Result.success(success)
         }
     }
 
     fun getProductsDownResult(uid: String): Result<Pair<Product, Product>> {
-        val pinned = products.isProductPinned(uid)
-        val formatProducts = if (pinned) products.getActivePinnedProducts() else products.getOtherProducts()
-        return if (formatProducts.size < 2) {
-            Result.failure(Exception())
-        } else {
+        return products.moveProductDown(uid).onSuccess {
             savedSelectedUid = uid
-
-            var currentIndex = 0
-            var nextIndex = 0
-            for (index in formatProducts.indices) {
-                val product = formatProducts[index]
-
-                currentIndex = index
-                if (index < formatProducts.lastIndex) {
-                    nextIndex = index + 1
-                }
-
-                if (product.productUid == uid) {
-                    break
-                }
-            }
-
-            val lastModified = System.currentTimeMillis()
-            val currentProduct = formatProducts[currentIndex].copy(
-                position = formatProducts[nextIndex].position,
-                lastModified = lastModified
-            )
-            val nextProduct = formatProducts[nextIndex].copy(
-                position = formatProducts[currentIndex].position,
-                lastModified = lastModified
-            )
-
-            val success = Pair(currentProduct, nextProduct)
-            Result.success(success)
         }
     }
 
     fun sortProductsResult(sortBy: SortBy): Result<List<Product>> {
         val sort = screenData.sort.copy(sortBy = sortBy)
-        val sortProducts = products.shoppingList.products.sortProducts(sort)
-        return if (sortProducts.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            val success = sortProducts.mapIndexed { index, product ->
-                product.copy(
-                    position = index,
-                    lastModified = System.currentTimeMillis()
-                )
-            }
-            Result.success(success)
-        }
+        return products.sortProducts(sort)
     }
 
     fun reverseSortProductsResult(): Result<List<Product>> {
-        val sortPinnedProducts = products.getActivePinnedProducts().reversed()
-        val sortOtherProducts = products.getOtherProducts().reversed()
-        return if (sortPinnedProducts.isEmpty() && sortOtherProducts.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            val success = sortPinnedProducts
-                .toMutableList()
-                .apply { addAll(sortOtherProducts) }
-                .mapIndexed { index, product ->
-                    product.copy(
-                        position = index,
-                        lastModified = System.currentTimeMillis()
-                    )
-            }
-            Result.success(success)
-        }
+        return products.reverseSortProducts()
     }
 
-    fun getShoppingListResult(): Result<ShoppingList> {
-        return Result.success(products.shoppingList)
+    fun getShoppingListUid(): String {
+        return products.getShoppingListUid()
+    }
+
+    fun isEditProductAfterCompleted(): Boolean {
+        return products.editProductAfterCompleted()
     }
 
     fun getCopyShoppingListResult(): Result<ShoppingList> {
-        val shoppingUid = UUID.randomUUID().toString()
-        val created = System.currentTimeMillis()
-        val selectedShoppingList = products.shoppingList
-        val success = selectedShoppingList.copy(
-            id = 0,
-            position = products.shoppingListsLastPosition?.plus(1) ?: 0,
-            uid = shoppingUid,
-            created = created,
-            lastModified = created,
-            products = selectedShoppingList.products.map {
-                it.copy(
-                    id = 0,
-                    shoppingUid = shoppingUid,
-                    productUid = UUID.randomUUID().toString(),
-                    created = created,
-                    lastModified = created
-                )
-            }
-        )
-
-        return Result.success(success)
+        return products.copyShoppingList()
     }
 
-    private fun toReminderText(reminder: Long?): UiText {
-        return if (reminder == null) {
-            UiText.Nothing
-        } else {
-            Calendar.getInstance()
-                .apply { timeInMillis = reminder }
-                .getDisplayDateAndTime()
-        }
+    private fun toReminderText(reminder: Calendar?): UiText {
+        return reminder?.getDisplayDateAndTime() ?: UiText.Nothing
     }
 
-    private fun toProductNotFoundText(location: ShoppingListLocation): UiText = when(location) {
-        ShoppingListLocation.PURCHASES -> UiText.FromResources(R.string.products_text_purchasesProductsNotFound)
+    private fun toProductNotFoundText(location: ShoppingLocation): UiText = when(location) {
+        ShoppingLocation.PURCHASES -> UiText.FromResources(R.string.products_text_purchasesProductsNotFound)
 
-        ShoppingListLocation.ARCHIVE -> UiText.FromResources(R.string.products_text_archiveProductsNotFound)
+        ShoppingLocation.ARCHIVE -> UiText.FromResources(R.string.products_text_archiveProductsNotFound)
 
-        ShoppingListLocation.TRASH -> UiText.FromResources(R.string.products_text_trashProductsNotFound)
+        ShoppingLocation.TRASH -> UiText.FromResources(R.string.products_text_trashProductsNotFound)
     }
 }
 
