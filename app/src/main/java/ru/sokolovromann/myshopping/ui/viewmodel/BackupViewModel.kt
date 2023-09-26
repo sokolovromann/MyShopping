@@ -139,13 +139,11 @@ class BackupViewModel @Inject constructor(
 
     private suspend fun deleteReminders() {
         shoppingListsRepository.getReminders().firstOrNull()?.let { shoppingLists ->
-            shoppingLists.shoppingLists
-                .map { it.uid }
-                .forEach { uid ->
-                    withContext(dispatchers.main) {
-                        alarmManager.deleteReminder(uid)
-                    }
+            shoppingLists.getUids().forEach { uid ->
+                withContext(dispatchers.main) {
+                    alarmManager.deleteReminder(uid)
                 }
+            }
         }
     }
 

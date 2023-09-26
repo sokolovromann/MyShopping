@@ -4,8 +4,6 @@ import android.appwidget.AppWidgetManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
-import ru.sokolovromann.myshopping.data.repository.model.DeviceSize
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
@@ -36,49 +34,42 @@ class ProductsWidgetConfigState {
         screenData = ProductsWidgetConfigScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(appConfig: AppConfig) {
-        shoppingLists = ShoppingLists(appConfig = appConfig)
-        val preferences = shoppingLists.appConfig.userPreferences
-        nightTheme = preferences.nightTheme
+    fun showNotFound(shoppingLists: ShoppingLists) {
+        this.shoppingLists = shoppingLists
+        nightTheme = shoppingLists.isNightTheme()
         loading = false
 
         screenData = ProductsWidgetConfigScreenData(
             screenState = ScreenState.Nothing,
-            displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompleted,
-            coloredCheckbox = preferences.coloredCheckbox,
-            smartphoneScreen = appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            fontSize = preferences.fontSize
+            displayProducts = shoppingLists.getDisplayProducts(),
+            displayCompleted = shoppingLists.getDisplayCompleted(),
+            coloredCheckbox = shoppingLists.isColoredCheckbox(),
+            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            fontSize = shoppingLists.getFontSize()
         )
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         this.shoppingLists = shoppingLists
-        val preferences = shoppingLists.appConfig.userPreferences
 
         loading = false
-        nightTheme = preferences.nightTheme
+        nightTheme = shoppingLists.isNightTheme()
 
         screenData = ProductsWidgetConfigScreenData(
             screenState = ScreenState.Showing,
             pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
             otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
-            displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompleted,
-            coloredCheckbox = preferences.coloredCheckbox,
-            multiColumns = preferences.shoppingsMultiColumns,
-            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            fontSize = preferences.fontSize
+            displayProducts = shoppingLists.getDisplayProducts(),
+            displayCompleted = shoppingLists.getDisplayCompleted(),
+            coloredCheckbox = shoppingLists.isColoredCheckbox(),
+            multiColumns = shoppingLists.isMultiColumns(),
+            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            fontSize = shoppingLists.getFontSize()
         )
     }
 
     fun getShoppingListResult(uid: String): Result<ShoppingList> {
-        val shoppingList = shoppingLists.shoppingLists.find { it.uid == uid }
-        return if (shoppingList == null) {
-            Result.failure(Exception())
-        } else {
-            Result.success(shoppingList)
-        }
+        return shoppingLists.getShoppingList(uid)
     }
 }
 

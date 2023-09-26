@@ -3,7 +3,6 @@ package ru.sokolovromann.myshopping.data.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
@@ -19,6 +18,7 @@ import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, appConfig)
+                mapping.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
             }
         )
     }
@@ -51,7 +51,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, appConfig)
+                mapping.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.PURCHASES, appConfig)
             }
         )
     }
@@ -62,7 +62,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, appConfig)
+                mapping.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.ARCHIVE, appConfig)
             }
         )
     }
@@ -73,7 +73,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, appConfig)
+                mapping.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.TRASH, appConfig)
             }
         )
     }
@@ -84,7 +84,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, appConfig)
+                mapping.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
             }
         )
     }

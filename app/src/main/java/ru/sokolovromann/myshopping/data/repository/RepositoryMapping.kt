@@ -37,11 +37,13 @@ class RepositoryMapping @Inject constructor() {
     fun toShoppingLists(
         entities: List<ShoppingListEntity>,
         lastPosition: Int?,
+        location: ShoppingLocation?,
         appConfigEntity: AppConfigEntity
     ): ShoppingLists {
         return ShoppingLists(
             shoppingLists = entities.map { toShoppingList(it, appConfigEntity) },
             shoppingListsLastPosition = lastPosition,
+            shoppingLocation = location,
             appConfig = toAppConfig(appConfigEntity)
         )
     }

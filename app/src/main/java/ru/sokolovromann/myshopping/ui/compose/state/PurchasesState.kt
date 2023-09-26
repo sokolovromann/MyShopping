@@ -8,7 +8,6 @@ import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
 import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
-import java.util.UUID
 
 class PurchasesState {
 
@@ -23,17 +22,16 @@ class PurchasesState {
         screenData = PurchasesScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(appConfig: AppConfig) {
-        shoppingLists = ShoppingLists(appConfig = appConfig)
-        val preferences = shoppingLists.appConfig.userPreferences
+    fun showNotFound(shoppingLists: ShoppingLists) {
+        this.shoppingLists = shoppingLists
 
-        val totalText: UiText = if (preferences.displayMoney) {
+        val totalText: UiText = if (shoppingLists.displayMoney()) {
             shoppingLists.calculateTotalToText()
         } else {
             UiText.Nothing
         }
 
-        val multiColumnsText: UiText = if (preferences.shoppingsMultiColumns) {
+        val multiColumnsText: UiText = if (shoppingLists.isMultiColumns()) {
             UiText.FromResources(R.string.shoppingLists_action_disableShoppingsMultiColumns)
         } else {
             UiText.FromResources(R.string.shoppingLists_action_enableShoppingsMultiColumns)
@@ -41,35 +39,31 @@ class PurchasesState {
 
         screenData = PurchasesScreenData(
             screenState = ScreenState.Nothing,
-            displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompleted,
-            coloredCheckbox = preferences.coloredCheckbox,
+            displayProducts = shoppingLists.getDisplayProducts(),
+            displayCompleted = shoppingLists.getDisplayCompleted(),
+            coloredCheckbox = shoppingLists.isColoredCheckbox(),
             totalText = totalText,
             multiColumnsText = multiColumnsText,
-            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize
+            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            displayTotal = shoppingLists.getDisplayTotal(),
+            fontSize = shoppingLists.getFontSize()
         )
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         this.shoppingLists = shoppingLists
-        val preferences = shoppingLists.appConfig.userPreferences
 
-        val totalText: UiText = if (preferences.displayMoney) {
+        val totalText: UiText = if (shoppingLists.displayMoney()) {
             shoppingLists.calculateTotalToText()
         } else {
             UiText.Nothing
         }
 
-        val multiColumnsText: UiText = if (preferences.shoppingsMultiColumns) {
+        val multiColumnsText: UiText = if (shoppingLists.isMultiColumns()) {
             UiText.FromResources(R.string.shoppingLists_action_disableShoppingsMultiColumns)
         } else {
             UiText.FromResources(R.string.shoppingLists_action_enableShoppingsMultiColumns)
         }
-
-        val showHiddenShoppingLists = preferences.displayCompleted == DisplayCompleted.HIDE
-                && shoppingLists.hasHiddenShoppingLists()
 
         val selectedUids = if (savedSelectedUid.isEmpty()) {
             null
@@ -81,16 +75,16 @@ class PurchasesState {
             screenState = ScreenState.Showing,
             pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
             otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
-            displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompleted,
-            coloredCheckbox = preferences.coloredCheckbox,
+            displayProducts = shoppingLists.getDisplayProducts(),
+            displayCompleted = shoppingLists.getDisplayCompleted(),
+            coloredCheckbox = shoppingLists.isColoredCheckbox(),
             totalText = totalText,
-            multiColumns = preferences.shoppingsMultiColumns,
+            multiColumns = shoppingLists.isMultiColumns(),
             multiColumnsText = multiColumnsText,
-            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize,
-            showHiddenShoppingLists = showHiddenShoppingLists,
+            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            displayTotal = shoppingLists.getDisplayTotal(),
+            fontSize = shoppingLists.getFontSize(),
+            showHiddenShoppingLists = shoppingLists.displayHiddenShoppingLists(),
             selectedUids = selectedUids
         )
     }
@@ -112,7 +106,7 @@ class PurchasesState {
 
     fun displayHiddenShoppingLists() {
         screenData = screenData.copy(
-            otherShoppingLists = shoppingLists.getOtherShoppingListItems(DisplayCompleted.LAST),
+            otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
             showHiddenShoppingLists = false
         )
     }
@@ -125,7 +119,7 @@ class PurchasesState {
         val uids = (screenData.selectedUids?.toMutableList() ?: mutableListOf())
             .apply { add(uid) }
 
-        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
+        val totalText = if (shoppingLists.displayMoney()) {
             shoppingLists.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -138,9 +132,9 @@ class PurchasesState {
     }
 
     fun selectAllShoppingLists() {
-        val uids = shoppingLists.shoppingLists.map { it.uid }
+        val uids = shoppingLists.getUids()
 
-        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
+        val totalText = if (shoppingLists.displayMoney()) {
             shoppingLists.calculateTotalToText(uids)
         } else {
             UiText.Nothing
@@ -160,7 +154,7 @@ class PurchasesState {
             .apply { remove(uid) }
         val checkedUids = if (uids.isEmpty()) null else uids
 
-        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
+        val totalText = if (shoppingLists.displayMoney()) {
             if (checkedUids == null) {
                 shoppingLists.calculateTotalToText()
             } else {
@@ -177,7 +171,7 @@ class PurchasesState {
     }
 
     fun unselectAllShoppingLists() {
-        val totalText = if (shoppingLists.appConfig.userPreferences.displayMoney) {
+        val totalText = if (shoppingLists.displayMoney()) {
             shoppingLists.calculateTotalToText()
         } else {
             UiText.Nothing
@@ -207,146 +201,32 @@ class PurchasesState {
     }
 
     fun sortShoppingListsResult(sortBy: SortBy): Result<List<ShoppingList>> {
-        val sortShoppingLists = shoppingLists.shoppingLists.sortShoppingLists(sort = Sort(sortBy))
-        return if (sortShoppingLists.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            val success = sortShoppingLists.mapIndexed { index, shoppingList ->
-                shoppingList.copy(
-                    position = index,
-                    lastModified = System.currentTimeMillis()
-                )
-            }
-            Result.success(success)
-        }
+        val sort = Sort(sortBy)
+        return shoppingLists.sortShoppingLists(sort)
     }
 
     fun reverseSortShoppingListsResult(): Result<List<ShoppingList>> {
-        val sortShoppingLists = shoppingLists.getAllShoppingLists().reversed()
-        return if (sortShoppingLists.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            val success = sortShoppingLists.mapIndexed { index, shoppingList ->
-                shoppingList.copy(
-                    position = index,
-                    lastModified = System.currentTimeMillis()
-                )
-            }
-            Result.success(success)
-        }
+        return shoppingLists.reverseSortShoppingLists()
     }
 
     fun getShoppingListResult(): Result<ShoppingList> {
-        return if (shoppingLists.shoppingListsLastPosition == null) {
-            Result.failure(Exception())
-        } else {
-            val position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0
-            val success = ShoppingList(position = position)
-            Result.success(success)
-        }
+        return shoppingLists.createShoppingList()
     }
 
     fun getCopyShoppingListsResult(): Result<List<ShoppingList>> {
-        return if (screenData.selectedUids == null) {
-            Result.failure(Exception())
-        } else {
-            val success = mutableListOf<ShoppingList>()
-            screenData.selectedUids?.forEach { uid ->
-                val shoppingUid = UUID.randomUUID().toString()
-                val created = System.currentTimeMillis()
-                val selectedShoppingList = shoppingLists.shoppingLists.find { it.uid == uid } ?: ShoppingList()
-                val newShoppingList = selectedShoppingList.copy(
-                    id = 0,
-                    position = shoppingLists.shoppingListsLastPosition?.plus(1) ?: 0,
-                    uid = shoppingUid,
-                    created = created,
-                    lastModified = created,
-                    products = selectedShoppingList.products.map {
-                        it.copy(
-                            id = 0,
-                            shoppingUid = shoppingUid,
-                            productUid = UUID.randomUUID().toString(),
-                            created = created,
-                            lastModified = created
-                        )
-                    }
-                )
-                success.add(newShoppingList)
-            }
-            Result.success(success)
-        }
+        val uids = screenData.selectedUids
+        return shoppingLists.copyShoppingLists(uids)
     }
 
     fun getShoppingListsUpResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
-        val allShoppingList = shoppingLists.getAllShoppingLists()
-        return if (allShoppingList.size < 2) {
-            Result.failure(Exception())
-        } else {
+        return shoppingLists.moveShoppingListUp(uid).onSuccess {
             savedSelectedUid = uid
-
-            var previousIndex = 0
-            var currentIndex = 0
-            for (index in allShoppingList.indices) {
-                val shoppingList = allShoppingList[index]
-                if (currentIndex > 0) {
-                    previousIndex = index - 1
-                }
-                currentIndex = index
-
-                if (shoppingList.uid == uid) {
-                    break
-                }
-            }
-
-            val lastModified = System.currentTimeMillis()
-            val currentShoppingList = allShoppingList[currentIndex].copy(
-                position = allShoppingList[previousIndex].position,
-                lastModified = lastModified
-            )
-            val previousShoppingList = allShoppingList[previousIndex].copy(
-                position = allShoppingList[currentIndex].position,
-                lastModified = lastModified
-            )
-
-            val success = Pair(currentShoppingList, previousShoppingList)
-            Result.success(success)
         }
     }
 
     fun getShoppingListsDownResult(uid: String): Result<Pair<ShoppingList, ShoppingList>> {
-        val allShoppingList = shoppingLists.getAllShoppingLists()
-        return if (allShoppingList.size < 2) {
-            Result.failure(Exception())
-        } else {
+        return shoppingLists.moveShoppingListDown(uid).onSuccess {
             savedSelectedUid = uid
-
-            var currentIndex = 0
-            var nextIndex = 0
-            for (index in allShoppingList.indices) {
-                val shoppingList = allShoppingList[index]
-
-                currentIndex = index
-                if (index < allShoppingList.lastIndex) {
-                    nextIndex = index + 1
-                }
-
-                if (shoppingList.uid == uid) {
-                    break
-                }
-            }
-
-            val lastModified = System.currentTimeMillis()
-            val currentShoppingList = allShoppingList[currentIndex].copy(
-                position = allShoppingList[nextIndex].position,
-                lastModified = lastModified
-            )
-            val nextShoppingList = allShoppingList[nextIndex].copy(
-                position = allShoppingList[currentIndex].position,
-                lastModified = lastModified
-            )
-
-            val success = Pair(currentShoppingList, nextShoppingList)
-            Result.success(success)
         }
     }
 }

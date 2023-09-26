@@ -94,8 +94,8 @@ class ArchiveViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingLists: ShoppingLists
     ) = withContext(dispatchers.main) {
-        if (shoppingLists.shoppingLists.isEmpty()) {
-            archiveState.showNotFound(shoppingLists.appConfig)
+        if (shoppingLists.isShoppingListsEmpty()) {
+            archiveState.showNotFound(shoppingLists)
         } else {
             archiveState.showShoppingLists(shoppingLists)
         }

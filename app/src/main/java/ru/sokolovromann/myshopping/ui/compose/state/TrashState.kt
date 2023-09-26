@@ -17,42 +17,40 @@ class TrashState {
         screenData = TrashScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(appConfig: AppConfig) {
-        shoppingLists = ShoppingLists(appConfig = appConfig)
-        val preferences = shoppingLists.appConfig.userPreferences
+    fun showNotFound(shoppingLists: ShoppingLists) {
+        this.shoppingLists = shoppingLists
 
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
-            displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompleted,
-            coloredCheckbox = preferences.coloredCheckbox,
+            displayProducts = shoppingLists.getDisplayProducts(),
+            displayCompleted = shoppingLists.getDisplayCompleted(),
+            coloredCheckbox = shoppingLists.isColoredCheckbox(),
             showBottomBar = false,
-            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize
+            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            displayTotal = shoppingLists.getDisplayTotal(),
+            fontSize = shoppingLists.getFontSize()
         )
     }
 
     fun showShoppingLists(shoppingLists: ShoppingLists) {
         this.shoppingLists = shoppingLists
-        val preferences = shoppingLists.appConfig.userPreferences
 
-        val shoppingListItems = when (preferences.displayCompleted) {
-            DisplayCompleted.HIDE -> shoppingLists.getAllShoppingListItems(false, DisplayCompleted.LAST)
-            else -> shoppingLists.getAllShoppingListItems(splitByPinned = false)
+        val shoppingListItems = when (shoppingLists.getDisplayCompleted()) {
+            DisplayCompleted.HIDE -> shoppingLists.getAllShoppingListItems()
+            else -> shoppingLists.getAllShoppingListItems()
         }
 
         screenData = TrashScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingListItems,
-            displayProducts = preferences.displayShoppingsProducts,
-            displayCompleted = preferences.displayCompleted,
-            coloredCheckbox = preferences.coloredCheckbox,
-            showBottomBar = preferences.displayMoney,
-            multiColumns = preferences.shoppingsMultiColumns,
-            smartphoneScreen = shoppingLists.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium,
-            displayTotal = preferences.displayTotal,
-            fontSize = preferences.fontSize
+            displayProducts = shoppingLists.getDisplayProducts(),
+            displayCompleted = shoppingLists.getDisplayCompleted(),
+            coloredCheckbox = shoppingLists.isColoredCheckbox(),
+            showBottomBar = shoppingLists.displayMoney(),
+            multiColumns = shoppingLists.isMultiColumns(),
+            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            displayTotal = shoppingLists.getDisplayTotal(),
+            fontSize = shoppingLists.getFontSize()
         )
     }
 
@@ -67,7 +65,7 @@ class TrashState {
     }
 
     fun selectAllShoppingLists() {
-        val uids = shoppingLists.shoppingLists.map { it.uid }
+        val uids = shoppingLists.getUids()
         screenData = screenData.copy(selectedUids = uids)
     }
 
