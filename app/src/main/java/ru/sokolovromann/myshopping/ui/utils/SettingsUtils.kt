@@ -25,12 +25,12 @@ private fun Settings.getGeneralSettingsItems(): List<SettingsItem> {
             uid = SettingsUid.NightTheme,
             titleText = UiText.FromResources(R.string.settings_title_nightTheme),
             bodyText = UiText.FromResources(R.string.settings_body_nightTheme),
-            checked = appConfig.userPreferences.nightTheme
+            checked = isNightTheme()
         ),
         SettingsItem(
             uid = SettingsUid.FontSize,
             titleText = UiText.FromResources(R.string.settings_title_fontSize),
-            bodyText = appConfig.userPreferences.fontSize.toSettingsText()
+            bodyText = getFontSize().toSettingsText()
         ),
         SettingsItem(
             uid = SettingsUid.Backup,
@@ -45,31 +45,31 @@ private fun Settings.getMoneySettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.DisplayMoney,
             titleText = UiText.FromResources(R.string.settings_title_displayMoney),
-            checked = appConfig.userPreferences.displayMoney
+            checked = displayMoney()
         ),
         SettingsItem(
             uid = SettingsUid.Currency,
             titleText = UiText.FromResources(R.string.settings_title_currencySymbol),
             bodyText = UiText.FromResourcesWithArgs(
                 R.string.settings_body_currencySymbol,
-                appConfig.userPreferences.currency.symbol
+                getCurrency().symbol
             )
         ),
         SettingsItem(
             uid = SettingsUid.DisplayCurrencyToLeft,
             titleText = UiText.FromResources(R.string.settings_title_displayCurrencySymbolToLeft),
-            checked = appConfig.userPreferences.currency.displayToLeft
+            checked = getCurrency().displayToLeft
         ),
         SettingsItem(
             uid = SettingsUid.DisplayMoneyZeros,
             titleText = UiText.FromResources(R.string.settings_title_displayMoneyZeros),
             bodyText = UiText.FromResources(R.string.settings_body_displayMoneyZeros),
-            checked = appConfig.userPreferences.moneyDecimalFormat.isDisplayZeros()
+            checked = getMoneyDecimalFormat().isDisplayZeros()
         ),
         SettingsItem(
             uid = SettingsUid.TaxRate,
             titleText = UiText.FromResources(R.string.settings_title_taxRate),
-            bodyText = UiText.FromString(appConfig.userPreferences.taxRate.toString())
+            bodyText = UiText.FromString(getTaxRate().getDisplayValue())
         )
     )
 }
@@ -79,42 +79,42 @@ private fun Settings.getPurchasesSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.DisplayCompletedPurchases,
             titleText = UiText.FromResources(R.string.settings_title_displayCompletedPurchases),
-            bodyText = appConfig.userPreferences.displayCompleted.toPurchasesSettingsText()
+            bodyText = getDisplayCompleted().toPurchasesSettingsText()
         ),
         SettingsItem(
             uid = SettingsUid.EditProductAfterCompleted,
             titleText = UiText.FromResources(R.string.settings_title_editProductAfterCompleted),
             bodyText = UiText.FromResources(R.string.settings_body_editProductAfterCompleted),
-            checked = appConfig.userPreferences.editProductAfterCompleted
+            checked = editProductAfterCompleted()
         ),
         SettingsItem(
             uid = SettingsUid.CompletedWithCheckbox,
             titleText = UiText.FromResources(R.string.settings_title_completedWithCheckbox),
             bodyText = UiText.FromResources(R.string.settings_body_completedWithCheckbox),
-            checked = appConfig.userPreferences.completedWithCheckbox,
+            checked = isCompletedWithCheckbox(),
         ),
         SettingsItem(
             uid = SettingsUid.ColoredCheckbox,
             titleText = UiText.FromResources(R.string.settings_title_coloredCheckbox),
             bodyText = UiText.FromResources(R.string.settings_body_coloredCheckbox),
-            checked = appConfig.userPreferences.coloredCheckbox
+            checked = isColoredCheckbox()
         ),
         SettingsItem(
             uid = SettingsUid.DisplayShoppingsProducts,
             titleText = UiText.FromResources(R.string.settings_title_displayShoppingsProducts),
-            bodyText = appConfig.userPreferences.displayShoppingsProducts.toPurchasesSettingsText()
+            bodyText = getShoppingsProducts().toPurchasesSettingsText()
         ),
         SettingsItem(
             uid = SettingsUid.DisplayOtherFields,
             titleText = UiText.FromResources(R.string.settings_title_displayOtherFields),
             bodyText = UiText.FromResources(R.string.settings_body_displayOtherFields),
-            checked = appConfig.userPreferences.displayOtherFields
+            checked = displayOtherFields()
         ),
         SettingsItem(
             uid = SettingsUid.EnterToSaveProducts,
             titleText = UiText.FromResources(R.string.settings_title_enterToSaveProduct),
             bodyText = UiText.FromResources(R.string.settings_body_enterToSaveProduct),
-            checked = appConfig.userPreferences.enterToSaveProduct
+            checked = isEnterToSaveProduct()
         )
     )
 }
@@ -123,14 +123,14 @@ private fun Settings.getAutocompletesSettingsItems(): List<SettingsItem> {
     val displayDefaultAutocompletes = SettingsItem(
         uid = SettingsUid.DisplayDefaultAutocomplete,
         titleText = UiText.FromResources(R.string.settings_title_displayDefaultAutocompletes),
-        checked = appConfig.userPreferences.displayDefaultAutocompletes
+        checked = displayDefaultAutocompletes()
     )
 
     val saveProductsToAutocompletes = SettingsItem(
         uid = SettingsUid.SaveProductToAutocompletes,
         titleText = UiText.FromResources(R.string.settings_title_saveProductToAutocompletes),
         bodyText = UiText.FromResources(R.string.settings_body_saveProductToAutocompletes),
-        checked = appConfig.userPreferences.saveProductToAutocompletes
+        checked = saveProductToAutocompletes()
     )
 
     return if (Locale.getDefault().isSupported()) {

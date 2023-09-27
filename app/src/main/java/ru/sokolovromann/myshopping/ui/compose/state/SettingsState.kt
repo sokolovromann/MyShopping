@@ -20,17 +20,15 @@ class SettingsState {
 
     fun showSetting(settings: Settings) {
         this.settings = settings
-        val preferences = settings.appConfig.userPreferences
-        val smartphoneScreen = settings.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
 
         screenData = SettingsScreenData(
             screenState = ScreenState.Showing,
             settings = settings.getSettingsItems(),
-            fontSize = preferences.fontSize,
-            displayCompletedPurchases = preferences.displayCompleted,
-            displayShoppingsProducts = preferences.displayShoppingsProducts,
-            multiColumns = !smartphoneScreen,
-            smartphoneScreen = smartphoneScreen
+            fontSize = settings.getFontSize(),
+            displayCompletedPurchases = settings.getDisplayCompleted(),
+            displayShoppingsProducts = settings.getShoppingsProducts(),
+            multiColumns = settings.isMultiColumns(),
+            smartphoneScreen = settings.isSmartphoneScreen()
         )
     }
 
@@ -95,16 +93,7 @@ class SettingsState {
             }
         }
 
-        return if (displayZeros == null) {
-            Result.failure(NullPointerException())
-        } else {
-            val success = UserPreferencesDefaults.getMoneyDecimalFormat().apply {
-                if (displayZeros == true) {
-                    minimumFractionDigits = 0
-                }
-            }
-            return Result.success(success)
-        }
+        return settings.createMoneyDecimalFormat(displayZeros)
     }
 }
 
