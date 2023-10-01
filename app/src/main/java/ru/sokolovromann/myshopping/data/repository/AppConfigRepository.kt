@@ -21,10 +21,7 @@ import ru.sokolovromann.myshopping.data.repository.model.UserPreferencesDefaults
 import java.text.DecimalFormat
 import javax.inject.Inject
 
-class AppConfigRepository @Inject constructor(
-    localDatasource: LocalDatasource,
-    private val mapping: RepositoryMapping
-) {
+class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) {
 
     private val appConfigDao = localDatasource.getAppConfigDao()
     private val resourcesDao = localDatasource.getResourcesDao()
@@ -33,42 +30,42 @@ class AppConfigRepository @Inject constructor(
 
     suspend fun getAppConfig(): Flow<AppConfig> = withContext(dispatcher) {
         return@withContext appConfigDao.getAppConfig().map {
-            mapping.toAppConfig(it)
+            RepositoryMapper.toAppConfig(it)
         }
     }
 
     suspend fun getDefaultCurrency(): Flow<Currency> = withContext(dispatcher) {
         val currency = resourcesDao.getCurrency()
-        val value = mapping.toCurrency(currency.defaultCurrency, currency.displayDefaultCurrencyToLeft)
+        val value = RepositoryMapper.toCurrency(currency.defaultCurrency, currency.displayDefaultCurrencyToLeft)
         return@withContext flowOf(value)
     }
 
     suspend fun getSettings(): Flow<Settings> = withContext(dispatcher) {
         return@withContext appConfigDao.getAppConfig().map {
             val resources = resourcesDao.getSettings()
-            mapping.toSettings(it, resources)
+            RepositoryMapper.toSettings(it, resources)
         }
     }
 
     suspend fun getEditCurrencySymbol(): Flow<EditCurrencySymbol> = withContext(dispatcher) {
         return@withContext appConfigDao.getAppConfig().map{
-            mapping.toEditCurrencySymbol(it)
+            RepositoryMapper.toEditCurrencySymbol(it)
         }
     }
 
     suspend fun getEditTaxRate(): Flow<EditTaxRate> = withContext(dispatcher) {
         return@withContext appConfigDao.getAppConfig().map {
-            mapping.toEditTaxRate(it)
+            RepositoryMapper.toEditTaxRate(it)
         }
     }
 
     suspend fun saveAppConfig(appConfig: AppConfig): Unit = withContext(dispatcher) {
-        val entity = mapping.toAppConfigEntity(appConfig)
+        val entity = RepositoryMapper.toAppConfigEntity(appConfig)
         appConfigDao.saveAppConfig(entity)
     }
 
     suspend fun saveFontSize(fontSize: FontSize): Unit = withContext(dispatcher) {
-        val value = mapping.toFontSizeString(fontSize)
+        val value = RepositoryMapper.toFontSizeString(fontSize)
         appConfigDao.saveFontSize(value)
     }
 
@@ -77,35 +74,35 @@ class AppConfigRepository @Inject constructor(
     }
 
     suspend fun saveTaxRate(taxRate: Money): Unit = withContext(dispatcher) {
-        val value = mapping.toTaxRateValue(taxRate)
+        val value = RepositoryMapper.toTaxRateValue(taxRate)
         appConfigDao.saveTaxRate(value)
     }
 
     suspend fun saveMoneyFractionDigits(decimalFormat: DecimalFormat): Unit = withContext(dispatcher) {
-        val min = mapping.toMinMoneyFractionDigits(decimalFormat)
+        val min = RepositoryMapper.toMinMoneyFractionDigits(decimalFormat)
         appConfigDao.saveMinMoneyFractionDigits(min)
 
-        val max = mapping.toMaxMoneyFractionDigits(decimalFormat)
+        val max = RepositoryMapper.toMaxMoneyFractionDigits(decimalFormat)
         appConfigDao.saveMaxMoneyFractionDigits(max)
     }
 
     suspend fun displayCompleted(displayCompleted: DisplayCompleted): Unit = withContext(dispatcher) {
-        val value = mapping.toDisplayCompletedString(displayCompleted)
+        val value = RepositoryMapper.toDisplayCompletedString(displayCompleted)
         appConfigDao.displayCompleted(value)
     }
 
     suspend fun displayTotal(displayTotal: DisplayTotal): Unit = withContext(dispatcher) {
-        val value = mapping.toDisplayTotalString(displayTotal)
+        val value = RepositoryMapper.toDisplayTotalString(displayTotal)
         appConfigDao.displayTotal(value)
     }
 
     suspend fun displayShoppingsProducts(displayProducts: DisplayProducts): Unit = withContext(dispatcher) {
-        val value = mapping.toDisplayShoppingsProductsString(displayProducts)
+        val value = RepositoryMapper.toDisplayShoppingsProductsString(displayProducts)
         appConfigDao.displayShoppingsProducts(value)
     }
 
     suspend fun lockProductElement(lockProductElement: LockProductElement): Unit = withContext(dispatcher) {
-        val value = mapping.toLockProductString(lockProductElement)
+        val value = RepositoryMapper.toLockProductString(lockProductElement)
         appConfigDao.lockProductElement(value)
     }
 

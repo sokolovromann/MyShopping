@@ -2,12 +2,57 @@ package ru.sokolovromann.myshopping.data.repository
 
 import android.database.Cursor
 import ru.sokolovromann.myshopping.BuildConfig
-import ru.sokolovromann.myshopping.data.local.entity.*
-import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
+import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
+import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
+import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
+import ru.sokolovromann.myshopping.data.local.entity.CodeVersion14UserPreferencesEntity
+import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
+import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
+import ru.sokolovromann.myshopping.data.local.entity.SettingsResourcesEntity
+import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
+import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
+import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
+import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
+import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
+import ru.sokolovromann.myshopping.data.repository.model.AppBuildConfig
+import ru.sokolovromann.myshopping.data.repository.model.AppConfig
+import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
+import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
+import ru.sokolovromann.myshopping.data.repository.model.Backup
+import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
+import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14
+import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14Preferences
+import ru.sokolovromann.myshopping.data.repository.model.Currency
+import ru.sokolovromann.myshopping.data.repository.model.DeviceConfig
+import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
+import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.repository.model.EditCurrencySymbol
+import ru.sokolovromann.myshopping.data.repository.model.EditReminder
+import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
+import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
+import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
+import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
+import ru.sokolovromann.myshopping.data.repository.model.Money
+import ru.sokolovromann.myshopping.data.repository.model.Product
+import ru.sokolovromann.myshopping.data.repository.model.Products
+import ru.sokolovromann.myshopping.data.repository.model.Quantity
+import ru.sokolovromann.myshopping.data.repository.model.Settings
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
+import ru.sokolovromann.myshopping.data.repository.model.Sort
+import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.repository.model.UserPreferences
+import ru.sokolovromann.myshopping.data.repository.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data.repository.model.formatFirst
 import java.text.DecimalFormat
-import javax.inject.Inject
 
-class RepositoryMapping @Inject constructor() {
+object RepositoryMapper {
 
     fun toShoppingEntity(shoppingList: ShoppingList): ShoppingEntity {
         return ShoppingEntity(
@@ -71,6 +116,46 @@ class RepositoryMapping @Inject constructor() {
         return shoppingLists.map { it.uid }
     }
 
+    fun toEditReminder(
+        entity: ShoppingListEntity?,
+        appConfigEntity: AppConfigEntity
+    ): EditReminder {
+        return EditReminder(
+            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
+            appConfig = toAppConfig(appConfigEntity)
+        )
+    }
+
+    fun toEditShoppingListName(
+        entity: ShoppingListEntity?,
+        appConfigEntity: AppConfigEntity
+    ): EditShoppingListName {
+        return EditShoppingListName(
+            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
+            appConfig = toAppConfig(appConfigEntity)
+        )
+    }
+
+    fun toEditShoppingListTotal(
+        entity: ShoppingListEntity?,
+        appConfigEntity: AppConfigEntity
+    ): EditShoppingListTotal {
+        return EditShoppingListTotal(
+            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
+            appConfig = toAppConfig(appConfigEntity)
+        )
+    }
+
+    fun toCalculateChange(
+        entity: ShoppingListEntity?,
+        appConfigEntity: AppConfigEntity
+    ): CalculateChange {
+        return CalculateChange(
+            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
+            appConfig = toAppConfig(appConfigEntity)
+        )
+    }
+
     fun toProductEntity(product: Product): ProductEntity {
         return ProductEntity(
             id = product.id,
@@ -107,54 +192,6 @@ class RepositoryMapping @Inject constructor() {
     fun toProductEntitiesFromShoppingLists(shoppingLists: List<ShoppingList>): List<ProductEntity> {
         val products = shoppingLists.map { it.products }
         return products.flatten().map { toProductEntity(it) }
-    }
-
-    fun toProduct(entity: ProductEntity, appConfigEntity: AppConfigEntity): Product {
-        val userPreferences = appConfigEntity.userPreferences
-        return Product(
-            id = entity.id,
-            position = entity.position,
-            productUid = entity.productUid,
-            shoppingUid = entity.shoppingUid,
-            created = entity.created,
-            lastModified = entity.lastModified,
-            name = entity.name,
-            quantity = toQuantity(
-                entity.quantity,
-                entity.quantitySymbol,
-                toQuantityDecimalFormat(
-                    appConfigEntity.userPreferences.minQuantityFractionDigits,
-                    appConfigEntity.userPreferences.maxQuantityFractionDigits
-                )
-            ),
-            price = toMoney(
-                value = entity.price,
-                userPreferences = userPreferences
-            ),
-            discount = toMoney(
-                value = entity.discount,
-                asPercent = entity.discountAsPercent,
-                userPreferences = userPreferences
-            ),
-            taxRate = toMoney(
-                value = userPreferences.taxRate,
-                asPercent = userPreferences.taxRateAsPercent,
-                userPreferences = userPreferences
-            ),
-            total = toMoney(
-                value = entity.total,
-                userPreferences = userPreferences
-            ),
-            totalFormatted = entity.totalFormatted,
-            note = entity.note,
-            manufacturer = entity.manufacturer,
-            brand = entity.brand,
-            size = entity.size,
-            color = entity.color,
-            provider = entity.provider,
-            completed = entity.completed,
-            pinned = entity.pinned
-        )
     }
 
     fun toProducts(
@@ -265,6 +302,20 @@ class RepositoryMapping @Inject constructor() {
         return autocompletes.toList()
     }
 
+    fun toAutocompleteEntities(autocompletes: List<Autocomplete>): List<AutocompleteEntity> {
+        return autocompletes.map { toAutocompleteEntity(it) }
+    }
+
+    fun toAddEditAutocomplete(
+        entity: AutocompleteEntity?,
+        appConfigEntity: AppConfigEntity
+    ): AddEditAutocomplete {
+        return AddEditAutocomplete(
+            autocomplete = if (entity == null) null else toAutocomplete(entity, appConfigEntity),
+            appConfig = toAppConfig(appConfigEntity)
+        )
+    }
+
     fun toSettings(
         appConfigEntity: AppConfigEntity,
         resourcesEntity: SettingsResourcesEntity
@@ -288,46 +339,6 @@ class RepositoryMapping @Inject constructor() {
 
     fun toEditTaxRate(appConfigEntity: AppConfigEntity): EditTaxRate {
         return EditTaxRate(
-            appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    fun toEditReminder(
-        entity: ShoppingListEntity?,
-        appConfigEntity: AppConfigEntity
-    ): EditReminder {
-        return EditReminder(
-            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
-            appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    fun toEditShoppingListName(
-        entity: ShoppingListEntity?,
-        appConfigEntity: AppConfigEntity
-    ): EditShoppingListName {
-        return EditShoppingListName(
-            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
-            appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    fun toEditShoppingListTotal(
-        entity: ShoppingListEntity?,
-        appConfigEntity: AppConfigEntity
-    ): EditShoppingListTotal {
-        return EditShoppingListTotal(
-            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
-            appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    fun toCalculateChange(
-        entity: ShoppingListEntity?,
-        appConfigEntity: AppConfigEntity
-    ): CalculateChange {
-        return CalculateChange(
-            shoppingList = if (entity == null) null else toShoppingList(entity, appConfigEntity),
             appConfig = toAppConfig(appConfigEntity)
         )
     }
@@ -369,48 +380,119 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toShoppingEntities(backup: Backup): List<ShoppingEntity> {
-        return backup.shoppingLists.map { toShoppingEntity(it) }
-    }
-
-    fun toProductEntities(backup: Backup): List<ProductEntity> {
-        return backup.products.map { toProductEntity(it) }
-    }
-
-    fun toAutocompleteEntities(backup: Backup): List<AutocompleteEntity> {
-        return backup.autocompletes.map { toAutocompleteEntity(it) }
-    }
-
-    fun toAutocompleteEntities(autocompletes: List<Autocomplete>): List<AutocompleteEntity> {
-        return autocompletes.map { toAutocompleteEntity(it) }
-    }
-
-    fun toFontSizeName(fontSize: FontSize): String {
-        return fontSize.name
-    }
-
-    fun toDisplayCompletedName(displayCompleted: DisplayCompleted): String {
-        return displayCompleted.name
-    }
-
-    fun toDisplayTotalName(displayTotal: DisplayTotal): String {
-        return displayTotal.name
-    }
-
-    fun toLockProductElementName(lockProductElement: LockProductElement): String {
-        return lockProductElement.name
-    }
-
     fun toMoneyValue(money: Money): Float {
         return money.value
     }
 
-    fun toDisplayProductsName(displayProducts: DisplayProducts): String {
-        return displayProducts.name
-    }
-
     fun toSortByName(sortBy: SortBy): String {
         return sortBy.name
+    }
+
+    fun toAppConfig(entity: AppConfigEntity): AppConfig {
+        return AppConfig(
+            deviceConfig = toDeviceConfig(entity.deviceConfig),
+            appBuildConfig = toAppBuildConfig(entity.appBuildConfig),
+            userPreferences = toUserPreferences(entity.userPreferences)
+        )
+    }
+
+    fun toAppConfigEntity(appConfig: AppConfig): AppConfigEntity {
+        return AppConfigEntity(
+            deviceConfig = toDeviceConfigEntity(appConfig.deviceConfig),
+            appBuildConfig = toAppBuildConfigEntity(appConfig.appBuildConfig),
+            userPreferences = toUserPreferencesEntity(appConfig.userPreferences)
+        )
+    }
+
+    fun toFontSizeString(value: FontSize): String {
+        return value.toString()
+    }
+
+    fun toDisplayCompletedString(value: DisplayCompleted): String {
+        return value.toString()
+    }
+
+    fun toDisplayTotalString(displayTotal: DisplayTotal): String {
+        return displayTotal.toString()
+    }
+
+    fun toDisplayShoppingsProductsString(value: DisplayProducts): String {
+        return value.toString()
+    }
+
+    fun toLockProductString(value: LockProductElement): String {
+        return value.toString()
+    }
+
+    fun toCurrency(symbol: String?, displayToLeft: Boolean?): Currency {
+        return if (symbol == null || displayToLeft == null) {
+            UserPreferencesDefaults.CURRENCY
+        } else {
+            Currency(symbol, displayToLeft)
+        }
+    }
+
+    fun toMinMoneyFractionDigits(value: DecimalFormat): Int {
+        return value.minimumFractionDigits
+    }
+
+    fun toMaxMoneyFractionDigits(value: DecimalFormat): Int {
+        return value.maximumFractionDigits
+    }
+
+    fun toCodeVersion14(
+        shoppingListsCursor: Cursor,
+        productsCursor: Cursor,
+        autocompletesCursor: Cursor,
+        defaultAutocompleteNames: List<String>,
+        preferences: CodeVersion14UserPreferencesEntity
+    ): CodeVersion14 {
+        val shoppingLists = mutableListOf<ShoppingList>()
+        val autocompletes = mutableListOf<Autocomplete>()
+        while (shoppingListsCursor.moveToNext()) {
+            val shoppingList = toShoppingList(shoppingListsCursor)
+
+            val products = mutableListOf<Product>()
+            while (productsCursor.moveToNext()) {
+                val product = toProduct(productsCursor, preferences)
+                if (product.shoppingUid == shoppingList.uid) {
+                    products.add(product)
+
+                    if (preferences.saveProductToAutocompletes == true) {
+                        val personal = isPersonalAutocomplete(defaultAutocompleteNames, product.name)
+                        val autocomplete = toAutocomplete(product, personal)
+                        autocompletes.add(autocomplete)
+                    }
+                }
+            }
+            shoppingLists.add(
+                shoppingList.copy(
+                    products = products.formatAppVersion14Products(
+                        preferences.sort ?: 0,
+                        preferences.firstLetterUppercase ?: false
+                    )
+                )
+            )
+
+            productsCursor.moveToFirst()
+        }
+
+        while (autocompletesCursor.moveToNext()) {
+            val autocompleteFromCursor = toAutocomplete(autocompletesCursor)
+            val autocomplete = autocompleteFromCursor.copy(
+                personal = isPersonalAutocomplete(defaultAutocompleteNames, autocompleteFromCursor.name)
+            )
+            autocompletes.add(autocomplete)
+        }
+
+        return CodeVersion14(
+            shoppingLists = shoppingLists.formatAppVersion14ShoppingLists(
+                preferences.sort ?: 0,
+                preferences.firstLetterUppercase ?: false
+            ).toList(),
+            autocompletes = autocompletes.toList(),
+            preferences = toCodeVersion14Preferences(preferences)
+        )
     }
 
     private fun toShoppingList(
@@ -478,56 +560,56 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    private fun toShoppingList(cursor: Cursor): ShoppingList {
-        val id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"))
-        val name = cursor.getString(cursor.getColumnIndexOrThrow("listname"))
-        val alarm = cursor.getLong(cursor.getColumnIndexOrThrow("alarm"))
-
-        return ShoppingList(
-            id = id.toInt(),
-            position = cursor.position,
-            uid = toAppVersion14ShoppingUid(id),
-            name = name,
-            reminder = toReminder(alarm)
-        )
+    private fun toShoppingLocation(archived: Boolean, deleted: Boolean): ShoppingLocation {
+        return ShoppingLocation.create(archived, deleted)
     }
 
-    private fun toProduct(cursor: Cursor, preferences: CodeVersion14UserPreferencesEntity): Product {
-        val listId = cursor.getLong(cursor.getColumnIndexOrThrow("listid"))
-        val name = cursor.getString(cursor.getColumnIndexOrThrow("goodsname"))
-        val number = cursor.getString(cursor.getColumnIndexOrThrow("number"))
-        val numberMeasure = cursor.getString(cursor.getColumnIndexOrThrow("numbermeasure"))
-        val priceMeasure = cursor.getFloat(cursor.getColumnIndexOrThrow("pricemeasure"))
-        val buy = cursor.getInt(cursor.getColumnIndexOrThrow("goodsbuy"))
-
-        val quantity = Quantity(
-            value = number.toFloatOrNull() ?: 0f,
-            symbol = numberMeasure.replace(".", "")
-        )
-        val price = Money(value = priceMeasure)
-        val taxRate = toMoney(
-            value = preferences.taxRate,
-            asPercent = true,
-            userPreferences = preferences
-        )
-        val total = Money(value = quantity.value * price.value)
-
+    private fun toProduct(entity: ProductEntity, appConfigEntity: AppConfigEntity): Product {
+        val userPreferences = appConfigEntity.userPreferences
         return Product(
-            position = cursor.position,
-            shoppingUid = toAppVersion14ShoppingUid(listId),
-            name = name,
-            quantity = quantity,
-            price = price,
-            taxRate = taxRate,
-            total = total,
-            totalFormatted = false,
-            completed = toAppVersion14Completed(buy)
+            id = entity.id,
+            position = entity.position,
+            productUid = entity.productUid,
+            shoppingUid = entity.shoppingUid,
+            created = entity.created,
+            lastModified = entity.lastModified,
+            name = entity.name,
+            quantity = toQuantity(
+                entity.quantity,
+                entity.quantitySymbol,
+                toQuantityDecimalFormat(
+                    appConfigEntity.userPreferences.minQuantityFractionDigits,
+                    appConfigEntity.userPreferences.maxQuantityFractionDigits
+                )
+            ),
+            price = toMoney(
+                value = entity.price,
+                userPreferences = userPreferences
+            ),
+            discount = toMoney(
+                value = entity.discount,
+                asPercent = entity.discountAsPercent,
+                userPreferences = userPreferences
+            ),
+            taxRate = toMoney(
+                value = userPreferences.taxRate,
+                asPercent = userPreferences.taxRateAsPercent,
+                userPreferences = userPreferences
+            ),
+            total = toMoney(
+                value = entity.total,
+                userPreferences = userPreferences
+            ),
+            totalFormatted = entity.totalFormatted,
+            note = entity.note,
+            manufacturer = entity.manufacturer,
+            brand = entity.brand,
+            size = entity.size,
+            color = entity.color,
+            provider = entity.provider,
+            completed = entity.completed,
+            pinned = entity.pinned
         )
-    }
-
-    private fun toAutocomplete(cursor: Cursor): Autocomplete {
-        val name = cursor.getString(cursor.getColumnIndexOrThrow("completename"))
-        return Autocomplete(name = name)
     }
 
     private fun toAutocomplete(product: Product, personal: Boolean): Autocomplete {
@@ -547,8 +629,86 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    private fun toShoppingLocation(archived: Boolean, deleted: Boolean): ShoppingLocation {
-        return ShoppingLocation.create(archived, deleted)
+    private fun isPersonalAutocomplete(defaultNames: List<String>, search: String): Boolean {
+        return defaultNames.find { it.equals(search, true) } == null
+    }
+
+    private fun toAutocomplete(entity: AutocompleteEntity, appConfigEntity: AppConfigEntity): Autocomplete {
+        val userPreferences = appConfigEntity.userPreferences
+        return Autocomplete(
+            id = entity.id,
+            uid = entity.uid,
+            created = entity.created,
+            lastModified = entity.lastModified,
+            name = entity.name,
+            quantity = toQuantity(
+                entity.quantity,
+                entity.quantitySymbol,
+                toQuantityDecimalFormat(
+                    appConfigEntity.userPreferences.minQuantityFractionDigits,
+                    appConfigEntity.userPreferences.maxQuantityFractionDigits
+                )
+            ),
+            price = toMoney(
+                value = entity.price,
+                userPreferences = userPreferences
+            ),
+            discount = toMoney(
+                value = entity.discount,
+                asPercent = entity.discountAsPercent,
+                userPreferences = userPreferences
+            ),
+            taxRate = toMoney(
+                value = entity.taxRate,
+                asPercent = entity.taxRateAsPercent,
+                userPreferences = userPreferences
+            ),
+            total = toMoney(
+                value = entity.total,
+                userPreferences = userPreferences
+            ),
+            manufacturer = entity.manufacturer,
+            brand = entity.brand,
+            size = entity.size,
+            color = entity.color,
+            provider = entity.provider,
+            personal = entity.personal,
+            language = entity.language
+        )
+    }
+
+    private fun toMoney(
+        value: Float?,
+        asPercent: Boolean? = null,
+        userPreferences: UserPreferencesEntity
+    ): Money {
+        return Money(
+            value = value ?: 0f,
+            currency = toCurrency(
+                userPreferences.currency,
+                userPreferences.displayCurrencyToLeft
+            ),
+            asPercent = asPercent ?: false,
+            decimalFormat = toMoneyDecimalFormat(
+                userPreferences.minMoneyFractionDigits,
+                userPreferences.maxMoneyFractionDigits
+            )
+        )
+    }
+
+    private fun toMoney(
+        value: Float?,
+        asPercent: Boolean? = null,
+        userPreferences: CodeVersion14UserPreferencesEntity
+    ): Money {
+        return Money(
+            value = value ?: 0f,
+            currency = toCurrency(
+                userPreferences.currency,
+                userPreferences.displayCurrencyToLeft
+            ),
+            asPercent = asPercent ?: false
+        )
     }
 
     private fun toQuantity(value: Float, symbol: String, decimalFormat: DecimalFormat): Quantity {
@@ -614,10 +774,6 @@ class RepositoryMapping @Inject constructor() {
         return reminder ?: 0L
     }
 
-    private fun toDisplayProducts(name: String): DisplayProducts {
-        return DisplayProducts.valueOfOrDefault(name)
-    }
-
     private fun toCompleted(entities: List<ProductEntity>): Boolean {
         return if (entities.isEmpty()) {
             false
@@ -626,186 +782,30 @@ class RepositoryMapping @Inject constructor() {
         }
     }
 
-    private fun isPersonalAutocomplete(defaultNames: List<String>, search: String): Boolean {
-        return defaultNames.find { it.equals(search, true) } == null
-    }
-
-    private fun toAppVersion14ShoppingUid(listId: Long): String {
-        return listId.toString()
-    }
-
     private fun toAppVersion14Completed(buy: Int): Boolean {
         val completed = 2130837592
         return buy == completed
     }
 
-    private fun List<ShoppingList>.formatAppVersion14ShoppingLists(
-        sort: Int,
-        firstLetterUppercase: Boolean
-    ): List<ShoppingList> {
-        return when (sort) {
-            1, 3 -> this.sortedBy { it.name }
-            2, 4 -> this.sortedBy { it.calculateTotal().value }
-            else -> this.sortedBy { it.id }
-        }.withIndex().map {
-            it.value.copy(
-                position = it.index,
-                name = it.value.name.formatFirst(firstLetterUppercase)
-            )
-        }
-    }
-
-    private fun List<Product>.formatAppVersion14Products(
-        sort: Int,
-        firstLetterUppercase: Boolean
-    ): List<Product> {
-        return when (sort) {
-            1, 3 -> this.sortedBy { it.name }
-            2, 4 -> this.sortedBy { it.total.value }
-            else -> this.sortedBy { it.id }
-        }.withIndex().map {
-            it.value.copy(
-                position = it.index,
-                name = it.value.name.formatFirst(firstLetterUppercase)
-            )
-        }
-    }
-
-    // -----
-    // MONEY
-    // -----
-
-    fun toMoney(
-        value: Float?,
-        asPercent: Boolean? = null,
-        userPreferences: UserPreferencesEntity
-    ): Money {
-        return Money(
-            value = value ?: 0f,
-            currency = toCurrency(
-                userPreferences.currency,
-                userPreferences.displayCurrencyToLeft
-            ),
-            asPercent = asPercent ?: false,
-            decimalFormat = toMoneyDecimalFormat(
-                userPreferences.minMoneyFractionDigits,
-                userPreferences.maxMoneyFractionDigits
-            )
-        )
-    }
-
-    fun toMoney(
-        value: Float?,
-        asPercent: Boolean? = null,
-        userPreferences: CodeVersion14UserPreferencesEntity
-    ): Money {
-        return Money(
-            value = value ?: 0f,
-            currency = toCurrency(
-                userPreferences.currency,
-                userPreferences.displayCurrencyToLeft
-            ),
-            asPercent = asPercent ?: false
-        )
-    }
-
-    //
-    // AUTOCOMPLETES
-    //
-
-    fun toAddEditAutocomplete(
-        entity: AutocompleteEntity?,
-        appConfigEntity: AppConfigEntity
-    ): AddEditAutocomplete {
-        return AddEditAutocomplete(
-            autocomplete = if (entity == null) null else toAutocomplete(entity, appConfigEntity),
-            appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    fun toAutocomplete(entity: AutocompleteEntity, appConfigEntity: AppConfigEntity): Autocomplete {
-        val userPreferences = appConfigEntity.userPreferences
-        return Autocomplete(
-            id = entity.id,
-            uid = entity.uid,
-            created = entity.created,
-            lastModified = entity.lastModified,
-            name = entity.name,
-            quantity = toQuantity(
-                entity.quantity,
-                entity.quantitySymbol,
-                toQuantityDecimalFormat(
-                    appConfigEntity.userPreferences.minQuantityFractionDigits,
-                    appConfigEntity.userPreferences.maxQuantityFractionDigits
-                )
-            ),
-            price = toMoney(
-                value = entity.price,
-                userPreferences = userPreferences
-            ),
-            discount = toMoney(
-                value = entity.discount,
-                asPercent = entity.discountAsPercent,
-                userPreferences = userPreferences
-            ),
-            taxRate = toMoney(
-                value = entity.taxRate,
-                asPercent = entity.taxRateAsPercent,
-                userPreferences = userPreferences
-            ),
-            total = toMoney(
-                value = entity.total,
-                userPreferences = userPreferences
-            ),
-            manufacturer = entity.manufacturer,
-            brand = entity.brand,
-            size = entity.size,
-            color = entity.color,
-            provider = entity.provider,
-            personal = entity.personal,
-            language = entity.language
-        )
-    }
-
-    // ----------
-    // APP CONFIG
-    // ----------
-
-    fun toAppConfig(entity: AppConfigEntity): AppConfig {
-        return AppConfig(
-            deviceConfig = toDeviceConfig(entity.deviceConfig),
-            appBuildConfig = toAppBuildConfig(entity.appBuildConfig),
-            userPreferences = toUserPreferences(entity.userPreferences)
-        )
-    }
-
-    fun toAppConfigEntity(appConfig: AppConfig): AppConfigEntity {
-        return AppConfigEntity(
-            deviceConfig = toDeviceConfigEntity(appConfig.deviceConfig),
-            appBuildConfig = toAppBuildConfigEntity(appConfig.appBuildConfig),
-            userPreferences = toUserPreferencesEntity(appConfig.userPreferences)
-        )
-    }
-
-    fun toDeviceConfig(entity: DeviceConfigEntity): DeviceConfig {
+    private fun toDeviceConfig(entity: DeviceConfigEntity): DeviceConfig {
         return DeviceConfig(
             screenWidthDp = toScreenDp(entity.screenWidthDp),
             screenHeightDp = toScreenDp(entity.screenHeightDp)
         )
     }
 
-    fun toScreenDp(value: Int?): Int {
+    private fun toScreenDp(value: Int?): Int {
         return value ?: DeviceConfig.UNKNOWN_SIZE_DP
     }
 
-    fun toDeviceConfigEntity(deviceConfig: DeviceConfig): DeviceConfigEntity {
+    private fun toDeviceConfigEntity(deviceConfig: DeviceConfig): DeviceConfigEntity {
         return DeviceConfigEntity(
             screenWidthDp = deviceConfig.screenWidthDp,
             screenHeightDp = deviceConfig.screenHeightDp
         )
     }
 
-    fun toAppBuildConfig(entity: AppBuildConfigEntity): AppBuildConfig {
+    private fun toAppBuildConfig(entity: AppBuildConfigEntity): AppBuildConfig {
         return AppBuildConfig(
             appId = BuildConfig.APPLICATION_ID,
             appVersionName = BuildConfig.VERSION_NAME,
@@ -817,7 +817,7 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toUserCodeVersion(userCodeVersion: Int?, appFirstTime: String?, fromCodeVersion14: Boolean?): Int {
+    private fun toUserCodeVersion(userCodeVersion: Int?, appFirstTime: String?, fromCodeVersion14: Boolean?): Int {
         return userCodeVersion ?: if (appFirstTime == "NOTHING") {
             AppBuildConfig.CODE_VERSION_18
         } else {
@@ -829,14 +829,14 @@ class RepositoryMapping @Inject constructor() {
         }
     }
 
-    fun toAppBuildConfigEntity(appBuildConfig: AppBuildConfig): AppBuildConfigEntity {
+    private fun toAppBuildConfigEntity(appBuildConfig: AppBuildConfig): AppBuildConfigEntity {
         return AppBuildConfigEntity(
             appFirstTime = "",
             userCodeVersion = appBuildConfig.userCodeVersion
         )
     }
 
-    fun toUserPreferences(entity: UserPreferencesEntity): UserPreferences {
+    private fun toUserPreferences(entity: UserPreferencesEntity): UserPreferences {
         return UserPreferences(
             nightTheme = toNightTheme(entity.nightTheme),
             fontSize = toFontSize(entity.fontSize),
@@ -870,7 +870,7 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toUserPreferencesEntity(userPreferences: UserPreferences): UserPreferencesEntity {
+    private fun toUserPreferencesEntity(userPreferences: UserPreferences): UserPreferencesEntity {
         return UserPreferencesEntity(
             nightTheme = userPreferences.nightTheme,
             fontSize = toFontSizeString(userPreferences.fontSize),
@@ -904,119 +904,91 @@ class RepositoryMapping @Inject constructor() {
         )
     }
 
-    fun toNightTheme(value: Boolean?): Boolean {
+    private fun toNightTheme(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.NIGHT_THEME
     }
 
-    fun toFontSize(value: String?): FontSize {
+    private fun toFontSize(value: String?): FontSize {
         return FontSize.valueOfOrDefault(value)
     }
 
-    fun toFontSizeString(value: FontSize): String {
-        return value.toString()
-    }
-
-    fun toMultiColumns(value: Boolean?): Boolean {
+    private fun toMultiColumns(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.MULTI_COLUMNS
     }
 
-    fun toDisplayCompleted(value: String?): DisplayCompleted {
+    private fun toDisplayCompleted(value: String?): DisplayCompleted {
         return DisplayCompleted.valueOfOrDefault(value)
     }
 
-    fun toDisplayCompletedString(value: DisplayCompleted): String {
-        return value.toString()
-    }
-
-    fun toDisplayTotal(value: String?): DisplayTotal {
+    private fun toDisplayTotal(value: String?): DisplayTotal {
         return DisplayTotal.valueOfOrDefault(value)
     }
 
-    fun toDisplayTotalString(displayTotal: DisplayTotal): String {
-        return displayTotal.toString()
-    }
-
-    fun toDisplayOtherFields(value: Boolean?): Boolean {
+    private fun toDisplayOtherFields(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.DISPLAY_OTHER_FIELDS
     }
 
-    fun toColoredCheckbox(value: Boolean?): Boolean {
+    private fun toColoredCheckbox(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.COLORED_CHECKBOX
     }
 
-    fun toDisplayShoppingsProducts(value: String?): DisplayProducts {
+    private fun toDisplayShoppingsProducts(value: String?): DisplayProducts {
         return DisplayProducts.valueOfOrDefault(value)
     }
 
-    fun toDisplayShoppingsProductsString(value: DisplayProducts): String {
-        return value.toString()
-    }
-
-    fun toPurchasesSeparator(value: String?): String {
+    private fun toPurchasesSeparator(value: String?): String {
         return value ?: UserPreferencesDefaults.PURCHASES_SEPARATOR
     }
 
-    fun toEditProductAfterCompleted(value: Boolean?): Boolean {
+    private fun toEditProductAfterCompleted(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.EDIT_PRODUCT_AFTER_COMPLETED
     }
 
-    fun toLockProductElement(value: String?): LockProductElement {
+    private fun toLockProductElement(value: String?): LockProductElement {
         return LockProductElement.valueOfOrDefault(value)
     }
 
-    fun toLockProductString(value: LockProductElement): String {
-        return value.toString()
-    }
-
-    fun toCompletedWithCheckbox(value: Boolean?): Boolean {
+    private fun toCompletedWithCheckbox(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.COMPLETED_WITH_CHECKBOX
     }
 
-    fun toEnterToSaveProduct(value: Boolean?): Boolean {
+    private fun toEnterToSaveProduct(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.ENTER_TO_SAVE_PRODUCTS
     }
 
-    fun toDisplayDefaultAutocompletes(value: Boolean?): Boolean {
+    private fun toDisplayDefaultAutocompletes(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.DISPLAY_DEFAULT_AUTOCOMPLETES
     }
 
-    fun toMaxAutocompleteNames(value: Int?): Int {
+    private fun toMaxAutocompleteNames(value: Int?): Int {
         return value ?: UserPreferencesDefaults.MAX_AUTOCOMPLETES_NAMES
     }
 
-    fun toMaxAutocompleteQuantities(value: Int?): Int {
+    private fun toMaxAutocompleteQuantities(value: Int?): Int {
         return value ?: UserPreferencesDefaults.MAX_AUTOCOMPLETES_QUANTITIES
     }
 
-    fun toMaxAutocompleteMoneys(value: Int?): Int {
+    private fun toMaxAutocompleteMoneys(value: Int?): Int {
         return value ?: UserPreferencesDefaults.MAX_AUTOCOMPLETES_MONEYS
     }
 
-    fun toMaxAutocompleteOthers(value: Int?): Int {
+    private fun toMaxAutocompleteOthers(value: Int?): Int {
         return value ?: UserPreferencesDefaults.MAX_AUTOCOMPLETES_OTHERS
     }
 
-    fun toSaveProductToAutocompletes(value: Boolean?): Boolean {
+    private fun toSaveProductToAutocompletes(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.SAVE_PRODUCT_TO_AUTOCOMPLETES
     }
 
-    fun toDisplayMoney(value: Boolean?): Boolean {
+    private fun toDisplayMoney(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.DISPLAY_MONEY
     }
 
-    fun toCurrency(symbol: String?, displayToLeft: Boolean?): Currency {
-        return if (symbol == null || displayToLeft == null) {
-            UserPreferencesDefaults.CURRENCY
-        } else {
-            Currency(symbol, displayToLeft)
-        }
-    }
-
-    fun toCurrencySymbol(value: Currency): String {
+    private fun toCurrencySymbol(value: Currency): String {
         return value.symbol
     }
 
-    fun toCurrencyDisplayToLeft(value: Currency): Boolean {
+    private fun toCurrencyDisplayToLeft(value: Currency): Boolean {
         return value.displayToLeft
     }
 
@@ -1024,108 +996,97 @@ class RepositoryMapping @Inject constructor() {
         return value.value
     }
 
-    fun toTaxRateAsPercent(value: Money): Boolean {
+    private fun toTaxRateAsPercent(value: Money): Boolean {
         return value.asPercent
     }
 
-    fun toDiscountValue(value: Money): Float {
+    private fun toDiscountValue(value: Money): Float {
         return value.value
     }
 
-    fun toDiscountAsPercent(value: Money): Boolean {
+    private fun toDiscountAsPercent(value: Money): Boolean {
         return value.asPercent
     }
 
-    fun toMoneyDecimalFormat(minFractionDigits: Int?, maxFractionDigits: Int?): DecimalFormat {
+    private fun toMoneyDecimalFormat(minFractionDigits: Int?, maxFractionDigits: Int?): DecimalFormat {
         return UserPreferencesDefaults.getMoneyDecimalFormat().apply {
             minFractionDigits?.let { minimumFractionDigits = it }
             maxFractionDigits?.let { maximumFractionDigits = it }
         }
     }
 
-    fun toMinMoneyFractionDigits(value: DecimalFormat): Int {
-        return value.minimumFractionDigits
-    }
-
-    fun toMaxMoneyFractionDigits(value: DecimalFormat): Int {
-        return value.maximumFractionDigits
-    }
-
-    fun toQuantityDecimalFormat(minFractionDigits: Int?, maxFractionDigits: Int?): DecimalFormat {
+    private fun toQuantityDecimalFormat(minFractionDigits: Int?, maxFractionDigits: Int?): DecimalFormat {
         return UserPreferencesDefaults.getQuantityDecimalFormat().apply {
             minFractionDigits?.let { minimumFractionDigits = it }
             maxFractionDigits?.let { maximumFractionDigits = it }
         }
     }
 
-    fun toMinQuantityFractionDigits(decimalFormat: DecimalFormat): Int {
+    private fun toMinQuantityFractionDigits(decimalFormat: DecimalFormat): Int {
         return decimalFormat.minimumFractionDigits
     }
 
-    fun toMaxQuantityFractionDigits(decimalFormat: DecimalFormat): Int {
+    private fun toMaxQuantityFractionDigits(decimalFormat: DecimalFormat): Int {
         return decimalFormat.maximumFractionDigits
     }
 
-    //
-    // CODE VERSION 14
-    //
+    private fun toAppVersion14ShoppingUid(listId: Long): String {
+        return listId.toString()
+    }
 
-    fun toCodeVersion14(
-        shoppingListsCursor: Cursor,
-        productsCursor: Cursor,
-        autocompletesCursor: Cursor,
-        defaultAutocompleteNames: List<String>,
-        preferences: CodeVersion14UserPreferencesEntity
-    ): CodeVersion14 {
-        val shoppingLists = mutableListOf<ShoppingList>()
-        val autocompletes = mutableListOf<Autocomplete>()
-        while (shoppingListsCursor.moveToNext()) {
-            val shoppingList = toShoppingList(shoppingListsCursor)
+    private fun toShoppingList(cursor: Cursor): ShoppingList {
+        val id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"))
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("listname"))
+        val alarm = cursor.getLong(cursor.getColumnIndexOrThrow("alarm"))
 
-            val products = mutableListOf<Product>()
-            while (productsCursor.moveToNext()) {
-                val product = toProduct(productsCursor, preferences)
-                if (product.shoppingUid == shoppingList.uid) {
-                    products.add(product)
-
-                    if (preferences.saveProductToAutocompletes == true) {
-                        val personal = isPersonalAutocomplete(defaultAutocompleteNames, product.name)
-                        val autocomplete = toAutocomplete(product, personal)
-                        autocompletes.add(autocomplete)
-                    }
-                }
-            }
-            shoppingLists.add(
-                shoppingList.copy(
-                    products = products.formatAppVersion14Products(
-                        preferences.sort ?: 0,
-                        preferences.firstLetterUppercase ?: false
-                    )
-                )
-            )
-
-            productsCursor.moveToFirst()
-        }
-
-        while (autocompletesCursor.moveToNext()) {
-            val autocompleteFromCursor = toAutocomplete(autocompletesCursor)
-            val autocomplete = autocompleteFromCursor.copy(
-                personal = isPersonalAutocomplete(defaultAutocompleteNames, autocompleteFromCursor.name)
-            )
-            autocompletes.add(autocomplete)
-        }
-
-        return CodeVersion14(
-            shoppingLists = shoppingLists.formatAppVersion14ShoppingLists(
-                preferences.sort ?: 0,
-                preferences.firstLetterUppercase ?: false
-            ).toList(),
-            autocompletes = autocompletes.toList(),
-            preferences = toCodeVersion14Preferences(preferences)
+        return ShoppingList(
+            id = id.toInt(),
+            position = cursor.position,
+            uid = toAppVersion14ShoppingUid(id),
+            name = name,
+            reminder = toReminder(alarm)
         )
     }
 
-    fun toCodeVersion14Preferences(entity: CodeVersion14UserPreferencesEntity): CodeVersion14Preferences {
+    private fun toProduct(cursor: Cursor, preferences: CodeVersion14UserPreferencesEntity): Product {
+        val listId = cursor.getLong(cursor.getColumnIndexOrThrow("listid"))
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("goodsname"))
+        val number = cursor.getString(cursor.getColumnIndexOrThrow("number"))
+        val numberMeasure = cursor.getString(cursor.getColumnIndexOrThrow("numbermeasure"))
+        val priceMeasure = cursor.getFloat(cursor.getColumnIndexOrThrow("pricemeasure"))
+        val buy = cursor.getInt(cursor.getColumnIndexOrThrow("goodsbuy"))
+
+        val quantity = Quantity(
+            value = number.toFloatOrNull() ?: 0f,
+            symbol = numberMeasure.replace(".", "")
+        )
+        val price = Money(value = priceMeasure)
+        val taxRate = toMoney(
+            value = preferences.taxRate,
+            asPercent = true,
+            userPreferences = preferences
+        )
+        val total = Money(value = quantity.value * price.value)
+
+        return Product(
+            position = cursor.position,
+            shoppingUid = toAppVersion14ShoppingUid(listId),
+            name = name,
+            quantity = quantity,
+            price = price,
+            taxRate = taxRate,
+            total = total,
+            totalFormatted = false,
+            completed = toAppVersion14Completed(buy)
+        )
+    }
+
+    private fun toAutocomplete(cursor: Cursor): Autocomplete {
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("completename"))
+        return Autocomplete(name = name)
+    }
+
+    private fun toCodeVersion14Preferences(entity: CodeVersion14UserPreferencesEntity): CodeVersion14Preferences {
         return CodeVersion14Preferences(
             firstOpened = entity.firstOpened ?: false,
             currency = toCurrency(entity.currency, entity.displayCurrencyToLeft),
@@ -1141,5 +1102,37 @@ class RepositoryMapping @Inject constructor() {
             editProductAfterCompleted = entity.editProductAfterCompleted ?: false,
             saveProductToAutocompletes = entity.saveProductToAutocompletes ?: false
         )
+    }
+
+    private fun List<ShoppingList>.formatAppVersion14ShoppingLists(
+        sort: Int,
+        firstLetterUppercase: Boolean
+    ): List<ShoppingList> {
+        return when (sort) {
+            1, 3 -> this.sortedBy { it.name }
+            2, 4 -> this.sortedBy { it.calculateTotal().value }
+            else -> this.sortedBy { it.id }
+        }.withIndex().map {
+            it.value.copy(
+                position = it.index,
+                name = it.value.name.formatFirst(firstLetterUppercase)
+            )
+        }
+    }
+
+    private fun List<Product>.formatAppVersion14Products(
+        sort: Int,
+        firstLetterUppercase: Boolean
+    ): List<Product> {
+        return when (sort) {
+            1, 3 -> this.sortedBy { it.name }
+            2, 4 -> this.sortedBy { it.total.value }
+            else -> this.sortedBy { it.id }
+        }.withIndex().map {
+            it.value.copy(
+                position = it.index,
+                name = it.value.name.formatFirst(firstLetterUppercase)
+            )
+        }
     }
 }

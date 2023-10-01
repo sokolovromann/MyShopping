@@ -10,10 +10,7 @@ import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.model.Backup
 import javax.inject.Inject
 
-class BackupRepository @Inject constructor(
-    localDatasource: LocalDatasource,
-    private val mapping: RepositoryMapping
-) {
+class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
 
     private val shoppingListsDao = localDatasource.getShoppingListsDao()
     private val autocompletesDao = localDatasource.getAutocompletesDao()
@@ -28,19 +25,19 @@ class BackupRepository @Inject constructor(
             flow2 = autocompletesDao.getAllAutocompletes(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, autocompletes, appConfig ->
-                mapping.toBackup(shoppingLists, autocompletes, appConfig, currentAppVersion)
+                RepositoryMapper.toBackup(shoppingLists, autocompletes, appConfig, currentAppVersion)
             }
         )
     }
 
     suspend fun importBackup(uri: Uri): Result<Flow<Backup>> = withContext(dispatcher) {
         return@withContext backupFiles.readBackup(uri).map {
-            it.map { entity -> mapping.toBackup(entity) }
+            it.map { entity -> RepositoryMapper.toBackup(entity) }
         }
     }
 
     suspend fun exportBackup(backup: Backup): Result<String> = withContext(dispatcher) {
-        val entity = mapping.toBackupEntity(backup)
+        val entity = RepositoryMapper.toBackupEntity(backup)
         return@withContext backupFiles.writeBackup(entity)
     }
 }

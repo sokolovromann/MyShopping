@@ -57,48 +57,28 @@ object AppModule {
     }
 
     @Provides
-    fun providesRepositoryMapping(): RepositoryMapping {
-        return RepositoryMapping()
+    fun providesAppConfigRepository(localDatasource: LocalDatasource): AppConfigRepository {
+        return AppConfigRepository(localDatasource)
     }
 
     @Provides
-    fun providesAppConfigRepository(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): AppConfigRepository {
-        return AppConfigRepository(localDatasource, mapping)
+    fun providesAutocompletesRepository(localDatasource: LocalDatasource): AutocompletesRepository {
+        return AutocompletesRepository(localDatasource)
     }
 
     @Provides
-    fun providesAutocompletesRepository(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): AutocompletesRepository {
-        return AutocompletesRepository(localDatasource, mapping)
+    fun providesBackupRepository(localDatasource: LocalDatasource): BackupRepository {
+        return BackupRepository(localDatasource)
     }
 
     @Provides
-    fun providesBackupRepository(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): BackupRepository {
-        return BackupRepository(localDatasource, mapping)
+    fun providesCodeVersion14Repository(localDatasource: LocalDatasource): CodeVersion14Repository {
+        return CodeVersion14Repository(localDatasource)
     }
 
     @Provides
-    fun providesCodeVersion14Repository(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): CodeVersion14Repository {
-        return CodeVersion14Repository(localDatasource, mapping)
-    }
-
-    @Provides
-    fun providesShoppingListsRepository(
-        localDatasource: LocalDatasource,
-        mapping: RepositoryMapping
-    ): ShoppingListsRepository {
-        return ShoppingListsRepository(localDatasource, mapping)
+    fun providesShoppingListsRepository(localDatasource: LocalDatasource): ShoppingListsRepository {
+        return ShoppingListsRepository(localDatasource)
     }
 
     @Provides

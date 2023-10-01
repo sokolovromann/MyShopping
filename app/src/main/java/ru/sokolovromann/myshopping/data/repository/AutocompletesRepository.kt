@@ -11,10 +11,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
 import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 import javax.inject.Inject
 
-class AutocompletesRepository @Inject constructor(
-    localDatasource: LocalDatasource,
-    private val mapping: RepositoryMapping
-) {
+class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasource) {
 
     private val autocompletesDao = localDatasource.getAutocompletesDao()
     private val resourcesDao = localDatasource.getResourcesDao()
@@ -26,7 +23,7 @@ class AutocompletesRepository @Inject constructor(
         return@withContext autocompletesDao.getAllAutocompletes().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { autocompletes, appConfig ->
-                mapping.toAutocompletes(autocompletes, null, appConfig, null)
+                RepositoryMapper.toAutocompletes(autocompletes, null, appConfig, null)
             }
         )
     }
@@ -37,7 +34,7 @@ class AutocompletesRepository @Inject constructor(
             flow2 = appConfigDao.getAppConfig(),
             transform = { autocompletes, appConfig ->
                 val resources = resourcesDao.getAutocompleteNames()
-                mapping.toAutocompletes(autocompletes, resources, appConfig, language)
+                RepositoryMapper.toAutocompletes(autocompletes, resources, appConfig, language)
             }
         )
     }
@@ -46,7 +43,7 @@ class AutocompletesRepository @Inject constructor(
         return@withContext autocompletesDao.getPersonalAutocompletes().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { autocompletes, appConfig ->
-                mapping.toAutocompletes(autocompletes, null, appConfig, null)
+                RepositoryMapper.toAutocompletes(autocompletes, null, appConfig, null)
             }
         )
     }
@@ -54,13 +51,13 @@ class AutocompletesRepository @Inject constructor(
     suspend fun getAddEditAutocomplete(uid: String?): Flow<AddEditAutocomplete> = withContext(dispatcher) {
         return@withContext if (uid == null) {
             appConfigDao.getAppConfig().map {
-                mapping.toAddEditAutocomplete(null, it)
+                RepositoryMapper.toAddEditAutocomplete(null, it)
             }
         } else {
             autocompletesDao.getAutocomplete(uid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { autocomplete, appConfig ->
-                    mapping.toAddEditAutocomplete(autocomplete, appConfig)
+                    RepositoryMapper.toAddEditAutocomplete(autocomplete, appConfig)
                 }
             )
         }
@@ -75,18 +72,18 @@ class AutocompletesRepository @Inject constructor(
             flow2 = appConfigDao.getAppConfig(),
             transform = { entities, appConfigEntity ->
                 val resources = resourcesDao.searchAutocompleteNames(search)
-                mapping.toAutocompletesList(entities, resources, appConfigEntity, language)
+                RepositoryMapper.toAutocompletesList(entities, resources, appConfigEntity, language)
             }
         )
     }
 
     suspend fun saveAutocompletes(autocompletes: List<Autocomplete>): Unit = withContext(dispatcher) {
-        val entities = mapping.toAutocompleteEntities(autocompletes)
+        val entities = RepositoryMapper.toAutocompleteEntities(autocompletes)
         autocompletesDao.insertAutocompletes(entities)
     }
 
     suspend fun saveAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatcher) {
-        val entity = mapping.toAutocompleteEntity(autocomplete)
+        val entity = RepositoryMapper.toAutocompleteEntity(autocomplete)
         autocompletesDao.insertAutocomplete(entity)
     }
 

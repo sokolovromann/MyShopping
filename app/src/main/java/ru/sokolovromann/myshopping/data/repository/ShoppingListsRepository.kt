@@ -23,10 +23,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import javax.inject.Inject
 
-class ShoppingListsRepository @Inject constructor(
-    localDatasource: LocalDatasource,
-    private val mapping: RepositoryMapping
-) {
+class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasource) {
 
     private val shoppingListsDao = localDatasource.getShoppingListsDao()
     private val productsDao = localDatasource.getProductsDao()
@@ -40,7 +37,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
+                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
             }
         )
     }
@@ -51,7 +48,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.PURCHASES, appConfig)
+                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.PURCHASES, appConfig)
             }
         )
     }
@@ -62,7 +59,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.ARCHIVE, appConfig)
+                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.ARCHIVE, appConfig)
             }
         )
     }
@@ -73,7 +70,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.TRASH, appConfig)
+                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.TRASH, appConfig)
             }
         )
     }
@@ -84,7 +81,7 @@ class ShoppingListsRepository @Inject constructor(
             flow2 = shoppingListsDao.getLastPosition(),
             flow3 = appConfigDao.getAppConfig(),
             transform = { shoppingLists, lastPosition, appConfig ->
-                mapping.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
+                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
             }
         )
     }
@@ -92,13 +89,13 @@ class ShoppingListsRepository @Inject constructor(
     suspend fun getEditReminder(uid: String?): Flow<EditReminder> = withContext(dispatcher) {
         return@withContext if (uid == null) {
             appConfigDao.getAppConfig().map {
-                mapping.toEditReminder(null, it)
+                RepositoryMapper.toEditReminder(null, it)
             }
         } else {
             shoppingListsDao.getShoppingList(uid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { shoppingList, appConfig ->
-                    mapping.toEditReminder(shoppingList, appConfig)
+                    RepositoryMapper.toEditReminder(shoppingList, appConfig)
                 }
             )
         }
@@ -112,7 +109,7 @@ class ShoppingListsRepository @Inject constructor(
                     return@combine null
                 }
 
-                mapping.toShoppingListNotification(shoppingList, appConfig)
+                RepositoryMapper.toShoppingListNotification(shoppingList, appConfig)
             }
         )
     }
@@ -121,7 +118,7 @@ class ShoppingListsRepository @Inject constructor(
         return@withContext shoppingListsDao.getReminders().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { shoppingLists, appConfig ->
-                mapping.toShoppingListNotifications(shoppingLists, appConfig)
+                RepositoryMapper.toShoppingListNotifications(shoppingLists, appConfig)
             }
         )
     }
@@ -129,13 +126,13 @@ class ShoppingListsRepository @Inject constructor(
     suspend fun getEditShoppingListName(uid: String?): Flow<EditShoppingListName> = withContext(dispatcher) {
         return@withContext if (uid == null) {
             appConfigDao.getAppConfig().map {
-                mapping.toEditShoppingListName(null, it)
+                RepositoryMapper.toEditShoppingListName(null, it)
             }
         } else {
             shoppingListsDao.getShoppingList(uid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { shoppingList, appConfig ->
-                    mapping.toEditShoppingListName(shoppingList, appConfig)
+                    RepositoryMapper.toEditShoppingListName(shoppingList, appConfig)
                 }
             )
         }
@@ -144,13 +141,13 @@ class ShoppingListsRepository @Inject constructor(
     suspend fun getEditShoppingListTotal(uid: String?): Flow<EditShoppingListTotal> = withContext(dispatcher) {
         return@withContext if (uid == null) {
             appConfigDao.getAppConfig().map {
-                mapping.toEditShoppingListTotal(null, it)
+                RepositoryMapper.toEditShoppingListTotal(null, it)
             }
         } else {
             shoppingListsDao.getShoppingList(uid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { shoppingList, appConfig ->
-                    mapping.toEditShoppingListTotal(shoppingList, appConfig)
+                    RepositoryMapper.toEditShoppingListTotal(shoppingList, appConfig)
                 }
             )
         }
@@ -160,7 +157,7 @@ class ShoppingListsRepository @Inject constructor(
         return@withContext productsDao.getAllProducts().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { products, appConfig ->
-                mapping.toProducts(products, appConfig)
+                RepositoryMapper.toProducts(products, appConfig)
             }
         )
     }
@@ -175,7 +172,7 @@ class ShoppingListsRepository @Inject constructor(
                     return@combine null
                 }
 
-                mapping.toProducts(shoppingList, lastPosition, appConfig)
+                RepositoryMapper.toProducts(shoppingList, lastPosition, appConfig)
             }
         )
     }
@@ -184,7 +181,7 @@ class ShoppingListsRepository @Inject constructor(
         return@withContext productsDao.getProducts(productUids).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { products, appConfig ->
-                mapping.toProducts(products, appConfig)
+                RepositoryMapper.toProducts(products, appConfig)
             }
         )
     }
@@ -197,7 +194,7 @@ class ShoppingListsRepository @Inject constructor(
             productsDao.getLastPosition(shoppingUid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { lastPosition, appConfig ->
-                    mapping.toAddEditProduct(null, lastPosition, appConfig)
+                    RepositoryMapper.toAddEditProduct(null, lastPosition, appConfig)
                 }
             )
         } else {
@@ -206,7 +203,7 @@ class ShoppingListsRepository @Inject constructor(
                 flow2 = productsDao.getLastPosition(shoppingUid),
                 flow3 = appConfigDao.getAppConfig(),
                 transform = { product, lastPosition, appConfig ->
-                    mapping.toAddEditProduct(product, lastPosition, appConfig)
+                    RepositoryMapper.toAddEditProduct(product, lastPosition, appConfig)
                 }
             )
         }
@@ -215,13 +212,13 @@ class ShoppingListsRepository @Inject constructor(
     suspend fun getCalculateChange(shoppingUid: String?): Flow<CalculateChange> = withContext(dispatcher) {
         return@withContext if (shoppingUid == null) {
             appConfigDao.getAppConfig().map {
-                mapping.toCalculateChange(null, it)
+                RepositoryMapper.toCalculateChange(null, it)
             }
         } else {
             shoppingListsDao.getShoppingList(shoppingUid).combine(
                 flow = appConfigDao.getAppConfig(),
                 transform = { shoppingList, appConfig ->
-                    mapping.toCalculateChange(shoppingList, appConfig)
+                    RepositoryMapper.toCalculateChange(shoppingList, appConfig)
                 }
             )
         }
@@ -248,23 +245,23 @@ class ShoppingListsRepository @Inject constructor(
     }
 
     suspend fun saveShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        val shoppings = mapping.toShoppingEntities(shoppingLists)
+        val shoppings = RepositoryMapper.toShoppingEntities(shoppingLists)
         shoppingListsDao.insertShoppings(shoppings)
 
-        val products = mapping.toProductEntitiesFromShoppingLists(shoppingLists)
+        val products = RepositoryMapper.toProductEntitiesFromShoppingLists(shoppingLists)
         productsDao.insertProducts(products)
     }
 
     suspend fun saveShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatcher) {
-        val shopping = mapping.toShoppingEntity(shoppingList)
+        val shopping = RepositoryMapper.toShoppingEntity(shoppingList)
         shoppingListsDao.insertShopping(shopping)
 
-        val products = mapping.toProductEntitiesFromProducts(shoppingList.products)
+        val products = RepositoryMapper.toProductEntitiesFromProducts(shoppingList.products)
         productsDao.insertProducts(products)
     }
 
     suspend fun swapShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        val entities = mapping.toShoppingEntities(shoppingLists)
+        val entities = RepositoryMapper.toShoppingEntities(shoppingLists)
         shoppingListsDao.insertShoppings(entities)
     }
 
@@ -282,12 +279,12 @@ class ShoppingListsRepository @Inject constructor(
     }
 
     suspend fun saveShoppingListTotal(uid: String, total: Money, lastModified: Long): Unit = withContext(dispatcher) {
-        val value = mapping.toMoneyValue(total)
+        val value = RepositoryMapper.toMoneyValue(total)
         shoppingListsDao.updateTotal(uid, value, lastModified)
     }
 
     suspend fun saveProducts(products: List<Product>): Unit = withContext(dispatcher) {
-        val entities = mapping.toProductEntitiesFromProducts(products)
+        val entities = RepositoryMapper.toProductEntitiesFromProducts(products)
         productsDao.insertProducts(entities)
 
         val first = products.first()
@@ -295,7 +292,7 @@ class ShoppingListsRepository @Inject constructor(
     }
 
     suspend fun saveProduct(product: Product): Unit = withContext(dispatcher) {
-        val entity = mapping.toProductEntity(product)
+        val entity = RepositoryMapper.toProductEntity(product)
         productsDao.insertProduct(entity)
 
         shoppingListsDao.updateLastModified(product.shoppingUid, product.lastModified)
@@ -373,7 +370,7 @@ class ShoppingListsRepository @Inject constructor(
         sortBy: SortBy,
         lastModified: Long
     ): Unit = withContext(dispatcher) {
-        val name = mapping.toSortByName(sortBy)
+        val name = RepositoryMapper.toSortByName(sortBy)
         shoppingListsDao.sortBy(shoppingUid, name, lastModified)
     }
 
@@ -390,7 +387,7 @@ class ShoppingListsRepository @Inject constructor(
         sort: Sort,
         lastModified: Long
     ): Unit = withContext(dispatcher) {
-        val sortBy = mapping.toSortByName(sort.sortBy)
+        val sortBy = RepositoryMapper.toSortByName(sort.sortBy)
         val sortAscending = sort.ascending
         shoppingListsDao.enableAutomaticSorting(shoppingUid, sortBy, sortAscending, lastModified)
     }
@@ -400,7 +397,7 @@ class ShoppingListsRepository @Inject constructor(
         sort: Sort,
         lastModified: Long
     ): Unit = withContext(dispatcher) {
-        val sortBy = mapping.toSortByName(sort.sortBy)
+        val sortBy = RepositoryMapper.toSortByName(sort.sortBy)
         val sortAscending = sort.ascending
         shoppingListsDao.disableAutomaticSorting(shoppingUid, sortBy, sortAscending, lastModified)
     }
@@ -411,10 +408,10 @@ class ShoppingListsRepository @Inject constructor(
     }
 
     suspend fun deleteShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        val shoppings = mapping.toShoppingEntities(shoppingLists)
+        val shoppings = RepositoryMapper.toShoppingEntities(shoppingLists)
         shoppingListsDao.deleteShoppings(shoppings)
 
-        val shoppingUids = mapping.toShoppingUids(shoppingLists)
+        val shoppingUids = RepositoryMapper.toShoppingUids(shoppingLists)
         productsDao.deleteProductsByShoppingUids(shoppingUids)
     }
 
