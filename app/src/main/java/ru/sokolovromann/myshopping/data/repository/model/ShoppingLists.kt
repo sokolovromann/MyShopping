@@ -343,8 +343,7 @@ data class ShoppingLists(
         val totalFormatted = shoppingList.totalFormatted && getDisplayTotal() == DisplayTotal.ALL
 
         return if (shoppingList.products.isEmpty()) {
-            val pair = Pair(null, "")
-            listOf(pair)
+            listOf()
         } else {
             val products: MutableList<Pair<Boolean?, String>> = shoppingList.products
                 .filterIndexed { index, _ -> index < maxShoppingProducts}
