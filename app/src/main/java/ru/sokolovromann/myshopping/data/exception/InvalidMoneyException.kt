@@ -1,3 +1,3 @@
 package ru.sokolovromann.myshopping.data.exception
 
-class InvalidMoneyException(message: String = "") : Exception(message)
+class InvalidMoneyException(message: String = "") : InvalidValueException(message)
