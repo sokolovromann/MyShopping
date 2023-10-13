@@ -5,6 +5,8 @@ import java.util.Calendar
 class Time(val millis: Long) {
 
     companion object {
+        val NO_TIME = Time(0)
+
         fun getCurrentTime(): Time {
             return Time(millis = System.currentTimeMillis())
         }
