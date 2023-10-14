@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import java.text.DecimalFormat
 
+@Deprecated(message = "Use String.uppercaseFirst()")
 fun String.formatFirst(uppercase: Boolean): String {
     return if (this.isEmpty() || !uppercase) {
         this
@@ -13,6 +14,7 @@ fun String.formatFirst(uppercase: Boolean): String {
     }
 }
 
+@Deprecated(message = "Use String.asSearchQuery()")
 fun String.toSearch(): String {
     return this.lowercase()
 }
