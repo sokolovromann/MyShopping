@@ -1,14 +1,16 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.app.AppLocale
-import java.util.UUID
+import ru.sokolovromann.myshopping.data.repository.model.Id
+import ru.sokolovromann.myshopping.data.repository.model.Money
+import ru.sokolovromann.myshopping.data.repository.model.Quantity
+import ru.sokolovromann.myshopping.data.repository.model.Time
 
-@Deprecated("Use model/Autocomplete")
 data class Autocomplete(
-    val id: Int = 0,
-    val uid: String = UUID.randomUUID().toString(),
-    val created: Long = System.currentTimeMillis(),
-    val lastModified: Long = created,
+    val id: Int = Id.NO_ID,
+    val position: Int = id,
+    val uid: String = Id.createUid(),
+    val lastModified: Time = Time.getCurrentTime(),
     val name: String = "",
     val quantity: Quantity = Quantity(),
     val price: Money = Money(),

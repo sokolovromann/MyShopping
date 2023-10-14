@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.CodeVersion14Repository
@@ -136,7 +137,8 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun migrateAutocompletes(list: List<Autocomplete>) {
-        autocompletesRepository.saveAutocompletes(list)
+        val autocompletes = AutocompletesMapper.toAutocompletes(list)
+        autocompletesRepository.saveAutocompletes(autocompletes)
     }
 
     private suspend fun migrateSettings(

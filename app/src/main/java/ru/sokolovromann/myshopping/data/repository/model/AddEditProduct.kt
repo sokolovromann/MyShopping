@@ -84,9 +84,6 @@ data class AddEditProduct(
         color: String?
     ): Result<Autocomplete> {
         return if (userPreferences.saveProductToAutocompletes) {
-            val exception = UnsupportedOperationException("Disabled saving product")
-            Result.failure(exception)
-        } else {
             val trimProductName = productName?.trim()
             val namesEquals = (selectedName?.lowercase() ?: "") == trimProductName?.lowercase()
             val personal = (if (namesEquals) selectedPersonal else null) ?: true
@@ -115,6 +112,9 @@ data class AddEditProduct(
             )
 
             Result.success(success)
+        } else {
+            val exception = UnsupportedOperationException("Disabled saving product")
+            Result.failure(exception)
         }
     }
 

@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 
+@Deprecated("Use model/AutocompleteWithConfig")
 data class AddEditAutocomplete(
     private val autocomplete: Autocomplete? = null,
     private val appConfig: AppConfig = AppConfig()

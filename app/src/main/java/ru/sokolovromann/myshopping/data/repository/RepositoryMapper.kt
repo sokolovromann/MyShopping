@@ -52,6 +52,7 @@ import ru.sokolovromann.myshopping.data.repository.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.repository.model.formatFirst
 import java.text.DecimalFormat
 
+@Deprecated("Use classes from /model/mapper")
 object RepositoryMapper {
 
     fun toShoppingEntity(shoppingList: ShoppingList): ShoppingEntity {
@@ -244,75 +245,6 @@ object RepositoryMapper {
             provider = autocomplete.provider,
             personal = autocomplete.personal,
             language = autocomplete.language
-        )
-    }
-
-    fun toAutocompletes(
-        entities: List<AutocompleteEntity>,
-        resources: List<String>?,
-        appConfigEntity: AppConfigEntity,
-        language: String?
-    ): Autocompletes {
-        val autocompletes = if (language == null) { entities } else {
-            val default = entities.filter { !it.personal && it.language == language }
-            val personal = entities.filter { it.personal }
-
-            mutableListOf<AutocompleteEntity>().apply {
-                addAll(default)
-                addAll(personal)
-            }
-        }
-            .map { toAutocomplete(it, appConfigEntity) }
-            .toMutableList()
-
-        resources?.forEach {
-            val autocomplete = Autocomplete(name = it, personal = false)
-            autocompletes.add(autocomplete)
-        }
-
-        return Autocompletes(
-            autocompletes = autocompletes,
-            appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    fun toAutocompletesList(
-        entities: List<AutocompleteEntity>,
-        resources: List<String>?,
-        appConfigEntity: AppConfigEntity,
-        language: String?
-    ): List<Autocomplete> {
-        val autocompletes = if (language == null) { entities } else {
-            val default = entities.filter { !it.personal && it.language == language }
-            val personal = entities.filter { it.personal }
-
-            mutableListOf<AutocompleteEntity>().apply {
-                addAll(default)
-                addAll(personal)
-            }
-        }
-            .map { toAutocomplete(it, appConfigEntity) }
-            .toMutableList()
-
-        resources?.forEach {
-            val autocomplete = Autocomplete(name = it, personal = false)
-            autocompletes.add(autocomplete)
-        }
-
-        return autocompletes.toList()
-    }
-
-    fun toAutocompleteEntities(autocompletes: List<Autocomplete>): List<AutocompleteEntity> {
-        return autocompletes.map { toAutocompleteEntity(it) }
-    }
-
-    fun toAddEditAutocomplete(
-        entity: AutocompleteEntity?,
-        appConfigEntity: AppConfigEntity
-    ): AddEditAutocomplete {
-        return AddEditAutocomplete(
-            autocomplete = if (entity == null) null else toAutocomplete(entity, appConfigEntity),
-            appConfig = toAppConfig(appConfigEntity)
         )
     }
 

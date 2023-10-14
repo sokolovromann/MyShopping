@@ -3,12 +3,14 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.app.AppLocale
+import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.repository.model.*
-import ru.sokolovromann.myshopping.ui.utils.getAutocompleteItems
+import ru.sokolovromann.myshopping.ui.utils.getAutocompletesItems
 
 class AutocompletesState {
 
-    private var autocompletes by mutableStateOf(Autocompletes())
+    private var autocompletesWithConfig by mutableStateOf(AutocompletesWithConfig())
 
     var screenData by mutableStateOf(AutocompletesScreenData())
         private set
@@ -17,29 +19,30 @@ class AutocompletesState {
         screenData = AutocompletesScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(autocompletes: Autocompletes, location: AutocompleteLocation) {
-        this.autocompletes = autocompletes
+    fun showNotFound(autocompletesWithConfig: AutocompletesWithConfig, location: AutocompleteLocation) {
+        this.autocompletesWithConfig = autocompletesWithConfig
 
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Nothing,
-            smartphoneScreen = autocompletes.isSmartphoneScreen(),
+            smartphoneScreen = isSmartphoneScreen(),
             location = location,
-            locationEnabled = autocompletes.isLocationEnabled(),
-            fontSize = autocompletes.getFontSize()
+            locationEnabled = isLocationEnabled(),
+            fontSize = autocompletesWithConfig.appConfig.userPreferences.fontSize
         )
     }
 
-    fun showAutocompletes(autocompletes: Autocompletes, location: AutocompleteLocation) {
-        this.autocompletes = autocompletes
+    fun showAutocompletes(autocompletesWithConfig: AutocompletesWithConfig, location: AutocompleteLocation) {
+        this.autocompletesWithConfig = autocompletesWithConfig
 
+        val userPreferences = autocompletesWithConfig.appConfig.userPreferences
         screenData = AutocompletesScreenData(
             screenState = ScreenState.Showing,
-            autocompletes = autocompletes.getAutocompleteItems(),
-            multiColumns = autocompletes.isMultiColumns(),
-            smartphoneScreen = autocompletes.isSmartphoneScreen(),
+            autocompletes = autocompletesWithConfig.getAutocompletesItems(),
+            multiColumns = isMultiColumns(),
+            smartphoneScreen = isSmartphoneScreen(),
             location = location,
-            locationEnabled = autocompletes.isLocationEnabled(),
-            fontSize = autocompletes.getFontSize()
+            locationEnabled = isLocationEnabled(),
+            fontSize = userPreferences.fontSize
         )
     }
 
@@ -52,7 +55,7 @@ class AutocompletesState {
     }
 
     fun selectAllAutocompletes() {
-        screenData = screenData.copy(selectedNames = autocompletes.getNames())
+        screenData = screenData.copy(selectedNames = autocompletesWithConfig.getNames())
     }
 
     fun selectAutocomplete(name: String) {
@@ -70,6 +73,18 @@ class AutocompletesState {
 
     fun unselectAllAutocompletes() {
         screenData = screenData.copy(selectedNames = null)
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        return AppLocale.isLanguageSupported() && autocompletesWithConfig.appConfig.userPreferences.displayDefaultAutocompletes
+    }
+
+    private fun isSmartphoneScreen(): Boolean {
+        return autocompletesWithConfig.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
+    }
+
+    private fun isMultiColumns(): Boolean {
+        return autocompletesWithConfig.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Large
     }
 }
 

@@ -9,13 +9,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,7 +69,7 @@ class AutocompletesViewModel @Inject constructor(
             autocompletesState.showLoading()
         }
 
-        autocompletesRepository.getDefaultAutocompletes(getCurrentLanguage()).collect {
+        autocompletesRepository.getDefaultAutocompletes().collect {
             autocompletesLoaded(it, AutocompleteLocation.DEFAULT)
         }
     }
@@ -86,10 +85,10 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private suspend fun autocompletesLoaded(
-        autocompletes: Autocompletes,
+        autocompletes: AutocompletesWithConfig,
         location: AutocompleteLocation
     ) = withContext(dispatchers.main) {
-        if (autocompletes.isAutocompletesEmpty()) {
+        if (autocompletes.isEmpty()) {
             autocompletesState.showNotFound(autocompletes, location)
         } else {
             autocompletesState.showAutocompletes(autocompletes, location)
@@ -102,15 +101,12 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun clearAutocompletes() = viewModelScope.launch {
         when (autocompletesState.screenData.location) {
-            AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes(getCurrentLanguage())
+            AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
             autocompletesState.screenData.selectedNames?.let { names ->
                 val uids = autocompletes.getUidsByNames(names)
-                autocompletesRepository.clearAutocompletes(
-                    uids = uids,
-                    lastModified = System.currentTimeMillis()
-                )
+                autocompletesRepository.clearAutocompletes(uids = uids)
             }
         }
 
@@ -194,9 +190,5 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun hideAutocompleteLocation() {
         autocompletesState.hideLocation()
-    }
-
-    private fun getCurrentLanguage(): String {
-        return Locale.getDefault().language
     }
 }

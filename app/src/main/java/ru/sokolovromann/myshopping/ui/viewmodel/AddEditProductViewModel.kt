@@ -11,15 +11,17 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
+import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -142,8 +144,7 @@ class AddEditProductViewModel @Inject constructor(
     private fun getAutocompletes(name: String) = viewModelScope.launch {
         val search = name.trim()
         val autocompletes = autocompletesRepository.searchAutocompletesLikeName(
-            search = search,
-            language = Locale.getDefault().language
+            search = search
         ).firstOrNull() ?: listOf()
         autocompletesLoaded(autocompletes)
     }
@@ -154,7 +155,8 @@ class AddEditProductViewModel @Inject constructor(
         val currentName = addEditProductState.screenData.nameValue.text
         val addEditProduct = addEditProductState.addEditProduct
 
-        val names = addEditProduct.searchAutocompletesLikeName(autocompletes, currentName)
+        val repositoryAutocompletes = AutocompletesMapper.toRepositoryAutocompletes(autocompletes)
+        val names = addEditProduct.searchAutocompletesLikeName(repositoryAutocompletes, currentName)
         if (names.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
@@ -170,27 +172,27 @@ class AddEditProductViewModel @Inject constructor(
 
         if (productUid == null || addEditProductState.productNameFocus) {
             addEditProductState.showAutocompleteElements(
-                brands = addEditProduct.filterAutocompleteBrands(autocompletes),
-                sizes = addEditProduct.filterAutocompleteSizes(autocompletes),
-                colors = addEditProduct.filterAutocompleteColors(autocompletes),
-                manufacturers = addEditProduct.filterAutocompletesManufacturers(autocompletes),
-                quantities = addEditProduct.filterAutocompletesQuantities(autocompletes),
-                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(autocompletes),
-                prices = addEditProduct.filterAutocompletesPrices(autocompletes),
-                discounts = addEditProduct.filterAutocompletesDiscounts(autocompletes),
-                totals = addEditProduct.filterAutocompletesTotals(autocompletes)
+                brands = addEditProduct.filterAutocompleteBrands(repositoryAutocompletes),
+                sizes = addEditProduct.filterAutocompleteSizes(repositoryAutocompletes),
+                colors = addEditProduct.filterAutocompleteColors(repositoryAutocompletes),
+                manufacturers = addEditProduct.filterAutocompletesManufacturers(repositoryAutocompletes),
+                quantities = addEditProduct.filterAutocompletesQuantities(repositoryAutocompletes),
+                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(repositoryAutocompletes),
+                prices = addEditProduct.filterAutocompletesPrices(repositoryAutocompletes),
+                discounts = addEditProduct.filterAutocompletesDiscounts(repositoryAutocompletes),
+                totals = addEditProduct.filterAutocompletesTotals(repositoryAutocompletes)
             )
         } else {
             addEditProductState.showAutocompleteElementsIf(
-                brands = addEditProduct.filterAutocompleteBrands(autocompletes),
-                sizes = addEditProduct.filterAutocompleteSizes(autocompletes),
-                colors = addEditProduct.filterAutocompleteColors(autocompletes),
-                manufacturers = addEditProduct.filterAutocompletesManufacturers(autocompletes),
-                quantities = addEditProduct.filterAutocompletesQuantities(autocompletes),
-                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(autocompletes),
-                prices = addEditProduct.filterAutocompletesPrices(autocompletes),
-                discounts = addEditProduct.filterAutocompletesDiscounts(autocompletes),
-                totals = addEditProduct.filterAutocompletesTotals(autocompletes)
+                brands = addEditProduct.filterAutocompleteBrands(repositoryAutocompletes),
+                sizes = addEditProduct.filterAutocompleteSizes(repositoryAutocompletes),
+                colors = addEditProduct.filterAutocompleteColors(repositoryAutocompletes),
+                manufacturers = addEditProduct.filterAutocompletesManufacturers(repositoryAutocompletes),
+                quantities = addEditProduct.filterAutocompletesQuantities(repositoryAutocompletes),
+                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(repositoryAutocompletes),
+                prices = addEditProduct.filterAutocompletesPrices(repositoryAutocompletes),
+                discounts = addEditProduct.filterAutocompletesDiscounts(repositoryAutocompletes),
+                totals = addEditProduct.filterAutocompletesTotals(repositoryAutocompletes)
             )
         }
     }
@@ -207,8 +209,10 @@ class AddEditProductViewModel @Inject constructor(
 
         shoppingListsRepository.saveProduct(product)
 
-        addEditProductState.getAutocompleteResult()
-            .onSuccess { autocompletesRepository.saveAutocomplete(it) }
+        addEditProductState.getAutocompleteResult().onSuccess {
+            val autocomplete = AutocompletesMapper.toAutocomplete(it)
+            autocompletesRepository.saveAutocomplete(autocomplete)
+        }
 
         addEditProductState.getProductLockResult().onSuccess {
             appConfigRepository.lockProductElement(it)

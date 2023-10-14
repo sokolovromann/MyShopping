@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.app.AppLocale
 
+@Deprecated("Use model/AutocompletesWithConfig")
 data class Autocompletes(
     private val autocompletes: List<Autocomplete> = listOf(),
     private val appConfig: AppConfig = AppConfig()

@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
@@ -123,7 +124,10 @@ class BackupViewModel @Inject constructor(
             viewModelScope.async { shoppingListsRepository.saveShoppingLists(importedBackup.shoppingLists) },
             viewModelScope.async { shoppingListsRepository.saveProducts(importedBackup.products) },
             viewModelScope.async { autocompletesRepository.deleteAllAutocompletes() },
-            viewModelScope.async { autocompletesRepository.saveAutocompletes(importedBackup.autocompletes) },
+            viewModelScope.async {
+                val autocompletes = AutocompletesMapper.toAutocompletes(importedBackup.autocompletes)
+                autocompletesRepository.saveAutocompletes(autocompletes)
+            },
             viewModelScope.async { appConfigRepository.saveAppConfig(appConfig) }
         ).awaitAll()
 

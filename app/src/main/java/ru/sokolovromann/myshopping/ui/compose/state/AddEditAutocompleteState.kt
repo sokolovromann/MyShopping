@@ -5,22 +5,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.repository.model.Time
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class AddEditAutocompleteState {
 
-    private var addEditAutocomplete by mutableStateOf(AddEditAutocomplete())
+    private var autocompleteWithConfig by mutableStateOf(AutocompleteWithConfig())
 
     var screenData by mutableStateOf(AddEditAutocompleteScreenData())
         private set
 
-    fun populate(addEditAutocomplete: AddEditAutocomplete) {
-        this.addEditAutocomplete = addEditAutocomplete
+    fun populate(autocompleteWithConfig: AutocompleteWithConfig) {
+        this.autocompleteWithConfig = autocompleteWithConfig
 
-        val headerText: UiText = if (addEditAutocomplete.isNewAutocomplete()) {
+        val headerText: UiText = if (autocompleteWithConfig.isEmpty()) {
             UiText.FromResources(R.string.addEditAutocomplete_header_addAutocomplete)
         } else {
             UiText.FromResources(R.string.addEditAutocomplete_header_editAutocomplete)
@@ -29,9 +30,9 @@ class AddEditAutocompleteState {
         screenData = AddEditAutocompleteScreenData(
             screenState = ScreenState.Showing,
             headerText = headerText,
-            nameValue = addEditAutocomplete.getFieldName().toTextFieldValue(),
+            nameValue = autocompleteWithConfig.autocomplete.name.toTextFieldValue(),
             showNameError = false,
-            fontSize = addEditAutocomplete.getFontSize()
+            fontSize = autocompleteWithConfig.appConfig.userPreferences.fontSize
         )
     }
 
@@ -42,14 +43,15 @@ class AddEditAutocompleteState {
         )
     }
 
-    fun getAutocompleteResult(): Result<Autocomplete> {
-        val result = addEditAutocomplete.createAutocomplete(screenData.nameValue.text).getOrNull()
-        return if (result == null) {
-            screenData = screenData.copy(showNameError = true)
-            Result.failure(Exception())
-        } else {
-            Result.success(result)
-        }
+    fun showNameError() {
+        screenData = screenData.copy(showNameError = true)
+    }
+
+    fun getCurrentAutocomplete(): Autocomplete {
+        return autocompleteWithConfig.autocomplete.copy(
+            name = screenData.nameValue.text,
+            lastModified = Time.getCurrentTime()
+        )
     }
 }
 

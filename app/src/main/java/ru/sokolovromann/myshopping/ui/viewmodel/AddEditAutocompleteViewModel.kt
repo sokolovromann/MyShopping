@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
-import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.AddEditAutocompleteState
@@ -33,7 +33,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
     private val uid: String? = savedStateHandle.get<String>(UiRouteKey.AutocompleteUid.key)
 
     init {
-        getAddEditAutocomplete()
+        getAutocomplete()
     }
 
     override fun onEvent(event: AddEditAutocompleteEvent) {
@@ -46,23 +46,21 @@ class AddEditAutocompleteViewModel @Inject constructor(
         }
     }
 
-    private fun getAddEditAutocomplete() = viewModelScope.launch {
-        autocompletesRepository.getAddEditAutocomplete(uid).firstOrNull()?.let {
-            addEditAutocompleteLoaded(it)
+    private fun getAutocomplete() = viewModelScope.launch {
+        autocompletesRepository.getAutocomplete(uid).firstOrNull()?.let {
+            autocompleteLoaded(it)
         }
     }
 
-    private suspend fun addEditAutocompleteLoaded(
-        addEditAutocomplete: AddEditAutocomplete
+    private suspend fun autocompleteLoaded(
+        autocomplete: AutocompleteWithConfig
     ) = withContext(dispatchers.main) {
-        addEditAutocompleteState.populate(addEditAutocomplete)
+        addEditAutocompleteState.populate(autocomplete)
         _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowKeyboard)
     }
 
     private fun saveAutocomplete() = viewModelScope.launch {
-        val autocomplete = addEditAutocompleteState.getAutocompleteResult()
-            .getOrElse { return@launch }
-
+        val autocomplete = addEditAutocompleteState.getCurrentAutocomplete()
         autocompletesRepository.saveAutocomplete(autocomplete)
 
         withContext(dispatchers.main) {
