@@ -5,6 +5,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
+import ru.sokolovromann.myshopping.data.exception.InvalidUidException
+import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 import ru.sokolovromann.myshopping.data.model.Autocomplete
@@ -103,28 +106,53 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
         )
     }
 
-    suspend fun saveAutocompletes(autocompletes: List<Autocomplete>): Unit = withContext(dispatcher) {
-        val entities = AutocompletesMapper.toAutocompleteEntities(autocompletes)
-        autocompletesDao.insertAutocompletes(entities)
+    suspend fun saveAutocompletes(autocompletes: List<Autocomplete>): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (autocompletes.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            val entities = AutocompletesMapper.toAutocompleteEntities(autocompletes)
+            autocompletesDao.insertAutocompletes(entities)
+            Result.success(Unit)
+        }
     }
 
-    suspend fun saveAutocomplete(autocomplete: Autocomplete): Unit = withContext(dispatcher) {
-        val entity = AutocompletesMapper.toAutocompleteEntity(autocomplete)
-        autocompletesDao.insertAutocomplete(entity)
+    suspend fun saveAutocomplete(autocomplete: Autocomplete): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (autocomplete.name.isEmpty()) {
+            val exception = InvalidNameException("Name must not be empty")
+            Result.failure(exception)
+        } else {
+            val entity = AutocompletesMapper.toAutocompleteEntity(autocomplete)
+            autocompletesDao.insertAutocomplete(entity)
+            Result.success(Unit)
+        }
     }
 
     suspend fun clearAutocompletes(
         uids: List<String>,
         lastModified: Time = Time.getCurrentTime()
-    ): Unit = withContext(dispatcher) {
-        autocompletesDao.clearAutocompletes(uids, lastModified.millis)
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (uids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            autocompletesDao.clearAutocompletes(uids, lastModified.millis)
+            Result.success(Unit)
+        }
     }
 
-    suspend fun deleteAllAutocompletes(): Unit = withContext(dispatcher) {
+    suspend fun deleteAllAutocompletes(): Result<Unit> = withContext(dispatcher) {
         autocompletesDao.deleteAllAutocompletes()
+        return@withContext Result.success(Unit)
     }
 
-    suspend fun deleteAutocompletes(uids: List<String>): Unit = withContext(dispatcher) {
-        autocompletesDao.deleteAutocompletes(uids)
+    suspend fun deleteAutocompletes(uids: List<String>): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (uids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            autocompletesDao.deleteAutocompletes(uids)
+            Result.success(Unit)
+        }
     }
 }

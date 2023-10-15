@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -62,10 +63,18 @@ class AddEditAutocompleteViewModel @Inject constructor(
     private fun saveAutocomplete() = viewModelScope.launch {
         val autocomplete = addEditAutocompleteState.getCurrentAutocomplete()
         autocompletesRepository.saveAutocomplete(autocomplete)
-
-        withContext(dispatchers.main) {
-            _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
-        }
+            .onSuccess {
+                withContext(dispatchers.main) {
+                    _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
+                }
+            }
+            .onFailure {
+                if (it is InvalidNameException) {
+                    withContext(dispatchers.main) {
+                        addEditAutocompleteState.showNameError()
+                    }
+                }
+            }
     }
 
     private fun cancelSavingAutocomplete() = viewModelScope.launch(dispatchers.main) {
