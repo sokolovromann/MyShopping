@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
@@ -91,8 +92,9 @@ class ProductsWidget : GlanceAppWidget() {
 
         LaunchedEffect(shoppingUid, Unit) {
             coroutineScope.launch {
-                entryPoint.shoppingListsRepository().getProducts(shoppingUid).collect {
-                    it?.let { productsFlow.emit(it) }
+                entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collect {
+                    val products = ShoppingListsMapper.toProducts(it)
+                    productsFlow.emit(products)
                 }
             }
         }
@@ -127,13 +129,9 @@ class ProductsWidget : GlanceAppWidget() {
                 ) {
                     coroutineScope.launch(entryPoint.dispatchers().io) {
                         if (it.completed) {
-                            entryPoint.shoppingListsRepository().activeProduct(
-                                it.uid, System.currentTimeMillis()
-                            )
+                            entryPoint.shoppingListsRepository().activeProduct(it.uid)
                         } else {
-                            entryPoint.shoppingListsRepository().completeProduct(
-                                it.uid, System.currentTimeMillis()
-                            )
+                            entryPoint.shoppingListsRepository().completeProduct(it.uid)
                         }
                     }
                 }

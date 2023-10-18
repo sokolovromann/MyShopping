@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditShoppingListTotalState
@@ -46,14 +47,15 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
     private fun getEditShoppingListTotal() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        shoppingListsRepository.getEditShoppingListTotal(uid).firstOrNull()?.let {
-            editShoppingListTotalLoaded(it)
+        shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
+            shoppingListLoaded(it)
         }
     }
 
-    private suspend fun editShoppingListTotalLoaded(
-        editShoppingListTotal: EditShoppingListTotal
+    private suspend fun shoppingListLoaded(
+        shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
+        val editShoppingListTotal = ShoppingListsMapper.toEditShoppingListTotal(shoppingListWithConfig)
         editShoppingListTotalState.populate(editShoppingListTotal)
         _screenEventFlow.emit(EditShoppingListTotalScreenEvent.ShowKeyboard)
     }
@@ -64,15 +66,11 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
         if (shoppingList.totalFormatted) {
             shoppingListsRepository.saveShoppingListTotal(
-                uid = shoppingList.uid,
-                total = shoppingList.total,
-                lastModified = shoppingList.lastModified
+                shoppingUid = shoppingList.uid,
+                total = shoppingList.total
             )
         } else {
-            shoppingListsRepository.deleteShoppingListTotal(
-                uid = shoppingList.uid,
-                lastModified = shoppingList.lastModified
-            )
+            shoppingListsRepository.deleteShoppingListTotal(shoppingList.uid)
         }
 
         withContext(dispatchers.main) {

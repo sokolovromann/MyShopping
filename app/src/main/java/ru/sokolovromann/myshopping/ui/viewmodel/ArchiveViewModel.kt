@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -86,15 +88,16 @@ class ArchiveViewModel @Inject constructor(
             archiveState.showLoading()
         }
 
-        shoppingListsRepository.getArchive().collect {
+        shoppingListsRepository.getArchiveWithConfig().collect {
             shoppingListsLoaded(it)
         }
     }
 
     private suspend fun shoppingListsLoaded(
-        shoppingLists: ShoppingLists
+        shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
-        if (shoppingLists.isShoppingListsEmpty()) {
+        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
+        if (shoppingListsWithConfig.isEmpty()) {
             archiveState.showNotFound(shoppingLists)
         } else {
             archiveState.showShoppingLists(shoppingLists)
@@ -103,10 +106,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun moveShoppingListsToPurchases() = viewModelScope.launch {
         archiveState.screenData.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToPurchases(
-                uids = it,
-                lastModified = System.currentTimeMillis()
-            )
+            shoppingListsRepository.moveShoppingListsToPurchases(it)
 
             withContext(dispatchers.main) {
                 unselectAllShoppingLists()
@@ -116,10 +116,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun moveShoppingListsToTrash() = viewModelScope.launch {
         archiveState.screenData.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToTrash(
-                uids = it,
-                lastModified = System.currentTimeMillis()
-            )
+            shoppingListsRepository.moveShoppingListsToTrash(it)
 
             withContext(dispatchers.main) {
                 unselectAllShoppingLists()
@@ -168,12 +165,9 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
-        val shoppingLists = archiveState.sortShoppingListsResult(event.sortBy).getOrElse {
-            withContext(dispatchers.main) { hideShoppingListsSort() }
-            return@launch
-        }
-
-        shoppingListsRepository.swapShoppingLists(shoppingLists)
+        shoppingListsRepository.sortShoppingLists(
+            sort = Sort(event.sortBy)
+        )
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
@@ -181,12 +175,7 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun reverseSortShoppingLists() = viewModelScope.launch {
-        val shoppingLists = archiveState.reverseSortShoppingListsResult().getOrElse {
-            withContext(dispatchers.main) { hideShoppingListsSort() }
-            return@launch
-        }
-
-        shoppingListsRepository.swapShoppingLists(shoppingLists)
+        shoppingListsRepository.reverseShoppingLists()
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()

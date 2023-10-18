@@ -6,17 +6,19 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
+import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
@@ -123,14 +125,15 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun getAddEditProduct() = viewModelScope.launch {
-        shoppingListsRepository.getAddEditProduct(shoppingUid, productUid).firstOrNull()?.let {
-            addEditProductLoaded(it)
+        shoppingListsRepository.getProductWithConfig(productUid).firstOrNull()?.let {
+            productLoaded(it)
         }
     }
 
-    private suspend fun addEditProductLoaded(
-        addEditProduct: AddEditProduct
+    private suspend fun productLoaded(
+        productWithConfig: ProductWithConfig
     ) = withContext(dispatchers.main) {
+        val addEditProduct = ShoppingListsMapper.toAddEditProduct(productWithConfig)
         if (productUid == null) {
             val product = Product(shoppingUid = shoppingUid)
             addEditProductState.populate(addEditProduct.copy(product = product))
@@ -198,30 +201,33 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun saveProduct() = viewModelScope.launch {
-        val product = addEditProductState.getProductResult(productUid == null)
+        val repositoryProduct = addEditProductState.getProductResult(productUid == null)
             .getOrElse { return@launch }
 
-        val productUidExists = shoppingListsRepository.checkIfProductExists(product.productUid).first()
-        if (productUidExists != null && product.productUid != productUid) {
-            addEditProductState.showUidError()
-            return@launch
-        }
-
+        val product = ShoppingListsMapper.toProduct(repositoryProduct)
         shoppingListsRepository.saveProduct(product)
+            .onSuccess {
+                addEditProductState.getAutocompleteResult().onSuccess {
+                    val autocomplete = AutocompletesMapper.toAutocomplete(it)
+                    autocompletesRepository.saveAutocomplete(autocomplete)
+                }
 
-        addEditProductState.getAutocompleteResult().onSuccess {
-            val autocomplete = AutocompletesMapper.toAutocomplete(it)
-            autocompletesRepository.saveAutocomplete(autocomplete)
-        }
+                addEditProductState.getProductLockResult().onSuccess {
+                    appConfigRepository.lockProductElement(it)
+                }
 
-        addEditProductState.getProductLockResult().onSuccess {
-            appConfigRepository.lockProductElement(it)
-        }
-
-        withContext(dispatchers.main) {
-            val event = AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
-            _screenEventFlow.emit(event)
-        }
+                withContext(dispatchers.main) {
+                    val event = AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
+                    _screenEventFlow.emit(event)
+                }
+            }
+            .onFailure {
+                when (it) {
+                    is InvalidNameException -> { addEditProductState.showNameError() }
+                    is InvalidUidException -> { addEditProductState.showUidError() }
+                    else -> {}
+                }
+            }
     }
 
     private fun cancelSavingProduct() = viewModelScope.launch(dispatchers.main) {

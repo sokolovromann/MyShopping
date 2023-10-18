@@ -11,8 +11,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.EditReminder
+import ru.sokolovromann.myshopping.data.repository.model.Time
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
@@ -63,14 +65,15 @@ class EditReminderViewModel @Inject constructor(
 
     private fun getEditReminder() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        shoppingListsRepository.getEditReminder(uid).firstOrNull()?.let {
-            editReminderLoaded(it)
+        shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
+            shoppingListLoaded(it)
         }
     }
 
-    private suspend fun editReminderLoaded(
-        editReminder: EditReminder
+    private suspend fun shoppingListLoaded(
+        shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
+        val editReminder = ShoppingListsMapper.toEditReminder(shoppingListWithConfig)
         editReminderState.populate(editReminder, alarmManager.checkCorrectReminderPermissions())
     }
 
@@ -81,9 +84,8 @@ class EditReminderViewModel @Inject constructor(
         val reminder = shoppingList.reminder ?: return@launch
 
         shoppingListsRepository.saveReminder(
-            uid = shoppingList.uid,
-            reminder = reminder,
-            lastModified = shoppingList.lastModified
+            shoppingUid = shoppingList.uid,
+            reminder = Time(reminder)
         )
 
         withContext(dispatchers.main) {
@@ -119,10 +121,7 @@ class EditReminderViewModel @Inject constructor(
         val shoppingList = editReminderState.getShoppingListResult()
             .getOrElse { return@launch }
 
-        shoppingListsRepository.deleteReminder(
-            uid = shoppingList.uid,
-            lastModified = shoppingList.lastModified
-        )
+        shoppingListsRepository.deleteReminder(shoppingList.uid)
 
         withContext(dispatchers.main) {
             alarmManager.deleteReminder(shoppingList.uid)

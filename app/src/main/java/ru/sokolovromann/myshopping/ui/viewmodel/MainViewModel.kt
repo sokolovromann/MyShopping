@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.CodeVersion14Repository
@@ -128,7 +129,8 @@ class MainViewModel @Inject constructor(
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
         list.forEach {
-            shoppingListsRepository.saveShoppingList(it)
+            val shoppingLists = ShoppingListsMapper.toShoppingLists(list)
+            shoppingListsRepository.saveShoppingLists(shoppingLists)
             if (it.reminder != null) {
                 alarmManager.deleteCodeVersion14Reminder(it.id)
                 alarmManager.createReminder(it.uid, it.reminder)

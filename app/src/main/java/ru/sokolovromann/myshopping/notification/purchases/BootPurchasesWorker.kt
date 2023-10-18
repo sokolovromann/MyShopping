@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 
@@ -43,7 +44,8 @@ class BootPurchasesWorker(
     }
 
     private suspend fun getShoppingLists(): ShoppingListNotifications? {
-        return entryPoint.repository().getNotifications().firstOrNull()
+        val shoppingListsWithConfig = entryPoint.repository().getRemindersWithConfig().firstOrNull()
+        return if (shoppingListsWithConfig == null) null else ShoppingListsMapper.toShoppingListNotifications(shoppingListsWithConfig)
     }
 
     private suspend fun createReminders(

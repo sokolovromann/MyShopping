@@ -6,14 +6,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -60,9 +60,9 @@ class MoveProductViewModel @Inject constructor(
             moveProductState.showLoading()
         }
 
-        shoppingListsRepository.getPurchases().collect {
+        shoppingListsRepository.getPurchasesWithConfig().collect {
             shoppingListsLoaded(
-                shoppingLists = it,
+                shoppingListsWithConfig = it,
                 location = ShoppingListLocation.PURCHASES
             )
         }
@@ -73,18 +73,19 @@ class MoveProductViewModel @Inject constructor(
             moveProductState.showLoading()
         }
 
-        shoppingListsRepository.getArchive().collect {
+        shoppingListsRepository.getArchiveWithConfig().collect {
             shoppingListsLoaded(
-                shoppingLists = it,
+                shoppingListsWithConfig = it,
                 location = ShoppingListLocation.ARCHIVE
             )
         }
     }
 
     private suspend fun shoppingListsLoaded(
-        shoppingLists: ShoppingLists,
+        shoppingListsWithConfig: ShoppingListsWithConfig,
         location: ShoppingListLocation
     ) = withContext(dispatchers.main) {
+        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
         if (shoppingLists.isShoppingListsEmpty()) {
             moveProductState.showNotFound(shoppingLists, location)
         } else {
@@ -101,26 +102,29 @@ class MoveProductViewModel @Inject constructor(
             cancelMovingProduct()
         } else {
             withContext(dispatchers.main) {
-                moveProductState.saveProducts(products)
+                val repositoryProducts = ShoppingListsMapper.toRepositoryProductList(products)
+                moveProductState.saveProducts(repositoryProducts)
             }
         }
     }
 
     private fun addShoppingList() = viewModelScope.launch {
         moveProductState.getShoppingListResult()
-            .onSuccess { shoppingListsRepository.saveShoppingList(it) }
-            .onFailure {
-                val lastPosition = shoppingListsRepository.getShoppingListsLastPosition().first() ?: 0
-                val shoppingList = ShoppingList(position = lastPosition.plus(1))
+            .onSuccess {
+                val shoppingList = ShoppingListsMapper.toShoppingList(it)
                 shoppingListsRepository.saveShoppingList(shoppingList)
+            }
+            .onFailure {
+                shoppingListsRepository.saveShoppingList(ShoppingList())
             }
     }
 
     private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
         moveProductState.selectShoppingList(event.uid)
-        val products = moveProductState.getProductsResult()
+        val repositoryProducts = moveProductState.getProductsResult()
             .getOrElse { return@launch }
 
+        val products = ShoppingListsMapper.toProductList(repositoryProducts)
         shoppingListsRepository.saveProducts(products)
 
         withContext(dispatchers.main) {

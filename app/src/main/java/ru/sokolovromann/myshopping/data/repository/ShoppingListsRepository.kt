@@ -2,25 +2,30 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.exception.InvalidNameException
+import ru.sokolovromann.myshopping.data.exception.InvalidUidException
+import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
-import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
-import ru.sokolovromann.myshopping.data.repository.model.EditReminder
-import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
-import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
+import ru.sokolovromann.myshopping.data.model.Product
+import ru.sokolovromann.myshopping.data.model.ProductWithConfig
+import ru.sokolovromann.myshopping.data.model.Shopping
+import ru.sokolovromann.myshopping.data.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
+import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.Product
-import ru.sokolovromann.myshopping.data.repository.model.Products
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.utils.sortedProducts
+import ru.sokolovromann.myshopping.data.utils.sortedShoppingLists
 import javax.inject.Inject
 
 class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasource) {
@@ -31,123 +36,47 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     private val dispatcher = AppDispatchers.IO
 
-    suspend fun getAllShoppingLists(): Flow<ShoppingLists> = withContext(dispatcher) {
-        return@withContext combine(
-            flow = shoppingListsDao.getAllShoppingLists(),
-            flow2 = shoppingListsDao.getLastPosition(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { shoppingLists, lastPosition, appConfig ->
-                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
-            }
-        )
+    suspend fun getPurchasesWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+        return@withContext getShoppingListsWithConfig(ShoppingLocation.PURCHASES)
     }
 
-    suspend fun getPurchases(): Flow<ShoppingLists> = withContext(dispatcher) {
-        return@withContext combine(
-            flow = shoppingListsDao.getPurchases(),
-            flow2 = shoppingListsDao.getLastPosition(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { shoppingLists, lastPosition, appConfig ->
-                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.PURCHASES, appConfig)
-            }
-        )
+    suspend fun getArchiveWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+        return@withContext getShoppingListsWithConfig(ShoppingLocation.ARCHIVE)
     }
 
-    suspend fun getArchive(): Flow<ShoppingLists> = withContext(dispatcher) {
-        return@withContext combine(
-            flow = shoppingListsDao.getArchive(),
-            flow2 = shoppingListsDao.getLastPosition(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { shoppingLists, lastPosition, appConfig ->
-                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.ARCHIVE, appConfig)
-            }
-        )
+    suspend fun getTrashWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+        return@withContext getShoppingListsWithConfig(ShoppingLocation.TRASH)
     }
 
-    suspend fun getTrash(): Flow<ShoppingLists> = withContext(dispatcher) {
-        return@withContext combine(
-            flow = shoppingListsDao.getTrash(),
-            flow2 = shoppingListsDao.getLastPosition(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { shoppingLists, lastPosition, appConfig ->
-                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, ShoppingLocation.TRASH, appConfig)
-            }
-        )
-    }
-
-    suspend fun getReminders(): Flow<ShoppingLists> = withContext(dispatcher) {
-        return@withContext combine(
-            flow = shoppingListsDao.getReminders(),
-            flow2 = shoppingListsDao.getLastPosition(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { shoppingLists, lastPosition, appConfig ->
-                RepositoryMapper.toShoppingLists(shoppingLists, lastPosition, null, appConfig)
-            }
-        )
-    }
-
-    suspend fun getEditReminder(uid: String?): Flow<EditReminder> = withContext(dispatcher) {
-        return@withContext if (uid == null) {
-            appConfigDao.getAppConfig().map {
-                RepositoryMapper.toEditReminder(null, it)
-            }
-        } else {
-            shoppingListsDao.getShoppingList(uid).combine(
-                flow = appConfigDao.getAppConfig(),
-                transform = { shoppingList, appConfig ->
-                    RepositoryMapper.toEditReminder(shoppingList, appConfig)
-                }
-            )
-        }
-    }
-
-    suspend fun getNotification(uid: String): Flow<ShoppingListNotification?> = withContext(dispatcher) {
-        return@withContext shoppingListsDao.getShoppingList(uid).combine(
-            flow = appConfigDao.getAppConfig(),
-            transform = { shoppingList, appConfig ->
-                if (shoppingList == null) {
-                    return@combine null
-                }
-
-                RepositoryMapper.toShoppingListNotification(shoppingList, appConfig)
-            }
-        )
-    }
-
-    suspend fun getNotifications(): Flow<ShoppingListNotifications> = withContext(dispatcher) {
+    suspend fun getRemindersWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
         return@withContext shoppingListsDao.getReminders().combine(
             flow = appConfigDao.getAppConfig(),
-            transform = { shoppingLists, appConfig ->
-                RepositoryMapper.toShoppingListNotifications(shoppingLists, appConfig)
+            transform = { shoppingListEntities, appConfigEntity ->
+                ShoppingListsMapper.toShoppingListsWithConfig(
+                    entities = shoppingListEntities,
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
             }
         )
     }
 
-    suspend fun getEditShoppingListName(uid: String?): Flow<EditShoppingListName> = withContext(dispatcher) {
-        return@withContext if (uid == null) {
-            appConfigDao.getAppConfig().map {
-                RepositoryMapper.toEditShoppingListName(null, it)
+    suspend fun getShoppingListWithConfig(
+        shoppingUid: String?
+    ): Flow<ShoppingListWithConfig> = withContext(dispatcher) {
+        return@withContext if (shoppingUid == null) {
+            appConfigDao.getAppConfig().map { appConfigEntity ->
+                ShoppingListsMapper.toShoppingListWithConfig(
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
             }
         } else {
-            shoppingListsDao.getShoppingList(uid).combine(
+            shoppingListsDao.getShoppingList(shoppingUid).combine(
                 flow = appConfigDao.getAppConfig(),
-                transform = { shoppingList, appConfig ->
-                    RepositoryMapper.toEditShoppingListName(shoppingList, appConfig)
-                }
-            )
-        }
-    }
-
-    suspend fun getEditShoppingListTotal(uid: String?): Flow<EditShoppingListTotal> = withContext(dispatcher) {
-        return@withContext if (uid == null) {
-            appConfigDao.getAppConfig().map {
-                RepositoryMapper.toEditShoppingListTotal(null, it)
-            }
-        } else {
-            shoppingListsDao.getShoppingList(uid).combine(
-                flow = appConfigDao.getAppConfig(),
-                transform = { shoppingList, appConfig ->
-                    RepositoryMapper.toEditShoppingListTotal(shoppingList, appConfig)
+                transform = { shoppingListEntity, appConfigEntity ->
+                    ShoppingListsMapper.toShoppingListWithConfig(
+                        entity = shoppingListEntity,
+                        appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                    )
                 }
             )
         }
@@ -156,23 +85,11 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun getAllProducts(): Flow<List<Product>> = withContext(dispatcher) {
         return@withContext productsDao.getAllProducts().combine(
             flow = appConfigDao.getAppConfig(),
-            transform = { products, appConfig ->
-                RepositoryMapper.toProducts(products, appConfig)
-            }
-        )
-    }
-
-    suspend fun getProducts(shoppingUid: String): Flow<Products?> = withContext(dispatcher) {
-        return@withContext combine(
-            flow = shoppingListsDao.getShoppingList(shoppingUid),
-            flow2 = shoppingListsDao.getLastPosition(),
-            flow3 = appConfigDao.getAppConfig(),
-            transform = { shoppingList, lastPosition, appConfig ->
-                if (shoppingList == null) {
-                    return@combine null
-                }
-
-                RepositoryMapper.toProducts(shoppingList, lastPosition, appConfig)
+            transform = { productEntities, appConfigEntity ->
+                ShoppingListsMapper.toProducts(
+                    entities = productEntities,
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
             }
         )
     }
@@ -180,272 +97,719 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun getProducts(productUids: List<String>): Flow<List<Product>> = withContext(dispatcher) {
         return@withContext productsDao.getProducts(productUids).combine(
             flow = appConfigDao.getAppConfig(),
-            transform = { products, appConfig ->
-                RepositoryMapper.toProducts(products, appConfig)
+            transform = { productEntities, appConfigEntity ->
+                ShoppingListsMapper.toProducts(
+                    entities = productEntities,
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
             }
         )
     }
 
-    suspend fun getAddEditProduct(
-        shoppingUid: String,
-        productUid: String?
-    ): Flow<AddEditProduct> = withContext(dispatcher) {
+    suspend fun getProductWithConfig(productUid: String?): Flow<ProductWithConfig> = withContext(dispatcher) {
         return@withContext if (productUid == null) {
-            productsDao.getLastPosition(shoppingUid).combine(
-                flow = appConfigDao.getAppConfig(),
-                transform = { lastPosition, appConfig ->
-                    RepositoryMapper.toAddEditProduct(null, lastPosition, appConfig)
-                }
-            )
-        } else {
-            combine(
-                flow = productsDao.getProduct(productUid),
-                flow2 = productsDao.getLastPosition(shoppingUid),
-                flow3 = appConfigDao.getAppConfig(),
-                transform = { product, lastPosition, appConfig ->
-                    RepositoryMapper.toAddEditProduct(product, lastPosition, appConfig)
-                }
-            )
-        }
-    }
-
-    suspend fun getCalculateChange(shoppingUid: String?): Flow<CalculateChange> = withContext(dispatcher) {
-        return@withContext if (shoppingUid == null) {
-            appConfigDao.getAppConfig().map {
-                RepositoryMapper.toCalculateChange(null, it)
+            appConfigDao.getAppConfig().map { appConfigEntity ->
+                ShoppingListsMapper.toProductWithConfig(
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
             }
         } else {
-            shoppingListsDao.getShoppingList(shoppingUid).combine(
+            productsDao.getProduct(productUid).combine(
                 flow = appConfigDao.getAppConfig(),
-                transform = { shoppingList, appConfig ->
-                    RepositoryMapper.toCalculateChange(shoppingList, appConfig)
+                transform = { productEntity, appConfigEntity ->
+                    ShoppingListsMapper.toProductWithConfig(
+                        entity = productEntity,
+                        appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                    )
                 }
             )
         }
     }
 
-    suspend fun getShoppingListsFirstPosition(): Flow<Int?> = withContext(dispatcher) {
-        return@withContext shoppingListsDao.getFirstPosition()
-    }
+    suspend fun saveShoppingLists(shoppingLists: List<ShoppingList>): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingLists.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            val shoppingEntities = ShoppingListsMapper.toShoppingEntities(shoppingLists)
+            shoppingListsDao.insertShoppings(shoppingEntities)
 
-    suspend fun getShoppingListsLastPosition(): Flow<Int?> = withContext(dispatcher) {
-        return@withContext shoppingListsDao.getLastPosition()
-    }
+            val productEntities = ShoppingListsMapper.toProductEntitiesFromShoppingLists(shoppingLists)
+            productsDao.insertProducts(productEntities)
 
-    suspend fun getProductsFirstPosition(shoppingUid: String): Flow<Int?> = withContext(dispatcher) {
-        return@withContext productsDao.getFirstPosition(shoppingUid)
-    }
-
-    suspend fun getProductsLastPosition(shoppingUid: String): Flow<Int?> = withContext(dispatcher) {
-        return@withContext productsDao.getLastPosition(shoppingUid)
-    }
-
-    suspend fun checkIfProductExists(productUid: String): Flow<String?> = withContext(dispatcher) {
-        return@withContext productsDao.checkIfProductExists(productUid)
-    }
-
-    suspend fun saveShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        val shoppings = RepositoryMapper.toShoppingEntities(shoppingLists)
-        shoppingListsDao.insertShoppings(shoppings)
-
-        val products = RepositoryMapper.toProductEntitiesFromShoppingLists(shoppingLists)
-        productsDao.insertProducts(products)
-    }
-
-    suspend fun saveShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatcher) {
-        val shopping = RepositoryMapper.toShoppingEntity(shoppingList)
-        shoppingListsDao.insertShopping(shopping)
-
-        val products = RepositoryMapper.toProductEntitiesFromProducts(shoppingList.products)
-        productsDao.insertProducts(products)
-    }
-
-    suspend fun swapShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        val entities = RepositoryMapper.toShoppingEntities(shoppingLists)
-        shoppingListsDao.insertShoppings(entities)
-    }
-
-    suspend fun swapShoppingLists(first: ShoppingList, second: ShoppingList): Unit = withContext(dispatcher) {
-        shoppingListsDao.updatePosition(first.uid, first.position, first.lastModified)
-        shoppingListsDao.updatePosition(second.uid, second.position, second.lastModified)
-    }
-
-    suspend fun saveShoppingListName(uid: String, name: String, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.updateName(uid, name, lastModified)
-    }
-
-    suspend fun saveReminder(uid: String, reminder: Long, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.updateReminder(uid, reminder, lastModified)
-    }
-
-    suspend fun saveShoppingListTotal(uid: String, total: Money, lastModified: Long): Unit = withContext(dispatcher) {
-        val value = RepositoryMapper.toMoneyValue(total)
-        shoppingListsDao.updateTotal(uid, value, lastModified)
-    }
-
-    suspend fun saveProducts(products: List<Product>): Unit = withContext(dispatcher) {
-        val entities = RepositoryMapper.toProductEntitiesFromProducts(products)
-        productsDao.insertProducts(entities)
-
-        val first = products.first()
-        shoppingListsDao.updateLastModified(first.shoppingUid, first.lastModified)
-    }
-
-    suspend fun saveProduct(product: Product): Unit = withContext(dispatcher) {
-        val entity = RepositoryMapper.toProductEntity(product)
-        productsDao.insertProduct(entity)
-
-        shoppingListsDao.updateLastModified(product.shoppingUid, product.lastModified)
-    }
-
-    suspend fun swapProducts(first: Product, second: Product): Unit = withContext(dispatcher) {
-        productsDao.updatePosition(first.productUid, first.position, first.lastModified)
-        productsDao.updatePosition(second.productUid, second.position, second.lastModified)
-    }
-
-    suspend fun swapProducts(products: List<Product>): Unit = withContext(dispatcher) {
-        products.forEach {
-            productsDao.updatePosition(it.productUid, it.position, it.lastModified)
+            Result.success(Unit)
         }
     }
 
-    suspend fun completeProduct(productUid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        productsDao.completeProduct(productUid, lastModified)
+    suspend fun addShopping(): Result<String> = withContext(dispatcher) {
+        val position = ShoppingListsMapper.toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull())
+        val shopping = Shopping(position = position)
+
+        val shoppingList = ShoppingList(shopping = shopping)
+        return@withContext saveShoppingList(shoppingList).map { shopping.uid }
     }
 
-    suspend fun activeProduct(productUid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        productsDao.activeProduct(productUid, lastModified)
+    suspend fun saveShoppingList(shoppingList: ShoppingList): Result<Unit> = withContext(dispatcher) {
+        val shoppingEntity = ShoppingListsMapper.toShoppingEntity(shoppingList.shopping)
+        shoppingListsDao.insertShopping(shoppingEntity)
+
+        if (shoppingList.products.isNotEmpty()) {
+            val productEntities = ShoppingListsMapper.toProductEntities(shoppingList.products)
+            productsDao.insertProducts(productEntities)
+        }
+
+        return@withContext Result.success(Unit)
     }
 
-    suspend fun pinShoppingLists(uids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.pinShoppings(uids, lastModified)
-    }
-
-    suspend fun unpinShoppingLists(uids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.unpinShoppings(uids, lastModified)
-    }
-
-    suspend fun pinProducts(productsUids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        productsDao.pinProducts(productsUids, lastModified)
-    }
-
-    suspend fun unpinProducts(productsUids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        productsDao.unpinProducts(productsUids, lastModified)
-    }
-
-    suspend fun moveShoppingListsToPurchases(uids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.moveToPurchases(uids, lastModified)
-    }
-
-    suspend fun moveShoppingListToPurchases(uid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.moveToPurchases(uid, lastModified)
-    }
-
-    suspend fun moveShoppingListsToArchive(uids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.moveToArchive(uids, lastModified)
-    }
-
-    suspend fun moveShoppingListToArchive(uid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.moveToArchive(uid, lastModified)
-    }
-
-    suspend fun moveShoppingListsToTrash(uids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.moveToTrash(uids, lastModified)
-    }
-
-    suspend fun moveShoppingListToTrash(uid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.moveToTrash(uid, lastModified)
-    }
-
-    suspend fun copyShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        saveShoppingLists(shoppingLists)
-    }
-
-    suspend fun copyShoppingList(shoppingList: ShoppingList): Unit = withContext(dispatcher) {
-        saveShoppingList(shoppingList)
-    }
-
-    suspend fun sortProductsBy(
+    suspend fun moveShoppingListUp(
         shoppingUid: String,
-        sortBy: SortBy,
-        lastModified: Long
-    ): Unit = withContext(dispatcher) {
-        val name = RepositoryMapper.toSortByName(sortBy)
-        shoppingListsDao.sortBy(shoppingUid, name, lastModified)
+        location: ShoppingLocation = ShoppingLocation.PURCHASES,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val shoppingLists = when (location) {
+            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
+            ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
+            ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
+        }.singleOrNull()
+
+        return@withContext if (shoppingLists == null || shoppingLists.size < 2) {
+            val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
+            Result.failure(exception)
+        } else {
+            var previousIndex = 0
+            var currentIndex = 0
+            for (index in shoppingLists.indices) {
+                val shopping = shoppingLists[index].shoppingEntity
+                if (currentIndex > 0) {
+                    previousIndex = index - 1
+                }
+                currentIndex = index
+
+                if (shopping.uid == shoppingUid) {
+                    break
+                }
+            }
+
+            shoppingListsDao.updatePosition(
+                uid = shoppingLists[currentIndex].shoppingEntity.uid,
+                position = shoppingLists[previousIndex].shoppingEntity.position,
+                lastModified = lastModified.millis
+            )
+
+            shoppingListsDao.updatePosition(
+                uid = shoppingLists[previousIndex].shoppingEntity.uid,
+                position = shoppingLists[currentIndex].shoppingEntity.position,
+                lastModified = lastModified.millis
+            )
+
+            Result.success(Unit)
+        }
     }
 
-    suspend fun sortProductsAscending(
+    suspend fun moveShoppingListDown(
         shoppingUid: String,
-        sortAscending: Boolean,
-        lastModified: Long
-    ): Unit = withContext(dispatcher) {
-        shoppingListsDao.sortAscending(shoppingUid, sortAscending, lastModified)
+        location: ShoppingLocation = ShoppingLocation.PURCHASES,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val shoppingLists = when (location) {
+            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
+            ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
+            ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
+        }.singleOrNull()
+
+        return@withContext if (shoppingLists == null || shoppingLists.size < 2) {
+            val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
+            Result.failure(exception)
+        } else {
+            var currentIndex = 0
+            var nextIndex = 0
+            for (index in shoppingLists.indices) {
+                val shopping = shoppingLists[index].shoppingEntity
+
+                currentIndex = index
+                if (index < shoppingLists.lastIndex) {
+                    nextIndex = index + 1
+                }
+
+                if (shopping.uid == shoppingUid) {
+                    break
+                }
+            }
+
+            shoppingListsDao.updatePosition(
+                uid = shoppingLists[currentIndex].shoppingEntity.uid,
+                position = shoppingLists[nextIndex].shoppingEntity.position,
+                lastModified = lastModified.millis
+            )
+
+            shoppingListsDao.updatePosition(
+                uid = shoppingLists[nextIndex].shoppingEntity.uid,
+                position = shoppingLists[currentIndex].shoppingEntity.position,
+                lastModified = lastModified.millis
+            )
+
+            Result.success(Unit)
+        }
     }
 
-    suspend fun enableAutomaticSorting(
+    suspend fun saveShoppingListName(
+        shoppingUid: String,
+        name: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.updateName(shoppingUid, name.trim(), lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveReminder(
+        shoppingUid: String,
+        reminder: Time,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.updateReminder(shoppingUid, reminder.millis, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveShoppingListTotal(
+        shoppingUid: String,
+        total: Money,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.updateTotal(shoppingUid, total.value, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveProducts(products: List<Product>): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (products.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            val productEntities = ShoppingListsMapper.toProductEntities(products)
+            productsDao.insertProducts(productEntities)
+
+            val first = productEntities.first()
+            shoppingListsDao.updateLastModified(first.shoppingUid, first.lastModified)
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun saveProduct(product: Product): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (product.name.isEmpty()) {
+            val exception = InvalidNameException("Name must not be null or empty")
+            Result.failure(exception)
+        } else {
+            val productUid = product.productUid.trim()
+            val checkIfProductExists = productsDao.checkIfProductExists(productUid).firstOrNull()
+            if (checkIfProductExists == null) {
+                val exception = InvalidUidException("Uid must not be null or empty")
+                Result.failure(exception)
+            } else {
+                val productEntity = ShoppingListsMapper.toProductEntity(product)
+                productsDao.insertProduct(productEntity)
+
+                shoppingListsDao.updateLastModified(productEntity.shoppingUid, productEntity.lastModified)
+                Result.success(Unit)
+            }
+        }
+    }
+
+    suspend fun moveProductUp(
+        shoppingUid: String,
+        productUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val products = shoppingListsDao.getShoppingList(shoppingUid).singleOrNull()?.productEntities
+
+        return@withContext if (products == null || products.size < 2) {
+            val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
+            Result.failure(exception)
+        } else {
+            var previousIndex = 0
+            var currentIndex = 0
+            for (index in products.indices) {
+                val product = products[index]
+                if (currentIndex > 0) {
+                    previousIndex = index - 1
+                }
+                currentIndex = index
+
+                if (product.productUid == productUid) {
+                    break
+                }
+            }
+
+            productsDao.updatePosition(
+                productUid = products[currentIndex].productUid,
+                position = products[previousIndex].position,
+                lastModified = lastModified.millis
+            )
+
+            productsDao.updatePosition(
+                productUid = products[previousIndex].productUid,
+                position = products[currentIndex].position,
+                lastModified = lastModified.millis
+            )
+
+            shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun moveProductDown(
+        shoppingUid: String,
+        productUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val products = shoppingListsDao.getShoppingList(shoppingUid).singleOrNull()?.productEntities
+
+        return@withContext if (products == null || products.size < 2) {
+            val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
+            Result.failure(exception)
+        } else {
+            var currentIndex = 0
+            var nextIndex = 0
+            for (index in products.indices) {
+                val product = products[index]
+
+                currentIndex = index
+                if (index < products.lastIndex) {
+                    nextIndex = index + 1
+                }
+
+                if (product.productUid == productUid) {
+                    break
+                }
+            }
+
+            productsDao.updatePosition(
+                productUid = products[currentIndex].productUid,
+                position = products[nextIndex].position,
+                lastModified = lastModified.millis
+            )
+
+            productsDao.updatePosition(
+                productUid = products[nextIndex].productUid,
+                position = products[currentIndex].position,
+                lastModified = lastModified.millis
+            )
+
+            shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun completeProduct(
+        productUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        productsDao.completeProduct(productUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun activeProduct(
+        productUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        productsDao.activeProduct(productUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun pinShoppingLists(
+        shoppingUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.pinShoppings(shoppingUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun unpinShoppingLists(
+        shoppingUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.unpinShoppings(shoppingUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun pinProducts(
+        productsUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (productsUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            productsDao.pinProducts(productsUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun unpinProducts(
+        productsUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (productsUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            productsDao.unpinProducts(productsUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun moveShoppingListsToPurchases(
+        shoppingUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.moveToPurchases(shoppingUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun moveShoppingListToPurchases(
+        shoppingUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.moveToPurchases(shoppingUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun moveShoppingListsToArchive(
+        shoppingUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.moveToArchive(shoppingUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun moveShoppingListToArchive(
+        shoppingUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.moveToArchive(shoppingUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun moveShoppingListsToTrash(
+        shoppingUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidUidException("Uids must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.moveToTrash(shoppingUids, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun moveShoppingListToTrash(
+        shoppingUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.moveToTrash(shoppingUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun copyShoppingLists(shoppingUids: List<String>): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingUids.forEach { copyShoppingList(it) }
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun copyShoppingList(shoppingUid: String): Result<Unit> = withContext(dispatcher) {
+        val shoppingList = shoppingListsDao.getShoppingList(shoppingUid).firstOrNull()
+        return@withContext if (shoppingList == null) {
+            val exception = InvalidUidException()
+            Result.failure(exception)
+        } else {
+            val newShoppingUid = Id.createUid()
+            val lastModified = Time.getCurrentTime().millis
+
+            val shopping = shoppingList.shoppingEntity.copy(
+                id = Id.NO_ID,
+                position = ShoppingListsMapper.toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
+                uid = newShoppingUid,
+                lastModified = lastModified
+            )
+            shoppingListsDao.insertShopping(shopping)
+
+            val products = shoppingList.productEntities.map {
+                it.copy(
+                    id = Id.NO_ID,
+                    shoppingUid = newShoppingUid,
+                    productUid = Id.createUid(),
+                    lastModified = lastModified
+                )
+            }
+            productsDao.insertProducts(products)
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun sortShoppingLists(
+        sort: Sort,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.shoppingLists
+        return@withContext if (shoppingLists.isNullOrEmpty()) {
+            val exception = UnsupportedOperationException("Sort empty list is not supported")
+            Result.failure(exception)
+        } else {
+            shoppingLists.sortedShoppingLists(sort)
+                .forEachIndexed { shoppingIndex, shoppingList ->
+                    shoppingListsDao.updatePosition(
+                        uid = shoppingList.shopping.uid,
+                        position = shoppingIndex,
+                        lastModified = lastModified.millis
+                    )
+
+                    shoppingList.products.forEachIndexed { productIndex, product ->
+                        productsDao.updatePosition(
+                            productUid = product.productUid,
+                            position = productIndex,
+                            lastModified = lastModified.millis
+                        )
+                    }
+                }
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun reverseShoppingLists(
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.shoppingLists
+        return@withContext if (shoppingLists.isNullOrEmpty()) {
+            val exception = UnsupportedOperationException("Sort empty list is not supported")
+            Result.failure(exception)
+        } else {
+            shoppingLists.reversed()
+                .forEachIndexed { shoppingIndex, shoppingList ->
+                    shoppingListsDao.updatePosition(
+                        uid = shoppingList.shopping.uid,
+                        position = shoppingIndex,
+                        lastModified = lastModified.millis
+                    )
+
+                    shoppingList.products.forEachIndexed { productIndex, product ->
+                        productsDao.updatePosition(
+                            productUid = product.productUid,
+                            position = productIndex,
+                            lastModified = lastModified.millis
+                        )
+                    }
+                }
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun sortProducts(
         shoppingUid: String,
         sort: Sort,
-        lastModified: Long
-    ): Unit = withContext(dispatcher) {
-        val sortBy = RepositoryMapper.toSortByName(sort.sortBy)
-        val sortAscending = sort.ascending
-        shoppingListsDao.enableAutomaticSorting(shoppingUid, sortBy, sortAscending, lastModified)
+        automaticSort: Boolean,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (automaticSort) {
+            shoppingListsDao.enableAutomaticSorting(
+                uid = shoppingUid,
+                sortBy = sort.sortBy.name,
+                sortAscending = sort.ascending,
+                lastModified = lastModified.millis
+            )
+            Result.success(Unit)
+        } else {
+            val products = getShoppingListWithConfig(shoppingUid).firstOrNull()?.shoppingList?.products
+            if (products.isNullOrEmpty()) {
+                val exception = UnsupportedOperationException("Sort empty list is not supported")
+                Result.failure(exception)
+            } else {
+                shoppingListsDao.disableAutomaticSorting(
+                    uid = shoppingUid,
+                    sortBy = sort.sortBy.name,
+                    sortAscending = sort.ascending,
+                    lastModified = lastModified.millis
+                )
+                products.sortedProducts(sort)
+                    .forEachIndexed { index, product ->
+                        productsDao.updatePosition(
+                            productUid = product.productUid,
+                            position = index,
+                            lastModified = lastModified.millis
+                        )
+                    }
+
+                Result.success(Unit)
+            }
+        }
     }
 
-    suspend fun disableAutomaticSorting(
+    suspend fun reverseProducts(
         shoppingUid: String,
-        sort: Sort,
-        lastModified: Long
-    ): Unit = withContext(dispatcher) {
-        val sortBy = RepositoryMapper.toSortByName(sort.sortBy)
-        val sortAscending = sort.ascending
-        shoppingListsDao.disableAutomaticSorting(shoppingUid, sortBy, sortAscending, lastModified)
+        automaticSort: Boolean,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val shoppingList = getShoppingListWithConfig(shoppingUid).firstOrNull()?.shoppingList
+        if (shoppingList == null) {
+            val exception = InvalidUidException("Shopping list is not exists")
+            return@withContext Result.failure(exception)
+        }
+
+        val sort = shoppingList.shopping.sort.copy(
+            ascending = !shoppingList.shopping.sort.ascending
+        )
+        val products = shoppingList.products
+
+        return@withContext if (automaticSort) {
+            shoppingListsDao.enableAutomaticSorting(
+                uid = shoppingUid,
+                sortBy = sort.sortBy.name,
+                sortAscending = sort.ascending,
+                lastModified = lastModified.millis
+            )
+            Result.success(Unit)
+        } else {
+
+            if (products.isEmpty()) {
+                val exception = UnsupportedOperationException("Sort empty list is not supported")
+                Result.failure(exception)
+            } else {
+                shoppingListsDao.disableAutomaticSorting(
+                    uid = shoppingUid,
+                    sortBy = sort.sortBy.name,
+                    sortAscending = sort.ascending,
+                    lastModified = lastModified.millis
+                )
+                products.sortedProducts(sort)
+                    .forEachIndexed { index, product ->
+                        productsDao.updatePosition(
+                            productUid = product.productUid,
+                            position = index,
+                            lastModified = lastModified.millis
+                        )
+                    }
+
+                Result.success(Unit)
+            }
+        }
     }
 
-    suspend fun deleteAllShoppingLists(): Unit = withContext(dispatcher) {
+    suspend fun deleteAllShoppingLists(): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.deleteAllShoppings()
         productsDao.deleteAllProducts()
+        return@withContext Result.success(Unit)
     }
 
-    suspend fun deleteShoppingLists(shoppingLists: List<ShoppingList>): Unit = withContext(dispatcher) {
-        val shoppings = RepositoryMapper.toShoppingEntities(shoppingLists)
-        shoppingListsDao.deleteShoppings(shoppings)
-
-        val shoppingUids = RepositoryMapper.toShoppingUids(shoppingLists)
-        productsDao.deleteProductsByShoppingUids(shoppingUids)
-    }
-
-    suspend fun deleteShoppingListsByUids(uids: List<String>): Unit = withContext(dispatcher) {
-        shoppingListsDao.deleteShoppingsByUids(uids)
-        productsDao.deleteProductsByShoppingUids(uids)
+    suspend fun deleteShoppingLists(shoppingUids: List<String>): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.deleteShoppingsByUids(shoppingUids)
+            productsDao.deleteProductsByShoppingUids(shoppingUids)
+            Result.success(Unit)
+        }
     }
 
     suspend fun deleteProductsByShoppingUid(
         shoppingUid: String,
-        lastModified: Long
-    ): Unit = withContext(dispatcher) {
-        shoppingListsDao.updateLastModified(shoppingUid, lastModified)
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
         productsDao.deleteProductsByShoppingUid(shoppingUid)
+        return@withContext Result.success(Unit)
     }
 
     suspend fun deleteProductsByProductUids(
-        productsUids: List<String>,
         shoppingUid: String,
-        lastModified: Long
-    ): Unit = withContext(dispatcher) {
-        shoppingListsDao.updateLastModified(shoppingUid, lastModified)
-        productsDao.deleteProductsByProductUids(productsUids)
+        productsUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (productsUids.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+            productsDao.deleteProductsByProductUids(productsUids)
+            Result.success(Unit)
+        }
     }
 
-    suspend fun deleteReminders(uids: List<String>, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.deleteReminders(uids, lastModified)
+    suspend fun deleteReminders(
+        shoppingUids: List<String>,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (shoppingUids.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            shoppingListsDao.deleteReminders(shoppingUids, lastModified.millis)
+            Result.success(Unit)
+        }
     }
 
-    suspend fun deleteReminder(uid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.deleteReminder(uid, lastModified)
+    suspend fun deleteReminder(
+        shoppingUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.deleteReminder(shoppingUid, lastModified.millis)
+        return@withContext Result.success(Unit)
     }
 
-    suspend fun deleteShoppingListTotal(uid: String, lastModified: Long): Unit = withContext(dispatcher) {
-        shoppingListsDao.deleteTotal(uid, lastModified)
+    suspend fun deleteShoppingListTotal(
+        shoppingUid: String,
+        lastModified: Time = Time.getCurrentTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.deleteTotal(shoppingUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    private suspend fun getShoppingListsWithConfig(
+        location: ShoppingLocation? = null
+    ): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+        val shoppingListsFlow = when (location) {
+            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
+            ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
+            ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
+            null -> shoppingListsDao.getAllShoppingLists()
+        }
+
+        return@withContext shoppingListsFlow.combine(
+            flow = appConfigDao.getAppConfig(),
+            transform = { shoppingListEntities, appConfigEntity ->
+                ShoppingListsMapper.toShoppingListsWithConfig(
+                    entities = shoppingListEntities,
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
+            }
+        )
     }
 }

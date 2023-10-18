@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditShoppingListNameState
@@ -46,14 +47,15 @@ class EditShoppingListNameViewModel @Inject constructor(
 
     private fun getEditShoppingListName() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        shoppingListsRepository.getEditShoppingListName(uid).firstOrNull()?.let {
-            editShoppingListNameLoaded(it)
+        shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
+            shoppingListLoaded(it)
         }
     }
 
-    private suspend fun editShoppingListNameLoaded(
-        editShoppingListName: EditShoppingListName
+    private suspend fun shoppingListLoaded(
+        shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
+        val editShoppingListName = ShoppingListsMapper.toEditShoppingListName(shoppingListWithConfig)
         editShoppingListNameState.populate(editShoppingListName)
         _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowKeyboard)
     }
@@ -63,9 +65,8 @@ class EditShoppingListNameViewModel @Inject constructor(
             .getOrElse { return@launch }
 
         shoppingListsRepository.saveShoppingListName(
-            uid = shoppingList.uid,
-            name = shoppingList.name,
-            lastModified = shoppingList.lastModified
+            shoppingUid = shoppingList.uid,
+            name = shoppingList.name
         )
 
         withContext(dispatchers.main) {

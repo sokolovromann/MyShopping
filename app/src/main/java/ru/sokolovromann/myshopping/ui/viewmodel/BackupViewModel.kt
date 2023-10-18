@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
@@ -121,8 +122,14 @@ class BackupViewModel @Inject constructor(
         listOf(
             viewModelScope.async { deleteReminders() },
             viewModelScope.async { shoppingListsRepository.deleteAllShoppingLists() },
-            viewModelScope.async { shoppingListsRepository.saveShoppingLists(importedBackup.shoppingLists) },
-            viewModelScope.async { shoppingListsRepository.saveProducts(importedBackup.products) },
+            viewModelScope.async {
+                val shoppingLists = ShoppingListsMapper.toShoppingLists(importedBackup.shoppingLists)
+                shoppingListsRepository.saveShoppingLists(shoppingLists)
+            },
+            viewModelScope.async {
+                val products = ShoppingListsMapper.toProductList(importedBackup.products)
+                shoppingListsRepository.saveProducts(products)
+            },
             viewModelScope.async { autocompletesRepository.deleteAllAutocompletes() },
             viewModelScope.async {
                 val autocompletes = AutocompletesMapper.toAutocompletes(importedBackup.autocompletes)
@@ -142,10 +149,10 @@ class BackupViewModel @Inject constructor(
     }
 
     private suspend fun deleteReminders() {
-        shoppingListsRepository.getReminders().firstOrNull()?.let { shoppingLists ->
-            shoppingLists.getUids().forEach { uid ->
+        shoppingListsRepository.getRemindersWithConfig().firstOrNull()?.let { shoppingLists ->
+            shoppingLists.shoppingLists.forEach {
                 withContext(dispatchers.main) {
-                    alarmManager.deleteReminder(uid)
+                    alarmManager.deleteReminder(it.shopping.uid)
                 }
             }
         }

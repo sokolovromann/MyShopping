@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.repository.model.*
@@ -103,14 +104,15 @@ class PurchasesViewModel @Inject constructor(
             purchasesState.showLoading()
         }
 
-        shoppingListsRepository.getPurchases().collect {
+        shoppingListsRepository.getPurchasesWithConfig().collect {
             shoppingListsLoaded(it)
         }
     }
 
     private suspend fun shoppingListsLoaded(
-        shoppingLists: ShoppingLists
+        shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
+        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
         if (shoppingLists.isShoppingListsEmpty()) {
             purchasesState.showNotFound(shoppingLists)
         } else {
@@ -119,31 +121,17 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun addShoppingList() = viewModelScope.launch {
-        purchasesState.getShoppingListResult()
+        shoppingListsRepository.addShopping()
             .onSuccess {
-                shoppingListsRepository.saveShoppingList(it)
-
                 withContext(dispatchers.main) {
-                    _screenEventFlow.emit(PurchasesScreenEvent.ShowProducts(it.uid))
-                }
-            }
-            .onFailure {
-                val lastPosition = shoppingListsRepository.getShoppingListsLastPosition().first() ?: 0
-                val shoppingList = ShoppingList(position = lastPosition.plus(1))
-                shoppingListsRepository.saveShoppingList(shoppingList)
-
-                withContext(dispatchers.main) {
-                    _screenEventFlow.emit(PurchasesScreenEvent.ShowProducts(shoppingList.uid))
+                    _screenEventFlow.emit(PurchasesScreenEvent.ShowProducts(it))
                 }
             }
     }
 
     private fun moveShoppingListsToArchive() = viewModelScope.launch {
         purchasesState.screenData.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToArchive(
-                uids = it,
-                lastModified = System.currentTimeMillis()
-            )
+            shoppingListsRepository.moveShoppingListsToArchive(it)
         }
 
         withContext(dispatchers.main) {
@@ -153,10 +141,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun moveShoppingListsToTrash() = viewModelScope.launch {
         purchasesState.screenData.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToTrash(
-                uids = it,
-                lastModified = System.currentTimeMillis()
-            )
+            shoppingListsRepository.moveShoppingListsToTrash(it)
         }
 
         withContext(dispatchers.main) {
@@ -166,7 +151,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun copyShoppingLists() = viewModelScope.launch {
         purchasesState.getCopyShoppingListsResult()
-            .onSuccess { shoppingListsRepository.copyShoppingLists(it) }
+            .onSuccess { shoppingListsRepository.copyShoppingLists(it.map { list -> list.uid }) }
 
         withContext(dispatchers.main) {
             hideSelectedMenu()
@@ -176,15 +161,13 @@ class PurchasesViewModel @Inject constructor(
     private fun moveShoppingListUp(
         event: PurchasesEvent.MoveShoppingListUp
     ) = viewModelScope.launch {
-        purchasesState.getShoppingListsUpResult(event.uid)
-            .onSuccess { shoppingListsRepository.swapShoppingLists(it.first, it.second) }
+        shoppingListsRepository.moveShoppingListUp(shoppingUid = event.uid)
     }
 
     private fun moveShoppingListDown(
         event: PurchasesEvent.MoveShoppingListDown
     ) = viewModelScope.launch {
-        purchasesState.getShoppingListsDownResult(event.uid)
-            .onSuccess { shoppingListsRepository.swapShoppingLists(it.first, it.second) }
+        shoppingListsRepository.moveShoppingListDown(shoppingUid = event.uid)
     }
 
     private fun selectDisplayPurchasesTotal() {
@@ -228,12 +211,9 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun sortShoppingLists(event: PurchasesEvent.SortShoppingLists) = viewModelScope.launch {
-        val shoppingLists = purchasesState.sortShoppingListsResult(event.sortBy).getOrElse {
-            withContext(dispatchers.main) { hideShoppingListsSort() }
-            return@launch
-        }
-
-        shoppingListsRepository.swapShoppingLists(shoppingLists)
+        shoppingListsRepository.sortShoppingLists(
+            sort = Sort(event.sortBy)
+        )
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
@@ -241,12 +221,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun reverseSortShoppingLists() = viewModelScope.launch {
-        val shoppingLists = purchasesState.reverseSortShoppingListsResult().getOrElse {
-            withContext(dispatchers.main) { hideShoppingListsSort() }
-            return@launch
-        }
-
-        shoppingListsRepository.swapShoppingLists(shoppingLists)
+        shoppingListsRepository.reverseShoppingLists()
 
         withContext(dispatchers.main) {
             hideShoppingListsSort()
@@ -315,7 +290,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun pinShoppingLists() = viewModelScope.launch {
         purchasesState.screenData.selectedUids?.let {
-            shoppingListsRepository.pinShoppingLists(it, System.currentTimeMillis())
+            shoppingListsRepository.pinShoppingLists(it)
         }
 
         withContext(dispatchers.main) {
@@ -325,7 +300,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun unpinShoppingLists() = viewModelScope.launch {
         purchasesState.screenData.selectedUids?.let {
-            shoppingListsRepository.unpinShoppingLists(it, System.currentTimeMillis())
+            shoppingListsRepository.unpinShoppingLists(it)
         }
 
         withContext(dispatchers.main) {

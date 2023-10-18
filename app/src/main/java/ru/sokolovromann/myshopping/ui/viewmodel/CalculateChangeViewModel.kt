@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CalculateChangeScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.CalculateChangeState
@@ -44,14 +45,15 @@ class CalculateChangeViewModel @Inject constructor(
 
     private fun getCalculateChange() = viewModelScope.launch {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        shoppingListsRepository.getCalculateChange(uid).firstOrNull()?.let {
-            calculateChangeLoaded(it)
+        shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
+            shoppingListLoaded(it)
         }
     }
 
-    private suspend fun calculateChangeLoaded(
-        calculateChange: CalculateChange
+    private suspend fun shoppingListLoaded(
+        shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
+        val calculateChange = ShoppingListsMapper.toCalculateChange(shoppingListWithConfig)
         calculateChangeState.populate(calculateChange)
         _screenEventFlow.emit(CalculateChangeScreenEvent.ShowKeyboard)
     }

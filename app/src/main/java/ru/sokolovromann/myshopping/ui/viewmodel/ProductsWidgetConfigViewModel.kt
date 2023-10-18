@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ProductsWidgetConfigState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsWidgetConfigEvent
@@ -44,15 +45,16 @@ class ProductsWidgetConfigViewModel @Inject constructor(
                 productsWidgetConfigState.onCreate(event.widgetId)
             }
 
-            shoppingListsRepository.getPurchases().collect {
+            shoppingListsRepository.getPurchasesWithConfig().collect {
                 shoppingListsLoaded(it)
             }
         }
     }
 
     private suspend fun shoppingListsLoaded(
-        shoppingLists: ShoppingLists
+        shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
+        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
         if (shoppingLists.isShoppingListsEmpty()) {
             productsWidgetConfigState.showNotFound(shoppingLists)
         } else {

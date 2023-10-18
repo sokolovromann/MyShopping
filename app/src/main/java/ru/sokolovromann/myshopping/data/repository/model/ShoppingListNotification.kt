@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+@Deprecated("Use ShoppingListWithConfig")
 data class ShoppingListNotification(
     val shoppingList: ShoppingList = ShoppingList(),
     val appConfig: AppConfig = AppConfig()
