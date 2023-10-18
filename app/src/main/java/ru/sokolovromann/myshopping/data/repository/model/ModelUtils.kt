@@ -37,6 +37,7 @@ fun DecimalFormat.isDisplayZeros(): Boolean {
     return minimumFractionDigits > 0
 }
 
+@Deprecated("Use .sortedShoppings")
 fun List<ShoppingList>.sortShoppingLists(sort: Sort = Sort()): List<ShoppingList> {
     return if (sort.ascending) {
         when (sort.sortBy) {
@@ -57,6 +58,7 @@ fun List<ShoppingList>.sortShoppingLists(sort: Sort = Sort()): List<ShoppingList
     }
 }
 
+@Deprecated("Use .sortedProducts")
 fun List<Product>.sortProducts(sort: Sort = Sort()): List<Product> {
     return if (sort.ascending) {
         when (sort.sortBy) {
@@ -77,6 +79,7 @@ fun List<Product>.sortProducts(sort: Sort = Sort()): List<Product> {
     }
 }
 
+@Deprecated("Use .sortedAutocompletes")
 fun List<Autocomplete>.sortAutocompletes(
     sort: Sort = Sort(sortBy = SortBy.NAME)
 ): List<Autocomplete> {
