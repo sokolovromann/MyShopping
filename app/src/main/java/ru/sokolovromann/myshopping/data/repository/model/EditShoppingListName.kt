@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 
+@Deprecated("Use ShoppingListWithConfig")
 data class EditShoppingListName(
     private val shoppingList: ShoppingList? = null,
     private val appConfig: AppConfig = AppConfig()

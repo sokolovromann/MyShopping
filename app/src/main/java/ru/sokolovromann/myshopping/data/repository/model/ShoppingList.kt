@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import java.util.UUID
 
+@Deprecated("Use /model/ShoppingList")
 data class ShoppingList(
     val id: Int = 0,
     val position: Int = 0,

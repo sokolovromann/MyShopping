@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import java.util.UUID
 
+@Deprecated("Use ShoppingListsWithConfig")
 data class ShoppingLists(
     private val shoppingLists: List<ShoppingList> = listOf(),
     private val shoppingListsLastPosition: Int? = null,

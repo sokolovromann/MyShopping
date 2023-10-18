@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import java.util.Calendar
 import java.util.UUID
 
+@Deprecated("USe ShoppingListWithConfig")
 data class Products(
     private val shoppingList: ShoppingList = ShoppingList(),
     private val shoppingListsLastPosition: Int? = null,

@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import java.util.Calendar
 
+@Deprecated("Use ShoppingListWithConfig")
 data class EditReminder(
     private val shoppingList: ShoppingList? = null,
     private val appConfig: AppConfig = AppConfig()

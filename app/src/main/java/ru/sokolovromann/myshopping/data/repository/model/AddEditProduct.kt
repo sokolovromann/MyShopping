@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 
+@Deprecated("Use ProductWithConfig")
 data class AddEditProduct(
     private val product: Product? = null,
     private val productsLastPosition: Int? = null,

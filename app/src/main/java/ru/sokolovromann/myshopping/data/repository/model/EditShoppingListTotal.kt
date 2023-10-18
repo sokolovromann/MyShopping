@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidMoneyException
 
+@Deprecated("Use ShoppingListWithConfig")
 data class EditShoppingListTotal(
     private val shoppingList: ShoppingList? = null,
     private val appConfig: AppConfig = AppConfig()

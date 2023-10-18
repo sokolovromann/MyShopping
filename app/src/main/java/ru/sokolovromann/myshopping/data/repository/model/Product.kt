@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import java.text.DecimalFormat
 import java.util.UUID
 
+@Deprecated("Use /model/product")
 data class Product(
     val id: Int = 0,
     val position: Int = 0,

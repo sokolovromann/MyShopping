@@ -430,6 +430,10 @@ class AddEditProductState {
         screenData = screenData.copy(showDiscountAsPercent = true)
     }
 
+    fun showNameError() {
+        screenData = screenData.copy(showNameError = true)
+    }
+
     fun showUidError() {
         screenData = screenData.copy(showUidError = true)
     }
