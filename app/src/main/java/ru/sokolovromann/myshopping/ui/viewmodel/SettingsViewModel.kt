@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -65,12 +65,15 @@ class SettingsViewModel @Inject constructor(
             settingsState.showLoading()
         }
 
-        appConfigRepository.getSettings().collect {
+        appConfigRepository.getSettingsWithConfig().collect {
             settingsLoaded(it)
         }
     }
 
-    private suspend fun settingsLoaded(settings: Settings) = withContext(dispatchers.main) {
+    private suspend fun settingsLoaded(
+        settingsWithConfig: SettingsWithConfig
+    ) = withContext(dispatchers.main) {
+        val settings = AppConfigMapper.toRepositorySettings(settingsWithConfig)
         settingsState.showSetting(settings)
     }
 
@@ -203,8 +206,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun invertDisplayMoneyZeros() = viewModelScope.launch {
-        settingsState.getMoneyFractionDigitsResult()
-            .onSuccess { appConfigRepository.saveMoneyFractionDigits(it) }
+        appConfigRepository.invertDisplayMoneyZeros()
     }
 
     private fun invertEditProductAfterCompleted() = viewModelScope.launch {
@@ -237,13 +239,9 @@ class SettingsViewModel @Inject constructor(
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
-    private fun sendEmailToDeveloper() = viewModelScope.launch {
-        appConfigRepository.getSettings().firstOrNull()?.let {
-            withContext(dispatchers.main) {
-                val event = SettingsScreenEvent.SendEmailToDeveloper(it.developerEmail)
-                _screenEventFlow.emit(event)
-            }
-        }
+    private fun sendEmailToDeveloper() = viewModelScope.launch(dispatchers.main) {
+        val event = SettingsScreenEvent.SendEmailToDeveloper(settingsState.getDeveloperEmail())
+        _screenEventFlow.emit(event)
     }
 
     private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {

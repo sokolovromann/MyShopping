@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditCurrencySymbolState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditCurrencySymbolEvent
@@ -28,7 +29,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<EditCurrencySymbolScreenEvent> = _screenEventFlow
 
     init {
-        getEditCurrencySymbol()
+        getSettingsWithConfig()
     }
 
     override fun onEvent(event: EditCurrencySymbolEvent) {
@@ -41,15 +42,16 @@ class EditCurrencySymbolViewModel @Inject constructor(
         }
     }
 
-    private fun getEditCurrencySymbol() = viewModelScope.launch(dispatchers.io) {
-        appConfigRepository.getEditCurrencySymbol().firstOrNull()?.let {
-            editCurrencySymbolLoaded(it)
+    private fun getSettingsWithConfig() = viewModelScope.launch(dispatchers.io) {
+        appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
+            settingsWithConfigLoaded(it)
         }
     }
 
-    private suspend fun editCurrencySymbolLoaded(
-        editCurrencySymbol: EditCurrencySymbol
+    private suspend fun settingsWithConfigLoaded(
+        settingsWithConfig: SettingsWithConfig
     ) = withContext(dispatchers.main) {
+        val editCurrencySymbol = AppConfigMapper.toEditCurrencySymbol(settingsWithConfig)
         editCurrencySymbolState.populate(editCurrencySymbol)
         _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowKeyboard)
     }
