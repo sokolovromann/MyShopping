@@ -5,18 +5,18 @@ import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
-import ru.sokolovromann.myshopping.data.repository.model.AppBuildConfig
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.AppBuildConfig
+import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Currency
-import ru.sokolovromann.myshopping.data.repository.model.DeviceConfig
+import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
 import ru.sokolovromann.myshopping.data.repository.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.UserPreferences
-import ru.sokolovromann.myshopping.data.repository.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data.model.UserPreferences
+import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import java.text.DecimalFormat
 
 object AppConfigMapper {

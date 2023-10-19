@@ -13,18 +13,16 @@ import ru.sokolovromann.myshopping.data.local.entity.SettingsResourcesEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
-import ru.sokolovromann.myshopping.data.repository.model.AddEditAutocomplete
 import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
-import ru.sokolovromann.myshopping.data.repository.model.AppBuildConfig
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.AppBuildConfig
+import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Autocomplete
-import ru.sokolovromann.myshopping.data.repository.model.Autocompletes
 import ru.sokolovromann.myshopping.data.repository.model.Backup
 import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14
 import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14Preferences
 import ru.sokolovromann.myshopping.data.repository.model.Currency
-import ru.sokolovromann.myshopping.data.repository.model.DeviceConfig
+import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
@@ -47,8 +45,8 @@ import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
-import ru.sokolovromann.myshopping.data.repository.model.UserPreferences
-import ru.sokolovromann.myshopping.data.repository.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data.model.UserPreferences
+import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.repository.model.formatFirst
 import java.text.DecimalFormat
 

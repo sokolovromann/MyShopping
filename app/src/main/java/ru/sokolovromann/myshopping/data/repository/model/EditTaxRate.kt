@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidMoneyException
+import ru.sokolovromann.myshopping.data.model.AppConfig
 
 data class EditTaxRate(
     private val appConfig: AppConfig = AppConfig()

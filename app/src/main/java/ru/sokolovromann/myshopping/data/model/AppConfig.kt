@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
 data class AppConfig(
     val deviceConfig: DeviceConfig = DeviceConfig(),

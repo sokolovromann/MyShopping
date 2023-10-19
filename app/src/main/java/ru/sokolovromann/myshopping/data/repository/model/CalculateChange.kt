@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.model.AppConfig
+
 @Deprecated("Use /model/ShoppingListWithConfig")
 data class CalculateChange(
     private val shoppingList: ShoppingList? = null,

@@ -4,11 +4,11 @@ import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Quantity
 import ru.sokolovromann.myshopping.data.repository.model.Time
-import ru.sokolovromann.myshopping.data.repository.model.UserPreferences
+import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object AutocompletesMapper {
 

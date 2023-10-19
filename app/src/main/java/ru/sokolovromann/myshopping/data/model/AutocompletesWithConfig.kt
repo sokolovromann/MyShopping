@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.AppConfig
 import ru.sokolovromann.myshopping.data.utils.asSearchQuery
 import ru.sokolovromann.myshopping.data.utils.sortedAutocompletes
 import ru.sokolovromann.myshopping.data.utils.uppercaseFirst

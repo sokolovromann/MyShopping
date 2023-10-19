@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.model.AppConfig
+
 data class Backup(
     val shoppingLists: List<ShoppingList> = listOf(),
     val products: List<Product> = listOf(),

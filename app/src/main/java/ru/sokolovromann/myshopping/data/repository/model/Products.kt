@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.model.AppConfig
 import java.util.Calendar
 import java.util.UUID
 

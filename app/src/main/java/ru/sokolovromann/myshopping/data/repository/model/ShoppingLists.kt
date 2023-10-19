@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
+import ru.sokolovromann.myshopping.data.model.AppConfig
 import java.util.UUID
 
 @Deprecated("Use ShoppingListsWithConfig")
