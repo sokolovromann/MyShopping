@@ -1,7 +1,10 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import java.text.DecimalFormat
 
+@Deprecated("Use /SettingsWithConfig")
 data class Settings(
     val developerName: String = "",
     val developerEmail: String = "",

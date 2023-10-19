@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
+import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditTaxRateState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
@@ -28,7 +29,7 @@ class EditTaxRateViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<EditTaxRateScreenEvent> = _screenEventFlow
 
     init {
-        getEditTaxRate()
+        getSettingsWithConfig()
     }
 
     override fun onEvent(event: EditTaxRateEvent) {
@@ -41,15 +42,16 @@ class EditTaxRateViewModel @Inject constructor(
         }
     }
 
-    private fun getEditTaxRate() = viewModelScope.launch {
-        appConfigRepository.getEditTaxRate().firstOrNull()?.let {
-            editTaxRateLoaded(it)
+    private fun getSettingsWithConfig() = viewModelScope.launch {
+        appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
+            settingsWithConfigLoaded(it)
         }
     }
 
-    private suspend fun editTaxRateLoaded(
-        editTaxRate: EditTaxRate
+    private suspend fun settingsWithConfigLoaded(
+        settingsWithConfig: SettingsWithConfig
     ) = withContext(dispatchers.main) {
+        val editTaxRate = AppConfigMapper.toEditTaxRate(settingsWithConfig)
         editTaxRateState.populate(editTaxRate)
         _screenEventFlow.emit(EditTaxRateScreenEvent.ShowKeyboard)
     }

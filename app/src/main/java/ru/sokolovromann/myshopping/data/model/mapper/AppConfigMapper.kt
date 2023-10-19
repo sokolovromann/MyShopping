@@ -4,11 +4,14 @@ import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
+import ru.sokolovromann.myshopping.data.local.entity.SettingsResourcesEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
+import ru.sokolovromann.myshopping.data.model.Settings
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
@@ -17,9 +20,31 @@ import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data.repository.model.EditCurrencySymbol
+import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import java.text.DecimalFormat
 
 object AppConfigMapper {
+
+    fun toRepositorySettings(settingsWithConfig: SettingsWithConfig): ru.sokolovromann.myshopping.data.repository.model.Settings {
+        return ru.sokolovromann.myshopping.data.repository.model.Settings(
+            developerName = settingsWithConfig.settings.developerName,
+            developerEmail = settingsWithConfig.settings.developerEmail,
+            appVersion = settingsWithConfig.settings.appVersion,
+            appGithubLink = settingsWithConfig.settings.appGithubLink,
+            privacyPolicyLink = settingsWithConfig.settings.privacyPolicyLink,
+            termsAndConditionsLink = settingsWithConfig.settings.termsAndConditionsLink,
+            appConfig = settingsWithConfig.appConfig
+        )
+    }
+
+    fun toEditCurrencySymbol(settingsWithConfig: SettingsWithConfig): EditCurrencySymbol {
+        return EditCurrencySymbol(appConfig = settingsWithConfig.appConfig)
+    }
+
+    fun toEditTaxRate(settingsWithConfig: SettingsWithConfig): EditTaxRate {
+        return EditTaxRate(appConfig = settingsWithConfig.appConfig)
+    }
 
     fun toAppConfigEntity(appConfig: AppConfig): AppConfigEntity {
         return AppConfigEntity(
@@ -34,6 +59,27 @@ object AppConfigMapper {
             deviceConfig = toDeviceConfig(entity.deviceConfig),
             appBuildConfig = toAppBuildConfig(entity.appBuildConfig),
             userPreferences = toUserPreferences(entity.userPreferences)
+        )
+    }
+
+    fun toSettingsWithConfig(
+        resourcesEntity: SettingsResourcesEntity,
+        appConfigEntity: AppConfigEntity
+    ): SettingsWithConfig {
+        return SettingsWithConfig(
+            settings = toSettings(resourcesEntity),
+            appConfig = toAppConfig(appConfigEntity)
+        )
+    }
+
+    private fun toSettings(entity: SettingsResourcesEntity): Settings {
+        return Settings(
+            developerEmail = entity.developerEmail,
+            developerName = entity.developerName,
+            appVersion = BuildConfig.VERSION_NAME,
+            appGithubLink = entity.appGithubLink,
+            privacyPolicyLink = entity.privacyPolicyLink,
+            termsAndConditionsLink = entity.termsAndConditionsLink
         )
     }
 
