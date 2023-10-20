@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.repository.model.Id
-import ru.sokolovromann.myshopping.data.repository.model.Quantity
 
 data class Autocomplete(
     val id: Int = Id.NO_ID,

@@ -6,7 +6,7 @@ import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.Quantity
+import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 

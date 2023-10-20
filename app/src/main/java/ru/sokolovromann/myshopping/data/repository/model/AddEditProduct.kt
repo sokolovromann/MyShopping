@@ -4,6 +4,7 @@ import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.Quantity
 
 @Deprecated("Use ProductWithConfig")
 data class AddEditProduct(

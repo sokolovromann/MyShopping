@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.Quantity
 import java.util.UUID
 
 @Deprecated("Use model/Autocomplete")

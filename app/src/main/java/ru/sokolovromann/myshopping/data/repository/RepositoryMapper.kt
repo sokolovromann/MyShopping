@@ -36,7 +36,7 @@ import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.Products
-import ru.sokolovromann.myshopping.data.repository.model.Quantity
+import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.repository.model.Settings
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification

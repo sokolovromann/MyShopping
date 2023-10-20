@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.Quantity
 import java.text.DecimalFormat
 import java.util.UUID
 

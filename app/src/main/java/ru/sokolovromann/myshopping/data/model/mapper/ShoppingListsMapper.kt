@@ -18,7 +18,7 @@ import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Products
-import ru.sokolovromann.myshopping.data.repository.model.Quantity
+import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
