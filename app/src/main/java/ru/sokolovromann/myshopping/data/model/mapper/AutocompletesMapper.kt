@@ -7,7 +7,7 @@ import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Quantity
-import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object AutocompletesMapper {
@@ -17,7 +17,7 @@ object AutocompletesMapper {
             id = autocomplete.id,
             position = autocomplete.id,
             uid = autocomplete.uid,
-            lastModified = Time(autocomplete.lastModified),
+            lastModified = DateTime(autocomplete.lastModified),
             name = autocomplete.name,
             quantity = autocomplete.quantity,
             price = autocomplete.price,
@@ -43,7 +43,7 @@ object AutocompletesMapper {
             ru.sokolovromann.myshopping.data.repository.model.Autocomplete(
                 id = it.id,
                 uid = it.uid,
-                created = Time.NO_TIME.millis,
+                created = DateTime.NO_DATE_TIME.millis,
                 lastModified = it.lastModified.millis,
                 name = it.name,
                 quantity = it.quantity,
@@ -65,7 +65,7 @@ object AutocompletesMapper {
         return AutocompleteEntity(
             id = autocomplete.id,
             uid = autocomplete.uid,
-            created = Time.NO_TIME.millis,
+            created = DateTime.NO_DATE_TIME.millis,
             lastModified = autocomplete.lastModified.millis,
             name = autocomplete.name,
             quantity = autocomplete.quantity.value,
@@ -165,7 +165,7 @@ object AutocompletesMapper {
             id = entity.id,
             position = entity.id,
             uid = entity.uid,
-            lastModified = Time(entity.lastModified),
+            lastModified = DateTime(entity.lastModified),
             name = entity.name,
             quantity = Quantity(
                 value = entity.quantity,

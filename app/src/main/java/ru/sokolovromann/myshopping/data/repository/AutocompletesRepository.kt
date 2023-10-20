@@ -15,7 +15,7 @@ import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
-import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.model.DateTime
 import java.util.Locale
 import javax.inject.Inject
 
@@ -130,7 +130,7 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun clearAutocompletes(
         uids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (uids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")

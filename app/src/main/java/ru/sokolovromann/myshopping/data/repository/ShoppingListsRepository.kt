@@ -23,7 +23,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
-import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
 import ru.sokolovromann.myshopping.data.utils.sortedShoppingLists
 import javax.inject.Inject
@@ -164,7 +164,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun moveShoppingListUp(
         shoppingUid: String,
         location: ShoppingLocation = ShoppingLocation.PURCHASES,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = when (location) {
             ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
@@ -209,7 +209,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun moveShoppingListDown(
         shoppingUid: String,
         location: ShoppingLocation = ShoppingLocation.PURCHASES,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = when (location) {
             ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
@@ -255,7 +255,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun saveShoppingListName(
         shoppingUid: String,
         name: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.updateName(shoppingUid, name.trim(), lastModified.millis)
         return@withContext Result.success(Unit)
@@ -263,8 +263,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun saveReminder(
         shoppingUid: String,
-        reminder: Time,
-        lastModified: Time = Time.getCurrentTime()
+        reminder: DateTime,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.updateReminder(shoppingUid, reminder.millis, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -273,7 +273,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun saveShoppingListTotal(
         shoppingUid: String,
         total: Money,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.updateTotal(shoppingUid, total.value, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -317,7 +317,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun moveProductUp(
         shoppingUid: String,
         productUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val products = shoppingListsDao.getShoppingList(shoppingUid).singleOrNull()?.productEntities
 
@@ -360,7 +360,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun moveProductDown(
         shoppingUid: String,
         productUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val products = shoppingListsDao.getShoppingList(shoppingUid).singleOrNull()?.productEntities
 
@@ -403,7 +403,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun completeProduct(
         productUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         productsDao.completeProduct(productUid, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -411,7 +411,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun activeProduct(
         productUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         productsDao.activeProduct(productUid, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -419,7 +419,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun pinShoppingLists(
         shoppingUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -432,7 +432,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun unpinShoppingLists(
         shoppingUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -445,7 +445,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun pinProducts(
         productsUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (productsUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -458,7 +458,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun unpinProducts(
         productsUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (productsUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -471,7 +471,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListsToPurchases(
         shoppingUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -484,7 +484,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListToPurchases(
         shoppingUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.moveToPurchases(shoppingUid, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -492,7 +492,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListsToArchive(
         shoppingUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -505,7 +505,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListToArchive(
         shoppingUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.moveToArchive(shoppingUid, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -513,7 +513,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListsToTrash(
         shoppingUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
@@ -526,7 +526,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListToTrash(
         shoppingUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.moveToTrash(shoppingUid, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -549,7 +549,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             Result.failure(exception)
         } else {
             val newShoppingUid = Id.createUid()
-            val lastModified = Time.getCurrentTime().millis
+            val lastModified = DateTime.getCurrentDateTime().millis
 
             val shopping = shoppingList.shoppingEntity.copy(
                 id = Id.NO_ID,
@@ -575,7 +575,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun sortShoppingLists(
         sort: Sort,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.shoppingLists
         return@withContext if (shoppingLists.isNullOrEmpty()) {
@@ -604,7 +604,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     }
 
     suspend fun reverseShoppingLists(
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.shoppingLists
         return@withContext if (shoppingLists.isNullOrEmpty()) {
@@ -636,7 +636,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         shoppingUid: String,
         sort: Sort,
         automaticSort: Boolean,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (automaticSort) {
             shoppingListsDao.enableAutomaticSorting(
@@ -675,7 +675,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun reverseProducts(
         shoppingUid: String,
         automaticSort: Boolean,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingList = getShoppingListWithConfig(shoppingUid).firstOrNull()?.shoppingList
         if (shoppingList == null) {
@@ -741,7 +741,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun deleteProductsByShoppingUid(
         shoppingUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
         productsDao.deleteProductsByShoppingUid(shoppingUid)
@@ -751,7 +751,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun deleteProductsByProductUids(
         shoppingUid: String,
         productsUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (productsUids.isEmpty()) {
             val exception = InvalidValueException("List must not be empty")
@@ -765,7 +765,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun deleteReminders(
         shoppingUids: List<String>,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidValueException("List must not be empty")
@@ -778,7 +778,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun deleteReminder(
         shoppingUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.deleteReminder(shoppingUid, lastModified.millis)
         return@withContext Result.success(Unit)
@@ -786,7 +786,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun deleteShoppingListTotal(
         shoppingUid: String,
-        lastModified: Time = Time.getCurrentTime()
+        lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.deleteTotal(shoppingUid, lastModified.millis)
         return@withContext Result.success(Unit)

@@ -25,7 +25,7 @@ import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
-import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object ShoppingListsMapper {
@@ -117,7 +117,7 @@ object ShoppingListsMapper {
             id = shopping.id,
             position = shopping.position,
             uid = shopping.uid,
-            created = Time.NO_TIME.millis,
+            created = DateTime.NO_DATE_TIME.millis,
             lastModified = shopping.lastModified.millis,
             name = shopping.name,
             reminder = shopping.reminder?.millis,
@@ -140,9 +140,9 @@ object ShoppingListsMapper {
             id = shoppingList.id,
             position = shoppingList.position,
             uid = shoppingList.uid,
-            lastModified = Time(shoppingList.lastModified),
+            lastModified = DateTime(shoppingList.lastModified),
             name = shoppingList.name,
-            reminder = if (shoppingList.reminder == null) null else Time(shoppingList.reminder),
+            reminder = if (shoppingList.reminder == null) null else DateTime(shoppingList.reminder),
             total = shoppingList.total,
             totalFormatted = shoppingList.totalFormatted,
             budget = shoppingList.budget,
@@ -203,7 +203,7 @@ object ShoppingListsMapper {
             position = product.position,
             productUid = product.productUid,
             shoppingUid = product.shoppingUid,
-            created = Time.NO_TIME.millis,
+            created = DateTime.NO_DATE_TIME.millis,
             lastModified = product.lastModified.millis,
             name = product.name,
             quantity = product.quantity,
@@ -229,7 +229,7 @@ object ShoppingListsMapper {
             position = product.position,
             productUid = product.productUid,
             shoppingUid = product.shoppingUid,
-            lastModified = Time(product.lastModified),
+            lastModified = DateTime(product.lastModified),
             name = product.name,
             quantity = product.quantity,
             price = product.price,
@@ -253,10 +253,10 @@ object ShoppingListsMapper {
             id = shopping.id,
             position = shopping.position,
             uid = shopping.uid,
-            created = Time.NO_TIME.millis,
+            created = DateTime.NO_DATE_TIME.millis,
             lastModified = shopping.lastModified.millis,
             name = shopping.name,
-            reminder = (shopping.reminder ?: Time.NO_TIME).millis,
+            reminder = (shopping.reminder ?: DateTime.NO_DATE_TIME).millis,
             total = shopping.total.value,
             totalFormatted = shopping.totalFormatted,
             budget = shopping.budget.value,
@@ -275,7 +275,7 @@ object ShoppingListsMapper {
             position = product.position,
             productUid = product.productUid,
             shoppingUid = product.shoppingUid,
-            created = Time.NO_TIME.millis,
+            created = DateTime.NO_DATE_TIME.millis,
             lastModified = product.lastModified.millis,
             name = product.name,
             quantity = product.quantity.value,
@@ -372,9 +372,9 @@ object ShoppingListsMapper {
             id = entity.id,
             position = entity.position,
             uid = entity.uid,
-            lastModified = Time(entity.lastModified),
+            lastModified = DateTime(entity.lastModified),
             name = entity.name,
-            reminder = if (entity.reminder == 0L) null else Time(entity.reminder),
+            reminder = if (entity.reminder == 0L) null else DateTime(entity.reminder),
             total = Money(
                 value = entity.total,
                 currency = userPreferences.currency,
@@ -404,7 +404,7 @@ object ShoppingListsMapper {
             position = entity.position,
             productUid = entity.productUid,
             shoppingUid = entity.shoppingUid,
-            lastModified = Time(entity.lastModified),
+            lastModified = DateTime(entity.lastModified),
             name = entity.name,
             quantity = Quantity(
                 value = entity.quantity,

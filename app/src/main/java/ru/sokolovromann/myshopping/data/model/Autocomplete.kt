@@ -4,13 +4,12 @@ import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Quantity
-import ru.sokolovromann.myshopping.data.repository.model.Time
 
 data class Autocomplete(
     val id: Int = Id.NO_ID,
     val position: Int = id,
     val uid: String = Id.createUid(),
-    val lastModified: Time = Time.getCurrentTime(),
+    val lastModified: DateTime = DateTime.getCurrentDateTime(),
     val name: String = "",
     val quantity: Quantity = Quantity(),
     val price: Money = Money(),

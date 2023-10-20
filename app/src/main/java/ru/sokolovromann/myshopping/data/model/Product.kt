@@ -3,14 +3,13 @@ package ru.sokolovromann.myshopping.data.model
 import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.repository.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Quantity
-import ru.sokolovromann.myshopping.data.repository.model.Time
 
 data class Product(
     val id: Int = Id.NO_ID,
     val position: Int = Id.FIRST_POSITION,
     val productUid: String = Id.createUid(),
     val shoppingUid: String = Id.NO_UID,
-    val lastModified: Time = Time.getCurrentTime(),
+    val lastModified: DateTime = DateTime.getCurrentDateTime(),
     val name: String = "",
     val quantity: Quantity = Quantity(),
     val price: Money = Money(),

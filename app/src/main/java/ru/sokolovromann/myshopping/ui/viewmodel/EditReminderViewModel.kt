@@ -14,7 +14,7 @@ import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
@@ -85,7 +85,7 @@ class EditReminderViewModel @Inject constructor(
 
         shoppingListsRepository.saveReminder(
             shoppingUid = shoppingList.uid,
-            reminder = Time(reminder)
+            reminder = DateTime(reminder)
         )
 
         withContext(dispatchers.main) {

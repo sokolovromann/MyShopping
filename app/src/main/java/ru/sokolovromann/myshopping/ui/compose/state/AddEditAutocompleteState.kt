@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Time
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class AddEditAutocompleteState {
@@ -50,7 +50,7 @@ class AddEditAutocompleteState {
     fun getCurrentAutocomplete(): Autocomplete {
         return autocompleteWithConfig.autocomplete.copy(
             name = screenData.nameValue.text,
-            lastModified = Time.getCurrentTime()
+            lastModified = DateTime.getCurrentDateTime()
         )
     }
 }
