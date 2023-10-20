@@ -19,6 +19,7 @@ fun String.toSearch(): String {
     return this.lowercase()
 }
 
+@Deprecated("Use DecimalFormat.formattedValueWithoutSeparators(")
 fun DecimalFormat.formatValueWithoutSeparators(value: Float): String {
     val spaceCode = 32
     val periodCode = 46
@@ -33,6 +34,7 @@ fun DecimalFormat.formatValueWithoutSeparators(value: Float): String {
         .replace(" ", "")
 }
 
+@Deprecated("Use DecimalFormat.displayZerosAfterDecimal()")
 fun DecimalFormat.isDisplayZeros(): Boolean {
     return minimumFractionDigits > 0
 }

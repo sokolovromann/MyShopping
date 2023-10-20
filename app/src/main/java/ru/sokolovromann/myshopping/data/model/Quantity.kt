@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.formatValueWithoutSeparators
+import ru.sokolovromann.myshopping.data.utils.formattedValueWithoutSeparators
 import java.text.DecimalFormat
 
 data class Quantity(
@@ -15,7 +15,7 @@ data class Quantity(
 
     fun getFormattedValueWithoutSeparators(): String {
         val format = decimalFormat
-        return format.formatValueWithoutSeparators(value)
+        return format.formattedValueWithoutSeparators(value)
     }
 
     fun getDisplayValue(): String {

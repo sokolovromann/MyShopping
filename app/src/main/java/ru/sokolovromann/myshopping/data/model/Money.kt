@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.repository.model.Currency
-import ru.sokolovromann.myshopping.data.repository.model.formatValueWithoutSeparators
+import ru.sokolovromann.myshopping.data.utils.formattedValueWithoutSeparators
 import java.text.DecimalFormat
 
 data class Money(
@@ -25,7 +25,7 @@ data class Money(
     }
 
     fun getFormattedValueWithoutSeparators(): String {
-        return _decimalFormat.formatValueWithoutSeparators(value)
+        return _decimalFormat.formattedValueWithoutSeparators(value)
     }
 
     fun getDisplayValue(): String {
