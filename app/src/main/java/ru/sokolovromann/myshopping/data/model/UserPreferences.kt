@@ -6,7 +6,6 @@ import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
-import ru.sokolovromann.myshopping.data.repository.model.Money
 import java.text.DecimalFormat
 
 data class UserPreferences(

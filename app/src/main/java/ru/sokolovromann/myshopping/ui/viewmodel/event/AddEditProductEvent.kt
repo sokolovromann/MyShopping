@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import androidx.compose.ui.text.input.TextFieldValue
+import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.*
 
 sealed class AddEditProductEvent {

@@ -17,7 +17,7 @@ import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
-import ru.sokolovromann.myshopping.data.repository.model.Money
+import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import javax.inject.Inject

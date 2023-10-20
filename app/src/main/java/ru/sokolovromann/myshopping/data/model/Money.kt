@@ -1,6 +1,7 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data.repository.model.Currency
+import ru.sokolovromann.myshopping.data.repository.model.formatValueWithoutSeparators
 import java.text.DecimalFormat
 
 data class Money(

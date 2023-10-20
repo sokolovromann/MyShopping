@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation

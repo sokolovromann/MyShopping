@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.data.repository.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Money
+import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 

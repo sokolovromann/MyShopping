@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
+import ru.sokolovromann.myshopping.data.model.Money
+
 data class CodeVersion14Preferences(
     val firstOpened: Boolean = false,
     val currency: Currency = Currency(),
