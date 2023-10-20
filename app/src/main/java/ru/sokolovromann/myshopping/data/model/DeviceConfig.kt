@@ -1,7 +1,5 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.DeviceSize
-
 data class DeviceConfig(
     val screenWidthDp: Int = UNKNOWN_SIZE_DP,
     val screenHeightDp: Int = UNKNOWN_SIZE_DP

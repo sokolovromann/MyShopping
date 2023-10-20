@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
 sealed class DeviceSize {
 
@@ -9,6 +9,10 @@ sealed class DeviceSize {
     object Large : DeviceSize()
 
     data class Error(val exception: Exception) : DeviceSize()
+
+    fun isSmartphoneScreen(): Boolean {
+        return this == Medium
+    }
 
     override fun toString(): String = when (this) {
         Small -> "Small"
