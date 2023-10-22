@@ -1,8 +1,8 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
 import java.util.UUID
 
-object Id {
+object IdDefaults {
 
     const val NO_UID: String = ""
     const val NO_ID: Int = 0
@@ -10,9 +10,5 @@ object Id {
 
     fun createUid(): String {
         return UUID.randomUUID().toString()
-    }
-
-    fun createLastPositionOrFirst(lastPosition: Int?): Int {
-        return lastPosition?.plus(1) ?: FIRST_POSITION
     }
 }

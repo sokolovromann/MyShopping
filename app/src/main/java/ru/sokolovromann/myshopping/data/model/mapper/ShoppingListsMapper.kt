@@ -15,7 +15,6 @@ import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
-import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.data.model.Quantity
@@ -26,6 +25,7 @@ import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
 import ru.sokolovromann.myshopping.data.model.DateTime
+import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object ShoppingListsMapper {
@@ -364,7 +364,7 @@ object ShoppingListsMapper {
     }
 
     fun toPositionOrFirst(lastPosition: Int?): Int {
-        return lastPosition?.plus(1) ?: Id.FIRST_POSITION
+        return lastPosition?.plus(1) ?: IdDefaults.FIRST_POSITION
     }
 
     private fun toShopping(entity: ShoppingEntity, userPreferences: UserPreferences): Shopping {

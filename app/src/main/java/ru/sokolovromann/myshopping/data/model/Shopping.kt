@@ -1,13 +1,12 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 
 data class Shopping(
-    val id: Int = Id.NO_ID,
-    val position: Int = Id.FIRST_POSITION,
-    val uid: String = Id.createUid(),
+    val id: Int = IdDefaults.NO_ID,
+    val position: Int = IdDefaults.FIRST_POSITION,
+    val uid: String = IdDefaults.createUid(),
     val lastModified: DateTime = DateTime.getCurrentDateTime(),
     val name: String = "",
     val reminder: DateTime? = null,

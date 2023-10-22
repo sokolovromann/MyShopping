@@ -1,12 +1,10 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.Id
-
 data class Product(
-    val id: Int = Id.NO_ID,
-    val position: Int = Id.FIRST_POSITION,
-    val productUid: String = Id.createUid(),
-    val shoppingUid: String = Id.NO_UID,
+    val id: Int = IdDefaults.NO_ID,
+    val position: Int = IdDefaults.FIRST_POSITION,
+    val productUid: String = IdDefaults.createUid(),
+    val shoppingUid: String = IdDefaults.NO_UID,
     val lastModified: DateTime = DateTime.getCurrentDateTime(),
     val name: String = "",
     val quantity: Quantity = Quantity(),

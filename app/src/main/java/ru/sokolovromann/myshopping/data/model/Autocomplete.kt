@@ -1,12 +1,11 @@
 package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.app.AppLocale
-import ru.sokolovromann.myshopping.data.repository.model.Id
 
 data class Autocomplete(
-    val id: Int = Id.NO_ID,
-    val position: Int = id,
-    val uid: String = Id.createUid(),
+    val id: Int = IdDefaults.NO_ID,
+    val position: Int = IdDefaults.FIRST_POSITION,
+    val uid: String = IdDefaults.createUid(),
     val lastModified: DateTime = DateTime.getCurrentDateTime(),
     val name: String = "",
     val quantity: Quantity = Quantity(),

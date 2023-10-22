@@ -19,11 +19,11 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
-import ru.sokolovromann.myshopping.data.repository.model.Id
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.Sort
 import ru.sokolovromann.myshopping.data.model.DateTime
+import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
 import ru.sokolovromann.myshopping.data.utils.sortedShoppingLists
 import javax.inject.Inject
@@ -548,11 +548,11 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             val exception = InvalidUidException()
             Result.failure(exception)
         } else {
-            val newShoppingUid = Id.createUid()
+            val newShoppingUid = IdDefaults.createUid()
             val lastModified = DateTime.getCurrentDateTime().millis
 
             val shopping = shoppingList.shoppingEntity.copy(
-                id = Id.NO_ID,
+                id = IdDefaults.NO_ID,
                 position = ShoppingListsMapper.toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
                 uid = newShoppingUid,
                 lastModified = lastModified
@@ -561,9 +561,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             val products = shoppingList.productEntities.map {
                 it.copy(
-                    id = Id.NO_ID,
+                    id = IdDefaults.NO_ID,
                     shoppingUid = newShoppingUid,
-                    productUid = Id.createUid(),
+                    productUid = IdDefaults.createUid(),
                     lastModified = lastModified
                 )
             }
