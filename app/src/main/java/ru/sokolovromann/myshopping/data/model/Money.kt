@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.Currency
 import ru.sokolovromann.myshopping.data.utils.formattedValueWithoutSeparators
 import java.text.DecimalFormat
 

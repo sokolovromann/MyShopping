@@ -15,6 +15,7 @@ import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.AppOpenHelper
+import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper

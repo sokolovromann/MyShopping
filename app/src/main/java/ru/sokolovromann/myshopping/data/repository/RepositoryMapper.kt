@@ -21,7 +21,7 @@ import ru.sokolovromann.myshopping.data.repository.model.Backup
 import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14
 import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14Preferences
-import ru.sokolovromann.myshopping.data.repository.model.Currency
+import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts

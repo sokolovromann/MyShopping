@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.data.local.entity.SettingsResourcesEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
-import ru.sokolovromann.myshopping.data.repository.model.Currency
+import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
