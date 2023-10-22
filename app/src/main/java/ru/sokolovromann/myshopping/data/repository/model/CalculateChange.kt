@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
 
 @Deprecated("Use /model/ShoppingListWithConfig")

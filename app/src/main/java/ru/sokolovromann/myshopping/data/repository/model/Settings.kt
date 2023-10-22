@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceSize
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import java.text.DecimalFormat

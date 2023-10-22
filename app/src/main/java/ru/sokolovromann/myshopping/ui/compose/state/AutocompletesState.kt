@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.DeviceSize
-import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.utils.getAutocompletesItems
 
 class AutocompletesState {

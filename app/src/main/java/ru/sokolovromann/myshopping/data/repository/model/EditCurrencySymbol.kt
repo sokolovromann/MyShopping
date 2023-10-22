@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.FontSize
 
 @Deprecated("Use SettingsWithConfig")
 data class EditCurrencySymbol(

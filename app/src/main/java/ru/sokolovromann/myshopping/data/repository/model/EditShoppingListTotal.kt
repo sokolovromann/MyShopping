@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.exception.InvalidMoneyException
 import ru.sokolovromann.myshopping.data.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.FontSize
 
 @Deprecated("Use ShoppingListWithConfig")
 data class EditShoppingListTotal(

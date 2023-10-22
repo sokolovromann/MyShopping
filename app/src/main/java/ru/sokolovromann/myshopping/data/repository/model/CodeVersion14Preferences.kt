@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.model.Currency
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
 
 data class CodeVersion14Preferences(

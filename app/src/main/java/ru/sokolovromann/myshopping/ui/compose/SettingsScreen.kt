@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
@@ -308,19 +308,19 @@ private fun SettingsFontSizeMenu(
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.LARGE) }
         )
         AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.HUGE) },
+            onClick = { onSelected(FontSize.VERY_LARGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.VERY_LARGE) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(FontSize.HUGE) },
+            text = { Text(text = stringResource(R.string.settings_action_selectHuge2FontSize)) },
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
         )
         AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.HUGE_2) },
-            text = { Text(text = stringResource(R.string.settings_action_selectHuge2FontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE_2) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.HUGE_3) },
+            onClick = { onSelected(FontSize.VERY_HUGE) },
             text = { Text(text = stringResource(R.string.settings_action_selectHuge3FontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE_3) }
+            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.VERY_HUGE) }
         )
     }
 }

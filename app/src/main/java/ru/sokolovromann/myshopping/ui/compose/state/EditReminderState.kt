@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
 import ru.sokolovromann.myshopping.ui.utils.getDisplayTime

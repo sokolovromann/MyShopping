@@ -31,7 +31,7 @@ import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
-import ru.sokolovromann.myshopping.data.repository.model.FontSize
+import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Product
@@ -661,11 +661,11 @@ object RepositoryMapper {
         } else if (value <= 18) {
             FontSize.LARGE
         } else if (value <= 20) {
-            FontSize.HUGE
+            FontSize.VERY_LARGE
         } else if (value <= 22) {
-            FontSize.HUGE_2
+            FontSize.HUGE
         } else if (value <= 24) {
-            FontSize.HUGE_3
+            FontSize.VERY_HUGE
         } else {
             FontSize.MEDIUM
         }
