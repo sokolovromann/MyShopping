@@ -28,8 +28,8 @@ data class UserPreferences(
     val maxAutocompletesOthers: Int = UserPreferencesDefaults.MAX_AUTOCOMPLETES_OTHERS,
     val saveProductToAutocompletes: Boolean = UserPreferencesDefaults.SAVE_PRODUCT_TO_AUTOCOMPLETES,
     val displayMoney: Boolean = UserPreferencesDefaults.DISPLAY_MONEY,
-    val currency: Currency = UserPreferencesDefaults.CURRENCY,
-    val taxRate: Money = UserPreferencesDefaults.TAX_RATE,
+    val currency: Currency = UserPreferencesDefaults.getCurrency(),
+    val taxRate: Money = UserPreferencesDefaults.getTaxRate(),
     val moneyDecimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat(),
     val quantityDecimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat()
 )

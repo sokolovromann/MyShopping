@@ -256,7 +256,7 @@ object AppConfigMapper {
         val symbol = entity.currency
         val displayToLeft = entity.displayCurrencyToLeft
         return if (symbol == null || displayToLeft == null) {
-            UserPreferencesDefaults.CURRENCY
+            UserPreferencesDefaults.getCurrency()
         } else {
             Currency(symbol, displayToLeft)
         }
@@ -266,7 +266,7 @@ object AppConfigMapper {
         val value = entity.taxRate
         val asPercent = entity.taxRateAsPercent
         return if (value == null || asPercent == null) {
-            UserPreferencesDefaults.TAX_RATE
+            UserPreferencesDefaults.getTaxRate()
         } else {
             val currency = toCurrencyOrDefault(entity)
             Money(

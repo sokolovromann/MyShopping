@@ -30,8 +30,22 @@ object UserPreferencesDefaults {
     val DISPLAY_TOTAL = DisplayTotal.DefaultValue
     val DISPLAY_SHOPPINGS_PRODUCTS = DisplayProducts.DefaultValue
     val LOCK_PRODUCT_ELEMENT = LockProductElement.DefaultValue
-    val CURRENCY = Currency(symbol = "", displayToLeft = false)
-    val TAX_RATE = Money(value = 0f, asPercent = true)
+
+    fun getCurrency(): Currency {
+        return Currency(
+            symbol = "",
+            displayToLeft = false
+        )
+    }
+
+    fun getTaxRate(): Money {
+        return Money(
+            value = 0f,
+            currency = getCurrency(),
+            asPercent = true,
+            decimalFormat = getMoneyDecimalFormat()
+        )
+    }
 
     fun getMoneyDecimalFormat(): DecimalFormat {
         return DecimalFormat().apply {

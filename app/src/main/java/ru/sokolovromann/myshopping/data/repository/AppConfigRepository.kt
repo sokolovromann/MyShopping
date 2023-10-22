@@ -125,7 +125,7 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
     }
 
     suspend fun invertDisplayCurrencyToLeft(): Result<Unit> = withContext(dispatcher) {
-        val valueIfNull = UserPreferencesDefaults.CURRENCY.displayToLeft
+        val valueIfNull = UserPreferencesDefaults.getCurrency().displayToLeft
         appConfigDao.invertDisplayCurrencyToLeft(valueIfNull)
 
         return@withContext Result.success(Unit)

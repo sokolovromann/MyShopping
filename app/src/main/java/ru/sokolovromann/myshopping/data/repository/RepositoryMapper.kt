@@ -356,7 +356,7 @@ object RepositoryMapper {
 
     fun toCurrency(symbol: String?, displayToLeft: Boolean?): Currency {
         return if (symbol == null || displayToLeft == null) {
-            UserPreferencesDefaults.CURRENCY
+            UserPreferencesDefaults.getCurrency()
         } else {
             Currency(symbol, displayToLeft)
         }
