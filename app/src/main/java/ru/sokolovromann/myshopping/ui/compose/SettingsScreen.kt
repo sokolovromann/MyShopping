@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRoute

@@ -12,7 +12,7 @@ import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize

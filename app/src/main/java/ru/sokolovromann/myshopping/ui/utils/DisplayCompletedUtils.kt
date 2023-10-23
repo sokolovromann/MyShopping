@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
 fun DisplayCompleted.toPurchasesSettingsText(): UiText = when (this) {

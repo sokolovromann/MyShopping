@@ -27,6 +27,7 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRoute

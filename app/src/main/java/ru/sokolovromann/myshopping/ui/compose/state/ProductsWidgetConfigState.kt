@@ -4,7 +4,7 @@ import android.appwidget.AppWidgetManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.data.repository.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
