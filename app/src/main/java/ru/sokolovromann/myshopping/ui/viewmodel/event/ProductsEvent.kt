@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
-import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.SortBy
 
 sealed class ProductsEvent {

@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
-import ru.sokolovromann.myshopping.data.repository.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
 import java.math.RoundingMode
 import java.text.DecimalFormat

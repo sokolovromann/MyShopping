@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.model.Currency
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import java.util.UUID
 
