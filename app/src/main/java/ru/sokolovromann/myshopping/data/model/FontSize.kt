@@ -14,7 +14,12 @@ enum class FontSize(private val fontSizeName: String) {
 
         fun valueOfOrDefault(name: String?): FontSize = try {
             val value = name ?: throw NullPointerException()
-            valueOf(value)
+            when (value) {
+                "HUGE" -> VERY_LARGE
+                "HUGE_2" -> HUGE
+                "HUGE_3" -> VERY_HUGE
+                else -> valueOf(value)
+            }
         } catch (e: Exception) {
             DefaultValue
         }
