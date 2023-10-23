@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
+import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
@@ -371,14 +371,14 @@ private fun SettingsDisplayShoppingsProductsMenu(
         onDismissRequest = onDismissRequest
     ) {
         AppDropdownMenuItem(
-            onClick = { onSelected(DisplayProducts.COLUMNS) },
+            onClick = { onSelected(DisplayProducts.VERTICAL) },
             text = { Text(text = stringResource(R.string.settings_action_displayShoppingsProductsColumns)) },
-            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.COLUMNS) }
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.VERTICAL) }
         )
         AppDropdownMenuItem(
-            onClick = { onSelected(DisplayProducts.ROW) },
+            onClick = { onSelected(DisplayProducts.HORIZONTAL) },
             text = { Text(text = stringResource(R.string.settings_action_displayShoppingsProductsRow)) },
-            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.ROW) }
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HORIZONTAL) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(DisplayProducts.HIDE) },

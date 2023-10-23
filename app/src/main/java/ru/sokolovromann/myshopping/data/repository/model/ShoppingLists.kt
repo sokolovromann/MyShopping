@@ -4,6 +4,7 @@ import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
@@ -369,7 +370,7 @@ data class ShoppingLists(
         val builder = StringBuilder(product.name)
 
         val shortText = isMultiColumns() && isSmartphoneScreen()
-        val displayVertically = userPreferences.displayShoppingsProducts == DisplayProducts.COLUMNS
+        val displayVertically = userPreferences.displayShoppingsProducts == DisplayProducts.VERTICAL
         val displayProductElements = !shortText && displayVertically
 
         if (displayProductElements) {

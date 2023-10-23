@@ -24,7 +24,7 @@ import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14Preference
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.repository.model.DisplayProducts
+import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.repository.model.EditCurrencySymbol
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.repository.model.*
@@ -319,7 +320,7 @@ private fun ShoppingListItemBody(
         }
 
         when (displayProducts) {
-            DisplayProducts.COLUMNS -> {
+            DisplayProducts.VERTICAL -> {
                 if (hasName || hasReminder) {
                     Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
                 }
@@ -327,7 +328,7 @@ private fun ShoppingListItemBody(
                 ShoppingsListsItemProducts(products, true, fontSize)
             }
 
-            DisplayProducts.ROW -> {
+            DisplayProducts.HORIZONTAL -> {
                 if (hasName) {
                     if (hasReminder) {
                         Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
@@ -354,7 +355,7 @@ private fun ShoppingListItemBody(
 
         val totalAsCompose = total.asCompose()
         if (totalAsCompose.isNotEmpty()) {
-            if (displayProducts == DisplayProducts.COLUMNS) {
+            if (displayProducts == DisplayProducts.VERTICAL) {
                 Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
             }
 
