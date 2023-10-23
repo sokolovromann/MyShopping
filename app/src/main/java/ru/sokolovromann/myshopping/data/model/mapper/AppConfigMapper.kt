@@ -16,7 +16,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
+import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults

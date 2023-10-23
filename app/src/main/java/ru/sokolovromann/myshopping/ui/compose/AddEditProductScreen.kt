@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.repository.model.*
@@ -580,7 +581,8 @@ fun AddEditProductScreen(
                         ) {
                             AppDropdownMenuItem(
                                 onClick = {
-                                    val event = AddEditProductEvent.LockProductElementSelected(LockProductElement.QUANTITY)
+                                    val event = AddEditProductEvent.LockProductElementSelected(
+                                        LockProductElement.QUANTITY)
                                     viewModel.onEvent(event)
                                 },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockQuantity)) },
@@ -588,7 +590,8 @@ fun AddEditProductScreen(
                             )
                             AppDropdownMenuItem(
                                 onClick = {
-                                    val event = AddEditProductEvent.LockProductElementSelected(LockProductElement.PRICE)
+                                    val event = AddEditProductEvent.LockProductElementSelected(
+                                        LockProductElement.PRICE)
                                     viewModel.onEvent(event)
                                 },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockPrice)) },
@@ -596,7 +599,8 @@ fun AddEditProductScreen(
                             )
                             AppDropdownMenuItem(
                                 onClick = {
-                                    val event = AddEditProductEvent.LockProductElementSelected(LockProductElement.TOTAL)
+                                    val event = AddEditProductEvent.LockProductElementSelected(
+                                        LockProductElement.TOTAL)
                                     viewModel.onEvent(event)
                                 },
                                 text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockTotal)) },

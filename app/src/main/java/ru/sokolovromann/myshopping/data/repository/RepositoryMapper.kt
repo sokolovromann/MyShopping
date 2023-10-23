@@ -32,7 +32,7 @@ import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.LockProductElement
+import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.repository.model.Product
 import ru.sokolovromann.myshopping.data.repository.model.Products
