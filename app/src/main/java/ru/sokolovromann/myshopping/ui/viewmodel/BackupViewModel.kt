@@ -3,24 +3,16 @@ package ru.sokolovromann.myshopping.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
-import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
-import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.AppConfig
-import ru.sokolovromann.myshopping.data.repository.model.Backup
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.compose.event.BackupScreenEvent
@@ -32,8 +24,6 @@ import javax.inject.Inject
 class BackupViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
     private val appConfigRepository: AppConfigRepository,
-    private val shoppingListsRepository: ShoppingListsRepository,
-    private val autocompletesRepository: AutocompletesRepository,
     private val dispatchers: AppDispatchers,
     private val alarmManager: PurchasesAlarmManager,
     private val mediaStore: BackupMediaStore
@@ -82,17 +72,17 @@ class BackupViewModel @Inject constructor(
             backupState.showExportProgress()
         }
 
-        val backup = backupRepository.createBackup(BuildConfig.VERSION_CODE).firstOrNull()
-        if (backup == null) {
-            backupState.showExportError()
-        } else {
-            backupRepository.exportBackup(backup)
-                .onSuccess { fileName ->
-                    createReminderIfExists(backup.shoppingLists)
-                    backupState.showExportSuccessful(fileName)
+        backupRepository.exportBackup(BuildConfig.VERSION_CODE)
+            .onSuccess { backup ->
+                withContext(dispatchers.main) {
+                    backupState.showExportSuccessful(backup.fileName)
                 }
-                .onFailure { backupState.showExportError() }
-        }
+            }
+            .onFailure {
+                withContext(dispatchers.main) {
+                    backupState.showExportError()
+                }
+            }
     }
 
     private fun selectFile() = viewModelScope.launch(dispatchers.main) {
@@ -105,63 +95,32 @@ class BackupViewModel @Inject constructor(
         }
 
         backupRepository.importBackup(event.uri)
-            .onSuccess {
-                val backup = it.firstOrNull()
-                if (backup == null) {
-                    backupState.showImportError()
-                } else {
-                    transferDataFromBackup(backup)
+            .onSuccess { oldNewBackups ->
+                withContext(dispatchers.main) {
+                    deleteRemindersIfExists(oldNewBackups.first.shoppings)
+                    createReminderIfExists(oldNewBackups.second.shoppings)
+                    backupState.showImportSuccessful()
                 }
             }
-            .onFailure { backupState.showImportError() }
-    }
-
-    private suspend fun transferDataFromBackup(importedBackup: Backup) {
-        val appConfig = createAppConfigFromBackup(importedBackup)
-
-        listOf(
-            viewModelScope.async { deleteReminders() },
-            viewModelScope.async { shoppingListsRepository.deleteAllShoppingLists() },
-            viewModelScope.async {
-                val shoppingLists = ShoppingListsMapper.toShoppingLists(importedBackup.shoppingLists)
-                shoppingListsRepository.saveShoppingLists(shoppingLists)
-            },
-            viewModelScope.async {
-                val products = ShoppingListsMapper.toProductList(importedBackup.products)
-                shoppingListsRepository.saveProducts(products)
-            },
-            viewModelScope.async { autocompletesRepository.deleteAllAutocompletes() },
-            viewModelScope.async {
-                val autocompletes = AutocompletesMapper.toAutocompletes(importedBackup.autocompletes)
-                autocompletesRepository.saveAutocompletes(autocompletes)
-            },
-            viewModelScope.async { appConfigRepository.saveAppConfig(appConfig) }
-        ).awaitAll()
-
-        backupState.showImportSuccessful()
-    }
-
-    private fun createAppConfigFromBackup(backup: Backup): AppConfig {
-        val appBuildConfig = backup.appConfig.appBuildConfig.copy(
-            userCodeVersion = BuildConfig.VERSION_CODE
-        )
-        return backup.appConfig.copy(appBuildConfig = appBuildConfig)
-    }
-
-    private suspend fun deleteReminders() {
-        shoppingListsRepository.getRemindersWithConfig().firstOrNull()?.let { shoppingLists ->
-            shoppingLists.shoppingLists.forEach {
+            .onFailure {
                 withContext(dispatchers.main) {
-                    alarmManager.deleteReminder(it.shopping.uid)
+                    backupState.showImportError()
                 }
+            }
+    }
+
+    private fun deleteRemindersIfExists(shoppings: List<Shopping>) {
+        shoppings.forEach { shopping ->
+            if (shopping.reminder != null) {
+                alarmManager.deleteReminder(shopping.uid)
             }
         }
     }
 
-    private fun createReminderIfExists(shoppingLists: List<ShoppingList>) {
-        shoppingLists.forEach { shoppingList ->
-            shoppingList.reminder?.let { reminder ->
-                alarmManager.createReminder(shoppingList.uid, reminder)
+    private fun createReminderIfExists(shoppings: List<Shopping>) {
+        shoppings.forEach { shopping ->
+            shopping.reminder?.let { dateTime ->
+                alarmManager.createReminder(shopping.uid, dateTime.millis)
             }
         }
     }

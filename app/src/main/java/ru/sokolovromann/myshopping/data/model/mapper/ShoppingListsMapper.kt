@@ -310,6 +310,10 @@ object ShoppingListsMapper {
         return shoppingLists.map { toShoppingEntity(it.shopping) }
     }
 
+    fun toShoppings(entities: List<ShoppingEntity>, appConfig: AppConfig): List<Shopping> {
+        return entities.map { toShopping(it, appConfig.userPreferences) }
+    }
+
     fun toProductEntitiesFromShoppingLists(shoppingLists: List<ShoppingList>): List<ProductEntity> {
         val products = mutableListOf<Product>()
         shoppingLists.forEach { products.addAll(it.products) }

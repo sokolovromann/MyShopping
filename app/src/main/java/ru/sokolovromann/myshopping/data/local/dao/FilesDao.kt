@@ -4,8 +4,6 @@ import android.content.ContentValues
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppBase64
 import ru.sokolovromann.myshopping.app.AppDispatchers
@@ -75,9 +73,9 @@ class FilesDao(appContent: AppContent) {
         }
     }
 
-    suspend fun readBackup(uri: Uri): Result<Flow<BackupFileEntity>> = withContext(AppDispatchers.IO) {
+    suspend fun readBackup(uri: Uri): Result<BackupFileEntity?> = withContext(AppDispatchers.IO) {
         return@withContext try {
-            var backupFileEntity = BackupFileEntity()
+            var backupFileEntity: BackupFileEntity? = null
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 if (!decodePackageName(inputStream)) {
                     throw FileNotFoundException()
@@ -85,8 +83,7 @@ class FilesDao(appContent: AppContent) {
                 backupFileEntity = decodeBackupFileEntity(inputStream)
             }
 
-            val flow = flowOf(backupFileEntity)
-            Result.success(flow)
+            Result.success(backupFileEntity)
         } catch (e: Exception) {
             Result.failure(e)
         }

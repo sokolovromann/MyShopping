@@ -17,6 +17,9 @@ interface ShoppingListsDao {
     @Query("SELECT * FROM shoppings")
     fun getAllShoppingLists(): Flow<List<ShoppingListEntity>>
 
+    @Query("SELECT * FROM shoppings")
+    fun getAllShoppings(): Flow<List<ShoppingEntity>>
+
     @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 0")
     fun getPurchases(): Flow<List<ShoppingListEntity>>
