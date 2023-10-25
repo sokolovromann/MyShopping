@@ -1,11 +1,5 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.model.Currency
-import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.model.Money
-
-@Deprecated("Use /model/CodeVersion14Preferences")
 data class CodeVersion14Preferences(
     val firstOpened: Boolean = false,
     val currency: Currency = Currency(),
