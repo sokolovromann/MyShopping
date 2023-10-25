@@ -5,7 +5,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
-import ru.sokolovromann.myshopping.data.repository.model.CodeVersion14
+import ru.sokolovromann.myshopping.data.model.CodeVersion14
+import ru.sokolovromann.myshopping.data.model.mapper.CodeVersion14Mapper
 import javax.inject.Inject
 
 class CodeVersion14Repository @Inject constructor(localDatasource: LocalDatasource) {
@@ -17,13 +18,13 @@ class CodeVersion14Repository @Inject constructor(localDatasource: LocalDatasour
     private val dispatcher = AppDispatchers.IO
 
     suspend fun getCodeVersion14(): Flow<CodeVersion14> = withContext(dispatcher) {
-        return@withContext appConfigDao.getCodeVersion14Preferences().map {
-            RepositoryMapper.toCodeVersion14(
-                shoppingListsCursor = codeVersion14Dao.getShoppingsCursor(),
+        return@withContext appConfigDao.getCodeVersion14Preferences().map { codeVersion14PreferencesEntity ->
+            CodeVersion14Mapper.toCodeVersion14(
+                shoppingsCursor = codeVersion14Dao.getShoppingsCursor(),
                 productsCursor = codeVersion14Dao.getProductsCursor(),
                 autocompletesCursor = codeVersion14Dao.getAutocompletesCursor(),
                 defaultAutocompleteNames = resourcesDao.getAutocompleteNames(),
-                preferences = it
+                preferences = codeVersion14PreferencesEntity
             )
         }
     }

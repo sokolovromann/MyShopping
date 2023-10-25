@@ -15,16 +15,17 @@ import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.AppOpenHelper
+import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.CodeVersion14
+import ru.sokolovromann.myshopping.data.model.CodeVersion14Preferences
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.UserPreferences
-import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.CodeVersion14Repository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
@@ -135,18 +136,18 @@ class MainViewModel @Inject constructor(
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
         list.forEach {
-            val shoppingLists = ShoppingListsMapper.toShoppingLists(list)
-            shoppingListsRepository.saveShoppingLists(shoppingLists)
-            if (it.reminder != null) {
-                alarmManager.deleteCodeVersion14Reminder(it.id)
-                alarmManager.createReminder(it.uid, it.reminder)
+            shoppingListsRepository.saveShoppingLists(list)
+
+            val shopping = it.shopping
+            if (shopping.reminder != null) {
+                alarmManager.deleteCodeVersion14Reminder(shopping.id)
+                alarmManager.createReminder(shopping.uid, shopping.reminder.millis)
             }
         }
     }
 
     private suspend fun migrateAutocompletes(list: List<Autocomplete>) {
-        val autocompletes = AutocompletesMapper.toAutocompletes(list)
-        autocompletesRepository.saveAutocompletes(autocompletes)
+        autocompletesRepository.saveAutocompletes(list)
     }
 
     private suspend fun migrateSettings(

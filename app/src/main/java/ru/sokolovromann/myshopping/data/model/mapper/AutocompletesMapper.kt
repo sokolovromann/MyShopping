@@ -34,10 +34,6 @@ object AutocompletesMapper {
         )
     }
 
-    fun toAutocompletes(autocompletes: List<ru.sokolovromann.myshopping.data.repository.model.Autocomplete>): List<Autocomplete> {
-        return autocompletes.map { toAutocomplete(it) }
-    }
-
     fun toRepositoryAutocompletes(autocompletes: List<Autocomplete>): List<ru.sokolovromann.myshopping.data.repository.model.Autocomplete> {
         return autocompletes.map {
             ru.sokolovromann.myshopping.data.repository.model.Autocomplete(

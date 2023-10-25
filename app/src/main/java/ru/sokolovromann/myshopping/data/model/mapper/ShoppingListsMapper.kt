@@ -104,10 +104,6 @@ object ShoppingListsMapper {
         )
     }
 
-    fun toShoppingLists(shoppingLists: List<ru.sokolovromann.myshopping.data.repository.model.ShoppingList>): List<ShoppingList> {
-        return shoppingLists.map { toShoppingList(it) }
-    }
-
     fun toShoppingList(
         shoppingList: ShoppingList,
         userPreferences: UserPreferences
