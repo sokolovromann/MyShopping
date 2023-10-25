@@ -30,6 +30,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
@@ -328,22 +329,26 @@ fun ProductsScreen(
                                     header = { Text(text = stringResource(id = R.string.products_action_sort)) }
                                 ) {
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.CREATED)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
+                                            SortBy.CREATED)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByCreated)) },
                                         right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.CREATED) }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.LAST_MODIFIED)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
+                                            SortBy.LAST_MODIFIED)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) },
                                         right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.LAST_MODIFIED) }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.NAME)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
+                                            SortBy.NAME)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByName)) },
                                         right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.NAME) }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(SortBy.TOTAL)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
+                                            SortBy.TOTAL)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByTotal)) },
                                         right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.TOTAL) }
                                     )

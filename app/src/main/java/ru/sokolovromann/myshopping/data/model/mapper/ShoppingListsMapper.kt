@@ -22,8 +22,8 @@ import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotificatio
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
-import ru.sokolovromann.myshopping.data.repository.model.Sort
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.UserPreferences

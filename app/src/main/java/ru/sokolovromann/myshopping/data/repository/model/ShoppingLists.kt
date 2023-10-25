@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
+import ru.sokolovromann.myshopping.data.model.Sort
 import java.util.UUID
 
 @Deprecated("Use ShoppingListsWithConfig")

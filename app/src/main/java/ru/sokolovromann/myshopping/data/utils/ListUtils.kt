@@ -3,8 +3,8 @@ package ru.sokolovromann.myshopping.data.utils
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingList
-import ru.sokolovromann.myshopping.data.repository.model.Sort
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 
 private val defaultShoppingListsSort: Sort = Sort(
     sortBy = SortBy.POSITION,

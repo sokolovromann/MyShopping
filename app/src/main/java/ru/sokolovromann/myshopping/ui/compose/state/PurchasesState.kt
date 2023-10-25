@@ -8,6 +8,8 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.utils.calculateTotalToText
 import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems

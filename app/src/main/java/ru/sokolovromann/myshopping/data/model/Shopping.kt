@@ -1,7 +1,5 @@
 package ru.sokolovromann.myshopping.data.model
 
-import ru.sokolovromann.myshopping.data.repository.model.Sort
-
 data class Shopping(
     val id: Int = IdDefaults.NO_ID,
     val position: Int = IdDefaults.FIRST_POSITION,

@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
@@ -194,19 +194,23 @@ fun ArchiveScreen(
                                 header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.CREATED)) },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(
+                                        SortBy.CREATED)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.LAST_MODIFIED)) },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(
+                                        SortBy.LAST_MODIFIED)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.NAME)) },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(
+                                        SortBy.NAME)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(SortBy.TOTAL)) },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.SortShoppingLists(
+                                        SortBy.TOTAL)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
                                 )
                                 Divider()

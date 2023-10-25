@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
 data class Sort(
     val sortBy: SortBy = SortBy.DefaultValue,

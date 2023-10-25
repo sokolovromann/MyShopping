@@ -1,6 +1,8 @@
 package ru.sokolovromann.myshopping.data.repository.model
 
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import java.text.DecimalFormat
 
 @Deprecated(message = "Use String.uppercaseFirst()")

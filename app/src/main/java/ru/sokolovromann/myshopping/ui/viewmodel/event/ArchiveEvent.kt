@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.repository.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 
 sealed class ArchiveEvent {
