@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.repository.model
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import java.util.UUID
 
 @Deprecated("Use /model/ShoppingList")

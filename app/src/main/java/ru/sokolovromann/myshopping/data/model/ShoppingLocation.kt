@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data.repository.model
+package ru.sokolovromann.myshopping.data.model
 
 enum class ShoppingLocation {
 
