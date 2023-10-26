@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.data.utils
 
 import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.Sort
@@ -22,35 +23,55 @@ private val defaultAutocompletesSort: Sort = Sort(
 )
 
 fun List<ShoppingList>.sortedShoppingLists(
-    sort: Sort = defaultShoppingListsSort
+    sort: Sort = defaultShoppingListsSort,
+    displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue
 ): List<ShoppingList> {
-    val shoppingLists = this.map {
-        it.copy(products = it.products.sortedProducts(sort))
-    }
-
-    return if (sort.ascending) {
+    val sortedShoppings = if (sort.ascending) {
         when (sort.sortBy) {
-            SortBy.POSITION -> shoppingLists.sortedBy { it.shopping.position }
-            SortBy.CREATED -> shoppingLists.sortedBy { it.shopping.id }
-            SortBy.LAST_MODIFIED -> shoppingLists.sortedBy { it.shopping.lastModified.millis }
-            SortBy.NAME -> shoppingLists.sortedBy { it.shopping.name }
-            SortBy.TOTAL -> shoppingLists.sortedBy { it.shopping.total.value }
+            SortBy.POSITION -> this.sortedBy { it.shopping.position }
+            SortBy.CREATED -> this.sortedBy { it.shopping.id }
+            SortBy.LAST_MODIFIED -> this.sortedBy { it.shopping.lastModified.millis }
+            SortBy.NAME -> this.sortedBy { it.shopping.name }
+            SortBy.TOTAL -> this.sortedBy { it.shopping.total.value }
         }
     } else {
         when (sort.sortBy) {
-            SortBy.POSITION -> shoppingLists.sortedByDescending { it.shopping.position }
-            SortBy.CREATED -> shoppingLists.sortedByDescending { it.shopping.id }
-            SortBy.LAST_MODIFIED -> shoppingLists.sortedByDescending { it.shopping.lastModified.millis }
-            SortBy.NAME -> shoppingLists.sortedByDescending { it.shopping.name }
-            SortBy.TOTAL -> shoppingLists.sortedByDescending { it.shopping.total.value }
+            SortBy.POSITION -> this.sortedByDescending { it.shopping.position }
+            SortBy.CREATED -> this.sortedByDescending { it.shopping.id }
+            SortBy.LAST_MODIFIED -> this.sortedByDescending { it.shopping.lastModified.millis }
+            SortBy.NAME -> this.sortedByDescending { it.shopping.name }
+            SortBy.TOTAL -> this.sortedByDescending { it.shopping.total.value }
+        }
+    }
+
+    val sortedShoppingList = sortedShoppings.map {
+        it.copy(products = it.products.sortedProducts(sort, displayCompleted))
+    }
+    val partition = sortedShoppingList.partition { it.isCompleted() }
+
+    return buildList {
+        when (displayCompleted) {
+            DisplayCompleted.FIRST -> {
+                addAll(partition.first)
+                addAll(partition.second)
+            }
+            DisplayCompleted.LAST -> {
+                addAll(partition.second)
+                addAll(partition.first)
+            }
+            DisplayCompleted.HIDE -> {
+                addAll(partition.second)
+            }
+            DisplayCompleted.NO_SPLIT -> {}
         }
     }
 }
 
 fun List<Product>.sortedProducts(
-    sort: Sort = defaultProductsSort
+    sort: Sort = defaultProductsSort,
+    displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue
 ): List<Product> {
-    return if (sort.ascending) {
+    val sorted = if (sort.ascending) {
         when (sort.sortBy) {
             SortBy.POSITION -> sortedBy { it.position }
             SortBy.CREATED -> sortedBy { it.id }
@@ -65,6 +86,24 @@ fun List<Product>.sortedProducts(
             SortBy.LAST_MODIFIED -> sortedByDescending { it.lastModified.millis }
             SortBy.NAME -> sortedByDescending { it.name }
             SortBy.TOTAL -> sortedByDescending { it.total.value }
+        }
+    }
+
+    val partition = sorted.partition { it.completed }
+    return buildList {
+        when (displayCompleted) {
+            DisplayCompleted.FIRST -> {
+                addAll(partition.first)
+                addAll(partition.second)
+            }
+            DisplayCompleted.LAST -> {
+                addAll(partition.second)
+                addAll(partition.first)
+            }
+            DisplayCompleted.HIDE -> {
+                addAll(partition.second)
+            }
+            DisplayCompleted.NO_SPLIT -> {}
         }
     }
 }

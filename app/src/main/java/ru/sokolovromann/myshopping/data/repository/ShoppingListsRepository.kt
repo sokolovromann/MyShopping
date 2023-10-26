@@ -577,12 +577,14 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         sort: Sort,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.shoppingLists
-        return@withContext if (shoppingLists.isNullOrEmpty()) {
+        val shoppingListsWithConfig = getShoppingListsWithConfig().firstOrNull()
+        val shoppingLists = shoppingListsWithConfig?.shoppingLists
+        return@withContext if (shoppingListsWithConfig == null || shoppingLists.isNullOrEmpty()) {
             val exception = UnsupportedOperationException("Sort empty list is not supported")
             Result.failure(exception)
         } else {
-            shoppingLists.sortedShoppingLists(sort)
+            val displayCompleted = shoppingListsWithConfig.appConfig.userPreferences.displayCompleted
+            shoppingLists.sortedShoppingLists(sort, displayCompleted)
                 .forEachIndexed { shoppingIndex, shoppingList ->
                     shoppingListsDao.updatePosition(
                         uid = shoppingList.shopping.uid,
@@ -647,8 +649,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             )
             Result.success(Unit)
         } else {
-            val products = getShoppingListWithConfig(shoppingUid).firstOrNull()?.shoppingList?.products
-            if (products.isNullOrEmpty()) {
+            val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
+            val products = shoppingListWithConfig?.shoppingList?.products
+            if (shoppingListWithConfig == null || products.isNullOrEmpty()) {
                 val exception = UnsupportedOperationException("Sort empty list is not supported")
                 Result.failure(exception)
             } else {
@@ -658,7 +661,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     sortAscending = sort.ascending,
                     lastModified = lastModified.millis
                 )
-                products.sortedProducts(sort)
+
+                val displayCompleted = shoppingListWithConfig.appConfig.userPreferences.displayCompleted
+                products.sortedProducts(sort, displayCompleted)
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(
                             productUid = product.productUid,
@@ -677,8 +682,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         automaticSort: Boolean,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val shoppingList = getShoppingListWithConfig(shoppingUid).firstOrNull()?.shoppingList
-        if (shoppingList == null) {
+        val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
+        val shoppingList = shoppingListWithConfig?.shoppingList
+        if (shoppingListWithConfig == null || shoppingList == null) {
             val exception = InvalidUidException("Shopping list is not exists")
             return@withContext Result.failure(exception)
         }
@@ -697,7 +703,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             )
             Result.success(Unit)
         } else {
-
             if (products.isEmpty()) {
                 val exception = UnsupportedOperationException("Sort empty list is not supported")
                 Result.failure(exception)
@@ -708,7 +713,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     sortAscending = sort.ascending,
                     lastModified = lastModified.millis
                 )
-                products.sortedProducts(sort)
+
+                val displayCompleted = shoppingListWithConfig.appConfig.userPreferences.displayCompleted
+                products.sortedProducts(sort, displayCompleted)
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(
                             productUid = product.productUid,

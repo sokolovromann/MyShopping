@@ -105,6 +105,7 @@ fun List<Autocomplete>.sortAutocompletes(
     }
 }
 
+@Deprecated("Use .sortedShoppingLists()")
 fun List<ShoppingList>.splitShoppingLists(displayCompleted: DisplayCompleted): List<ShoppingList> {
     val partition = partition { it.completed }
     return buildList {
@@ -125,6 +126,7 @@ fun List<ShoppingList>.splitShoppingLists(displayCompleted: DisplayCompleted): L
     }
 }
 
+@Deprecated("Use .sortedProducts()")
 fun List<Product>.splitProducts(displayCompleted: DisplayCompleted): List<Product> {
     val partition = this.partition { it.completed }
     return buildList {
