@@ -89,7 +89,8 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
         val oldAppConfig = AppConfigMapper.toAppConfig(backupFileEntity.appConfigEntity)
         return BackupMapper.toBackup(
             shoppings = ShoppingListsMapper.toShoppings(
-                entities = backupFileEntity.shoppingEntities,
+                shoppingEntities = backupFileEntity.shoppingEntities,
+                productEntities = backupFileEntity.productEntities,
                 appConfig = oldAppConfig
             ),
             products = ShoppingListsMapper.toProducts(
@@ -116,7 +117,8 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
 
         return BackupMapper.toBackup(
             shoppings = ShoppingListsMapper.toShoppings(
-                entities = shoppingEntities,
+                shoppingEntities = shoppingEntities,
+                productEntities = productEntities,
                 appConfig = newAppConfig
             ),
             products = ShoppingListsMapper.toProducts(

@@ -46,7 +46,10 @@ object CodeVersion14Mapper {
             }
 
             val shoppingList = ShoppingList(
-                shopping = shopping,
+                shopping = shopping.copy(
+                    total = calculateProductsTotal(products, preferences),
+                    totalFormatted = false
+                ),
                 products = products.formatCodeVersion14Products(
                     sort = preferences.sort ?: 0,
                     firstLetterUppercase = preferences.firstLetterUppercase ?: false
@@ -187,6 +190,44 @@ object CodeVersion14Mapper {
 
     private fun isPersonalAutocomplete(defaultNames: List<String>, search: String): Boolean {
         return defaultNames.find { it.equals(search, true) } == null
+    }
+
+    private fun calculateProductsTotal(
+        products: List<Product>,
+        userPreferencesEntity: CodeVersion14UserPreferencesEntity
+    ): Money {
+        var all = 0f
+        var completed = 0f
+        var active = 0f
+
+        products.forEach {
+            val totalValue = it.total.value
+
+            all += totalValue
+            if (it.completed) {
+                completed += totalValue
+            } else {
+                active += totalValue
+            }
+        }
+
+        val total = when (toDisplayTotal(userPreferencesEntity.displayTotal)) {
+            DisplayTotal.ALL -> all
+            DisplayTotal.COMPLETED -> completed
+            DisplayTotal.ACTIVE -> active
+        }
+
+        val currency = Currency(
+            symbol = userPreferencesEntity.currency ?: "",
+            displayToLeft = userPreferencesEntity.displayCurrencyToLeft ?: false
+        )
+
+        return Money(
+            value = total,
+            currency = currency,
+            asPercent = false,
+            decimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
+        )
     }
 
     private fun List<ShoppingList>.formatCodeVersion14ShoppingLists(

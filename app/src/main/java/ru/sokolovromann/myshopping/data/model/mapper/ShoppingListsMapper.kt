@@ -25,6 +25,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.DateTime
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
@@ -306,8 +307,21 @@ object ShoppingListsMapper {
         return shoppingLists.map { toShoppingEntity(it.shopping) }
     }
 
-    fun toShoppings(entities: List<ShoppingEntity>, appConfig: AppConfig): List<Shopping> {
-        return entities.map { toShopping(it, appConfig.userPreferences) }
+    fun toShoppings(
+        shoppingEntities: List<ShoppingEntity>,
+        productEntities: List<ProductEntity>,
+        appConfig: AppConfig
+    ): List<Shopping> {
+        return shoppingEntities.map { shoppingEntity ->
+            val shoppingProductEntities = productEntities.filter { productEntity ->
+                productEntity.shoppingUid == shoppingEntity.uid
+            }
+            val productsTotal = calculateProductsTotal(
+                productEntities = shoppingProductEntities,
+                userPreferences = appConfig.userPreferences
+            )
+            toShopping(shoppingEntity, productsTotal, appConfig.userPreferences)
+        }
     }
 
     fun toProductEntitiesFromShoppingLists(shoppingLists: List<ShoppingList>): List<ProductEntity> {
@@ -367,7 +381,22 @@ object ShoppingListsMapper {
         return lastPosition?.plus(1) ?: IdDefaults.FIRST_POSITION
     }
 
-    private fun toShopping(entity: ShoppingEntity, userPreferences: UserPreferences): Shopping {
+    private fun toShopping(
+        entity: ShoppingEntity,
+        productsTotal: Money,
+        userPreferences: UserPreferences
+    ): Shopping {
+        val total = if (entity.totalFormatted) {
+            Money(
+                value = entity.total,
+                currency = userPreferences.currency,
+                asPercent = false,
+                decimalFormat = userPreferences.moneyDecimalFormat
+            )
+        } else {
+            productsTotal
+        }
+
         return Shopping(
             id = entity.id,
             position = entity.position,
@@ -375,12 +404,7 @@ object ShoppingListsMapper {
             lastModified = DateTime(entity.lastModified),
             name = entity.name,
             reminder = if (entity.reminder == 0L) null else DateTime(entity.reminder),
-            total = Money(
-                value = entity.total,
-                currency = userPreferences.currency,
-                asPercent = false,
-                decimalFormat = userPreferences.moneyDecimalFormat
-            ),
+            total = total,
             totalFormatted = entity.totalFormatted,
             budget = Money(
                 value = entity.budget,
@@ -448,8 +472,9 @@ object ShoppingListsMapper {
     }
 
     private fun toShoppingList(entity: ShoppingListEntity, appConfig: AppConfig): ShoppingList {
+        val productsTotal = calculateProductsTotal(entity.productEntities, appConfig.userPreferences)
         return ShoppingList(
-            shopping = toShopping(entity.shoppingEntity, appConfig.userPreferences),
+            shopping = toShopping(entity.shoppingEntity, productsTotal, appConfig.userPreferences),
             products = toProducts(entity.productEntities, appConfig)
         )
     }
@@ -459,5 +484,38 @@ object ShoppingListsMapper {
         appConfig: AppConfig
     ): List<ShoppingList> {
         return entities.map { toShoppingList(it, appConfig) }
+    }
+
+    private fun calculateProductsTotal(
+        productEntities: List<ProductEntity>,
+        userPreferences: UserPreferences
+    ): Money {
+        var all = 0f
+        var completed = 0f
+        var active = 0f
+
+        productEntities.forEach {
+            val totalValue = it.total
+
+            all += totalValue
+            if (it.completed) {
+                completed += totalValue
+            } else {
+                active += totalValue
+            }
+        }
+
+        val total = when (userPreferences.displayTotal) {
+            DisplayTotal.ALL -> all
+            DisplayTotal.COMPLETED -> completed
+            DisplayTotal.ACTIVE -> active
+        }
+
+        return Money(
+            value = total,
+            currency = userPreferences.currency,
+            asPercent = false,
+            decimalFormat = userPreferences.moneyDecimalFormat
+        )
     }
 }
