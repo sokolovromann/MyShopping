@@ -14,6 +14,8 @@ import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.utils.uppercaseFirst
 
@@ -48,7 +50,9 @@ object CodeVersion14Mapper {
             val shoppingList = ShoppingList(
                 shopping = shopping.copy(
                     total = calculateProductsTotal(products, preferences),
-                    totalFormatted = false
+                    totalFormatted = false,
+                    sort = toSort(preferences.sort),
+                    sortFormatted = false
                 ),
                 products = products.formatCodeVersion14Products(
                     sort = preferences.sort ?: 0,
@@ -234,9 +238,10 @@ object CodeVersion14Mapper {
         sort: Int,
         firstLetterUppercase: Boolean
     ): List<ShoppingList> {
-        return when (sort) {
-            1, 3 -> this.sortedBy { it.shopping.name }
-            2, 4 -> this.sortedBy { it.shopping.total.value }
+        val sortBy = toSort(sort).sortBy
+        return when (sortBy) {
+            SortBy.NAME -> this.sortedBy { it.shopping.name }
+            SortBy.TOTAL -> this.sortedBy { it.shopping.total.value }
             else -> this.sortedBy { it.shopping.id }
         }.withIndex().map {
             val name = it.value.shopping.name
@@ -252,9 +257,10 @@ object CodeVersion14Mapper {
         sort: Int,
         firstLetterUppercase: Boolean
     ): List<Product> {
-        return when (sort) {
-            1, 3 -> this.sortedBy { it.name }
-            2, 4 -> this.sortedBy { it.total.value }
+        val sortBy = toSort(sort).sortBy
+        return when (sortBy) {
+            SortBy.NAME -> this.sortedBy { it.name }
+            SortBy.TOTAL -> this.sortedBy { it.total.value }
             else -> this.sortedBy { it.id }
         }.withIndex().map {
             val name = it.value.name
@@ -295,5 +301,14 @@ object CodeVersion14Mapper {
             2 -> DisplayTotal.COMPLETED
             else -> DisplayTotal.ALL
         }
+    }
+
+    private fun toSort(sort: Int?): Sort {
+        val sortBy = when (sort) {
+            1, 3 -> SortBy.NAME
+            2, 4 -> SortBy.TOTAL
+            else -> SortBy.CREATED
+        }
+        return Sort(sortBy = sortBy, ascending = true)
     }
 }
