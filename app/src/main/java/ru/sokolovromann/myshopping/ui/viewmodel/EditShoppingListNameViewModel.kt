@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
@@ -55,22 +54,19 @@ class EditShoppingListNameViewModel @Inject constructor(
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
-        val editShoppingListName = ShoppingListsMapper.toEditShoppingListName(shoppingListWithConfig)
-        editShoppingListNameState.populate(editShoppingListName)
+        editShoppingListNameState.populate(shoppingListWithConfig)
         _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowKeyboard)
     }
 
     private fun saveShoppingListName() = viewModelScope.launch {
-        val shoppingList = editShoppingListNameState.getShoppingListResult()
-            .getOrElse { return@launch }
-
+        val shoppingUid = editShoppingListNameState.getShoppingUid()
         shoppingListsRepository.saveShoppingListName(
-            shoppingUid = shoppingList.uid,
-            name = shoppingList.name
+            shoppingUid = shoppingUid,
+            name = editShoppingListNameState.screenData.nameValue.text
         )
 
         withContext(dispatchers.main) {
-            val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingList.uid)
+            val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
             _screenEventFlow.emit(event)
         }
     }
