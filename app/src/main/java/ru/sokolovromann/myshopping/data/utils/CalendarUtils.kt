@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.utils
 
+import ru.sokolovromann.myshopping.data.model.DateTime
 import java.util.Calendar
 
 fun Calendar.setDate(year: Int, month: Int, dayOfMonth: Int) {
@@ -11,6 +12,17 @@ fun Calendar.setDate(year: Int, month: Int, dayOfMonth: Int) {
 fun Calendar.setTime(hourOfDay: Int, minute: Int) {
     set(Calendar.HOUR_OF_DAY, hourOfDay)
     set(Calendar.MINUTE, minute)
+}
+
+fun Calendar.addDate(year: Int, month: Int, dayOfMonth: Int) {
+    add(Calendar.YEAR, year)
+    add(Calendar.MONTH, month)
+    add(Calendar.DAY_OF_MONTH, dayOfMonth)
+}
+
+fun Calendar.addTime(hourOfDay: Int, minute: Int) {
+    add(Calendar.HOUR_OF_DAY, hourOfDay)
+    add(Calendar.MINUTE, minute)
 }
 
 fun Calendar.getYearMonthDay(): Triple<Int, Int, Int> {
@@ -26,4 +38,8 @@ fun Calendar.getHourMinute(): Pair<Int, Int> {
         first = get(Calendar.HOUR_OF_DAY),
         second = get(Calendar.MINUTE)
     )
+}
+
+fun Calendar.toDateTime(): DateTime {
+    return DateTime(timeInMillis)
 }
