@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -85,11 +84,10 @@ class TrashViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
-        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
-        if (shoppingLists.isShoppingListsEmpty()) {
-            trashState.showNotFound(shoppingLists)
+        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+            trashState.showNotFound(shoppingListsWithConfig)
         } else {
-            trashState.showShoppingLists(shoppingLists)
+            trashState.showShoppingLists(shoppingListsWithConfig)
         }
     }
 

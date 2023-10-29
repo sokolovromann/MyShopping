@@ -22,10 +22,10 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
-import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListLocation
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.utils.*
 
@@ -181,11 +181,11 @@ fun ShoppingListsTotalContent(
 @Composable
 fun ShoppingListsLocationContent(
     modifier: Modifier = Modifier,
-    location: ShoppingListLocation,
+    location: ShoppingLocation,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
-    onSelected: (ShoppingListLocation) -> Unit
+    onSelected: (ShoppingLocation) -> Unit
 ) {
     TextButton(
         modifier = Modifier
@@ -203,14 +203,14 @@ fun ShoppingListsLocationContent(
             header = { Text(text = stringResource(R.string.shoppingLists_header_location)) }
         ) {
             AppDropdownMenuItem(
-                onClick = { onSelected(ShoppingListLocation.PURCHASES) },
+                onClick = { onSelected(ShoppingLocation.PURCHASES) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectPurchasesLocation)) },
-                right = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.PURCHASES) }
+                right = { CheckmarkAppCheckbox(checked = location == ShoppingLocation.PURCHASES) }
             )
             AppDropdownMenuItem(
-                onClick = { onSelected(ShoppingListLocation.ARCHIVE) },
+                onClick = { onSelected(ShoppingLocation.ARCHIVE) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectArchiveLocation)) },
-                right = { CheckmarkAppCheckbox(checked = location == ShoppingListLocation.ARCHIVE) }
+                right = { CheckmarkAppCheckbox(checked = location == ShoppingLocation.ARCHIVE) }
             )
         }
     }

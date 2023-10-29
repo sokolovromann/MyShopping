@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.Sort
@@ -96,11 +95,10 @@ class ArchiveViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
-        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
-        if (shoppingListsWithConfig.isEmpty()) {
-            archiveState.showNotFound(shoppingLists)
+        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+            archiveState.showNotFound(shoppingListsWithConfig)
         } else {
-            archiveState.showShoppingLists(shoppingLists)
+            archiveState.showShoppingLists(shoppingListsWithConfig)
         }
     }
 

@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ProductsWidgetConfigState
@@ -54,11 +53,10 @@ class ProductsWidgetConfigViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
-        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
-        if (shoppingLists.isShoppingListsEmpty()) {
-            productsWidgetConfigState.showNotFound(shoppingLists)
+        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+            productsWidgetConfigState.showNotFound(shoppingListsWithConfig)
         } else {
-            productsWidgetConfigState.showShoppingLists(shoppingLists)
+            productsWidgetConfigState.showShoppingLists(shoppingListsWithConfig)
         }
     }
 
@@ -66,10 +64,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
         event: ProductsWidgetConfigEvent.SelectShoppingList
     ) = viewModelScope.launch {
         val widgetId = productsWidgetConfigState.widgetId
-        val shoppingList = productsWidgetConfigState.getShoppingListResult(event.uid)
-            .getOrElse { return@launch }
-
-        _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.UpdateWidget(widgetId, shoppingList.uid))
+        _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.UpdateWidget(widgetId, event.uid))
     }
 
     private fun cancelSelectingShoppingList() = viewModelScope.launch {

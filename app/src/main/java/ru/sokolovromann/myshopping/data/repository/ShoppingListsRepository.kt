@@ -573,6 +573,67 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
+    suspend fun copyProducts(
+        products: List<Product>,
+        shoppingUid: String
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (products.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            val lastModified = DateTime.getCurrentDateTime()
+            shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+
+            val lastPosition = productsDao.getLastPosition(shoppingUid)
+                .firstOrNull() ?: IdDefaults.FIRST_POSITION
+            val newProducts = products.mapIndexed { index, product ->
+                val newPosition = lastPosition + index
+                product.copy(
+                    id = IdDefaults.NO_ID,
+                    position = newPosition,
+                    shoppingUid = shoppingUid,
+                    productUid = IdDefaults.createUid(),
+                    lastModified = lastModified
+                )
+            }
+
+            val productEntities = ShoppingListsMapper.toProductEntities(newProducts)
+            productsDao.insertProducts(productEntities)
+
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun moveProducts(
+        products: List<Product>,
+        shoppingUid: String
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (products.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            val lastModified = DateTime.getCurrentDateTime()
+            shoppingListsDao.updateLastModified(products.first().shoppingUid, lastModified.millis)
+            shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+
+            val lastPosition = productsDao.getLastPosition(shoppingUid)
+                .firstOrNull() ?: IdDefaults.FIRST_POSITION
+            val newProducts = products.mapIndexed { index, product ->
+                val newPosition = lastPosition + index
+                product.copy(
+                    position = newPosition,
+                    shoppingUid = shoppingUid,
+                    lastModified = lastModified
+                )
+            }
+
+            val productEntities = ShoppingListsMapper.toProductEntities(newProducts)
+            productsDao.insertProducts(productEntities)
+
+            Result.success(Unit)
+        }
+    }
+
     suspend fun sortShoppingLists(
         sort: Sort,
         lastModified: DateTime = DateTime.getCurrentDateTime()

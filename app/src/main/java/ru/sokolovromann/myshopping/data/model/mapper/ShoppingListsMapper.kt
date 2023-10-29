@@ -184,16 +184,6 @@ object ShoppingListsMapper {
         return products.map { toProduct(it) }
     }
 
-    fun toProducts(shoppingListWithConfig: ShoppingListWithConfig): Products {
-        return Products(
-            shoppingList = toShoppingList(
-                shoppingListWithConfig.shoppingList,
-                shoppingListWithConfig.appConfig.userPreferences
-            ),
-            appConfig = shoppingListWithConfig.appConfig
-        )
-    }
-
     fun toProduct(product: Product): ru.sokolovromann.myshopping.data.repository.model.Product {
         return ru.sokolovromann.myshopping.data.repository.model.Product(
             id = product.id,

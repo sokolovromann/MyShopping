@@ -10,9 +10,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CopyProductScreenEvent
@@ -63,7 +62,7 @@ class CopyProductViewModel @Inject constructor(
         shoppingListsRepository.getPurchasesWithConfig().collect {
             shoppingListsLoaded(
                 shoppingListsWithConfig = it,
-                location = ShoppingListLocation.PURCHASES
+                location = ShoppingLocation.PURCHASES
             )
         }
     }
@@ -76,20 +75,19 @@ class CopyProductViewModel @Inject constructor(
         shoppingListsRepository.getArchiveWithConfig().collect {
             shoppingListsLoaded(
                 shoppingListsWithConfig = it,
-                location = ShoppingListLocation.ARCHIVE
+                location = ShoppingLocation.ARCHIVE
             )
         }
     }
 
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig,
-        location: ShoppingListLocation
+        location: ShoppingLocation
     ) = withContext(dispatchers.main) {
-        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
-        if (shoppingLists.isShoppingListsEmpty()) {
-            copyProductState.showNotFound(shoppingLists, location)
+        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+            copyProductState.showNotFound(shoppingListsWithConfig, location)
         } else {
-            copyProductState.showShoppingLists(shoppingLists, location)
+            copyProductState.showShoppingLists(shoppingListsWithConfig, location)
         }
     }
 
@@ -102,30 +100,20 @@ class CopyProductViewModel @Inject constructor(
             cancelCopingProduct()
         } else {
             withContext(dispatchers.main) {
-                val repositoryProducts = ShoppingListsMapper.toRepositoryProductList(products)
-                copyProductState.saveProducts(repositoryProducts)
+                copyProductState.saveProducts(products)
             }
         }
     }
 
     private fun addShoppingList() = viewModelScope.launch {
-        copyProductState.getShoppingListResult()
-            .onSuccess {
-                val shoppingList = ShoppingListsMapper.toShoppingList(it)
-                shoppingListsRepository.saveShoppingList(shoppingList)
-            }
-            .onFailure {
-                shoppingListsRepository.saveShoppingList(ShoppingList())
-            }
+        shoppingListsRepository.addShopping()
     }
 
     private fun copyProduct(event: CopyProductEvent.CopyProduct) = viewModelScope.launch {
-        copyProductState.selectShoppingList(event.uid)
-        val repositoryProducts = copyProductState.getProductsResult()
-            .getOrElse { return@launch }
-
-        val products = ShoppingListsMapper.toProductList(repositoryProducts)
-        shoppingListsRepository.saveProducts(products)
+        shoppingListsRepository.copyProducts(
+            products = copyProductState.products,
+            shoppingUid = event.uid
+        )
 
         withContext(dispatchers.main) {
             val screenEvent = CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets
@@ -145,8 +133,8 @@ class CopyProductViewModel @Inject constructor(
         hideShoppingListsLocation()
 
         when (event.location) {
-            ShoppingListLocation.PURCHASES -> getPurchases()
-            ShoppingListLocation.ARCHIVE -> getArchive()
+            ShoppingLocation.PURCHASES -> getPurchases()
+            ShoppingLocation.ARCHIVE -> getArchive()
             else -> {}
         }
     }

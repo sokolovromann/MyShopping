@@ -7,12 +7,12 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.utils.getAllShoppingListItems
 
 class TrashState {
 
-    private var shoppingLists by mutableStateOf(ShoppingLists())
+    private var shoppingListsWithConfig by mutableStateOf(ShoppingListsWithConfig())
 
     var screenData by mutableStateOf(TrashScreenData())
         private set
@@ -21,40 +21,37 @@ class TrashState {
         screenData = TrashScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(shoppingLists: ShoppingLists) {
-        this.shoppingLists = shoppingLists
+    fun showNotFound(shoppingListsWithConfig: ShoppingListsWithConfig) {
+        this.shoppingListsWithConfig = shoppingListsWithConfig
 
+        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
-            displayProducts = shoppingLists.getDisplayProducts(),
-            displayCompleted = shoppingLists.getDisplayCompleted(),
-            coloredCheckbox = shoppingLists.isColoredCheckbox(),
+            displayProducts = userPreferences.displayShoppingsProducts,
+            displayCompleted = userPreferences.displayCompleted,
+            coloredCheckbox = userPreferences.coloredCheckbox,
             showBottomBar = false,
-            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
-            displayTotal = shoppingLists.getDisplayTotal(),
-            fontSize = shoppingLists.getFontSize()
+            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            displayTotal = userPreferences.displayTotal,
+            fontSize = userPreferences.fontSize
         )
     }
 
-    fun showShoppingLists(shoppingLists: ShoppingLists) {
-        this.shoppingLists = shoppingLists
+    fun showShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig) {
+        this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val shoppingListItems = when (shoppingLists.getDisplayCompleted()) {
-            DisplayCompleted.HIDE -> shoppingLists.getAllShoppingListItems()
-            else -> shoppingLists.getAllShoppingListItems()
-        }
-
+        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
         screenData = TrashScreenData(
             screenState = ScreenState.Showing,
-            shoppingLists = shoppingListItems,
-            displayProducts = shoppingLists.getDisplayProducts(),
-            displayCompleted = shoppingLists.getDisplayCompleted(),
-            coloredCheckbox = shoppingLists.isColoredCheckbox(),
-            showBottomBar = shoppingLists.displayMoney(),
-            multiColumns = shoppingLists.isMultiColumns(),
-            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
-            displayTotal = shoppingLists.getDisplayTotal(),
-            fontSize = shoppingLists.getFontSize()
+            shoppingLists = shoppingListsWithConfig.getAllShoppingListItems(),
+            displayProducts = userPreferences.displayShoppingsProducts,
+            displayCompleted = userPreferences.displayCompleted,
+            coloredCheckbox = userPreferences.coloredCheckbox,
+            showBottomBar = userPreferences.displayMoney,
+            multiColumns = userPreferences.shoppingsMultiColumns,
+            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            displayTotal = userPreferences.displayTotal,
+            fontSize = userPreferences.fontSize
         )
     }
 
@@ -69,7 +66,7 @@ class TrashState {
     }
 
     fun selectAllShoppingLists() {
-        val uids = shoppingLists.getUids()
+        val uids = shoppingListsWithConfig.shoppingLists.map { it.shopping.uid }
         screenData = screenData.copy(selectedUids = uids)
     }
 

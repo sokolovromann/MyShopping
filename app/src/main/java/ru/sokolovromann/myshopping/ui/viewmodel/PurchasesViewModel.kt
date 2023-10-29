@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.Sort
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -112,11 +111,10 @@ class PurchasesViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(dispatchers.main) {
-        val shoppingLists = ShoppingListsMapper.toShoppingLists(shoppingListsWithConfig)
-        if (shoppingLists.isShoppingListsEmpty()) {
-            purchasesState.showNotFound(shoppingLists)
+        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+            purchasesState.showNotFound(shoppingListsWithConfig)
         } else {
-            purchasesState.showShoppingLists(shoppingLists)
+            purchasesState.showShoppingLists(shoppingListsWithConfig)
         }
     }
 
@@ -150,8 +148,9 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun copyShoppingLists() = viewModelScope.launch {
-        purchasesState.getCopyShoppingListsResult()
-            .onSuccess { shoppingListsRepository.copyShoppingLists(it.map { list -> list.uid }) }
+        purchasesState.screenData.selectedUids?.let {
+            shoppingListsRepository.copyShoppingLists(it)
+        }
 
         withContext(dispatchers.main) {
             hideSelectedMenu()

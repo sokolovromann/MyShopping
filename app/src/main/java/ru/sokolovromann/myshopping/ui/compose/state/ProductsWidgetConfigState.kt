@@ -7,14 +7,13 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
 import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
 
 class ProductsWidgetConfigState {
 
-    private var shoppingLists by mutableStateOf(ShoppingLists())
+    private var shoppingListsWithConfig by mutableStateOf(ShoppingListsWithConfig())
 
     var screenData by mutableStateOf(ProductsWidgetConfigScreenData())
         private set
@@ -34,42 +33,41 @@ class ProductsWidgetConfigState {
         screenData = ProductsWidgetConfigScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(shoppingLists: ShoppingLists) {
-        this.shoppingLists = shoppingLists
-        nightTheme = shoppingLists.isNightTheme()
+    fun showNotFound(shoppingListsWithConfig: ShoppingListsWithConfig) {
+        this.shoppingListsWithConfig = shoppingListsWithConfig
+
+        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        nightTheme = userPreferences.nightTheme
         loading = false
 
         screenData = ProductsWidgetConfigScreenData(
             screenState = ScreenState.Nothing,
-            displayProducts = shoppingLists.getDisplayProducts(),
-            displayCompleted = shoppingLists.getDisplayCompleted(),
-            coloredCheckbox = shoppingLists.isColoredCheckbox(),
-            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
-            fontSize = shoppingLists.getFontSize()
+            displayProducts = userPreferences.displayShoppingsProducts,
+            displayCompleted = userPreferences.displayCompleted,
+            coloredCheckbox = userPreferences.coloredCheckbox,
+            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            fontSize = userPreferences.fontSize
         )
     }
 
-    fun showShoppingLists(shoppingLists: ShoppingLists) {
-        this.shoppingLists = shoppingLists
+    fun showShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig) {
+        this.shoppingListsWithConfig = shoppingListsWithConfig
 
+        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        nightTheme = userPreferences.nightTheme
         loading = false
-        nightTheme = shoppingLists.isNightTheme()
 
         screenData = ProductsWidgetConfigScreenData(
             screenState = ScreenState.Showing,
-            pinnedShoppingLists = shoppingLists.getActivePinnedShoppingListItems(),
-            otherShoppingLists = shoppingLists.getOtherShoppingListItems(),
-            displayProducts = shoppingLists.getDisplayProducts(),
-            displayCompleted = shoppingLists.getDisplayCompleted(),
-            coloredCheckbox = shoppingLists.isColoredCheckbox(),
-            multiColumns = shoppingLists.isMultiColumns(),
-            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
-            fontSize = shoppingLists.getFontSize()
+            pinnedShoppingLists = shoppingListsWithConfig.getActivePinnedShoppingListItems(),
+            otherShoppingLists = shoppingListsWithConfig.getOtherShoppingListItems(),
+            displayProducts = userPreferences.displayShoppingsProducts,
+            displayCompleted = userPreferences.displayCompleted,
+            coloredCheckbox = userPreferences.coloredCheckbox,
+            multiColumns = userPreferences.shoppingsMultiColumns,
+            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            fontSize = userPreferences.fontSize
         )
-    }
-
-    fun getShoppingListResult(uid: String): Result<ShoppingList> {
-        return shoppingLists.getShoppingList(uid)
     }
 }
 

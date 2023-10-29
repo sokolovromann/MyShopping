@@ -6,16 +6,19 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.data.model.Product
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.utils.getActivePinnedShoppingListItems
 import ru.sokolovromann.myshopping.ui.utils.getAllShoppingListItems
 import ru.sokolovromann.myshopping.ui.utils.getOtherShoppingListItems
 
 class CopyProductState {
 
-    private var products by mutableStateOf<List<Product>>(listOf())
+    private var shoppingListsWithConfig by mutableStateOf(ShoppingListsWithConfig())
 
-    private var shoppingLists by mutableStateOf(ShoppingLists())
+    var products by mutableStateOf<List<Product>>(listOf())
+        private set
 
     var screenData by mutableStateOf(CopyProductScreenData())
         private set
@@ -24,47 +27,49 @@ class CopyProductState {
         screenData = CopyProductScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showNotFound(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
-        this.shoppingLists = shoppingLists
+    fun showNotFound(shoppingListsWithConfig: ShoppingListsWithConfig, location: ShoppingLocation) {
+        this.shoppingListsWithConfig = shoppingListsWithConfig
 
+        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
         screenData = CopyProductScreenData(
             screenState = ScreenState.Nothing,
-            displayProducts = shoppingLists.getDisplayProducts(),
-            displayCompleted = shoppingLists.getDisplayCompleted(),
-            coloredCheckbox = shoppingLists.isColoredCheckbox(),
-            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            displayProducts = userPreferences.displayShoppingsProducts,
+            displayCompleted = userPreferences.displayCompleted,
+            coloredCheckbox = userPreferences.coloredCheckbox,
+            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
             location = location,
-            fontSize = shoppingLists.getFontSize()
+            fontSize = userPreferences.fontSize
         )
     }
 
-    fun showShoppingLists(shoppingLists: ShoppingLists, location: ShoppingListLocation) {
-        this.shoppingLists = shoppingLists
+    fun showShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig, location: ShoppingLocation) {
+        this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val pinnedShoppingLists = if (location == ShoppingListLocation.PURCHASES) {
-            shoppingLists.getActivePinnedShoppingListItems()
+        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val pinnedShoppingLists = if (location == ShoppingLocation.PURCHASES) {
+            shoppingListsWithConfig.getActivePinnedShoppingListItems()
         } else {
             listOf()
         }
 
-        val otherShoppingLists = if (location == ShoppingListLocation.PURCHASES) {
-            shoppingLists.getOtherShoppingListItems()
+        val otherShoppingLists = if (location == ShoppingLocation.PURCHASES) {
+            shoppingListsWithConfig.getOtherShoppingListItems()
         } else {
-            shoppingLists.getAllShoppingListItems()
+            shoppingListsWithConfig.getAllShoppingListItems()
         }
 
         screenData = CopyProductScreenData(
             screenState = ScreenState.Showing,
             pinnedShoppingLists = pinnedShoppingLists,
             otherShoppingLists = otherShoppingLists,
-            displayProducts = shoppingLists.getDisplayProducts(),
-            displayCompleted = shoppingLists.getDisplayCompleted(),
-            coloredCheckbox = shoppingLists.isColoredCheckbox(),
-            multiColumns = shoppingLists.isMultiColumns(),
-            smartphoneScreen = shoppingLists.isSmartphoneScreen(),
+            displayProducts = userPreferences.displayShoppingsProducts,
+            displayCompleted = userPreferences.displayCompleted,
+            coloredCheckbox = userPreferences.coloredCheckbox,
+            multiColumns = userPreferences.shoppingsMultiColumns,
+            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
             location = location,
-            fontSize = shoppingLists.getFontSize(),
-            showHiddenShoppingLists = shoppingLists.displayHiddenShoppingLists()
+            fontSize = userPreferences.fontSize,
+            showHiddenShoppingLists = isDisplayHiddenShoppingLists()
         )
     }
 
@@ -72,21 +77,17 @@ class CopyProductState {
         this.products = products
     }
 
-    fun selectShoppingList(uid: String) {
-        screenData = screenData.copy(shoppingListSelectedUid = uid)
-    }
-
     fun displayHiddenShoppingLists() {
-        val pinnedShoppingLists = if (screenData.location == ShoppingListLocation.PURCHASES) {
-            shoppingLists.getActivePinnedShoppingListItems()
+        val pinnedShoppingLists = if (screenData.location == ShoppingLocation.PURCHASES) {
+            shoppingListsWithConfig.getActivePinnedShoppingListItems()
         } else {
             listOf()
         }
 
-        val otherShoppingLists = if (screenData.location == ShoppingListLocation.PURCHASES) {
-            shoppingLists.getOtherShoppingListItems()
+        val otherShoppingLists = if (screenData.location == ShoppingLocation.PURCHASES) {
+            shoppingListsWithConfig.getOtherShoppingListItems()
         } else {
-            shoppingLists.getAllShoppingListItems()
+            shoppingListsWithConfig.getAllShoppingListItems()
         }
 
         screenData = screenData.copy(
@@ -104,17 +105,10 @@ class CopyProductState {
         screenData = screenData.copy(showLocation = false)
     }
 
-    fun getProductsResult(): Result<List<Product>> {
-        screenData = screenData.copy(screenState = ScreenState.Saving)
-
-        return shoppingLists.copyProducts(
-            shoppingUid = screenData.shoppingListSelectedUid,
-            products = products
-        )
-    }
-
-    fun getShoppingListResult(): Result<ShoppingList> {
-        return shoppingLists.createShoppingList()
+    private fun isDisplayHiddenShoppingLists(): Boolean {
+        val hideCompleted = shoppingListsWithConfig.appConfig.userPreferences.displayCompleted == DisplayCompleted.HIDE
+        val hasHiddenShoppingList = shoppingListsWithConfig.shoppingLists.find { it.isCompleted() } != null
+        return hideCompleted && hasHiddenShoppingList
     }
 }
 
@@ -125,10 +119,9 @@ data class CopyProductScreenData(
     val displayProducts: DisplayProducts = DisplayProducts.DefaultValue,
     val displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
     val coloredCheckbox: Boolean = false,
-    val shoppingListSelectedUid: String? = null,
     val multiColumns: Boolean = false,
     val smartphoneScreen: Boolean = true,
-    val location: ShoppingListLocation = ShoppingListLocation.DefaultValue,
+    val location: ShoppingLocation = ShoppingLocation.DefaultValue,
     val showLocation: Boolean = false,
     val fontSize: FontSize = FontSize.MEDIUM,
     val showHiddenShoppingLists: Boolean = false
