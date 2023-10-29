@@ -348,7 +348,6 @@
     <string name="settings_body_email">Zum Schreiben tippen</string>
     <string name="settings_body_enterToSaveProduct">Wenn aktiviert, kann ein Produkt durch Tippen auf die Eingabetaste gespeichert werden</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
-    <string name="settings_body_migrateFromCodeVersion14">Die Daten werden automatisch in eine neue Version der App übertragen. Wenn die Daten jedoch nicht übertragen wurden, können Sie die Übertragung auf die neue Version der App erzwingen. Alle nach dem Update erstellten Daten werden gelöscht.</string>
     <string name="settings_body_nightTheme">Außer Widgets</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
@@ -379,7 +378,6 @@
     <string name="settings_title_enterToSaveProduct">Geben Sie ein, um Produkt zu speichern</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_migrateFromCodeVersion14">Migrieren Sie von Version 1.3.5 und niedriger</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
     <string name="settings_title_saveProductToAutocompletes">Unbekanntes produkt speichern</string>

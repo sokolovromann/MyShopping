@@ -26,7 +26,6 @@ enum class SettingsUid {
     EnterToSaveProducts,
     ColoredCheckbox,
     SaveProductToAutocompletes,
-    MigrateFromCodeVersion14,
     Email,
     Github,
     PrivacyPolicy,

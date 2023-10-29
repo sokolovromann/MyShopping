@@ -3,15 +3,16 @@ package ru.sokolovromann.myshopping.ui.compose.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.*
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.ui.utils.*
 
 class SettingsState {
 
-    private var settings by mutableStateOf(Settings())
+    private var settingsWithConfig by mutableStateOf(SettingsWithConfig())
 
     var screenData by mutableStateOf(SettingsScreenData())
         private set
@@ -20,17 +21,19 @@ class SettingsState {
         screenData = SettingsScreenData(screenState = ScreenState.Loading)
     }
 
-    fun showSetting(settings: Settings) {
-        this.settings = settings
+    fun showSetting(settingsWithConfig: SettingsWithConfig) {
+        this.settingsWithConfig = settingsWithConfig
 
+        val userPreferences = settingsWithConfig.appConfig.userPreferences
+        val smartphoneScreen = settingsWithConfig.appConfig.deviceConfig.getDeviceSize() == DeviceSize.Medium
         screenData = SettingsScreenData(
             screenState = ScreenState.Showing,
-            settings = settings.getSettingsItems(),
-            fontSize = settings.getFontSize(),
-            displayCompletedPurchases = settings.getDisplayCompleted(),
-            displayShoppingsProducts = settings.getShoppingsProducts(),
-            multiColumns = settings.isMultiColumns(),
-            smartphoneScreen = settings.isSmartphoneScreen()
+            settings = settingsWithConfig.getSettingsItems(),
+            fontSize = userPreferences.fontSize,
+            displayCompletedPurchases = userPreferences.displayCompleted,
+            displayShoppingsProducts = userPreferences.displayShoppingsProducts,
+            multiColumns = !smartphoneScreen,
+            smartphoneScreen = smartphoneScreen
         )
     }
 
@@ -58,35 +61,20 @@ class SettingsState {
         screenData = screenData.copy(settingsItemUid = null)
     }
 
-    fun getAppGithubLinkResult(): Result<String> {
-        val link = settings.appGithubLink
-        return if (link.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            Result.success(link)
-        }
+    fun getAppGithubLink(): String {
+        return settingsWithConfig.settings.appGithubLink
     }
 
-    fun getPrivacyPolicyLinkResult(): Result<String> {
-        val link = settings.privacyPolicyLink
-        return if (link.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            Result.success(link)
-        }
+    fun getPrivacyPolicyLink(): String {
+        return settingsWithConfig.settings.privacyPolicyLink
     }
 
-    fun getTermsAndConditionsLinkResult(): Result<String> {
-        val link = settings.termsAndConditionsLink
-        return if (link.isEmpty()) {
-            Result.failure(Exception())
-        } else {
-            Result.success(link)
-        }
+    fun getTermsAndConditionsLink(): String {
+        return settingsWithConfig.settings.termsAndConditionsLink
     }
 
     fun getDeveloperEmail(): String {
-        return settings.developerEmail
+        return settingsWithConfig.settings.developerEmail
     }
 }
 

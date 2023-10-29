@@ -26,18 +26,6 @@ import java.text.DecimalFormat
 
 object AppConfigMapper {
 
-    fun toRepositorySettings(settingsWithConfig: SettingsWithConfig): ru.sokolovromann.myshopping.data.repository.model.Settings {
-        return ru.sokolovromann.myshopping.data.repository.model.Settings(
-            developerName = settingsWithConfig.settings.developerName,
-            developerEmail = settingsWithConfig.settings.developerEmail,
-            appVersion = settingsWithConfig.settings.appVersion,
-            appGithubLink = settingsWithConfig.settings.appGithubLink,
-            privacyPolicyLink = settingsWithConfig.settings.privacyPolicyLink,
-            termsAndConditionsLink = settingsWithConfig.settings.termsAndConditionsLink,
-            appConfig = settingsWithConfig.appConfig
-        )
-    }
-
     fun toEditCurrencySymbol(settingsWithConfig: SettingsWithConfig): EditCurrencySymbol {
         return EditCurrencySymbol(appConfig = settingsWithConfig.appConfig)
     }

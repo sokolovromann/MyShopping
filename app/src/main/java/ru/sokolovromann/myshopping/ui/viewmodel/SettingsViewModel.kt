@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
@@ -73,8 +72,7 @@ class SettingsViewModel @Inject constructor(
     private suspend fun settingsLoaded(
         settingsWithConfig: SettingsWithConfig
     ) = withContext(dispatchers.main) {
-        val settings = AppConfigMapper.toRepositorySettings(settingsWithConfig)
-        settingsState.showSetting(settings)
+        settingsState.showSetting(settingsWithConfig)
     }
 
     private fun editCurrencySymbol() = viewModelScope.launch(dispatchers.main) {
@@ -122,8 +120,6 @@ class SettingsViewModel @Inject constructor(
             SettingsUid.ColoredCheckbox -> invertColoredCheckbox()
 
             SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
-
-            SettingsUid.MigrateFromCodeVersion14 -> {}
 
             SettingsUid.Email -> sendEmailToDeveloper()
 
@@ -253,22 +249,19 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun showAppGithub() = viewModelScope.launch(dispatchers.main) {
-        val link = settingsState.getAppGithubLinkResult()
-            .getOrElse { return@launch }
+        val link = settingsState.getAppGithubLink()
         val event = SettingsScreenEvent.ShowAppGithub(link)
         _screenEventFlow.emit(event)
     }
 
     private fun showPrivacyPolicy() = viewModelScope.launch(dispatchers.main) {
-        val link = settingsState.getPrivacyPolicyLinkResult()
-            .getOrElse { return@launch }
+        val link = settingsState.getPrivacyPolicyLink()
         val event = SettingsScreenEvent.ShowPrivacyPolicy(link)
         _screenEventFlow.emit(event)
     }
 
     private fun showTermsAndConditions() = viewModelScope.launch(dispatchers.main) {
-        val link = settingsState.getTermsAndConditionsLinkResult()
-            .getOrElse { return@launch }
+        val link = settingsState.getTermsAndConditionsLink()
         val event = SettingsScreenEvent.ShowTermsAndConditions(link)
         _screenEventFlow.emit(event)
     }
