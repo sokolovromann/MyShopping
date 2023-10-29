@@ -45,11 +45,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.Products
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.state.ProductWidgetItem
@@ -83,7 +82,9 @@ class ProductsWidget : GlanceAppWidget() {
         val shoppingUid = currentState(key = stringPreferencesKey(WidgetKey.SHOPPING_UID.name)) ?: ""
 
         val coroutineScope = rememberCoroutineScope()
-        val productsFlow: MutableStateFlow<Products> = remember { MutableStateFlow(Products()) }
+        val shoppingListWithConfigFlow: MutableStateFlow<ShoppingListWithConfig> = remember {
+            MutableStateFlow(ShoppingListWithConfig())
+        }
 
         val entryPoint = EntryPointAccessors.fromApplication(
             context = context,
@@ -93,39 +94,40 @@ class ProductsWidget : GlanceAppWidget() {
         LaunchedEffect(shoppingUid, Unit) {
             coroutineScope.launch {
                 entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collect {
-                    val products = ShoppingListsMapper.toProducts(it)
-                    productsFlow.emit(products)
+                    shoppingListWithConfigFlow.emit(it)
                 }
             }
         }
 
         Column(modifier = GlanceModifier.fillMaxSize()) {
-            val products = productsFlow.collectAsState().value
+            val shoppingListWithConfig = shoppingListWithConfigFlow.collectAsState().value
+            val shoppingList = shoppingListWithConfig.shoppingList
+            val userPreferences = shoppingListWithConfig.appConfig.userPreferences
 
-            if (products.isProductsEmpty()) {
+            if (shoppingListWithConfig.shoppingList.products.isEmpty()) {
                 ProductsWidgetName(
-                    name = products.getDisplayName(),
-                    fontSize = products.getFontSize(),
-                    completed = products.isCompleted(),
-                    noSplit = products.getDisplayCompleted() == DisplayCompleted.NO_SPLIT
+                    name = shoppingList.shopping.name,
+                    fontSize = userPreferences.fontSize,
+                    completed = shoppingList.isCompleted(),
+                    noSplit = userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT
                 )
 
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
-                    fontSize = products.getFontSize()
+                    fontSize = userPreferences.fontSize
                 )
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),
-                    name = products.getDisplayName(),
-                    completed = products.isCompleted(),
-                    pinnedItems = products.getActivePinnedProductWidgetItems(),
-                    otherItems = products.getOtherProductWidgetItems(),
-                    displayCompleted = products.getDisplayCompleted(),
-                    fontSize = products.getFontSize(),
-                    coloredCheckbox = products.isColoredCheckbox(),
-                    completedWithCheckbox = products.isCompletedWithCheckbox()
+                    name = shoppingList.shopping.name,
+                    completed = shoppingList.isCompleted(),
+                    pinnedItems = shoppingListWithConfig.getActivePinnedProductWidgetItems(),
+                    otherItems = shoppingListWithConfig.getOtherProductWidgetItems(),
+                    displayCompleted = userPreferences.displayCompleted,
+                    fontSize = userPreferences.fontSize,
+                    coloredCheckbox = userPreferences.coloredCheckbox,
+                    completedWithCheckbox = userPreferences.completedWithCheckbox
                 ) {
                     coroutineScope.launch(entryPoint.dispatchers().io) {
                         if (it.completed) {
@@ -152,10 +154,10 @@ class ProductsWidget : GlanceAppWidget() {
                     .background(ColorProvider(R.color.gray_200)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (products.displayMoney()) {
+                if (userPreferences.displayMoney) {
                     ProductsWidgetTotal(
-                        products.calculateTotal().toString(),
-                        products.getFontSize()
+                        shoppingList.shopping.total.getDisplayValue(),
+                        userPreferences.fontSize
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())

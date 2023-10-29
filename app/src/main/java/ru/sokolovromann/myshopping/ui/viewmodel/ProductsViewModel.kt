@@ -11,7 +11,6 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.Sort
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -140,12 +139,10 @@ class ProductsViewModel @Inject constructor(
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
-        val products = ShoppingListsMapper.toProducts(shoppingListWithConfig)
-
-        if (products.isProductsEmpty()) {
-            productsState.showNotFound(products)
+        if (shoppingListWithConfig.shoppingList.products.isEmpty()) {
+            productsState.showNotFound(shoppingListWithConfig)
         } else {
-            productsState.showProducts(products)
+            productsState.showProducts(shoppingListWithConfig)
         }
     }
 
@@ -278,8 +275,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun copyShoppingList() = viewModelScope.launch {
-        productsState.getCopyShoppingListResult()
-            .onSuccess { shoppingListsRepository.copyShoppingList(it.uid) }
+        shoppingListsRepository.copyShoppingList(shoppingUid)
 
         withContext(dispatchers.main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)

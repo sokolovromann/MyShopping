@@ -30,6 +30,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -123,9 +124,9 @@ fun ProductsScreen(
                         }
                     },
                     actions = {
-                        screenData.shoppingListLocation?.let {
+                        screenData.shoppingLocation?.let {
                             when (it) {
-                                ShoppingListLocation.PURCHASES, ShoppingListLocation.ARCHIVE -> {
+                                ShoppingLocation.PURCHASES, ShoppingLocation.ARCHIVE -> {
                                     IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) }) {
                                         Icon(
                                             painter = painterResource(R.drawable.ic_all_rename),
@@ -208,7 +209,7 @@ fun ProductsScreen(
             }
         },
         bottomBar = {
-            if (screenData.shoppingListLocation != ShoppingListLocation.TRASH) {
+            if (screenData.shoppingLocation != ShoppingLocation.TRASH) {
                 AppBottomAppBar(
                     content = {
                         if (screenData.totalText != UiText.Nothing) {
@@ -294,8 +295,8 @@ fun ProductsScreen(
                                     onDismissRequest = { viewModel.onEvent(ProductsEvent.HideShoppingListMenu) },
                                     header = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) }
                                 ) {
-                                    when (screenData.shoppingListLocation) {
-                                        ShoppingListLocation.PURCHASES -> {
+                                    when (screenData.shoppingLocation) {
+                                        ShoppingLocation.PURCHASES -> {
                                             AppDropdownMenuItem(
                                                 onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToArchive)) }
@@ -309,7 +310,7 @@ fun ProductsScreen(
                                                 text = { Text(text = stringResource(R.string.products_action_copyShoppingList)) }
                                             )
                                         }
-                                        ShoppingListLocation.ARCHIVE -> {
+                                        ShoppingLocation.ARCHIVE -> {
                                             AppDropdownMenuItem(
                                                 onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToPurchases)) }
@@ -480,7 +481,7 @@ fun ProductsScreen(
                 }
             },
             completedWithCheckbox = screenData.completedWithCheckbox,
-            location = screenData.shoppingListLocation,
+            location = screenData.shoppingLocation,
             onClick = { uid, completed ->
                 val uids = screenData.selectedUids
                 val event = if (uids == null) {
@@ -626,7 +627,7 @@ private fun ProductsGrid(
     fontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     completedWithCheckbox: Boolean,
-    location: ShoppingListLocation?,
+    location: ShoppingLocation?,
     onClick: (String, Boolean) -> Unit,
     onLongClick: (String) -> Unit,
     selectedUids: List<String>?
@@ -652,7 +653,7 @@ private fun ProductsGrid(
                 val selected = selectedUids?.contains(item.uid) ?: false
 
                 val leftOnClickEnabled = selectedUids == null &&
-                        location != ShoppingListLocation.TRASH &&
+                        location != ShoppingLocation.TRASH &&
                         completedWithCheckbox
                 val leftOnClick: ((Boolean) -> Unit)? = if (leftOnClickEnabled) {
                     { onClick(item.uid, item.completed) }
@@ -661,12 +662,12 @@ private fun ProductsGrid(
                 }
 
                 val clickableEnabled = if (selectedUids == null) {
-                    location != ShoppingListLocation.TRASH && !completedWithCheckbox
+                    location != ShoppingLocation.TRASH && !completedWithCheckbox
                 } else {
                     true
                 }
 
-                val longClickableEnabled = location != ShoppingListLocation.TRASH
+                val longClickableEnabled = location != ShoppingLocation.TRASH
 
                 AppMultiColumnsItem(
                     multiColumns = multiColumns,
@@ -697,7 +698,7 @@ private fun ProductsGrid(
             val selected = selectedUids?.contains(item.uid) ?: false
 
             val leftOnClickEnabled = selectedUids == null &&
-                    location != ShoppingListLocation.TRASH &&
+                    location != ShoppingLocation.TRASH &&
                     completedWithCheckbox
             val leftOnClick: ((Boolean) -> Unit)? = if (leftOnClickEnabled) {
                 { onClick(item.uid, item.completed) }
@@ -706,12 +707,12 @@ private fun ProductsGrid(
             }
 
             val clickableEnabled = if (selectedUids == null) {
-                location != ShoppingListLocation.TRASH && !completedWithCheckbox
+                location != ShoppingLocation.TRASH && !completedWithCheckbox
             } else {
                 true
             }
 
-            val longClickableEnabled = location != ShoppingListLocation.TRASH
+            val longClickableEnabled = location != ShoppingLocation.TRASH
 
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
