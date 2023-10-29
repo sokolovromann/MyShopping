@@ -12,9 +12,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
@@ -73,25 +71,22 @@ class EditReminderViewModel @Inject constructor(
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
-        val editReminder = ShoppingListsMapper.toEditReminder(shoppingListWithConfig)
-        editReminderState.populate(editReminder, alarmManager.checkCorrectReminderPermissions())
+        editReminderState.populate(shoppingListWithConfig, alarmManager.checkCorrectReminderPermissions())
     }
 
     private fun saveReminder() = viewModelScope.launch {
-        val shoppingList = editReminderState.getShoppingListResult()
-            .getOrElse { return@launch }
-
-        val reminder = shoppingList.reminder ?: return@launch
+        val shoppingUid = editReminderState.getShoppingUid()
+        val reminder = editReminderState.getReminder()
 
         shoppingListsRepository.saveReminder(
-            shoppingUid = shoppingList.uid,
-            reminder = DateTime(reminder)
+            shoppingUid = shoppingUid,
+            reminder = reminder
         )
 
         withContext(dispatchers.main) {
             alarmManager.createReminder(
-                uid = shoppingList.uid,
-                reminder = reminder
+                uid = shoppingUid,
+                reminder = reminder.millis
             )
             _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
         }
@@ -118,13 +113,11 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun deleteReminder() = viewModelScope.launch {
-        val shoppingList = editReminderState.getShoppingListResult()
-            .getOrElse { return@launch }
-
-        shoppingListsRepository.deleteReminder(shoppingList.uid)
+        val shoppingUid = editReminderState.getShoppingUid()
+        shoppingListsRepository.deleteReminder(shoppingUid)
 
         withContext(dispatchers.main) {
-            alarmManager.deleteReminder(shoppingList.uid)
+            alarmManager.deleteReminder(shoppingUid)
             _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
         }
     }

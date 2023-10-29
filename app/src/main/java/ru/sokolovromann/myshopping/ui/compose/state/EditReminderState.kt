@@ -9,66 +9,86 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.EditReminder
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.utils.getHourMinute
+import ru.sokolovromann.myshopping.data.utils.getYearMonthDay
+import ru.sokolovromann.myshopping.data.utils.setDate
+import ru.sokolovromann.myshopping.data.utils.setTime
+import ru.sokolovromann.myshopping.data.utils.toDateTime
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
 import ru.sokolovromann.myshopping.ui.utils.getDisplayTime
+import java.util.Calendar
 
 class EditReminderState {
 
-    private var editReminder by mutableStateOf(EditReminder())
+    private var shoppingListWithConfig by mutableStateOf(ShoppingListWithConfig())
+
+    private var calendar by mutableStateOf(Calendar.getInstance())
 
     var screenData by mutableStateOf(EditReminderScreenData())
         private set
 
-    fun populate(editReminder: EditReminder, correctReminderPermission: Boolean) {
-        this.editReminder = editReminder
+    fun populate(shoppingListWithConfig: ShoppingListWithConfig, correctReminderPermission: Boolean) {
+        this.shoppingListWithConfig = shoppingListWithConfig
 
-        val headerText: UiText = if (editReminder.hasReminder()) {
+        val shopping = shoppingListWithConfig.shoppingList.shopping
+        val headerText: UiText = if (shopping.reminder != null) {
             UiText.FromResources(R.string.editReminder_header_editReminder)
         } else {
             UiText.FromResources(R.string.editReminder_header_addReminder)
         }
 
+        val reminder = (shopping.reminder ?: shopping.createDefaultReminder()).toCalendar()
+        calendar = reminder
+
+        val yearMonthDay = reminder.getYearMonthDay()
+        val hourMinute = reminder.getHourMinute()
         screenData = EditReminderScreenData(
             screenState = ScreenState.Showing,
             headerText = headerText,
-            dateText = editReminder.reminder.getDisplayDate(),
-            dateYear = editReminder.getYear(),
-            dateMonth = editReminder.getMonth(),
-            dateDayOfMonth = editReminder.getDayOfMonth(),
-            timeText = editReminder.reminder.getDisplayTime(),
-            timeHourOfDay = editReminder.getHourOfDay(),
-            timeMinute = editReminder.getMinute(),
+            dateText = reminder.getDisplayDate(),
+            dateYear = yearMonthDay.first,
+            dateMonth = yearMonthDay.second,
+            dateDayOfMonth = yearMonthDay.third,
+            timeText = reminder.getDisplayTime(),
+            timeHourOfDay = hourMinute.first,
+            timeMinute = hourMinute.second,
             showPermissionError = !correctReminderPermission,
-            showDeleteButton = editReminder.isDisplayDeleteReminder(),
+            showDeleteButton = shopping.reminder != null,
             showDateDialog = false,
             showTimeDialog = false,
-            fontSize = editReminder.getFontSize()
+            fontSize = shoppingListWithConfig.appConfig.userPreferences.fontSize
         )
     }
 
     fun changeReminderDate(year: Int, month: Int, dayOfMonth: Int) {
-        editReminder.changeReminderDate(year, month, dayOfMonth)
+        calendar = calendar.apply {
+            setDate(year, month, dayOfMonth)
+        }
 
+        val yearMonthDay = calendar.getYearMonthDay()
         screenData = screenData.copy(
-            dateText = editReminder.reminder.getDisplayDate(),
-            dateYear = editReminder.getYear(),
-            dateMonth = editReminder.getMonth(),
-            dateDayOfMonth = editReminder.getDayOfMonth(),
+            dateText = calendar.getDisplayDate(),
+            dateYear = yearMonthDay.first,
+            dateMonth = yearMonthDay.second,
+            dateDayOfMonth = yearMonthDay.third,
             showDateDialog = false,
             showTimeDialog = false
         )
     }
 
     fun changeReminderTime(hourOfDay: Int, minute: Int) {
-        editReminder.changeReminderTime(hourOfDay, minute)
+        calendar = calendar.apply {
+            setTime(hourOfDay, minute)
+        }
 
+        val hourMinute = calendar.getHourMinute()
         screenData = screenData.copy(
-            timeText = editReminder.reminder.getDisplayTime(),
-            timeHourOfDay = editReminder.getHourOfDay(),
-            timeMinute = editReminder.getMinute(),
+            timeText = calendar.getDisplayTime(),
+            timeHourOfDay = hourMinute.first,
+            timeMinute = hourMinute.second,
             showDateDialog = false,
             showTimeDialog = false
         )
@@ -102,14 +122,12 @@ class EditReminderState {
         )
     }
 
-    fun getShoppingListResult(): Result<ShoppingList> {
-        screenData = screenData.copy(screenState = ScreenState.Saving)
-        val shoppingList = editReminder.createShoppingList().getOrNull()
-        return if (shoppingList == null) {
-            Result.failure(Exception())
-        } else {
-            Result.success(shoppingList)
-        }
+    fun getShoppingUid(): String {
+        return shoppingListWithConfig.shoppingList.shopping.uid
+    }
+
+    fun getReminder(): DateTime {
+        return calendar.toDateTime()
     }
 }
 
