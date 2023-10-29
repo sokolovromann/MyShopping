@@ -31,3 +31,7 @@ sealed class UiText {
         is FromResourcesWithArgs -> stringResource(id, *args)
     }
 }
+
+fun String.toUiTextOrNothing(): UiText {
+    return if (isEmpty()) UiText.Nothing else UiText.FromString(this)
+}
