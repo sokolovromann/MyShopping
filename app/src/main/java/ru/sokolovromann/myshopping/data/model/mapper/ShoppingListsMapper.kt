@@ -16,11 +16,9 @@ import ru.sokolovromann.myshopping.data.repository.model.EditReminder
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListName
 import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.model.Money
-import ru.sokolovromann.myshopping.data.repository.model.Products
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingLists
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -96,15 +94,6 @@ object ShoppingListsMapper {
         )
     }
 
-    fun toShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig): ShoppingLists {
-        return ShoppingLists(
-            shoppingLists = shoppingListsWithConfig.shoppingLists.map {
-                toShoppingList(it, shoppingListsWithConfig.appConfig.userPreferences)
-            },
-            appConfig = shoppingListsWithConfig.appConfig
-        )
-    }
-
     fun toShoppingList(
         shoppingList: ShoppingList,
         userPreferences: UserPreferences
@@ -132,55 +121,7 @@ object ShoppingListsMapper {
         )
     }
 
-    fun toShoppingList(shoppingList: ru.sokolovromann.myshopping.data.repository.model.ShoppingList): ShoppingList {
-        val shopping = Shopping(
-            id = shoppingList.id,
-            position = shoppingList.position,
-            uid = shoppingList.uid,
-            lastModified = DateTime(shoppingList.lastModified),
-            name = shoppingList.name,
-            reminder = if (shoppingList.reminder == null) null else DateTime(shoppingList.reminder),
-            total = shoppingList.total,
-            totalFormatted = shoppingList.totalFormatted,
-            budget = shoppingList.budget,
-            location = shoppingList.location,
-            sort = shoppingList.sort,
-            sortFormatted = shoppingList.sortFormatted,
-            pinned = shoppingList.pinned
-        )
-
-        val products = shoppingList.products.map {
-            Product(
-                id = it.id,
-                position = it.position,
-                productUid = it.productUid,
-                shoppingUid = it.shoppingUid,
-                name = it.name,
-                quantity = it.quantity,
-                price = it.price,
-                discount = it.discount,
-                taxRate = it.taxRate,
-                total = it.total,
-                totalFormatted = it.totalFormatted,
-                note = it.note,
-                manufacturer = it.manufacturer,
-                brand = it.brand,
-                size = it.size,
-                color = it.color,
-                provider = it.provider,
-                completed = it.completed,
-                pinned = it.pinned
-            )
-        }
-
-        return ShoppingList(shopping, products)
-    }
-
     fun toRepositoryProductList(products: List<Product>): List<ru.sokolovromann.myshopping.data.repository.model.Product> {
-        return products.map { toProduct(it) }
-    }
-
-    fun toProductList(products: List<ru.sokolovromann.myshopping.data.repository.model.Product>): List<Product> {
         return products.map { toProduct(it) }
     }
 
