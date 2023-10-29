@@ -13,7 +13,6 @@ import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.repository.model.EditReminder
-import ru.sokolovromann.myshopping.data.repository.model.EditShoppingListTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
@@ -45,16 +44,6 @@ object ShoppingListsMapper {
 
     fun toShoppingListNotification(shoppingListWithConfig: ShoppingListWithConfig): ShoppingListNotification {
         return ShoppingListNotification(
-            shoppingList = toShoppingList(
-                shoppingListWithConfig.shoppingList,
-                shoppingListWithConfig.appConfig.userPreferences
-            ),
-            appConfig = shoppingListWithConfig.appConfig
-        )
-    }
-
-    fun toEditShoppingListTotal(shoppingListWithConfig: ShoppingListWithConfig): EditShoppingListTotal {
-        return EditShoppingListTotal(
             shoppingList = toShoppingList(
                 shoppingListWithConfig.shoppingList,
                 shoppingListWithConfig.appConfig.userPreferences

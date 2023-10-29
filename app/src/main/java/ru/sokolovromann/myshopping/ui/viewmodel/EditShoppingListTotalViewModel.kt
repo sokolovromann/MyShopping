@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
@@ -55,26 +54,25 @@ class EditShoppingListTotalViewModel @Inject constructor(
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
-        val editShoppingListTotal = ShoppingListsMapper.toEditShoppingListTotal(shoppingListWithConfig)
-        editShoppingListTotalState.populate(editShoppingListTotal)
+        editShoppingListTotalState.populate(shoppingListWithConfig)
         _screenEventFlow.emit(EditShoppingListTotalScreenEvent.ShowKeyboard)
     }
 
     private fun saveShoppingListTotal() = viewModelScope.launch {
-        val shoppingList = editShoppingListTotalState.getShoppingListResult()
-            .getOrElse { return@launch }
+        val shoppingUid = editShoppingListTotalState.getShoppingUid()
+        val total = editShoppingListTotalState.getTotal()
 
-        if (shoppingList.totalFormatted) {
+        if (total.isNotEmpty()) {
             shoppingListsRepository.saveShoppingListTotal(
-                shoppingUid = shoppingList.uid,
-                total = shoppingList.total
+                shoppingUid = shoppingUid,
+                total = total
             )
         } else {
-            shoppingListsRepository.deleteShoppingListTotal(shoppingList.uid)
+            shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
         }
 
         withContext(dispatchers.main) {
-            val event = EditShoppingListTotalScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingList.uid)
+            val event = EditShoppingListTotalScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
             _screenEventFlow.emit(event)
         }
     }
