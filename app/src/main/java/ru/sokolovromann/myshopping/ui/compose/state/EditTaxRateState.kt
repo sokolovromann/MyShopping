@@ -4,27 +4,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
-import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
+import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditTaxRateState {
 
-    private var editTaxRate by mutableStateOf(EditTaxRate())
+    private var settingsWithConfig by mutableStateOf(SettingsWithConfig())
 
     var screenData by mutableStateOf(EditTaxRateScreenData())
         private set
 
-    fun populate(editTaxRate: EditTaxRate) {
-        this.editTaxRate = editTaxRate
+    fun populate(settingsWithConfig: SettingsWithConfig) {
+        this.settingsWithConfig = settingsWithConfig
 
+        val userPreferences = settingsWithConfig.appConfig.userPreferences
         screenData = EditTaxRateScreenData(
             screenState = ScreenState.Showing,
-            taxRateValue = editTaxRate.getFieldTaxRate().toTextFieldValue(),
+            taxRateValue = userPreferences.taxRate.getFormattedValueWithoutSeparators().toTextFieldValue(),
             showTaxRateError = false,
-            fontSize = editTaxRate.getFontSize()
+            fontSize = userPreferences.fontSize
         )
     }
 
@@ -35,17 +36,10 @@ class EditTaxRateState {
         )
     }
 
-    fun getTaxRateResult(): Result<Money> {
-        val taxRate = editTaxRate.createTaxRate(
-            taxRate = screenData.taxRateValue.toFloatOrNull()
-        ).getOrNull()
-
-        return if (taxRate == null) {
-            screenData = screenData.copy(showTaxRateError = true)
-            Result.failure(Exception())
-        } else {
-            Result.success(taxRate)
-        }
+    fun getTaxRate(): Money {
+        return settingsWithConfig.appConfig.userPreferences.taxRate.copy(
+            value = screenData.taxRateValue.toFloatOrZero()
+        )
     }
 }
 

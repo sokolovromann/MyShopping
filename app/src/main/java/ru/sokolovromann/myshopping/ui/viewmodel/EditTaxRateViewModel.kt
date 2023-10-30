@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.EditTaxRateState
@@ -51,15 +50,12 @@ class EditTaxRateViewModel @Inject constructor(
     private suspend fun settingsWithConfigLoaded(
         settingsWithConfig: SettingsWithConfig
     ) = withContext(dispatchers.main) {
-        val editTaxRate = AppConfigMapper.toEditTaxRate(settingsWithConfig)
-        editTaxRateState.populate(editTaxRate)
+        editTaxRateState.populate(settingsWithConfig)
         _screenEventFlow.emit(EditTaxRateScreenEvent.ShowKeyboard)
     }
 
     private fun saveTaxRate() = viewModelScope.launch {
-        val taxRate = editTaxRateState.getTaxRateResult()
-            .getOrElse { return@launch }
-
+        val taxRate = editTaxRateState.getTaxRate()
         appConfigRepository.saveTaxRate(taxRate)
 
         withContext(dispatchers.main) {

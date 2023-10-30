@@ -20,14 +20,9 @@ import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
-import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import java.text.DecimalFormat
 
 object AppConfigMapper {
-
-    fun toEditTaxRate(settingsWithConfig: SettingsWithConfig): EditTaxRate {
-        return EditTaxRate(appConfig = settingsWithConfig.appConfig)
-    }
 
     fun toAppConfigEntity(appConfig: AppConfig): AppConfigEntity {
         return AppConfigEntity(
