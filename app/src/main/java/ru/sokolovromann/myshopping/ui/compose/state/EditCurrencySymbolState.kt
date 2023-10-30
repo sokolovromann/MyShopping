@@ -4,25 +4,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
-import ru.sokolovromann.myshopping.data.repository.model.EditCurrencySymbol
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditCurrencySymbolState {
 
-    private var editCurrencySymbol by mutableStateOf(EditCurrencySymbol())
+    private var settingsWithConfig by mutableStateOf(SettingsWithConfig())
 
     var screenData by mutableStateOf(EditCurrencySymbolScreenData())
         private set
 
-    fun populate(editCurrencySymbol: EditCurrencySymbol) {
-        this.editCurrencySymbol = editCurrencySymbol
+    fun populate(settingsWithConfig: SettingsWithConfig) {
+        this.settingsWithConfig = settingsWithConfig
 
+        val userPreferences = settingsWithConfig.appConfig.userPreferences
         screenData = EditCurrencySymbolScreenData(
             screenState = ScreenState.Showing,
-            symbolValue = editCurrencySymbol.getFieldSymbol().toTextFieldValue(),
+            symbolValue = userPreferences.currency.symbol.toTextFieldValue(),
             showSymbolError = false,
-            fontSize = editCurrencySymbol.getFontSize()
+            fontSize = userPreferences.fontSize
         )
     }
 
@@ -33,20 +34,8 @@ class EditCurrencySymbolState {
         )
     }
 
-    fun getSymbolResult(): Result<String> {
-        screenData = screenData.copy(screenState = ScreenState.Saving)
-
-        val symbol = editCurrencySymbol.createSymbol(
-            symbol = screenData.symbolValue.text
-        ).getOrNull()
-
-        return if (symbol == null) {
-            screenData = screenData.copy(showSymbolError = true)
-            Result.failure(Exception())
-        } else {
-            screenData = screenData.copy(screenState = ScreenState.Saving)
-            Result.success(symbol)
-        }
+    fun showSymbolError() {
+        screenData = screenData.copy(showSymbolError = true)
     }
 }
 

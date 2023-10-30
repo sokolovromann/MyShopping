@@ -20,15 +20,10 @@ import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
-import ru.sokolovromann.myshopping.data.repository.model.EditCurrencySymbol
 import ru.sokolovromann.myshopping.data.repository.model.EditTaxRate
 import java.text.DecimalFormat
 
 object AppConfigMapper {
-
-    fun toEditCurrencySymbol(settingsWithConfig: SettingsWithConfig): EditCurrencySymbol {
-        return EditCurrencySymbol(appConfig = settingsWithConfig.appConfig)
-    }
 
     fun toEditTaxRate(settingsWithConfig: SettingsWithConfig): EditTaxRate {
         return EditTaxRate(appConfig = settingsWithConfig.appConfig)
