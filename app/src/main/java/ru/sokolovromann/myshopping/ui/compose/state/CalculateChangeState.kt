@@ -5,23 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.CalculateChange
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
 
 class CalculateChangeState {
 
-    private var calculateChange by mutableStateOf(CalculateChange())
+    private var shoppingListWithConfig by mutableStateOf(ShoppingListWithConfig())
 
     var screenData by mutableStateOf(CalculateChangeScreenData())
         private set
 
-    fun populate(calculateChange: CalculateChange) {
-        this.calculateChange = calculateChange
+    fun populate(shoppingListWithConfig: ShoppingListWithConfig) {
+        this.shoppingListWithConfig = shoppingListWithConfig
 
         val totalText: UiText = UiText.FromResourcesWithArgs(
             R.string.calculateChange_text_total,
-            calculateChange.getDisplayTotal()
+            shoppingListWithConfig.shoppingList.shopping.total
         )
 
         val changeText: UiText = UiText.FromResources(R.string.calculateChange_text_noChange)
@@ -31,14 +32,12 @@ class CalculateChangeState {
             userMoneyValue = TextFieldValue(),
             totalText = totalText,
             changeText = changeText,
-            fontSize = calculateChange.getFontSize()
+            fontSize = shoppingListWithConfig.appConfig.userPreferences.fontSize
         )
     }
 
     fun changeUserMoneyValue(userMoneyValue: TextFieldValue) {
-        val change = calculateChange.calculateChange(
-            userMoney = userMoneyValue.toFloatOrNull()
-        )
+        val change = calculateChange(userMoneyValue.toFloatOrNull())
 
         val changeText: UiText = if (change.isEmpty()) {
             UiText.FromResources(R.string.calculateChange_text_noChange)
@@ -50,6 +49,20 @@ class CalculateChangeState {
             userMoneyValue = userMoneyValue,
             changeText = changeText
         )
+    }
+
+    private fun calculateChange(userMoney: Float?): String {
+        val total = shoppingListWithConfig.shoppingList.shopping.total
+        return if (userMoney == null || userMoney <= total.value) {
+            ""
+        } else {
+            val value = userMoney - total.value
+            Money(
+                value = value,
+                currency = total.currency,
+                decimalFormat = total.decimalFormat
+            ).getDisplayValue()
+        }
     }
 }
 

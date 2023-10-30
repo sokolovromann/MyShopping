@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CalculateChangeScreenEvent
@@ -53,8 +52,7 @@ class CalculateChangeViewModel @Inject constructor(
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(dispatchers.main) {
-        val calculateChange = ShoppingListsMapper.toCalculateChange(shoppingListWithConfig)
-        calculateChangeState.populate(calculateChange)
+        calculateChangeState.populate(shoppingListWithConfig)
         _screenEventFlow.emit(CalculateChangeScreenEvent.ShowKeyboard)
     }
 
