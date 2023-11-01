@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CalculateChangeViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<CalculateChangeEvent> {
 
@@ -51,7 +50,7 @@ class CalculateChangeViewModel @Inject constructor(
 
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         calculateChangeState.populate(shoppingListWithConfig)
         _screenEventFlow.emit(CalculateChangeScreenEvent.ShowKeyboard)
     }
@@ -60,7 +59,7 @@ class CalculateChangeViewModel @Inject constructor(
         calculateChangeState.changeUserMoneyValue(event.value)
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(CalculateChangeScreenEvent.ShowBackScreen)
     }
 }

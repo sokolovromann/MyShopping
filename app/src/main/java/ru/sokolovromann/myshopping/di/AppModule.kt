@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.data.local.datasource.AppRoomDatabase
@@ -48,12 +47,6 @@ object AppModule {
         appContent: AppContent
     ): LocalDatasource {
         return LocalDatasource(appRoomDatabase, appSQLiteOpenHelper, appContent)
-    }
-
-    @Singleton
-    @Provides
-    fun providesAppDispatchers(): AppDispatchers {
-        return AppDispatchers()
     }
 
     @Provides

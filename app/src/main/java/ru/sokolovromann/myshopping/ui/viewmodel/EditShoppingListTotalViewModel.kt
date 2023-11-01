@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class EditShoppingListTotalViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel(), ViewModelEvent<EditShoppingListTotalEvent> {
 
@@ -53,7 +52,7 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         editShoppingListTotalState.populate(shoppingListWithConfig)
         _screenEventFlow.emit(EditShoppingListTotalScreenEvent.ShowKeyboard)
     }
@@ -71,13 +70,13 @@ class EditShoppingListTotalViewModel @Inject constructor(
             shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             val event = EditShoppingListTotalScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
             _screenEventFlow.emit(event)
         }
     }
 
-    private fun cancelSavingShoppingListTotal() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelSavingShoppingListTotal() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(EditShoppingListTotalScreenEvent.ShowBackScreen)
     }
 

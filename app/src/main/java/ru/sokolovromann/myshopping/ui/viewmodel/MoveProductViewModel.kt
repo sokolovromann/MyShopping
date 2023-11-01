@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MoveProductViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<MoveProductEvent> {
 
@@ -55,7 +54,7 @@ class MoveProductViewModel @Inject constructor(
     }
 
     private fun getPurchases() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             moveProductState.showLoading()
         }
 
@@ -68,7 +67,7 @@ class MoveProductViewModel @Inject constructor(
     }
 
     private fun getArchive() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             moveProductState.showLoading()
         }
 
@@ -83,7 +82,7 @@ class MoveProductViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         location: ShoppingLocation
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
             moveProductState.showNotFound(shoppingListsWithConfig, location)
         } else {
@@ -99,7 +98,7 @@ class MoveProductViewModel @Inject constructor(
         if (products == null) {
             cancelMovingProduct()
         } else {
-            withContext(dispatchers.main) {
+            withContext(AppDispatchers.Main) {
                 moveProductState.saveProducts(products)
             }
         }
@@ -115,7 +114,7 @@ class MoveProductViewModel @Inject constructor(
             shoppingUid = event.uid
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
         }
     }
@@ -138,7 +137,7 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun cancelMovingProduct() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelMovingProduct() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
     }
 

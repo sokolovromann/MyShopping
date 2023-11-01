@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -21,8 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ArchiveViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers
+    private val appConfigRepository: AppConfigRepository
 ) : ViewModel(), ViewModelEvent<ArchiveEvent> {
 
     val archiveState: ArchiveState = ArchiveState()
@@ -83,7 +82,7 @@ class ArchiveViewModel @Inject constructor(
     }
 
     private fun getShoppingLists() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             archiveState.showLoading()
         }
 
@@ -94,7 +93,7 @@ class ArchiveViewModel @Inject constructor(
 
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
             archiveState.showNotFound(shoppingListsWithConfig)
         } else {
@@ -106,7 +105,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.screenData.selectedUids?.let {
             shoppingListsRepository.moveShoppingListsToPurchases(it)
 
-            withContext(dispatchers.main) {
+            withContext(AppDispatchers.Main) {
                 unselectAllShoppingLists()
             }
         }
@@ -116,7 +115,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.screenData.selectedUids?.let {
             shoppingListsRepository.moveShoppingListsToTrash(it)
 
-            withContext(dispatchers.main) {
+            withContext(AppDispatchers.Main) {
                 unselectAllShoppingLists()
             }
         }
@@ -128,7 +127,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun selectNavigationItem(
         event: ArchiveEvent.SelectNavigationItem
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.route) {
             UiRoute.Purchases -> _screenEventFlow.emit(ArchiveScreenEvent.ShowPurchases)
             UiRoute.Trash -> _screenEventFlow.emit(ArchiveScreenEvent.ShowTrash)
@@ -167,7 +166,7 @@ class ArchiveViewModel @Inject constructor(
             sort = Sort(event.sortBy)
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideShoppingListsSort()
         }
     }
@@ -175,7 +174,7 @@ class ArchiveViewModel @Inject constructor(
     private fun reverseSortShoppingLists() = viewModelScope.launch {
         shoppingListsRepository.reverseShoppingLists()
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideShoppingListsSort()
         }
     }
@@ -185,7 +184,7 @@ class ArchiveViewModel @Inject constructor(
     ) = viewModelScope.launch {
         appConfigRepository.displayTotal(event.displayTotal)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideDisplayPurchasesTotal()
         }
     }
@@ -194,15 +193,15 @@ class ArchiveViewModel @Inject constructor(
         archiveState.displayHiddenShoppingLists()
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.ShowBackScreen)
     }
 
-    private fun showProducts(event: ArchiveEvent.ShowProducts) = viewModelScope.launch(dispatchers.main) {
+    private fun showProducts(event: ArchiveEvent.ShowProducts) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.ShowProducts(event.uid))
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.ShowNavigationDrawer)
     }
 
@@ -210,7 +209,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.showArchiveMenu()
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.HideNavigationDrawer)
     }
 

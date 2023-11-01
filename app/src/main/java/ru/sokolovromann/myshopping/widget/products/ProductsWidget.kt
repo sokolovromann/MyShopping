@@ -43,7 +43,6 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
@@ -70,7 +69,6 @@ class ProductsWidget : GlanceAppWidget() {
     @InstallIn(SingletonComponent::class)
     interface ProductsWidgetEntryPoint {
         fun shoppingListsRepository(): ShoppingListsRepository
-        fun dispatchers(): AppDispatchers
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -129,7 +127,7 @@ class ProductsWidget : GlanceAppWidget() {
                     coloredCheckbox = userPreferences.coloredCheckbox,
                     completedWithCheckbox = userPreferences.completedWithCheckbox
                 ) {
-                    coroutineScope.launch(entryPoint.dispatchers().io) {
+                    coroutineScope.launch {
                         if (it.completed) {
                             entryPoint.shoppingListsRepository().activeProduct(it.uid)
                         } else {

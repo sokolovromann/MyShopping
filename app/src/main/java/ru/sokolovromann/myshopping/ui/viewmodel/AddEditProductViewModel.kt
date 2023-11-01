@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.Autocomplete
@@ -35,7 +35,6 @@ class AddEditProductViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
     private val autocompletesRepository: AutocompletesRepository,
     private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditProductEvent> {
 
@@ -136,7 +135,7 @@ class AddEditProductViewModel @Inject constructor(
 
     private suspend fun productLoaded(
         productWithConfig: ProductWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (productUid == null) {
             val newProduct = Product(shoppingUid = shoppingUid)
             val newProductWithConfig = productWithConfig.copy(product = newProduct)
@@ -160,7 +159,7 @@ class AddEditProductViewModel @Inject constructor(
 
     private suspend fun autocompletesLoaded(
         autocompletes: List<Autocomplete>
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         val currentName = addEditProductState.screenData.nameValue.text
         val names = searchAutocompletesLikeName(autocompletes, currentName)
         if (names.isEmpty()) {
@@ -213,7 +212,7 @@ class AddEditProductViewModel @Inject constructor(
                 autocompletesRepository.saveAutocomplete(addEditProductState.getAutocomplete())
                 appConfigRepository.lockProductElement(addEditProductState.screenData.lockProductElement)
 
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     val event = AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
                     _screenEventFlow.emit(event)
                 }
@@ -227,7 +226,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun cancelSavingProduct() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelSavingProduct() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AddEditProductScreenEvent.ShowBackScreen)
     }
 
@@ -368,7 +367,7 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.selectLockProductElement()
     }
 
-    private fun showKeyboard() = viewModelScope.launch(dispatchers.main) {
+    private fun showKeyboard() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AddEditProductScreenEvent.ShowKeyboard)
     }
 

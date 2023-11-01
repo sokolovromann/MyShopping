@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
@@ -21,8 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PurchasesViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers
+    private val appConfigRepository: AppConfigRepository
 ) : ViewModel(), ViewModelEvent<PurchasesEvent> {
 
     val purchasesState: PurchasesState = PurchasesState()
@@ -99,7 +98,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun getShoppingLists() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             purchasesState.showLoading()
         }
 
@@ -110,7 +109,7 @@ class PurchasesViewModel @Inject constructor(
 
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
             purchasesState.showNotFound(shoppingListsWithConfig)
         } else {
@@ -121,7 +120,7 @@ class PurchasesViewModel @Inject constructor(
     private fun addShoppingList() = viewModelScope.launch {
         shoppingListsRepository.addShopping()
             .onSuccess {
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     _screenEventFlow.emit(PurchasesScreenEvent.ShowProducts(it))
                 }
             }
@@ -132,7 +131,7 @@ class PurchasesViewModel @Inject constructor(
             shoppingListsRepository.moveShoppingListsToArchive(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllShoppingList()
         }
     }
@@ -142,7 +141,7 @@ class PurchasesViewModel @Inject constructor(
             shoppingListsRepository.moveShoppingListsToTrash(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllShoppingList()
         }
     }
@@ -152,7 +151,7 @@ class PurchasesViewModel @Inject constructor(
             shoppingListsRepository.copyShoppingLists(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideSelectedMenu()
         }
     }
@@ -175,7 +174,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun selectNavigationItem(
         event: PurchasesEvent.SelectNavigationItem
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.route) {
             UiRoute.Archive -> _screenEventFlow.emit(PurchasesScreenEvent.ShowArchive)
             UiRoute.Trash -> _screenEventFlow.emit(PurchasesScreenEvent.ShowTrash)
@@ -214,7 +213,7 @@ class PurchasesViewModel @Inject constructor(
             sort = Sort(event.sortBy)
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideShoppingListsSort()
         }
     }
@@ -222,7 +221,7 @@ class PurchasesViewModel @Inject constructor(
     private fun reverseSortShoppingLists() = viewModelScope.launch {
         shoppingListsRepository.reverseShoppingLists()
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideShoppingListsSort()
         }
     }
@@ -232,7 +231,7 @@ class PurchasesViewModel @Inject constructor(
     ) = viewModelScope.launch {
         appConfigRepository.displayTotal(event.displayTotal)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideDisplayPurchasesTotal()
         }
     }
@@ -243,11 +242,11 @@ class PurchasesViewModel @Inject constructor(
 
     private fun showProducts(
         event: PurchasesEvent.ShowProducts
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(PurchasesScreenEvent.ShowProducts(event.uid))
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(PurchasesScreenEvent.ShowNavigationDrawer)
     }
 
@@ -259,7 +258,7 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.showSelectedMenu()
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(PurchasesScreenEvent.HideNavigationDrawer)
     }
 
@@ -279,7 +278,7 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.hideSelectedMenu()
     }
 
-    private fun finishApp() = viewModelScope.launch(dispatchers.main) {
+    private fun finishApp() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(PurchasesScreenEvent.FinishApp)
     }
 
@@ -292,7 +291,7 @@ class PurchasesViewModel @Inject constructor(
             shoppingListsRepository.pinShoppingLists(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllShoppingList()
         }
     }
@@ -302,7 +301,7 @@ class PurchasesViewModel @Inject constructor(
             shoppingListsRepository.unpinShoppingLists(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllShoppingList()
         }
     }

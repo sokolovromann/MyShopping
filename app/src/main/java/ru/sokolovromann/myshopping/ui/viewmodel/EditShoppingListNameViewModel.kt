@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class EditShoppingListNameViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel(), ViewModelEvent<EditShoppingListNameEvent> {
 
@@ -53,7 +52,7 @@ class EditShoppingListNameViewModel @Inject constructor(
 
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         editShoppingListNameState.populate(shoppingListWithConfig)
         _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowKeyboard)
     }
@@ -65,13 +64,13 @@ class EditShoppingListNameViewModel @Inject constructor(
             name = editShoppingListNameState.screenData.nameValue.text
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
             _screenEventFlow.emit(event)
         }
     }
 
-    private fun cancelSavingShoppingListName() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelSavingShoppingListName() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowBackScreen)
     }
 

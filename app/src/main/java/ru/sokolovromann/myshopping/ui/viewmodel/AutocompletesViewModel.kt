@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -19,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AutocompletesViewModel @Inject constructor(
-    private val autocompletesRepository: AutocompletesRepository,
-    private val dispatchers: AppDispatchers
+    private val autocompletesRepository: AutocompletesRepository
 ) : ViewModel(), ViewModelEvent<AutocompletesEvent> {
 
     val autocompletesState: AutocompletesState = AutocompletesState()
@@ -65,7 +64,7 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun getDefaultAutocompletes() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             autocompletesState.showLoading()
         }
 
@@ -75,7 +74,7 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun getPersonalAutocompletes() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             autocompletesState.showLoading()
         }
 
@@ -87,7 +86,7 @@ class AutocompletesViewModel @Inject constructor(
     private suspend fun autocompletesLoaded(
         autocompletes: AutocompletesWithConfig,
         location: AutocompleteLocation
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (autocompletes.isEmpty()) {
             autocompletesState.showNotFound(autocompletes, location)
         } else {
@@ -95,7 +94,7 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun addAutocomplete() = viewModelScope.launch(dispatchers.main) {
+    private fun addAutocomplete() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.AddAutocomplete)
     }
 
@@ -110,7 +109,7 @@ class AutocompletesViewModel @Inject constructor(
             }
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAutocompletes()
         }
     }
@@ -126,14 +125,14 @@ class AutocompletesViewModel @Inject constructor(
             }
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAutocompletes()
         }
     }
 
     private fun selectNavigationItem(
         event: AutocompletesEvent.SelectNavigationItem
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.route) {
             UiRoute.Purchases -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowPurchases)
             UiRoute.Archive -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowArchive)
@@ -176,15 +175,15 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.ShowBackScreen)
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AutocompletesScreenEvent.HideNavigationDrawer)
     }
 

@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.AppOpenHelper
@@ -39,7 +39,6 @@ class MainViewModel @Inject constructor(
     private val codeVersion14Repository: CodeVersion14Repository,
     private val shoppingListsRepository: ShoppingListsRepository,
     private val autocompletesRepository: AutocompletesRepository,
-    private val dispatchers: AppDispatchers,
     private val notificationManager: PurchasesNotificationManager,
     private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<MainEvent> {
@@ -64,7 +63,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onCreate() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             mainState.showLoading()
         }
 
@@ -83,7 +82,7 @@ class MainViewModel @Inject constructor(
         mainState.clearShoppingUid()
     }
 
-    private suspend fun applyAppConfig(appConfig: AppConfig) = withContext(dispatchers.main) {
+    private suspend fun applyAppConfig(appConfig: AppConfig) = withContext(AppDispatchers.Main) {
         mainState.applyAppConfig(appConfig)
 
         when (appConfig.appBuildConfig.getOpenHelper()) {
@@ -97,7 +96,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getDefaultDeviceConfig() = viewModelScope.launch(dispatchers.main) {
+    private fun getDefaultDeviceConfig() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(MainScreenEvent.GetDefaultDeviceConfig)
     }
 
@@ -108,7 +107,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getScreenSize() = viewModelScope.launch(dispatchers.main) {
+    private fun getScreenSize() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(MainScreenEvent.GetScreenSize)
     }
 
@@ -187,7 +186,7 @@ class MainViewModel @Inject constructor(
 
     private fun addAppConfig(
         event: MainEvent.AddDefaultDeviceConfig
-    ) = viewModelScope.launch(dispatchers.io) {
+    ) = viewModelScope.launch {
         val deviceConfig = DeviceConfig(
             screenWidthDp = event.screenWidth,
             screenHeightDp = event.screenHeight

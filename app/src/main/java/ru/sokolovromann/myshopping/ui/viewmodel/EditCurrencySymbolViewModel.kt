@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
@@ -18,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditCurrencySymbolViewModel @Inject constructor(
-    private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers,
+    private val appConfigRepository: AppConfigRepository
 ) : ViewModel(), ViewModelEvent<EditCurrencySymbolEvent> {
 
     val editCurrencySymbolState: EditCurrencySymbolState = EditCurrencySymbolState()
@@ -41,7 +40,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
         }
     }
 
-    private fun getSettingsWithConfig() = viewModelScope.launch(dispatchers.io) {
+    private fun getSettingsWithConfig() = viewModelScope.launch {
         appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
             settingsWithConfigLoaded(it)
         }
@@ -49,7 +48,7 @@ class EditCurrencySymbolViewModel @Inject constructor(
 
     private suspend fun settingsWithConfigLoaded(
         settingsWithConfig: SettingsWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         editCurrencySymbolState.populate(settingsWithConfig)
         _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowKeyboard)
     }
@@ -58,18 +57,18 @@ class EditCurrencySymbolViewModel @Inject constructor(
         val symbol = editCurrencySymbolState.screenData.symbolValue.text
         appConfigRepository.saveCurrencySymbol(symbol)
             .onSuccess {
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
                 }
             }
             .onFailure {
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     editCurrencySymbolState.showSymbolError()
                 }
             }
     }
 
-    private fun cancelSavingCurrencySymbol() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelSavingCurrencySymbol() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreen)
     }
 

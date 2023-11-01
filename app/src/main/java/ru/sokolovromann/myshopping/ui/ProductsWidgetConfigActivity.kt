@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.ui.compose.AppScaffold
 import ru.sokolovromann.myshopping.ui.compose.ShoppingListsGrid
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
@@ -81,11 +82,11 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
     private suspend fun updateWidget(
         widgetId: Int,
         shoppingUid: String
-    ) = lifecycleScope.launch(viewModel.dispatchers.io) {
+    ) = lifecycleScope.launch(AppDispatchers.IO) {
         val glanceId = GlanceAppWidgetManager(applicationContext).getGlanceIdBy(widgetId)
         updateProductsWidgetState(applicationContext, glanceId, shoppingUid)
 
-        withContext(viewModel.dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             ProductsWidget().update(applicationContext, glanceId)
 
             setResult(RESULT_OK)

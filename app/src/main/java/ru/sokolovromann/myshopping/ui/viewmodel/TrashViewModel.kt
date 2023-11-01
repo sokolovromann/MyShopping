@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -22,7 +22,6 @@ import javax.inject.Inject
 class TrashViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
     private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers,
     private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<TrashEvent> {
 
@@ -72,7 +71,7 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun getShoppingLists() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             trashState.showLoading()
         }
 
@@ -83,7 +82,7 @@ class TrashViewModel @Inject constructor(
 
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
             trashState.showNotFound(shoppingListsWithConfig)
         } else {
@@ -95,7 +94,7 @@ class TrashViewModel @Inject constructor(
         val uids = trashState.screenData.selectedUids
         uids?.let { shoppingListsRepository.deleteShoppingLists(it) }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             uids?.forEach { uid -> alarmManager.deleteReminder(uid) }
             unselectAllShoppingLists()
         }
@@ -105,7 +104,7 @@ class TrashViewModel @Inject constructor(
         val uids = trashState.screenData.shoppingLists.map { it.uid }
         shoppingListsRepository.deleteShoppingLists(uids)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             uids.forEach { alarmManager.deleteReminder(it) }
         }
     }
@@ -115,7 +114,7 @@ class TrashViewModel @Inject constructor(
             shoppingListsRepository.moveShoppingListToPurchases(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllShoppingLists()
         }
     }
@@ -125,7 +124,7 @@ class TrashViewModel @Inject constructor(
             shoppingListsRepository.moveShoppingListToArchive(it)
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllShoppingLists()
         }
     }
@@ -136,7 +135,7 @@ class TrashViewModel @Inject constructor(
 
     private fun selectNavigationItem(
         event: TrashEvent.SelectNavigationItem
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.route) {
             UiRoute.Purchases -> _screenEventFlow.emit(TrashScreenEvent.ShowPurchases)
             UiRoute.Archive -> _screenEventFlow.emit(TrashScreenEvent.ShowArchive)
@@ -171,24 +170,24 @@ class TrashViewModel @Inject constructor(
     ) = viewModelScope.launch {
         appConfigRepository.displayTotal(event.displayTotal)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideDisplayPurchasesTotal()
         }
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(TrashScreenEvent.ShowBackScreen)
     }
 
-    private fun showProducts(event: TrashEvent.ShowProducts) = viewModelScope.launch(dispatchers.main) {
+    private fun showProducts(event: TrashEvent.ShowProducts) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(TrashScreenEvent.ShowProducts(event.uid))
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(TrashScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(TrashScreenEvent.HideNavigationDrawer)
     }
 

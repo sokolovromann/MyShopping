@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
@@ -23,7 +23,6 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
     private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<ProductsEvent> {
 
@@ -127,7 +126,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun getProducts() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             productsState.showLoading()
         }
 
@@ -138,7 +137,7 @@ class ProductsViewModel @Inject constructor(
 
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListWithConfig.shoppingList.products.isEmpty()) {
             productsState.showNotFound(shoppingListWithConfig)
         } else {
@@ -146,37 +145,34 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateProductsWidget() = withContext(dispatchers.main) {
+    private suspend fun updateProductsWidget() = withContext(AppDispatchers.Main) {
         val uid = productsState.getShoppingListUid()
         val event = ProductsScreenEvent.UpdateProductsWidget(uid)
         _screenEventFlow.emit(event)
     }
 
-    private fun addProduct() = viewModelScope.launch(dispatchers.main) {
+    private fun addProduct() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.AddProduct(shoppingUid))
     }
 
     private fun editProduct(
         event: ProductsEvent.EditProduct
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
-
-        withContext(dispatchers.main) {
-            unselectAllProducts()
-        }
+        unselectAllProducts()
     }
 
-    private fun editShoppingListName() = viewModelScope.launch(dispatchers.main) {
+    private fun editShoppingListName() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListName(shoppingUid))
         hideProductsMenu()
     }
 
-    private fun editShoppingListReminder() = viewModelScope.launch(dispatchers.main) {
+    private fun editShoppingListReminder() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListReminder(shoppingUid))
         hideProductsMenu()
     }
 
-    private fun editShoppingListTotal() = viewModelScope.launch(dispatchers.main) {
+    private fun editShoppingListTotal() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListTotal(shoppingUid))
         hideDisplayPurchasesTotal()
     }
@@ -184,7 +180,7 @@ class ProductsViewModel @Inject constructor(
     private fun deleteShoppingListTotal() = viewModelScope.launch {
         shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideDisplayPurchasesTotal()
         }
     }
@@ -213,12 +209,12 @@ class ProductsViewModel @Inject constructor(
             updateProductsWidget()
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllProducts()
         }
     }
 
-    private fun shareProducts() = viewModelScope.launch(dispatchers.main) {
+    private fun shareProducts() = viewModelScope.launch(AppDispatchers.Main) {
         val shareText = productsState.getShareProductsResult()
             .getOrElse { return@launch }
 
@@ -232,7 +228,7 @@ class ProductsViewModel @Inject constructor(
             _screenEventFlow.emit(ProductsScreenEvent.CopyProductToShoppingList(uids))
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideSelectedMenu()
             unselectAllProducts()
         }
@@ -244,7 +240,7 @@ class ProductsViewModel @Inject constructor(
             _screenEventFlow.emit(ProductsScreenEvent.MoveProductToShoppingList(uids))
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideSelectedMenu()
             unselectAllProducts()
         }
@@ -253,7 +249,7 @@ class ProductsViewModel @Inject constructor(
     private fun moveShoppingListToPurchases() = viewModelScope.launch {
         shoppingListsRepository.moveShoppingListToPurchases(productsState.getShoppingListUid())
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
         }
     }
@@ -261,7 +257,7 @@ class ProductsViewModel @Inject constructor(
     private fun moveShoppingListToArchive() = viewModelScope.launch {
         shoppingListsRepository.moveShoppingListToArchive(productsState.getShoppingListUid())
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
         }
     }
@@ -269,7 +265,7 @@ class ProductsViewModel @Inject constructor(
     private fun moveShoppingListToTrash() = viewModelScope.launch {
         shoppingListsRepository.moveShoppingListToTrash(productsState.getShoppingListUid())
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
         }
     }
@@ -277,7 +273,7 @@ class ProductsViewModel @Inject constructor(
     private fun copyShoppingList() = viewModelScope.launch {
         shoppingListsRepository.copyShoppingList(shoppingUid)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
         }
     }
@@ -288,7 +284,7 @@ class ProductsViewModel @Inject constructor(
         shoppingListsRepository.completeProduct(event.uid)
 
         if (productsState.isEditProductAfterCompleted()) {
-            withContext(dispatchers.main) {
+            withContext(AppDispatchers.Main) {
                 _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
             }
         }
@@ -300,7 +296,7 @@ class ProductsViewModel @Inject constructor(
         shoppingListsRepository.activeProduct(event.uid)
     }
 
-    private fun calculateChange() = viewModelScope.launch(dispatchers.main) {
+    private fun calculateChange() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.CalculateChange(shoppingUid))
         hideProductsMenu()
     }
@@ -340,7 +336,7 @@ class ProductsViewModel @Inject constructor(
             automaticSort = productsState.screenData.automaticSorting
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideProductsSort()
         }
     }
@@ -351,7 +347,7 @@ class ProductsViewModel @Inject constructor(
             automaticSort = productsState.screenData.automaticSorting
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideProductsSort()
         }
     }
@@ -361,7 +357,7 @@ class ProductsViewModel @Inject constructor(
     ) = viewModelScope.launch {
         appConfigRepository.displayTotal(event.displayTotal)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideDisplayPurchasesTotal()
         }
 
@@ -384,7 +380,7 @@ class ProductsViewModel @Inject constructor(
         productsState.showShoppingMenu()
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
     }
 
@@ -426,7 +422,7 @@ class ProductsViewModel @Inject constructor(
             updateProductsWidget()
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllProducts()
         }
     }
@@ -437,7 +433,7 @@ class ProductsViewModel @Inject constructor(
             updateProductsWidget()
         }
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             unselectAllProducts()
         }
     }

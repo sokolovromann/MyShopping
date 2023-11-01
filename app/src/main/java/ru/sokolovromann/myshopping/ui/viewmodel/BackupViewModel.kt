@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
 import ru.sokolovromann.myshopping.data.model.AppConfig
@@ -24,7 +24,6 @@ import javax.inject.Inject
 class BackupViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
     private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers,
     private val alarmManager: PurchasesAlarmManager,
     private val mediaStore: BackupMediaStore
 ): ViewModel(), ViewModelEvent<BackupEvent> {
@@ -60,7 +59,7 @@ class BackupViewModel @Inject constructor(
 
     private suspend fun appConfigLoaded(
         appConfig: AppConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         backupState.onCreate(
             appConfig = appConfig,
             correctWriteFilesPermission = mediaStore.checkCorrectWriteFilesPermissions()
@@ -68,42 +67,42 @@ class BackupViewModel @Inject constructor(
     }
 
     private fun export() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             backupState.showExportProgress()
         }
 
         backupRepository.exportBackup(BuildConfig.VERSION_CODE)
             .onSuccess { backup ->
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     backupState.showExportSuccessful(backup.fileName)
                 }
             }
             .onFailure {
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     backupState.showExportError()
                 }
             }
     }
 
-    private fun selectFile() = viewModelScope.launch(dispatchers.main) {
+    private fun selectFile() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(BackupScreenEvent.ShowSelectFile)
     }
 
     private fun import(event: BackupEvent.Import) = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             backupState.showImportProgress()
         }
 
         backupRepository.importBackup(event.uri)
             .onSuccess { oldNewBackups ->
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     deleteRemindersIfExists(oldNewBackups.first.shoppings)
                     createReminderIfExists(oldNewBackups.second.shoppings)
                     backupState.showImportSuccessful()
                 }
             }
             .onFailure {
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     backupState.showImportError()
                 }
             }
@@ -125,11 +124,11 @@ class BackupViewModel @Inject constructor(
         }
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(BackupScreenEvent.ShowBackScreen)
     }
 
-    private fun showPermissions() = viewModelScope.launch(dispatchers.main) {
+    private fun showPermissions() = viewModelScope.launch(AppDispatchers.Main) {
         val event = BackupScreenEvent.ShowPermissions(BuildConfig.APPLICATION_ID)
         _screenEventFlow.emit(event)
     }

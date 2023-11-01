@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -18,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val appConfigRepository: AppConfigRepository,
-    private val dispatchers: AppDispatchers
+    private val appConfigRepository: AppConfigRepository
 ) : ViewModel(), ViewModelEvent<SettingsEvent> {
 
     val settingsState: SettingsState = SettingsState()
@@ -60,7 +59,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun getSettings() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             settingsState.showLoading()
         }
 
@@ -71,15 +70,15 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun settingsLoaded(
         settingsWithConfig: SettingsWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         settingsState.showSetting(settingsWithConfig)
     }
 
-    private fun editCurrencySymbol() = viewModelScope.launch(dispatchers.main) {
+    private fun editCurrencySymbol() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.EditCurrency)
     }
 
-    private fun editTaxRate() = viewModelScope.launch(dispatchers.main) {
+    private fun editTaxRate() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.EditTaxRate)
     }
 
@@ -135,7 +134,7 @@ class SettingsViewModel @Inject constructor(
         settingsState.showFontSize()
     }
 
-    private fun backup() = viewModelScope.launch(dispatchers.main) {
+    private fun backup() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.ShowBackup)
     }
 
@@ -145,7 +144,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectNavigationItem(
         event: SettingsEvent.SelectNavigationItem
-    ) = viewModelScope.launch(dispatchers.main) {
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.route) {
             UiRoute.Purchases -> _screenEventFlow.emit(SettingsScreenEvent.ShowPurchases)
             UiRoute.Archive -> _screenEventFlow.emit(SettingsScreenEvent.ShowArchive)
@@ -164,7 +163,7 @@ class SettingsViewModel @Inject constructor(
     ) = viewModelScope.launch {
         appConfigRepository.saveFontSize(event.fontSize)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideFontSize()
             _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
         }
@@ -175,7 +174,7 @@ class SettingsViewModel @Inject constructor(
     ) = viewModelScope.launch {
         appConfigRepository.displayCompleted(event.displayCompleted)
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             hideDisplayCompletedPurchases()
             _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
         }
@@ -235,32 +234,32 @@ class SettingsViewModel @Inject constructor(
         _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
     }
 
-    private fun sendEmailToDeveloper() = viewModelScope.launch(dispatchers.main) {
+    private fun sendEmailToDeveloper() = viewModelScope.launch(AppDispatchers.Main) {
         val event = SettingsScreenEvent.SendEmailToDeveloper(settingsState.getDeveloperEmail())
         _screenEventFlow.emit(event)
     }
 
-    private fun showBackScreen() = viewModelScope.launch(dispatchers.main) {
+    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.ShowBackScreen)
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.ShowNavigationDrawer)
     }
 
-    private fun showAppGithub() = viewModelScope.launch(dispatchers.main) {
+    private fun showAppGithub() = viewModelScope.launch(AppDispatchers.Main) {
         val link = settingsState.getAppGithubLink()
         val event = SettingsScreenEvent.ShowAppGithub(link)
         _screenEventFlow.emit(event)
     }
 
-    private fun showPrivacyPolicy() = viewModelScope.launch(dispatchers.main) {
+    private fun showPrivacyPolicy() = viewModelScope.launch(AppDispatchers.Main) {
         val link = settingsState.getPrivacyPolicyLink()
         val event = SettingsScreenEvent.ShowPrivacyPolicy(link)
         _screenEventFlow.emit(event)
     }
 
-    private fun showTermsAndConditions() = viewModelScope.launch(dispatchers.main) {
+    private fun showTermsAndConditions() = viewModelScope.launch(AppDispatchers.Main) {
         val link = settingsState.getTermsAndConditionsLink()
         val event = SettingsScreenEvent.ShowTermsAndConditions(link)
         _screenEventFlow.emit(event)
@@ -270,7 +269,7 @@ class SettingsViewModel @Inject constructor(
         settingsState.hideFontSize()
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(dispatchers.main) {
+    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.HideNavigationDrawer)
     }
 

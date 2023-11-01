@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditAutocompleteViewModel @Inject constructor(
     private val autocompletesRepository: AutocompletesRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditAutocompleteEvent> {
 
@@ -55,7 +54,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private suspend fun autocompleteLoaded(
         autocomplete: AutocompleteWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         addEditAutocompleteState.populate(autocomplete)
         _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowKeyboard)
     }
@@ -64,20 +63,20 @@ class AddEditAutocompleteViewModel @Inject constructor(
         val autocomplete = addEditAutocompleteState.getCurrentAutocomplete()
         autocompletesRepository.saveAutocomplete(autocomplete)
             .onSuccess {
-                withContext(dispatchers.main) {
+                withContext(AppDispatchers.Main) {
                     _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
                 }
             }
             .onFailure {
                 if (it is InvalidNameException) {
-                    withContext(dispatchers.main) {
+                    withContext(AppDispatchers.Main) {
                         addEditAutocompleteState.showNameError()
                     }
                 }
             }
     }
 
-    private fun cancelSavingAutocomplete() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelSavingAutocomplete() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
     }
 

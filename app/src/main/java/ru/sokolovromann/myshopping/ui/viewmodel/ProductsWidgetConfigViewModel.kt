@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
@@ -17,8 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsWidgetConfigViewModel @Inject constructor(
-    private val shoppingListsRepository: ShoppingListsRepository,
-    val dispatchers: AppDispatchers
+    private val shoppingListsRepository: ShoppingListsRepository
 ) : ViewModel(), ViewModelEvent<ProductsWidgetConfigEvent> {
 
     val productsWidgetConfigState = ProductsWidgetConfigState()
@@ -40,7 +39,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
         if (event.widgetId == null) {
             _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.FinishApp)
         } else {
-            withContext(dispatchers.main) {
+            withContext(AppDispatchers.Main) {
                 productsWidgetConfigState.onCreate(event.widgetId)
             }
 
@@ -52,7 +51,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
 
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
             productsWidgetConfigState.showNotFound(shoppingListsWithConfig)
         } else {

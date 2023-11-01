@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.AppDispatchers
+import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CopyProductViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val dispatchers: AppDispatchers,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<CopyProductEvent> {
 
@@ -55,7 +54,7 @@ class CopyProductViewModel @Inject constructor(
     }
 
     private fun getPurchases() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             copyProductState.showLoading()
         }
 
@@ -68,7 +67,7 @@ class CopyProductViewModel @Inject constructor(
     }
 
     private fun getArchive() = viewModelScope.launch {
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             copyProductState.showLoading()
         }
 
@@ -83,7 +82,7 @@ class CopyProductViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         location: ShoppingLocation
-    ) = withContext(dispatchers.main) {
+    ) = withContext(AppDispatchers.Main) {
         if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
             copyProductState.showNotFound(shoppingListsWithConfig, location)
         } else {
@@ -99,7 +98,7 @@ class CopyProductViewModel @Inject constructor(
         if (products == null) {
             cancelCopingProduct()
         } else {
-            withContext(dispatchers.main) {
+            withContext(AppDispatchers.Main) {
                 copyProductState.saveProducts(products)
             }
         }
@@ -115,7 +114,7 @@ class CopyProductViewModel @Inject constructor(
             shoppingUid = event.uid
         )
 
-        withContext(dispatchers.main) {
+        withContext(AppDispatchers.Main) {
             val screenEvent = CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets
             _screenEventFlow.emit(screenEvent)
         }
@@ -139,7 +138,7 @@ class CopyProductViewModel @Inject constructor(
         }
     }
 
-    private fun cancelCopingProduct() = viewModelScope.launch(dispatchers.main) {
+    private fun cancelCopingProduct() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(CopyProductScreenEvent.ShowBackScreen)
     }
 
