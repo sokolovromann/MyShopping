@@ -12,51 +12,6 @@ import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object AutocompletesMapper {
 
-    fun toAutocomplete(autocomplete: ru.sokolovromann.myshopping.data.repository.model.Autocomplete): Autocomplete {
-        return Autocomplete(
-            id = autocomplete.id,
-            position = autocomplete.id,
-            uid = autocomplete.uid,
-            lastModified = DateTime(autocomplete.lastModified),
-            name = autocomplete.name,
-            quantity = autocomplete.quantity,
-            price = autocomplete.price,
-            discount = autocomplete.discount,
-            taxRate = autocomplete.taxRate,
-            total = autocomplete.total,
-            manufacturer = autocomplete.manufacturer,
-            brand = autocomplete.brand,
-            size = autocomplete.size,
-            color = autocomplete.color,
-            provider = autocomplete.provider,
-            personal = autocomplete.personal,
-            language = autocomplete.language
-        )
-    }
-
-    fun toRepositoryAutocompletes(autocompletes: List<Autocomplete>): List<ru.sokolovromann.myshopping.data.repository.model.Autocomplete> {
-        return autocompletes.map {
-            ru.sokolovromann.myshopping.data.repository.model.Autocomplete(
-                id = it.id,
-                uid = it.uid,
-                created = DateTime.NO_DATE_TIME.millis,
-                lastModified = it.lastModified.millis,
-                name = it.name,
-                quantity = it.quantity,
-                price = it.price,
-                discount = it.discount,
-                taxRate = it.taxRate,
-                total = it.total,
-                manufacturer = it.manufacturer,
-                brand = it.brand,
-                size = it.size,
-                color = it.color,
-                provider = it.provider,
-                personal = it.personal
-            )
-        }
-    }
-
     fun toAutocompleteEntity(autocomplete: Autocomplete): AutocompleteEntity {
         return AutocompleteEntity(
             id = autocomplete.id,

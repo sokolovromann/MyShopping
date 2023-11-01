@@ -9,7 +9,6 @@ import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.data.repository.model.AddEditProduct
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
@@ -24,13 +23,6 @@ import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object ShoppingListsMapper {
-
-    fun toAddEditProduct(productWithConfig: ProductWithConfig): AddEditProduct {
-        return AddEditProduct(
-            product = toProduct(productWithConfig.product),
-            appConfig = productWithConfig.appConfig
-        )
-    }
 
     fun toShoppingListNotifications(shoppingListsWithConfig: ShoppingListsWithConfig): ShoppingListNotifications {
         return ShoppingListNotifications(

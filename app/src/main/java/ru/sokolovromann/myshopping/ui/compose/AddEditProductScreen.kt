@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
-import ru.sokolovromann.myshopping.data.repository.model.*
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel

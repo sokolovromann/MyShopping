@@ -13,13 +13,17 @@ import ru.sokolovromann.myshopping.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
-import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
+import ru.sokolovromann.myshopping.data.model.Quantity
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.Product
+import ru.sokolovromann.myshopping.data.utils.asSearchQuery
+import ru.sokolovromann.myshopping.data.utils.sortedAutocompletes
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -133,14 +137,16 @@ class AddEditProductViewModel @Inject constructor(
     private suspend fun productLoaded(
         productWithConfig: ProductWithConfig
     ) = withContext(dispatchers.main) {
-        val addEditProduct = ShoppingListsMapper.toAddEditProduct(productWithConfig)
         if (productUid == null) {
-            val product = Product(shoppingUid = shoppingUid)
-            addEditProductState.populate(addEditProduct.copy(product = product))
+            val newProduct = Product(shoppingUid = shoppingUid)
+            val newProductWithConfig = productWithConfig.copy(product = newProduct)
+            addEditProductState.populate(newProductWithConfig)
             showKeyboard()
         } else {
-            addEditProductState.populate(addEditProduct)
-            getAutocompletes(addEditProduct.getSearchName())
+            addEditProductState.populate(productWithConfig)
+
+            val searchName = productWithConfig.product.name.trim()
+            getAutocompletes(searchName)
         }
     }
 
@@ -156,10 +162,7 @@ class AddEditProductViewModel @Inject constructor(
         autocompletes: List<Autocomplete>
     ) = withContext(dispatchers.main) {
         val currentName = addEditProductState.screenData.nameValue.text
-        val addEditProduct = addEditProductState.addEditProduct
-
-        val repositoryAutocompletes = AutocompletesMapper.toRepositoryAutocompletes(autocompletes)
-        val names = addEditProduct.searchAutocompletesLikeName(repositoryAutocompletes, currentName)
+        val names = searchAutocompletesLikeName(autocompletes, currentName)
         if (names.isEmpty()) {
             addEditProductState.hideAutocompletes()
             return@withContext
@@ -173,48 +176,42 @@ class AddEditProductViewModel @Inject constructor(
             addEditProductState.hideAutocompleteNames(containsAutocomplete)
         }
 
+        val filterByPersonal = filterAutocompletesByPersonal(autocompletes).sortedAutocompletes(
+            Sort(SortBy.LAST_MODIFIED, false)
+        )
+
         if (productUid == null || addEditProductState.productNameFocus) {
             addEditProductState.showAutocompleteElements(
-                brands = addEditProduct.filterAutocompleteBrands(repositoryAutocompletes),
-                sizes = addEditProduct.filterAutocompleteSizes(repositoryAutocompletes),
-                colors = addEditProduct.filterAutocompleteColors(repositoryAutocompletes),
-                manufacturers = addEditProduct.filterAutocompletesManufacturers(repositoryAutocompletes),
-                quantities = addEditProduct.filterAutocompletesQuantities(repositoryAutocompletes),
-                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(repositoryAutocompletes),
-                prices = addEditProduct.filterAutocompletesPrices(repositoryAutocompletes),
-                discounts = addEditProduct.filterAutocompletesDiscounts(repositoryAutocompletes),
-                totals = addEditProduct.filterAutocompletesTotals(repositoryAutocompletes)
+                brands = filterAutocompleteBrands(filterByPersonal),
+                sizes = filterAutocompleteSizes(filterByPersonal),
+                colors = filterAutocompleteColors(filterByPersonal),
+                manufacturers = filterAutocompletesManufacturers(filterByPersonal),
+                quantities = filterAutocompletesQuantities(filterByPersonal),
+                quantitySymbols = filterAutocompletesQuantitySymbols(filterByPersonal),
+                prices = filterAutocompletesPrices(filterByPersonal),
+                discounts = filterAutocompletesDiscounts(filterByPersonal),
+                totals = filterAutocompletesTotals(filterByPersonal)
             )
         } else {
             addEditProductState.showAutocompleteElementsIf(
-                brands = addEditProduct.filterAutocompleteBrands(repositoryAutocompletes),
-                sizes = addEditProduct.filterAutocompleteSizes(repositoryAutocompletes),
-                colors = addEditProduct.filterAutocompleteColors(repositoryAutocompletes),
-                manufacturers = addEditProduct.filterAutocompletesManufacturers(repositoryAutocompletes),
-                quantities = addEditProduct.filterAutocompletesQuantities(repositoryAutocompletes),
-                quantitySymbols = addEditProduct.filterAutocompletesQuantitySymbols(repositoryAutocompletes),
-                prices = addEditProduct.filterAutocompletesPrices(repositoryAutocompletes),
-                discounts = addEditProduct.filterAutocompletesDiscounts(repositoryAutocompletes),
-                totals = addEditProduct.filterAutocompletesTotals(repositoryAutocompletes)
+                brands = filterAutocompleteBrands(filterByPersonal),
+                sizes = filterAutocompleteSizes(filterByPersonal),
+                colors = filterAutocompleteColors(filterByPersonal),
+                manufacturers = filterAutocompletesManufacturers(filterByPersonal),
+                quantities = filterAutocompletesQuantities(filterByPersonal),
+                quantitySymbols = filterAutocompletesQuantitySymbols(filterByPersonal),
+                prices = filterAutocompletesPrices(filterByPersonal),
+                discounts = filterAutocompletesDiscounts(filterByPersonal),
+                totals = filterAutocompletesTotals(filterByPersonal)
             )
         }
     }
 
     private fun saveProduct() = viewModelScope.launch {
-        val repositoryProduct = addEditProductState.getProductResult(productUid == null)
-            .getOrElse { return@launch }
-
-        val product = ShoppingListsMapper.toProduct(repositoryProduct)
-        shoppingListsRepository.saveProduct(product)
+        shoppingListsRepository.saveProduct(addEditProductState.getCurrentProduct())
             .onSuccess {
-                addEditProductState.getAutocompleteResult().onSuccess {
-                    val autocomplete = AutocompletesMapper.toAutocomplete(it)
-                    autocompletesRepository.saveAutocomplete(autocomplete)
-                }
-
-                addEditProductState.getProductLockResult().onSuccess {
-                    appConfigRepository.lockProductElement(it)
-                }
+                autocompletesRepository.saveAutocomplete(addEditProductState.getAutocomplete())
+                appConfigRepository.lockProductElement(addEditProductState.screenData.lockProductElement)
 
                 withContext(dispatchers.main) {
                     val event = AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
@@ -381,5 +378,125 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun hideLockProductElement() {
         addEditProductState.hideLockProductElement()
+    }
+
+    private fun filterAutocompletesByPersonal(autocompletes: List<Autocomplete>): List<Autocomplete> {
+        return if (addEditProductState.getUserPreferences().displayDefaultAutocompletes) {
+            autocompletes
+        } else {
+            autocompletes.filter { it.personal }
+        }
+    }
+
+    private fun searchAutocompletesLikeName(
+        autocompletes: List<Autocomplete>,
+        search: String
+    ): List<Autocomplete>  {
+        val endIndex = search.length - 1
+        val partition = filterAutocompletesByPersonal(autocompletes)
+            .partition {
+                val charsName = it.name.asSearchQuery().toCharArray(endIndex = endIndex)
+                val charsSearch = search.asSearchQuery().toCharArray(endIndex = endIndex)
+                charsName.contentEquals(charsSearch)
+            }
+        val searchAutocompletes = partition.first
+            .sortedAutocompletes()
+            .distinctBy { it.name.lowercase() }
+
+        val otherAutocompletes = partition.second
+            .sortedAutocompletes()
+            .distinctBy { it.name.lowercase() }
+
+        val bothAutocompletes = mutableListOf<Autocomplete>()
+        return bothAutocompletes
+            .apply {
+                addAll(searchAutocompletes)
+                addAll(otherAutocompletes)
+            }
+            .filterIndexed { index, autocomplete ->
+                autocomplete.name.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesNames
+            }
+    }
+
+    private fun filterAutocompleteBrands(autocompletes: List<Autocomplete>): List<String> {
+        return autocompletes
+            .map { it.brand }
+            .distinct()
+            .filterIndexed { index, brand ->
+                brand.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+            }
+    }
+
+    private fun filterAutocompleteSizes(autocompletes: List<Autocomplete>): List<String> {
+        return autocompletes
+            .map { it.size }
+            .distinct()
+            .filterIndexed { index, size ->
+                size.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+            }
+    }
+
+    private fun filterAutocompleteColors(autocompletes: List<Autocomplete>): List<String> {
+        return autocompletes
+            .map { it.color }
+            .distinct()
+            .filterIndexed { index, color ->
+                color.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+            }
+    }
+
+    private fun filterAutocompletesManufacturers(autocompletes: List<Autocomplete>): List<String> {
+        return autocompletes
+            .map { it.manufacturer }
+            .distinct()
+            .filterIndexed { index, manufacturer ->
+                manufacturer.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+            }
+    }
+
+    private fun filterAutocompletesQuantities(autocompletes: List<Autocomplete>): List<Quantity> {
+        return autocompletes
+            .map { it.quantity }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, quantity ->
+                quantity.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesQuantities
+            }
+    }
+
+    private fun filterAutocompletesQuantitySymbols(autocompletes: List<Autocomplete>): List<Quantity> {
+        return autocompletes
+            .map { it.quantity }
+            .distinctBy { it.symbol }
+            .filterIndexed { index, quantity ->
+                quantity.value > 0 && quantity.symbol.isNotEmpty() &&
+                        index <= addEditProductState.getUserPreferences().maxAutocompletesQuantities
+            }
+    }
+
+    private fun filterAutocompletesPrices(autocompletes: List<Autocomplete>): List<Money> {
+        return autocompletes
+            .map { it.price }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, price ->
+                price.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesMoneys
+            }
+    }
+
+    private fun filterAutocompletesDiscounts(autocompletes: List<Autocomplete>): List<Money> {
+        return autocompletes
+            .map { it.discount }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, discount ->
+                discount.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesMoneys
+            }
+    }
+
+    private fun filterAutocompletesTotals(autocompletes: List<Autocomplete>): List<Money> {
+        return autocompletes
+            .map { it.total }
+            .distinctBy { it.getFormattedValue() }
+            .filterIndexed { index, total ->
+                total.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesMoneys
+            }
     }
 }
