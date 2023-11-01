@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
+import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.notification.AppNotificationChannel
 import ru.sokolovromann.myshopping.ui.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -39,20 +39,21 @@ class PurchasesNotificationManager @Inject constructor(
         }
     }
 
-    fun showNotification(notification: ShoppingListNotification) {
-        val pendingIntent: PendingIntent = toPendingIntent(notification.shoppingList.uid)
+    fun showNotification(shoppingList: ShoppingList) {
+        val shopping = shoppingList.shopping
+        val pendingIntent: PendingIntent = toPendingIntent(shopping.uid)
 
         val builder = NotificationCompat.Builder(context, AppNotificationChannel.Purchases.name)
             .setSmallIcon(R.drawable.ic_all_purchases)
-            .setContentText(notification.body())
+            .setContentText(shoppingList.productsToString())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
-        if (notification.title().isNotEmpty()) {
-            builder.setContentTitle(notification.title())
+        if (shopping.name.isNotEmpty()) {
+            builder.setContentTitle(shopping.name)
         }
 
         with(NotificationManagerCompat.from(context)) {
@@ -62,10 +63,10 @@ class PurchasesNotificationManager @Inject constructor(
                     Manifest.permission.POST_NOTIFICATIONS
                 )
                 if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {
-                    notify(notification.id(), builder.build())
+                    notify(shopping.id, builder.build())
                 }
             } else {
-                notify(notification.id(), builder.build())
+                notify(shopping.id, builder.build())
             }
         }
     }

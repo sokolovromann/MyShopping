@@ -52,6 +52,17 @@ data class ShoppingList(
         )
     }
 
+    fun productsToString(): String {
+        val builder = StringBuilder()
+        products.forEachIndexed { index, product ->
+            builder.append(product.name)
+            if (index < products.lastIndex) {
+                builder.append(", ")
+            }
+        }
+        return builder.toString()
+    }
+
     fun isCompleted(): Boolean {
         return if (products.isEmpty()) {
             false

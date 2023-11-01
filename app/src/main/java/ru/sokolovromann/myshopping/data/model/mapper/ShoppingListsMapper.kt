@@ -12,8 +12,6 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -23,24 +21,6 @@ import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object ShoppingListsMapper {
-
-    fun toShoppingListNotifications(shoppingListsWithConfig: ShoppingListsWithConfig): ShoppingListNotifications {
-        return ShoppingListNotifications(
-            shoppingListsWithConfig.shoppingLists.map {
-                toShoppingList(it, shoppingListsWithConfig.appConfig.userPreferences)
-            }
-        )
-    }
-
-    fun toShoppingListNotification(shoppingListWithConfig: ShoppingListWithConfig): ShoppingListNotification {
-        return ShoppingListNotification(
-            shoppingList = toShoppingList(
-                shoppingListWithConfig.shoppingList,
-                shoppingListWithConfig.appConfig.userPreferences
-            ),
-            appConfig = shoppingListWithConfig.appConfig
-        )
-    }
 
     fun toShoppingList(
         shoppingList: ShoppingList,

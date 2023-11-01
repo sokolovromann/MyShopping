@@ -10,9 +10,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotification
 
 class PurchasesWorker(
     context: Context,
@@ -40,7 +39,7 @@ class PurchasesWorker(
     )
 
     override suspend fun doWork(): Result {
-        return getShoppingList().let {
+        return getShoppingListWithConfig().let {
             if (it == null) {
                 Result.failure()
             } else {
@@ -50,17 +49,16 @@ class PurchasesWorker(
         }
     }
 
-    private suspend fun getShoppingList(): ShoppingListNotification? {
+    private suspend fun getShoppingListWithConfig(): ShoppingListWithConfig? {
         val uid = inputData.getString(UID_KEY) ?: return null
-
         entryPoint.repository().deleteReminder(uid)
-        val shoppingListWithConfig = entryPoint.repository().getShoppingListWithConfig(uid).firstOrNull()
-        return if (shoppingListWithConfig == null) null else ShoppingListsMapper.toShoppingListNotification(shoppingListWithConfig)
+
+        return entryPoint.repository().getShoppingListWithConfig(uid).firstOrNull()
     }
 
     private suspend fun showNotification(
-        notification: ShoppingListNotification
+        shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(entryPoint.dispatchers().main) {
-        entryPoint.notificationManager().showNotification(notification)
+        entryPoint.notificationManager().showNotification(shoppingListWithConfig.shoppingList)
     }
 }

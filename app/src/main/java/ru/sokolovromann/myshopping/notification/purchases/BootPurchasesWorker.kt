@@ -10,9 +10,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
+import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.repository.model.ShoppingListNotifications
 
 class BootPurchasesWorker(
     context: Context,
@@ -33,7 +32,7 @@ class BootPurchasesWorker(
     )
 
     override suspend fun doWork(): Result {
-        return getShoppingLists().let {
+        return getShoppingListsWithConfig().let {
             if (it == null) {
                 Result.failure()
             } else {
@@ -43,18 +42,18 @@ class BootPurchasesWorker(
         }
     }
 
-    private suspend fun getShoppingLists(): ShoppingListNotifications? {
-        val shoppingListsWithConfig = entryPoint.repository().getRemindersWithConfig().firstOrNull()
-        return if (shoppingListsWithConfig == null) null else ShoppingListsMapper.toShoppingListNotifications(shoppingListsWithConfig)
+    private suspend fun getShoppingListsWithConfig(): ShoppingListsWithConfig? {
+        return entryPoint.repository().getRemindersWithConfig().firstOrNull()
     }
 
     private suspend fun createReminders(
-        notifications: ShoppingListNotifications
+        shoppingListsWithConfig: ShoppingListsWithConfig
     ): Unit = withContext(entryPoint.dispatchers().main) {
-        notifications.reminders().forEach {
+        shoppingListsWithConfig.shoppingLists.forEach {
+            val shopping = it.shopping
             entryPoint.alarmManager().createReminder(
-                uid = it.first,
-                reminder = it.second
+                uid = shopping.uid,
+                reminder = shopping.reminder?.millis ?: throw NullPointerException("")
             )
         }
     }
