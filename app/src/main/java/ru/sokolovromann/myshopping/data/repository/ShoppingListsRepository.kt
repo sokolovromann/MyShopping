@@ -302,9 +302,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             val productUid = product.productUid.trim()
             val checkIfProductExists = productsDao.checkIfProductExists(productUid).firstOrNull()
             if (checkIfProductExists == null) {
-                val exception = InvalidUidException("Uid must not be null or empty")
-                Result.failure(exception)
-            } else {
                 val position = ShoppingListsMapper.toPositionOrFirst(
                     productsDao.getLastPosition(product.shoppingUid).firstOrNull()
                 )
@@ -314,6 +311,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
                 shoppingListsDao.updateLastModified(productEntity.shoppingUid, productEntity.lastModified)
                 Result.success(Unit)
+            } else {
+                val exception = InvalidUidException("Uid must not be null or empty")
+                Result.failure(exception)
             }
         }
     }
