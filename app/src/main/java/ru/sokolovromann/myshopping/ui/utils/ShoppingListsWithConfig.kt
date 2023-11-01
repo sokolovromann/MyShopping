@@ -24,7 +24,7 @@ fun ShoppingListsWithConfig.getActivePinnedShoppingListItems(): List<ShoppingLis
 }
 
 fun ShoppingListsWithConfig.getOtherShoppingListItems(): List<ShoppingListItem> {
-    return getPinnedOtherShoppingLists().first.map { toShoppingListItems(it) }
+    return getPinnedOtherShoppingLists().second.map { toShoppingListItems(it) }
 }
 
 fun ShoppingListsWithConfig.getTotalText(): UiText {
