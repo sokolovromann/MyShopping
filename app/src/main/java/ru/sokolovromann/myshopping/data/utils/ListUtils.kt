@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.data.utils
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.Product
+import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -44,8 +45,13 @@ fun List<ShoppingList>.sortedShoppingLists(
         }
     }
 
+    val productsDisplayCompleted = if (displayCompleted == DisplayCompleted.HIDE) {
+        DisplayCompleted.NO_SPLIT
+    } else {
+        displayCompleted
+    }
     val sortedShoppingList = sortedShoppings.map {
-        it.copy(products = it.products.sortedProducts(sort, displayCompleted))
+        it.copy(products = it.products.sortedProducts(sort, productsDisplayCompleted))
     }
     val partition = sortedShoppingList.partition { it.isCompleted() }
 
@@ -62,7 +68,9 @@ fun List<ShoppingList>.sortedShoppingLists(
             DisplayCompleted.HIDE -> {
                 addAll(partition.second)
             }
-            DisplayCompleted.NO_SPLIT -> {}
+            DisplayCompleted.NO_SPLIT -> {
+                addAll(sortedShoppingList)
+            }
         }
     }
 }
@@ -103,7 +111,9 @@ fun List<Product>.sortedProducts(
             DisplayCompleted.HIDE -> {
                 addAll(partition.second)
             }
-            DisplayCompleted.NO_SPLIT -> {}
+            DisplayCompleted.NO_SPLIT -> {
+                addAll(sorted)
+            }
         }
     }
 }
@@ -128,4 +138,37 @@ fun List<Autocomplete>.sortedAutocompletes(
             else -> sortedByDescending { it.id }
         }
     }
+}
+
+fun List<Product>.toProductsString(): String {
+    val builder = StringBuilder()
+    forEachIndexed { index, product ->
+        builder.append(product.name)
+        if (index < lastIndex) {
+            builder.append(", ")
+        }
+    }
+    return builder.toString()
+}
+
+fun List<Shopping>.toShoppingsString(): String {
+    val builder = StringBuilder()
+    forEachIndexed { index, shopping ->
+        builder.append(shopping.name)
+        if (index < lastIndex) {
+            builder.append(", ")
+        }
+    }
+    return builder.toString()
+}
+
+fun List<Autocomplete>.toAutocompletesString(): String {
+    val builder = StringBuilder()
+    forEachIndexed { index, autocomplete ->
+        builder.append(autocomplete.name)
+        if (index < lastIndex) {
+            builder.append(", ")
+        }
+    }
+    return builder.toString()
 }
