@@ -24,11 +24,7 @@ data class Shopping(
     fun createDefaultReminder(): DateTime {
         val calendar = Calendar.getInstance().apply {
             val hourMinute = getHourMinute()
-            val newMinute = if (hourMinute.second in 0..30) {
-                hourMinute.second - 30
-            } else {
-                60 - hourMinute.second
-            }
+            val newMinute = 60 - hourMinute.second
             addTime(1, newMinute)
         }
 
