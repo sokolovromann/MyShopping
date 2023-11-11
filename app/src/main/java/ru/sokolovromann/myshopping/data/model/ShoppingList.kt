@@ -1,9 +1,27 @@
 package ru.sokolovromann.myshopping.data.model
 
+import ru.sokolovromann.myshopping.data.utils.sortedProducts
+import ru.sokolovromann.myshopping.data.utils.toProductsList
+
 data class ShoppingList(
     val shopping: Shopping = Shopping(),
     val products: List<Product> = listOf()
 ) {
+
+    fun getSortedProducts(displayCompleted: DisplayCompleted): List<Product> {
+        return getPinnedOtherSortedProducts(displayCompleted).toProductsList()
+    }
+
+    fun getPinnedOtherSortedProducts(displayCompleted: DisplayCompleted): Pair<List<Product>, List<Product>> {
+        val sort = if (shopping.sortFormatted) shopping.sort else Sort()
+        return products
+            .sortedProducts(sort, displayCompleted)
+            .partition { it.pinned && !it.completed }
+    }
+
+    fun getProductUids(): List<String> {
+        return products.map { it.productUid }
+    }
 
     fun calculateTotalByProductUids(productUids: List<String>): Money {
         var total = 0f
@@ -52,22 +70,23 @@ data class ShoppingList(
         )
     }
 
-    fun productsToString(): String {
-        val builder = StringBuilder()
-        products.forEachIndexed { index, product ->
-            builder.append(product.name)
-            if (index < products.lastIndex) {
-                builder.append(", ")
-            }
-        }
-        return builder.toString()
-    }
-
     fun isCompleted(): Boolean {
         return if (products.isEmpty()) {
             false
         } else {
             products.find { !it.completed } == null
         }
+    }
+
+    fun isActive(): Boolean {
+        return !isCompleted()
+    }
+
+    fun isShoppingEmpty(): Boolean {
+        return shopping.id == IdDefaults.NO_ID
+    }
+
+    fun isProductsEmpty(): Boolean {
+        return products.isEmpty()
     }
 }

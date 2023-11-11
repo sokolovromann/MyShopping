@@ -350,12 +350,12 @@
     <string name="settings_action_hideShoppingsProducts">Завжди приховувати</string>
     <string name="settings_action_hideShoppingsProductsIfHasTitle">Приховувати, якщо є заголовок</string>
     <string name="settings_action_noSplitCompletedPurchases">Без поділу</string>
-    <string name="settings_action_selectHuge2FontSize">Величезний 2</string>
-    <string name="settings_action_selectHuge3FontSize">Величезний 3</string>
-    <string name="settings_action_selectHugeFontSize">Величезний 1</string>
+    <string name="settings_action_selectHugeFontSize">Величезний</string>
     <string name="settings_action_selectLargeFontSize">Великий</string>
     <string name="settings_action_selectMediumFontSize">Середній</string>
     <string name="settings_action_selectSmallFontSize">Маленький</string>
+    <string name="settings_action_selectVeryHugeFontSize">Дуже величезний</string>
+    <string name="settings_action_selectVeryLargeFontSize">Дуже великий</string>
     <string name="settings_body_backup">Експорт/імпорт усіх даних програми</string>
     <string name="settings_body_coloredCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>

@@ -13,10 +13,7 @@ data class Money(
     private val _decimalFormat = if (value % 1f == 0f) {
         decimalFormat
     } else {
-        decimalFormat.apply {
-            minimumFractionDigits = UserPreferencesDefaults
-                .getMoneyDecimalFormat().minimumFractionDigits
-        }
+        UserPreferencesDefaults.getMoneyDecimalFormat()
     }
 
     fun getFormattedValue(): String {

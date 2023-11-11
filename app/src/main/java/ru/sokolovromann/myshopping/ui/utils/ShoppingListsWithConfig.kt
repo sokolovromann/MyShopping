@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.utils
 
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
@@ -11,27 +12,29 @@ import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.compose.state.toUiTextOrNothing
 
-fun ShoppingListsWithConfig.getAllShoppingListItems(): List<ShoppingListItem> {
-    val shoppingLists = getPinnedOtherShoppingLists().first.toMutableList()
-        .apply {
-            addAll(getPinnedOtherShoppingLists().second)
-        }
-    return shoppingLists.map { toShoppingListItems(it) }
+fun ShoppingListsWithConfig.getAllShoppingListItems(
+    displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+): List<ShoppingListItem> {
+    return getSortedShoppingLists(displayCompleted).map { toShoppingListItems(it) }
 }
 
-fun ShoppingListsWithConfig.getActivePinnedShoppingListItems(): List<ShoppingListItem> {
-    return getPinnedOtherShoppingLists().first.map { toShoppingListItems(it) }
+fun ShoppingListsWithConfig.getActivePinnedShoppingListItems(
+    displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+): List<ShoppingListItem> {
+    return getPinnedOtherSortedShoppingLists(displayCompleted).first.map { toShoppingListItems(it) }
 }
 
-fun ShoppingListsWithConfig.getOtherShoppingListItems(): List<ShoppingListItem> {
-    return getPinnedOtherShoppingLists().second.map { toShoppingListItems(it) }
+fun ShoppingListsWithConfig.getOtherShoppingListItems(
+    displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+): List<ShoppingListItem> {
+    return getPinnedOtherSortedShoppingLists(displayCompleted).second.map { toShoppingListItems(it) }
 }
 
 fun ShoppingListsWithConfig.getTotalText(): UiText {
     return shoppingTotalToText(
         getTotal(),
         false,
-        appConfig.userPreferences.displayTotal
+        getUserPreferences().displayTotal
     )
 }
 
@@ -40,14 +43,10 @@ fun ShoppingListsWithConfig.getSelectedTotal(uids: List<String>): UiText {
     return UiText.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.toString())
 }
 
-private fun ShoppingListsWithConfig.getPinnedOtherShoppingLists(): Pair<List<ShoppingList>, List<ShoppingList>> {
-    return shoppingLists.partition { !it.isCompleted() && it.shopping.pinned }
-}
-
 private fun ShoppingListsWithConfig.toShoppingListItems(shoppingList: ShoppingList): ShoppingListItem {
-    val displayShoppingsProducts = appConfig.userPreferences.displayShoppingsProducts
-    val displayMoney = appConfig.userPreferences.displayMoney
-    val displayTotal = appConfig.userPreferences.displayTotal == DisplayTotal.ALL
+    val displayShoppingsProducts = getUserPreferences().displayShoppingsProducts
+    val displayMoney = getUserPreferences().displayMoney
+    val displayTotal = getUserPreferences().displayTotal == DisplayTotal.ALL
 
     val name = shoppingList.shopping.name
     val displayUnnamed = displayShoppingsProducts == DisplayProducts.HIDE && name.isEmpty()
@@ -64,6 +63,7 @@ private fun ShoppingListsWithConfig.toShoppingListItems(shoppingList: ShoppingLi
         listOf(pair)
     } else {
         val products: MutableList<Pair<Boolean?, UiText>> = shoppingList.products
+            .sortedByDescending { it.pinned }
             .filterIndexed { index, _ -> index < maxShoppingProducts }
             .map {
                 productsToPair(
@@ -83,7 +83,7 @@ private fun ShoppingListsWithConfig.toShoppingListItems(shoppingList: ShoppingLi
         shoppingTotalToText(
             shoppingList.shopping.total,
             shoppingList.shopping.totalFormatted,
-            appConfig.userPreferences.displayTotal
+            getUserPreferences().displayTotal
         )
     } else {
         UiText.Nothing
@@ -109,22 +109,22 @@ private fun ShoppingListsWithConfig.productsToPair(
     product: Product,
     totalFormatted: Boolean
 ): Pair<Boolean, UiText> {
-    val multiColumns = appConfig.userPreferences.shoppingsMultiColumns
-    val smartphoneScreen = appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen()
-    val separator = appConfig.userPreferences.purchasesSeparator
-    val displayMoney = appConfig.userPreferences.displayMoney
-    val displayOtherFields = appConfig.userPreferences.displayOtherFields
+    val multiColumns = getUserPreferences().shoppingsMultiColumns
+    val smartphoneScreen = getDeviceConfig().getDeviceSize().isSmartphoneScreen()
+    val separator = getUserPreferences().purchasesSeparator
+    val displayMoney = getUserPreferences().displayMoney
+    val displayOtherFields = getUserPreferences().displayOtherFields
 
     val builder = StringBuilder(product.name)
 
     val shortText = multiColumns && smartphoneScreen
-    val displayVertically = appConfig.userPreferences.displayShoppingsProducts == DisplayProducts.VERTICAL
+    val displayVertically = getUserPreferences().displayShoppingsProducts == DisplayProducts.VERTICAL
     val displayProductElements = !shortText && displayVertically
 
     if (displayProductElements) {
         val displayBrand = displayOtherFields && product.brand.isNotEmpty()
         if (displayBrand) {
-            builder.append(separator)
+            builder.append(" ")
             builder.append(product.brand)
         }
 

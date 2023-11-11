@@ -27,7 +27,7 @@ class DateTime(val millis: Long) {
         val format = "%tY%tm%td_%tH%tM%tS"
         return String.format(
             format,
-            arrayOf(millis, millis, millis, millis, millis, millis)
+            millis, millis, millis, millis, millis, millis
         )
     }
 

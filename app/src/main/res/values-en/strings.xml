@@ -403,12 +403,12 @@
     <string name="settings_action_hideShoppingsProducts">Always hide</string>
     <string name="settings_action_hideShoppingsProductsIfHasTitle">Hide if there is a title</string>
     <string name="settings_action_noSplitCompletedPurchases">No split</string>
-    <string name="settings_action_selectHuge2FontSize">Huge 2</string>
-    <string name="settings_action_selectHuge3FontSize">Huge 3</string>
-    <string name="settings_action_selectHugeFontSize">Huge 1</string>
+    <string name="settings_action_selectHugeFontSize">Huge</string>
     <string name="settings_action_selectLargeFontSize">Large</string>
     <string name="settings_action_selectMediumFontSize">Medium</string>
     <string name="settings_action_selectSmallFontSize">Small</string>
+    <string name="settings_action_selectVeryHugeFontSize">Very huge</string>
+    <string name="settings_action_selectVeryLargeFontSize">Very large</string>
     <string name="settings_body_backup">Export/import all app data</string>
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>

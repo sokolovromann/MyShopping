@@ -138,7 +138,7 @@ class ProductsViewModel @Inject constructor(
     private suspend fun shoppingListLoaded(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListWithConfig.shoppingList.products.isEmpty()) {
+        if (shoppingListWithConfig.isProductsEmpty()) {
             productsState.showNotFound(shoppingListWithConfig)
         } else {
             productsState.showProducts(shoppingListWithConfig)
@@ -189,14 +189,20 @@ class ProductsViewModel @Inject constructor(
         shoppingListsRepository.moveProductUp(
             shoppingUid = shoppingUid,
             productUid = event.uid
-        ).onSuccess { updateProductsWidget() }
+        ).onSuccess {
+            productsState.selectProduct(event.uid)
+            updateProductsWidget()
+        }
     }
 
     private fun moveProductDown(event: ProductsEvent.MoveProductDown) = viewModelScope.launch {
         shoppingListsRepository.moveProductDown(
             shoppingUid = shoppingUid,
             productUid = event.uid
-        ).onSuccess { updateProductsWidget() }
+        ).onSuccess {
+            productsState.selectProduct(event.uid)
+            updateProductsWidget()
+        }
     }
 
     private fun deleteProducts() = viewModelScope.launch {
@@ -412,7 +418,7 @@ class ProductsViewModel @Inject constructor(
         shoppingListsRepository.sortProducts(
             shoppingUid = shoppingUid,
             sort = productsState.screenData.sort,
-            automaticSort = productsState.screenData.automaticSorting
+            automaticSort = !productsState.screenData.automaticSorting
         )
     }
 

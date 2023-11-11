@@ -249,7 +249,7 @@ private fun AutocompletesGrid(
     ) {
         val names = map.keys.toList()
         itemsIndexed(map.values.toList()) { index, item ->
-            val nameToString = (names[index] as UiText.FromString).value.lowercase()
+            val nameToString = (names[index] as UiText.FromString).value
             val selected = selectedNames?.contains(nameToString) ?: false
 
             AppSurfaceItem(

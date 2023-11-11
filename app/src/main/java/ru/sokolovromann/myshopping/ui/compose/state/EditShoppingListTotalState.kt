@@ -21,18 +21,23 @@ class EditShoppingListTotalState {
     fun populate(shoppingListWithConfig: ShoppingListWithConfig) {
         this.shoppingListWithConfig = shoppingListWithConfig
 
-        val shopping = shoppingListWithConfig.shoppingList.shopping
+        val shopping = shoppingListWithConfig.getShopping()
         val headerText: UiText = if (shopping.totalFormatted) {
             UiText.FromResources(R.string.editShoppingListTotal_header_editShoppingListTotal)
         } else {
             UiText.FromResources(R.string.editShoppingListTotal_header_addShoppingListTotal)
         }
 
+        val totalValue = if (shopping.totalFormatted) {
+            shopping.total.toTextFieldValue()
+        } else {
+            "".toTextFieldValue()
+        }
         screenData = EditShoppingListTotalScreenData(
             screenState = ScreenState.Showing,
             headerText = headerText,
-            totalValue = shopping.total.getFormattedValueWithoutSeparators().toTextFieldValue(),
-            fontSize = shoppingListWithConfig.appConfig.userPreferences.fontSize
+            totalValue = totalValue,
+            fontSize = shoppingListWithConfig.getUserPreferences().fontSize
         )
     }
 
@@ -41,11 +46,11 @@ class EditShoppingListTotalState {
     }
 
     fun getShoppingUid(): String {
-        return shoppingListWithConfig.shoppingList.shopping.uid
+        return shoppingListWithConfig.getShopping().uid
     }
 
     fun getTotal(): Money {
-        return shoppingListWithConfig.shoppingList.shopping.total.copy(
+        return shoppingListWithConfig.getShopping().total.copy(
             value = screenData.totalValue.toFloatOrZero()
         )
     }

@@ -8,9 +8,9 @@ fun FontSize.toSettingsText(): UiText = when (this) {
     FontSize.SMALL -> UiText.FromResources(R.string.settings_action_selectSmallFontSize)
     FontSize.MEDIUM -> UiText.FromResources(R.string.settings_action_selectMediumFontSize)
     FontSize.LARGE -> UiText.FromResources(R.string.settings_action_selectLargeFontSize)
-    FontSize.VERY_LARGE -> UiText.FromResources(R.string.settings_action_selectHugeFontSize)
-    FontSize.HUGE -> UiText.FromResources(R.string.settings_action_selectHuge2FontSize)
-    FontSize.VERY_HUGE -> UiText.FromResources(R.string.settings_action_selectHuge3FontSize)
+    FontSize.VERY_LARGE -> UiText.FromResources(R.string.settings_action_selectVeryLargeFontSize)
+    FontSize.HUGE -> UiText.FromResources(R.string.settings_action_selectHugeFontSize)
+    FontSize.VERY_HUGE -> UiText.FromResources(R.string.settings_action_selectVeryHugeFontSize)
 }
 
 fun FontSize.toItemTitle(): Int = when (this) {

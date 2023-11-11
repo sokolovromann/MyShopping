@@ -19,7 +19,7 @@ class EditShoppingListNameState {
     fun populate(shoppingListWithConfig: ShoppingListWithConfig) {
         this.shoppingListWithConfig = shoppingListWithConfig
 
-        val shoppingName = shoppingListWithConfig.shoppingList.shopping.name
+        val shoppingName = shoppingListWithConfig.getShopping().name
         val headerText: UiText = if (shoppingName.isNotEmpty()) {
             UiText.FromResources(R.string.editShoppingListName_header_editShoppingListName)
         } else {
@@ -30,7 +30,7 @@ class EditShoppingListNameState {
             screenState = ScreenState.Showing,
             headerText = headerText,
             nameValue = shoppingName.toTextFieldValue(),
-            fontSize = shoppingListWithConfig.appConfig.userPreferences.fontSize
+            fontSize = shoppingListWithConfig.getUserPreferences().fontSize
         )
     }
 
@@ -39,7 +39,7 @@ class EditShoppingListNameState {
     }
 
     fun getShoppingUid(): String {
-        return shoppingListWithConfig.shoppingList.shopping.uid
+        return shoppingListWithConfig.getShopping().uid
     }
 }
 

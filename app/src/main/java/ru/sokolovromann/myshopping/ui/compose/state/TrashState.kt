@@ -24,14 +24,14 @@ class TrashState {
     fun showNotFound(shoppingListsWithConfig: ShoppingListsWithConfig) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val userPreferences = shoppingListsWithConfig.getUserPreferences()
         screenData = TrashScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = userPreferences.displayShoppingsProducts,
             displayCompleted = userPreferences.displayCompleted,
             coloredCheckbox = userPreferences.coloredCheckbox,
             showBottomBar = false,
-            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen(),
             displayTotal = userPreferences.displayTotal,
             fontSize = userPreferences.fontSize
         )
@@ -40,7 +40,7 @@ class TrashState {
     fun showShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val userPreferences = shoppingListsWithConfig.getUserPreferences()
         screenData = TrashScreenData(
             screenState = ScreenState.Showing,
             shoppingLists = shoppingListsWithConfig.getAllShoppingListItems(),
@@ -49,7 +49,7 @@ class TrashState {
             coloredCheckbox = userPreferences.coloredCheckbox,
             showBottomBar = userPreferences.displayMoney,
             multiColumns = userPreferences.shoppingsMultiColumns,
-            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen(),
             displayTotal = userPreferences.displayTotal,
             fontSize = userPreferences.fontSize
         )
@@ -66,7 +66,7 @@ class TrashState {
     }
 
     fun selectAllShoppingLists() {
-        val uids = shoppingListsWithConfig.shoppingLists.map { it.shopping.uid }
+        val uids = shoppingListsWithConfig.getShoppingUids()
         screenData = screenData.copy(selectedUids = uids)
     }
 

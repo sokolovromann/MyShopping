@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
@@ -170,7 +169,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
             ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
             ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
-        }.singleOrNull()
+        }.firstOrNull()?.sortedBy { it.shoppingEntity.position }
 
         return@withContext if (shoppingLists == null || shoppingLists.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -215,7 +214,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
             ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
             ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
-        }.singleOrNull()
+        }.firstOrNull()?.sortedBy { it.shoppingEntity.position }
 
         return@withContext if (shoppingLists == null || shoppingLists.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -322,7 +321,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val products = shoppingListsDao.getShoppingList(shoppingUid).singleOrNull()?.productEntities
+        val products = shoppingListsDao.getShoppingList(shoppingUid).firstOrNull()?.productEntities
+            ?.sortedBy { it.position }
 
         return@withContext if (products == null || products.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -365,7 +365,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val products = shoppingListsDao.getShoppingList(shoppingUid).singleOrNull()?.productEntities
+        val products = shoppingListsDao.getShoppingList(shoppingUid).firstOrNull()?.productEntities
+            ?.sortedBy { it.position }
 
         return@withContext if (products == null || products.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -642,12 +643,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingListsWithConfig = getShoppingListsWithConfig().firstOrNull()
-        val shoppingLists = shoppingListsWithConfig?.shoppingLists
+        val shoppingLists = shoppingListsWithConfig?.getSortedShoppingLists()
         return@withContext if (shoppingListsWithConfig == null || shoppingLists.isNullOrEmpty()) {
             val exception = UnsupportedOperationException("Sort empty list is not supported")
             Result.failure(exception)
         } else {
-            val displayCompleted = shoppingListsWithConfig.appConfig.userPreferences.displayCompleted
+            val displayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
             shoppingLists.sortedShoppingLists(sort, displayCompleted)
                 .forEachIndexed { shoppingIndex, shoppingList ->
                     shoppingListsDao.updatePosition(
@@ -672,7 +673,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun reverseShoppingLists(
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.shoppingLists
+        val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.getSortedShoppingLists()
         return@withContext if (shoppingLists.isNullOrEmpty()) {
             val exception = UnsupportedOperationException("Sort empty list is not supported")
             Result.failure(exception)
@@ -685,12 +686,13 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                         lastModified = lastModified.millis
                     )
 
-                    shoppingList.products.forEachIndexed { productIndex, product ->
-                        productsDao.updatePosition(
-                            productUid = product.productUid,
-                            position = productIndex,
-                            lastModified = lastModified.millis
-                        )
+                    shoppingList.products.reversed()
+                        .forEachIndexed { productIndex, product ->
+                            productsDao.updatePosition(
+                                productUid = product.productUid,
+                                position = productIndex,
+                                lastModified = lastModified.millis
+                            )
                     }
                 }
 
@@ -714,19 +716,19 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             Result.success(Unit)
         } else {
             val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
-            val products = shoppingListWithConfig?.shoppingList?.products
+            val products = shoppingListWithConfig?.getSortedProducts()
             if (shoppingListWithConfig == null || products.isNullOrEmpty()) {
                 val exception = UnsupportedOperationException("Sort empty list is not supported")
                 Result.failure(exception)
             } else {
                 shoppingListsDao.disableAutomaticSorting(
                     uid = shoppingUid,
-                    sortBy = sort.sortBy.name,
+                    sortBy = "",
                     sortAscending = sort.ascending,
                     lastModified = lastModified.millis
                 )
 
-                val displayCompleted = shoppingListWithConfig.appConfig.userPreferences.displayCompleted
+                val displayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
                 products.sortedProducts(sort, displayCompleted)
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(
@@ -747,16 +749,14 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
-        val shoppingList = shoppingListWithConfig?.shoppingList
-        if (shoppingListWithConfig == null || shoppingList == null) {
+        if (shoppingListWithConfig == null) {
             val exception = InvalidUidException("Shopping list is not exists")
             return@withContext Result.failure(exception)
         }
 
-        val sort = shoppingList.shopping.sort.copy(
-            ascending = !shoppingList.shopping.sort.ascending
-        )
-        val products = shoppingList.products
+        val shopping = shoppingListWithConfig.getShopping()
+        val sort = shopping.sort.copy(ascending = !shopping.sort.ascending)
+        val products = shoppingListWithConfig.getSortedProducts()
 
         return@withContext if (automaticSort) {
             shoppingListsDao.enableAutomaticSorting(
@@ -771,14 +771,16 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 val exception = UnsupportedOperationException("Sort empty list is not supported")
                 Result.failure(exception)
             } else {
-                shoppingListsDao.disableAutomaticSorting(
-                    uid = shoppingUid,
-                    sortBy = sort.sortBy.name,
-                    sortAscending = sort.ascending,
-                    lastModified = lastModified.millis
-                )
+                if (shopping.sortFormatted) {
+                    shoppingListsDao.disableAutomaticSorting(
+                        uid = shoppingUid,
+                        sortBy = sort.sortBy.name,
+                        sortAscending = sort.ascending,
+                        lastModified = lastModified.millis
+                    )
+                }
 
-                val displayCompleted = shoppingListWithConfig.appConfig.userPreferences.displayCompleted
+                val displayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
                 products.sortedProducts(sort, displayCompleted)
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(

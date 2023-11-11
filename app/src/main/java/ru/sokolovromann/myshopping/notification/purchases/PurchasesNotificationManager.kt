@@ -13,7 +13,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.utils.toProductsString
 import ru.sokolovromann.myshopping.notification.AppNotificationChannel
 import ru.sokolovromann.myshopping.ui.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -39,13 +40,13 @@ class PurchasesNotificationManager @Inject constructor(
         }
     }
 
-    fun showNotification(shoppingList: ShoppingList) {
-        val shopping = shoppingList.shopping
+    fun showNotification(shoppingListWithConfig: ShoppingListWithConfig) {
+        val shopping = shoppingListWithConfig.getShopping()
         val pendingIntent: PendingIntent = toPendingIntent(shopping.uid)
 
         val builder = NotificationCompat.Builder(context, AppNotificationChannel.Purchases.name)
             .setSmallIcon(R.drawable.ic_all_purchases)
-            .setContentText(shoppingList.productsToString())
+            .setContentText(shoppingListWithConfig.getSortedProducts().toProductsString())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

@@ -22,7 +22,7 @@ data class AutocompletesWithConfig(
 
     fun getUidsByNames(names: List<String>): List<String> {
         return autocompletes
-            .filter { names.contains(it.name.asSearchQuery()) }
+            .filter { names.contains(it.name) }
             .map { it.uid }
     }
 

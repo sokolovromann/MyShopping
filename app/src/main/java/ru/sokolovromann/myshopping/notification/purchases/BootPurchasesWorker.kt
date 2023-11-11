@@ -48,7 +48,7 @@ class BootPurchasesWorker(
     private suspend fun createReminders(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ): Unit = withContext(AppDispatchers.Main) {
-        shoppingListsWithConfig.shoppingLists.forEach {
+        shoppingListsWithConfig.getSortedShoppingLists().forEach {
             val shopping = it.shopping
             entryPoint.alarmManager().createReminder(
                 uid = shopping.uid,

@@ -58,6 +58,6 @@ class PurchasesWorker(
     private suspend fun showNotification(
         shoppingListWithConfig: ShoppingListWithConfig
     ) = withContext(AppDispatchers.Main) {
-        entryPoint.notificationManager().showNotification(shoppingListWithConfig.shoppingList)
+        entryPoint.notificationManager().showNotification(shoppingListWithConfig)
     }
 }

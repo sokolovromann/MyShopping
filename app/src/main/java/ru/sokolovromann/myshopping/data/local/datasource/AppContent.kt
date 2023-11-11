@@ -11,7 +11,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import javax.inject.Inject
 
 class AppContent @Inject constructor(
-    private val context: Context
+    val context: Context
 ) {
 
     companion object {

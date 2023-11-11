@@ -14,24 +14,25 @@ import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
 import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
+import ru.sokolovromann.myshopping.data.model.DateTime
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.InputStream
 import java.io.InputStreamReader
 
 class FilesDao(appContent: AppContent) {
 
     private val contentResolver = appContent.getContentResolver()
+    private val dispatcher = AppDispatchers.IO
 
     private val packageNamePrefix = "ru.sokolovromann.myshopping"
-    private val codeVersionPrefix = "ru.sokolovromann.myshopping.CODE_VERSION:"
-    private val shoppingPrefix = "ru.sokolovromann.myshopping.BACKUP_SHOPPING_PREFIX:"
-    private val productPrefix = "ru.sokolovromann.myshopping.BACKUP_PRODUCT_PREFIX:"
-    private val autocompletePrefix = "ru.sokolovromann.myshopping.BACKUP_AUTOCOMPLETE_PREFIX:"
-    private val appConfigPrefix = "ru.sokolovromann.myshopping.BACKUP_APP_CONFIG_PREFIX:"
+    private val codeVersionPrefix = "$packageNamePrefix.CODE_VERSION:"
+    private val shoppingPrefix = "$packageNamePrefix.BACKUP_SHOPPING_PREFIX:"
+    private val productPrefix = "$packageNamePrefix.BACKUP_PRODUCT_PREFIX:"
+    private val autocompletePrefix = "$packageNamePrefix.BACKUP_AUTOCOMPLETE_PREFIX:"
+    private val appConfigPrefix = "$packageNamePrefix.BACKUP_APP_CONFIG_PREFIX:"
 
-    suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(AppDispatchers.IO) {
+    suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(dispatcher) {
         return@withContext try {
             val entityJson = encodeBackupFileEntity(entity)
             val displayName = createDisplayName()
@@ -73,14 +74,17 @@ class FilesDao(appContent: AppContent) {
         }
     }
 
-    suspend fun readBackup(uri: Uri): Result<BackupFileEntity?> = withContext(AppDispatchers.IO) {
+    suspend fun readBackup(uri: Uri): Result<BackupFileEntity?> = withContext(dispatcher) {
         return@withContext try {
             var backupFileEntity: BackupFileEntity? = null
             contentResolver.openInputStream(uri)?.use { inputStream ->
-                if (!decodePackageName(inputStream)) {
-                    throw FileNotFoundException()
+                BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                    val line: String = reader.readLine() ?: throw FileNotFoundException()
+                    if (!decodePackageName(line)) {
+                        throw FileNotFoundException()
+                    }
+                    backupFileEntity = decodeBackupFileEntity(line)
                 }
-                backupFileEntity = decodeBackupFileEntity(inputStream)
             }
 
             Result.success(backupFileEntity)
@@ -126,50 +130,41 @@ class FilesDao(appContent: AppContent) {
         return "$appConfigPrefix${AppJson.encodeToString(entity)}"
     }
 
-    private fun decodePackageName(inputStream: InputStream): Boolean {
-        var correctPackageName = false
-        BufferedReader(InputStreamReader(inputStream)).use { reader ->
-            val line: String = reader.readLine() ?: return@use
-            val codeVersionWithPackageName = AppBase64.decode(line).split("\n")[0]
-            correctPackageName = codeVersionWithPackageName.startsWith(packageNamePrefix)
-        }
-
-        return correctPackageName
+    private fun decodePackageName(line: String): Boolean {
+        val codeVersionWithPackageName = AppBase64.decode(line).split("\n")[0]
+        return codeVersionWithPackageName.startsWith(packageNamePrefix)
     }
 
-    private fun decodeBackupFileEntity(inputStream: InputStream): BackupFileEntity {
+    private fun decodeBackupFileEntity(line: String): BackupFileEntity {
         var appVersion = 0
         val shoppingEntities = mutableListOf<ShoppingEntity>()
         val productEntities = mutableListOf<ProductEntity>()
         val autocompleteEntities = mutableListOf<AutocompleteEntity>()
         var appConfigEntity = AppConfigEntity()
 
-        BufferedReader(InputStreamReader(inputStream)).use { reader ->
-            val line: String = reader.readLine() ?: return@use
-            AppBase64.decode(line).split("\n").forEach {
-                if (it.startsWith(codeVersionPrefix)) {
-                    appVersion = it.replace(codeVersionPrefix, "").toIntOrNull() ?: 0
-                }
+        AppBase64.decode(line).split("\n").forEach {
+            if (it.startsWith(codeVersionPrefix)) {
+                appVersion = it.replace(codeVersionPrefix, "").toIntOrNull() ?: 0
+            }
 
-                if (it.startsWith(shoppingPrefix)) {
-                    val shoppingEntity = decodeShoppingEntity(it)
-                    shoppingEntities.add(shoppingEntity)
-                }
+            if (it.startsWith(shoppingPrefix)) {
+                val shoppingEntity = decodeShoppingEntity(it)
+                shoppingEntities.add(shoppingEntity)
+            }
 
-                if (it.startsWith(productPrefix)) {
-                    val productEntity = decodeProductEntity(it)
-                    productEntities.add(productEntity)
-                }
+            if (it.startsWith(productPrefix)) {
+                val productEntity = decodeProductEntity(it)
+                productEntities.add(productEntity)
+            }
 
-                if (it.startsWith(autocompletePrefix)) {
-                    val autocompleteEntity = decodeAutocompleteEntity(it)
-                    autocompleteEntities.add(autocompleteEntity)
-                }
+            if (it.startsWith(autocompletePrefix)) {
+                val autocompleteEntity = decodeAutocompleteEntity(it)
+                autocompleteEntities.add(autocompleteEntity)
+            }
 
-                if (it.startsWith(appConfigPrefix)) {
-                    val appConfig = decodeAppConfigEntity(it)
-                    appConfigEntity = appConfig
-                }
+            if (it.startsWith(appConfigPrefix)) {
+                val appConfig = decodeAppConfigEntity(it)
+                appConfigEntity = appConfig
             }
         }
 
@@ -203,13 +198,8 @@ class FilesDao(appContent: AppContent) {
     }
 
     private fun createDisplayName(): String {
-        val currentTime = System.currentTimeMillis()
-        val currentTimeFormat= String.format(
-            "%tY%tm%td_%tH%tM%tS",
-            currentTime, currentTime, currentTime, currentTime, currentTime, currentTime
-        )
-
+        val formattedMillis = DateTime.getCurrentDateTime().getFormattedMillis()
         val extension = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) "" else ".txt"
-        return "Backup_$currentTimeFormat$extension"
+        return "Backup_$formattedMillis$extension"
     }
 }

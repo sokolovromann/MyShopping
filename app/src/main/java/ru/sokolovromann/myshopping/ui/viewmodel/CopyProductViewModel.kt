@@ -83,7 +83,7 @@ class CopyProductViewModel @Inject constructor(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         location: ShoppingLocation
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+        if (shoppingListsWithConfig.isEmpty()) {
             copyProductState.showNotFound(shoppingListsWithConfig, location)
         } else {
             copyProductState.showShoppingLists(shoppingListsWithConfig, location)

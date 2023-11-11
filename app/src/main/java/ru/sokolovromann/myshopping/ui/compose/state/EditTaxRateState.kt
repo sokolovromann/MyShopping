@@ -23,7 +23,7 @@ class EditTaxRateState {
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         screenData = EditTaxRateScreenData(
             screenState = ScreenState.Showing,
-            taxRateValue = userPreferences.taxRate.getFormattedValueWithoutSeparators().toTextFieldValue(),
+            taxRateValue = userPreferences.taxRate.toTextFieldValue(displayZeroIfEmpty = true),
             showTaxRateError = false,
             fontSize = userPreferences.fontSize
         )

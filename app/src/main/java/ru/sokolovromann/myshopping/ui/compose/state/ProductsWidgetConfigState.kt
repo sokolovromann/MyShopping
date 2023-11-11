@@ -36,7 +36,7 @@ class ProductsWidgetConfigState {
     fun showNotFound(shoppingListsWithConfig: ShoppingListsWithConfig) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val userPreferences = shoppingListsWithConfig.getUserPreferences()
         nightTheme = userPreferences.nightTheme
         loading = false
 
@@ -45,7 +45,7 @@ class ProductsWidgetConfigState {
             displayProducts = userPreferences.displayShoppingsProducts,
             displayCompleted = userPreferences.displayCompleted,
             coloredCheckbox = userPreferences.coloredCheckbox,
-            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen(),
             fontSize = userPreferences.fontSize
         )
     }
@@ -53,7 +53,7 @@ class ProductsWidgetConfigState {
     fun showShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val userPreferences = shoppingListsWithConfig.getUserPreferences()
         nightTheme = userPreferences.nightTheme
         loading = false
 
@@ -65,7 +65,7 @@ class ProductsWidgetConfigState {
             displayCompleted = userPreferences.displayCompleted,
             coloredCheckbox = userPreferences.coloredCheckbox,
             multiColumns = userPreferences.shoppingsMultiColumns,
-            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen(),
             fontSize = userPreferences.fontSize
         )
     }

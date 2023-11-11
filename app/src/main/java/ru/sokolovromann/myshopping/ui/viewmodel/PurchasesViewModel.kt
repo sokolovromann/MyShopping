@@ -110,7 +110,7 @@ class PurchasesViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+        if (shoppingListsWithConfig.isEmpty()) {
             purchasesState.showNotFound(shoppingListsWithConfig)
         } else {
             purchasesState.showShoppingLists(shoppingListsWithConfig)

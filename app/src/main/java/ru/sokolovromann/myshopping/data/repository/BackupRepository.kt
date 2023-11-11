@@ -25,12 +25,12 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
     private val productsDao = localDatasource.getProductsDao()
     private val autocompletesDao = localDatasource.getAutocompletesDao()
     private val appConfigDao = localDatasource.getAppConfigDao()
-    private val backupFiles = localDatasource.getBackupFiles()
+    private val filesDao = localDatasource.getFilesDao()
 
     private val dispatcher = AppDispatchers.IO
 
     suspend fun importBackup(uri: Uri): Result<Pair<Backup, Backup>> = withContext(dispatcher) {
-        val backupFileEntity = backupFiles.readBackup(uri).getOrNull()
+        val backupFileEntity = filesDao.readBackup(uri).getOrNull()
         return@withContext if (backupFileEntity == null) {
             val exception = FileNotFoundException()
             Result.failure(exception)
@@ -74,7 +74,7 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             val exception = InvalidValueException("App data is not exists")
             Result.failure(exception)
         } else {
-            val fileName = backupFiles.writeBackup(backupFileEntity).getOrNull()
+            val fileName = filesDao.writeBackup(backupFileEntity).getOrNull()
             if (fileName == null) {
                 val exception = FileNotFoundException()
                 Result.failure(exception)

@@ -30,13 +30,13 @@ class MoveProductState {
     fun showNotFound(shoppingListsWithConfig: ShoppingListsWithConfig, location: ShoppingLocation) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val userPreferences = shoppingListsWithConfig.getUserPreferences()
         screenData = MoveProductScreenData(
             screenState = ScreenState.Nothing,
             displayProducts = userPreferences.displayShoppingsProducts,
             displayCompleted = userPreferences.displayCompleted,
             coloredCheckbox = userPreferences.coloredCheckbox,
-            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen(),
             location = location,
             fontSize = userPreferences.fontSize
         )
@@ -45,7 +45,7 @@ class MoveProductState {
     fun showShoppingLists(shoppingListsWithConfig: ShoppingListsWithConfig, location: ShoppingLocation) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
-        val userPreferences = shoppingListsWithConfig.appConfig.userPreferences
+        val userPreferences = shoppingListsWithConfig.getUserPreferences()
         val pinnedShoppingLists = if (location == ShoppingLocation.PURCHASES) {
             shoppingListsWithConfig.getActivePinnedShoppingListItems()
         } else {
@@ -66,10 +66,10 @@ class MoveProductState {
             displayCompleted = userPreferences.displayCompleted,
             coloredCheckbox = userPreferences.coloredCheckbox,
             multiColumns = userPreferences.shoppingsMultiColumns,
-            smartphoneScreen = shoppingListsWithConfig.appConfig.deviceConfig.getDeviceSize().isSmartphoneScreen(),
+            smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen(),
             location = location,
             fontSize = userPreferences.fontSize,
-            showHiddenShoppingLists = isDisplayHiddenShoppingLists()
+            showHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         )
     }
 
@@ -103,12 +103,6 @@ class MoveProductState {
 
     fun hideLocation() {
         screenData = screenData.copy(showLocation = false)
-    }
-
-    private fun isDisplayHiddenShoppingLists(): Boolean {
-        val hideCompleted = shoppingListsWithConfig.appConfig.userPreferences.displayCompleted == DisplayCompleted.HIDE
-        val hasHiddenShoppingList = shoppingListsWithConfig.shoppingLists.find { it.isCompleted() } != null
-        return hideCompleted && hasHiddenShoppingList
     }
 }
 

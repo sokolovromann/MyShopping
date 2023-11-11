@@ -309,17 +309,17 @@ private fun SettingsFontSizeMenu(
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.VERY_LARGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
+            text = { Text(text = stringResource(R.string.settings_action_selectVeryLargeFontSize)) },
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.VERY_LARGE) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.HUGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectHuge2FontSize)) },
+            text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(FontSize.VERY_HUGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectHuge3FontSize)) },
+            text = { Text(text = stringResource(R.string.settings_action_selectVeryHugeFontSize)) },
             right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.VERY_HUGE) }
         )
     }

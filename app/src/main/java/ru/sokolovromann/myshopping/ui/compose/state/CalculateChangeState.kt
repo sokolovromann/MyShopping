@@ -22,7 +22,7 @@ class CalculateChangeState {
 
         val totalText: UiText = UiText.FromResourcesWithArgs(
             R.string.calculateChange_text_total,
-            shoppingListWithConfig.shoppingList.shopping.total
+            shoppingListWithConfig.getShopping().total
         )
 
         val changeText: UiText = UiText.FromResources(R.string.calculateChange_text_noChange)
@@ -32,7 +32,7 @@ class CalculateChangeState {
             userMoneyValue = TextFieldValue(),
             totalText = totalText,
             changeText = changeText,
-            fontSize = shoppingListWithConfig.appConfig.userPreferences.fontSize
+            fontSize = shoppingListWithConfig.getUserPreferences().fontSize
         )
     }
 
@@ -52,7 +52,7 @@ class CalculateChangeState {
     }
 
     private fun calculateChange(userMoney: Float?): String {
-        val total = shoppingListWithConfig.shoppingList.shopping.total
+        val total = shoppingListWithConfig.getShopping().total
         return if (userMoney == null || userMoney <= total.value) {
             ""
         } else {

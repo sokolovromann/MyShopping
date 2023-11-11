@@ -93,8 +93,9 @@ object ShoppingListsMapper {
             val shoppingProductEntities = productEntities.filter { productEntity ->
                 productEntity.shoppingUid == shoppingEntity.uid
             }
+            val products = toProducts(shoppingProductEntities, appConfig)
             val productsTotal = calculateProductsTotal(
-                productEntities = shoppingProductEntities,
+                products = products,
                 userPreferences = appConfig.userPreferences
             )
             toShopping(shoppingEntity, productsTotal, appConfig.userPreferences)
@@ -105,13 +106,6 @@ object ShoppingListsMapper {
         val products = mutableListOf<Product>()
         shoppingLists.forEach { products.addAll(it.products) }
         return toProductEntities(products)
-    }
-
-    fun toShoppingListEntity(shoppingList: ShoppingList): ShoppingListEntity {
-        return ShoppingListEntity(
-            shoppingEntity = toShoppingEntity(shoppingList.shopping),
-            productEntities = toProductEntities(shoppingList.products)
-        )
     }
 
     fun toProductWithConfig(
@@ -200,6 +194,51 @@ object ShoppingListsMapper {
     }
 
     private fun toProduct(entity: ProductEntity, userPreferences: UserPreferences): Product {
+        val quantity = Quantity(
+            value = entity.quantity,
+            symbol = entity.quantitySymbol,
+            decimalFormat = userPreferences.quantityDecimalFormat
+        )
+
+        val price = Money(
+            value = entity.price,
+            currency = userPreferences.currency,
+            asPercent = false,
+            decimalFormat = userPreferences.moneyDecimalFormat
+        )
+
+        val discount = Money(
+            value = entity.discount,
+            currency = userPreferences.currency,
+            asPercent = entity.discountAsPercent,
+            decimalFormat = userPreferences.moneyDecimalFormat
+        )
+
+        val taxRate = userPreferences.taxRate
+
+        val calculateTotal = if (entity.totalFormatted) {
+            val total = Money(
+                value = entity.total,
+                currency = userPreferences.currency,
+                asPercent = false,
+                decimalFormat = userPreferences.moneyDecimalFormat
+            )
+            if (total.isEmpty()) price else total
+        } else {
+            val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
+            val total = quantityValue * price.value
+            val discountValue = discount.calculateValueFromPercent(total)
+            val taxRateValue = taxRate.calculateValueFromPercent(total)
+
+            val totalWithDiscountAndTaxRate = total - discountValue + taxRateValue
+            Money(
+                value = totalWithDiscountAndTaxRate,
+                currency = userPreferences.currency,
+                asPercent = false,
+                decimalFormat = userPreferences.moneyDecimalFormat
+            )
+        }
+
         return Product(
             id = entity.id,
             position = entity.position,
@@ -207,35 +246,11 @@ object ShoppingListsMapper {
             shoppingUid = entity.shoppingUid,
             lastModified = DateTime(entity.lastModified),
             name = entity.name,
-            quantity = Quantity(
-                value = entity.quantity,
-                symbol = entity.quantitySymbol,
-                decimalFormat = userPreferences.quantityDecimalFormat
-            ),
-            price = Money(
-                value = entity.price,
-                currency = userPreferences.currency,
-                asPercent = false,
-                decimalFormat = userPreferences.moneyDecimalFormat
-            ),
-            discount = Money(
-                value = entity.discount,
-                currency = userPreferences.currency,
-                asPercent = entity.discountAsPercent,
-                decimalFormat = userPreferences.moneyDecimalFormat
-            ),
-            taxRate = Money(
-                value = entity.taxRate,
-                currency = userPreferences.currency,
-                asPercent = entity.taxRateAsPercent,
-                decimalFormat = userPreferences.moneyDecimalFormat
-            ),
-            total = Money(
-                value = entity.total,
-                currency = userPreferences.currency,
-                asPercent = false,
-                decimalFormat = userPreferences.moneyDecimalFormat
-            ),
+            quantity = quantity,
+            price = price,
+            discount = discount,
+            taxRate = taxRate,
+            total = calculateTotal,
             totalFormatted = entity.totalFormatted,
             note = entity.note,
             manufacturer = entity.manufacturer,
@@ -249,10 +264,11 @@ object ShoppingListsMapper {
     }
 
     private fun toShoppingList(entity: ShoppingListEntity, appConfig: AppConfig): ShoppingList {
-        val productsTotal = calculateProductsTotal(entity.productEntities, appConfig.userPreferences)
+        val products = toProducts(entity.productEntities, appConfig)
+        val productsTotal = calculateProductsTotal(products, appConfig.userPreferences)
         return ShoppingList(
             shopping = toShopping(entity.shoppingEntity, productsTotal, appConfig.userPreferences),
-            products = toProducts(entity.productEntities, appConfig)
+            products = products
         )
     }
 
@@ -264,15 +280,15 @@ object ShoppingListsMapper {
     }
 
     private fun calculateProductsTotal(
-        productEntities: List<ProductEntity>,
+        products: List<Product>,
         userPreferences: UserPreferences
     ): Money {
         var all = 0f
         var completed = 0f
         var active = 0f
 
-        productEntities.forEach {
-            val totalValue = it.total
+        products.forEach {
+            val totalValue = it.total.value
 
             all += totalValue
             if (it.completed) {

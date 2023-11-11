@@ -83,7 +83,7 @@ class MoveProductViewModel @Inject constructor(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         location: ShoppingLocation
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.shoppingLists.isEmpty()) {
+        if (shoppingListsWithConfig.isEmpty()) {
             moveProductState.showNotFound(shoppingListsWithConfig, location)
         } else {
             moveProductState.showShoppingLists(shoppingListsWithConfig, location)

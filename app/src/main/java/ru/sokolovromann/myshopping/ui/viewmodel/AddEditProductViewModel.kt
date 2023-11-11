@@ -209,7 +209,9 @@ class AddEditProductViewModel @Inject constructor(
     private fun saveProduct() = viewModelScope.launch {
         shoppingListsRepository.saveProduct(addEditProductState.getCurrentProduct())
             .onSuccess {
-                autocompletesRepository.saveAutocomplete(addEditProductState.getAutocomplete())
+                if (addEditProductState.getUserPreferences().saveProductToAutocompletes) {
+                    autocompletesRepository.saveAutocomplete(addEditProductState.getAutocomplete())
+                }
                 appConfigRepository.lockProductElement(addEditProductState.screenData.lockProductElement)
 
                 withContext(AppDispatchers.Main) {

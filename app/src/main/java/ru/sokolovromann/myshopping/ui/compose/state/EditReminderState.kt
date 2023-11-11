@@ -33,7 +33,7 @@ class EditReminderState {
     fun populate(shoppingListWithConfig: ShoppingListWithConfig, correctReminderPermission: Boolean) {
         this.shoppingListWithConfig = shoppingListWithConfig
 
-        val shopping = shoppingListWithConfig.shoppingList.shopping
+        val shopping = shoppingListWithConfig.getShopping()
         val headerText: UiText = if (shopping.reminder != null) {
             UiText.FromResources(R.string.editReminder_header_editReminder)
         } else {
@@ -59,7 +59,7 @@ class EditReminderState {
             showDeleteButton = shopping.reminder != null,
             showDateDialog = false,
             showTimeDialog = false,
-            fontSize = shoppingListWithConfig.appConfig.userPreferences.fontSize
+            fontSize = shoppingListWithConfig.getUserPreferences().fontSize
         )
     }
 
@@ -123,7 +123,7 @@ class EditReminderState {
     }
 
     fun getShoppingUid(): String {
-        return shoppingListWithConfig.shoppingList.shopping.uid
+        return shoppingListWithConfig.getShopping().uid
     }
 
     fun getReminder(): DateTime {

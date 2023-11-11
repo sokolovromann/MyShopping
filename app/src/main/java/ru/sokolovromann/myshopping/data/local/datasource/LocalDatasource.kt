@@ -39,7 +39,7 @@ class LocalDatasource @Inject constructor(
         return ResourcesDao(appContent)
     }
 
-    fun getBackupFiles(): FilesDao {
+    fun getFilesDao(): FilesDao {
         return FilesDao(appContent)
     }
 }

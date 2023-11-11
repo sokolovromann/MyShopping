@@ -332,31 +332,50 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
                                             SortBy.CREATED)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByCreated)) },
-                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.CREATED) }
+                                        right = {
+                                            val checked = screenData.automaticSorting &&
+                                                    screenData.sort.sortBy == SortBy.CREATED
+                                            CheckmarkAppCheckbox(checked = checked)
+                                        }
                                     )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
                                             SortBy.LAST_MODIFIED)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) },
-                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.LAST_MODIFIED) }
+                                        right = {
+                                            val checked = screenData.automaticSorting &&
+                                                    screenData.sort.sortBy == SortBy.LAST_MODIFIED
+                                            CheckmarkAppCheckbox(checked = checked)
+                                        }
                                     )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
                                             SortBy.NAME)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByName)) },
-                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.NAME) }
+                                        right = {
+                                            val checked = screenData.automaticSorting &&
+                                                    screenData.sort.sortBy == SortBy.NAME
+                                            CheckmarkAppCheckbox(checked = checked)
+                                        }
                                     )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
                                             SortBy.TOTAL)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByTotal)) },
-                                        right = { CheckmarkAppCheckbox(checked = screenData.sort.sortBy == SortBy.TOTAL) }
+                                        right = {
+                                            val checked = screenData.automaticSorting &&
+                                                    screenData.sort.sortBy == SortBy.TOTAL
+                                            CheckmarkAppCheckbox(checked = checked)
+                                        }
                                     )
                                     Divider()
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.ReverseSortProducts) },
                                         text = { Text(text = stringResource(R.string.products_action_reverseSort)) },
-                                        right = { CheckmarkAppCheckbox(checked = !screenData.sort.ascending) }
+                                        right = {
+                                            val checked = !screenData.sort.ascending
+                                            CheckmarkAppCheckbox(checked = checked)
+                                        }
                                     )
                                     Divider()
                                     AppDropdownMenuItem(

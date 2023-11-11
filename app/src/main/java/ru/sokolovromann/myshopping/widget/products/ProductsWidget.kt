@@ -99,14 +99,14 @@ class ProductsWidget : GlanceAppWidget() {
 
         Column(modifier = GlanceModifier.fillMaxSize()) {
             val shoppingListWithConfig = shoppingListWithConfigFlow.collectAsState().value
-            val shoppingList = shoppingListWithConfig.shoppingList
-            val userPreferences = shoppingListWithConfig.appConfig.userPreferences
+            val shopping = shoppingListWithConfig.getShopping()
+            val userPreferences = shoppingListWithConfig.getUserPreferences()
 
-            if (shoppingListWithConfig.shoppingList.products.isEmpty()) {
+            if (shoppingListWithConfig.isProductsEmpty()) {
                 ProductsWidgetName(
-                    name = shoppingList.shopping.name,
+                    name = shopping.name,
                     fontSize = userPreferences.fontSize,
-                    completed = shoppingList.isCompleted(),
+                    completed = shoppingListWithConfig.isCompleted(),
                     noSplit = userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT
                 )
 
@@ -118,8 +118,8 @@ class ProductsWidget : GlanceAppWidget() {
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),
-                    name = shoppingList.shopping.name,
-                    completed = shoppingList.isCompleted(),
+                    name = shopping.name,
+                    completed = shoppingListWithConfig.isCompleted(),
                     pinnedItems = shoppingListWithConfig.getActivePinnedProductWidgetItems(),
                     otherItems = shoppingListWithConfig.getOtherProductWidgetItems(),
                     displayCompleted = userPreferences.displayCompleted,
@@ -154,7 +154,7 @@ class ProductsWidget : GlanceAppWidget() {
             ) {
                 if (userPreferences.displayMoney) {
                     ProductsWidgetTotal(
-                        shoppingList.shopping.total.getDisplayValue(),
+                        shopping.total.getDisplayValue(),
                         userPreferences.fontSize
                     )
                 }
