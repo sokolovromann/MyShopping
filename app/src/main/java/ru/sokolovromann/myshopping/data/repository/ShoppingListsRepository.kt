@@ -588,8 +588,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             val lastModified = DateTime.getCurrentDateTime()
             shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
 
-            val lastPosition = productsDao.getLastPosition(shoppingUid)
-                .firstOrNull() ?: IdDefaults.FIRST_POSITION
+            val lastPosition = nextPositionOrFirst(productsDao.getLastPosition(shoppingUid).firstOrNull())
             val newProducts = products.mapIndexed { index, product ->
                 val newPosition = lastPosition + index
                 product.copy(
@@ -620,8 +619,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             shoppingListsDao.updateLastModified(products.first().shoppingUid, lastModified.millis)
             shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
 
-            val lastPosition = productsDao.getLastPosition(shoppingUid)
-                .firstOrNull() ?: IdDefaults.FIRST_POSITION
+            val lastPosition = nextPositionOrFirst(productsDao.getLastPosition(shoppingUid).firstOrNull())
             val newProducts = products.mapIndexed { index, product ->
                 val newPosition = lastPosition + index
                 product.copy(
@@ -884,5 +882,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 )
             }
         )
+    }
+
+    private fun nextPositionOrFirst(lastPosition: Int?): Int {
+        return lastPosition?.plus(1) ?: IdDefaults.FIRST_POSITION
     }
 }
