@@ -129,7 +129,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     }
 
     suspend fun addShopping(): Result<String> = withContext(dispatcher) {
-        val position = toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull())
+        val position = nextPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull())
         val shopping = Shopping(position = position)
 
         val shoppingList = ShoppingList(shopping = shopping)
@@ -264,7 +264,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 val exception = InvalidUidException("Uid must not be empty")
                 Result.failure(exception)
             } else {
-                val position = toPositionOrFirst(
+                val position = nextPositionOrFirst(
                     productsDao.getLastPosition(product.shoppingUid).firstOrNull()
                 )
                 val newProduct = product.copy(position = position)
@@ -518,7 +518,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             val shopping = shoppingList.shoppingEntity.copy(
                 id = IdDefaults.NO_ID,
-                position = toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
+                position = nextPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
                 uid = newShoppingUid,
                 lastModified = lastModified
             )
@@ -840,10 +840,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 )
             }
         )
-    }
-
-    private fun toPositionOrFirst(lastPosition: Int?): Int {
-        return lastPosition ?: IdDefaults.FIRST_POSITION
     }
 
     private fun nextPositionOrFirst(lastPosition: Int?): Int {
