@@ -71,12 +71,6 @@ class ProductsState {
         val shopping = shoppingListWithConfig.getShopping()
         val userPreference = shoppingListWithConfig.getUserPreferences()
 
-        val totalText = if (userPreference.displayMoney) {
-            shoppingListWithConfig.getTotal()
-        } else {
-            UiText.Nothing
-        }
-
         val multiColumnsText: UiText = if (userPreference.productsMultiColumns) {
             UiText.FromResources(R.string.products_action_disableProductsMultiColumns)
         } else {
@@ -89,6 +83,16 @@ class ProductsState {
             null
         } else {
             listOf(savedSelectedUid)
+        }
+
+        val totalText = if (userPreference.displayMoney) {
+            if (selectedUids == null) {
+                shoppingListWithConfig.getTotal()
+            } else {
+                shoppingListWithConfig.getSelectedTotal(selectedUids)
+            }
+        } else {
+            UiText.Nothing
         }
 
         screenData = ProductsScreenData(

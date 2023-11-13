@@ -60,12 +60,6 @@ class PurchasesState {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
         val userPreferences = shoppingListsWithConfig.getUserPreferences()
-        val totalText: UiText = if (userPreferences.displayMoney) {
-            shoppingListsWithConfig.getTotalText()
-        } else {
-            UiText.Nothing
-        }
-
         val multiColumnsText: UiText = if (userPreferences.shoppingsMultiColumns) {
             UiText.FromResources(R.string.shoppingLists_action_disableShoppingsMultiColumns)
         } else {
@@ -76,6 +70,16 @@ class PurchasesState {
             null
         } else {
             listOf(savedSelectedUid)
+        }
+
+        val totalText: UiText = if (userPreferences.displayMoney) {
+            if (selectedUids == null) {
+                shoppingListsWithConfig.getTotalText()
+            } else {
+                shoppingListsWithConfig.getSelectedTotal(selectedUids)
+            }
+        } else {
+            UiText.Nothing
         }
 
         screenData = PurchasesScreenData(
