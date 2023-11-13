@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -70,14 +69,8 @@ interface ShoppingListsDao {
     @Query("UPDATE shoppings SET pinned = 1, last_modified = :lastModified WHERE uid IN (:uids)")
     fun pinShoppings(uids: List<String>, lastModified: Long)
 
-    @Query("UPDATE shoppings SET pinned = 1, last_modified = :lastModified WHERE uid = :uid")
-    fun pinShopping(uid: String, lastModified: Long)
-
     @Query("UPDATE shoppings SET pinned = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun unpinShoppings(uids: List<String>, lastModified: Long)
-
-    @Query("UPDATE shoppings SET pinned = 0, last_modified = :lastModified WHERE uid = :uid")
-    fun unpinShopping(uid: String, lastModified: Long)
 
     @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun moveToPurchases(uids: List<String>, lastModified: Long)
@@ -97,12 +90,6 @@ interface ShoppingListsDao {
     @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = :lastModified WHERE uid = :uid")
     fun moveToTrash(uid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET sort_by = :sortBy, last_modified = :lastModified WHERE uid = :uid")
-    fun sortBy(uid: String, sortBy: String, lastModified: Long)
-
-    @Query("UPDATE shoppings SET sort_ascending = :sortAscending, last_modified = :lastModified WHERE uid = :uid")
-    fun sortAscending(uid: String, sortAscending: Boolean, lastModified: Long)
-
     @Query("UPDATE shoppings SET sort_by = :sortBy, sort_ascending = :sortAscending, sort_formatted = 1, last_modified = :lastModified WHERE uid = :uid")
     fun enableAutomaticSorting(uid: String, sortBy: String, sortAscending: Boolean, lastModified: Long)
 
@@ -112,14 +99,8 @@ interface ShoppingListsDao {
     @Query("DELETE FROM shoppings")
     fun deleteAllShoppings()
 
-    @Delete
-    fun deleteShoppings(shoppings: List<ShoppingEntity>)
-
     @Query("DELETE FROM shoppings WHERE uid IN (:uids)")
     fun deleteShoppingsByUids(uids: List<String>)
-
-    @Query("DELETE FROM shoppings WHERE uid = :uid")
-    fun deleteShopping(uid: String)
 
     @Query("UPDATE shoppings SET reminder = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun deleteReminders(uids: List<String>, lastModified: Long)

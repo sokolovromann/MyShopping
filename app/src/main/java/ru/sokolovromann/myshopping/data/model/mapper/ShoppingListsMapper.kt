@@ -17,7 +17,6 @@ import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object ShoppingListsMapper {
@@ -146,10 +145,6 @@ object ShoppingListsMapper {
             shoppingLists = toShoppingLists(entities, appConfig),
             appConfig = appConfig
         )
-    }
-
-    fun toPositionOrFirst(lastPosition: Int?): Int {
-        return lastPosition?.plus(1) ?: IdDefaults.FIRST_POSITION
     }
 
     private fun toShopping(

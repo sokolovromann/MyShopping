@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -47,30 +46,15 @@ interface ProductsDao {
     @Query("UPDATE products SET pinned = 1, last_modified = :lastModified WHERE product_uid IN (:productUids)")
     fun pinProducts(productUids: List<String>, lastModified: Long)
 
-    @Query("UPDATE products SET pinned = 1, last_modified = :lastModified WHERE product_uid = :productUid")
-    fun pinProduct(productUid: String, lastModified: Long)
-
     @Query("UPDATE products SET pinned = 0, last_modified = :lastModified WHERE product_uid IN (:productUids)")
     fun unpinProducts(productUids: List<String>, lastModified: Long)
 
-    @Query("UPDATE products SET pinned = 0, last_modified = :lastModified WHERE product_uid = :productUid")
-    fun unpinProduct(productUid: String, lastModified: Long)
-
     @Query("DELETE FROM products")
     fun deleteAllProducts()
-
-    @Delete
-    fun deleteProducts(products: List<ProductEntity>)
 
     @Query("DELETE FROM products WHERE product_uid IN (:productUids)")
     fun deleteProductsByProductUids(productUids: List<String>)
 
     @Query("DELETE FROM products WHERE shopping_uid IN (:shoppingUids)")
     fun deleteProductsByShoppingUids(shoppingUids: List<String>)
-
-    @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid")
-    fun deleteProductsByShoppingUid(shoppingUid: String)
-
-    @Query("DELETE FROM products WHERE product_uid = :productUid")
-    fun deleteProduct(productUid: String)
 }

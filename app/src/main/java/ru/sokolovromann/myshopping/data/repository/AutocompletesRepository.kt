@@ -27,18 +27,6 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
 
     private val dispatcher = AppDispatchers.IO
 
-    suspend fun getAllAutocompletes(): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
-        return@withContext autocompletesDao.getAllAutocompletes().combine(
-            flow = appConfigDao.getAppConfig(),
-            transform = { autocompleteEntities, appConfigEntity ->
-                AutocompletesMapper.toAutocompletesWithConfig(
-                    entities = autocompleteEntities,
-                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
-                )
-            }
-        )
-    }
-
     suspend fun getDefaultAutocompletes(
         language: String = Locale.getDefault().language
     ): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
@@ -139,11 +127,6 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
             autocompletesDao.clearAutocompletes(uids, lastModified.millis)
             Result.success(Unit)
         }
-    }
-
-    suspend fun deleteAllAutocompletes(): Result<Unit> = withContext(dispatcher) {
-        autocompletesDao.deleteAllAutocompletes()
-        return@withContext Result.success(Unit)
     }
 
     suspend fun deleteAutocompletes(uids: List<String>): Result<Unit> = withContext(dispatcher) {

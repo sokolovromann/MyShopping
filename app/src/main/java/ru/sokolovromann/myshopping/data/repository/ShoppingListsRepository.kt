@@ -81,18 +81,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
-    suspend fun getAllProducts(): Flow<List<Product>> = withContext(dispatcher) {
-        return@withContext productsDao.getAllProducts().combine(
-            flow = appConfigDao.getAppConfig(),
-            transform = { productEntities, appConfigEntity ->
-                ShoppingListsMapper.toProducts(
-                    entities = productEntities,
-                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
-                )
-            }
-        )
-    }
-
     suspend fun getProducts(productUids: List<String>): Flow<List<Product>> = withContext(dispatcher) {
         return@withContext productsDao.getProducts(productUids).combine(
             flow = appConfigDao.getAppConfig(),
@@ -141,23 +129,11 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     }
 
     suspend fun addShopping(): Result<String> = withContext(dispatcher) {
-        val position = ShoppingListsMapper.toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull())
+        val position = toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull())
         val shopping = Shopping(position = position)
 
         val shoppingList = ShoppingList(shopping = shopping)
         return@withContext saveShoppingList(shoppingList).map { shopping.uid }
-    }
-
-    suspend fun saveShoppingList(shoppingList: ShoppingList): Result<Unit> = withContext(dispatcher) {
-        val shoppingEntity = ShoppingListsMapper.toShoppingEntity(shoppingList.shopping)
-        shoppingListsDao.insertShopping(shoppingEntity)
-
-        if (shoppingList.products.isNotEmpty()) {
-            val productEntities = ShoppingListsMapper.toProductEntities(shoppingList.products)
-            productsDao.insertProducts(productEntities)
-        }
-
-        return@withContext Result.success(Unit)
     }
 
     suspend fun moveShoppingListUp(
@@ -278,21 +254,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         return@withContext Result.success(Unit)
     }
 
-    suspend fun saveProducts(products: List<Product>): Result<Unit> = withContext(dispatcher) {
-        return@withContext if (products.isEmpty()) {
-            val exception = InvalidValueException("List must not be empty")
-            Result.failure(exception)
-        } else {
-            val productEntities = ShoppingListsMapper.toProductEntities(products)
-            productsDao.insertProducts(productEntities)
-
-            val first = productEntities.first()
-            shoppingListsDao.updateLastModified(first.shoppingUid, first.lastModified)
-
-            Result.success(Unit)
-        }
-    }
-
     suspend fun saveProduct(product: Product): Result<Unit> = withContext(dispatcher) {
         return@withContext if (product.name.isEmpty()) {
             val exception = InvalidNameException("Name must not be null or empty")
@@ -303,7 +264,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 val exception = InvalidUidException("Uid must not be empty")
                 Result.failure(exception)
             } else {
-                val position = ShoppingListsMapper.toPositionOrFirst(
+                val position = toPositionOrFirst(
                     productsDao.getLastPosition(product.shoppingUid).firstOrNull()
                 )
                 val newProduct = product.copy(position = position)
@@ -557,7 +518,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             val shopping = shoppingList.shoppingEntity.copy(
                 id = IdDefaults.NO_ID,
-                position = ShoppingListsMapper.toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
+                position = toPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
                 uid = newShoppingUid,
                 lastModified = lastModified
             )
@@ -793,12 +754,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
-    suspend fun deleteAllShoppingLists(): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.deleteAllShoppings()
-        productsDao.deleteAllProducts()
-        return@withContext Result.success(Unit)
-    }
-
     suspend fun deleteShoppingLists(shoppingUids: List<String>): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidValueException("List must not be empty")
@@ -808,15 +763,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             productsDao.deleteProductsByShoppingUids(shoppingUids)
             Result.success(Unit)
         }
-    }
-
-    suspend fun deleteProductsByShoppingUid(
-        shoppingUid: String,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
-    ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
-        productsDao.deleteProductsByShoppingUid(shoppingUid)
-        return@withContext Result.success(Unit)
     }
 
     suspend fun deleteProductsByProductUids(
@@ -863,6 +809,18 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         return@withContext Result.success(Unit)
     }
 
+    private suspend fun saveShoppingList(shoppingList: ShoppingList): Result<Unit> = withContext(dispatcher) {
+        val shoppingEntity = ShoppingListsMapper.toShoppingEntity(shoppingList.shopping)
+        shoppingListsDao.insertShopping(shoppingEntity)
+
+        if (shoppingList.products.isNotEmpty()) {
+            val productEntities = ShoppingListsMapper.toProductEntities(shoppingList.products)
+            productsDao.insertProducts(productEntities)
+        }
+
+        return@withContext Result.success(Unit)
+    }
+
     private suspend fun getShoppingListsWithConfig(
         location: ShoppingLocation? = null
     ): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
@@ -882,6 +840,10 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 )
             }
         )
+    }
+
+    private fun toPositionOrFirst(lastPosition: Int?): Int {
+        return lastPosition ?: IdDefaults.FIRST_POSITION
     }
 
     private fun nextPositionOrFirst(lastPosition: Int?): Int {

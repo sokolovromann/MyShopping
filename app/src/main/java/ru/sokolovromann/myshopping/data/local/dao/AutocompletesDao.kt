@@ -54,7 +54,4 @@ interface AutocompletesDao {
 
     @Query("DELETE FROM autocompletes WHERE uid IN (:uids)")
     fun deleteAutocompletes(uids: List<String>)
-
-    @Query("DELETE FROM autocompletes WHERE uid = :uid")
-    fun deleteAutocomplete(uid: String)
 }
