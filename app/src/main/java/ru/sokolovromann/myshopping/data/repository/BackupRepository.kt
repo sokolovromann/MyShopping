@@ -37,10 +37,10 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
         } else {
             listOf(
                 async { shoppingListsDao.deleteAllShoppings() },
-                async { shoppingListsDao.insertShoppings(backupFileEntity.shoppingEntities) },
                 async { productsDao.deleteAllProducts() },
-                async { productsDao.insertProducts(backupFileEntity.productEntities) },
                 async { autocompletesDao.deleteAllAutocompletes() },
+                async { shoppingListsDao.insertShoppings(backupFileEntity.shoppingEntities) },
+                async { productsDao.insertProducts(backupFileEntity.productEntities) },
                 async { autocompletesDao.insertAutocompletes(backupFileEntity.autocompleteEntities) },
                 async { appConfigDao.saveAppConfig(backupFileEntity.appConfigEntity) }
             ).awaitAll()
