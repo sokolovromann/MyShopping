@@ -88,7 +88,6 @@ object CodeVersion14Mapper {
         val alarm = cursor.getLong(cursor.getColumnIndexOrThrow("alarm"))
 
         return Shopping(
-            id = id.toInt(),
             position = cursor.position,
             uid = id.toString(),
             name = name,
@@ -242,7 +241,7 @@ object CodeVersion14Mapper {
         return when (sortBy) {
             SortBy.NAME -> this.sortedBy { it.shopping.name }
             SortBy.TOTAL -> this.sortedBy { it.shopping.total.value }
-            else -> this.sortedBy { it.shopping.id }
+            else -> this.sortedBy { it.shopping.uid }
         }.withIndex().map {
             val name = it.value.shopping.name
             val shopping = it.value.shopping.copy(
@@ -261,7 +260,7 @@ object CodeVersion14Mapper {
         return when (sortBy) {
             SortBy.NAME -> this.sortedBy { it.name }
             SortBy.TOTAL -> this.sortedBy { it.total.value }
-            else -> this.sortedBy { it.id }
+            else -> this.sortedBy { it.productUid }
         }.withIndex().map {
             val name = it.value.name
             it.value.copy(

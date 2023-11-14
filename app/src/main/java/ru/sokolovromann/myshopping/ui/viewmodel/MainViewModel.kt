@@ -134,9 +134,9 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
-        list.forEach {
-            shoppingListsRepository.saveShoppingLists(list)
+        shoppingListsRepository.saveShoppingLists(list)
 
+        list.forEach {
             val shopping = it.shopping
             if (shopping.reminder != null) {
                 alarmManager.deleteCodeVersion14Reminder(shopping.id)
