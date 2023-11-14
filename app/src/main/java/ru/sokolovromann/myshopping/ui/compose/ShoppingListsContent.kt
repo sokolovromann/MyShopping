@@ -79,7 +79,8 @@ fun ShoppingListsGrid(
                             displayProducts = displayProducts,
                             total = item.totalText,
                             reminder = item.reminderText,
-                            fontSize = fontSize
+                            fontSize = fontSize,
+                            coloredCheckbox = coloredCheckbox
                         )
                     },
                     left = getShoppingListItemLeftOrNull(
@@ -117,7 +118,8 @@ fun ShoppingListsGrid(
                         displayProducts = displayProducts,
                         total = item.totalText,
                         reminder = item.reminderText,
-                        fontSize = fontSize
+                        fontSize = fontSize,
+                        coloredCheckbox = coloredCheckbox
                     )
                 },
                 left = getShoppingListItemLeftOrNull(
@@ -291,6 +293,7 @@ private fun ShoppingListItemBody(
     total: UiText,
     reminder: UiText,
     fontSize: FontSize,
+    coloredCheckbox: Boolean
 ) {
     val itemFontSize = fontSize.toItemBody()
 
@@ -324,7 +327,13 @@ private fun ShoppingListItemBody(
                     Spacer(modifier = Modifier.size(ShoppingListItemSpacerLargeSize))
                 }
 
-                ShoppingsListsItemProducts(products, true, fontSize)
+                ShoppingsListsItemProducts(
+                    products = products,
+                    spacerAfterIcon = true,
+                    fontSize = fontSize,
+                    showCheckbox = true,
+                    coloredCheckbox = coloredCheckbox
+                )
             }
 
             DisplayProducts.HORIZONTAL -> {
@@ -337,7 +346,12 @@ private fun ShoppingListItemBody(
                 }
 
                 Row {
-                    ShoppingsListsItemProducts(products, false, fontSize)
+                    ShoppingsListsItemProducts(
+                        products = products,
+                        spacerAfterIcon = false,
+                        fontSize = fontSize,
+                        showCheckbox = true,
+                        coloredCheckbox = coloredCheckbox)
                 }
             }
 
@@ -346,7 +360,13 @@ private fun ShoppingListItemBody(
             DisplayProducts.HIDE_IF_HAS_TITLE -> {
                 if (!hasName) {
                     Row {
-                        ShoppingsListsItemProducts(products, false, fontSize, false)
+                        ShoppingsListsItemProducts(
+                            products = products,
+                            spacerAfterIcon = false,
+                            fontSize = fontSize,
+                            showCheckbox = false,
+                            coloredCheckbox = coloredCheckbox
+                        )
                     }
                 }
             }
@@ -372,7 +392,8 @@ private fun ShoppingsListsItemProducts(
     products: List<Pair<Boolean?, UiText>>,
     spacerAfterIcon: Boolean,
     fontSize: FontSize,
-    showCheckbox: Boolean = true
+    showCheckbox: Boolean = true,
+    coloredCheckbox: Boolean
 ) {
     val itemFontSize = fontSize.toItemBody()
 
@@ -393,12 +414,21 @@ private fun ShoppingsListsItemProducts(
                     painterResource(R.drawable.ic_all_check_box_outline)
                 }
 
+                val tint = (if (coloredCheckbox) {
+                    if (completed) {
+                        MaterialTheme.colors.primary
+                    } else {
+                        MaterialTheme.colors.error
+                    }
+                } else {
+                    contentColorFor(MaterialTheme.colors.onSurface)
+                }).copy(ContentAlpha.medium)
+
                 Icon(
                     modifier = Modifier.size(itemFontSize.dp),
                     painter = painter,
                     contentDescription = "",
-                    tint = contentColorFor(MaterialTheme.colors.onSurface)
-                        .copy(ContentAlpha.medium)
+                    tint = tint
                 )
 
                 if (spacerAfterIcon) {
