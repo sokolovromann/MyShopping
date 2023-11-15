@@ -67,6 +67,16 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         }
     }
 
+    suspend fun saveUserCodeVersion(userCodeVersion: Int): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (userCodeVersion <= AppBuildConfig.UNKNOWN_CODE_VERSION) {
+            val exception = InvalidValueException("Unknown code version")
+            Result.failure(exception)
+        } else {
+            appConfigDao.saveUserCodeVersion(userCodeVersion)
+            Result.success(Unit)
+        }
+    }
+
     suspend fun saveFontSize(fontSize: FontSize): Result<Unit> = withContext(dispatcher) {
         appConfigDao.saveFontSize(fontSize.name)
         return@withContext Result.success(Unit)

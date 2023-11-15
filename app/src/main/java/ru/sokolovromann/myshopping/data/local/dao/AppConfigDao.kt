@@ -38,6 +38,12 @@ class AppConfigDao(appContent: AppContent) {
         saveUserPreferences(appConfig.userPreferences)
     }
 
+    suspend fun saveUserCodeVersion(userCodeVersion: Int) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.Build.userCodeVersion] = userCodeVersion
+        }
+    }
+
     suspend fun saveFontSize(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.fontSize] = value

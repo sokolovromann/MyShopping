@@ -103,12 +103,16 @@ class MainViewModel @Inject constructor(
     private fun migrate(appConfig: AppConfig) {
         when (appConfig.appBuildConfig.userCodeVersion) {
             AppBuildConfig.CODE_VERSION_14 -> getScreenSize()
-            else -> mainState.hideLoading()
+            else -> migrateFromOtherVersion()
         }
     }
 
     private fun getScreenSize() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(MainScreenEvent.GetScreenSize)
+    }
+
+    private fun migrateFromOtherVersion() = viewModelScope.launch {
+        appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
     }
 
     private fun migrateFromCodeVersion14(
@@ -117,20 +121,11 @@ class MainViewModel @Inject constructor(
         notificationManager.createNotificationChannel()
 
         val codeVersion14 = codeVersion14Repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
-
-        val migrates = listOf(
+        listOf(
             viewModelScope.async { migrateShoppings(codeVersion14.shoppingLists) },
             viewModelScope.async { migrateAutocompletes(codeVersion14.autocompletes) },
-            viewModelScope.async {
-                migrateSettings(
-                    codeVersion14.preferences,
-                    event
-                )
-            }
-        )
-        migrates.awaitAll()
-
-        mainState.hideLoading()
+            viewModelScope.async { migrateSettings(codeVersion14.preferences, event) }
+        ).awaitAll()
     }
 
     private suspend fun migrateShoppings(list: List<ShoppingList>) {
