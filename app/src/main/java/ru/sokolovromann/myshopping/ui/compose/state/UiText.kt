@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
+@Deprecated("Use UiString")
 sealed class UiText {
 
     object Nothing : UiText()
