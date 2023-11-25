@@ -13,6 +13,7 @@ fun FontSize.toSettingsText(): UiText = when (this) {
     FontSize.VERY_HUGE -> UiText.FromResources(R.string.settings_action_selectVeryHugeFontSize)
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toItemTitle(): Int = when (this) {
     FontSize.SMALL -> 14
     FontSize.MEDIUM -> 16
@@ -22,6 +23,7 @@ fun FontSize.toItemTitle(): Int = when (this) {
     FontSize.VERY_HUGE -> 24
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toItemBody(): Int = when (this) {
     FontSize.SMALL -> 12
     FontSize.MEDIUM -> 14
@@ -31,6 +33,7 @@ fun FontSize.toItemBody(): Int = when (this) {
     FontSize.VERY_HUGE -> 22
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toButton(): Int = when (this) {
     FontSize.SMALL -> 12
     FontSize.MEDIUM -> 14
@@ -40,6 +43,7 @@ fun FontSize.toButton(): Int = when (this) {
     FontSize.VERY_HUGE -> 22
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toTextField(): Int = when (this) {
     FontSize.SMALL -> 14
     FontSize.MEDIUM -> 16
@@ -49,6 +53,7 @@ fun FontSize.toTextField(): Int = when (this) {
     FontSize.VERY_HUGE -> 24
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toHeader6(): Int = when (this) {
     FontSize.SMALL -> 18
     FontSize.MEDIUM -> 20
@@ -58,6 +63,7 @@ fun FontSize.toHeader6(): Int = when (this) {
     FontSize.VERY_HUGE -> 28
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toWidgetTitle(): Int = when (this) {
     FontSize.SMALL -> 16
     FontSize.MEDIUM -> 18
@@ -67,6 +73,7 @@ fun FontSize.toWidgetTitle(): Int = when (this) {
     FontSize.VERY_HUGE -> 26
 }
 
+@Deprecated("Use UiFontSize")
 fun FontSize.toWidgetBody(): Int = when (this) {
     FontSize.SMALL -> 14
     FontSize.MEDIUM -> 16
