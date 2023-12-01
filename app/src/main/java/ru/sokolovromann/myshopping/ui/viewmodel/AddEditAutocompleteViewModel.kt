@@ -1,5 +1,8 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +18,7 @@ import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.AddEditAutocompleteState
+import ru.sokolovromann.myshopping.ui.model.AddEditAutocompleteState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditAutocompleteEvent
 import javax.inject.Inject
 
@@ -25,7 +28,8 @@ class AddEditAutocompleteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditAutocompleteEvent> {
 
-    val addEditAutocompleteState: AddEditAutocompleteState = AddEditAutocompleteState()
+    var addEditAutocompleteState: AddEditAutocompleteState by mutableStateOf(AddEditAutocompleteState())
+        private set
 
     private val _screenEventFlow: MutableSharedFlow<AddEditAutocompleteScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AddEditAutocompleteScreenEvent> = _screenEventFlow
@@ -53,15 +57,16 @@ class AddEditAutocompleteViewModel @Inject constructor(
     }
 
     private suspend fun autocompleteLoaded(
-        autocomplete: AutocompleteWithConfig
+        autocompleteWithConfig: AutocompleteWithConfig
     ) = withContext(AppDispatchers.Main) {
-        addEditAutocompleteState.populate(autocomplete)
+        addEditAutocompleteState.populate(autocompleteWithConfig)
         _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowKeyboard)
     }
 
     private fun saveAutocomplete() = viewModelScope.launch {
-        val autocomplete = addEditAutocompleteState.getCurrentAutocomplete()
-        autocompletesRepository.saveAutocomplete(autocomplete)
+        addEditAutocompleteState.onWaiting()
+
+        autocompletesRepository.saveAutocomplete(addEditAutocompleteState.getAutocomplete())
             .onSuccess {
                 withContext(AppDispatchers.Main) {
                     _screenEventFlow.emit(AddEditAutocompleteScreenEvent.ShowBackScreen)
@@ -70,7 +75,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
             .onFailure {
                 if (it is InvalidNameException) {
                     withContext(AppDispatchers.Main) {
-                        addEditAutocompleteState.showNameError()
+                        addEditAutocompleteState.onInvalidNameValue()
                     }
                 }
             }
@@ -81,6 +86,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
     }
 
     private fun nameChanged(event: AddEditAutocompleteEvent.NameChanged) {
-        addEditAutocompleteState.changeNameValue(event.value)
+        addEditAutocompleteState.onNameValueChanged(event.value)
     }
 }

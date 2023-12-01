@@ -20,7 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
-import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditAutocompleteViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditAutocompleteEvent
 
@@ -29,7 +28,7 @@ fun AddEditAutocompleteScreen(
     navController: NavController,
     viewModel: AddEditAutocompleteViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.addEditAutocompleteState.screenData
+    val state = viewModel.addEditAutocompleteState
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
@@ -49,10 +48,11 @@ fun AddEditAutocompleteScreen(
 
     AppDialog(
         onDismissRequest = { viewModel.onEvent(AddEditAutocompleteEvent.CancelSavingAutocomplete) },
-        header = { Text(text = screenData.headerText.asCompose()) },
+        header = { Text(text = state.header.asCompose()) },
         actionButtons = {
             AppDialogActionButton(
                 onClick = { viewModel.onEvent(AddEditAutocompleteEvent.CancelSavingAutocomplete) },
+                enabled = !state.waiting,
                 content = {
                     Text(text = stringResource(R.string.addEditAutocomplete_action_cancelSavingAutocomplete))
                 }
@@ -60,6 +60,7 @@ fun AddEditAutocompleteScreen(
             AppDialogActionButton(
                 onClick = { viewModel.onEvent(AddEditAutocompleteEvent.SaveAutocomplete) },
                 primaryButton = true,
+                enabled = !state.waiting,
                 content = {
                     Text(text = stringResource(R.string.addEditAutocomplete_action_saveAutocomplete))
                 }
@@ -70,8 +71,8 @@ fun AddEditAutocompleteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = screenData.nameValue,
-            valueFontSize = screenData.fontSize.toTextField().sp,
+            value = state.nameValue,
+            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = AddEditAutocompleteEvent.NameChanged(it)
                 viewModel.onEvent(event)
@@ -80,7 +81,7 @@ fun AddEditAutocompleteScreen(
                 Text(text = stringResource(R.string.addEditAutocomplete_label_name))
             },
             error = { Text(text = stringResource(R.string.addEditAutocomplete_message_nameError)) },
-            showError = screenData.showNameError,
+            showError = state.nameError,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Text,
