@@ -35,11 +35,11 @@ fun AddEditAutocompleteScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                AddEditAutocompleteScreenEvent.ShowBackScreen -> {
+                AddEditAutocompleteScreenEvent.OnShowBackScreen -> {
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }
-                AddEditAutocompleteScreenEvent.ShowKeyboard -> {
+                AddEditAutocompleteScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
@@ -47,18 +47,18 @@ fun AddEditAutocompleteScreen(
     }
 
     AppDialog(
-        onDismissRequest = { viewModel.onEvent(AddEditAutocompleteEvent.CancelSavingAutocomplete) },
+        onDismissRequest = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickCancel) },
         header = { Text(text = state.header.asCompose()) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(AddEditAutocompleteEvent.CancelSavingAutocomplete) },
+                onClick = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickCancel) },
                 enabled = !state.waiting,
                 content = {
                     Text(text = stringResource(R.string.addEditAutocomplete_action_cancelSavingAutocomplete))
                 }
             )
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(AddEditAutocompleteEvent.SaveAutocomplete) },
+                onClick = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickSave) },
                 primaryButton = true,
                 enabled = !state.waiting,
                 content = {
@@ -74,7 +74,7 @@ fun AddEditAutocompleteScreen(
             value = state.nameValue,
             valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
-                val event = AddEditAutocompleteEvent.NameChanged(it)
+                val event = AddEditAutocompleteEvent.OnNameValueChanged(it)
                 viewModel.onEvent(event)
             },
             label = {
@@ -88,7 +88,7 @@ fun AddEditAutocompleteScreen(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.onEvent(AddEditAutocompleteEvent.SaveAutocomplete) }
+                onDone = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickSave) }
             )
         )
     }

@@ -4,9 +4,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class AddEditAutocompleteEvent {
 
-    object SaveAutocomplete : AddEditAutocompleteEvent()
+    object OnClickSave : AddEditAutocompleteEvent()
 
-    object CancelSavingAutocomplete : AddEditAutocompleteEvent()
+    object OnClickCancel : AddEditAutocompleteEvent()
 
-    data class NameChanged(val value: TextFieldValue) : AddEditAutocompleteEvent()
+    data class OnNameValueChanged(val value: TextFieldValue) : AddEditAutocompleteEvent()
 }

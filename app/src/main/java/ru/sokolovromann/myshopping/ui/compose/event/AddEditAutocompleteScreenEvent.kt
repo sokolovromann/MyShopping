@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.event
 
 sealed class AddEditAutocompleteScreenEvent {
 
-    object ShowBackScreen : AddEditAutocompleteScreenEvent()
+    object OnShowBackScreen : AddEditAutocompleteScreenEvent()
 
-    object ShowKeyboard : AddEditAutocompleteScreenEvent()
+    object OnShowKeyboard : AddEditAutocompleteScreenEvent()
 }
