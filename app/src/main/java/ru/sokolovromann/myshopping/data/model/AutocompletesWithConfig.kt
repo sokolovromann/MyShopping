@@ -21,8 +21,9 @@ data class AutocompletesWithConfig(
     }
 
     fun getUidsByNames(names: List<String>): List<String> {
+        val namesAsSearch = names.map { it.asSearchQuery() }
         return autocompletes
-            .filter { names.contains(it.name) }
+            .filter { namesAsSearch.contains(it.name.asSearchQuery()) }
             .map { it.uid }
     }
 
