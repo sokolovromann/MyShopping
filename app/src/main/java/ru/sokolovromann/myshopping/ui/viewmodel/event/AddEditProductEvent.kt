@@ -14,8 +14,6 @@ sealed class AddEditProductEvent {
 
     data class ProductNameChanged(val value: TextFieldValue) : AddEditProductEvent()
 
-    data class ProductNameFocusChanged(val focused: Boolean) : AddEditProductEvent()
-
     data class ProductUidChanged(val value: TextFieldValue) : AddEditProductEvent()
 
     data class ProductBrandChanged(val value: TextFieldValue) : AddEditProductEvent()

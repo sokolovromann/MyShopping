@@ -13,6 +13,7 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.Autocomplete
+import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
@@ -26,7 +27,10 @@ import ru.sokolovromann.myshopping.data.utils.asSearchQuery
 import ru.sokolovromann.myshopping.data.utils.sortedAutocompletes
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.AddEditProductState
+import ru.sokolovromann.myshopping.ui.utils.isEmpty
+import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
 import javax.inject.Inject
 
@@ -58,8 +62,6 @@ class AddEditProductViewModel @Inject constructor(
             AddEditProductEvent.CancelSavingProduct -> cancelSavingProduct()
 
             is AddEditProductEvent.ProductNameChanged -> productNameChanged(event)
-
-            is AddEditProductEvent.ProductNameFocusChanged -> productNameFocusChanged(event)
 
             is AddEditProductEvent.ProductUidChanged -> productUidChanged(event)
 
@@ -160,59 +162,49 @@ class AddEditProductViewModel @Inject constructor(
     private suspend fun autocompletesLoaded(
         autocompletes: List<Autocomplete>
     ) = withContext(AppDispatchers.Main) {
-        val currentName = addEditProductState.screenData.nameValue.text
+        val currentName = addEditProductState.nameValue.text
         val names = searchAutocompletesLikeName(autocompletes, currentName)
         if (names.isEmpty()) {
-            addEditProductState.hideAutocompletes()
+            addEditProductState.onHideAutocompletes()
             return@withContext
         }
 
-        val containsAutocomplete = names.find { it.name.lowercase() == currentName.lowercase() }
-
-        if (containsAutocomplete == null) {
-            addEditProductState.showAutocompleteNames(names)
-        } else {
-            addEditProductState.hideAutocompleteNames(containsAutocomplete)
-        }
-
+        val containsAutocomplete = names.find { it.name.asSearchQuery() == currentName.asSearchQuery() }
         val filterByPersonal = filterAutocompletesByPersonal(autocompletes).sortedAutocompletes(
             Sort(SortBy.LAST_MODIFIED, false)
         )
 
-        if (productUid == null || addEditProductState.productNameFocus) {
-            addEditProductState.showAutocompleteElements(
-                brands = filterAutocompleteBrands(filterByPersonal),
-                sizes = filterAutocompleteSizes(filterByPersonal),
-                colors = filterAutocompleteColors(filterByPersonal),
-                manufacturers = filterAutocompletesManufacturers(filterByPersonal),
-                quantities = filterAutocompletesQuantities(filterByPersonal),
-                quantitySymbols = filterAutocompletesQuantitySymbols(filterByPersonal),
-                prices = filterAutocompletesPrices(filterByPersonal),
-                discounts = filterAutocompletesDiscounts(filterByPersonal),
-                totals = filterAutocompletesTotals(filterByPersonal)
-            )
-        } else {
-            addEditProductState.showAutocompleteElementsIf(
-                brands = filterAutocompleteBrands(filterByPersonal),
-                sizes = filterAutocompleteSizes(filterByPersonal),
-                colors = filterAutocompleteColors(filterByPersonal),
-                manufacturers = filterAutocompletesManufacturers(filterByPersonal),
-                quantities = filterAutocompletesQuantities(filterByPersonal),
-                quantitySymbols = filterAutocompletesQuantitySymbols(filterByPersonal),
-                prices = filterAutocompletesPrices(filterByPersonal),
-                discounts = filterAutocompletesDiscounts(filterByPersonal),
-                totals = filterAutocompletesTotals(filterByPersonal)
-            )
+        val quantitySymbols = if (addEditProductState.quantitySymbolValue.isEmpty()) filterAutocompletesQuantitySymbols(filterByPersonal)  else listOf()
+        val autocompletesSelectedValue = addEditProductState.autocompletes.copy(
+            names = names,
+            brands = if (addEditProductState.brandValue.isEmpty()) filterAutocompleteBrands(filterByPersonal) else listOf(),
+            sizes = if (addEditProductState.sizeValue.isEmpty()) filterAutocompleteSizes(filterByPersonal) else listOf(),
+            colors = if (addEditProductState.colorValue.isEmpty()) filterAutocompleteColors(filterByPersonal) else listOf(),
+            manufacturers = if (addEditProductState.manufacturerValue.isEmpty()) filterAutocompletesManufacturers(filterByPersonal) else listOf(),
+            quantities = if (addEditProductState.quantityValue.isEmpty()) filterAutocompletesQuantities(filterByPersonal) else listOf(),
+            quantitySymbols = quantitySymbols,
+            displayDefaultQuantitySymbols = quantitySymbols.isEmpty() && addEditProductState.quantitySymbolValue.isEmpty(),
+            prices = if (addEditProductState.priceValue.isEmpty()) filterAutocompletesPrices(filterByPersonal) else listOf(),
+            discounts = if (addEditProductState.discountValue.isEmpty()) filterAutocompletesDiscounts(filterByPersonal) else listOf(),
+            totals = if (addEditProductState.totalValue.isEmpty()) filterAutocompletesTotals(filterByPersonal) else listOf(),
+            selected = containsAutocomplete
+        )
+        addEditProductState.onShowAutocomplete(autocompletesSelectedValue)
+
+        if (containsAutocomplete != null) {
+            addEditProductState.onNameSelected(containsAutocomplete)
         }
     }
 
     private fun saveProduct() = viewModelScope.launch {
+        addEditProductState.onWaiting()
+
         shoppingListsRepository.saveProduct(addEditProductState.getCurrentProduct())
             .onSuccess {
-                if (addEditProductState.getUserPreferences().saveProductToAutocompletes) {
-                    autocompletesRepository.saveAutocomplete(addEditProductState.getAutocomplete())
+                if (addEditProductState.getCurrentUserPreferences().saveProductToAutocompletes) {
+                    autocompletesRepository.saveAutocomplete(addEditProductState.getCurrentAutocomplete())
                 }
-                appConfigRepository.lockProductElement(addEditProductState.screenData.lockProductElement)
+                appConfigRepository.lockProductElement(addEditProductState.lockProductElementValue.selected)
 
                 withContext(AppDispatchers.Main) {
                     val event = AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
@@ -221,8 +213,8 @@ class AddEditProductViewModel @Inject constructor(
             }
             .onFailure {
                 when (it) {
-                    is InvalidNameException -> { addEditProductState.showNameError() }
-                    is InvalidUidException -> { addEditProductState.showUidError() }
+                    is InvalidNameException -> { addEditProductState.onInvalidNameValue() }
+                    is InvalidUidException -> { addEditProductState.onInvalidUidValue() }
                     else -> {}
                 }
             }
@@ -233,140 +225,209 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun productBrandChanged(event: AddEditProductEvent.ProductBrandChanged) {
-        addEditProductState.changeBrandValue(event.value)
+        addEditProductState.onBrandValueChanged(event.value)
     }
 
     private fun productSizeChanged(event: AddEditProductEvent.ProductSizeChanged) {
-        addEditProductState.changeSizeValue(event.value)
+        addEditProductState.onSizeValueChanged(event.value)
     }
 
     private fun productColorChanged(event: AddEditProductEvent.ProductColorChanged) {
-        addEditProductState.changeColorValue(event.value)
+        addEditProductState.onColorValueChanged(event.value)
     }
 
     private fun productNameChanged(event: AddEditProductEvent.ProductNameChanged) {
-        addEditProductState.changeNameValue(event.value)
+        addEditProductState.onNameValueChanged(event.value)
 
         val minLength = 2
         if (event.value.text.length >= minLength) {
             val search = event.value.text
             getAutocompletes(search)
         } else {
-            addEditProductState.hideAutocompletes()
+            addEditProductState.onHideAutocompletes()
         }
     }
 
-    private fun productNameFocusChanged(event: AddEditProductEvent.ProductNameFocusChanged) {
-        addEditProductState.changeNameFocus(event.focused)
-    }
-
     private fun productUidChanged(event: AddEditProductEvent.ProductUidChanged) {
-        addEditProductState.changeUidValue(event.value)
+        addEditProductState.onUidValueChanged(event.value)
     }
 
     private fun productManufacturerChanged(event: AddEditProductEvent.ProductManufacturerChanged) {
-        addEditProductState.changeManufacturerValue(event.value)
+        addEditProductState.onManufacturerValueChanged(event.value)
     }
 
     private fun productQuantityChanged(event: AddEditProductEvent.ProductQuantityChanged) {
-        addEditProductState.changeQuantityValue(event.value)
+        addEditProductState.onQuantityValueChanged(event.value)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.PRICE -> calculatePrice()
+            LockProductElement.TOTAL -> calculateTotal()
+            else -> {}
+        }
     }
 
     private fun productQuantitySymbolChanged(event: AddEditProductEvent.ProductQuantitySymbolChanged) {
-        addEditProductState.changeQuantitySymbolValue(event.value)
+        addEditProductState.onQuantitySymbolValueChanged(event.value)
     }
 
     private fun productPriceChanged(event: AddEditProductEvent.ProductPriceChanged) {
-        addEditProductState.changePriceValue(event.value)
+        addEditProductState.onPriceValueChanged(event.value)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.QUANTITY -> calculateQuantity()
+            LockProductElement.TOTAL -> calculateTotal()
+            else -> {}
+        }
     }
 
     private fun productDiscountChanged(event: AddEditProductEvent.ProductDiscountChanged) {
-        addEditProductState.changeDiscountValue(event.value)
+        addEditProductState.onDiscountValueChanged(event.value)
+
+        if (addEditProductState.lockProductElementValue.selected == LockProductElement.TOTAL) {
+            calculateTotal()
+        }
     }
 
     private fun productDiscountAsPercentSelected() {
-        addEditProductState.selectDiscountAsPercent()
+        addEditProductState.onDiscountAsPercentSelected(asPercent = true)
+
+        if (addEditProductState.lockProductElementValue.selected == LockProductElement.TOTAL) {
+            calculateTotal()
+        }
     }
 
     private fun productDiscountAsMoneySelected() {
-        addEditProductState.selectDiscountAsMoney()
+        addEditProductState.onDiscountAsPercentSelected(asPercent = false)
+
+        if (addEditProductState.lockProductElementValue.selected == LockProductElement.TOTAL) {
+            calculateTotal()
+        }
     }
 
     private fun productTotalChanged(event: AddEditProductEvent.ProductTotalChanged) {
-        addEditProductState.changeProductTotalValue(event.value)
+        addEditProductState.onTotalValueChanged(event.value)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.QUANTITY -> calculateQuantity()
+            LockProductElement.PRICE -> calculatePrice()
+            LockProductElement.TOTAL -> {}
+        }
     }
 
     private fun lockProductElementSelected(event: AddEditProductEvent.LockProductElementSelected) {
-        addEditProductState.lockProductElementSelected(event.lockProductElement)
+        addEditProductState.onLockProductElementSelected(event.lockProductElement)
     }
 
     private fun autocompleteNameSelected(event: AddEditProductEvent.AutocompleteNameSelected) {
-        addEditProductState.selectAutocompleteName(event.autocomplete)
+        addEditProductState.onNameSelected(event.autocomplete)
         getAutocompletes(event.autocomplete.name)
     }
 
     private fun autocompleteBrandSelected(event: AddEditProductEvent.AutocompleteBrandSelected) {
-        addEditProductState.selectAutocompleteBrand(event.brand)
+        addEditProductState.onBrandSelected(event.brand)
     }
 
     private fun autocompleteSizeSelected(event: AddEditProductEvent.AutocompleteSizeSelected) {
-        addEditProductState.selectAutocompleteSize(event.size)
+        addEditProductState.onSizeSelected(event.size)
     }
 
     private fun autocompleteColorSelected(event: AddEditProductEvent.AutocompleteColorSelected) {
-        addEditProductState.selectAutocompleteColor(event.color)
+        addEditProductState.onColorSelected(event.color)
     }
 
     private fun autocompleteManufacturerSelected(event: AddEditProductEvent.AutocompleteManufacturerSelected) {
-        addEditProductState.selectAutocompleteManufacturer(event.manufacturer)
+        addEditProductState.onManufacturerSelected(event.manufacturer)
     }
 
     private fun autocompleteQuantitySelected(event: AddEditProductEvent.AutocompleteQuantitySelected) {
-        addEditProductState.selectAutocompleteQuantity(event.quantity)
+        addEditProductState.onQuantitySelected(event.quantity)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.PRICE -> calculatePrice()
+            LockProductElement.TOTAL -> calculateTotal()
+            else -> {}
+        }
     }
 
     private fun autocompleteQuantitySymbolSelected(event: AddEditProductEvent.AutocompleteQuantitySymbolSelected) {
-        addEditProductState.selectAutocompleteQuantitySymbol(event.quantity)
+        addEditProductState.onQuantitySymbolSelected(event.quantity)
     }
 
     private fun autocompletePriceSelected(event: AddEditProductEvent.AutocompletePriceSelected) {
-        addEditProductState.selectAutocompletePrice(event.price)
+        addEditProductState.onPriceSelected(event.price)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.QUANTITY -> calculateQuantity()
+            LockProductElement.TOTAL -> calculateTotal()
+            else -> {}
+        }
     }
 
     private fun autocompleteTotalSelected(event: AddEditProductEvent.AutocompleteTotalSelected) {
-        addEditProductState.selectAutocompleteTotal(event.total)
+        addEditProductState.onTotalSelected(event.total)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.QUANTITY -> calculateQuantity()
+            LockProductElement.PRICE -> calculatePrice()
+            else -> {}
+        }
     }
 
     private fun autocompleteDiscountSelected(event: AddEditProductEvent.AutocompleteDiscountSelected) {
-        addEditProductState.selectAutocompleteDiscount(event.discount)
+        addEditProductState.onDiscountSelected(event.discount)
+
+        if (addEditProductState.lockProductElementValue.selected == LockProductElement.TOTAL) {
+            calculateTotal()
+        }
     }
 
     private fun autocompleteMinusOneQuantitySelected() {
-        addEditProductState.minusOneQuantity()
+        val value = addEditProductState.quantityValue.toFloatOrZero().minus(1)
+        val quantity = Quantity(value = value)
+        val quantityValue = if (quantity.isEmpty()) {
+            "".toTextFieldValue()
+        } else {
+            quantity.toTextFieldValue()
+        }
+        addEditProductState.onQuantityValueChanged(quantityValue)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.PRICE -> calculatePrice()
+            LockProductElement.TOTAL -> calculateTotal()
+            else -> {}
+        }
     }
 
     private fun autocompletePlusOneQuantitySelected() {
-        addEditProductState.plusOneQuantity()
+        val value = addEditProductState.quantityValue.toFloatOrZero().plus(1)
+        val quantityValue = Quantity(value = value).toTextFieldValue()
+        addEditProductState.onQuantityValueChanged(quantityValue)
+
+        when (addEditProductState.lockProductElementValue.selected) {
+            LockProductElement.PRICE -> calculatePrice()
+            LockProductElement.TOTAL -> calculateTotal()
+            else -> {}
+        }
     }
 
     private fun productNoteChanged(event: AddEditProductEvent.ProductNoteChanged) {
-        addEditProductState.changeProductNoteValue(event.value)
+        addEditProductState.onNoteValueChanged(event.value)
     }
 
     private fun showProductDiscountAsPercentMenu() {
-        addEditProductState.showDiscountAsPercent()
+        addEditProductState.onSelectDiscountAsPercent(expanded = true)
     }
 
     private fun invertNameOtherFields() {
-        addEditProductState.invertNameOtherFields()
+        addEditProductState.onInvertNameOtherFields()
     }
 
     private fun invertPriceOtherFields() {
-        addEditProductState.invertPriceOtherFields()
+        addEditProductState.onInvertPriceOtherFields()
     }
 
     private fun selectLockProductElement() {
-        addEditProductState.selectLockProductElement()
+        addEditProductState.onSelectLockProductElement(expanded = true)
     }
 
     private fun showKeyboard() = viewModelScope.launch(AppDispatchers.Main) {
@@ -374,15 +435,15 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun hideProductDiscountAsPercentMenu() {
-        addEditProductState.hideDiscountAsPercent()
+        addEditProductState.onSelectDiscountAsPercent(expanded = false)
     }
 
     private fun hideLockProductElement() {
-        addEditProductState.hideLockProductElement()
+        addEditProductState.onSelectLockProductElement(expanded = false)
     }
 
     private fun filterAutocompletesByPersonal(autocompletes: List<Autocomplete>): List<Autocomplete> {
-        return if (addEditProductState.getUserPreferences().displayDefaultAutocompletes) {
+        return if (addEditProductState.getCurrentUserPreferences().displayDefaultAutocompletes) {
             autocompletes
         } else {
             autocompletes.filter { it.personal }
@@ -415,7 +476,7 @@ class AddEditProductViewModel @Inject constructor(
                 addAll(otherAutocompletes)
             }
             .filterIndexed { index, autocomplete ->
-                autocomplete.name.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesNames
+                autocomplete.name.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesNames
             }
     }
 
@@ -424,7 +485,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.brand }
             .distinct()
             .filterIndexed { index, brand ->
-                brand.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+                brand.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
             }
     }
 
@@ -433,7 +494,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.size }
             .distinct()
             .filterIndexed { index, size ->
-                size.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+                size.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
             }
     }
 
@@ -442,7 +503,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.color }
             .distinct()
             .filterIndexed { index, color ->
-                color.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+                color.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
             }
     }
 
@@ -451,7 +512,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.manufacturer }
             .distinct()
             .filterIndexed { index, manufacturer ->
-                manufacturer.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesOthers
+                manufacturer.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
             }
     }
 
@@ -460,7 +521,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.quantity }
             .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, quantity ->
-                quantity.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesQuantities
+                quantity.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesQuantities
             }
     }
 
@@ -470,7 +531,7 @@ class AddEditProductViewModel @Inject constructor(
             .distinctBy { it.symbol }
             .filterIndexed { index, quantity ->
                 quantity.value > 0 && quantity.symbol.isNotEmpty() &&
-                        index <= addEditProductState.getUserPreferences().maxAutocompletesQuantities
+                        index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesQuantities
             }
     }
 
@@ -479,7 +540,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.price }
             .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, price ->
-                price.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesMoneys
+                price.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesMoneys
             }
     }
 
@@ -488,7 +549,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.discount }
             .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, discount ->
-                discount.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesMoneys
+                discount.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesMoneys
             }
     }
 
@@ -497,7 +558,64 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.total }
             .distinctBy { it.getFormattedValue() }
             .filterIndexed { index, total ->
-                total.isNotEmpty() && index <= addEditProductState.getUserPreferences().maxAutocompletesMoneys
+                total.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesMoneys
             }
+    }
+
+    private fun calculateQuantity() {
+        val price = addEditProductState.priceValue.toFloatOrZero()
+        val total = addEditProductState.totalValue.toFloatOrZero()
+        val fieldValue = if (price <= 0f || total <= 0f) {
+            "".toTextFieldValue()
+        } else {
+            Quantity(
+                value = total / price,
+                decimalFormat = addEditProductState.getCurrentUserPreferences().quantityDecimalFormat
+            ).toTextFieldValue()
+        }
+
+        addEditProductState.onQuantityValueChanged(fieldValue)
+    }
+
+    private fun calculatePrice() {
+        val quantity = addEditProductState.quantityValue.toFloatOrZero()
+        val total = addEditProductState.totalValue.toFloatOrZero()
+        val fieldValue = if (quantity <= 0f || total < 0f) {
+            "".toTextFieldValue()
+        } else {
+            Money(
+                value = total / quantity,
+                currency = addEditProductState.getCurrentUserPreferences().currency,
+                asPercent = false,
+                decimalFormat = addEditProductState.getCurrentUserPreferences().moneyDecimalFormat
+            ).toTextFieldValue()
+        }
+
+        addEditProductState.onPriceValueChanged(fieldValue)
+    }
+
+    private fun calculateTotal() {
+        val quantity = addEditProductState.quantityValue.toFloatOrZero()
+        val price = addEditProductState.priceValue.toFloatOrZero()
+        val fieldValue = if (quantity <= 0f || price <= 0f) {
+            "".toTextFieldValue()
+        } else {
+            val totalValue = quantity * price
+            val moneyDiscount = Money(
+                value = addEditProductState.discountValue.toFloatOrZero(),
+                asPercent = addEditProductState.discountAsPercentValue.selected
+            )
+            val taxRate = addEditProductState.getCurrentUserPreferences().taxRate
+            val totalWithDiscountAndTaxRate = totalValue - moneyDiscount.calculateValueFromPercent(totalValue) +
+                    taxRate.calculateValueFromPercent(totalValue)
+            Money(
+                value = totalWithDiscountAndTaxRate,
+                currency = addEditProductState.getCurrentUserPreferences().currency,
+                asPercent = false,
+                decimalFormat = addEditProductState.getCurrentUserPreferences().moneyDecimalFormat
+            ).toTextFieldValue()
+        }
+
+        addEditProductState.onTotalValueChanged(fieldValue)
     }
 }
