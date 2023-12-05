@@ -62,8 +62,6 @@ fun AddEditProductScreen(
                 AddEditProductScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
-
-                else -> {}
             }
         }
     }
