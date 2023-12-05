@@ -177,14 +177,14 @@ private fun getProductBody(
         builder.append(product.color)
     }
 
-    if (builder.isNotEmpty()) {
-        builder.append(separator)
-    }
-
     val displayQuantity = product.quantity.isNotEmpty()
     val displayTotal = displayMoney && !shoppingTotalFormatted && product.total.isNotEmpty()
 
     if (displayTotal) {
+        if (builder.isNotEmpty()) {
+            builder.append(separator)
+        }
+
         if (displayQuantity) {
             builder.append(product.quantity)
             builder.append(separator)
@@ -192,6 +192,9 @@ private fun getProductBody(
         builder.append(product.total)
     } else {
         if (displayQuantity) {
+            if (builder.isNotEmpty()) {
+                builder.append(separator)
+            }
             builder.append(product.quantity)
         }
     }
