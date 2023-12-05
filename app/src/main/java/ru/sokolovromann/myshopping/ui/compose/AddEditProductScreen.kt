@@ -62,6 +62,8 @@ fun AddEditProductScreen(
                 AddEditProductScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
+
+                else -> {}
             }
         }
     }
@@ -393,7 +395,7 @@ fun AddEditProductScreen(
                 fontSize = state.fontSize,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
-                    val event = AddEditProductEvent.OnQuantitySelected(it)
+                    val event = AddEditProductEvent.OnQuantitySymbolSelected(it)
                     viewModel.onEvent(event)
                 }
             )
@@ -403,7 +405,7 @@ fun AddEditProductScreen(
                 fontSize = state.fontSize,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
-                    val event = AddEditProductEvent.OnQuantitySymbolSelected(it)
+                    val event = AddEditProductEvent.OnQuantitySelected(it)
                     viewModel.onEvent(event)
                 }
             )
