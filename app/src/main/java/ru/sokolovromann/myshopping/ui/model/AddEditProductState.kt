@@ -266,6 +266,7 @@ class AddEditProductState {
 
     fun onDiscountAsPercentSelected(asPercent: Boolean) {
         discountAsPercentValue = toDiscountSelectedValue(asPercent)
+        expandedDiscountAsPercent = false
     }
 
     fun onSelectDiscountAsPercent(expanded: Boolean) {
@@ -287,6 +288,7 @@ class AddEditProductState {
 
     fun onLockProductElementSelected(lockProductElement: LockProductElement) {
         lockProductElementValue = toLockProductElementSelectedValue(lockProductElement)
+        expandedLockProductElement = false
     }
 
     fun onSelectLockProductElement(expanded: Boolean) {

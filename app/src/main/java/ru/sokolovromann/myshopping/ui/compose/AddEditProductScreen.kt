@@ -36,6 +36,7 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
@@ -53,25 +54,20 @@ fun AddEditProductScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                AddEditProductScreenEvent.ShowBackScreen -> {
-                    navController.popBackStack()
-                    focusManager.clearFocus(force = true)
-                }
-
-                is AddEditProductScreenEvent.ShowBackScreenAndUpdateProductsWidget -> {
+                is AddEditProductScreenEvent.OnShowBackScreen -> {
                     updateProductsWidget(context, it.shoppingUid)
                     navController.popBackStack()
                     focusManager.clearFocus(force = true)
                 }
 
-                AddEditProductScreenEvent.ShowKeyboard -> {
+                AddEditProductScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
         }
     }
 
-    BackHandler { viewModel.onEvent(AddEditProductEvent.CancelSavingProduct) }
+    BackHandler { viewModel.onEvent(AddEditProductEvent.OnClickCancel) }
 
     AppScaffold(
         topBar = {
@@ -80,7 +76,7 @@ fun AddEditProductScreen(
                 navigationIcon = {
                     IconButton(
                         enabled = !state.waiting,
-                        onClick = { viewModel.onEvent(AddEditProductEvent.CancelSavingProduct) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickCancel) }
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -91,7 +87,7 @@ fun AddEditProductScreen(
                 actions = {
                     TextButton(
                         enabled = !state.waiting,
-                        onClick = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickSave) }
                     ) {
                         Text(text = stringResource(R.string.addEditProduct_action_saveProduct).uppercase())
                     }
@@ -102,7 +98,7 @@ fun AddEditProductScreen(
     ) { paddings ->
         AddEditProductContent(scaffoldPaddings = paddings) {
             val keyboardActions: KeyboardActions = if (state.enterToSaveProduct) {
-                KeyboardActions(onDone = { viewModel.onEvent(AddEditProductEvent.SaveProduct) })
+                KeyboardActions(onDone = { viewModel.onEvent(AddEditProductEvent.OnClickSave) })
             } else {
                 KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) })
             }
@@ -125,7 +121,7 @@ fun AddEditProductScreen(
                     value = state.nameValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductNameChanged(it)
+                        val event = AddEditProductEvent.OnNameValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_name)) },
@@ -150,7 +146,7 @@ fun AddEditProductScreen(
                                 border = getButtonBorderStroke(),
                                 shape = MaterialTheme.shapes.small
                             ),
-                        onClick = { viewModel.onEvent(AddEditProductEvent.InvertNameOtherFields) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnInvertNameOtherFields) }
                     ) {
                         Icon(
                             imageVector = if (state.displayNameOtherFields) {
@@ -169,7 +165,7 @@ fun AddEditProductScreen(
                 names = state.autocompletes.names,
                 fontSize = state.fontSize,
                 onClick = {
-                    val event = AddEditProductEvent.AutocompleteNameSelected(it)
+                    val event = AddEditProductEvent.OnNameSelected(it)
                     viewModel.onEvent(event)
                 }
             )
@@ -183,7 +179,7 @@ fun AddEditProductScreen(
                     value = state.brandValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductBrandChanged(it)
+                        val event = AddEditProductEvent.OnBrandValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_brand)) },
@@ -199,7 +195,7 @@ fun AddEditProductScreen(
                     list = state.autocompletes.brands,
                     fontSize = state.fontSize,
                     onClick = {
-                        val event = AddEditProductEvent.AutocompleteBrandSelected(it)
+                        val event = AddEditProductEvent.OnBrandSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -212,7 +208,7 @@ fun AddEditProductScreen(
                     value = state.sizeValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductSizeChanged(it)
+                        val event = AddEditProductEvent.OnSizeValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_size)) },
@@ -228,7 +224,7 @@ fun AddEditProductScreen(
                     list = state.autocompletes.sizes,
                     fontSize = state.fontSize,
                     onClick = {
-                        val event = AddEditProductEvent.AutocompleteSizeSelected(it)
+                        val event = AddEditProductEvent.OnSizeSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -241,7 +237,7 @@ fun AddEditProductScreen(
                     value = state.colorValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductColorChanged(it)
+                        val event = AddEditProductEvent.OnColorValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_color)) },
@@ -257,7 +253,7 @@ fun AddEditProductScreen(
                     list = state.autocompletes.colors,
                     fontSize = state.fontSize,
                     onClick = {
-                        val event = AddEditProductEvent.AutocompleteColorSelected(it)
+                        val event = AddEditProductEvent.OnColorSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -270,7 +266,7 @@ fun AddEditProductScreen(
                     value = state.manufacturerValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductManufacturerChanged(it)
+                        val event = AddEditProductEvent.OnManufacturerValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_manufacturer)) },
@@ -286,7 +282,7 @@ fun AddEditProductScreen(
                     list = state.autocompletes.manufacturers,
                     fontSize = state.fontSize,
                     onClick = {
-                        val event = AddEditProductEvent.AutocompleteManufacturerSelected(it)
+                        val event = AddEditProductEvent.OnManufacturerSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -299,7 +295,7 @@ fun AddEditProductScreen(
                     value = state.uidValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductUidChanged(it)
+                        val event = AddEditProductEvent.OnUidValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_uid)) },
@@ -324,7 +320,7 @@ fun AddEditProductScreen(
                     value = state.quantityValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductQuantityChanged(it)
+                        val event = AddEditProductEvent.OnQuantityValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
@@ -343,7 +339,7 @@ fun AddEditProductScreen(
                     value = state.quantitySymbolValue,
                     valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
-                        val event = AddEditProductEvent.ProductQuantitySymbolChanged(it)
+                        val event = AddEditProductEvent.OnQuantitySymbolValueChanged(it)
                         viewModel.onEvent(event)
                     },
                     label = { Text(text = stringResource(R.string.addEditProduct_label_quantitySymbol)) },
@@ -359,7 +355,7 @@ fun AddEditProductScreen(
                 quantities = state.autocompletes.quantitySymbols,
                 minusOneQuantityChip = {
                     AppChip(
-                        onClick = { viewModel.onEvent(AddEditProductEvent.AutocompleteMinusOneQuantitySelected) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickMinusOneQuantity) }
                     ) {
                         Text(
                             text = stringResource(R.string.addEditProduct_action_quantityMinusOne),
@@ -369,7 +365,7 @@ fun AddEditProductScreen(
                 },
                 plusOneQuantityChip = {
                     AppChip(
-                        onClick = { viewModel.onEvent(AddEditProductEvent.AutocompletePlusOneQuantitySelected) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickPlusOneQuantity) }
                     ) {
                         Text(
                             text = stringResource(R.string.addEditProduct_action_quantityPlusOne),
@@ -381,7 +377,7 @@ fun AddEditProductScreen(
                     stringArrayResource(R.array.data_text_defaultAutocompleteQuantitySymbols).forEach {
                         AppChip(
                             onClick = {
-                                val event = AddEditProductEvent.ProductQuantitySymbolChanged(it.toTextFieldValue())
+                                val event = AddEditProductEvent.OnQuantitySymbolValueChanged(it.toTextFieldValue())
                                 viewModel.onEvent(event)
                             },
                             content = {
@@ -398,7 +394,7 @@ fun AddEditProductScreen(
                 fontSize = state.fontSize,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
-                    val event = AddEditProductEvent.AutocompleteQuantitySymbolSelected(it)
+                    val event = AddEditProductEvent.OnQuantitySelected(it)
                     viewModel.onEvent(event)
                 }
             )
@@ -408,7 +404,7 @@ fun AddEditProductScreen(
                 fontSize = state.fontSize,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
-                    val event = AddEditProductEvent.AutocompleteQuantitySelected(it)
+                    val event = AddEditProductEvent.OnQuantitySymbolSelected(it)
                     viewModel.onEvent(event)
                 }
             )
@@ -424,7 +420,7 @@ fun AddEditProductScreen(
                         value = state.priceValue,
                         valueFontSize = state.fontSize.textField.sp,
                         onValueChange = {
-                            val event = AddEditProductEvent.ProductPriceChanged(it)
+                            val event = AddEditProductEvent.OnPriceValueChanged(it)
                             viewModel.onEvent(event)
                         },
                         enabled = state.lockProductElementValue.selected != LockProductElement.PRICE,
@@ -446,7 +442,7 @@ fun AddEditProductScreen(
                                 border = getButtonBorderStroke(),
                                 shape = MaterialTheme.shapes.small
                             ),
-                        onClick = { viewModel.onEvent(AddEditProductEvent.InvertPriceOtherFields) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnInvertPriceOtherFields) }
                     ) {
                         Icon(
                             imageVector = if (state.displayPriceOtherFields) {
@@ -465,7 +461,7 @@ fun AddEditProductScreen(
                     fontSize = state.fontSize,
                     enabled = state.lockProductElementValue.selected != LockProductElement.PRICE,
                     onClick = {
-                        val event = AddEditProductEvent.AutocompletePriceSelected(it)
+                        val event = AddEditProductEvent.OnPriceSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -481,7 +477,7 @@ fun AddEditProductScreen(
                             value = state.discountValue,
                             valueFontSize = state.fontSize.textField.sp,
                             onValueChange = {
-                                val event = AddEditProductEvent.ProductDiscountChanged(it)
+                                val event = AddEditProductEvent.OnDiscountValueChanged(it)
                                 viewModel.onEvent(event)
                             },
                             enabled = state.lockProductElementValue.selected == LockProductElement.TOTAL,
@@ -497,7 +493,7 @@ fun AddEditProductScreen(
 
                         AddEditProductDiscountAsPercentButton(
                             modifier = Modifier.weight(0.4f),
-                            onClick = { viewModel.onEvent(AddEditProductEvent.ShowProductDiscountAsPercentMenu) },
+                            onClick = { viewModel.onEvent(AddEditProductEvent.OnSelectDiscountAsPercent(true)) },
                             enabled = state.lockProductElementValue.selected == LockProductElement.TOTAL
                         ) {
                             Text(
@@ -508,16 +504,16 @@ fun AddEditProductScreen(
 
                             AppDropdownMenu(
                                 expanded = state.expandedDiscountAsPercent,
-                                onDismissRequest = { viewModel.onEvent(AddEditProductEvent.HideProductDiscountAsPercentMenu) }
+                                onDismissRequest = { viewModel.onEvent(AddEditProductEvent.OnSelectDiscountAsPercent(false)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsPercentSelected) },
-                                    text = { Text(text = state.discountAsPercentValue.text.asCompose()) },
+                                    onClick = { viewModel.onEvent(AddEditProductEvent.OnDiscountAsPercentSelected(true)) },
+                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsPercents)) },
                                     right = { CheckmarkAppCheckbox(checked = state.discountAsPercentValue.selected) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(AddEditProductEvent.ProductDiscountAsMoneySelected) },
-                                    text = { Text(text = state.discountAsPercentValue.text.asCompose()) },
+                                    onClick = { viewModel.onEvent(AddEditProductEvent.OnDiscountAsPercentSelected(false)) },
+                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectDiscountAsMoney)) },
                                     right = { CheckmarkAppCheckbox(checked = !state.discountAsPercentValue.selected) }
                                 )
                             }
@@ -529,7 +525,7 @@ fun AddEditProductScreen(
                         fontSize = state.fontSize,
                         enabled = state.lockProductElementValue.selected == LockProductElement.TOTAL,
                         onClick = {
-                            val event = AddEditProductEvent.AutocompleteDiscountSelected(it)
+                            val event = AddEditProductEvent.OnDiscountSelected(it)
                             viewModel.onEvent(event)
                         }
                     )
@@ -545,7 +541,7 @@ fun AddEditProductScreen(
                         value = state.totalValue,
                         valueFontSize = state.fontSize.textField.sp,
                         onValueChange = {
-                            val event = AddEditProductEvent.ProductTotalChanged(it)
+                            val event = AddEditProductEvent.OnTotalValueChanged(it)
                             viewModel.onEvent(event)
                         },
                         enabled = state.lockProductElementValue.selected != LockProductElement.TOTAL,
@@ -567,7 +563,7 @@ fun AddEditProductScreen(
                                 border = getButtonBorderStroke(),
                                 shape = MaterialTheme.shapes.small
                             ),
-                        onClick = { viewModel.onEvent(AddEditProductEvent.SelectLockProductElement) }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnSelectLockProductElement(true)) }
                     ) {
                         Icon(
                             painter = state.lockProductElementValue.selected.toButtonIcon().asPainter() ?: return@IconButton,
@@ -577,34 +573,31 @@ fun AddEditProductScreen(
 
                         AppDropdownMenu(
                             expanded = state.expandedLockProductElement,
-                            onDismissRequest = { viewModel.onEvent(AddEditProductEvent.HideLockProductElement) },
+                            onDismissRequest = { viewModel.onEvent(AddEditProductEvent.OnSelectLockProductElement(false)) },
                             header = { Text(text = stringResource(R.string.addEditProduct_header_productLock)) }
                         ) {
                             AppDropdownMenuItem(
                                 onClick = {
-                                    val event = AddEditProductEvent.LockProductElementSelected(
-                                        LockProductElement.QUANTITY)
+                                    val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.QUANTITY)
                                     viewModel.onEvent(event)
                                 },
-                                text = { Text(text = state.lockProductElementValue.text.asCompose()) },
+                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockQuantity)) },
                                 right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.QUANTITY) }
                             )
                             AppDropdownMenuItem(
                                 onClick = {
-                                    val event = AddEditProductEvent.LockProductElementSelected(
-                                        LockProductElement.PRICE)
+                                    val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.PRICE)
                                     viewModel.onEvent(event)
                                 },
-                                text = { Text(text = state.lockProductElementValue.text.asCompose()) },
+                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockPrice)) },
                                 right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.PRICE) }
                             )
                             AppDropdownMenuItem(
                                 onClick = {
-                                    val event = AddEditProductEvent.LockProductElementSelected(
-                                        LockProductElement.TOTAL)
+                                    val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.TOTAL)
                                     viewModel.onEvent(event)
                                 },
-                                text = { Text(text = state.lockProductElementValue.text.asCompose()) },
+                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockTotal)) },
                                 right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.TOTAL) }
                             )
                         }
@@ -616,7 +609,7 @@ fun AddEditProductScreen(
                     fontSize = state.fontSize,
                     enabled = state.lockProductElementValue.selected != LockProductElement.TOTAL,
                     onClick = {
-                        val event = AddEditProductEvent.AutocompleteTotalSelected(it)
+                        val event = AddEditProductEvent.OnTotalSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -628,7 +621,7 @@ fun AddEditProductScreen(
                     .padding(AddEditProductElementPaddings),
                 value = state.noteValue,
                 onValueChange = {
-                    val event = AddEditProductEvent.ProductNoteChanged(it)
+                    val event = AddEditProductEvent.OnNoteValueChanged(it)
                     viewModel.onEvent(event)
                 },
                 valueFontSize = state.fontSize.textField.sp,
@@ -639,7 +632,7 @@ fun AddEditProductScreen(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { viewModel.onEvent(AddEditProductEvent.SaveProduct) }
+                    onDone = { viewModel.onEvent(AddEditProductEvent.OnClickSave) }
                 )
             )
         }
