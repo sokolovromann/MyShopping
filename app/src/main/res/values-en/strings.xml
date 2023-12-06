@@ -333,7 +333,7 @@
     <string name="productsWidget_text_productsNotFound">Shopping list is empty</string>
 
     <string name="products_action_addShoppingListTotal">Add</string>
-    <string name="products_action_automaticSorting">Automatic sorting</string>
+    <string name="products_action_automaticSorting">Save sort</string>
     <string name="products_action_calculateChange">Calculate change</string>
     <string name="products_action_copyProductsToShoppingList">Copy to…</string>
     <string name="products_action_copyShoppingList">Copy</string>

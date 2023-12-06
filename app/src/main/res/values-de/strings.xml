@@ -262,7 +262,7 @@
     <string name="productsWidget_text_productsNotFound">Einkaufsliste ist leer</string>
 
     <string name="products_action_addShoppingListTotal">Hinzufügen</string>
-    <string name="products_action_automaticSorting">Automatische Sortierung</string>
+    <string name="products_action_automaticSorting">Sortierung speichern</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_copyProductsToShoppingList">Kopieren nach…</string>
     <string name="products_action_copyShoppingList">Kopieren</string>
