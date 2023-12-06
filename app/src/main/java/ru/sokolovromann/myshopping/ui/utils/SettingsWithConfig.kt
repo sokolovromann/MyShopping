@@ -155,7 +155,7 @@ private fun SettingsWithConfig.getAboutSettingsItems(): List<SettingsItem> {
         SettingsItem(
             uid = SettingsUid.NoUId,
             titleText = UiText.FromResources(R.string.settings_title_appVersion),
-            bodyText = UiText.FromString(settings.appVersion)
+            bodyText = UiText.FromString(appConfig.appBuildConfig.getDisplayName())
         ),
         SettingsItem(
             uid = SettingsUid.Github,
