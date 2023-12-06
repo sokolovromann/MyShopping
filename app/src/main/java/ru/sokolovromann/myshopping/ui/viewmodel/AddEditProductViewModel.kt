@@ -380,9 +380,6 @@ class AddEditProductViewModel @Inject constructor(
             return@launch
         } else {
             addEditProductState.onShowAutocomplete(autocompletesSelectedValue)
-            autocompletesSelectedValue.selected?.let {
-                addEditProductState.onNameSelected(it)
-            }
         }
     }
 
@@ -400,21 +397,22 @@ class AddEditProductViewModel @Inject constructor(
             Sort(SortBy.LAST_MODIFIED, false)
         )
 
-        val quantitySymbols = filterAutocompletesQuantitySymbols(filterByPersonal)
+        val filterNames = if (containsAutocomplete == null) names else listOf()
+        val quantitySymbols = filterAutocompleteQuantitySymbols(filterByPersonal)
         val displayDefaultQuantitySymbols = quantitySymbols.isEmpty() &&
                 addEditProductState.quantitySymbolValue.isEmpty()
         return addEditProductState.autocompletes.copy(
-            names = names,
+            names = filterNames,
             brands = filterAutocompleteBrands(filterByPersonal),
             sizes = filterAutocompleteSizes(filterByPersonal),
             colors = filterAutocompleteColors(filterByPersonal),
-            manufacturers = filterAutocompletesManufacturers(filterByPersonal),
-            quantities = filterAutocompletesQuantities(filterByPersonal),
+            manufacturers = filterAutocompleteManufacturers(filterByPersonal),
+            quantities = filterAutocompleteQuantities(filterByPersonal),
             quantitySymbols = quantitySymbols,
             displayDefaultQuantitySymbols = displayDefaultQuantitySymbols,
-            prices = filterAutocompletesPrices(filterByPersonal),
-            discounts = filterAutocompletesDiscounts(filterByPersonal),
-            totals = filterAutocompletesTotals(filterByPersonal),
+            prices = filterAutocompletePrices(filterByPersonal),
+            discounts = filterAutocompleteDiscounts(filterByPersonal),
+            totals = filterAutocompleteTotals(filterByPersonal),
             selected = containsAutocomplete
         )
     }
@@ -484,7 +482,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun filterAutocompletesManufacturers(autocompletes: List<Autocomplete>): List<String> {
+    private fun filterAutocompleteManufacturers(autocompletes: List<Autocomplete>): List<String> {
         return if (addEditProductState.manufacturerValue.isNotEmpty()) listOf() else autocompletes
             .map { it.manufacturer }
             .distinct()
@@ -493,7 +491,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun filterAutocompletesQuantities(autocompletes: List<Autocomplete>): List<Quantity> {
+    private fun filterAutocompleteQuantities(autocompletes: List<Autocomplete>): List<Quantity> {
         return if (addEditProductState.quantityValue.isNotEmpty()) listOf() else autocompletes
             .map { it.quantity }
             .distinctBy { it.getFormattedValue() }
@@ -502,7 +500,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun filterAutocompletesQuantitySymbols(autocompletes: List<Autocomplete>): List<Quantity> {
+    private fun filterAutocompleteQuantitySymbols(autocompletes: List<Autocomplete>): List<Quantity> {
         return if (addEditProductState.quantitySymbolValue.isNotEmpty()) listOf() else autocompletes
             .map { it.quantity }
             .distinctBy { it.symbol }
@@ -512,7 +510,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun filterAutocompletesPrices(autocompletes: List<Autocomplete>): List<Money> {
+    private fun filterAutocompletePrices(autocompletes: List<Autocomplete>): List<Money> {
         return if (addEditProductState.priceValue.isNotEmpty()) listOf() else autocompletes
             .map { it.price }
             .distinctBy { it.getFormattedValue() }
@@ -521,7 +519,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun filterAutocompletesDiscounts(autocompletes: List<Autocomplete>): List<Money> {
+    private fun filterAutocompleteDiscounts(autocompletes: List<Autocomplete>): List<Money> {
         return if (addEditProductState.discountValue.isNotEmpty()) listOf() else autocompletes
             .map { it.discount }
             .distinctBy { it.getFormattedValue() }
@@ -530,7 +528,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun filterAutocompletesTotals(autocompletes: List<Autocomplete>): List<Money> {
+    private fun filterAutocompleteTotals(autocompletes: List<Autocomplete>): List<Money> {
         return if (addEditProductState.totalValue.isNotEmpty()) listOf() else autocompletes
             .map { it.total }
             .distinctBy { it.getFormattedValue() }

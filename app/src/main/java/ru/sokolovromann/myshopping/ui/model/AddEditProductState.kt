@@ -152,6 +152,8 @@ class AddEditProductState {
 
     fun onNameSelected(autocomplete: Autocomplete) {
         nameValue = autocomplete.name.toTextFieldValue()
+        nameError = false
+        waiting = false
         autocompletes = autocompletes.copy(
             names = listOf(),
             selected = autocomplete
