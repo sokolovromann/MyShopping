@@ -226,19 +226,22 @@ class AddEditProductState {
         quantitySymbolValue = quantity.symbol.toTextFieldValue()
         autocompletes = autocompletes.copy(
             quantities = listOf(),
-            quantitySymbols = listOf()
+            quantitySymbols = listOf(),
+            displayDefaultQuantitySymbols = false
         )
     }
 
     fun onQuantitySymbolValueChanged(value: TextFieldValue) {
         quantitySymbolValue = value
+        autocompletes = autocompletes.copy(displayDefaultQuantitySymbols = false)
     }
 
     fun onQuantitySymbolSelected(quantity: Quantity) {
         quantitySymbolValue = quantity.symbol.toTextFieldValue()
         autocompletes = autocompletes.copy(
             quantities = listOf(),
-            quantitySymbols = listOf()
+            quantitySymbols = listOf(),
+            displayDefaultQuantitySymbols = false
         )
     }
 
