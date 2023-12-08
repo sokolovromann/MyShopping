@@ -280,7 +280,6 @@
     <string name="editCurrencySymbol_action_saveCurrencySymbol">Сохранить</string>
     <string name="editCurrencySymbol_header">Валюта</string>
     <string name="editCurrencySymbol_label_symbol">Символ</string>
-    <string name="editCurrencySymbol_message_symbolError">Добавьте символ</string>
 
     <string name="editReminder_action_cancelSavingReminder">Отмена</string>
     <string name="editReminder_action_deleteReminder">Удалить напоминание</string>

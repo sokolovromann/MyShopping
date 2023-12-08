@@ -12,7 +12,7 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.EditCurrencySymbolState
+import ru.sokolovromann.myshopping.ui.model.EditCurrencySymbolState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditCurrencySymbolEvent
 import javax.inject.Inject
 
@@ -54,16 +54,12 @@ class EditCurrencySymbolViewModel @Inject constructor(
     }
 
     private fun saveCurrencySymbol() = viewModelScope.launch {
-        val symbol = editCurrencySymbolState.screenData.symbolValue.text
-        appConfigRepository.saveCurrencySymbol(symbol)
+        editCurrencySymbolState.onWaiting()
+
+        appConfigRepository.saveCurrencySymbol(editCurrencySymbolState.getCurrentCurrency().symbol)
             .onSuccess {
                 withContext(AppDispatchers.Main) {
                     _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
-                }
-            }
-            .onFailure {
-                withContext(AppDispatchers.Main) {
-                    editCurrencySymbolState.showSymbolError()
                 }
             }
     }
@@ -73,6 +69,6 @@ class EditCurrencySymbolViewModel @Inject constructor(
     }
 
     private fun currencySymbolChanged(event: EditCurrencySymbolEvent.CurrencySymbolChanged) {
-        editCurrencySymbolState.changeSymbolValue(event.value)
+        editCurrencySymbolState.onSymbolValueChanged(event.value)
     }
 }

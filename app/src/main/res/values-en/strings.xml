@@ -286,7 +286,6 @@
     <string name="editCurrencySymbol_action_saveCurrencySymbol">Save</string>
     <string name="editCurrencySymbol_header">Edit currency</string>
     <string name="editCurrencySymbol_label_symbol">Currency</string>
-    <string name="editCurrencySymbol_message_symbolError">Add currency</string>
 
     <string name="editReminder_action_cancelSavingReminder">Cancel</string>
     <string name="editReminder_action_deleteReminder">Delete reminder</string>

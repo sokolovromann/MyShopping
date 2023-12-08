@@ -20,7 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
-import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.EditCurrencySymbolViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditCurrencySymbolEvent
@@ -30,7 +29,7 @@ fun EditCurrencySymbolScreen(
     navController: NavController,
     viewModel: EditCurrencySymbolViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.editCurrencySymbolState.screenData
+    val state = viewModel.editCurrencySymbolState
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val context = LocalContext.current
@@ -62,6 +61,7 @@ fun EditCurrencySymbolScreen(
         actionButtons = {
             AppDialogActionButton(
                 onClick = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
+                enabled = !state.waiting,
                 content = {
                     Text(text = stringResource(R.string.editCurrencySymbol_action_cancelSavingCurrencySymbol))
                 }
@@ -69,6 +69,7 @@ fun EditCurrencySymbolScreen(
             AppDialogActionButton(
                 onClick = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) },
                 primaryButton = true,
+                enabled = !state.waiting,
                 content = {
                     Text(text = stringResource(R.string.editCurrencySymbol_action_saveCurrencySymbol))
                 }
@@ -79,15 +80,13 @@ fun EditCurrencySymbolScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = screenData.symbolValue,
-            valueFontSize = screenData.fontSize.toTextField().sp,
+            value = state.symbolValue,
+            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editCurrencySymbol_label_symbol)) },
-            error = { Text(text = stringResource(R.string.editCurrencySymbol_message_symbolError)) },
-            showError = screenData.showSymbolError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
