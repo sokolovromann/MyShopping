@@ -43,18 +43,13 @@ fun EditShoppingListTotalScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditShoppingListTotalScreenEvent.ShowBackScreen -> {
-                    focusManager.clearFocus(force = true)
-                    navController.popBackStack()
-                }
-
-                is EditShoppingListTotalScreenEvent.ShowBackScreenAndUpdateProductsWidget -> {
+                is EditShoppingListTotalScreenEvent.OnShowBackScreen -> {
                     updateProductsWidget(context, it.shoppingUid)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }
 
-                EditShoppingListTotalScreenEvent.ShowKeyboard -> {
+                EditShoppingListTotalScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
@@ -63,18 +58,18 @@ fun EditShoppingListTotalScreen(
 
     AppDialog(
         onDismissRequest = {
-            viewModel.onEvent(EditShoppingListTotalEvent.CancelSavingShoppingListTotal)
+            viewModel.onEvent(EditShoppingListTotalEvent.OnClickCancel)
         },
         header = { Text(text = state.header.asCompose()) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.CancelSavingShoppingListTotal) },
+                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickCancel) },
                 content = {
                     Text(text = stringResource(R.string.editShoppingListTotal_action_cancelSavingShoppingListTotal))
                 }
             )
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.SaveShoppingListTotal) },
+                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) },
                 primaryButton = true,
                 content = {
                     Text(text = stringResource(R.string.editShoppingListTotal_action_saveShoppingListTotal))
@@ -89,7 +84,7 @@ fun EditShoppingListTotalScreen(
             value = state.totalValue,
             valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
-                val event = EditShoppingListTotalEvent.ShoppingListTotalChanged(it)
+                val event = EditShoppingListTotalEvent.OnTotalChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editShoppingListTotal_label_total)) },
@@ -99,7 +94,7 @@ fun EditShoppingListTotalScreen(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.onEvent(EditShoppingListTotalEvent.SaveShoppingListTotal) }
+                onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
             )
         )
 

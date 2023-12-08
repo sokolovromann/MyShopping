@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
@@ -29,60 +27,50 @@ class EditShoppingListTotalViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<EditShoppingListTotalScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditShoppingListTotalScreenEvent> = _screenEventFlow
 
-    init {
-        getEditShoppingListTotal()
-    }
+    init { onInit() }
 
     override fun onEvent(event: EditShoppingListTotalEvent) {
         when (event) {
-            EditShoppingListTotalEvent.SaveShoppingListTotal -> saveShoppingListTotal()
+            EditShoppingListTotalEvent.OnClickSave -> onClickSave()
 
-            EditShoppingListTotalEvent.CancelSavingShoppingListTotal -> cancelSavingShoppingListTotal()
+            EditShoppingListTotalEvent.OnClickCancel -> onClickCancel()
 
-            is EditShoppingListTotalEvent.ShoppingListTotalChanged -> shoppingListTotalChanged(event)
+            is EditShoppingListTotalEvent.OnTotalChanged -> onTotalChanged(event)
         }
     }
 
-    private fun getEditShoppingListTotal() = viewModelScope.launch {
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
-            shoppingListLoaded(it)
+            editShoppingListTotalState.populate(it)
+            _screenEventFlow.emit(EditShoppingListTotalScreenEvent.OnShowKeyboard)
         }
     }
 
-    private suspend fun shoppingListLoaded(
-        shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        editShoppingListTotalState.populate(shoppingListWithConfig)
-        _screenEventFlow.emit(EditShoppingListTotalScreenEvent.ShowKeyboard)
-    }
-
-    private fun saveShoppingListTotal() = viewModelScope.launch {
+    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
         editShoppingListTotalState.onWaiting()
 
-        val shoppingUid = editShoppingListTotalState.getCurrentShopping().uid
-        val total = editShoppingListTotalState.getCurrentShopping().total
+        val shopping = editShoppingListTotalState.getCurrentShopping()
 
-        if (total.isNotEmpty()) {
+        if (shopping.totalFormatted) {
             shoppingListsRepository.saveShoppingListTotal(
-                shoppingUid = shoppingUid,
-                total = total
+                shoppingUid = shopping.uid,
+                total = shopping.total
             )
         } else {
-            shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
+            shoppingListsRepository.deleteShoppingListTotal(shopping.uid)
         }
 
-        withContext(AppDispatchers.Main) {
-            val event = EditShoppingListTotalScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
-            _screenEventFlow.emit(event)
-        }
+        val event = EditShoppingListTotalScreenEvent.OnShowBackScreen(shopping.uid)
+        _screenEventFlow.emit(event)
     }
 
-    private fun cancelSavingShoppingListTotal() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(EditShoppingListTotalScreenEvent.ShowBackScreen)
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        val uid = editShoppingListTotalState.getCurrentShopping().uid
+        _screenEventFlow.emit(EditShoppingListTotalScreenEvent.OnShowBackScreen(uid))
     }
 
-    private fun shoppingListTotalChanged(event: EditShoppingListTotalEvent.ShoppingListTotalChanged) {
+    private fun onTotalChanged(event: EditShoppingListTotalEvent.OnTotalChanged) {
         editShoppingListTotalState.onTotalValueChanged(event.value)
     }
 }

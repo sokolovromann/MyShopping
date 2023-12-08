@@ -4,9 +4,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class EditShoppingListTotalEvent {
 
-    object SaveShoppingListTotal : EditShoppingListTotalEvent()
+    object OnClickSave : EditShoppingListTotalEvent()
 
-    object CancelSavingShoppingListTotal : EditShoppingListTotalEvent()
+    object OnClickCancel : EditShoppingListTotalEvent()
 
-    data class ShoppingListTotalChanged(val value: TextFieldValue) : EditShoppingListTotalEvent()
+    data class OnTotalChanged(val value: TextFieldValue) : EditShoppingListTotalEvent()
 }
