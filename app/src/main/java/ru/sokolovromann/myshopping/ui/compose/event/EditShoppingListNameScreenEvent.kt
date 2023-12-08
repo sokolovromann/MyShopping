@@ -2,9 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.event
 
 sealed class EditShoppingListNameScreenEvent {
 
-    object ShowBackScreen : EditShoppingListNameScreenEvent()
+    data class OnShowBackScreen(val shoppingUid: String) : EditShoppingListNameScreenEvent()
 
-    data class ShowBackScreenAndUpdateProductsWidget(val shoppingUid: String) : EditShoppingListNameScreenEvent()
-
-    object ShowKeyboard : EditShoppingListNameScreenEvent()
+    object OnShowKeyboard : EditShoppingListNameScreenEvent()
 }

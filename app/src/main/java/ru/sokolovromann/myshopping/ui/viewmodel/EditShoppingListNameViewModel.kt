@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
@@ -29,35 +27,27 @@ class EditShoppingListNameViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<EditShoppingListNameScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditShoppingListNameScreenEvent> = _screenEventFlow
 
-    init {
-        getEditShoppingListName()
-    }
+    init { onInit() }
 
     override fun onEvent(event: EditShoppingListNameEvent) {
         when (event) {
-            EditShoppingListNameEvent.SaveShoppingListName -> saveShoppingListName()
+            EditShoppingListNameEvent.OnClickSave -> onClickSave()
 
-            EditShoppingListNameEvent.CancelSavingShoppingListName -> cancelSavingShoppingListName()
+            EditShoppingListNameEvent.OnClickCancel -> onClickCancel()
 
-            is EditShoppingListNameEvent.ShoppingListNameChanged -> shoppingListNameChanged(event)
+            is EditShoppingListNameEvent.OnNameChanged -> onNameChanged(event)
         }
     }
 
-    private fun getEditShoppingListName() = viewModelScope.launch {
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
-            shoppingListLoaded(it)
+            editShoppingListNameState.populate(it)
+            _screenEventFlow.emit(EditShoppingListNameScreenEvent.OnShowKeyboard)
         }
     }
 
-    private suspend fun shoppingListLoaded(
-        shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        editShoppingListNameState.populate(shoppingListWithConfig)
-        _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowKeyboard)
-    }
-
-    private fun saveShoppingListName() = viewModelScope.launch {
+    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
         editShoppingListNameState.onWaiting()
 
         val shopping = editShoppingListNameState.getCurrentShopping()
@@ -66,17 +56,16 @@ class EditShoppingListNameViewModel @Inject constructor(
             name = shopping.name
         )
 
-        withContext(AppDispatchers.Main) {
-            val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shopping.uid)
-            _screenEventFlow.emit(event)
-        }
+        val event = EditShoppingListNameScreenEvent.OnShowBackScreen(shopping.uid)
+        _screenEventFlow.emit(event)
     }
 
-    private fun cancelSavingShoppingListName() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(EditShoppingListNameScreenEvent.ShowBackScreen)
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        val uid = editShoppingListNameState.getCurrentShopping().uid
+        _screenEventFlow.emit(EditShoppingListNameScreenEvent.OnShowBackScreen(uid))
     }
 
-    private fun shoppingListNameChanged(event: EditShoppingListNameEvent.ShoppingListNameChanged) {
+    private fun onNameChanged(event: EditShoppingListNameEvent.OnNameChanged) {
         editShoppingListNameState.onNameValueChanged(event.value)
     }
 }

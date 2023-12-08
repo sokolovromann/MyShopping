@@ -4,9 +4,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class EditShoppingListNameEvent {
 
-    object SaveShoppingListName : EditShoppingListNameEvent()
+    object OnClickSave : EditShoppingListNameEvent()
 
-    object CancelSavingShoppingListName : EditShoppingListNameEvent()
+    object OnClickCancel : EditShoppingListNameEvent()
 
-    data class ShoppingListNameChanged(val value: TextFieldValue) : EditShoppingListNameEvent()
+    data class OnNameChanged(val value: TextFieldValue) : EditShoppingListNameEvent()
 }

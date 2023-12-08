@@ -38,18 +38,13 @@ fun EditShoppingListNameScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditShoppingListNameScreenEvent.ShowBackScreen -> {
-                    focusManager.clearFocus(force = true)
-                    navController.popBackStack()
-                }
-
-                is EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget -> {
+                is EditShoppingListNameScreenEvent.OnShowBackScreen -> {
                     updateProductsWidget(context, it.shoppingUid)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }
 
-                EditShoppingListNameScreenEvent.ShowKeyboard -> {
+                EditShoppingListNameScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
@@ -57,23 +52,19 @@ fun EditShoppingListNameScreen(
     }
 
     AppDialog(
-        onDismissRequest = {
-            viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName)
-        },
+        onDismissRequest = { viewModel.onEvent(EditShoppingListNameEvent.OnClickCancel) },
         header = { Text(text = state.header.asCompose()) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName) },
-                content = {
-                    Text(text = stringResource(R.string.editShoppingListName_action_cancelSavingShoppingListName))
-                }
+                onClick = { viewModel.onEvent(EditShoppingListNameEvent.OnClickCancel) },
+                enabled = !state.waiting,
+                content = { Text(text = stringResource(R.string.editShoppingListName_action_cancelSavingShoppingListName)) }
             )
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) },
+                onClick = { viewModel.onEvent(EditShoppingListNameEvent.OnClickSave) },
                 primaryButton = true,
-                content = {
-                    Text(text = stringResource(R.string.editShoppingListName_action_saveShoppingListName))
-                }
+                enabled = !state.waiting,
+                content = { Text(text = stringResource(R.string.editShoppingListName_action_saveShoppingListName)) }
             )
         }
     ) {
@@ -84,7 +75,7 @@ fun EditShoppingListNameScreen(
             value = state.nameValue,
             valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
-                val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
+                val event = EditShoppingListNameEvent.OnNameChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editShoppingListName_label_name)) },
@@ -94,7 +85,7 @@ fun EditShoppingListNameScreen(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.onEvent(EditShoppingListNameEvent.SaveShoppingListName) }
+                onDone = { viewModel.onEvent(EditShoppingListNameEvent.OnClickSave) }
             )
         )
     }
