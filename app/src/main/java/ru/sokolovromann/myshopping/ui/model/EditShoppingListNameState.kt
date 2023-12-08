@@ -8,6 +8,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditShoppingListNameState {
@@ -37,6 +38,7 @@ class EditShoppingListNameState {
         }
         nameValue = name.toTextFieldValue()
         waiting = false
+        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().fontSize)
     }
 
     fun onNameValueChanged(value: TextFieldValue) {
