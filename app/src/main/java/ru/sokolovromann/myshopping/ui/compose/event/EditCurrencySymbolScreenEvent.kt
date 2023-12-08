@@ -2,9 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.event
 
 sealed class EditCurrencySymbolScreenEvent {
 
-    object ShowBackScreen : EditCurrencySymbolScreenEvent()
+    object OnShowBackScreen : EditCurrencySymbolScreenEvent()
 
-    object ShowBackScreenAndUpdateProductsWidgets : EditCurrencySymbolScreenEvent()
-
-    object ShowKeyboard : EditCurrencySymbolScreenEvent()
+    object OnShowKeyboard : EditCurrencySymbolScreenEvent()
 }

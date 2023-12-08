@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditCurrencySymbolState
@@ -26,49 +24,37 @@ class EditCurrencySymbolViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<EditCurrencySymbolScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditCurrencySymbolScreenEvent> = _screenEventFlow
 
-    init {
-        getSettingsWithConfig()
-    }
+    init { onInit() }
 
     override fun onEvent(event: EditCurrencySymbolEvent) {
         when (event) {
-            EditCurrencySymbolEvent.SaveCurrencySymbol -> saveCurrencySymbol()
+            EditCurrencySymbolEvent.OnClickSave -> onClickSave()
 
-            EditCurrencySymbolEvent.CancelSavingCurrencySymbol -> cancelSavingCurrencySymbol()
+            EditCurrencySymbolEvent.OnClickCancel -> onClickCancel()
 
-            is EditCurrencySymbolEvent.CurrencySymbolChanged -> currencySymbolChanged(event)
+            is EditCurrencySymbolEvent.OnSymbolChanged -> onSymbolChanged(event)
         }
     }
 
-    private fun getSettingsWithConfig() = viewModelScope.launch {
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
-            settingsWithConfigLoaded(it)
+            editCurrencySymbolState.populate(it)
+            _screenEventFlow.emit(EditCurrencySymbolScreenEvent.OnShowKeyboard)
         }
     }
 
-    private suspend fun settingsWithConfigLoaded(
-        settingsWithConfig: SettingsWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        editCurrencySymbolState.populate(settingsWithConfig)
-        _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowKeyboard)
-    }
-
-    private fun saveCurrencySymbol() = viewModelScope.launch {
+    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
         editCurrencySymbolState.onWaiting()
 
         appConfigRepository.saveCurrencySymbol(editCurrencySymbolState.getCurrentCurrency().symbol)
-            .onSuccess {
-                withContext(AppDispatchers.Main) {
-                    _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
-                }
-            }
+            .onSuccess { _screenEventFlow.emit(EditCurrencySymbolScreenEvent.OnShowBackScreen) }
     }
 
-    private fun cancelSavingCurrencySymbol() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(EditCurrencySymbolScreenEvent.ShowBackScreen)
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(EditCurrencySymbolScreenEvent.OnShowBackScreen)
     }
 
-    private fun currencySymbolChanged(event: EditCurrencySymbolEvent.CurrencySymbolChanged) {
+    private fun onSymbolChanged(event: EditCurrencySymbolEvent.OnSymbolChanged) {
         editCurrencySymbolState.onSymbolValueChanged(event.value)
     }
 }

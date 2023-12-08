@@ -4,9 +4,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class EditCurrencySymbolEvent {
 
-    object SaveCurrencySymbol : EditCurrencySymbolEvent()
+    object OnClickSave : EditCurrencySymbolEvent()
 
-    object CancelSavingCurrencySymbol : EditCurrencySymbolEvent()
+    object OnClickCancel : EditCurrencySymbolEvent()
 
-    data class CurrencySymbolChanged(val value: TextFieldValue) : EditCurrencySymbolEvent()
+    data class OnSymbolChanged(val value: TextFieldValue) : EditCurrencySymbolEvent()
 }

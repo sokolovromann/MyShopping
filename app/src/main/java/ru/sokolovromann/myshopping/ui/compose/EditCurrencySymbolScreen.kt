@@ -37,18 +37,13 @@ fun EditCurrencySymbolScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditCurrencySymbolScreenEvent.ShowBackScreen -> {
-                    focusManager.clearFocus(force = true)
-                    navController.popBackStack()
-                }
-
-                EditCurrencySymbolScreenEvent.ShowBackScreenAndUpdateProductsWidgets -> {
+                EditCurrencySymbolScreenEvent.OnShowBackScreen -> {
                     updateProductsWidgets(context)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }
 
-                EditCurrencySymbolScreenEvent.ShowKeyboard -> {
+                EditCurrencySymbolScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
@@ -56,18 +51,18 @@ fun EditCurrencySymbolScreen(
     }
 
     AppDialog(
-        onDismissRequest = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
+        onDismissRequest = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.editCurrencySymbol_header)) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.CancelSavingCurrencySymbol) },
+                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickCancel) },
                 enabled = !state.waiting,
                 content = {
                     Text(text = stringResource(R.string.editCurrencySymbol_action_cancelSavingCurrencySymbol))
                 }
             )
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) },
+                onClick = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickSave) },
                 primaryButton = true,
                 enabled = !state.waiting,
                 content = {
@@ -83,7 +78,7 @@ fun EditCurrencySymbolScreen(
             value = state.symbolValue,
             valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
-                val event = EditCurrencySymbolEvent.CurrencySymbolChanged(it)
+                val event = EditCurrencySymbolEvent.OnSymbolChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editCurrencySymbol_label_symbol)) },
@@ -92,7 +87,7 @@ fun EditCurrencySymbolScreen(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.onEvent(EditCurrencySymbolEvent.SaveCurrencySymbol) }
+                onDone = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickSave) }
             )
         )
     }
