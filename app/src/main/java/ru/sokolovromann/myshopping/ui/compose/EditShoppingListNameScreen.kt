@@ -21,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
-import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.EditShoppingListNameViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListNameEvent
@@ -31,7 +30,7 @@ fun EditShoppingListNameScreen(
     navController: NavController,
     viewModel: EditShoppingListNameViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.editShoppingListNameState.screenData
+    val state = viewModel.editShoppingListNameState
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val context = LocalContext.current
@@ -61,7 +60,7 @@ fun EditShoppingListNameScreen(
         onDismissRequest = {
             viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName)
         },
-        header = { Text(text = screenData.headerText.asCompose()) },
+        header = { Text(text = state.header.asCompose()) },
         actionButtons = {
             AppDialogActionButton(
                 onClick = { viewModel.onEvent(EditShoppingListNameEvent.CancelSavingShoppingListName) },
@@ -82,8 +81,8 @@ fun EditShoppingListNameScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = screenData.nameValue,
-            valueFontSize = screenData.fontSize.toTextField().sp,
+            value = state.nameValue,
+            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = EditShoppingListNameEvent.ShoppingListNameChanged(it)
                 viewModel.onEvent(event)

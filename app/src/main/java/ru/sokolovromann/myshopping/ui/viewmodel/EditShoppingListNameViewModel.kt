@@ -14,7 +14,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.EditShoppingListNameState
+import ru.sokolovromann.myshopping.ui.model.EditShoppingListNameState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListNameEvent
 import javax.inject.Inject
 
@@ -58,14 +58,16 @@ class EditShoppingListNameViewModel @Inject constructor(
     }
 
     private fun saveShoppingListName() = viewModelScope.launch {
-        val shoppingUid = editShoppingListNameState.getShoppingUid()
+        editShoppingListNameState.onWaiting()
+
+        val shopping = editShoppingListNameState.getCurrentShopping()
         shoppingListsRepository.saveShoppingListName(
-            shoppingUid = shoppingUid,
-            name = editShoppingListNameState.screenData.nameValue.text
+            shoppingUid = shopping.uid,
+            name = shopping.name
         )
 
         withContext(AppDispatchers.Main) {
-            val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shoppingUid)
+            val event = EditShoppingListNameScreenEvent.ShowBackScreenAndUpdateProductsWidget(shopping.uid)
             _screenEventFlow.emit(event)
         }
     }
@@ -75,6 +77,6 @@ class EditShoppingListNameViewModel @Inject constructor(
     }
 
     private fun shoppingListNameChanged(event: EditShoppingListNameEvent.ShoppingListNameChanged) {
-        editShoppingListNameState.changeNameValue(event.value)
+        editShoppingListNameState.onNameValueChanged(event.value)
     }
 }
