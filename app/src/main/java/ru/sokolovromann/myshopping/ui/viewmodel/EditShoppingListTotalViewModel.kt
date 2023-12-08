@@ -14,7 +14,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.EditShoppingListTotalState
+import ru.sokolovromann.myshopping.ui.model.EditShoppingListTotalState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListTotalEvent
 import javax.inject.Inject
 
@@ -58,8 +58,10 @@ class EditShoppingListTotalViewModel @Inject constructor(
     }
 
     private fun saveShoppingListTotal() = viewModelScope.launch {
-        val shoppingUid = editShoppingListTotalState.getShoppingUid()
-        val total = editShoppingListTotalState.getTotal()
+        editShoppingListTotalState.onWaiting()
+
+        val shoppingUid = editShoppingListTotalState.getCurrentShopping().uid
+        val total = editShoppingListTotalState.getCurrentShopping().total
 
         if (total.isNotEmpty()) {
             shoppingListsRepository.saveShoppingListTotal(
@@ -81,6 +83,6 @@ class EditShoppingListTotalViewModel @Inject constructor(
     }
 
     private fun shoppingListTotalChanged(event: EditShoppingListTotalEvent.ShoppingListTotalChanged) {
-        editShoppingListTotalState.changeTotalValue(event.value)
+        editShoppingListTotalState.onTotalValueChanged(event.value)
     }
 }
