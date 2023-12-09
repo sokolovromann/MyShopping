@@ -259,7 +259,7 @@ class ProductsState {
     }
 
     private fun toReminderText(reminder: Calendar?): UiText {
-        return reminder?.getDisplayDateAndTime() ?: UiText.Nothing
+        return reminder?.getDisplayDateAndTimeText() ?: UiText.Nothing
     }
 
     private fun toProductNotFoundText(location: ShoppingLocation): UiText = when(location) {

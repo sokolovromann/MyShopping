@@ -92,7 +92,7 @@ private fun ShoppingListsWithConfig.toShoppingListItems(shoppingList: ShoppingLi
     val reminderText: UiText = if (shoppingList.shopping.reminder == null) {
         UiText.Nothing
     } else {
-        shoppingList.shopping.reminder.toCalendar().getDisplayDateAndTime()
+        shoppingList.shopping.reminder.toCalendar().getDisplayDateAndTimeText()
     }
 
     return ShoppingListItem(

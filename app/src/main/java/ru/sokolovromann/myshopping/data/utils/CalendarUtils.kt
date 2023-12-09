@@ -43,3 +43,25 @@ fun Calendar.getHourMinute(): Pair<Int, Int> {
 fun Calendar.toDateTime(): DateTime {
     return DateTime(timeInMillis)
 }
+
+fun Calendar.isCurrentYear(): Boolean {
+    return get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)
+}
+
+fun Calendar.isTomorrow(): Boolean {
+    val calendar = Calendar.getInstance().apply {
+        add(Calendar.DAY_OF_YEAR, 1)
+    }
+    return isCurrentYear() && get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)
+}
+
+fun Calendar.isToday(): Boolean {
+    return isCurrentYear() && get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+}
+
+fun Calendar.isYesterday(): Boolean {
+    val calendar = Calendar.getInstance().apply {
+        add(Calendar.DAY_OF_YEAR, -1)
+    }
+    return isCurrentYear() && get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)
+}
