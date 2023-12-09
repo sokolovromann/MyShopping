@@ -2,23 +2,19 @@ package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 sealed class EditReminderEvent {
 
-    object SaveReminder : EditReminderEvent()
+    object OnClickSave : EditReminderEvent()
 
-    object CancelSavingReminder : EditReminderEvent()
+    object OnClickCancel : EditReminderEvent()
 
-    object CancelSelectingReminderDate : EditReminderEvent()
+    object OnClickDelete : EditReminderEvent()
 
-    object CancelSelectingReminderTime : EditReminderEvent()
+    object OnClickOpenPermissions : EditReminderEvent()
 
-    object DeleteReminder : EditReminderEvent()
+    data class OnDateChanged(val year: Int, val month: Int, val dayOfMonth: Int) : EditReminderEvent()
 
-    object SelectReminderDate : EditReminderEvent()
+    data class OnSelectDate(val display: Boolean) : EditReminderEvent()
 
-    object SelectReminderTime : EditReminderEvent()
+    data class OnTimeChanged(val hourOfDay: Int, val minute: Int) : EditReminderEvent()
 
-    data class ReminderDateChanged(val year: Int, val month: Int, val dayOfMonth: Int) : EditReminderEvent()
-
-    data class ReminderTimeChanged(val hourOfDay: Int, val minute: Int) : EditReminderEvent()
-
-    object ShowPermissions : EditReminderEvent()
+    data class OnSelectTime(val display: Boolean) : EditReminderEvent()
 }

@@ -8,10 +8,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
@@ -32,48 +30,36 @@ class EditReminderViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<EditReminderScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditReminderScreenEvent> = _screenEventFlow
 
-    init {
-        getEditReminder()
-    }
+    init { onInit() }
 
     override fun onEvent(event: EditReminderEvent) {
         when (event) {
-            EditReminderEvent.SaveReminder -> saveReminder()
+            EditReminderEvent.OnClickSave -> onClickSave()
 
-            EditReminderEvent.CancelSavingReminder -> cancelSavingReminder()
+            EditReminderEvent.OnClickCancel -> onClickCancel()
 
-            EditReminderEvent.CancelSelectingReminderDate -> cancelSelectingReminderDate()
+            EditReminderEvent.OnClickDelete -> onClickDelete()
 
-            EditReminderEvent.CancelSelectingReminderTime -> cancelSelectingReminderTime()
+            EditReminderEvent.OnClickOpenPermissions -> onClickOpenPermissions()
 
-            EditReminderEvent.DeleteReminder -> deleteReminder()
+            is EditReminderEvent.OnDateChanged -> onDateChanged(event)
 
-            EditReminderEvent.SelectReminderDate -> selectReminderDate()
+            is EditReminderEvent.OnSelectDate -> onSelectDate(event)
 
-            EditReminderEvent.SelectReminderTime -> selectReminderTime()
+            is EditReminderEvent.OnTimeChanged -> onTimeChanged(event)
 
-            is EditReminderEvent.ReminderDateChanged -> reminderDateChanged(event)
-
-            is EditReminderEvent.ReminderTimeChanged -> reminderTimeChanged(event)
-
-            EditReminderEvent.ShowPermissions -> showPermissions()
+            is EditReminderEvent.OnSelectTime -> onSelectTime(event)
         }
     }
 
-    private fun getEditReminder() = viewModelScope.launch {
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
-            shoppingListLoaded(it)
+            editReminderState.populate(it, alarmManager.checkCorrectReminderPermissions())
         }
     }
 
-    private suspend fun shoppingListLoaded(
-        shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        editReminderState.populate(shoppingListWithConfig, alarmManager.checkCorrectReminderPermissions())
-    }
-
-    private fun saveReminder() = viewModelScope.launch {
+    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
         editReminderState.onWaiting()
 
         val shopping = editReminderState.getCurrentShopping()
@@ -81,57 +67,48 @@ class EditReminderViewModel @Inject constructor(
         shoppingListsRepository.saveReminder(
             shoppingUid = shopping.uid,
             reminder = reminder
-        )
-
-        withContext(AppDispatchers.Main) {
+        ).onSuccess {
             alarmManager.createReminder(
                 uid = shopping.uid,
                 reminder = reminder.millis
             )
-            _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
+            _screenEventFlow.emit(EditReminderScreenEvent.OnShowBackScreen)
         }
     }
 
-    private fun cancelSavingReminder() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(EditReminderScreenEvent.OnShowBackScreen)
     }
 
-    private fun cancelSelectingReminderDate() {
-        editReminderState.onSelectDate(false)
-    }
+    private fun onClickDelete() = viewModelScope.launch(AppDispatchers.Main) {
+        editReminderState.onWaiting()
 
-    private fun cancelSelectingReminderTime() {
-        editReminderState.onSelectTime(false)
-    }
-
-    private fun selectReminderDate() {
-        editReminderState.onSelectDate(true)
-    }
-
-    private fun selectReminderTime() {
-        editReminderState.onSelectTime(true)
-    }
-
-    private fun deleteReminder() = viewModelScope.launch {
         val shoppingUid = editReminderState.getCurrentShopping().uid
         shoppingListsRepository.deleteReminder(shoppingUid)
-
-        withContext(AppDispatchers.Main) {
-            alarmManager.deleteReminder(shoppingUid)
-            _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
-        }
+            .onSuccess {
+                alarmManager.deleteReminder(shoppingUid)
+                _screenEventFlow.emit(EditReminderScreenEvent.OnShowBackScreen)
+            }
     }
 
-    private fun reminderDateChanged(event: EditReminderEvent.ReminderDateChanged) {
+    private fun onClickOpenPermissions() = viewModelScope.launch(AppDispatchers.Main) {
+        val event = EditReminderScreenEvent.OnShowPermissions(BuildConfig.APPLICATION_ID)
+        _screenEventFlow.emit(event)
+    }
+
+    private fun onDateChanged(event: EditReminderEvent.OnDateChanged) {
         editReminderState.onDateChanged(event.year, event.month, event.dayOfMonth)
     }
 
-    private fun reminderTimeChanged(event: EditReminderEvent.ReminderTimeChanged) {
+    private fun onSelectDate(event: EditReminderEvent.OnSelectDate) {
+        editReminderState.onSelectDate(event.display)
+    }
+
+    private fun onTimeChanged(event: EditReminderEvent.OnTimeChanged) {
         editReminderState.onTimeChanged(event.hourOfDay, event.minute)
     }
 
-    private fun showPermissions() = viewModelScope.launch {
-        val event = EditReminderScreenEvent.ShowPermissions(BuildConfig.APPLICATION_ID)
-        _screenEventFlow.emit(event)
+    private fun onSelectTime(event: EditReminderEvent.OnSelectTime) {
+        editReminderState.onSelectTime(event.display)
     }
 }
