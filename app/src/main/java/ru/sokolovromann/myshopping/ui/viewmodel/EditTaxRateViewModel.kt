@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditTaxRateState
@@ -26,48 +24,37 @@ class EditTaxRateViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<EditTaxRateScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditTaxRateScreenEvent> = _screenEventFlow
 
-    init {
-        getSettingsWithConfig()
-    }
+    init { onInit() }
 
     override fun onEvent(event: EditTaxRateEvent) {
         when (event) {
-            EditTaxRateEvent.SaveTaxRate -> saveTaxRate()
+            EditTaxRateEvent.OnClickSave -> onClickSave()
 
-            EditTaxRateEvent.CancelSavingTaxRate -> cancelSavingTaxRate()
+            EditTaxRateEvent.OnClickCancel -> onClickCancel()
 
-            is EditTaxRateEvent.TaxRateChanged -> taxRateChanged(event)
+            is EditTaxRateEvent.OnTaxRateChanged -> onTaxRateChanged(event)
         }
     }
 
-    private fun getSettingsWithConfig() = viewModelScope.launch {
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
-            settingsWithConfigLoaded(it)
+            editTaxRateState.populate(it)
+            _screenEventFlow.emit(EditTaxRateScreenEvent.OnShowKeyboard)
         }
     }
 
-    private suspend fun settingsWithConfigLoaded(
-        settingsWithConfig: SettingsWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        editTaxRateState.populate(settingsWithConfig)
-        _screenEventFlow.emit(EditTaxRateScreenEvent.ShowKeyboard)
-    }
-
-    private fun saveTaxRate() = viewModelScope.launch {
+    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
         editTaxRateState.onWaiting()
 
         appConfigRepository.saveTaxRate(editTaxRateState.getCurrentTaxRate())
-
-        withContext(AppDispatchers.Main) {
-            _screenEventFlow.emit(EditTaxRateScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
-        }
+            .onSuccess { _screenEventFlow.emit(EditTaxRateScreenEvent.OnShowBackScreen) }
     }
 
-    private fun taxRateChanged(event: EditTaxRateEvent.TaxRateChanged) {
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(EditTaxRateScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onTaxRateChanged(event: EditTaxRateEvent.OnTaxRateChanged) {
         editTaxRateState.onTaxRateValueChanged(event.value)
-    }
-
-    private fun cancelSavingTaxRate() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(EditTaxRateScreenEvent.ShowBackScreen)
     }
 }

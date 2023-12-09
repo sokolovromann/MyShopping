@@ -37,18 +37,13 @@ fun EditTaxRateScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                EditTaxRateScreenEvent.ShowBackScreen -> {
-                    focusManager.clearFocus(force = true)
-                    navController.popBackStack()
-                }
-
-                EditTaxRateScreenEvent.ShowBackScreenAndUpdateProductsWidgets -> {
+                EditTaxRateScreenEvent.OnShowBackScreen -> {
                     updateProductsWidgets(context)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
                 }
 
-                EditTaxRateScreenEvent.ShowKeyboard -> {
+                EditTaxRateScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
@@ -56,21 +51,19 @@ fun EditTaxRateScreen(
     }
 
     AppDialog(
-        onDismissRequest = { viewModel.onEvent(EditTaxRateEvent.CancelSavingTaxRate) },
+        onDismissRequest = { viewModel.onEvent(EditTaxRateEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.editTaxRate_header)) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditTaxRateEvent.CancelSavingTaxRate) },
-                content = {
-                    Text(text = stringResource(R.string.editTaxRate_action_cancelSavingTaxRate))
-                }
+                onClick = { viewModel.onEvent(EditTaxRateEvent.OnClickCancel) },
+                enabled = !state.waiting,
+                content = { Text(text = stringResource(R.string.editTaxRate_action_cancelSavingTaxRate)) }
             )
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) },
+                onClick = { viewModel.onEvent(EditTaxRateEvent.OnClickSave) },
                 primaryButton = true,
-                content = {
-                    Text(text = stringResource(R.string.editTaxRate_action_saveTaxRate))
-                }
+                enabled = !state.waiting,
+                content = { Text(text = stringResource(R.string.editTaxRate_action_saveTaxRate)) }
             )
         }
     ) {
@@ -81,7 +74,7 @@ fun EditTaxRateScreen(
             value = state.taxRateValue,
             valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
-                val event = EditTaxRateEvent.TaxRateChanged(it)
+                val event = EditTaxRateEvent.OnTaxRateChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editTaxRate_label_taxRate)) },
@@ -90,7 +83,7 @@ fun EditTaxRateScreen(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.onEvent(EditTaxRateEvent.SaveTaxRate) }
+                onDone = { viewModel.onEvent(EditTaxRateEvent.OnClickSave) }
             )
         )
     }

@@ -2,9 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.event
 
 sealed class EditTaxRateScreenEvent {
 
-    object ShowBackScreen : EditTaxRateScreenEvent()
+    object OnShowBackScreen : EditTaxRateScreenEvent()
 
-    object ShowBackScreenAndUpdateProductsWidgets : EditTaxRateScreenEvent()
-
-    object ShowKeyboard : EditTaxRateScreenEvent()
+    object OnShowKeyboard : EditTaxRateScreenEvent()
 }

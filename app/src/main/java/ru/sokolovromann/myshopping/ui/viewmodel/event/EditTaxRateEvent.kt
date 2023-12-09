@@ -4,9 +4,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class EditTaxRateEvent {
 
-    object SaveTaxRate : EditTaxRateEvent()
+    object OnClickSave : EditTaxRateEvent()
 
-    object CancelSavingTaxRate : EditTaxRateEvent()
+    object OnClickCancel : EditTaxRateEvent()
 
-    data class TaxRateChanged(val value: TextFieldValue) : EditTaxRateEvent()
+    data class OnTaxRateChanged(val value: TextFieldValue) : EditTaxRateEvent()
 }
