@@ -16,7 +16,7 @@ import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.EditReminderState
+import ru.sokolovromann.myshopping.ui.model.EditReminderState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
 import javax.inject.Inject
 
@@ -74,17 +74,18 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun saveReminder() = viewModelScope.launch {
-        val shoppingUid = editReminderState.getShoppingUid()
-        val reminder = editReminderState.getReminder()
+        editReminderState.onWaiting()
 
+        val shopping = editReminderState.getCurrentShopping()
+        val reminder = shopping.reminder ?: return@launch
         shoppingListsRepository.saveReminder(
-            shoppingUid = shoppingUid,
+            shoppingUid = shopping.uid,
             reminder = reminder
         )
 
         withContext(AppDispatchers.Main) {
             alarmManager.createReminder(
-                uid = shoppingUid,
+                uid = shopping.uid,
                 reminder = reminder.millis
             )
             _screenEventFlow.emit(EditReminderScreenEvent.ShowBackScreen)
@@ -96,23 +97,23 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun cancelSelectingReminderDate() {
-        editReminderState.cancelSelectingReminderDate()
+        editReminderState.onSelectDate(false)
     }
 
     private fun cancelSelectingReminderTime() {
-        editReminderState.cancelSelectingReminderTime()
+        editReminderState.onSelectTime(false)
     }
 
     private fun selectReminderDate() {
-        editReminderState.selectReminderDate()
+        editReminderState.onSelectDate(true)
     }
 
     private fun selectReminderTime() {
-        editReminderState.selectReminderTime()
+        editReminderState.onSelectTime(true)
     }
 
     private fun deleteReminder() = viewModelScope.launch {
-        val shoppingUid = editReminderState.getShoppingUid()
+        val shoppingUid = editReminderState.getCurrentShopping().uid
         shoppingListsRepository.deleteReminder(shoppingUid)
 
         withContext(AppDispatchers.Main) {
@@ -122,11 +123,11 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun reminderDateChanged(event: EditReminderEvent.ReminderDateChanged) {
-        editReminderState.changeReminderDate(event.year, event.month, event.dayOfMonth)
+        editReminderState.onDateChanged(event.year, event.month, event.dayOfMonth)
     }
 
     private fun reminderTimeChanged(event: EditReminderEvent.ReminderTimeChanged) {
-        editReminderState.changeReminderTime(event.hourOfDay, event.minute)
+        editReminderState.onTimeChanged(event.hourOfDay, event.minute)
     }
 
     private fun showPermissions() = viewModelScope.launch {

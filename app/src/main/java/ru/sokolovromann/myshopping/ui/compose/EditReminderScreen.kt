@@ -17,9 +17,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.utils.getHourMinute
+import ru.sokolovromann.myshopping.data.utils.getYearMonthDay
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
 import ru.sokolovromann.myshopping.ui.navigate
-import ru.sokolovromann.myshopping.ui.utils.toItemBody
+import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
+import ru.sokolovromann.myshopping.ui.utils.getDisplayTime
+import ru.sokolovromann.myshopping.ui.utils.isTime24HourFormat
 import ru.sokolovromann.myshopping.ui.viewmodel.EditReminderViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
 
@@ -28,7 +32,7 @@ fun EditReminderScreen(
     navController: NavController,
     viewModel: EditReminderViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.editReminderState.screenData
+    val state = viewModel.editReminderState
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -50,13 +54,13 @@ fun EditReminderScreen(
 
     AppDialog(
         onDismissRequest = { viewModel.onEvent(EditReminderEvent.CancelSavingReminder) },
-        header = { Text(text = screenData.headerText.asCompose()) },
+        header = { Text(text = state.header.asCompose()) },
         actionButtons = {
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center
             ) {
-                if (screenData.showDeleteButton) {
+                if (state.displayDeleteButton) {
                     AppDialogActionButton(
                         onClick = { viewModel.onEvent(EditReminderEvent.DeleteReminder) },
                         content = {
@@ -72,7 +76,7 @@ fun EditReminderScreen(
                         }
                     )
 
-                    if (screenData.showPermissionError) {
+                    if (state.displayPermissionError) {
                         AppDialogActionButton(
                             onClick = { viewModel.onEvent(EditReminderEvent.ShowPermissions) },
                             primaryButton = true,
@@ -93,11 +97,11 @@ fun EditReminderScreen(
             }
         },
     ) {
-        if (screenData.showPermissionError) {
+        if (state.displayPermissionError) {
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = stringResource(R.string.editReminder_message_permissionError),
-                fontSize = screenData.fontSize.toItemBody().sp,
+                fontSize = state.fontSize.itemBody.sp,
                 style = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.error)
             )
         } else {
@@ -111,7 +115,7 @@ fun EditReminderScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start,
-                        content = { Text(text = screenData.dateText.asCompose()) }
+                        content = { Text(text = state.calendar.getDisplayDate().asCompose()) }
                     )
                 }
 
@@ -126,13 +130,13 @@ fun EditReminderScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start,
-                        content = { Text(text = screenData.timeText.asCompose()) }
+                        content = { Text(text = state.calendar.getDisplayTime().asCompose()) }
                     )
                 }
             }
         }
 
-        if (screenData.showDateDialog) {
+        if (state.displayDateDialog) {
             AppDatePickerDialog(
                 onDismissRequest = {
                     viewModel.onEvent(EditReminderEvent.CancelSelectingReminderDate)
@@ -141,14 +145,14 @@ fun EditReminderScreen(
                     val event = EditReminderEvent.ReminderDateChanged(year, month, dayOfMonth)
                     viewModel.onEvent(event)
                 },
-                dialogStyle = screenData.dateTimeDialogStyle(),
-                year = screenData.dateYear,
-                monthOfYear = screenData.dateMonth,
-                dayOfMonth = screenData.dateDayOfMonth
+                dialogStyle = state.getDialogStyle(),
+                year = state.calendar.getYearMonthDay().first,
+                monthOfYear = state.calendar.getYearMonthDay().second,
+                dayOfMonth = state.calendar.getYearMonthDay().third
             )
         }
 
-        if (screenData.showTimeDialog) {
+        if (state.displayTimeDialog) {
             AppTimePickerDialog(
                 onDismissRequest = {
                     viewModel.onEvent(EditReminderEvent.CancelSelectingReminderTime)
@@ -157,10 +161,10 @@ fun EditReminderScreen(
                     val event = EditReminderEvent.ReminderTimeChanged(hourOfDay, minute)
                     viewModel.onEvent(event)
                 },
-                dialogStyle = screenData.dateTimeDialogStyle(),
-                hourOfDay = screenData.timeHourOfDay,
-                minute = screenData.timeMinute,
-                is24HourFormat = screenData.isTime24HourFormat()
+                dialogStyle = state.getDialogStyle(),
+                hourOfDay = state.calendar.getHourMinute().first,
+                minute = state.calendar.getHourMinute().second,
+                is24HourFormat = state.calendar.isTime24HourFormat()
             )
         }
     }
