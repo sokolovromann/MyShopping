@@ -153,7 +153,6 @@
     <string name="editTaxRate_action_saveTaxRate">Save</string>
     <string name="editTaxRate_header">Tax rate</string>
     <string name="editTaxRate_label_taxRate">Rate in percentages</string>
-    <string name="editTaxRate_message_taxRateError">Add tax rate</string>
 
     <string name="moveProduct_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="moveProduct_contentDescription_navigationIcon">Cancel</string>

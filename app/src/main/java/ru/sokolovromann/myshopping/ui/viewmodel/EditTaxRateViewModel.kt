@@ -12,7 +12,7 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.EditTaxRateState
+import ru.sokolovromann.myshopping.ui.model.EditTaxRateState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
 import javax.inject.Inject
 
@@ -54,8 +54,9 @@ class EditTaxRateViewModel @Inject constructor(
     }
 
     private fun saveTaxRate() = viewModelScope.launch {
-        val taxRate = editTaxRateState.getTaxRate()
-        appConfigRepository.saveTaxRate(taxRate)
+        editTaxRateState.onWaiting()
+
+        appConfigRepository.saveTaxRate(editTaxRateState.getCurrentTaxRate())
 
         withContext(AppDispatchers.Main) {
             _screenEventFlow.emit(EditTaxRateScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
@@ -63,7 +64,7 @@ class EditTaxRateViewModel @Inject constructor(
     }
 
     private fun taxRateChanged(event: EditTaxRateEvent.TaxRateChanged) {
-        editTaxRateState.changeTaxRateValue(event.value)
+        editTaxRateState.onTaxRateValueChanged(event.value)
     }
 
     private fun cancelSavingTaxRate() = viewModelScope.launch(AppDispatchers.Main) {

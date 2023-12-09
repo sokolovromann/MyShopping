@@ -20,7 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
-import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.EditTaxRateViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
@@ -30,7 +29,7 @@ fun EditTaxRateScreen(
     navController: NavController,
     viewModel: EditTaxRateViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.editTaxRateState.screenData
+    val state = viewModel.editTaxRateState
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val context = LocalContext.current
@@ -79,15 +78,13 @@ fun EditTaxRateScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = screenData.taxRateValue,
-            valueFontSize = screenData.fontSize.toTextField().sp,
+            value = state.taxRateValue,
+            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = EditTaxRateEvent.TaxRateChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editTaxRate_label_taxRate)) },
-            error = { Text(text = stringResource(R.string.editTaxRate_message_taxRateError)) },
-            showError = screenData.showTaxRateError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
                 imeAction = ImeAction.Done

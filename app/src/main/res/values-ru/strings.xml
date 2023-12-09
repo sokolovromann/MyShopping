@@ -306,7 +306,6 @@
     <string name="editTaxRate_action_saveTaxRate">Сохранить</string>
     <string name="editTaxRate_header">Налоговая ставка</string>
     <string name="editTaxRate_label_taxRate">Размер в процентах</string>
-    <string name="editTaxRate_message_taxRateError">Добавьте налоговую ставку</string>
 
     <string name="moveProduct_contentDescription_addShoppingListIcon">Добавить список покупок</string>
     <string name="moveProduct_contentDescription_navigationIcon">Отмена</string>
