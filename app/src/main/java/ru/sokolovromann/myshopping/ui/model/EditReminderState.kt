@@ -22,7 +22,7 @@ class EditReminderState {
     var header: UiString by mutableStateOf(UiString.FromString(""))
         private set
 
-    var calendar by mutableStateOf(Calendar.getInstance())
+    var calendar: Calendar by mutableStateOf(Calendar.getInstance())
         private set
 
     var displayPermissionError: Boolean by mutableStateOf(false)
