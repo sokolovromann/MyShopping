@@ -77,6 +77,15 @@ sealed class UiRoute(val graph: String) {
         const val editTaxRateScreen = "edit-tax-rate"
         const val backupScreen = "backup-screen"
     }
+
+    fun toDrawerScreen(): DrawerScreen = when (this) {
+        Purchases -> DrawerScreen.PURCHASES
+        Archive -> DrawerScreen.ARCHIVE
+        Trash -> DrawerScreen.TRASH
+        Autocompletes -> DrawerScreen.AUTOCOMPLETES
+        Settings -> DrawerScreen.SETTINGS
+        Products -> DrawerScreen.PURCHASES
+    }
 }
 
 enum class UiRouteKey(val key: String, val placeholder: String) {
@@ -92,6 +101,27 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
         key = "autocomplete-uid",
         placeholder = "{autocomplete-uid}"
     )
+}
+
+enum class DrawerScreen {
+
+    PURCHASES, ARCHIVE, TRASH, AUTOCOMPLETES, SETTINGS;
+
+    fun getScreen(): String = when (this) {
+        PURCHASES -> UiRoute.Purchases.purchasesScreen
+        ARCHIVE -> UiRoute.Archive.archiveScreen
+        TRASH -> UiRoute.Trash.trashScreen
+        AUTOCOMPLETES -> UiRoute.Autocompletes.autocompletesScreen
+        SETTINGS -> UiRoute.Settings.settingsScreen
+    }
+
+    fun toUiRoute(): UiRoute = when (this) {
+        PURCHASES -> UiRoute.Purchases
+        ARCHIVE -> UiRoute.Archive
+        TRASH -> UiRoute.Trash
+        AUTOCOMPLETES -> UiRoute.Autocompletes
+        SETTINGS -> UiRoute.Settings
+    }
 }
 
 fun NavGraphBuilder.purchasesGraph(navController: NavController) {
