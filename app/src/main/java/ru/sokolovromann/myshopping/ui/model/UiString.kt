@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
 sealed class UiString {
 
@@ -27,5 +28,11 @@ sealed class UiString {
     @Composable
     fun isNotEmpty(): Boolean {
         return this.asCompose().isNotEmpty()
+    }
+
+    fun toUiText(): UiText = when (this) {
+        is FromString -> UiText.FromString(value)
+        is FromResources -> UiText.FromResources(id)
+        is FromResourcesWithArgs -> UiText.FromResourcesWithArgs(id, args)
     }
 }
