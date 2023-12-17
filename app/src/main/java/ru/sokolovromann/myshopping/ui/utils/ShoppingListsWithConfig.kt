@@ -12,24 +12,28 @@ import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.compose.state.toUiTextOrNothing
 
+@Deprecated("Will be deleted")
 fun ShoppingListsWithConfig.getAllShoppingListItems(
     displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
 ): List<ShoppingListItem> {
     return getSortedShoppingLists(displayCompleted).map { toShoppingListItems(it) }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListsWithConfig.getActivePinnedShoppingListItems(
     displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
 ): List<ShoppingListItem> {
     return getPinnedOtherSortedShoppingLists(displayCompleted).first.map { toShoppingListItems(it) }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListsWithConfig.getOtherShoppingListItems(
     displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
 ): List<ShoppingListItem> {
     return getPinnedOtherSortedShoppingLists(displayCompleted).second.map { toShoppingListItems(it) }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListsWithConfig.getTotalText(): UiText {
     return shoppingTotalToText(
         getTotal(),
@@ -38,11 +42,13 @@ fun ShoppingListsWithConfig.getTotalText(): UiText {
     )
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListsWithConfig.getSelectedTotal(uids: List<String>): UiText {
     val total = calculateTotalByUids(uids)
     return UiText.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.toString())
 }
 
+@Deprecated("Will be deleted")
 private fun ShoppingListsWithConfig.toShoppingListItems(shoppingList: ShoppingList): ShoppingListItem {
     val displayShoppingsProducts = getUserPreferences().displayShoppingsProducts
     val displayMoney = getUserPreferences().displayMoney
@@ -105,6 +111,7 @@ private fun ShoppingListsWithConfig.toShoppingListItems(shoppingList: ShoppingLi
     )
 }
 
+@Deprecated("Will be deleted")
 private fun ShoppingListsWithConfig.productsToPair(
     product: Product,
     totalFormatted: Boolean
@@ -158,6 +165,7 @@ private fun ShoppingListsWithConfig.productsToPair(
     )
 }
 
+@Deprecated("Will be deleted")
 private fun shoppingTotalToText(total: Money, totalFormatted: Boolean, displayTotal: DisplayTotal): UiText {
     return if (totalFormatted) {
         UiText.FromResourcesWithArgs(R.string.shoppingLists_text_totalFormatted, total.getDisplayValue())

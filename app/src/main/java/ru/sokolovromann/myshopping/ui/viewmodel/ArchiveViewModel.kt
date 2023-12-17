@@ -6,15 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.Sort
-import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.ArchiveState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
 import javax.inject.Inject
 
@@ -29,203 +26,132 @@ class ArchiveViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<ArchiveScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ArchiveScreenEvent> = _screenEventFlow
 
-    init {
-        getShoppingLists()
-    }
+    init { onInit() }
 
     override fun onEvent(event: ArchiveEvent) {
         when (event) {
-            ArchiveEvent.MoveShoppingListsToPurchases -> moveShoppingListsToPurchases()
+            is ArchiveEvent.OnClickShoppingList -> onClickShoppingList(event)
 
-            ArchiveEvent.MoveShoppingListsToTrash -> moveShoppingListsToTrash()
+            ArchiveEvent.OnClickBack -> onClickBack()
 
-            ArchiveEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
+            ArchiveEvent.OnMoveShoppingListsToPurchases -> onMoveShoppingListsToPurchases()
 
-            is ArchiveEvent.SelectNavigationItem -> selectNavigationItem(event)
+            ArchiveEvent.OnMoveShoppingListsToTrash -> onMoveShoppingListsToTrash()
 
-            ArchiveEvent.SelectShoppingListsSort -> selectShoppingListsSort()
+            is ArchiveEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
-            is ArchiveEvent.SelectShoppingList -> selectShoppingList(event)
+            is ArchiveEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
-            ArchiveEvent.SelectAllShoppingLists -> selectAllShoppingLists()
+            is ArchiveEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
 
-            is ArchiveEvent.UnselectShoppingList -> unselectShoppingList(event)
+            is ArchiveEvent.OnSelectDisplayTotal -> onSelectDisplayTotal(event)
 
-            ArchiveEvent.CancelSelectingShoppingLists -> cancelSelectingShoppingLists()
+            is ArchiveEvent.OnSortSelected -> onSortSelected(event)
 
-            is ArchiveEvent.SortShoppingLists -> sortShoppingLists(event)
+            ArchiveEvent.OnReverseSort -> onReverseSort()
 
-            ArchiveEvent.ReverseSortShoppingLists -> reverseSortShoppingLists()
+            is ArchiveEvent.OnSelectSort -> onSelectSort(event)
 
-            is ArchiveEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
+            is ArchiveEvent.OnShowArchiveMenu -> onShowArchiveMenu(event)
 
-            ArchiveEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
+            is ArchiveEvent.OnAllShoppingListsSelected -> onAllShoppingListsSelected(event)
 
-            ArchiveEvent.ShowBackScreen -> showBackScreen()
+            is ArchiveEvent.OnShoppingListSelected -> onShoppingListSelected(event)
 
-            is ArchiveEvent.ShowProducts -> showProducts(event)
+            is ArchiveEvent.OnShowHiddenShoppingLists -> onShowHiddenShoppingLists(event)
 
-            ArchiveEvent.ShowNavigationDrawer -> showNavigationDrawer()
-
-            ArchiveEvent.ShowArchiveMenu -> showArchiveMenu()
-
-            ArchiveEvent.HideNavigationDrawer -> hideNavigationDrawer()
-
-            ArchiveEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
-
-            ArchiveEvent.HideArchiveMenu -> hideArchiveMenu()
-
-            ArchiveEvent.HideShoppingListsSort -> hideShoppingListsSort()
-
-            ArchiveEvent.InvertShoppingsMultiColumns -> invertShoppingListsMultiColumns()
+            ArchiveEvent.OnInvertMultiColumns -> onInvertMultiColumns()
         }
     }
 
-    private fun getShoppingLists() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            archiveState.showLoading()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        archiveState.onWaiting()
 
         shoppingListsRepository.getArchiveWithConfig().collect {
-            shoppingListsLoaded(it)
+            archiveState.populate(it)
         }
     }
 
-    private suspend fun shoppingListsLoaded(
-        shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.isEmpty()) {
-            archiveState.showNotFound(shoppingListsWithConfig)
-        } else {
-            archiveState.showShoppingLists(shoppingListsWithConfig)
-        }
-    }
-
-    private fun moveShoppingListsToPurchases() = viewModelScope.launch {
-        archiveState.screenData.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToPurchases(it)
-
-            withContext(AppDispatchers.Main) {
-                unselectAllShoppingLists()
-            }
-        }
-    }
-
-    private fun moveShoppingListsToTrash() = viewModelScope.launch {
-        archiveState.screenData.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToTrash(it)
-
-            withContext(AppDispatchers.Main) {
-                unselectAllShoppingLists()
-            }
-        }
-    }
-
-    private fun selectDisplayPurchasesTotal() {
-        archiveState.selectDisplayPurchasesTotal()
-    }
-
-    private fun selectNavigationItem(
-        event: ArchiveEvent.SelectNavigationItem
+    private fun onClickShoppingList(
+        event: ArchiveEvent.OnClickShoppingList
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        when (event.route) {
-            UiRoute.Purchases -> _screenEventFlow.emit(ArchiveScreenEvent.ShowPurchases)
-            UiRoute.Trash -> _screenEventFlow.emit(ArchiveScreenEvent.ShowTrash)
-            UiRoute.Autocompletes -> _screenEventFlow.emit(ArchiveScreenEvent.ShowAutocompletes)
-            UiRoute.Settings -> _screenEventFlow.emit(ArchiveScreenEvent.ShowSettings)
-            else -> return@launch
+        _screenEventFlow.emit(ArchiveScreenEvent.OnShowShoppingList(event.uid))
+    }
+
+    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ArchiveScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onMoveShoppingListsToPurchases() = viewModelScope.launch(AppDispatchers.Main) {
+        archiveState.selectedUids?.let {
+            shoppingListsRepository.moveShoppingListsToPurchases(it)
+            archiveState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    private fun selectShoppingListsSort() {
-        archiveState.showSort()
-    }
-
-    private fun selectShoppingList(event: ArchiveEvent.SelectShoppingList) {
-        archiveState.selectShoppingList(event.uid)
-    }
-
-    private fun selectAllShoppingLists() {
-        archiveState.selectAllShoppingLists()
-    }
-
-    private fun unselectShoppingList(event: ArchiveEvent.UnselectShoppingList) {
-        archiveState.unselectShoppingList(event.uid)
-    }
-
-    private fun unselectAllShoppingLists() {
-        archiveState.unselectAllShoppingLists()
-    }
-
-    private fun cancelSelectingShoppingLists() {
-        unselectAllShoppingLists()
-    }
-
-    private fun sortShoppingLists(event: ArchiveEvent.SortShoppingLists) = viewModelScope.launch {
-        shoppingListsRepository.sortShoppingLists(
-            sort = Sort(event.sortBy)
-        )
-
-        withContext(AppDispatchers.Main) {
-            hideShoppingListsSort()
+    private fun onMoveShoppingListsToTrash() = viewModelScope.launch(AppDispatchers.Main) {
+        archiveState.selectedUids?.let {
+            shoppingListsRepository.moveShoppingListsToTrash(it)
+            archiveState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    private fun reverseSortShoppingLists() = viewModelScope.launch {
-        shoppingListsRepository.reverseShoppingLists()
-
-        withContext(AppDispatchers.Main) {
-            hideShoppingListsSort()
-        }
+    private fun onDrawerScreenSelected(
+        event: ArchiveEvent.OnDrawerScreenSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ArchiveScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
-    private fun displayPurchasesTotal(
-        event: ArchiveEvent.DisplayPurchasesTotal
-    ) = viewModelScope.launch {
+    private fun onSelectDrawerScreen(
+        event: ArchiveEvent.OnSelectDrawerScreen
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ArchiveScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onDisplayTotalSelected(
+        event: ArchiveEvent.OnDisplayTotalSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.displayTotal(event.displayTotal)
-
-        withContext(AppDispatchers.Main) {
-            hideDisplayPurchasesTotal()
-        }
+        archiveState.onSelectDisplayTotal(expanded = false)
     }
 
-    private fun displayHiddenShoppingLists() {
-        archiveState.displayHiddenShoppingLists()
+    private fun onSelectDisplayTotal(event: ArchiveEvent.OnSelectDisplayTotal) {
+        archiveState.onSelectDisplayTotal(event.expanded)
     }
 
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ArchiveScreenEvent.ShowBackScreen)
+    private fun onSortSelected(
+        event: ArchiveEvent.OnSortSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        shoppingListsRepository.sortShoppingLists(sort = Sort(event.sortBy))
+        archiveState.onSelectSort(expanded = false)
     }
 
-    private fun showProducts(event: ArchiveEvent.ShowProducts) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ArchiveScreenEvent.ShowProducts(event.uid))
+    private fun onReverseSort() = viewModelScope.launch(AppDispatchers.Main) {
+        shoppingListsRepository.reverseShoppingLists()
+        archiveState.onSelectSort(expanded = false)
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ArchiveScreenEvent.ShowNavigationDrawer)
+    private fun onSelectSort(event: ArchiveEvent.OnSelectSort) {
+        archiveState.onSelectSort(event.expanded)
     }
 
-    private fun showArchiveMenu() {
-        archiveState.showArchiveMenu()
+    private fun onShowArchiveMenu(event: ArchiveEvent.OnShowArchiveMenu) {
+        archiveState.onShowArchiveMenu(event.expanded)
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ArchiveScreenEvent.HideNavigationDrawer)
+    private fun onAllShoppingListsSelected(event: ArchiveEvent.OnAllShoppingListsSelected) {
+        archiveState.onAllShoppingListsSelected(event.selected)
     }
 
-    private fun hideDisplayPurchasesTotal() {
-        archiveState.hideDisplayPurchasesTotal()
+    private fun onShoppingListSelected(event: ArchiveEvent.OnShoppingListSelected) {
+        archiveState.onShoppingListSelected(event.selected, event.uid)
     }
 
-    private fun hideArchiveMenu() {
-        archiveState.hideArchiveMenu()
+    private fun onShowHiddenShoppingLists(event: ArchiveEvent.OnShowHiddenShoppingLists) {
+        archiveState.onShowHiddenShoppingLists(event.display)
     }
 
-    private fun hideShoppingListsSort() {
-        archiveState.hideSort()
-    }
-
-    private fun invertShoppingListsMultiColumns() = viewModelScope.launch {
+    private fun onInvertMultiColumns() = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.invertShoppingListsMultiColumns()
     }
 }

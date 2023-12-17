@@ -33,6 +33,6 @@ sealed class UiString {
     fun toUiText(): UiText = when (this) {
         is FromString -> UiText.FromString(value)
         is FromResources -> UiText.FromResources(id)
-        is FromResourcesWithArgs -> UiText.FromResourcesWithArgs(id, args)
+        is FromResourcesWithArgs -> UiText.FromResourcesWithArgs(id, *args)
     }
 }

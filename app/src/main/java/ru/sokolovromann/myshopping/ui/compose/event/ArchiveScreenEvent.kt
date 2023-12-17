@@ -1,20 +1,14 @@
 package ru.sokolovromann.myshopping.ui.compose.event
 
+import ru.sokolovromann.myshopping.ui.DrawerScreen
+
 sealed class ArchiveScreenEvent {
 
-    object ShowBackScreen : ArchiveScreenEvent()
+    object OnShowBackScreen : ArchiveScreenEvent()
 
-    data class ShowProducts(val uid: String) : ArchiveScreenEvent()
+    data class OnShowShoppingList(val uid: String) : ArchiveScreenEvent()
 
-    object ShowPurchases : ArchiveScreenEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : ArchiveScreenEvent()
 
-    object ShowTrash : ArchiveScreenEvent()
-
-    object ShowAutocompletes : ArchiveScreenEvent()
-
-    object ShowSettings : ArchiveScreenEvent()
-
-    object ShowNavigationDrawer : ArchiveScreenEvent()
-
-    object HideNavigationDrawer : ArchiveScreenEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : ArchiveScreenEvent()
 }
