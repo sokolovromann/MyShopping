@@ -1,20 +1,14 @@
 package ru.sokolovromann.myshopping.ui.compose.event
 
+import ru.sokolovromann.myshopping.ui.DrawerScreen
+
 sealed class TrashScreenEvent {
 
-    object ShowBackScreen : TrashScreenEvent()
+    object OnShowBackScreen : TrashScreenEvent()
 
-    data class ShowProducts(val uid: String) : TrashScreenEvent()
+    data class OnShowShoppingList(val uid: String) : TrashScreenEvent()
 
-    object ShowPurchases : TrashScreenEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : TrashScreenEvent()
 
-    object ShowArchive : TrashScreenEvent()
-
-    object ShowAutocompletes : TrashScreenEvent()
-
-    object ShowSettings  : TrashScreenEvent()
-
-    object ShowNavigationDrawer : TrashScreenEvent()
-
-    object HideNavigationDrawer : TrashScreenEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : TrashScreenEvent()
 }

@@ -6,13 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
-import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.model.TrashState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
@@ -21,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class TrashViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val appConfigRepository: AppConfigRepository,
     private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<TrashEvent> {
 
@@ -30,166 +25,96 @@ class TrashViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<TrashScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<TrashScreenEvent> = _screenEventFlow
 
-    init {
-        getShoppingLists()
-    }
+    init { onInit() }
 
     override fun onEvent(event: TrashEvent) {
         when (event) {
-            TrashEvent.MoveShoppingListsToPurchases -> moveShoppingListsToPurchases()
+            is TrashEvent.OnClickShoppingList -> onClickShoppingList(event)
 
-            TrashEvent.MoveShoppingListsToArchive -> moveShoppingListsToArchive()
+            TrashEvent.OnClickBack -> onClickBack()
 
-            TrashEvent.DeleteShoppingLists -> deleteShoppingLists()
+            TrashEvent.OnClickMoveToPurchases -> onClickMoveToPurchases()
 
-            TrashEvent.EmptyTrash -> emptyTrash()
+            TrashEvent.OnClickMoveToArchive -> onClickMoveToArchive()
 
-            TrashEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
+            TrashEvent.OnClickDelete -> onClickDelete()
 
-            is TrashEvent.SelectNavigationItem -> selectNavigationItem(event)
+            TrashEvent.OnClickEmptyTrash -> onClickEmptyTrash()
 
-            is TrashEvent.SelectShoppingList -> selectShoppingList(event)
+            is TrashEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
-            TrashEvent.SelectAllShoppingLists -> selectAllShoppingLists()
+            is TrashEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
-            is TrashEvent.UnselectShoppingList -> unselectShoppingList(event)
+            is TrashEvent.OnAllShoppingListsSelected -> onAllShoppingListsSelected(event)
 
-            is TrashEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
-
-            TrashEvent.CancelSelectingShoppingLists -> cancelSelectingShoppingLists()
-
-            TrashEvent.ShowBackScreen -> showBackScreen()
-
-            is TrashEvent.ShowProducts -> showProducts(event)
-
-            TrashEvent.ShowNavigationDrawer -> showNavigationDrawer()
-
-            TrashEvent.HideNavigationDrawer -> hideNavigationDrawer()
-
-            TrashEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
+            is TrashEvent.OnShoppingListSelected -> onShoppingListSelected(event)
         }
     }
 
-    private fun getShoppingLists() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            trashState.onWaiting()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        trashState.onWaiting()
 
         shoppingListsRepository.getTrashWithConfig().collect {
-            shoppingListsLoaded(it)
+            trashState.populate(it)
         }
     }
 
-    private suspend fun shoppingListsLoaded(
-        shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        trashState.populate(shoppingListsWithConfig)
+    private fun onClickShoppingList(
+        event: TrashEvent.OnClickShoppingList
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(TrashScreenEvent.OnShowShoppingList(event.uid))
     }
 
-    private fun deleteShoppingLists() = viewModelScope.launch {
-        val uids = trashState.selectedUids
-        uids?.let { shoppingListsRepository.deleteShoppingLists(it) }
-
-        withContext(AppDispatchers.Main) {
-            uids?.forEach { uid -> alarmManager.deleteReminder(uid) }
-            unselectAllShoppingLists()
-        }
+    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(TrashScreenEvent.OnShowBackScreen)
     }
 
-    private fun emptyTrash() = viewModelScope.launch {
-        val uids = trashState.shoppingLists.map { it.uid }
-        shoppingListsRepository.deleteShoppingLists(uids)
-
-        withContext(AppDispatchers.Main) {
-            uids.forEach { alarmManager.deleteReminder(it) }
-        }
-    }
-
-    private fun moveShoppingListsToPurchases() = viewModelScope.launch {
+    private fun onClickMoveToPurchases() = viewModelScope.launch(AppDispatchers.Main) {
         trashState.selectedUids?.forEach {
             shoppingListsRepository.moveShoppingListToPurchases(it)
-        }
-
-        withContext(AppDispatchers.Main) {
-            unselectAllShoppingLists()
+            trashState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    private fun moveShoppingListsToArchive() = viewModelScope.launch {
+    private fun onClickMoveToArchive() = viewModelScope.launch(AppDispatchers.Main) {
         trashState.selectedUids?.forEach {
             shoppingListsRepository.moveShoppingListToArchive(it)
-        }
-
-        withContext(AppDispatchers.Main) {
-            unselectAllShoppingLists()
+            trashState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    @Deprecated("Will be deleted")
-    private fun selectDisplayPurchasesTotal() {
-
+    private fun onClickDelete() = viewModelScope.launch(AppDispatchers.Main) {
+        trashState.selectedUids?.let {
+            shoppingListsRepository.deleteShoppingLists(it)
+            alarmManager.deleteReminders(it)
+            trashState.onAllShoppingListsSelected(selected = false)
+        }
     }
 
-    private fun selectNavigationItem(
-        event: TrashEvent.SelectNavigationItem
+    private fun onClickEmptyTrash() = viewModelScope.launch(AppDispatchers.Main) {
+        val uids = trashState.shoppingLists.map { it.uid }
+        shoppingListsRepository.deleteShoppingLists(uids)
+        alarmManager.deleteReminders(uids)
+        trashState.onAllShoppingListsSelected(selected = false)
+    }
+
+    private fun onDrawerScreenSelected(
+        event: TrashEvent.OnDrawerScreenSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        when (event.route) {
-            UiRoute.Purchases -> _screenEventFlow.emit(TrashScreenEvent.ShowPurchases)
-            UiRoute.Archive -> _screenEventFlow.emit(TrashScreenEvent.ShowArchive)
-            UiRoute.Autocompletes -> _screenEventFlow.emit(TrashScreenEvent.ShowAutocompletes)
-            UiRoute.Settings -> _screenEventFlow.emit(TrashScreenEvent.ShowSettings)
-            else -> return@launch
-        }
+        _screenEventFlow.emit(TrashScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
-    private fun selectShoppingList(event: TrashEvent.SelectShoppingList) {
-        trashState.onShoppingListSelected(true, event.uid)
+    private fun onSelectDrawerScreen(
+        event: TrashEvent.OnSelectDrawerScreen
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(TrashScreenEvent.OnSelectDrawerScreen(event.display))
     }
 
-    private fun selectAllShoppingLists() {
-        trashState.onAllShoppingListsSelected(true)
+    private fun onAllShoppingListsSelected(event: TrashEvent.OnAllShoppingListsSelected) {
+        trashState.onAllShoppingListsSelected(event.selected)
     }
 
-    private fun unselectShoppingList(event: TrashEvent.UnselectShoppingList) {
-        trashState.onShoppingListSelected(false, event.uid)
-    }
-
-    private fun unselectAllShoppingLists() {
-        trashState.onAllShoppingListsSelected(false)
-    }
-
-    private fun cancelSelectingShoppingLists() {
-        unselectAllShoppingLists()
-    }
-
-    private fun displayPurchasesTotal(
-        event: TrashEvent.DisplayPurchasesTotal
-    ) = viewModelScope.launch {
-        appConfigRepository.displayTotal(event.displayTotal)
-
-        withContext(AppDispatchers.Main) {
-            hideDisplayPurchasesTotal()
-        }
-    }
-
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(TrashScreenEvent.ShowBackScreen)
-    }
-
-    private fun showProducts(event: TrashEvent.ShowProducts) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(TrashScreenEvent.ShowProducts(event.uid))
-    }
-
-    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(TrashScreenEvent.ShowNavigationDrawer)
-    }
-
-    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(TrashScreenEvent.HideNavigationDrawer)
-    }
-
-    @Deprecated("Will be deleted")
-    private fun hideDisplayPurchasesTotal() {
-
+    private fun onShoppingListSelected(event: TrashEvent.OnShoppingListSelected) {
+        trashState.onShoppingListSelected(event.selected, event.uid)
     }
 }

@@ -29,6 +29,10 @@ class PurchasesAlarmManager @Inject constructor(
         alarmManager.cancel(pendingIntent)
     }
 
+    fun deleteReminders(uids: List<String>) {
+        uids.forEach { deleteReminder(it) }
+    }
+
     fun deleteCodeVersion14Reminder(id: Int) {
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val pendingIntent = PendingIntent.getBroadcast(context, id, Intent(), flags)

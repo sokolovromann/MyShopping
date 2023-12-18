@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
@@ -43,49 +44,36 @@ fun TrashScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                TrashScreenEvent.ShowBackScreen -> navController.popBackStack()
+                TrashScreenEvent.OnShowBackScreen -> {
+                    navController.popBackStack()
+                }
 
-                is TrashScreenEvent.ShowProducts -> navController.navigate(
+                is TrashScreenEvent.OnShowShoppingList -> navController.navigate(
                     route = UiRoute.Products.productsScreen(it.uid)
                 )
 
-                TrashScreenEvent.ShowPurchases -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Purchases.purchasesScreen)
+                is TrashScreenEvent.OnDrawerScreenSelected -> {
+                    navController.navigateWithDrawerOption(route = it.drawerScreen.getScreen())
                     coroutineScope.launch { scaffoldState.drawerState.close() }
                 }
 
-                TrashScreenEvent.ShowArchive -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                TrashScreenEvent.ShowAutocompletes -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                TrashScreenEvent.ShowSettings -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Settings.settingsScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                TrashScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.open()
-                }
-
-                TrashScreenEvent.HideNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.close()
+                is TrashScreenEvent.OnSelectDrawerScreen -> coroutineScope.launch {
+                    if (it.display) {
+                        scaffoldState.drawerState.open()
+                    } else {
+                        scaffoldState.drawerState.close()
+                    }
                 }
             }
         }
     }
 
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
-        viewModel.onEvent(TrashEvent.HideNavigationDrawer)
+        viewModel.onEvent(TrashEvent.OnSelectDrawerScreen(false))
     }
 
     BackHandler(enabled = state.selectedUids != null) {
-        viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists)
+        viewModel.onEvent(TrashEvent.OnAllShoppingListsSelected(false))
     }
 
     AppScaffold(
@@ -95,7 +83,7 @@ fun TrashScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.trash_header)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.ShowNavigationDrawer) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnSelectDrawerScreen(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
                                 contentDescription = stringResource(R.string.trash_contentDescription_navigationIcon)
@@ -107,7 +95,7 @@ fun TrashScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnAllShoppingListsSelected(false)) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(R.string.trash_contentDescription_cancelSelectingShoppingLists)
@@ -115,25 +103,25 @@ fun TrashScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.MoveShoppingListsToPurchases) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnClickMoveToPurchases) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_restore),
                                 contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToPurchases)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.MoveShoppingListsToArchive) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnClickMoveToArchive) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_archive),
                                 contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToArchive)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.DeleteShoppingLists) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnClickDelete) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.trash_contentDescription_deleteShoppingLists)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.SelectAllShoppingLists) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnAllShoppingListsSelected(true)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_select_all),
                                 contentDescription = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)
@@ -145,9 +133,9 @@ fun TrashScreen(
         },
         drawerContent = {
             AppDrawerContent(
-                selected = UiRoute.Trash,
+                selected = DrawerScreen.TRASH.toUiRoute(),
                 onItemClick = {
-                    val event = TrashEvent.SelectNavigationItem(it)
+                    val event = TrashEvent.OnDrawerScreenSelected(it.toDrawerScreen())
                     viewModel.onEvent(event)
                 }
             )
@@ -168,7 +156,7 @@ fun TrashScreen(
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),
-                    onClick = { viewModel.onEvent(TrashEvent.EmptyTrash) }
+                    onClick = { viewModel.onEvent(TrashEvent.OnClickEmptyTrash) }
                 ) {
                     Text(
                         text = stringResource(R.string.trash_action_deleteShoppingLists),
@@ -187,19 +175,21 @@ fun TrashScreen(
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {
-                    TrashEvent.ShowProducts(it)
+                    TrashEvent.OnClickShoppingList(it)
                 } else {
-                    if (uids.contains(it)) {
-                        TrashEvent.UnselectShoppingList(it)
-                    } else {
-                        TrashEvent.SelectShoppingList(it)
-                    }
+                    TrashEvent.OnShoppingListSelected(
+                        selected = !uids.contains(it),
+                        uid = it
+                    )
                 }
                 viewModel.onEvent(event)
             },
             onLongClick = {
                 if (state.selectedUids == null) {
-                    val event = TrashEvent.SelectShoppingList(it)
+                    val event = TrashEvent.OnShoppingListSelected(
+                        selected = true,
+                        uid = it
+                    )
                     viewModel.onEvent(event)
                 }
             },
