@@ -102,13 +102,13 @@ fun ArchiveScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnMoveShoppingListsToPurchases) }) {
+                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnClickMoveToPurchases) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_unarchive),
                                 contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToPurchases)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnMoveShoppingListsToTrash) }) {
+                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnClickMoveToTrash) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToTrash)
@@ -246,7 +246,7 @@ fun ArchiveScreen(
                     ArchiveEvent.OnClickShoppingList(it)
                 } else {
                     ArchiveEvent.OnShoppingListSelected(
-                        selected = uids.contains(it),
+                        selected = !uids.contains(it),
                         uid = it
                     )
                 }

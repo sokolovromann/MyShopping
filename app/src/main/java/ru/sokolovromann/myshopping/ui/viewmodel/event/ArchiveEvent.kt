@@ -10,9 +10,9 @@ sealed class ArchiveEvent {
 
     object OnClickBack : ArchiveEvent()
 
-    object OnMoveShoppingListsToPurchases : ArchiveEvent()
+    object OnClickMoveToPurchases : ArchiveEvent()
 
-    object OnMoveShoppingListsToTrash : ArchiveEvent()
+    object OnClickMoveToTrash : ArchiveEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : ArchiveEvent()
 

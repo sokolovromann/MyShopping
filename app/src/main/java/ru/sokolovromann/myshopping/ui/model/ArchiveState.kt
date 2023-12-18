@@ -8,6 +8,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
@@ -71,11 +72,7 @@ class ArchiveState {
         displayProducts = userPreferences.displayShoppingsProducts
         displayCompleted = userPreferences.displayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
-        totalValue = UiShoppingListsMapper.toTotalValue(
-            total = shoppingListsWithConfig.getTotal(),
-            totalFormatted = false,
-            userPreferences = userPreferences
-        )
+        totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())
         expandedDisplayTotal = false
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
@@ -109,9 +106,13 @@ class ArchiveState {
         } else {
             shoppingListsWithConfig.calculateTotalByUids(uids)
         }
-        totalValue = totalValue?.copy(
-            text = UiString.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.getDisplayValue())
-        )
+        totalValue = if (uids == null) {
+            toTotalSelectedValue(total)
+        } else {
+            totalValue?.copy(
+                text = UiString.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.getDisplayValue())
+            )
+        }
     }
 
     fun onShoppingListSelected(selected: Boolean, uid: String) {
@@ -126,9 +127,13 @@ class ArchiveState {
         } else {
             shoppingListsWithConfig.calculateTotalByUids(checkedUids)
         }
-        totalValue = totalValue?.copy(
-            text = UiString.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.getDisplayValue())
-        )
+        totalValue = if (checkedUids == null) {
+            toTotalSelectedValue(total)
+        } else {
+            totalValue?.copy(
+                text = UiString.FromResourcesWithArgs(R.string.shoppingLists_text_selectedTotal, total.getDisplayValue())
+            )
+        }
     }
 
     fun onShowHiddenShoppingLists(display: Boolean) {
@@ -142,5 +147,13 @@ class ArchiveState {
 
     fun onWaiting() {
         waiting = true
+    }
+
+    private fun toTotalSelectedValue(total: Money): SelectedValue<DisplayTotal>? {
+        return UiShoppingListsMapper.toTotalValue(
+            total = total,
+            totalFormatted = false,
+            userPreferences = shoppingListsWithConfig.getUserPreferences()
+        )
     }
 }

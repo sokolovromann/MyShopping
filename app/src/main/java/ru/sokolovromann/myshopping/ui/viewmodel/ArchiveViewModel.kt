@@ -34,9 +34,9 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.OnClickBack -> onClickBack()
 
-            ArchiveEvent.OnMoveShoppingListsToPurchases -> onMoveShoppingListsToPurchases()
+            ArchiveEvent.OnClickMoveToPurchases -> onClickMoveToPurchases()
 
-            ArchiveEvent.OnMoveShoppingListsToTrash -> onMoveShoppingListsToTrash()
+            ArchiveEvent.OnClickMoveToTrash -> onClickMoveToTrash()
 
             is ArchiveEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
@@ -82,14 +82,14 @@ class ArchiveViewModel @Inject constructor(
         _screenEventFlow.emit(ArchiveScreenEvent.OnShowBackScreen)
     }
 
-    private fun onMoveShoppingListsToPurchases() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickMoveToPurchases() = viewModelScope.launch(AppDispatchers.Main) {
         archiveState.selectedUids?.let {
             shoppingListsRepository.moveShoppingListsToPurchases(it)
             archiveState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    private fun onMoveShoppingListsToTrash() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickMoveToTrash() = viewModelScope.launch(AppDispatchers.Main) {
         archiveState.selectedUids?.let {
             shoppingListsRepository.moveShoppingListsToTrash(it)
             archiveState.onAllShoppingListsSelected(selected = false)
