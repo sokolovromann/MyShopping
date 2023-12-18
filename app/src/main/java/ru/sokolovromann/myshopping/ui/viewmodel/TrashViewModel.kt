@@ -14,7 +14,7 @@ import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.TrashState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
 import javax.inject.Inject
 
@@ -72,7 +72,7 @@ class TrashViewModel @Inject constructor(
 
     private fun getShoppingLists() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            trashState.showLoading()
+            trashState.onWaiting()
         }
 
         shoppingListsRepository.getTrashWithConfig().collect {
@@ -83,15 +83,11 @@ class TrashViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.isEmpty()) {
-            trashState.showNotFound(shoppingListsWithConfig)
-        } else {
-            trashState.showShoppingLists(shoppingListsWithConfig)
-        }
+        trashState.populate(shoppingListsWithConfig)
     }
 
     private fun deleteShoppingLists() = viewModelScope.launch {
-        val uids = trashState.screenData.selectedUids
+        val uids = trashState.selectedUids
         uids?.let { shoppingListsRepository.deleteShoppingLists(it) }
 
         withContext(AppDispatchers.Main) {
@@ -101,7 +97,7 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun emptyTrash() = viewModelScope.launch {
-        val uids = trashState.screenData.shoppingLists.map { it.uid }
+        val uids = trashState.shoppingLists.map { it.uid }
         shoppingListsRepository.deleteShoppingLists(uids)
 
         withContext(AppDispatchers.Main) {
@@ -110,7 +106,7 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun moveShoppingListsToPurchases() = viewModelScope.launch {
-        trashState.screenData.selectedUids?.forEach {
+        trashState.selectedUids?.forEach {
             shoppingListsRepository.moveShoppingListToPurchases(it)
         }
 
@@ -120,7 +116,7 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun moveShoppingListsToArchive() = viewModelScope.launch {
-        trashState.screenData.selectedUids?.forEach {
+        trashState.selectedUids?.forEach {
             shoppingListsRepository.moveShoppingListToArchive(it)
         }
 
@@ -129,8 +125,9 @@ class TrashViewModel @Inject constructor(
         }
     }
 
+    @Deprecated("Will be deleted")
     private fun selectDisplayPurchasesTotal() {
-        trashState.selectDisplayPurchasesTotal()
+
     }
 
     private fun selectNavigationItem(
@@ -146,19 +143,19 @@ class TrashViewModel @Inject constructor(
     }
 
     private fun selectShoppingList(event: TrashEvent.SelectShoppingList) {
-        trashState.selectShoppingList(event.uid)
+        trashState.onShoppingListSelected(true, event.uid)
     }
 
     private fun selectAllShoppingLists() {
-        trashState.selectAllShoppingLists()
+        trashState.onAllShoppingListsSelected(true)
     }
 
     private fun unselectShoppingList(event: TrashEvent.UnselectShoppingList) {
-        trashState.unselectShoppingList(event.uid)
+        trashState.onShoppingListSelected(false, event.uid)
     }
 
     private fun unselectAllShoppingLists() {
-        trashState.unselectAllShoppingLists()
+        trashState.onAllShoppingListsSelected(false)
     }
 
     private fun cancelSelectingShoppingLists() {
@@ -191,7 +188,8 @@ class TrashViewModel @Inject constructor(
         _screenEventFlow.emit(TrashScreenEvent.HideNavigationDrawer)
     }
 
+    @Deprecated("Will be deleted")
     private fun hideDisplayPurchasesTotal() {
-        trashState.hideDisplayPurchasesTotal()
+
     }
 }

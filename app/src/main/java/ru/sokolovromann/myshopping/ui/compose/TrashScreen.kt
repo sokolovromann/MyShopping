@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
+import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.utils.toButton
 import ru.sokolovromann.myshopping.ui.utils.toItemTitle
@@ -34,7 +36,7 @@ fun TrashScreen(
     navController: NavController,
     viewModel: TrashViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.trashState.screenData
+    val state = viewModel.trashState
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -82,14 +84,14 @@ fun TrashScreen(
         viewModel.onEvent(TrashEvent.HideNavigationDrawer)
     }
 
-    BackHandler(enabled = screenData.selectedUids != null) {
+    BackHandler(enabled = state.selectedUids != null) {
         viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists)
     }
 
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            if (screenData.selectedUids == null) {
+            if (state.selectedUids == null) {
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.trash_header)) },
                     navigationIcon = {
@@ -103,7 +105,7 @@ fun TrashScreen(
                 )
             } else {
                 AppTopAppBar(
-                    title = { Text(text = screenData.selectedUids.size.toString()) },
+                    title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(TrashEvent.CancelSelectingShoppingLists) }) {
                             Icon(
@@ -153,13 +155,16 @@ fun TrashScreen(
     ) { paddings ->
         ShoppingListsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = screenData.screenState,
-            multiColumns = screenData.multiColumns,
-            smartphoneScreen = screenData.smartphoneScreen,
-            otherItems = screenData.shoppingLists,
-            displayProducts = screenData.displayProducts,
-            displayCompleted = screenData.displayCompleted,
-            coloredCheckbox = screenData.coloredCheckbox,
+            screenState = ScreenState.create(
+                waiting = state.waiting,
+                notFound = state.shoppingLists.isEmpty()
+            ),
+            multiColumns = state.multiColumnsValue.selected,
+            smartphoneScreen = state.smartphoneScreen,
+            otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.shoppingLists),
+            displayProducts = state.displayProducts,
+            displayCompleted = state.displayCompleted,
+            coloredCheckbox = state.coloredCheckbox,
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),
@@ -167,20 +172,20 @@ fun TrashScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.trash_action_deleteShoppingLists),
-                        fontSize = screenData.fontSize.toButton().sp
+                        fontSize = state.oldFontSize.toButton().sp
                     )
                 }
             },
             notFound = {
                 Text(
                     text = stringResource(R.string.trash_text_shoppingListsNotFound),
-                    fontSize = screenData.fontSize.toItemTitle().sp,
+                    fontSize = state.oldFontSize.toItemTitle().sp,
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = screenData.fontSize,
+            fontSize = state.oldFontSize,
             onClick = {
-                val uids = screenData.selectedUids
+                val uids = state.selectedUids
                 val event = if (uids == null) {
                     TrashEvent.ShowProducts(it)
                 } else {
@@ -193,12 +198,12 @@ fun TrashScreen(
                 viewModel.onEvent(event)
             },
             onLongClick = {
-                if (screenData.selectedUids == null) {
+                if (state.selectedUids == null) {
                     val event = TrashEvent.SelectShoppingList(it)
                     viewModel.onEvent(event)
                 }
             },
-            selectedUids = screenData.selectedUids
+            selectedUids = state.selectedUids
         )
     }
 }
