@@ -277,7 +277,7 @@ fun PurchasesScreen(
             ),
             multiColumns = state.multiColumnsValue.selected,
             smartphoneScreen = state.smartphoneScreen,
-            pinnedItems = UiShoppingListsMapper.toOldPinnedSortedShoppingListItems(state.pinnedShoppingLists),
+            pinnedItems = UiShoppingListsMapper.toOldShoppingListItems(state.pinnedShoppingLists),
             otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.otherShoppingLists),
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
