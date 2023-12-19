@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
@@ -40,49 +41,36 @@ fun PurchasesScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                is PurchasesScreenEvent.ShowProducts -> navController.navigate(
+                is PurchasesScreenEvent.OnFinishApp -> {
+                    navController.popBackStack()
+                }
+
+                is PurchasesScreenEvent.OnShowShoppingList -> navController.navigate(
                     route = UiRoute.Products.productsScreen(it.uid)
                 )
 
-                PurchasesScreenEvent.ShowArchive -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
+                is PurchasesScreenEvent.OnDrawerScreenSelected -> {
+                    navController.navigateWithDrawerOption(route = it.drawerScreen.getScreen())
                     coroutineScope.launch { scaffoldState.drawerState.close() }
                 }
 
-                PurchasesScreenEvent.ShowTrash -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Trash.trashScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                is PurchasesScreenEvent.OnSelectDrawerScreen -> coroutineScope.launch {
+                    if (it.display) {
+                        scaffoldState.drawerState.open()
+                    } else {
+                        scaffoldState.drawerState.close()
+                    }
                 }
-
-                PurchasesScreenEvent.ShowAutocompletes -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                PurchasesScreenEvent.ShowSettings -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Settings.settingsScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                PurchasesScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.open()
-                }
-
-                PurchasesScreenEvent.HideNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.close()
-                }
-
-                PurchasesScreenEvent.FinishApp -> navController.popBackStack()
             }
         }
     }
 
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
-        viewModel.onEvent(PurchasesEvent.HideNavigationDrawer)
+        viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(false))
     }
 
     BackHandler(enabled = state.selectedUids != null) {
-        viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists)
+        viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(false))
     }
 
     AppScaffold(
@@ -92,7 +80,7 @@ fun PurchasesScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.purchases_header)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowNavigationDrawer) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon)
@@ -104,7 +92,7 @@ fun PurchasesScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(false)) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_cancelSelectingShoppingLists)
@@ -112,15 +100,7 @@ fun PurchasesScreen(
                         }
                     },
                     actions = {
-                        IconButton(
-                            onClick = {
-                                if (state.isOnlyPinned()) {
-                                    viewModel.onEvent(PurchasesEvent.UnpinShoppingLists)
-                                } else {
-                                    viewModel.onEvent(PurchasesEvent.PinShoppingLists)
-                                }
-                            }
-                        ) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickPin) }) {
                             Icon(
                                 painter = if (state.isOnlyPinned()) {
                                     painterResource(R.drawable.ic_all_pin)
@@ -130,33 +110,33 @@ fun PurchasesScreen(
                                 contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToArchive) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveToArchive) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_archive),
                                 contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListsToTrash) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveToTrash) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowSelectedMenu) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowItemMoreMenu(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = ""
                             )
                             AppDropdownMenu(
                                 expanded = state.expandedItemMoreMenu,
-                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideSelectedMenu) }
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowItemMoreMenu(false)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.CopyShoppingLists) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnClickCopy) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_copyShoppingLists)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.SelectAllShoppingLists) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(true)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)) }
                                 )
                             }
@@ -175,15 +155,9 @@ fun PurchasesScreen(
                             totalText = totalValue.text.toUiText(),
                             fontSize = state.fontSize.button.sp,
                             expanded = state.expandedDisplayTotal,
-                            onExpanded = {
-                                if (it) {
-                                    viewModel.onEvent(PurchasesEvent.SelectDisplayPurchasesTotal)
-                                } else {
-                                    viewModel.onEvent(PurchasesEvent.HideDisplayPurchasesTotal)
-                                }
-                            },
+                            onExpanded = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayTotal(it)) },
                             onSelected = {
-                                val event = PurchasesEvent.DisplayPurchasesTotal(it)
+                                val event = PurchasesEvent.OnDisplayTotalSelected(it)
                                 viewModel.onEvent(event)
                             }
                         )
@@ -191,23 +165,23 @@ fun PurchasesScreen(
                 },
                 actionButtons = {
                     if (state.selectedUids == null) {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAdd) }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.ShowPurchasesMenu) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon)
                             )
                             AppDropdownMenu(
                                 expanded = state.expandedPurchasesMenu,
-                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.HidePurchasesMenu) }
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(false)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.InvertShoppingsMultiColumns) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnInvertMultiColumns) },
                                     text = { Text(text = state.multiColumnsValue.text.asCompose()) }
                                 )
                                 AppDropdownMenuItem(
@@ -219,38 +193,34 @@ fun PurchasesScreen(
                                             tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                                         )
                                     },
-                                    onClick = { viewModel.onEvent(PurchasesEvent.SelectShoppingListsSort) }
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectSort(true)) }
                                 )
                             }
 
                             AppDropdownMenu(
                                 expanded = state.expandedSort,
-                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnSelectSort(false)) },
                                 header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(
-                                        SortBy.CREATED)) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.CREATED)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(
-                                        SortBy.LAST_MODIFIED)) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.LAST_MODIFIED)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(
-                                        SortBy.NAME)) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.NAME)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.SortShoppingLists(
-                                        SortBy.TOTAL)) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.TOTAL)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
                                 )
                                 Divider()
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.ReverseSortShoppingLists) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnReverseSort) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
                                 )
                             }
@@ -261,9 +231,9 @@ fun PurchasesScreen(
         },
         drawerContent = {
             AppDrawerContent(
-                selected = UiRoute.Purchases,
+                selected = DrawerScreen.PURCHASES.toUiRoute(),
                 onItemClick = {
-                    val event = PurchasesEvent.SelectNavigationItem(it)
+                    val event = PurchasesEvent.OnDrawerScreenSelected(it.toDrawerScreen())
                     viewModel.onEvent(event)
                 }
             )
@@ -286,7 +256,7 @@ fun PurchasesScreen(
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
                         fontSize = state.oldFontSize,
-                        onClick = { viewModel.onEvent(PurchasesEvent.DisplayHiddenShoppingLists) }
+                        onClick = { viewModel.onEvent(PurchasesEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
             },
@@ -305,14 +275,14 @@ fun PurchasesScreen(
                     properties = PopupProperties(focusable = false)
                 ) {
                     Row {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListUp(it)) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveUp(it)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_arrow_up),
                                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUp),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.MoveShoppingListDown(it)) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveDown(it)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_arrow_down),
                                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDown),
@@ -325,19 +295,21 @@ fun PurchasesScreen(
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {
-                    PurchasesEvent.ShowProducts(it)
+                    PurchasesEvent.OnClickShoppingList(it)
                 } else {
-                    if (uids.contains(it)) {
-                        PurchasesEvent.UnselectShoppingList(it)
-                    } else {
-                        PurchasesEvent.SelectShoppingList(it)
-                    }
+                    PurchasesEvent.OnShoppingListSelected(
+                        selected = !uids.contains(it),
+                        uid = it
+                    )
                 }
                 viewModel.onEvent(event)
             },
             onLongClick = {
                 if (state.selectedUids == null) {
-                    val event = PurchasesEvent.SelectShoppingList(it)
+                    val event = PurchasesEvent.OnShoppingListSelected(
+                        selected = true,
+                        uid = it
+                    )
                     viewModel.onEvent(event)
                 }
             },

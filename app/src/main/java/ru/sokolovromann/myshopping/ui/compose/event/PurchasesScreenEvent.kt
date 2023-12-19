@@ -1,20 +1,14 @@
 package ru.sokolovromann.myshopping.ui.compose.event
 
+import ru.sokolovromann.myshopping.ui.DrawerScreen
+
 sealed class PurchasesScreenEvent {
 
-    data class ShowProducts(val uid: String) : PurchasesScreenEvent()
+    object OnFinishApp : PurchasesScreenEvent()
 
-    object ShowArchive : PurchasesScreenEvent()
+    data class OnShowShoppingList(val uid: String) : PurchasesScreenEvent()
 
-    object ShowTrash : PurchasesScreenEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesScreenEvent()
 
-    object ShowAutocompletes : PurchasesScreenEvent()
-
-    object ShowSettings : PurchasesScreenEvent()
-
-    object ShowNavigationDrawer : PurchasesScreenEvent()
-
-    object HideNavigationDrawer : PurchasesScreenEvent()
-
-    object FinishApp : PurchasesScreenEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : PurchasesScreenEvent()
 }

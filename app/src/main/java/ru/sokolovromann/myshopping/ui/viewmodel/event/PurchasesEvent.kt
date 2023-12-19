@@ -2,67 +2,51 @@ package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.SortBy
-import ru.sokolovromann.myshopping.ui.UiRoute
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 
 sealed class PurchasesEvent {
 
-    object AddShoppingList : PurchasesEvent()
+    data class OnClickShoppingList(val uid: String) : PurchasesEvent()
 
-    object MoveShoppingListsToArchive : PurchasesEvent()
+    object OnClickAdd : PurchasesEvent()
 
-    object MoveShoppingListsToTrash : PurchasesEvent()
+    object OnClickBack : PurchasesEvent()
 
-    object CopyShoppingLists : PurchasesEvent()
+    object OnClickMoveToArchive : PurchasesEvent()
 
-    data class MoveShoppingListUp(val uid: String) : PurchasesEvent()
+    object OnClickMoveToTrash : PurchasesEvent()
 
-    data class MoveShoppingListDown(val uid: String) : PurchasesEvent()
+    object OnClickPin: PurchasesEvent()
 
-    object SelectDisplayPurchasesTotal : PurchasesEvent()
+    object OnClickCopy : PurchasesEvent()
 
-    data class SelectNavigationItem(val route: UiRoute) : PurchasesEvent()
+    data class OnClickMoveUp(val uid: String) : PurchasesEvent()
 
-    object SelectShoppingListsSort : PurchasesEvent()
+    data class OnClickMoveDown(val uid: String) : PurchasesEvent()
 
-    data class SelectShoppingList(val uid: String) : PurchasesEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesEvent()
 
-    object SelectAllShoppingLists : PurchasesEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : PurchasesEvent()
 
-    data class UnselectShoppingList(val uid: String) : PurchasesEvent()
+    data class OnDisplayTotalSelected(val displayTotal: DisplayTotal) : PurchasesEvent()
 
-    object CancelSelectingShoppingLists : PurchasesEvent()
+    data class OnSelectDisplayTotal(val expanded: Boolean) : PurchasesEvent()
 
-    data class SortShoppingLists(val sortBy: SortBy) : PurchasesEvent()
+    data class OnSortSelected(val sortBy: SortBy) : PurchasesEvent()
 
-    object ReverseSortShoppingLists : PurchasesEvent()
+    object OnReverseSort : PurchasesEvent()
 
-    data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : PurchasesEvent()
+    data class OnSelectSort(val expanded: Boolean) : PurchasesEvent()
 
-    object DisplayHiddenShoppingLists : PurchasesEvent()
+    data class OnShowPurchasesMenu(val expanded: Boolean) : PurchasesEvent()
 
-    data class ShowProducts(val uid: String) : PurchasesEvent()
+    data class OnShowItemMoreMenu(val expanded: Boolean) : PurchasesEvent()
 
-    object ShowNavigationDrawer : PurchasesEvent()
+    data class OnAllShoppingListsSelected(val selected: Boolean) : PurchasesEvent()
 
-    object ShowPurchasesMenu : PurchasesEvent()
+    data class OnShoppingListSelected(val selected: Boolean, val uid: String) : PurchasesEvent()
 
-    object ShowSelectedMenu : PurchasesEvent()
+    data class OnShowHiddenShoppingLists(val display: Boolean) : PurchasesEvent()
 
-    object HideNavigationDrawer : PurchasesEvent()
-
-    object HideDisplayPurchasesTotal : PurchasesEvent()
-
-    object HidePurchasesMenu : PurchasesEvent()
-
-    object HideShoppingListsSort : PurchasesEvent()
-
-    object HideSelectedMenu : PurchasesEvent()
-
-    object FinishApp : PurchasesEvent()
-
-    object InvertShoppingsMultiColumns : PurchasesEvent()
-
-    object PinShoppingLists : PurchasesEvent()
-
-    object UnpinShoppingLists : PurchasesEvent()
+    object OnInvertMultiColumns : PurchasesEvent()
 }
