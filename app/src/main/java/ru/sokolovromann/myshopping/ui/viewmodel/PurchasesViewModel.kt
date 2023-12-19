@@ -14,7 +14,7 @@ import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.PurchasesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 import javax.inject.Inject
 
@@ -99,7 +99,7 @@ class PurchasesViewModel @Inject constructor(
 
     private fun getShoppingLists() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            purchasesState.showLoading()
+            purchasesState.onWaiting()
         }
 
         shoppingListsRepository.getPurchasesWithConfig().collect {
@@ -110,11 +110,7 @@ class PurchasesViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.isEmpty()) {
-            purchasesState.showNotFound(shoppingListsWithConfig)
-        } else {
-            purchasesState.showShoppingLists(shoppingListsWithConfig)
-        }
+        purchasesState.populate(shoppingListsWithConfig)
     }
 
     private fun addShoppingList() = viewModelScope.launch {
@@ -127,7 +123,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun moveShoppingListsToArchive() = viewModelScope.launch {
-        purchasesState.screenData.selectedUids?.let {
+        purchasesState.selectedUids?.let {
             shoppingListsRepository.moveShoppingListsToArchive(it)
         }
 
@@ -137,7 +133,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun moveShoppingListsToTrash() = viewModelScope.launch {
-        purchasesState.screenData.selectedUids?.let {
+        purchasesState.selectedUids?.let {
             shoppingListsRepository.moveShoppingListsToTrash(it)
         }
 
@@ -147,7 +143,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun copyShoppingLists() = viewModelScope.launch {
-        purchasesState.screenData.selectedUids?.let {
+        purchasesState.selectedUids?.let {
             shoppingListsRepository.copyShoppingLists(it)
         }
 
@@ -169,7 +165,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun selectDisplayPurchasesTotal() {
-        purchasesState.selectDisplayPurchasesTotal()
+        purchasesState.onSelectDisplayTotal(true)
     }
 
     private fun selectNavigationItem(
@@ -185,23 +181,23 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun selectShoppingListsSort() {
-        purchasesState.showSort()
+        purchasesState.onSelectSort(true)
     }
 
     private fun selectShoppingList(event: PurchasesEvent.SelectShoppingList) {
-        purchasesState.selectShoppingList(event.uid)
+        purchasesState.onShoppingListSelected(true, event.uid)
     }
 
     private fun selectAllShoppingLists() {
-        purchasesState.selectAllShoppingLists()
+        purchasesState.onAllShoppingListsSelected(true)
     }
 
     private fun unselectShoppingList(event: PurchasesEvent.UnselectShoppingList) {
-        purchasesState.unselectShoppingList(event.uid)
+        purchasesState.onShoppingListSelected(false, event.uid)
     }
 
     private fun unselectAllShoppingList() {
-        purchasesState.unselectAllShoppingLists()
+        purchasesState.onAllShoppingListsSelected(false)
     }
 
     private fun cancelSelectingShoppingLists() {
@@ -237,7 +233,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun displayHiddenShoppingLists() {
-        purchasesState.displayHiddenShoppingLists()
+        purchasesState.onShowHiddenShoppingLists(true)
     }
 
     private fun showProducts(
@@ -251,11 +247,11 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun showPurchasesMenu() {
-        purchasesState.showPurchasesMenu()
+        purchasesState.onShowPurchasesMenu(true)
     }
 
     private fun showSelectedMenu() {
-        purchasesState.showSelectedMenu()
+        purchasesState.onShowItemMoreMenu(true)
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
@@ -263,19 +259,19 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun hideDisplayPurchasesTotal() {
-        purchasesState.hideDisplayPurchasesTotal()
+        purchasesState.onSelectDisplayTotal(false)
     }
 
     private fun hidePurchasesMenu() {
-        purchasesState.hidePurchasesMenu()
+        purchasesState.onShowPurchasesMenu(false)
     }
 
     private fun hideShoppingListsSort() {
-        purchasesState.hideSort()
+        purchasesState.onSelectSort(false)
     }
 
     private fun hideSelectedMenu() {
-        purchasesState.hideSelectedMenu()
+        purchasesState.onShowItemMoreMenu(false)
     }
 
     private fun finishApp() = viewModelScope.launch(AppDispatchers.Main) {
@@ -287,7 +283,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun pinShoppingLists() = viewModelScope.launch {
-        purchasesState.screenData.selectedUids?.let {
+        purchasesState.selectedUids?.let {
             shoppingListsRepository.pinShoppingLists(it)
         }
 
@@ -297,7 +293,7 @@ class PurchasesViewModel @Inject constructor(
     }
 
     private fun unpinShoppingLists() = viewModelScope.launch {
-        purchasesState.screenData.selectedUids?.let {
+        purchasesState.selectedUids?.let {
             shoppingListsRepository.unpinShoppingLists(it)
         }
 

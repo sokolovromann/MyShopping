@@ -22,10 +22,9 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
+import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
-import ru.sokolovromann.myshopping.ui.utils.toButton
-import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.viewmodel.PurchasesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 
@@ -34,7 +33,7 @@ fun PurchasesScreen(
     navController: NavController,
     viewModel: PurchasesViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.purchasesState.screenData
+    val state = viewModel.purchasesState
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -82,14 +81,14 @@ fun PurchasesScreen(
         viewModel.onEvent(PurchasesEvent.HideNavigationDrawer)
     }
 
-    BackHandler(enabled = screenData.selectedUids != null) {
+    BackHandler(enabled = state.selectedUids != null) {
         viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists)
     }
 
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            if (screenData.selectedUids == null) {
+            if (state.selectedUids == null) {
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.purchases_header)) },
                     navigationIcon = {
@@ -103,7 +102,7 @@ fun PurchasesScreen(
                 )
             } else {
                 AppTopAppBar(
-                    title = { Text(text = screenData.selectedUids.size.toString()) },
+                    title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.CancelSelectingShoppingLists) }) {
                             Icon(
@@ -115,7 +114,7 @@ fun PurchasesScreen(
                     actions = {
                         IconButton(
                             onClick = {
-                                if (screenData.isOnlyPinned()) {
+                                if (state.isOnlyPinned()) {
                                     viewModel.onEvent(PurchasesEvent.UnpinShoppingLists)
                                 } else {
                                     viewModel.onEvent(PurchasesEvent.PinShoppingLists)
@@ -123,7 +122,7 @@ fun PurchasesScreen(
                             }
                         ) {
                             Icon(
-                                painter = if (screenData.isOnlyPinned()) {
+                                painter = if (state.isOnlyPinned()) {
                                     painterResource(R.drawable.ic_all_pin)
                                 } else {
                                     painterResource(R.drawable.ic_all_unpin)
@@ -149,7 +148,7 @@ fun PurchasesScreen(
                                 contentDescription = ""
                             )
                             AppDropdownMenu(
-                                expanded = screenData.showSelectedMenu,
+                                expanded = state.expandedItemMoreMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideSelectedMenu) }
                             ) {
                                 AppDropdownMenuItem(
@@ -169,12 +168,13 @@ fun PurchasesScreen(
         bottomBar = {
             AppBottomAppBar(
                 content = {
-                    if (screenData.totalText != UiText.Nothing) {
+                    val totalValue = state.totalValue ?: return@AppBottomAppBar
+                    if (totalValue.text.isNotEmpty()) {
                         ShoppingListsTotalContent(
-                            displayTotal = screenData.displayTotal,
-                            totalText = screenData.totalText,
-                            fontSize = screenData.fontSize.toButton().sp,
-                            expanded = screenData.showDisplayTotal,
+                            displayTotal = totalValue.selected,
+                            totalText = totalValue.text.toUiText(),
+                            fontSize = state.fontSize.button.sp,
+                            expanded = state.expandedDisplayTotal,
                             onExpanded = {
                                 if (it) {
                                     viewModel.onEvent(PurchasesEvent.SelectDisplayPurchasesTotal)
@@ -190,7 +190,7 @@ fun PurchasesScreen(
                     }
                 },
                 actionButtons = {
-                    if (screenData.selectedUids == null) {
+                    if (state.selectedUids == null) {
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.AddShoppingList) }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -203,12 +203,12 @@ fun PurchasesScreen(
                                 contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon)
                             )
                             AppDropdownMenu(
-                                expanded = screenData.showPurchasesMenu,
+                                expanded = state.expandedPurchasesMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.HidePurchasesMenu) }
                             ) {
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(PurchasesEvent.InvertShoppingsMultiColumns) },
-                                    text = { Text(text = screenData.multiColumnsText.asCompose()) }
+                                    text = { Text(text = state.multiColumnsValue.text.asCompose()) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
@@ -224,7 +224,7 @@ fun PurchasesScreen(
                             }
 
                             AppDropdownMenu(
-                                expanded = screenData.showSort,
+                                expanded = state.expandedSort,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.HideShoppingListsSort) },
                                 header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
                             ) {
@@ -271,18 +271,21 @@ fun PurchasesScreen(
     ) { paddings ->
         ShoppingListsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = screenData.screenState,
-            multiColumns = screenData.multiColumns,
-            smartphoneScreen = screenData.smartphoneScreen,
-            pinnedItems = screenData.pinnedShoppingLists,
-            otherItems = screenData.otherShoppingLists,
-            displayProducts = screenData.displayProducts,
-            displayCompleted = screenData.displayCompleted,
-            coloredCheckbox = screenData.coloredCheckbox,
+            screenState = ScreenState.create(
+                waiting = state.waiting,
+                notFound = state.isNotFound()
+            ),
+            multiColumns = state.multiColumnsValue.selected,
+            smartphoneScreen = state.smartphoneScreen,
+            pinnedItems = UiShoppingListsMapper.toOldPinnedSortedShoppingListItems(state.pinnedShoppingLists),
+            otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.otherShoppingLists),
+            displayProducts = state.displayProducts,
+            displayCompleted = state.displayCompleted,
+            coloredCheckbox = state.coloredCheckbox,
             bottomBar = {
-                if (screenData.showHiddenShoppingLists) {
+                if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
-                        fontSize = screenData.fontSize,
+                        fontSize = state.oldFontSize,
                         onClick = { viewModel.onEvent(PurchasesEvent.DisplayHiddenShoppingLists) }
                     )
                 }
@@ -290,16 +293,14 @@ fun PurchasesScreen(
             notFound = {
                 Text(
                     text = stringResource(R.string.purchases_text_shoppingListsNotFound),
-                    fontSize = screenData.fontSize.toItemTitle().sp,
+                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = screenData.fontSize,
+            fontSize = state.oldFontSize,
             dropdownMenu = {
-                val expanded = screenData.selectedUids?.count() == 1 &&
-                        screenData.selectedUids.contains(it)
                 AppDropdownMenu(
-                    expanded = expanded,
+                    expanded = state.expandedItemFavoriteMenu(it),
                     onDismissRequest = {},
                     properties = PopupProperties(focusable = false)
                 ) {
@@ -322,7 +323,7 @@ fun PurchasesScreen(
                 }
             },
             onClick = {
-                val uids = screenData.selectedUids
+                val uids = state.selectedUids
                 val event = if (uids == null) {
                     PurchasesEvent.ShowProducts(it)
                 } else {
@@ -335,12 +336,12 @@ fun PurchasesScreen(
                 viewModel.onEvent(event)
             },
             onLongClick = {
-                if (screenData.selectedUids == null) {
+                if (state.selectedUids == null) {
                     val event = PurchasesEvent.SelectShoppingList(it)
                     viewModel.onEvent(event)
                 }
             },
-            selectedUids = screenData.selectedUids
+            selectedUids = state.selectedUids
         )
     }
 }

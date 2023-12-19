@@ -68,7 +68,63 @@ object UiShoppingListsMapper {
         }
     }
 
+    fun toPinnedSortedShoppingListItems(
+        shoppingListsWithConfig: ShoppingListsWithConfig,
+        displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
+    ): List<ShoppingListItem> {
+        return shoppingListsWithConfig.getPinnedOtherSortedShoppingLists(displayCompleted).first.map {
+            toShoppingListItems(
+                shoppingList = it,
+                deviceConfig = shoppingListsWithConfig.getDeviceConfig(),
+                userPreferences = shoppingListsWithConfig.getUserPreferences()
+            )
+        }
+    }
+
+    fun toOtherSortedShoppingListItems(
+        shoppingListsWithConfig: ShoppingListsWithConfig,
+        displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
+    ): List<ShoppingListItem> {
+        return shoppingListsWithConfig.getPinnedOtherSortedShoppingLists(displayCompleted).second.map {
+            toShoppingListItems(
+                shoppingList = it,
+                deviceConfig = shoppingListsWithConfig.getDeviceConfig(),
+                userPreferences = shoppingListsWithConfig.getUserPreferences()
+            )
+        }
+    }
+
     fun toOldShoppingListItems(items: List<ShoppingListItem>): List<ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem> {
+        return items.map {
+            ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem(
+                uid = it.uid,
+                nameText = it.name.toUiText(),
+                productsList = it.products.map { product ->
+                    Pair(product.first, product.second.toUiText())
+                },
+                totalText = it.total.toUiText(),
+                reminderText = it.reminder.toUiText(),
+                completed = it.completed
+            )
+        }
+    }
+
+    fun toOldPinnedSortedShoppingListItems(items: List<ShoppingListItem>): List<ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem> {
+        return items.map {
+            ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem(
+                uid = it.uid,
+                nameText = it.name.toUiText(),
+                productsList = it.products.map { product ->
+                    Pair(product.first, product.second.toUiText())
+                },
+                totalText = it.total.toUiText(),
+                reminderText = it.reminder.toUiText(),
+                completed = it.completed
+            )
+        }
+    }
+
+    fun toOldOtherSortedShoppingListItems(items: List<ShoppingListItem>): List<ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem> {
         return items.map {
             ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem(
                 uid = it.uid,
