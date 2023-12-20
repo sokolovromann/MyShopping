@@ -11,7 +11,7 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ProductsWidgetConfigState
+import ru.sokolovromann.myshopping.ui.model.ProductsWidgetConfigState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsWidgetConfigEvent
 import javax.inject.Inject
 
@@ -40,7 +40,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
             _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.FinishApp)
         } else {
             withContext(AppDispatchers.Main) {
-                productsWidgetConfigState.onCreate(event.widgetId)
+                productsWidgetConfigState.saveWidgetId(event.widgetId)
             }
 
             shoppingListsRepository.getPurchasesWithConfig().collect {
@@ -52,11 +52,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
     private suspend fun shoppingListsLoaded(
         shoppingListsWithConfig: ShoppingListsWithConfig
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.isEmpty()) {
-            productsWidgetConfigState.showNotFound(shoppingListsWithConfig)
-        } else {
-            productsWidgetConfigState.showShoppingLists(shoppingListsWithConfig)
-        }
+        productsWidgetConfigState.populate(shoppingListsWithConfig)
     }
 
     private fun selectShoppingList(

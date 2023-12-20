@@ -30,8 +30,9 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.ui.compose.AppScaffold
 import ru.sokolovromann.myshopping.ui.compose.ShoppingListsGrid
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
+import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
-import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgetState
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsWidgetConfigViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsWidgetConfigEvent
@@ -52,7 +53,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
         viewModel.onEvent(event)
 
         installSplashScreen().apply {
-            setKeepOnScreenCondition { productsWidgetConfigState.loading }
+            setKeepOnScreenCondition { productsWidgetConfigState.waiting }
         }
 
         setContent {
@@ -96,7 +97,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
 
     @Composable
     private fun ProductsWidgetConfigContent() {
-        val screenData = viewModel.productsWidgetConfigState.screenData
+        val state = viewModel.productsWidgetConfigState
 
         AppScaffold(
             topBar = {
@@ -116,15 +117,18 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
             }
         ) {
             ShoppingListsGrid(
-                screenState = screenData.screenState,
-                multiColumns = screenData.multiColumns,
-                smartphoneScreen = screenData.smartphoneScreen,
-                pinnedItems = screenData.pinnedShoppingLists,
-                otherItems = screenData.otherShoppingLists,
-                displayProducts = screenData.displayProducts,
-                displayCompleted = screenData.displayCompleted,
-                coloredCheckbox = screenData.coloredCheckbox,
-                fontSize = screenData.fontSize,
+                screenState = ScreenState.create(
+                    waiting = state.waiting,
+                    notFound = state.isNotFound()
+                ),
+                multiColumns = state.multiColumnsValue.selected,
+                smartphoneScreen = state.smartphoneScreen,
+                pinnedItems = UiShoppingListsMapper.toOldShoppingListItems(state.pinnedShoppingLists),
+                otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.otherShoppingLists),
+                displayProducts = state.displayProducts,
+                displayCompleted = state.displayCompleted,
+                coloredCheckbox = state.coloredCheckbox,
+                fontSize = state.oldFontSize,
                 onClick = {
                     val event = ProductsWidgetConfigEvent.SelectShoppingList(it)
                     viewModel.onEvent(event)
@@ -133,7 +137,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 notFound = {
                     Text(
                         text = stringResource(R.string.productsWidgetConfig_text_shoppingListsNotFound),
-                        fontSize = screenData.fontSize.toItemTitle().sp,
+                        fontSize = state.fontSize.itemTitle.sp,
                         textAlign = TextAlign.Center
                     )
                 }
