@@ -4,17 +4,15 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 
 sealed class CopyProductEvent {
 
-    object AddShoppingList : CopyProductEvent()
+    object OnClickAdd : CopyProductEvent()
 
-    data class CopyProduct(val uid: String) : CopyProductEvent()
+    object OnClickCancel : CopyProductEvent()
 
-    object SelectShoppingListLocation : CopyProductEvent()
+    data class OnClickCopy(val uid: String) : CopyProductEvent()
 
-    object DisplayHiddenShoppingLists : CopyProductEvent()
+    data class OnLocationSelected(val location: ShoppingLocation) : CopyProductEvent()
 
-    data class ShowShoppingLists(val location: ShoppingLocation) : CopyProductEvent()
+    data class OnSelectLocation(val expanded: Boolean) : CopyProductEvent()
 
-    object CancelCopingProduct : CopyProductEvent()
-
-    object HideShoppingListsLocation : CopyProductEvent()
+    data class OnShowHiddenShoppingLists(val display: Boolean) : CopyProductEvent()
 }

@@ -36,9 +36,7 @@ fun CopyProductScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                CopyProductScreenEvent.ShowBackScreen -> navController.popBackStack()
-
-                CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets -> {
+                CopyProductScreenEvent.OnShowBackScreen -> {
                     updateProductsWidgets(context)
                     navController.popBackStack()
                 }
@@ -47,7 +45,7 @@ fun CopyProductScreen(
     }
 
     BackHandler {
-        viewModel.onEvent(CopyProductEvent.CancelCopingProduct)
+        viewModel.onEvent(CopyProductEvent.OnClickCancel)
     }
 
     AppScaffold(
@@ -55,7 +53,7 @@ fun CopyProductScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.copyProduct_header)) },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.CancelCopingProduct) }) {
+                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.OnClickCancel) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.copyProduct_contentDescription_navigationIcon)
@@ -84,20 +82,14 @@ fun CopyProductScreen(
                         location = state.locationValue.selected,
                         fontSize = state.fontSize.button.sp,
                         expanded = state.expandedLocation,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(CopyProductEvent.SelectShoppingListLocation)
-                            } else {
-                                viewModel.onEvent(CopyProductEvent.HideShoppingListsLocation)
-                            }
-                        },
+                        onExpanded = { viewModel.onEvent(CopyProductEvent.OnSelectLocation(it)) },
                         onSelected = {
-                            val event = CopyProductEvent.ShowShoppingLists(it)
+                            val event = CopyProductEvent.OnLocationSelected(it)
                             viewModel.onEvent(event)
                         }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.AddShoppingList) }) {
+                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.OnClickAdd) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.copyProduct_contentDescription_addShoppingListIcon),
@@ -110,7 +102,7 @@ fun CopyProductScreen(
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
                         fontSize = state.oldFontSize,
-                        onClick = { viewModel.onEvent(CopyProductEvent.DisplayHiddenShoppingLists) }
+                        onClick = { viewModel.onEvent(CopyProductEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
             },
@@ -123,7 +115,7 @@ fun CopyProductScreen(
             },
             fontSize = state.oldFontSize,
             onClick = {
-                val event = CopyProductEvent.CopyProduct(it)
+                val event = CopyProductEvent.OnClickCopy(it)
                 viewModel.onEvent(event)
             },
             onLongClick = {}

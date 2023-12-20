@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -30,115 +28,81 @@ class CopyProductViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<CopyProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<CopyProductScreenEvent> = _screenEventFlow
 
-    init {
-        getPurchases()
-        getProducts()
-    }
+    init { onInit() }
 
     override fun onEvent(event: CopyProductEvent) {
         when (event) {
-            CopyProductEvent.AddShoppingList -> addShoppingList()
+            CopyProductEvent.OnClickAdd -> onClickAdd()
 
-            is CopyProductEvent.CopyProduct -> copyProduct(event)
+            CopyProductEvent.OnClickCancel -> onClickCancel()
 
-            CopyProductEvent.SelectShoppingListLocation -> selectShoppingListLocation()
+            is CopyProductEvent.OnClickCopy -> onClickCopy(event)
 
-            CopyProductEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
+            is CopyProductEvent.OnLocationSelected -> onLocationSelected(event)
 
-            is CopyProductEvent.ShowShoppingLists -> showShoppingLists(event)
+            is CopyProductEvent.OnSelectLocation -> onSelectLocation(event)
 
-            CopyProductEvent.CancelCopingProduct -> cancelCopingProduct()
-
-            CopyProductEvent.HideShoppingListsLocation -> hideShoppingListsLocation()
+            is CopyProductEvent.OnShowHiddenShoppingLists -> onShowHiddenShoppingLists(event)
         }
     }
 
-    private fun getPurchases() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            copyProductState.onWaiting()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        copyProductState.onWaiting()
 
-        shoppingListsRepository.getPurchasesWithConfig().collect {
-            shoppingListsLoaded(
-                shoppingListsWithConfig = it,
-                location = ShoppingLocation.PURCHASES
-            )
-        }
-    }
-
-    private fun getArchive() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            copyProductState.onWaiting()
-        }
-
-        shoppingListsRepository.getArchiveWithConfig().collect {
-            shoppingListsLoaded(
-                shoppingListsWithConfig = it,
-                location = ShoppingLocation.ARCHIVE
-            )
-        }
-    }
-
-    private suspend fun shoppingListsLoaded(
-        shoppingListsWithConfig: ShoppingListsWithConfig,
-        location: ShoppingLocation
-    ) = withContext(AppDispatchers.Main) {
-        copyProductState.populate(shoppingListsWithConfig, location)
-    }
-
-    private fun getProducts() = viewModelScope.launch {
-        val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
-        val uids = productUid.split(",")
-        val products = shoppingListsRepository.getProducts(uids).firstOrNull()
-
-        if (products == null) {
-            cancelCopingProduct()
-        } else {
-            withContext(AppDispatchers.Main) {
+        savedStateHandle.get<String>(UiRouteKey.ProductUid.key)?.let { productUid ->
+            val uids = productUid.split(",")
+            shoppingListsRepository.getProducts(uids).firstOrNull()?.let { products ->
                 copyProductState.saveProducts(products)
             }
         }
+
+        shoppingListsRepository.getPurchasesWithConfig().collect {
+            copyProductState.populate(it, ShoppingLocation.PURCHASES)
+        }
     }
 
-    private fun addShoppingList() = viewModelScope.launch {
+    private fun onClickAdd() = viewModelScope.launch {
         shoppingListsRepository.addShopping()
     }
 
-    private fun copyProduct(event: CopyProductEvent.CopyProduct) = viewModelScope.launch {
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(CopyProductScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onClickCopy(
+        event: CopyProductEvent.OnClickCopy
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.copyProducts(
             products = copyProductState.savedProducts,
             shoppingUid = event.uid
         )
-
-        withContext(AppDispatchers.Main) {
-            val screenEvent = CopyProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets
-            _screenEventFlow.emit(screenEvent)
-        }
+        _screenEventFlow.emit(CopyProductScreenEvent.OnShowBackScreen)
     }
 
-    private fun selectShoppingListLocation() {
-        copyProductState.onSelectLocation(true)
-    }
-
-    private fun displayHiddenShoppingLists() {
-        copyProductState.onShowHiddenShoppingLists(true)
-    }
-
-    private fun showShoppingLists(event: CopyProductEvent.ShowShoppingLists) {
-        hideShoppingListsLocation()
+    private fun onLocationSelected(
+        event: CopyProductEvent.OnLocationSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        copyProductState.onWaiting()
 
         when (event.location) {
-            ShoppingLocation.PURCHASES -> getPurchases()
-            ShoppingLocation.ARCHIVE -> getArchive()
+            ShoppingLocation.PURCHASES -> shoppingListsRepository.getPurchasesWithConfig().collect {
+                copyProductState.populate(it, ShoppingLocation.PURCHASES)
+            }
+
+            ShoppingLocation.ARCHIVE -> shoppingListsRepository.getArchiveWithConfig().collect {
+                copyProductState.populate(it, ShoppingLocation.ARCHIVE)
+            }
+
             else -> {}
         }
     }
 
-    private fun cancelCopingProduct() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(CopyProductScreenEvent.ShowBackScreen)
+
+    private fun onSelectLocation(event: CopyProductEvent.OnSelectLocation) {
+        copyProductState.onSelectLocation(event.expanded)
     }
 
-    private fun hideShoppingListsLocation() {
-        copyProductState.onSelectLocation(false)
+    private fun onShowHiddenShoppingLists(event: CopyProductEvent.OnShowHiddenShoppingLists) {
+        copyProductState.onShowHiddenShoppingLists(event.display)
     }
 }
