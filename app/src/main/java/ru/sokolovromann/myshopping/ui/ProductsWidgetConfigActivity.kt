@@ -66,12 +66,12 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
         lifecycleScope.launch {
             viewModel.screenEventFlow.collect {
                 when (it) {
-                    is ProductsWidgetConfigScreenEvent.UpdateWidget -> updateWidget(
+                    is ProductsWidgetConfigScreenEvent.OnUpdate -> updateWidget(
                         widgetId = it.widgetId,
                         shoppingUid = it.shoppingUid
                     )
 
-                    ProductsWidgetConfigScreenEvent.FinishApp -> {
+                    ProductsWidgetConfigScreenEvent.OnFinishApp -> {
                         setResult(RESULT_CANCELED)
                         finish()
                     }
@@ -104,7 +104,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 TopAppBar(
                     title = { Text(text = stringResource(R.string.productsWidgetConfig_header)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsWidgetConfigEvent.CancelSelectingShoppingList) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsWidgetConfigEvent.OnClickCancel) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(R.string.productsWidgetConfig_contentDescription_navigationIcon),
@@ -130,7 +130,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 coloredCheckbox = state.coloredCheckbox,
                 fontSize = state.oldFontSize,
                 onClick = {
-                    val event = ProductsWidgetConfigEvent.SelectShoppingList(it)
+                    val event = ProductsWidgetConfigEvent.OnShoppingListSelected(it)
                     viewModel.onEvent(event)
                 },
                 onLongClick = {},

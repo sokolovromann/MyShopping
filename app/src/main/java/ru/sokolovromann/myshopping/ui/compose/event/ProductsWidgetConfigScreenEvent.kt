@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.event
 
 sealed class ProductsWidgetConfigScreenEvent {
 
-    data class UpdateWidget(val widgetId: Int, val shoppingUid: String) : ProductsWidgetConfigScreenEvent()
+    data class OnUpdate(val widgetId: Int, val shoppingUid: String) : ProductsWidgetConfigScreenEvent()
 
-    object FinishApp : ProductsWidgetConfigScreenEvent()
+    object OnFinishApp : ProductsWidgetConfigScreenEvent()
 }

@@ -6,9 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ProductsWidgetConfigState
@@ -27,42 +25,35 @@ class ProductsWidgetConfigViewModel @Inject constructor(
 
     override fun onEvent(event: ProductsWidgetConfigEvent) {
         when (event) {
+            ProductsWidgetConfigEvent.OnClickCancel -> onClickCancel()
+
             is ProductsWidgetConfigEvent.OnCreate -> onCreate(event)
 
-            is ProductsWidgetConfigEvent.SelectShoppingList -> selectShoppingList(event)
-
-            ProductsWidgetConfigEvent.CancelSelectingShoppingList -> cancelSelectingShoppingList()
+            is ProductsWidgetConfigEvent.OnShoppingListSelected -> onShoppingListSelected(event)
         }
     }
 
-    private fun onCreate(event: ProductsWidgetConfigEvent.OnCreate) = viewModelScope.launch {
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.OnFinishApp)
+    }
+
+    private fun onCreate(
+        event: ProductsWidgetConfigEvent.OnCreate
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         if (event.widgetId == null) {
-            _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.FinishApp)
+            _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.OnFinishApp)
         } else {
-            withContext(AppDispatchers.Main) {
-                productsWidgetConfigState.saveWidgetId(event.widgetId)
-            }
-
+            productsWidgetConfigState.saveWidgetId(event.widgetId)
             shoppingListsRepository.getPurchasesWithConfig().collect {
-                shoppingListsLoaded(it)
+                productsWidgetConfigState.populate(it)
             }
         }
     }
 
-    private suspend fun shoppingListsLoaded(
-        shoppingListsWithConfig: ShoppingListsWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        productsWidgetConfigState.populate(shoppingListsWithConfig)
-    }
-
-    private fun selectShoppingList(
-        event: ProductsWidgetConfigEvent.SelectShoppingList
-    ) = viewModelScope.launch {
+    private fun onShoppingListSelected(
+        event: ProductsWidgetConfigEvent.OnShoppingListSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         val widgetId = productsWidgetConfigState.widgetId
-        _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.UpdateWidget(widgetId, event.uid))
-    }
-
-    private fun cancelSelectingShoppingList() = viewModelScope.launch {
-        _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.FinishApp)
+        _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.OnUpdate(widgetId, event.uid))
     }
 }
