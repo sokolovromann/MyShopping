@@ -15,7 +15,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.MoveProductState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MoveProductEvent
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ class MoveProductViewModel @Inject constructor(
 
     private fun getPurchases() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            moveProductState.showLoading()
+            moveProductState.onWaiting()
         }
 
         shoppingListsRepository.getPurchasesWithConfig().collect {
@@ -68,7 +68,7 @@ class MoveProductViewModel @Inject constructor(
 
     private fun getArchive() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            moveProductState.showLoading()
+            moveProductState.onWaiting()
         }
 
         shoppingListsRepository.getArchiveWithConfig().collect {
@@ -83,11 +83,7 @@ class MoveProductViewModel @Inject constructor(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         location: ShoppingLocation
     ) = withContext(AppDispatchers.Main) {
-        if (shoppingListsWithConfig.isEmpty()) {
-            moveProductState.showNotFound(shoppingListsWithConfig, location)
-        } else {
-            moveProductState.showShoppingLists(shoppingListsWithConfig, location)
-        }
+        moveProductState.populate(shoppingListsWithConfig, location)
     }
 
     private fun getProducts() = viewModelScope.launch {
@@ -110,7 +106,7 @@ class MoveProductViewModel @Inject constructor(
 
     private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
         shoppingListsRepository.moveProducts(
-            products = moveProductState.products,
+            products = moveProductState.savedProducts,
             shoppingUid = event.uid
         )
 
@@ -120,11 +116,11 @@ class MoveProductViewModel @Inject constructor(
     }
 
     private fun selectShoppingListLocation() {
-        moveProductState.showLocation()
+        moveProductState.onSelectLocation(expanded = true)
     }
 
     private fun displayHiddenShoppingLists() {
-        moveProductState.displayHiddenShoppingLists()
+        moveProductState.onShowHiddenShoppingLists(display = true)
     }
 
     private fun showShoppingLists(event: MoveProductEvent.ShowShoppingLists) {
@@ -142,6 +138,6 @@ class MoveProductViewModel @Inject constructor(
     }
 
     private fun hideShoppingListsLocation() {
-        moveProductState.hideLocation()
+        moveProductState.onSelectLocation(expanded = false)
     }
 }
