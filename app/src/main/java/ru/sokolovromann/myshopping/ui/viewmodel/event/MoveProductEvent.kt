@@ -4,17 +4,15 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 
 sealed class MoveProductEvent {
 
-    object AddShoppingList : MoveProductEvent()
+    object OnClickAdd : MoveProductEvent()
 
-    data class MoveProduct(val uid: String) : MoveProductEvent()
+    object OnClickCancel : MoveProductEvent()
 
-    object SelectShoppingListLocation : MoveProductEvent()
+    data class OnClickMove(val uid: String) : MoveProductEvent()
 
-    object DisplayHiddenShoppingLists : MoveProductEvent()
+    data class OnLocationSelected(val location: ShoppingLocation) : MoveProductEvent()
 
-    data class ShowShoppingLists(val location: ShoppingLocation) : MoveProductEvent()
+    data class OnSelectLocation(val expanded: Boolean) : MoveProductEvent()
 
-    object CancelMovingProduct : MoveProductEvent()
-
-    object HideShoppingListsLocation : MoveProductEvent()
+    data class OnShowHiddenShoppingLists(val display: Boolean) : MoveProductEvent()
 }

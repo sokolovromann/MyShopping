@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -30,114 +28,80 @@ class MoveProductViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<MoveProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<MoveProductScreenEvent> = _screenEventFlow
 
-    init {
-        getProducts()
-        getPurchases()
-    }
+    init { onInit() }
 
     override fun onEvent(event: MoveProductEvent) {
         when (event) {
-            MoveProductEvent.AddShoppingList -> addShoppingList()
+            MoveProductEvent.OnClickAdd -> onClickAdd()
 
-            is MoveProductEvent.MoveProduct -> moveProduct(event)
+            MoveProductEvent.OnClickCancel -> onClickCancel()
 
-            MoveProductEvent.SelectShoppingListLocation -> selectShoppingListLocation()
+            is MoveProductEvent.OnClickMove -> onClickMove(event)
 
-            MoveProductEvent.DisplayHiddenShoppingLists -> displayHiddenShoppingLists()
+            is MoveProductEvent.OnLocationSelected -> onLocationSelected(event)
 
-            is MoveProductEvent.ShowShoppingLists -> showShoppingLists(event)
+            is MoveProductEvent.OnSelectLocation -> onSelectLocation(event)
 
-            MoveProductEvent.CancelMovingProduct -> cancelMovingProduct()
-
-            MoveProductEvent.HideShoppingListsLocation -> hideShoppingListsLocation()
+            is MoveProductEvent.OnShowHiddenShoppingLists -> onShowHiddenShoppingLists(event)
         }
     }
 
-    private fun getPurchases() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            moveProductState.onWaiting()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        moveProductState.onWaiting()
 
-        shoppingListsRepository.getPurchasesWithConfig().collect {
-            shoppingListsLoaded(
-                shoppingListsWithConfig = it,
-                location = ShoppingLocation.PURCHASES
-            )
-        }
-    }
-
-    private fun getArchive() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            moveProductState.onWaiting()
-        }
-
-        shoppingListsRepository.getArchiveWithConfig().collect {
-            shoppingListsLoaded(
-                shoppingListsWithConfig = it,
-                location = ShoppingLocation.ARCHIVE
-            )
-        }
-    }
-
-    private suspend fun shoppingListsLoaded(
-        shoppingListsWithConfig: ShoppingListsWithConfig,
-        location: ShoppingLocation
-    ) = withContext(AppDispatchers.Main) {
-        moveProductState.populate(shoppingListsWithConfig, location)
-    }
-
-    private fun getProducts() = viewModelScope.launch {
-        val productUid: String = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) ?: ""
-        val uids = productUid.split(",")
-        val products = shoppingListsRepository.getProducts(uids).firstOrNull()
-
-        if (products == null) {
-            cancelMovingProduct()
-        } else {
-            withContext(AppDispatchers.Main) {
+        savedStateHandle.get<String>(UiRouteKey.ProductUid.key)?.let {  productUid ->
+            val uids = productUid.split(",")
+            shoppingListsRepository.getProducts(uids).firstOrNull()?.let { products ->
                 moveProductState.saveProducts(products)
             }
         }
+
+        shoppingListsRepository.getPurchasesWithConfig().collect {
+            moveProductState.populate(it, ShoppingLocation.PURCHASES)
+        }
     }
 
-    private fun addShoppingList() = viewModelScope.launch {
+    private fun onClickAdd() = viewModelScope.launch {
         shoppingListsRepository.addShopping()
     }
 
-    private fun moveProduct(event: MoveProductEvent.MoveProduct) = viewModelScope.launch {
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(MoveProductScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onClickMove(
+        event: MoveProductEvent.OnClickMove
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.moveProducts(
             products = moveProductState.savedProducts,
             shoppingUid = event.uid
         )
-
-        withContext(AppDispatchers.Main) {
-            _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets)
-        }
+        _screenEventFlow.emit(MoveProductScreenEvent.OnShowBackScreen)
     }
 
-    private fun selectShoppingListLocation() {
-        moveProductState.onSelectLocation(expanded = true)
-    }
-
-    private fun displayHiddenShoppingLists() {
-        moveProductState.onShowHiddenShoppingLists(display = true)
-    }
-
-    private fun showShoppingLists(event: MoveProductEvent.ShowShoppingLists) {
-        hideShoppingListsLocation()
+    private fun onLocationSelected(
+        event: MoveProductEvent.OnLocationSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        moveProductState.onWaiting()
 
         when (event.location) {
-            ShoppingLocation.PURCHASES -> getPurchases()
-            ShoppingLocation.ARCHIVE -> getArchive()
+            ShoppingLocation.PURCHASES -> shoppingListsRepository.getPurchasesWithConfig().collect {
+                moveProductState.populate(it, ShoppingLocation.PURCHASES)
+            }
+
+            ShoppingLocation.ARCHIVE -> shoppingListsRepository.getArchiveWithConfig().collect {
+                moveProductState.populate(it, ShoppingLocation.ARCHIVE)
+            }
+
             else -> {}
         }
     }
 
-    private fun cancelMovingProduct() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(MoveProductScreenEvent.ShowBackScreen)
+    private fun onSelectLocation(event: MoveProductEvent.OnSelectLocation) {
+        moveProductState.onSelectLocation(event.expanded)
     }
 
-    private fun hideShoppingListsLocation() {
-        moveProductState.onSelectLocation(expanded = false)
+    private fun onShowHiddenShoppingLists(event: MoveProductEvent.OnShowHiddenShoppingLists) {
+        moveProductState.onShowHiddenShoppingLists(event.display)
     }
 }

@@ -36,9 +36,7 @@ fun MoveProductScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                MoveProductScreenEvent.ShowBackScreen -> navController.popBackStack()
-
-                MoveProductScreenEvent.ShowBackScreenAndUpdateProductsWidgets -> {
+                MoveProductScreenEvent.OnShowBackScreen -> {
                     updateProductsWidgets(context)
                     navController.popBackStack()
                 }
@@ -47,7 +45,7 @@ fun MoveProductScreen(
     }
 
     BackHandler {
-        viewModel.onEvent(MoveProductEvent.CancelMovingProduct)
+        viewModel.onEvent(MoveProductEvent.OnClickCancel)
     }
 
     AppScaffold(
@@ -55,7 +53,7 @@ fun MoveProductScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.moveProduct_header)) },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(MoveProductEvent.CancelMovingProduct) }) {
+                    IconButton(onClick = { viewModel.onEvent(MoveProductEvent.OnClickCancel) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.moveProduct_contentDescription_navigationIcon)
@@ -84,20 +82,14 @@ fun MoveProductScreen(
                         location = state.locationValue.selected,
                         fontSize = state.fontSize.button.sp,
                         expanded = state.expandedLocation,
-                        onExpanded = {
-                            if (it) {
-                                viewModel.onEvent(MoveProductEvent.SelectShoppingListLocation)
-                            } else {
-                                viewModel.onEvent(MoveProductEvent.HideShoppingListsLocation)
-                            }
-                        },
+                        onExpanded = { viewModel.onEvent(MoveProductEvent.OnSelectLocation(it)) },
                         onSelected = {
-                            val event = MoveProductEvent.ShowShoppingLists(it)
+                            val event = MoveProductEvent.OnLocationSelected(it)
                             viewModel.onEvent(event)
                         }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.onEvent(MoveProductEvent.AddShoppingList) }) {
+                    IconButton(onClick = { viewModel.onEvent(MoveProductEvent.OnClickAdd) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.moveProduct_contentDescription_addShoppingListIcon),
@@ -110,7 +102,7 @@ fun MoveProductScreen(
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
                         fontSize = state.oldFontSize,
-                        onClick = { viewModel.onEvent(MoveProductEvent.DisplayHiddenShoppingLists) }
+                        onClick = { viewModel.onEvent(MoveProductEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
             },
@@ -123,7 +115,7 @@ fun MoveProductScreen(
             },
             fontSize = state.oldFontSize,
             onClick = {
-                val event = MoveProductEvent.MoveProduct(it)
+                val event = MoveProductEvent.OnClickMove(it)
                 viewModel.onEvent(event)
             },
             onLongClick = {}
