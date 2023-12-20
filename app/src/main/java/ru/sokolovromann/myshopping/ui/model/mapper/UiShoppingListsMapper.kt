@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
@@ -55,6 +56,17 @@ object UiShoppingListsMapper {
         )
     }
 
+    fun toLocationValue(location: ShoppingLocation): SelectedValue<ShoppingLocation> {
+        return SelectedValue(
+            selected = location,
+            text = when (location) {
+                ShoppingLocation.PURCHASES -> UiString.FromResources(R.string.shoppingLists_action_selectPurchasesLocation)
+                ShoppingLocation.ARCHIVE -> UiString.FromResources(R.string.shoppingLists_action_selectArchiveLocation)
+                ShoppingLocation.TRASH -> UiString.FromResources(R.string.shoppingLists_action_selectTrashLocation)
+            }
+        )
+    }
+
     fun toSortedShoppingListItems(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
@@ -81,6 +93,18 @@ object UiShoppingListsMapper {
         }
     }
 
+    fun toPinnedSortedShoppingListItems(
+        shoppingListsWithConfig: ShoppingListsWithConfig,
+        location: ShoppingLocation,
+        displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
+    ): List<ShoppingListItem> {
+        return if (location == ShoppingLocation.PURCHASES) {
+            toPinnedSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
+        } else {
+            listOf()
+        }
+    }
+
     fun toOtherSortedShoppingListItems(
         shoppingListsWithConfig: ShoppingListsWithConfig,
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
@@ -91,6 +115,18 @@ object UiShoppingListsMapper {
                 deviceConfig = shoppingListsWithConfig.getDeviceConfig(),
                 userPreferences = shoppingListsWithConfig.getUserPreferences()
             )
+        }
+    }
+
+    fun toOtherSortedShoppingListItems(
+        shoppingListsWithConfig: ShoppingListsWithConfig,
+        location: ShoppingLocation,
+        displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
+    ): List<ShoppingListItem> {
+        return if (location == ShoppingLocation.PURCHASES) {
+            toOtherSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
+        } else {
+            toSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
         }
     }
 

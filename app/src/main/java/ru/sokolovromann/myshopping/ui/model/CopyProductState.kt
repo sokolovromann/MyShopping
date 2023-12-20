@@ -3,7 +3,6 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
@@ -63,15 +62,21 @@ class CopyProductState {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
         val userPreferences = shoppingListsWithConfig.getUserPreferences()
-        pinnedShoppingLists = toPinnedShoppingListItems(location)
-        otherShoppingLists = toOtherShoppingListItems(location)
+        pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(
+            shoppingListsWithConfig = shoppingListsWithConfig,
+            location = location
+        )
+        otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(
+            shoppingListsWithConfig = shoppingListsWithConfig,
+            location = location
+        )
         displayHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         displayProducts = userPreferences.displayShoppingsProducts
         displayCompleted = userPreferences.displayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
-        locationValue = toLocationSelectedValue(location)
+        locationValue = UiShoppingListsMapper.toLocationValue(location)
         expandedLocation = false
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
         oldFontSize = userPreferences.fontSize
@@ -88,8 +93,16 @@ class CopyProductState {
 
     fun onShowHiddenShoppingLists(display: Boolean) {
         val displayCompleted = if (display) DisplayCompleted.LAST else DisplayCompleted.HIDE
-        pinnedShoppingLists = toPinnedShoppingListItems(locationValue.selected, displayCompleted)
-        otherShoppingLists = toOtherShoppingListItems(locationValue.selected, displayCompleted)
+        pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(
+            shoppingListsWithConfig = shoppingListsWithConfig,
+            location = locationValue.selected,
+            displayCompleted = displayCompleted
+        )
+        otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(
+            shoppingListsWithConfig = shoppingListsWithConfig,
+            location = locationValue.selected,
+            displayCompleted = displayCompleted
+        )
         displayHiddenShoppingLists = display
     }
 
@@ -98,39 +111,6 @@ class CopyProductState {
     }
 
     fun isNotFound(): Boolean {
-        return pinnedShoppingLists.isEmpty() && otherShoppingLists.isEmpty()
-    }
-
-    private fun toPinnedShoppingListItems(
-        location: ShoppingLocation,
-        displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
-    ): List<ShoppingListItem> {
-        return if (location == ShoppingLocation.PURCHASES) {
-            UiShoppingListsMapper.toPinnedSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
-        } else {
-            listOf()
-        }
-    }
-
-    private fun toOtherShoppingListItems(
-        location: ShoppingLocation,
-        displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
-    ): List<ShoppingListItem> {
-        return if (location == ShoppingLocation.PURCHASES) {
-            UiShoppingListsMapper.toOtherSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
-        } else {
-            UiShoppingListsMapper.toSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
-        }
-    }
-
-    private fun toLocationSelectedValue(location: ShoppingLocation): SelectedValue<ShoppingLocation> {
-        return SelectedValue(
-            selected = location,
-            text = when (location) {
-                ShoppingLocation.PURCHASES -> UiString.FromResources(R.string.shoppingLists_action_selectPurchasesLocation)
-                ShoppingLocation.ARCHIVE -> UiString.FromResources(R.string.shoppingLists_action_selectArchiveLocation)
-                ShoppingLocation.TRASH -> UiString.FromResources(R.string.shoppingLists_action_selectTrashLocation)
-            }
-        )
+        return shoppingListsWithConfig.isEmpty()
     }
 }
