@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
@@ -50,72 +49,75 @@ class MainViewModel @Inject constructor(
 
     override fun onEvent(event: MainEvent) {
         when (event) {
-            MainEvent.OnCreate -> onCreate()
+            is MainEvent.OnCreate -> onCreate(event)
 
-            is MainEvent.OnStart -> onStart(event)
-
-            MainEvent.OnStop -> onStop()
-
-            is MainEvent.AddDefaultDeviceConfig -> addAppConfig(event)
-
-            is MainEvent.MigrateFromCodeVersion14 -> migrateFromCodeVersion14(event)
+            is MainEvent.OnSaveShoppingUid -> onSaveShoppingUid(event)
         }
     }
 
-    private fun onCreate() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            mainState.onWaiting(displaySplashScreen = true)
-        }
+    private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch(AppDispatchers.Main) {
+        mainState.onWaiting(displaySplashScreen = true)
 
         appConfigRepository.getAppConfig().collect {
-            applyAppConfig(it)
+            mainState.populate(it)
+
+            when (it.appBuildConfig.getOpenHelper()) {
+                AppOpenHelper.Open -> {
+                    mainState.onWaiting(displaySplashScreen = false)
+                }
+
+                AppOpenHelper.Create -> {
+                    onAddDefaultAppConfig(event)
+                }
+
+                AppOpenHelper.Migrate -> {
+                    when (it.appBuildConfig.userCodeVersion) {
+                        AppBuildConfig.CODE_VERSION_14 -> onMigrateFromCodeVersion14(event)
+                        else -> appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
+                    }
+                }
+
+                is AppOpenHelper.Error -> {
+                    _screenEventFlow.emit(MainScreenEvent.OnFinishApp)
+                }
+            }
         }
     }
 
-    private fun onStart(event: MainEvent.OnStart) = viewModelScope.launch {
-        mainState.saveShoppingUid(event.shoppingUid)
+    private fun onSaveShoppingUid(event: MainEvent.OnSaveShoppingUid) {
+        mainState.saveShoppingUid(event.uid)
     }
 
-    private fun onStop() = viewModelScope.launch {
-        mainState.saveShoppingUid(uid = null)
+    private fun onAddDefaultAppConfig(
+        event: MainEvent.OnCreate
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        val deviceConfig = DeviceConfig(
+            screenWidthDp = event.screenWidth,
+            screenHeightDp = event.screenHeight
+        )
+
+        val appBuildConfig = AppBuildConfig(
+            userCodeVersion = BuildConfig.VERSION_CODE
+        )
+
+        val userPreferences = UserPreferences(
+            currency = appConfigRepository.getDefaultCurrency().firstOrNull() ?: Currency()
+        )
+
+        val appConfig = AppConfig(
+            deviceConfig = deviceConfig,
+            appBuildConfig = appBuildConfig,
+            userPreferences = userPreferences
+        )
+
+        appConfigRepository.saveAppConfig(appConfig)
+
+        notificationManager.createNotificationChannel()
     }
 
-    private suspend fun applyAppConfig(appConfig: AppConfig) = withContext(AppDispatchers.Main) {
-        mainState.populate(appConfig)
-
-        when (appConfig.appBuildConfig.getOpenHelper()) {
-            AppOpenHelper.Create -> getDefaultDeviceConfig()
-
-            AppOpenHelper.Open -> mainState.onWaiting(displaySplashScreen = false)
-
-            AppOpenHelper.Migrate -> migrate(appConfig)
-
-            is AppOpenHelper.Error -> {}
-        }
-    }
-
-    private fun getDefaultDeviceConfig() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(MainScreenEvent.GetDefaultDeviceConfig)
-    }
-
-    private fun migrate(appConfig: AppConfig) {
-        when (appConfig.appBuildConfig.userCodeVersion) {
-            AppBuildConfig.CODE_VERSION_14 -> getScreenSize()
-            else -> migrateFromOtherVersion()
-        }
-    }
-
-    private fun getScreenSize() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(MainScreenEvent.GetScreenSize)
-    }
-
-    private fun migrateFromOtherVersion() = viewModelScope.launch {
-        appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
-    }
-
-    private fun migrateFromCodeVersion14(
-        event: MainEvent.MigrateFromCodeVersion14
-    ) = viewModelScope.launch {
+    private fun onMigrateFromCodeVersion14(
+        event: MainEvent.OnCreate
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         notificationManager.createNotificationChannel()
 
         val codeVersion14 = codeVersion14Repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
@@ -144,7 +146,7 @@ class MainViewModel @Inject constructor(
 
     private suspend fun migrateSettings(
         preferences: CodeVersion14Preferences,
-        event: MainEvent.MigrateFromCodeVersion14
+        event: MainEvent.OnCreate
     ) {
         val deviceConfig = DeviceConfig(
             screenWidthDp = event.screenWidth,
@@ -175,32 +177,5 @@ class MainViewModel @Inject constructor(
         )
 
         appConfigRepository.saveAppConfig(appConfig)
-    }
-
-    private fun addAppConfig(
-        event: MainEvent.AddDefaultDeviceConfig
-    ) = viewModelScope.launch {
-        val deviceConfig = DeviceConfig(
-            screenWidthDp = event.screenWidth,
-            screenHeightDp = event.screenHeight
-        )
-
-        val appBuildConfig = AppBuildConfig(
-            userCodeVersion = BuildConfig.VERSION_CODE
-        )
-
-        val userPreferences = UserPreferences(
-            currency = appConfigRepository.getDefaultCurrency().firstOrNull() ?: Currency()
-        )
-
-        val appConfig = AppConfig(
-            deviceConfig = deviceConfig,
-            appBuildConfig = appBuildConfig,
-            userPreferences = userPreferences
-        )
-
-        appConfigRepository.saveAppConfig(appConfig)
-
-        notificationManager.createNotificationChannel()
     }
 }

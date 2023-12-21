@@ -24,8 +24,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val event = MainEvent.OnCreate(
+            screenWidth = resources.configuration.screenWidthDp,
+            screenHeight = resources.configuration.screenHeightDp
+        )
+        viewModel.onEvent(event)
+
         val mainState = viewModel.mainState
-        viewModel.onEvent(MainEvent.OnCreate)
 
         installSplashScreen().apply {
             setKeepOnScreenCondition { mainState.waiting }
@@ -43,24 +48,21 @@ class MainActivity : ComponentActivity() {
         super.onStart()
 
         val shoppingUid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
-        val event = MainEvent.OnStart(shoppingUid)
+        val event = MainEvent.OnSaveShoppingUid(shoppingUid)
         viewModel.onEvent(event)
     }
 
     override fun onStop() {
-        intent = getIntentWithoutExtras()
-
-        viewModel.onEvent(MainEvent.OnStop)
-        super.onStop()
-    }
-
-    private fun getIntentWithoutExtras(): Intent {
-        return Intent().apply {
+        intent = Intent().apply {
             val args = intent.extras
             if (args?.containsKey(UiRouteKey.ShoppingUid.key) == true) {
                 intent.removeExtra(UiRouteKey.ShoppingUid.key)
             }
         }
+
+        val event = MainEvent.OnSaveShoppingUid(uid = null)
+        viewModel.onEvent(event)
+        super.onStop()
     }
 
     @Composable
@@ -86,27 +88,9 @@ class MainActivity : ComponentActivity() {
         LaunchedEffect(Unit) {
             viewModel.screenEventFlow.collect {
                 when (it) {
-                    MainScreenEvent.GetDefaultDeviceConfig -> addDefaultDeviceConfig()
-
-                    MainScreenEvent.GetScreenSize -> migrateFromCodeVersion14()
+                    MainScreenEvent.OnFinishApp -> finish()
                 }
             }
         }
-    }
-
-    private fun addDefaultDeviceConfig() {
-        val event = MainEvent.AddDefaultDeviceConfig(
-            screenWidth = resources.configuration.screenWidthDp,
-            screenHeight = resources.configuration.screenHeightDp
-        )
-        viewModel.onEvent(event)
-    }
-
-    private fun migrateFromCodeVersion14() {
-        val event = MainEvent.MigrateFromCodeVersion14(
-            screenWidth = resources.configuration.screenWidthDp,
-            screenHeight = resources.configuration.screenHeightDp
-        )
-        viewModel.onEvent(event)
     }
 }
