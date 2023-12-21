@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.CalculateChangeScreenEvent
-import ru.sokolovromann.myshopping.ui.utils.toTextField
 import ru.sokolovromann.myshopping.ui.viewmodel.CalculateChangeViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CalculateChangeEvent
 
@@ -31,7 +30,7 @@ fun CalculateChangeScreen(
     navController: NavController,
     viewModel: CalculateChangeViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.calculateChangeState.screenData
+    val state = viewModel.calculateChangeState
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
@@ -66,8 +65,8 @@ fun CalculateChangeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = screenData.userMoneyValue,
-            valueFontSize = screenData.fontSize.toTextField().sp,
+            value = state.userMoneyValue,
+            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = CalculateChangeEvent.UserMoneyChanged(it)
                 viewModel.onEvent(event)
@@ -85,9 +84,9 @@ fun CalculateChangeScreen(
         Spacer(modifier = Modifier.size(CalculateChangeSpacerSmallSize))
 
         ProvideCalculateChangeTextStyle {
-            Text(text = screenData.totalText.asCompose())
+            Text(text = state.totalText.asCompose())
             Spacer(modifier = Modifier.size(CalculateChangeSpacerMediumSize))
-            Text(text = screenData.changeText.asCompose())
+            Text(text = state.changeText.asCompose())
         }
     }
 }

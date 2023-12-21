@@ -45,6 +45,15 @@ class ShoppingListWithConfig(
         return shoppingList.calculateTotalByDisplayTotal(displayTotal)
     }
 
+    fun calculateChange(userMoneyValue: Float): Money {
+        val value = userMoneyValue - shoppingList.shopping.total.value
+        return Money(
+            value = value,
+            currency = appConfig.userPreferences.currency,
+            decimalFormat = appConfig.userPreferences.moneyDecimalFormat
+        )
+    }
+
     fun hasHiddenProducts(): Boolean {
         val hideCompleted = getUserPreferences().displayCompleted == DisplayCompleted.HIDE
         val hasCompletedProducts = shoppingList.products.find { it.completed } != null

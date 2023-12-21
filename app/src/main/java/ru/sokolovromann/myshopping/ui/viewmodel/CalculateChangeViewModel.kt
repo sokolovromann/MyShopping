@@ -14,7 +14,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CalculateChangeScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.CalculateChangeState
+import ru.sokolovromann.myshopping.ui.model.CalculateChangeState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CalculateChangeEvent
 import javax.inject.Inject
 
@@ -42,6 +42,8 @@ class CalculateChangeViewModel @Inject constructor(
     }
 
     private fun getCalculateChange() = viewModelScope.launch {
+        calculateChangeState.onWaiting()
+
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
             shoppingListLoaded(it)
@@ -56,7 +58,7 @@ class CalculateChangeViewModel @Inject constructor(
     }
 
     private fun userMoneyChange(event: CalculateChangeEvent.UserMoneyChanged) {
-        calculateChangeState.changeUserMoneyValue(event.value)
+        calculateChangeState.onUserMoneyValueChanged(event.value)
     }
 
     private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
