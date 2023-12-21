@@ -29,7 +29,7 @@ import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.MainState
+import ru.sokolovromann.myshopping.ui.model.MainState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
 import javax.inject.Inject
 
@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
 
     private fun onCreate() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            mainState.showLoading()
+            mainState.onWaiting(displaySplashScreen = true)
         }
 
         appConfigRepository.getAppConfig().collect {
@@ -73,22 +73,20 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onStart(event: MainEvent.OnStart) = viewModelScope.launch {
-        if (event.shoppingUid != null) {
-            mainState.showProducts(event.shoppingUid)
-        }
+        mainState.saveShoppingUid(event.shoppingUid)
     }
 
     private fun onStop() = viewModelScope.launch {
-        mainState.clearShoppingUid()
+        mainState.saveShoppingUid(uid = null)
     }
 
     private suspend fun applyAppConfig(appConfig: AppConfig) = withContext(AppDispatchers.Main) {
-        mainState.applyAppConfig(appConfig)
+        mainState.populate(appConfig)
 
         when (appConfig.appBuildConfig.getOpenHelper()) {
             AppOpenHelper.Create -> getDefaultDeviceConfig()
 
-            AppOpenHelper.Open -> mainState.hideLoading()
+            AppOpenHelper.Open -> mainState.onWaiting(displaySplashScreen = false)
 
             AppOpenHelper.Migrate -> migrate(appConfig)
 
