@@ -30,12 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.BackupScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
 import ru.sokolovromann.myshopping.ui.navigate
-import ru.sokolovromann.myshopping.ui.utils.toButton
-import ru.sokolovromann.myshopping.ui.utils.toItemBody
-import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.viewmodel.BackupViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.BackupEvent
 
@@ -44,28 +39,18 @@ fun BackupScreen(
     navController: NavController,
     viewModel: BackupViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.backupState.screenData
+    val state = viewModel.backupState
     val registerForActivity = registerSelectFileForResult { uri ->
-        val event = BackupEvent.Import(uri)
+        val event = BackupEvent.OnFileSelected(uri)
         viewModel.onEvent(event)
     }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                BackupScreenEvent.ShowBackScreen -> navController.popBackStack()
+                BackupScreenEvent.OnShowBackScreen -> navController.popBackStack()
 
-                BackupScreenEvent.ShowSelectFile -> {
-                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                        type = "*/*"
-                        putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("text/plain"))
-                    }
-
-                    registerForActivity.launch(intent)
-                }
-
-                is BackupScreenEvent.ShowPermissions -> {
+                is BackupScreenEvent.OnShowPermissions -> {
                     navController.popBackStack()
                     navController.navigate(
                         intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
@@ -74,24 +59,34 @@ fun BackupScreen(
                         }
                     )
                 }
+
+                BackupScreenEvent.OnSelectFile -> {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/*"
+                        putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("text/plain"))
+                    }
+
+                    registerForActivity.launch(intent)
+                }
             }
         }
     }
 
     AppDialog(
-        onDismissRequest = { viewModel.onEvent(BackupEvent.ShowBackScreen) },
+        onDismissRequest = { viewModel.onEvent(BackupEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.backup_header)) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(BackupEvent.ShowBackScreen) },
+                onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
                 content = {
                     Text(text = stringResource(R.string.backup_action_closeBackup))
                 }
             )
 
-            if (screenData.showPermissionError) {
+            if (state.permissionError) {
                 AppDialogActionButton(
-                    onClick = { viewModel.onEvent(BackupEvent.ShowPermissions) },
+                    onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
                     primaryButton = true,
                     content = {
                         Text(text = stringResource(R.string.backup_action_showPermissions))
@@ -100,17 +95,15 @@ fun BackupScreen(
             }
         }
     ) {
-        if (screenData.showPermissionError) {
+        if (state.permissionError) {
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = stringResource(R.string.backup_message_permissionError),
-                fontSize = screenData.fontSize.toItemBody().sp,
+                fontSize = state.fontSize.itemBody.sp,
                 style = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.error)
             )
         } else {
-            if (screenData.screenState == ScreenState.Loading ||
-                screenData.screenState == ScreenState.Saving
-            ) {
+            if (state.waiting) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -121,7 +114,7 @@ fun BackupScreen(
                 Row {
                     OutlinedButton(
                         modifier = Modifier.weight(0.5f),
-                        onClick = { viewModel.onEvent(BackupEvent.Export) },
+                        onClick = { viewModel.onEvent(BackupEvent.OnClickExport) },
                         contentPadding = BackupContentPadding
                     ) {
                         Column(
@@ -131,7 +124,7 @@ fun BackupScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.backup_action_export),
-                                fontSize = screenData.fontSize.toButton().sp
+                                fontSize = state.fontSize.button.sp
                             )
                         }
                     }
@@ -140,7 +133,7 @@ fun BackupScreen(
 
                     OutlinedButton(
                         modifier = Modifier.weight(0.5f),
-                        onClick = { viewModel.onEvent(BackupEvent.SelectFile) },
+                        onClick = { viewModel.onEvent(BackupEvent.OnClickImport) },
                         contentPadding = BackupContentPadding
                     ) {
                         Column(
@@ -150,38 +143,38 @@ fun BackupScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.backup_action_import),
-                                fontSize = screenData.fontSize.toButton().sp
+                                fontSize = state.fontSize.button.sp
                             )
                         }
                     }
                 }
 
-                if (screenData.messageText != UiText.Nothing) {
+                if (state.messageText.isNotEmpty()) {
                     Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
                     Text(
-                        text = screenData.messageText.asCompose(),
-                        fontSize = screenData.fontSize.toItemTitle().sp,
+                        text = state.messageText.asCompose(),
+                        fontSize = state.fontSize.itemTitle.sp,
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface
                         )
                     )
                 }
 
-                if (screenData.locationText != UiText.Nothing) {
+                if (state.locationText.isNotEmpty()) {
                     Text(
-                        text = screenData.locationText.asCompose(),
-                        fontSize = screenData.fontSize.toItemBody().sp,
+                        text = state.locationText.asCompose(),
+                        fontSize = state.fontSize.itemBody.sp,
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                         )
                     )
                 }
 
-                if (screenData.warningText != UiText.Nothing) {
+                if (state.warningText.isNotEmpty()) {
                     Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
                     Text(
-                        text = screenData.warningText.asCompose(),
-                        fontSize = screenData.fontSize.toItemBody().sp,
+                        text = state.warningText.asCompose(),
+                        fontSize = state.fontSize.itemBody.sp,
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface
                         )

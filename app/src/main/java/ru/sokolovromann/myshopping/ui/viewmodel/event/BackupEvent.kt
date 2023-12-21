@@ -4,13 +4,13 @@ import android.net.Uri
 
 sealed class BackupEvent {
 
-    object Export : BackupEvent()
+    object OnClickCancel : BackupEvent()
 
-    object SelectFile : BackupEvent()
+    object OnClickOpenPermissions : BackupEvent()
 
-    data class Import(val uri: Uri) : BackupEvent()
+    object OnClickExport : BackupEvent()
 
-    object ShowBackScreen : BackupEvent()
+    object OnClickImport : BackupEvent()
 
-    object ShowPermissions : BackupEvent()
+    data class OnFileSelected(val uri: Uri) : BackupEvent()
 }

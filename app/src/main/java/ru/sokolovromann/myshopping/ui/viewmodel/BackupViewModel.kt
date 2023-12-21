@@ -6,17 +6,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
-import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.compose.event.BackupScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.BackupState
+import ru.sokolovromann.myshopping.ui.model.BackupState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.BackupEvent
 import javax.inject.Inject
 
@@ -33,78 +31,72 @@ class BackupViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<BackupScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<BackupScreenEvent> = _screenEventFlow
 
-    init {
-        getAppConfig()
-    }
+    init { onInit() }
 
     override fun onEvent(event: BackupEvent) {
         when (event) {
-            BackupEvent.Export -> export()
+            BackupEvent.OnClickCancel -> onClickCancel()
 
-            is BackupEvent.Import -> import(event)
+            BackupEvent.OnClickOpenPermissions -> onClickOpenPermissions()
 
-            BackupEvent.SelectFile -> selectFile()
+            BackupEvent.OnClickExport -> onClickExport()
 
-            BackupEvent.ShowBackScreen -> showBackScreen()
+            BackupEvent.OnClickImport -> onClickImport()
 
-            BackupEvent.ShowPermissions -> showPermissions()
+            is BackupEvent.OnFileSelected -> onFileSelected(event)
         }
     }
 
-    private fun getAppConfig() = viewModelScope.launch {
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.getAppConfig().collect {
-            appConfigLoaded(it)
+            backupState.populate(it, mediaStore.checkCorrectWriteFilesPermissions())
         }
     }
 
-    private suspend fun appConfigLoaded(
-        appConfig: AppConfig
-    ) = withContext(AppDispatchers.Main) {
-        backupState.onCreate(
-            appConfig = appConfig,
-            correctWriteFilesPermission = mediaStore.checkCorrectWriteFilesPermissions()
-        )
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(BackupScreenEvent.OnShowBackScreen)
     }
 
-    private fun export() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            backupState.showExportProgress()
-        }
+    private fun onClickOpenPermissions() = viewModelScope.launch(AppDispatchers.Main) {
+        val event = BackupScreenEvent.OnShowPermissions(BuildConfig.APPLICATION_ID)
+        _screenEventFlow.emit(event)
+    }
+
+    private fun onClickExport() = viewModelScope.launch(AppDispatchers.Main) {
+        backupState.onWaiting()
 
         backupRepository.exportBackup(BuildConfig.VERSION_CODE)
-            .onSuccess { backup ->
-                withContext(AppDispatchers.Main) {
-                    backupState.showExportSuccessful(backup.fileName)
-                }
+            .onSuccess {
+                backupState.onShowExportMessage(
+                    success = true,
+                    fileName = it.fileName
+                )
             }
             .onFailure {
-                withContext(AppDispatchers.Main) {
-                    backupState.showExportError()
-                }
+                backupState.onShowExportMessage(
+                    success = false,
+                    fileName = null
+                )
             }
     }
 
-    private fun selectFile() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(BackupScreenEvent.ShowSelectFile)
+    private fun onClickImport() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(BackupScreenEvent.OnSelectFile)
     }
 
-    private fun import(event: BackupEvent.Import) = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            backupState.showImportProgress()
-        }
+    private fun onFileSelected(
+        event: BackupEvent.OnFileSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        backupState.onWaiting()
 
         backupRepository.importBackup(event.uri)
-            .onSuccess { oldNewBackups ->
-                withContext(AppDispatchers.Main) {
-                    deleteRemindersIfExists(oldNewBackups.first.shoppings)
-                    createReminderIfExists(oldNewBackups.second.shoppings)
-                    backupState.showImportSuccessful()
-                }
+            .onSuccess {
+                deleteRemindersIfExists(it.first.shoppings)
+                createReminderIfExists(it.second.shoppings)
+                backupState.onShowImportMessage(success = true)
             }
             .onFailure {
-                withContext(AppDispatchers.Main) {
-                    backupState.showImportError()
-                }
+                backupState.onShowImportMessage(success = false)
             }
     }
 
@@ -122,14 +114,5 @@ class BackupViewModel @Inject constructor(
                 alarmManager.createReminder(shopping.uid, dateTime.millis)
             }
         }
-    }
-
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(BackupScreenEvent.ShowBackScreen)
-    }
-
-    private fun showPermissions() = viewModelScope.launch(AppDispatchers.Main) {
-        val event = BackupScreenEvent.ShowPermissions(BuildConfig.APPLICATION_ID)
-        _screenEventFlow.emit(event)
     }
 }
