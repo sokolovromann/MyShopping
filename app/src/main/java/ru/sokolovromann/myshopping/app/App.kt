@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping
+package ru.sokolovromann.myshopping.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
