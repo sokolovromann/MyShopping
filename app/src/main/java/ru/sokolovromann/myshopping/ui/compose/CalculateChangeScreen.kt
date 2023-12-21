@@ -37,12 +37,12 @@ fun CalculateChangeScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                CalculateChangeScreenEvent.ShowBackScreen -> {
+                CalculateChangeScreenEvent.OnShowBackScreen -> {
                     navController.popBackStack()
                     focusManager.clearFocus(force = true)
                 }
 
-                CalculateChangeScreenEvent.ShowKeyboard -> {
+                CalculateChangeScreenEvent.OnShowKeyboard -> {
                     focusRequester.requestFocus()
                 }
             }
@@ -50,11 +50,11 @@ fun CalculateChangeScreen(
     }
 
     AppDialog(
-        onDismissRequest = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) },
+        onDismissRequest = { viewModel.onEvent(CalculateChangeEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.calculateChange_header)) },
         actionButtons = {
             AppDialogActionButton(
-                onClick = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) },
+                onClick = { viewModel.onEvent(CalculateChangeEvent.OnClickCancel) },
                 content = {
                     Text(text = stringResource(R.string.calculateChange_action_closeCalculatingChange))
                 }
@@ -68,7 +68,7 @@ fun CalculateChangeScreen(
             value = state.userMoneyValue,
             valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
-                val event = CalculateChangeEvent.UserMoneyChanged(it)
+                val event = CalculateChangeEvent.OnUserMoneyChanged(it)
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.calculateChange_label_userMoney)) },
@@ -77,7 +77,7 @@ fun CalculateChangeScreen(
                 imeAction = ImeAction.Previous
             ),
             keyboardActions = KeyboardActions(
-                onPrevious = { viewModel.onEvent(CalculateChangeEvent.ShowBackScreen) }
+                onPrevious = { viewModel.onEvent(CalculateChangeEvent.OnClickCancel) }
             )
         )
 

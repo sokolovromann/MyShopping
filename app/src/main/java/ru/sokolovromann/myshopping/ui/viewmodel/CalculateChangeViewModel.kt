@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CalculateChangeScreenEvent
@@ -29,39 +27,29 @@ class CalculateChangeViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<CalculateChangeScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<CalculateChangeScreenEvent> = _screenEventFlow
 
-    init {
-        getCalculateChange()
-    }
+    init { onInit() }
 
     override fun onEvent(event: CalculateChangeEvent) {
         when (event) {
-            CalculateChangeEvent.ShowBackScreen -> showBackScreen()
+            CalculateChangeEvent.OnClickCancel -> onClickCancel()
 
-            is CalculateChangeEvent.UserMoneyChanged -> userMoneyChange(event)
+            is CalculateChangeEvent.OnUserMoneyChanged -> onUserMoneyChanged(event)
         }
     }
 
-    private fun getCalculateChange() = viewModelScope.launch {
-        calculateChangeState.onWaiting()
-
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
-            shoppingListLoaded(it)
+            calculateChangeState.populate(it)
+            _screenEventFlow.emit(CalculateChangeScreenEvent.OnShowKeyboard)
         }
     }
 
-    private suspend fun shoppingListLoaded(
-        shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        calculateChangeState.populate(shoppingListWithConfig)
-        _screenEventFlow.emit(CalculateChangeScreenEvent.ShowKeyboard)
+    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(CalculateChangeScreenEvent.OnShowBackScreen)
     }
 
-    private fun userMoneyChange(event: CalculateChangeEvent.UserMoneyChanged) {
+    private fun onUserMoneyChanged(event: CalculateChangeEvent.OnUserMoneyChanged) {
         calculateChangeState.onUserMoneyValueChanged(event.value)
-    }
-
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(CalculateChangeScreenEvent.ShowBackScreen)
     }
 }

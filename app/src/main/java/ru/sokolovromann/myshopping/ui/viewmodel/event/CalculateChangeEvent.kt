@@ -4,7 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class CalculateChangeEvent {
 
-    object ShowBackScreen : CalculateChangeEvent()
+    object OnClickCancel : CalculateChangeEvent()
 
-    data class UserMoneyChanged(val value: TextFieldValue) : CalculateChangeEvent()
+    data class OnUserMoneyChanged(val value: TextFieldValue) : CalculateChangeEvent()
 }

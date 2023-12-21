@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.ui.compose.event
 
 sealed class CalculateChangeScreenEvent {
 
-    object ShowBackScreen : CalculateChangeScreenEvent()
+    object OnShowBackScreen : CalculateChangeScreenEvent()
 
-    object ShowKeyboard : CalculateChangeScreenEvent()
+    object OnShowKeyboard : CalculateChangeScreenEvent()
 }
