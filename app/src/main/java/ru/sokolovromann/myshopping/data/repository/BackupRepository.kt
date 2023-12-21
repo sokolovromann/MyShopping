@@ -39,6 +39,9 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
                 async { shoppingListsDao.deleteAllShoppings() },
                 async { productsDao.deleteAllProducts() },
                 async { autocompletesDao.deleteAllAutocompletes() },
+            ).awaitAll()
+
+            listOf(
                 async { shoppingListsDao.insertShoppings(backupFileEntity.shoppingEntities) },
                 async { productsDao.insertProducts(backupFileEntity.productEntities) },
                 async { autocompletesDao.insertAutocompletes(backupFileEntity.autocompleteEntities) },
