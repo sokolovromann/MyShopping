@@ -19,18 +19,21 @@ fun ShoppingListWithConfig.getOtherProductWidgetItems(): List<ProductWidgetItem>
     return getPinnedOtherSortedProducts().second.map { toProductWidgetItem(it) }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListWithConfig.getActivePinnedProductItems(
     displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
 ): List<ProductItem> {
     return getPinnedOtherSortedProducts(displayCompleted).first.map { toProductItem(it) }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListWithConfig.getOtherProductItems(
     displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
 ): List<ProductItem> {
     return getPinnedOtherSortedProducts(displayCompleted).second.map { toProductItem(it) }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListWithConfig.getTotal(): UiText {
     val total = getShopping().total.getDisplayValue()
     return if (getShopping().totalFormatted) {
@@ -45,11 +48,13 @@ fun ShoppingListWithConfig.getTotal(): UiText {
     }
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListWithConfig.getSelectedTotal(productUids: List<String>): UiText {
     val total = calculateTotalByProductUids(productUids)
     return UiText.FromResourcesWithArgs(R.string.products_text_selectedTotal, total.getDisplayValue())
 }
 
+@Deprecated("Will be deleted")
 fun ShoppingListWithConfig.getShareText(): Result<String> {
     return if (isProductsEmpty()) {
         val exception = IllegalArgumentException("You have no products")

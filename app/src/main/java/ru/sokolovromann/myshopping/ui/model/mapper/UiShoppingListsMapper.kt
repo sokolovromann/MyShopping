@@ -7,10 +7,13 @@ import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
+import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingList
+import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.UserPreferences
+import ru.sokolovromann.myshopping.ui.model.ProductItem
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiString
@@ -65,6 +68,62 @@ object UiShoppingListsMapper {
                 ShoppingLocation.TRASH -> UiString.FromResources(R.string.shoppingLists_action_selectTrashLocation)
             }
         )
+    }
+
+    fun toShoppingListString(shoppingListWithConfig: ShoppingListWithConfig): String {
+        val shopping = shoppingListWithConfig.getShopping()
+        val userPreferences = shoppingListWithConfig.getUserPreferences()
+        val displayMoney = userPreferences.displayMoney
+
+        val success = StringBuilder()
+
+        val shoppingName = shopping.name
+        val displayName = shoppingName.isNotEmpty()
+        if (displayName) {
+            success.append(shoppingName)
+            success.append(":\n")
+        }
+
+        val totalFormatted = shopping.totalFormatted
+        shoppingListWithConfig.getSortedProducts().forEach {
+            if (!it.completed) {
+                success.append("- ")
+
+                val title = getProductName(
+                    product = it,
+                    userPreferences = userPreferences
+                )
+                success.append(title)
+
+                val body = getProductBody(
+                    product = it,
+                    shoppingTotalFormatted = totalFormatted,
+                    userPreferences = userPreferences
+                )
+                if (body.isNotEmpty()) {
+                    success.append(userPreferences.purchasesSeparator)
+                    success.append(body)
+                }
+
+                success.append("\n")
+            }
+        }
+
+        val total = if (shopping.totalFormatted) {
+            shopping.total
+        } else {
+            shoppingListWithConfig.calculateTotalByDisplayTotal(DisplayTotal.ACTIVE)
+        }
+        if (displayMoney && total.isNotEmpty()) {
+            success.append("\n= ")
+            success.append(total.getDisplayValue())
+        } else {
+            if (success.isNotEmpty()) {
+                success.dropLast(1)
+            }
+        }
+
+        return success.toString()
     }
 
     fun toSortedShoppingListItems(
@@ -140,6 +199,56 @@ object UiShoppingListsMapper {
                 },
                 totalText = it.total.toUiText(),
                 reminderText = it.reminder.toUiText(),
+                completed = it.completed
+            )
+        }
+    }
+
+    fun toSortedProductItems(
+        shoppingListWithConfig: ShoppingListWithConfig,
+        displayCompleted: DisplayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
+    ): List<ProductItem> {
+        return shoppingListWithConfig.getSortedProducts(displayCompleted).map {
+            toProductItem(
+                product = it,
+                shopping = shoppingListWithConfig.getShopping(),
+                userPreferences = shoppingListWithConfig.getUserPreferences()
+            )
+        }
+    }
+
+    fun toPinnedSortedProductItems(
+        shoppingListWithConfig: ShoppingListWithConfig,
+        displayCompleted: DisplayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
+    ): List<ProductItem> {
+        return shoppingListWithConfig.getPinnedOtherSortedProducts(displayCompleted).first.map {
+            toProductItem(
+                product = it,
+                shopping = shoppingListWithConfig.getShopping(),
+                userPreferences = shoppingListWithConfig.getUserPreferences()
+            )
+        }
+    }
+
+    fun toOtherSortedProductItems(
+        shoppingListWithConfig: ShoppingListWithConfig,
+        displayCompleted: DisplayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
+    ): List<ProductItem> {
+        return shoppingListWithConfig.getPinnedOtherSortedProducts(displayCompleted).second.map {
+            toProductItem(
+                product = it,
+                shopping = shoppingListWithConfig.getShopping(),
+                userPreferences = shoppingListWithConfig.getUserPreferences()
+            )
+        }
+    }
+
+    fun toOldProductsItems(items: List<ProductItem>): List<ru.sokolovromann.myshopping.ui.compose.state.ProductItem> {
+        return items.map {
+            ru.sokolovromann.myshopping.ui.compose.state.ProductItem(
+                uid = it.uid,
+                nameText = it.name.toUiText(),
+                bodyText = it.body.toUiText(),
                 completed = it.completed
             )
         }
@@ -262,5 +371,102 @@ object UiShoppingListsMapper {
             first = product.completed,
             second = builder.toUiString()
         )
+    }
+
+    private fun toProductItem(
+        product: Product,
+        shopping: Shopping,
+        userPreferences: UserPreferences
+    ): ProductItem {
+        val totalFormatted = shopping.totalFormatted
+        return ProductItem(
+            uid = product.productUid,
+            name = getProductName(
+                product = product,
+                userPreferences = userPreferences
+            ).toUiString(),
+            body = getProductBody(
+                product = product,
+                shoppingTotalFormatted = totalFormatted,
+                userPreferences = userPreferences
+            ).toUiString(),
+            completed = product.completed
+        )
+    }
+
+    private fun getProductName(product: Product, userPreferences: UserPreferences): String {
+        val displayOtherFields = userPreferences.displayOtherFields
+        val separator = userPreferences.purchasesSeparator
+
+        val builder = StringBuilder(product.name)
+
+        val displayBrand = displayOtherFields && product.brand.isNotEmpty()
+        if (displayBrand) {
+            builder.append(" ${product.brand}")
+        }
+
+        val displayManufacturer = displayOtherFields && product.manufacturer.isNotEmpty()
+        if (displayManufacturer) {
+            builder.append("$separator${product.manufacturer}")
+        }
+
+        return builder.toString()
+    }
+
+    private fun getProductBody(
+        product: Product,
+        shoppingTotalFormatted: Boolean,
+        userPreferences: UserPreferences
+    ): String {
+        val displayOtherFields = userPreferences.displayOtherFields
+        val displayMoney = userPreferences.displayMoney
+        val separator = userPreferences.purchasesSeparator
+
+        val builder = StringBuilder()
+
+        val displaySize = displayOtherFields && product.size.isNotEmpty()
+        if (displaySize) {
+            builder.append(product.size)
+        }
+
+        val displayColor = displayOtherFields && product.color.isNotEmpty()
+        if (displayColor) {
+            if (builder.isNotEmpty()) {
+                builder.append(separator)
+            }
+            builder.append(product.color)
+        }
+
+        val displayQuantity = product.quantity.isNotEmpty()
+        val displayTotal = displayMoney && !shoppingTotalFormatted && product.total.isNotEmpty()
+
+        if (displayTotal) {
+            if (builder.isNotEmpty()) {
+                builder.append(separator)
+            }
+
+            if (displayQuantity) {
+                builder.append(product.quantity)
+                builder.append(separator)
+            }
+            builder.append(product.total)
+        } else {
+            if (displayQuantity) {
+                if (builder.isNotEmpty()) {
+                    builder.append(separator)
+                }
+                builder.append(product.quantity)
+            }
+        }
+
+        val displayNote = product.note.isNotEmpty()
+        if (displayNote) {
+            if (builder.isNotEmpty()) {
+                builder.append("\n")
+            }
+            builder.append(product.note)
+        }
+
+        return builder.toString()
     }
 }
