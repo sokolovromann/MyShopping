@@ -52,41 +52,43 @@ fun ProductsScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                is ProductsScreenEvent.AddProduct -> navController.navigate(
-                    route = UiRoute.Products.addProductScreen(it.uid)
+                ProductsScreenEvent.OnShowBackScreen -> {
+                    navController.popBackStack()
+                }
+
+                is ProductsScreenEvent.OnShowAddProduct -> navController.navigate(
+                    route = UiRoute.Products.addProductScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.EditProduct -> navController.navigate(
+                is ProductsScreenEvent.OnShowEditProduct -> navController.navigate(
                     route = UiRoute.Products.editProductScreen(it.shoppingUid, it.productUid)
                 )
 
-                is ProductsScreenEvent.EditShoppingListName -> navController.navigate(
-                    route = UiRoute.Products.editShoppingListNameScreen(it.uid)
+                is ProductsScreenEvent.OnShowEditName -> navController.navigate(
+                    route = UiRoute.Products.editShoppingListNameScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.EditShoppingListReminder -> navController.navigate(
-                    route = UiRoute.Products.editShoppingListReminderScreen(it.uid)
+                is ProductsScreenEvent.OnShowEditReminder -> navController.navigate(
+                    route = UiRoute.Products.editShoppingListReminderScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.EditShoppingListTotal -> navController.navigate(
-                    route = UiRoute.Products.editShoppingListTotalScreen(it.uid)
+                is ProductsScreenEvent.OnShowEditTotal -> navController.navigate(
+                    route = UiRoute.Products.editShoppingListTotalScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.CopyProductToShoppingList -> navController.navigate(
-                    route = UiRoute.Products.copyProductToShoppingList(it.uids)
+                is ProductsScreenEvent.OnShowCopyProduct -> navController.navigate(
+                    route = UiRoute.Products.copyProductToShoppingList(it.productUids)
                 )
 
-                is ProductsScreenEvent.MoveProductToShoppingList -> navController.navigate(
-                    route = UiRoute.Products.moveProductToShoppingList(it.uids)
+                is ProductsScreenEvent.OnShowMoveProduct -> navController.navigate(
+                    route = UiRoute.Products.moveProductToShoppingList(it.productUids)
                 )
 
-                ProductsScreenEvent.ShowBackScreen -> navController.popBackStack()
-
-                is ProductsScreenEvent.CalculateChange -> navController.navigate(
-                    route = UiRoute.Products.calculateChange(it.uid)
+                is ProductsScreenEvent.OnShowCalculateChange -> navController.navigate(
+                    route = UiRoute.Products.calculateChange(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.ShareProducts -> navController.chooseNavigate(
+                is ProductsScreenEvent.OnShareProducts -> navController.chooseNavigate(
                     intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_TEXT, it.products)
@@ -94,7 +96,7 @@ fun ProductsScreen(
                     }
                 )
 
-                is ProductsScreenEvent.UpdateProductsWidget -> updateProductsWidget(
+                is ProductsScreenEvent.OnUpdateProductsWidget -> updateProductsWidget(
                     context = context,
                     shoppingUid = it.shoppingUid
                 )
@@ -104,9 +106,9 @@ fun ProductsScreen(
 
     BackHandler {
         if (state.selectedUids == null) {
-            viewModel.onEvent(ProductsEvent.ShowBackScreen)
+            viewModel.onEvent(ProductsEvent.OnClickBack)
         } else {
-            viewModel.onEvent(ProductsEvent.CancelSelectingProducts)
+            viewModel.onEvent(ProductsEvent.OnAllProductsSelected(false))
         }
     }
 
@@ -116,7 +118,7 @@ fun ProductsScreen(
                 AppTopAppBar(
                     title = {},
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowBackScreen) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) }) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = stringResource(R.string.products_contentDescription_navigationIcon)
@@ -126,13 +128,13 @@ fun ProductsScreen(
                     actions = {
                         when (state.locationValue.selected) {
                             ShoppingLocation.PURCHASES, ShoppingLocation.ARCHIVE -> {
-                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListName) }) {
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditName) }) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_all_rename),
                                         contentDescription = stringResource(R.string.products_contentDescription_editShoppingListName)
                                     )
                                 }
-                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }) {
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditReminder) }) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_all_reminder),
                                         contentDescription = stringResource(R.string.products_contentDescription_editShoppingListReminder)
@@ -147,7 +149,7 @@ fun ProductsScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.CancelSelectingProducts) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnAllProductsSelected(false)) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(R.string.products_contentDescription_cancelSelectingProducts)
@@ -155,15 +157,7 @@ fun ProductsScreen(
                         }
                     },
                     actions = {
-                        IconButton(
-                            onClick = {
-                                if (state.isOnlyPinned()) {
-                                    viewModel.onEvent(ProductsEvent.UnpinProducts)
-                                } else {
-                                    viewModel.onEvent(ProductsEvent.PinProducts)
-                                }
-                            }
-                        ) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickPin) }) {
                             Icon(
                                 painter = if (state.isOnlyPinned()) {
                                     painterResource(R.drawable.ic_all_pin)
@@ -173,31 +167,31 @@ fun ProductsScreen(
                                 contentDescription = stringResource(R.string.products_contentDescription_pinOrUnpinProduct)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.products_contentDescription_deleteProducts)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowSelectedMenu) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = ""
                             )
                             AppDropdownMenu(
                                 expanded = state.expandedItemMoreMenu,
-                                onDismissRequest = { viewModel.onEvent(ProductsEvent.HideSelectedMenu) },
+                                onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(false)) },
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.CopyProductsToShoppingList) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.OnClickCopyProductsToShoppingList) },
                                     text = { Text(text = stringResource(R.string.products_action_copyProductsToShoppingList)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.MoveProductsToShoppingList) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductsToShoppingList) },
                                     text = { Text(text = stringResource(R.string.products_action_moveProductsToShoppingList)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.SelectAllProducts) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.OnAllProductsSelected(true)) },
                                     text = { Text(text = stringResource(R.string.products_action_selectAllProducts)) }
                                 )
                             }
@@ -218,38 +212,32 @@ fun ProductsScreen(
                                 totalFormatted = state.totalFormatted,
                                 fontSize = state.fontSize.button.sp,
                                 expanded = state.expandedDisplayTotal,
-                                onExpanded = {
-                                    if (it) {
-                                        viewModel.onEvent(ProductsEvent.SelectDisplayPurchasesTotal)
-                                    } else {
-                                        viewModel.onEvent(ProductsEvent.HideDisplayPurchasesTotal)
-                                    }
-                                },
+                                onExpanded = { viewModel.onEvent(ProductsEvent.OnSelectDisplayTotal(it)) },
                                 onSelected = {
-                                    val event = ProductsEvent.DisplayPurchasesTotal(it)
+                                    val event = ProductsEvent.OnDisplayTotalSelected(it)
                                     viewModel.onEvent(event)
                                 },
-                                onEditTotal = { viewModel.onEvent(ProductsEvent.EditShoppingListTotal) },
-                                onDeleteTotal = { viewModel.onEvent(ProductsEvent.DeleteShoppingListTotal) }
+                                onEditTotal = { viewModel.onEvent(ProductsEvent.OnClickEditTotal) },
+                                onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) }
                             )
                         }
                     },
                     actionButtons = {
                         if (state.selectedUids == null) {
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.AddProduct) }) {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickAddProduct) }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
                                     contentDescription = stringResource(R.string.products_contentDescription_addProductIcon)
                                 )
                             }
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.ShowProductsMenu) }) {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(true)) }) {
                                 Icon(
                                     imageVector = Icons.Default.MoreVert,
                                     contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon)
                                 )
                                 AppDropdownMenu(
                                     expanded = state.expandedProductsMenu,
-                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsMenu) }
+                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(false)) }
                                 ) {
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) },
@@ -260,10 +248,10 @@ fun ProductsScreen(
                                                 tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                                             )
                                         },
-                                        onClick = { viewModel.onEvent(ProductsEvent.ShowShoppingListMenu) }
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnShowShoppingMenu(true)) }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.InvertProductsMultiColumns) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnInvertMultiColumns) },
                                         text = { Text(text = state.multiColumnsValue.text.asCompose()) }
                                     )
                                     AppDropdownMenuItem(
@@ -275,47 +263,47 @@ fun ProductsScreen(
                                                 tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                                             )
                                         },
-                                        onClick = { viewModel.onEvent(ProductsEvent.SelectProductsSort) }
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSelectSort(true)) }
                                     )
                                     if (state.displayMoney) {
                                         AppDropdownMenuItem(
                                             text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
-                                            onClick = { viewModel.onEvent(ProductsEvent.CalculateChange) }
+                                            onClick = { viewModel.onEvent(ProductsEvent.OnClickCalculateChange) }
                                         )
                                     }
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.ShareProducts) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnClickShareProducts) },
                                         text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
                                     )
                                 }
 
                                 AppDropdownMenu(
                                     expanded = state.expandedShoppingMenu,
-                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.HideShoppingListMenu) },
+                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowShoppingMenu(false)) },
                                     header = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) }
                                 ) {
                                     when (state.locationValue.selected) {
                                         ShoppingLocation.PURCHASES -> {
                                             AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToArchive) },
+                                                onClick = { viewModel.onEvent(ProductsEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToArchive)) }
                                             )
                                             AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
+                                                onClick = { viewModel.onEvent(ProductsEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
                                             )
                                             AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.CopyShoppingList) },
+                                                onClick = { viewModel.onEvent(ProductsEvent.OnClickCopyShoppingList) },
                                                 text = { Text(text = stringResource(R.string.products_action_copyShoppingList)) }
                                             )
                                         }
                                         ShoppingLocation.ARCHIVE -> {
                                             AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToPurchases) },
+                                                onClick = { viewModel.onEvent(ProductsEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToPurchases)) }
                                             )
                                             AppDropdownMenuItem(
-                                                onClick = { viewModel.onEvent(ProductsEvent.MoveShoppingListToTrash) },
+                                                onClick = { viewModel.onEvent(ProductsEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToTrash)) }
                                             )
                                         }
@@ -325,12 +313,11 @@ fun ProductsScreen(
 
                                 AppDropdownMenu(
                                     expanded = state.expandedSort,
-                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.HideProductsSort) },
+                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.OnSelectSort(false)) },
                                     header = { Text(text = stringResource(id = R.string.products_action_sort)) }
                                 ) {
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
-                                            SortBy.CREATED)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSortSelected(SortBy.CREATED)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByCreated)) },
                                         right = {
                                             val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.CREATED
@@ -338,8 +325,7 @@ fun ProductsScreen(
                                         }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
-                                            SortBy.LAST_MODIFIED)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSortSelected(SortBy.LAST_MODIFIED)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByLastModified)) },
                                         right = {
                                             val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.LAST_MODIFIED
@@ -347,8 +333,7 @@ fun ProductsScreen(
                                         }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
-                                            SortBy.NAME)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSortSelected(SortBy.NAME)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByName)) },
                                         right = {
                                             val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.NAME
@@ -356,8 +341,7 @@ fun ProductsScreen(
                                         }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.SortProducts(
-                                            SortBy.TOTAL)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSortSelected(SortBy.TOTAL)) },
                                         text = { Text(text = stringResource(R.string.products_action_sortByTotal)) },
                                         right = {
                                             val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.TOTAL
@@ -366,7 +350,7 @@ fun ProductsScreen(
                                     )
                                     Divider()
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.ReverseSortProducts) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnReverseSort) },
                                         text = { Text(text = stringResource(R.string.products_action_reverseSort)) },
                                         right = {
                                             val checked = !state.sortValue.selected.ascending
@@ -375,7 +359,7 @@ fun ProductsScreen(
                                     )
                                     Divider()
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.InvertAutomaticSorting) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnInvertSortFormatted) },
                                         text = { Text(text = stringResource(R.string.products_action_automaticSorting)) },
                                         right = { AppSwitch(checked = state.sortFormatted) }
                                     )
@@ -432,7 +416,7 @@ fun ProductsScreen(
                             ProductsReminderContent(
                                 reminderText = state.reminderText.toUiText(),
                                 fontSize = state.oldFontSize,
-                                onClick = { viewModel.onEvent(ProductsEvent.EditShoppingListReminder) }
+                                onClick = { viewModel.onEvent(ProductsEvent.OnClickEditReminder) }
                             )
                         }
                     }
@@ -442,7 +426,7 @@ fun ProductsScreen(
                 if (state.displayHiddenProducts) {
                     ProductsHiddenContent(
                         fontSize = state.oldFontSize,
-                        onClick = { viewModel.onEvent(ProductsEvent.DisplayHiddenProducts) }
+                        onClick = { viewModel.onEvent(ProductsEvent.OnShowHiddenProducts(true)) }
                     )
                 }
             },
@@ -462,14 +446,14 @@ fun ProductsScreen(
                 ) {
                     Row {
                         if (!state.sortFormatted) {
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductUp(it)) }) {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductUp(it)) }) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_all_arrow_up),
                                     contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUp),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.MoveProductDown(it)) }) {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductDown(it)) }) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_all_arrow_down),
                                     contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
@@ -478,14 +462,14 @@ fun ProductsScreen(
                             }
                             AppVerticalDivider()
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.EditProduct(it)) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditProduct(it)) }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = stringResource(id = R.string.products_contentDescription_editProduct),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.DeleteProducts) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.products_contentDescription_deleteProducts),
@@ -500,23 +484,21 @@ fun ProductsScreen(
             onClick = { uid, completed ->
                 val uids = state.selectedUids
                 val event = if (uids == null) {
-                    if (completed) {
-                        ProductsEvent.ActiveProduct(uid)
-                    } else {
-                        ProductsEvent.CompleteProduct(uid)
-                    }
+                    ProductsEvent.OnClickProduct(uid, completed)
                 } else {
-                    if (uids.contains(uid)) {
-                        ProductsEvent.UnselectProduct(uid)
-                    } else {
-                        ProductsEvent.SelectProduct(uid)
-                    }
+                    ProductsEvent.OnProductSelected(
+                        selected = !uids.contains(uid),
+                        productUid = uid
+                    )
                 }
                 viewModel.onEvent(event)
             },
             onLongClick = {
                 if (state.selectedUids == null) {
-                    val event = ProductsEvent.SelectProduct(it)
+                    val event = ProductsEvent.OnProductSelected(
+                        selected = true,
+                        productUid = it
+                    )
                     viewModel.onEvent(event)
                 }
             },

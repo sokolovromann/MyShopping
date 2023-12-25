@@ -1,91 +1,70 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 
 sealed class ProductsEvent {
 
-    object AddProduct : ProductsEvent()
+    data class OnClickProduct(val productUid: String, val completed: Boolean) : ProductsEvent()
 
-    data class EditProduct(val uid: String) : ProductsEvent()
+    object OnClickAddProduct : ProductsEvent()
 
-    object EditShoppingListName : ProductsEvent()
+    data class OnClickEditProduct(val productUid: String) : ProductsEvent()
 
-    object EditShoppingListReminder : ProductsEvent()
+    object OnClickBack : ProductsEvent()
 
-    object EditShoppingListTotal : ProductsEvent()
+    object OnClickEditName : ProductsEvent()
 
-    object DeleteShoppingListTotal : ProductsEvent()
+    object OnClickEditReminder : ProductsEvent()
 
-    object CopyProductsToShoppingList : ProductsEvent()
+    object OnClickEditTotal : ProductsEvent()
 
-    object MoveProductsToShoppingList : ProductsEvent()
+    object OnClickDeleteTotal : ProductsEvent()
 
-    object MoveShoppingListToPurchases : ProductsEvent()
+    object OnClickPin: ProductsEvent()
 
-    object MoveShoppingListToArchive : ProductsEvent()
+    object OnClickCopyProductsToShoppingList : ProductsEvent()
 
-    object MoveShoppingListToTrash : ProductsEvent()
+    object OnClickMoveProductsToShoppingList : ProductsEvent()
 
-    object CopyShoppingList : ProductsEvent()
+    object OnClickCopyShoppingList : ProductsEvent()
 
-    data class MoveProductUp(val uid: String) : ProductsEvent()
+    data class OnClickMoveProductUp(val productUid: String) : ProductsEvent()
 
-    data class MoveProductDown(val uid: String) : ProductsEvent()
+    data class OnClickMoveProductDown(val productUid: String) : ProductsEvent()
 
-    object DeleteProducts : ProductsEvent()
+    object OnClickDeleteProducts : ProductsEvent()
 
-    object ShareProducts : ProductsEvent()
+    object OnClickShareProducts : ProductsEvent()
 
-    object SelectProductsSort : ProductsEvent()
+    object OnClickCalculateChange : ProductsEvent()
 
-    object SelectDisplayPurchasesTotal : ProductsEvent()
+    data class OnMoveShoppingListSelected(val location: ShoppingLocation) : ProductsEvent()
 
-    data class SelectProduct(val uid: String) : ProductsEvent()
+    data class OnDisplayTotalSelected(val displayTotal: DisplayTotal) : ProductsEvent()
 
-    object SelectAllProducts : ProductsEvent()
+    data class OnSelectDisplayTotal(val expanded: Boolean) : ProductsEvent()
 
-    data class UnselectProduct(val uid: String) : ProductsEvent()
+    data class OnSortSelected(val sortBy: SortBy) : ProductsEvent()
 
-    object CancelSelectingProducts : ProductsEvent()
+    object OnReverseSort : ProductsEvent()
 
-    data class SortProducts(val sortBy: SortBy) : ProductsEvent()
+    data class OnSelectSort(val expanded: Boolean) : ProductsEvent()
 
-    object ReverseSortProducts : ProductsEvent()
+    object OnInvertSortFormatted : ProductsEvent()
 
-    object InvertAutomaticSorting : ProductsEvent()
+    data class OnShowProductsMenu(val expanded: Boolean) : ProductsEvent()
 
-    data class DisplayPurchasesTotal(val displayTotal: DisplayTotal) : ProductsEvent()
+    data class OnShowItemMoreMenu(val expanded: Boolean) : ProductsEvent()
 
-    object DisplayHiddenProducts : ProductsEvent()
+    data class OnShowShoppingMenu(val expanded: Boolean) : ProductsEvent()
 
-    data class CompleteProduct(val uid: String) : ProductsEvent()
+    data class OnAllProductsSelected(val selected: Boolean) : ProductsEvent()
 
-    data class ActiveProduct(val uid: String) : ProductsEvent()
+    data class OnProductSelected(val selected: Boolean, val productUid: String) : ProductsEvent()
 
-    object ShowBackScreen : ProductsEvent()
+    data class OnShowHiddenProducts(val display: Boolean) : ProductsEvent()
 
-    object ShowProductsMenu : ProductsEvent()
-
-    object ShowSelectedMenu : ProductsEvent()
-
-    object ShowShoppingListMenu : ProductsEvent()
-
-    object HideProductsMenu : ProductsEvent()
-
-    object HideSelectedMenu : ProductsEvent()
-
-    object HideProductsSort : ProductsEvent()
-
-    object HideShoppingListMenu : ProductsEvent()
-
-    object HideDisplayPurchasesTotal : ProductsEvent()
-
-    object CalculateChange : ProductsEvent()
-
-    object InvertProductsMultiColumns : ProductsEvent()
-
-    object PinProducts : ProductsEvent()
-
-    object UnpinProducts : ProductsEvent()
+    object OnInvertMultiColumns : ProductsEvent()
 }

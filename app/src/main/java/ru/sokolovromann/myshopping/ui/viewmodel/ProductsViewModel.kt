@@ -7,9 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -33,375 +32,267 @@ class ProductsViewModel @Inject constructor(
 
     private val shoppingUid: String = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
 
-    init {
-        getProducts()
-    }
+    init { onInit() }
 
     override fun onEvent(event: ProductsEvent) {
         when (event) {
-            ProductsEvent.AddProduct -> addProduct()
+            is ProductsEvent.OnClickProduct -> onClickProduct(event)
 
-            is ProductsEvent.EditProduct -> editProduct(event)
+            is ProductsEvent.OnClickAddProduct -> onClickAddProduct()
 
-            ProductsEvent.EditShoppingListName -> editShoppingListName()
+            is ProductsEvent.OnClickEditProduct -> onClickEditProduct(event)
 
-            ProductsEvent.EditShoppingListReminder -> editShoppingListReminder()
+            ProductsEvent.OnClickBack -> onClickBack()
 
-            ProductsEvent.EditShoppingListTotal -> editShoppingListTotal()
+            ProductsEvent.OnClickEditName -> onClickEditName()
 
-            ProductsEvent.DeleteShoppingListTotal -> deleteShoppingListTotal()
+            ProductsEvent.OnClickEditReminder -> onClickEditReminder()
 
-            ProductsEvent.CopyProductsToShoppingList -> copyProductsToShoppingList()
+            ProductsEvent.OnClickEditTotal -> onClickEditTotal()
 
-            ProductsEvent.MoveProductsToShoppingList -> moveProductsToShoppingList()
+            ProductsEvent.OnClickDeleteTotal -> onClickDeleteTotal()
 
-            ProductsEvent.MoveShoppingListToPurchases -> moveShoppingListToPurchases()
+            ProductsEvent.OnClickPin -> onClickPin()
 
-            ProductsEvent.MoveShoppingListToArchive -> moveShoppingListToArchive()
+            ProductsEvent.OnClickCopyProductsToShoppingList -> onClickCopyProductsToShoppingList()
 
-            ProductsEvent.MoveShoppingListToTrash -> moveShoppingListToTrash()
+            ProductsEvent.OnClickMoveProductsToShoppingList -> onClickMoveProductsToShoppingList()
 
-            ProductsEvent.CopyShoppingList -> copyShoppingList()
+            ProductsEvent.OnClickCopyShoppingList -> onClickCopyShoppingList()
 
-            is ProductsEvent.MoveProductUp -> moveProductUp(event)
+            is ProductsEvent.OnClickMoveProductUp -> onClickMoveProductUp(event)
 
-            is ProductsEvent.MoveProductDown -> moveProductDown(event)
+            is ProductsEvent.OnClickMoveProductDown -> onClickMoveProductDown(event)
 
-            ProductsEvent.DeleteProducts -> deleteProducts()
+            ProductsEvent.OnClickDeleteProducts -> onClickDeleteProducts()
 
-            ProductsEvent.ShareProducts -> shareProducts()
+            ProductsEvent.OnClickShareProducts -> onClickShareProducts()
 
-            ProductsEvent.SelectProductsSort -> selectProductsSort()
+            ProductsEvent.OnClickCalculateChange -> onClickCalculateChange()
 
-            ProductsEvent.SelectDisplayPurchasesTotal -> selectDisplayPurchasesTotal()
+            is ProductsEvent.OnMoveShoppingListSelected -> onMoveShoppingListSelected(event)
 
-            is ProductsEvent.SelectProduct -> selectProduct(event)
+            is ProductsEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
 
-            ProductsEvent.SelectAllProducts -> selectAllProducts()
+            is ProductsEvent.OnSelectDisplayTotal -> onSelectDisplayTotal(event)
 
-            is ProductsEvent.UnselectProduct -> unselectProduct(event)
+            is ProductsEvent.OnSortSelected -> onSortSelected(event)
 
-            ProductsEvent.CancelSelectingProducts -> cancelSelectingProducts()
+            ProductsEvent.OnReverseSort -> onReverseSort()
 
-            is ProductsEvent.SortProducts -> sortProducts(event)
+            is ProductsEvent.OnSelectSort -> onSelectSort(event)
 
-            ProductsEvent.ReverseSortProducts -> reverseSortProducts()
+            ProductsEvent.OnInvertSortFormatted -> onInvertSortFormatted()
 
-            is ProductsEvent.DisplayPurchasesTotal -> displayPurchasesTotal(event)
+            is ProductsEvent.OnShowProductsMenu -> onShowProductsMenu(event)
 
-            ProductsEvent.DisplayHiddenProducts -> displayHiddenProducts()
+            is ProductsEvent.OnShowItemMoreMenu -> onShowItemMoreMenu(event)
 
-            is ProductsEvent.CompleteProduct -> completeProduct(event)
+            is ProductsEvent.OnShowShoppingMenu -> onShowShoppingMenu(event)
 
-            is ProductsEvent.ActiveProduct -> activeProduct(event)
+            is ProductsEvent.OnAllProductsSelected -> onAllProductsSelected(event)
 
-            ProductsEvent.ShowBackScreen -> showBackScreen()
+            is ProductsEvent.OnProductSelected -> onProductSelected(event)
 
-            ProductsEvent.ShowProductsMenu -> showProductsMenu()
+            is ProductsEvent.OnShowHiddenProducts -> onShowHiddenProducts(event)
 
-            ProductsEvent.ShowSelectedMenu -> showSelectedMenu()
-
-            ProductsEvent.ShowShoppingListMenu -> showShoppingListMenu()
-
-            ProductsEvent.HideProductsMenu -> hideProductsMenu()
-
-            ProductsEvent.HideSelectedMenu -> hideSelectedMenu()
-
-            ProductsEvent.HideShoppingListMenu -> hideShoppingListMenu()
-
-            ProductsEvent.HideProductsSort -> hideProductsSort()
-
-            ProductsEvent.HideDisplayPurchasesTotal -> hideDisplayPurchasesTotal()
-
-            ProductsEvent.CalculateChange -> calculateChange()
-
-            ProductsEvent.InvertProductsMultiColumns -> invertProductsMultiColumns()
-
-            ProductsEvent.InvertAutomaticSorting -> invertAutomaticSorting()
-
-            ProductsEvent.PinProducts -> pinProducts()
-
-            ProductsEvent.UnpinProducts -> unpinProducts()
+            ProductsEvent.OnInvertMultiColumns -> onInvertMultiColumns()
         }
     }
 
-    private fun getProducts() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            productsState.onWaiting()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onWaiting()
 
         shoppingListsRepository.getShoppingListWithConfig(shoppingUid).collect {
-            shoppingListLoaded(it)
+            productsState.populate(it)
         }
     }
 
-    private suspend fun shoppingListLoaded(
-        shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        productsState.populate(shoppingListWithConfig)
-    }
-
-    private suspend fun updateProductsWidget() = withContext(AppDispatchers.Main) {
-        val event = ProductsScreenEvent.UpdateProductsWidget(shoppingUid)
-        _screenEventFlow.emit(event)
-    }
-
-    private fun addProduct() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.AddProduct(shoppingUid))
-    }
-
-    private fun editProduct(
-        event: ProductsEvent.EditProduct
+    private fun onClickProduct(
+        event: ProductsEvent.OnClickProduct
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
-        unselectAllProducts()
-    }
-
-    private fun editShoppingListName() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListName(shoppingUid))
-        hideProductsMenu()
-    }
-
-    private fun editShoppingListReminder() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListReminder(shoppingUid))
-        hideProductsMenu()
-    }
-
-    private fun editShoppingListTotal() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.EditShoppingListTotal(shoppingUid))
-        hideDisplayPurchasesTotal()
-    }
-
-    private fun deleteShoppingListTotal() = viewModelScope.launch {
-        shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
-
-        withContext(AppDispatchers.Main) {
-            hideDisplayPurchasesTotal()
+        if (event.completed) {
+            shoppingListsRepository.activeProduct(event.productUid)
+        } else {
+            shoppingListsRepository.completeProduct(event.productUid)
+            if (productsState.isEditProductAfterCompleted()) {
+                _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProduct(shoppingUid, event.productUid))
+            }
         }
     }
 
-    private fun moveProductUp(event: ProductsEvent.MoveProductUp) = viewModelScope.launch {
+    private fun onClickAddProduct() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowAddProduct(shoppingUid))
+    }
+
+    private fun onClickEditProduct(
+        event: ProductsEvent.OnClickEditProduct
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProduct(shoppingUid, event.productUid))
+        productsState.onAllProductsSelected(selected = false)
+    }
+
+    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onClickEditName() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditName(shoppingUid))
+        productsState.onShowProductsMenu(expanded = false)
+    }
+
+    private fun onClickEditReminder() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditReminder(shoppingUid))
+        productsState.onShowProductsMenu(expanded = false)
+    }
+
+    private fun onClickEditTotal() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditTotal(shoppingUid))
+        productsState.onSelectDisplayTotal(expanded = false)
+    }
+
+    private fun onClickDeleteTotal() = viewModelScope.launch(AppDispatchers.Main) {
+        shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
+        productsState.onSelectDisplayTotal(expanded = false)
+    }
+
+    private fun onClickPin() = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.selectedUids?.let {
+            if (productsState.isOnlyPinned()) {
+                shoppingListsRepository.unpinProducts(it)
+            } else {
+                shoppingListsRepository.pinProducts(it)
+            }
+
+            productsState.onAllProductsSelected(selected = false)
+            _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
+        }
+    }
+
+    private fun onClickCopyProductsToShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.selectedUids?.let {
+            val uids = uidsToString(it)
+            _screenEventFlow.emit(ProductsScreenEvent.OnShowCopyProduct(uids))
+
+            productsState.onAllProductsSelected(selected = false)
+        }
+    }
+
+    private fun onClickMoveProductsToShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.selectedUids?.let {
+            val uids = uidsToString(it)
+            _screenEventFlow.emit(ProductsScreenEvent.OnShowMoveProduct(uids))
+
+            productsState.onAllProductsSelected(selected = false)
+        }
+    }
+
+    private fun onClickCopyShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+        shoppingListsRepository.copyShoppingList(shoppingUid)
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onClickMoveProductUp(
+        event: ProductsEvent.OnClickMoveProductUp
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.moveProductUp(
             shoppingUid = shoppingUid,
-            productUid = event.uid
-        ).onSuccess { updateProductsWidget() }
+            productUid = event.productUid
+        )
+        _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
     }
 
-    private fun moveProductDown(event: ProductsEvent.MoveProductDown) = viewModelScope.launch {
+    private fun onClickMoveProductDown(
+        event: ProductsEvent.OnClickMoveProductDown
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.moveProductDown(
             shoppingUid = shoppingUid,
-            productUid = event.uid
-        ).onSuccess { updateProductsWidget() }
+            productUid = event.productUid
+        )
+        _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
     }
 
-    private fun deleteProducts() = viewModelScope.launch {
+    private fun onClickDeleteProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
             shoppingListsRepository.deleteProductsByProductUids(
                 productsUids = it,
                 shoppingUid = shoppingUid
             )
-
-            updateProductsWidget()
-        }
-
-        withContext(AppDispatchers.Main) {
-            unselectAllProducts()
+            productsState.onAllProductsSelected(selected = false)
+            _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
         }
     }
 
-    private fun shareProducts() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickShareProducts() = viewModelScope.launch(AppDispatchers.Main) {
         val shareText = productsState.getShareText()
-        _screenEventFlow.emit(ProductsScreenEvent.ShareProducts(shareText))
-        hideProductsMenu()
+        _screenEventFlow.emit(ProductsScreenEvent.OnShareProducts(shareText))
+        productsState.onShowProductsMenu(expanded = false)
     }
 
-    private fun copyProductsToShoppingList() = viewModelScope.launch {
-        productsState.selectedUids?.let {
-            val uids = uidsToString(it)
-            _screenEventFlow.emit(ProductsScreenEvent.CopyProductToShoppingList(uids))
-        }
-
-        withContext(AppDispatchers.Main) {
-            hideSelectedMenu()
-            unselectAllProducts()
-        }
+    private fun onClickCalculateChange() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowCalculateChange(shoppingUid))
+        productsState.onShowProductsMenu(expanded = false)
     }
 
-    private fun moveProductsToShoppingList() = viewModelScope.launch {
-        productsState.selectedUids?.let {
-            val uids = uidsToString(it)
-            _screenEventFlow.emit(ProductsScreenEvent.MoveProductToShoppingList(uids))
-        }
+    private fun onMoveShoppingListSelected(
+        event: ProductsEvent.OnMoveShoppingListSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        when (event.location) {
+            ShoppingLocation.PURCHASES -> {
+                shoppingListsRepository.moveShoppingListToPurchases(shoppingUid)
+            }
 
-        withContext(AppDispatchers.Main) {
-            hideSelectedMenu()
-            unselectAllProducts()
-        }
-    }
+            ShoppingLocation.ARCHIVE -> {
+                shoppingListsRepository.moveShoppingListToArchive(shoppingUid)
+            }
 
-    private fun moveShoppingListToPurchases() = viewModelScope.launch {
-        shoppingListsRepository.moveShoppingListToPurchases(shoppingUid)
-
-        withContext(AppDispatchers.Main) {
-            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-        }
-    }
-
-    private fun moveShoppingListToArchive() = viewModelScope.launch {
-        shoppingListsRepository.moveShoppingListToArchive(shoppingUid)
-
-        withContext(AppDispatchers.Main) {
-            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-        }
-    }
-
-    private fun moveShoppingListToTrash() = viewModelScope.launch {
-        shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
-
-        withContext(AppDispatchers.Main) {
-            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-        }
-    }
-
-    private fun copyShoppingList() = viewModelScope.launch {
-        shoppingListsRepository.copyShoppingList(shoppingUid)
-
-        withContext(AppDispatchers.Main) {
-            _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-        }
-    }
-
-    private fun completeProduct(
-        event: ProductsEvent.CompleteProduct
-    ) = viewModelScope.launch {
-        shoppingListsRepository.completeProduct(event.uid)
-
-        if (productsState.isEditProductAfterCompleted()) {
-            withContext(AppDispatchers.Main) {
-                _screenEventFlow.emit(ProductsScreenEvent.EditProduct(shoppingUid, event.uid))
+            ShoppingLocation.TRASH -> {
+                shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
             }
         }
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
     }
 
-    private fun activeProduct(
-        event: ProductsEvent.ActiveProduct
-    ) = viewModelScope.launch {
-        shoppingListsRepository.activeProduct(event.uid)
+    private fun onDisplayTotalSelected(
+        event: ProductsEvent.OnDisplayTotalSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.displayTotal(event.displayTotal)
+        productsState.onSelectDisplayTotal(expanded = false)
+        _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
     }
 
-    private fun calculateChange() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.CalculateChange(shoppingUid))
-        hideProductsMenu()
+    private fun onSelectDisplayTotal(
+        event: ProductsEvent.OnSelectDisplayTotal
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onSelectDisplayTotal(event.expanded)
     }
 
-    private fun selectProductsSort() {
-        productsState.onSelectSort(true)
-    }
-
-    private fun selectDisplayPurchasesTotal() {
-        productsState.onSelectDisplayTotal(true)
-    }
-
-    private fun selectProduct(event: ProductsEvent.SelectProduct) {
-        productsState.onProductSelected(true, event.uid)
-    }
-
-    private fun selectAllProducts() {
-        productsState.onAllProductsSelected(true)
-    }
-
-    private fun unselectProduct(event: ProductsEvent.UnselectProduct) {
-        productsState.onProductSelected(false, event.uid)
-    }
-
-    private fun unselectAllProducts() {
-        productsState.onAllProductsSelected(false)
-    }
-
-    private fun cancelSelectingProducts() {
-        productsState.onAllProductsSelected(false)
-    }
-
-    private fun sortProducts(event: ProductsEvent.SortProducts) = viewModelScope.launch {
+    private fun onSortSelected(
+        event: ProductsEvent.OnSortSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.sortProducts(
             shoppingUid = shoppingUid,
             sort = Sort(event.sortBy),
             automaticSort = productsState.sortFormatted
         )
-
-        withContext(AppDispatchers.Main) {
-            hideProductsSort()
-        }
+        productsState.onSelectSort(expanded = false)
     }
 
-    private fun reverseSortProducts() = viewModelScope.launch {
+    private fun onReverseSort() = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.reverseProducts(
             shoppingUid = shoppingUid,
             automaticSort = productsState.sortFormatted
         )
-
-        withContext(AppDispatchers.Main) {
-            hideProductsSort()
-        }
+        productsState.onSelectSort(expanded = false)
     }
 
-    private fun displayPurchasesTotal(
-        event: ProductsEvent.DisplayPurchasesTotal
-    ) = viewModelScope.launch {
-        appConfigRepository.displayTotal(event.displayTotal)
-
-        withContext(AppDispatchers.Main) {
-            hideDisplayPurchasesTotal()
-        }
-
-        updateProductsWidget()
+    private fun onSelectSort(
+        event: ProductsEvent.OnSelectSort
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onSelectSort(event.expanded)
     }
 
-    private fun displayHiddenProducts() {
-        productsState.onShowHiddenProducts(true)
-    }
-
-    private fun showProductsMenu() {
-        productsState.onShowProductsMenu(true)
-    }
-
-    private fun showSelectedMenu() {
-        productsState.onShowItemMoreMenu(true)
-    }
-
-    private fun showShoppingListMenu() {
-        productsState.onShowShoppingMenu(true)
-    }
-
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.ShowBackScreen)
-    }
-
-    private fun hideProductsMenu() {
-        productsState.onShowProductsMenu(false)
-    }
-
-    private fun hideSelectedMenu() {
-        productsState.onShowItemMoreMenu(false)
-    }
-
-    private fun hideShoppingListMenu() {
-        productsState.onShowShoppingMenu(false)
-    }
-
-    private fun hideProductsSort() {
-        productsState.onSelectSort(false)
-    }
-
-    private fun hideDisplayPurchasesTotal() {
-        productsState.onSelectDisplayTotal(false)
-    }
-
-    private fun invertProductsMultiColumns() = viewModelScope.launch {
-        appConfigRepository.invertProductsMultiColumns()
-    }
-
-    private fun invertAutomaticSorting() = viewModelScope.launch {
+    private fun onInvertSortFormatted() = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.sortProducts(
             shoppingUid = shoppingUid,
             sort = productsState.sortValue.selected,
@@ -409,26 +300,44 @@ class ProductsViewModel @Inject constructor(
         )
     }
 
-    private fun pinProducts() = viewModelScope.launch {
-        productsState.selectedUids?.let {
-            shoppingListsRepository.pinProducts(it)
-            updateProductsWidget()
-        }
-
-        withContext(AppDispatchers.Main) {
-            unselectAllProducts()
-        }
+    private fun onShowProductsMenu(
+        event: ProductsEvent.OnShowProductsMenu
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onShowProductsMenu(event.expanded)
     }
 
-    private fun unpinProducts() = viewModelScope.launch {
-        productsState.selectedUids?.let {
-            shoppingListsRepository.unpinProducts(it)
-            updateProductsWidget()
-        }
+    private fun onShowItemMoreMenu(
+        event: ProductsEvent.OnShowItemMoreMenu
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onShowItemMoreMenu(event.expanded)
+    }
 
-        withContext(AppDispatchers.Main) {
-            unselectAllProducts()
-        }
+    private fun onShowShoppingMenu(
+        event: ProductsEvent.OnShowShoppingMenu
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onShowProductsMenu(event.expanded)
+    }
+
+    private fun onAllProductsSelected(
+        event: ProductsEvent.OnAllProductsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onAllProductsSelected(event.selected)
+    }
+
+    private fun onProductSelected(
+        event: ProductsEvent.OnProductSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onProductSelected(event.selected, event.productUid)
+    }
+
+    private fun onShowHiddenProducts(
+        event: ProductsEvent.OnShowHiddenProducts
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.onShowHiddenProducts(event.display)
+    }
+
+    private fun onInvertMultiColumns() = viewModelScope.launch {
+        appConfigRepository.invertProductsMultiColumns()
     }
 
     private fun uidsToString(uids: List<String>): String {
