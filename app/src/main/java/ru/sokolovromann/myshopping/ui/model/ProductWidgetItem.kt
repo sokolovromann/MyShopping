@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.ui.compose.state
+package ru.sokolovromann.myshopping.ui.model
 
 data class ProductWidgetItem(
     val uid: String,

@@ -14,6 +14,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.ui.model.ProductItem
+import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiString
@@ -238,6 +239,28 @@ object UiShoppingListsMapper {
             toProductItem(
                 product = it,
                 shopping = shoppingListWithConfig.getShopping(),
+                userPreferences = shoppingListWithConfig.getUserPreferences()
+            )
+        }
+    }
+
+    fun toOtherSortedProductWidgetItems(
+        shoppingListWithConfig: ShoppingListWithConfig,
+    ): List<ProductWidgetItem> {
+        return shoppingListWithConfig.getPinnedOtherSortedProducts().first.map {
+            toProductWidgetItem(
+                product = it,
+                userPreferences = shoppingListWithConfig.getUserPreferences()
+            )
+        }
+    }
+
+    fun toPinnedSortedProductWidgetItems(
+        shoppingListWithConfig: ShoppingListWithConfig,
+    ): List<ProductWidgetItem> {
+        return shoppingListWithConfig.getPinnedOtherSortedProducts().second.map {
+            toProductWidgetItem(
+                product = it,
                 userPreferences = shoppingListWithConfig.getUserPreferences()
             )
         }
@@ -468,5 +491,39 @@ object UiShoppingListsMapper {
         }
 
         return builder.toString()
+    }
+
+    private fun toProductWidgetItem(
+        product: Product,
+        userPreferences: UserPreferences
+    ): ProductWidgetItem {
+        val displayMoney = userPreferences.displayMoney
+        val separator = userPreferences.purchasesSeparator
+
+        val builder = StringBuilder(product.name)
+
+        val displayPrice = product.total.isNotEmpty() && displayMoney && !product.totalFormatted
+        val displayQuantity = product.quantity.isNotEmpty()
+
+        if (displayPrice) {
+            builder.append(separator)
+
+            if (displayQuantity) {
+                builder.append(product.quantity)
+                builder.append(separator)
+            }
+            builder.append(product.total)
+        } else {
+            if (displayQuantity) {
+                builder.append(separator)
+                builder.append(product.quantity)
+            }
+        }
+
+        return ProductWidgetItem(
+            uid = product.productUid,
+            body = builder.toString(),
+            completed = product.completed
+        )
     }
 }

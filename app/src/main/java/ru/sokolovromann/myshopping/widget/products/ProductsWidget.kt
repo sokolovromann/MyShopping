@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.widget.products
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -50,9 +51,8 @@ import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
-import ru.sokolovromann.myshopping.ui.compose.state.ProductWidgetItem
-import ru.sokolovromann.myshopping.ui.utils.getActivePinnedProductWidgetItems
-import ru.sokolovromann.myshopping.ui.utils.getOtherProductWidgetItems
+import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
+import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.utils.toWidgetBody
 import ru.sokolovromann.myshopping.ui.utils.toWidgetTitle
 import ru.sokolovromann.myshopping.widget.WidgetKey
@@ -75,6 +75,7 @@ class ProductsWidget : GlanceAppWidget() {
         provideContent { ProductsWidgetContent(context) }
     }
 
+    @SuppressLint("RestrictedApi")
     @Composable
     private fun ProductsWidgetContent(context: Context) {
         val shoppingUid = currentState(key = stringPreferencesKey(WidgetKey.SHOPPING_UID.name)) ?: ""
@@ -120,8 +121,8 @@ class ProductsWidget : GlanceAppWidget() {
                     modifier = GlanceModifier.defaultWeight(),
                     name = shopping.name,
                     completed = shoppingListWithConfig.isCompleted(),
-                    pinnedItems = shoppingListWithConfig.getActivePinnedProductWidgetItems(),
-                    otherItems = shoppingListWithConfig.getOtherProductWidgetItems(),
+                    pinnedItems = UiShoppingListsMapper.toPinnedSortedProductWidgetItems(shoppingListWithConfig),
+                    otherItems = UiShoppingListsMapper.toOtherSortedProductWidgetItems(shoppingListWithConfig),
                     displayCompleted = userPreferences.displayCompleted,
                     fontSize = userPreferences.fontSize,
                     coloredCheckbox = userPreferences.coloredCheckbox,
@@ -185,6 +186,7 @@ private fun createAction(uid: String): String {
     return "ru.sokolovromann.myshopping.products_widget_$uid"
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetName(
     name: String,
@@ -229,6 +231,7 @@ private fun ProductsWidgetName(
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetTotal(
     total: String,
@@ -248,6 +251,7 @@ private fun ProductsWidgetTotal(
     )
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetNotFound(
     modifier: GlanceModifier,
@@ -276,6 +280,7 @@ private fun ProductsWidgetNotFound(
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetProducts(
     modifier: GlanceModifier,
@@ -326,6 +331,7 @@ private fun ProductsWidgetProducts(
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetItem(
     widgetItem: ProductWidgetItem,
