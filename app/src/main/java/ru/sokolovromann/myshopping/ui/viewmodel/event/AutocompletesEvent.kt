@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.ui.UiRoute
-import ru.sokolovromann.myshopping.ui.compose.state.AutocompleteLocation
+import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 
 sealed class AutocompletesEvent {
 

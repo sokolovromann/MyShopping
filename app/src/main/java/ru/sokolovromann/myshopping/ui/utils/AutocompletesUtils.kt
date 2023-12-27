@@ -5,6 +5,7 @@ import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.ui.compose.state.AutocompleteItems
 import ru.sokolovromann.myshopping.ui.compose.state.UiText
 
+@Deprecated("Will be deleted")
 fun AutocompletesWithConfig.getAutocompletesItems(): Map<UiText, AutocompleteItems> {
     val items: MutableMap<UiText, AutocompleteItems> = mutableMapOf()
     groupAutocompletesByName().forEach {

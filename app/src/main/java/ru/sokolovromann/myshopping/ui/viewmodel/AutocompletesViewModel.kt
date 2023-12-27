@@ -13,7 +13,8 @@ import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
+import ru.sokolovromann.myshopping.ui.model.AutocompletesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
 import javax.inject.Inject
 
@@ -65,7 +66,7 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun getDefaultAutocompletes() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            autocompletesState.showLoading()
+            autocompletesState.onWaiting()
         }
 
         autocompletesRepository.getDefaultAutocompletes().collect {
@@ -75,7 +76,7 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun getPersonalAutocompletes() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            autocompletesState.showLoading()
+            autocompletesState.onWaiting()
         }
 
         autocompletesRepository.getPersonalAutocompletes().collect {
@@ -87,11 +88,7 @@ class AutocompletesViewModel @Inject constructor(
         autocompletes: AutocompletesWithConfig,
         location: AutocompleteLocation
     ) = withContext(AppDispatchers.Main) {
-        if (autocompletes.isEmpty()) {
-            autocompletesState.showNotFound(autocompletes, location)
-        } else {
-            autocompletesState.showAutocompletes(autocompletes, location)
-        }
+        autocompletesState.populate(autocompletes, location)
     }
 
     private fun addAutocomplete() = viewModelScope.launch(AppDispatchers.Main) {
@@ -99,11 +96,11 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun clearAutocompletes() = viewModelScope.launch {
-        when (autocompletesState.screenData.location) {
+        when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
-            autocompletesState.screenData.selectedNames?.let { names ->
+            autocompletesState.selectedNames?.let { names ->
                 val uids = autocompletes.getUidsByNames(names)
                 autocompletesRepository.clearAutocompletes(uids = uids)
             }
@@ -115,11 +112,11 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun deleteAutocompletes() = viewModelScope.launch {
-        when (autocompletesState.screenData.location) {
+        when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> return@launch
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
         }.firstOrNull()?.let { autocompletes ->
-            autocompletesState.screenData.selectedNames?.let { names ->
+            autocompletesState.selectedNames?.let { names ->
                 val uids = autocompletes.getUidsByNames(names)
                 autocompletesRepository.deleteAutocompletes(uids)
             }
@@ -143,23 +140,23 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun selectAutocompleteLocation() {
-        autocompletesState.showLocation()
+        autocompletesState.onSelectLocation(true)
     }
 
     private fun selectAllAutocompletes() {
-        autocompletesState.selectAllAutocompletes()
+        autocompletesState.onAllAutocompletesSelected(true)
     }
 
     private fun selectAutocomplete(event: AutocompletesEvent.SelectAutocomplete) {
-        autocompletesState.selectAutocomplete(event.name)
+        autocompletesState.onAutocompleteSelected(true, event.name)
     }
 
     private fun unselectAutocomplete(event: AutocompletesEvent.UnselectAutocomplete) {
-        autocompletesState.unselectAutocomplete(event.name)
+        autocompletesState.onAutocompleteSelected(false, event.name)
     }
 
     private fun unselectAutocompletes() {
-        autocompletesState.unselectAllAutocompletes()
+        autocompletesState.onAllAutocompletesSelected(false)
     }
 
     private fun cancelSelectingAutocompletes() {
@@ -188,6 +185,6 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun hideAutocompleteLocation() {
-        autocompletesState.hideLocation()
+        autocompletesState.onSelectLocation(false)
     }
 }
