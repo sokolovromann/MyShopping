@@ -4,11 +4,11 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.UiRoute
-import ru.sokolovromann.myshopping.ui.compose.state.SettingsUid
+import ru.sokolovromann.myshopping.ui.model.SettingUid
 
 sealed class SettingsEvent {
 
-    data class SelectSettingsItem(val uid: SettingsUid) : SettingsEvent()
+    data class SelectSettingsItem(val uid: SettingUid) : SettingsEvent()
 
     data class SelectNavigationItem(val route: UiRoute) : SettingsEvent()
 

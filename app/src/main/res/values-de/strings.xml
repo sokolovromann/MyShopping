@@ -340,7 +340,8 @@
     <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
-    <string name="settings_body_displayMoneyZeros">Wenn aktiviert, werden immer Nullen angezeigt.</string>
+    <string name="settings_body_displayMoney">Wenn aktiviert, werden Geld und Felder angezeigt</string>
+    <string name="settings_body_displayMoneyZeros">Wenn aktiviert, werden immer Nullen angezeigt</string>
     <string name="settings_body_displayOtherFields">Marke, Größe, Farbe usw.</string>
     <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet (Außer Widgets)</string>
     <string name="settings_body_email">Zum Schreiben tippen</string>
@@ -378,7 +379,7 @@
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
-    <string name="settings_title_saveProductToAutocompletes">Unbekanntes produkt speichern</string>
+    <string name="settings_title_saveProductToAutocompletes">Produkte speichern</string>
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 

@@ -1,14 +1,6 @@
-package ru.sokolovromann.myshopping.ui.compose.state
+package ru.sokolovromann.myshopping.ui.model
 
-data class SettingsItem(
-    val uid: SettingsUid = SettingsUid.NoUId,
-    val titleText: UiText = UiText.Nothing,
-    val bodyText: UiText = UiText.Nothing,
-    val checked: Boolean? = null
-)
-
-enum class SettingsUid {
-    NoUId,
+enum class SettingUid {
     NightTheme,
     FontSize,
     Backup,
@@ -26,7 +18,9 @@ enum class SettingsUid {
     EnterToSaveProducts,
     ColoredCheckbox,
     SaveProductToAutocompletes,
+    Developer,
     Email,
+    AppVersion,
     Github,
     PrivacyPolicy,
     TermsAndConditions

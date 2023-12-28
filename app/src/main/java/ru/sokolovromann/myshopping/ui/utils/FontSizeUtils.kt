@@ -1,17 +1,6 @@
 package ru.sokolovromann.myshopping.ui.utils
 
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
-
-fun FontSize.toSettingsText(): UiText = when (this) {
-    FontSize.SMALL -> UiText.FromResources(R.string.settings_action_selectSmallFontSize)
-    FontSize.MEDIUM -> UiText.FromResources(R.string.settings_action_selectMediumFontSize)
-    FontSize.LARGE -> UiText.FromResources(R.string.settings_action_selectLargeFontSize)
-    FontSize.VERY_LARGE -> UiText.FromResources(R.string.settings_action_selectVeryLargeFontSize)
-    FontSize.HUGE -> UiText.FromResources(R.string.settings_action_selectHugeFontSize)
-    FontSize.VERY_HUGE -> UiText.FromResources(R.string.settings_action_selectVeryHugeFontSize)
-}
 
 @Deprecated("Use UiFontSize")
 fun FontSize.toItemTitle(): Int = when (this) {

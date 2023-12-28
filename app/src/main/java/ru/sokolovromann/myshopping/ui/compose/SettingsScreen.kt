@@ -30,9 +30,11 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.SettingItem
+import ru.sokolovromann.myshopping.ui.model.SettingUid
+import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
-import ru.sokolovromann.myshopping.ui.utils.toItemBody
-import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.SettingsViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SettingsEvent
@@ -42,7 +44,7 @@ fun SettingsScreen(
     navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val screenData = viewModel.settingsState.screenData
+    val state = viewModel.settingsState
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val subjectText = stringResource(R.string.data_email_subject)
@@ -158,17 +160,20 @@ fun SettingsScreen(
     ) { paddings ->
         SettingsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = screenData.screenState,
-            multiColumns = screenData.multiColumns,
-            smartphoneScreen = screenData.smartphoneScreen,
-            map = screenData.settings,
-            fontSize = screenData.fontSize,
+            screenState = ScreenState.create(
+                waiting = state.waiting,
+                notFound = false
+            ),
+            multiColumns = state.multiColumns,
+            smartphoneScreen = state.smartphoneScreen,
+            map = state.settings,
+            fontSize = state.fontSize,
             dropdownMenu = {
                 when (it) {
-                    SettingsUid.FontSize -> {
+                    SettingUid.FontSize -> {
                         SettingsFontSizeMenu(
-                            expanded = it == screenData.settingsItemUid,
-                            fontSize = screenData.fontSize,
+                            expanded = it == state.selectedUid,
+                            fontSize = state.fontSizeValue.selected,
                             onDismissRequest = { viewModel.onEvent(SettingsEvent.HideFontSize) },
                             onSelected = { fontSize ->
                                 viewModel.onEvent(SettingsEvent.FontSizeSelected(fontSize))
@@ -176,10 +181,10 @@ fun SettingsScreen(
                         )
                     }
 
-                    SettingsUid.DisplayCompletedPurchases -> {
+                    SettingUid.DisplayCompletedPurchases -> {
                         SettingsDisplayCompletedMenu(
-                            expanded = it == screenData.settingsItemUid,
-                            displayCompleted = screenData.displayCompletedPurchases,
+                            expanded = it == state.selectedUid,
+                            displayCompleted = state.displayCompletedValue.selected,
                             onDismissRequest = { viewModel.onEvent(SettingsEvent.HideDisplayCompletedPurchases) },
                             onSelected = { displayCompleted ->
                                 viewModel.onEvent(SettingsEvent.DisplayCompletedPurchasesSelected(displayCompleted))
@@ -187,10 +192,10 @@ fun SettingsScreen(
                         )
                     }
 
-                    SettingsUid.DisplayShoppingsProducts -> {
+                    SettingUid.DisplayShoppingsProducts -> {
                         SettingsDisplayShoppingsProductsMenu(
-                            expanded = it == screenData.settingsItemUid,
-                            displayProducts = screenData.displayShoppingsProducts,
+                            expanded = it == state.selectedUid,
+                            displayProducts = state.displayProductsValue.selected,
                             onDismissRequest = { viewModel.onEvent(SettingsEvent.HideDisplayShoppingsProducts) },
                             onSelected = { displayProducts ->
                                 viewModel.onEvent(SettingsEvent.DisplayShoppingsProductsSelected(displayProducts))
@@ -216,10 +221,10 @@ private fun SettingsGrid(
     screenState: ScreenState,
     multiColumns: Boolean,
     smartphoneScreen: Boolean,
-    map: Map<UiText, List<SettingsItem>>,
-    fontSize: FontSize,
-    dropdownMenu: @Composable (SettingsUid) -> Unit,
-    onClick: (SettingsUid) -> Unit
+    map: Map<UiString, List<SettingItem>>,
+    fontSize: UiFontSize,
+    dropdownMenu: @Composable (SettingUid) -> Unit,
+    onClick: (SettingUid) -> Unit
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
@@ -235,14 +240,14 @@ private fun SettingsGrid(
                     Text(
                         modifier = Modifier.padding(SettingsSurfaceHeaderPaddings),
                         text = headers[index].asCompose(),
-                        fontSize = fontSize.toItemTitle().sp
+                        fontSize = fontSize.itemTitle.sp
                     )
                 },
                 items = {
                     settingsItems.forEach { item ->
                         AppItem(
-                            title = getSettingsItemTitle(item.titleText, fontSize),
-                            body = getSettingsItemBodyOrNull(item.bodyText, fontSize),
+                            title = getSettingsItemTitle(item.title, fontSize),
+                            body = getSettingsItemBodyOrNull(item.body, fontSize),
                             right = getSettingsItemAfterOrNull(item.checked),
                             dropdownMenu = { dropdownMenu(item.uid) },
                             onClick = { onClick(item.uid) }
@@ -395,23 +400,23 @@ private fun SettingsDisplayShoppingsProductsMenu(
 
 @Composable
 private fun getSettingsItemTitle(
-    text: UiText,
-    fontSize: FontSize
+    text: UiString,
+    fontSize: UiFontSize
 ): @Composable () -> Unit = {
     Text(
         text = text.asCompose(),
-        fontSize = fontSize.toItemTitle().sp
+        fontSize = fontSize.itemTitle.sp
     )
 }
 
 @Composable
 private fun getSettingsItemBodyOrNull(
-    text: UiText,
-    fontSize: FontSize
+    text: UiString,
+    fontSize: UiFontSize
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
     Text(
         text = text.asCompose(),
-        fontSize = fontSize.toItemBody().sp
+        fontSize = fontSize.itemBody.sp
     )
 }
 

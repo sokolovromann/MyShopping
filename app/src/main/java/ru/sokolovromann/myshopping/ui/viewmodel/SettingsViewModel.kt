@@ -12,7 +12,8 @@ import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
+import ru.sokolovromann.myshopping.ui.model.SettingUid
+import ru.sokolovromann.myshopping.ui.model.SettingsState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SettingsEvent
 import javax.inject.Inject
 
@@ -60,7 +61,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun getSettings() = viewModelScope.launch {
         withContext(AppDispatchers.Main) {
-            settingsState.showLoading()
+            settingsState.onWaiting()
         }
 
         appConfigRepository.getSettingsWithConfig().collect {
@@ -71,7 +72,7 @@ class SettingsViewModel @Inject constructor(
     private suspend fun settingsLoaded(
         settingsWithConfig: SettingsWithConfig
     ) = withContext(AppDispatchers.Main) {
-        settingsState.showSetting(settingsWithConfig)
+        settingsState.populate(settingsWithConfig)
     }
 
     private fun editCurrencySymbol() = viewModelScope.launch(AppDispatchers.Main) {
@@ -84,54 +85,56 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectSettingsItem(event: SettingsEvent.SelectSettingsItem) {
         when (event.uid) {
-            SettingsUid.NoUId -> return
+            SettingUid.NightTheme -> invertNightTheme()
 
-            SettingsUid.NightTheme -> invertNightTheme()
+            SettingUid.FontSize -> selectFontSize()
 
-            SettingsUid.FontSize -> selectFontSize()
+            SettingUid.Backup -> backup()
 
-            SettingsUid.Backup -> backup()
+            SettingUid.DisplayMoney -> invertDisplayMoney()
 
-            SettingsUid.DisplayMoney -> invertDisplayMoney()
+            SettingUid.Currency -> editCurrencySymbol()
 
-            SettingsUid.Currency -> editCurrencySymbol()
+            SettingUid.DisplayCurrencyToLeft -> invertDisplayCurrencyToLeft()
 
-            SettingsUid.DisplayCurrencyToLeft -> invertDisplayCurrencyToLeft()
+            SettingUid.DisplayMoneyZeros -> invertDisplayMoneyZeros()
 
-            SettingsUid.DisplayMoneyZeros -> invertDisplayMoneyZeros()
+            SettingUid.TaxRate -> editTaxRate()
 
-            SettingsUid.TaxRate -> editTaxRate()
+            SettingUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
 
-            SettingsUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
+            SettingUid.DisplayCompletedPurchases -> selectDisplayCompletedPurchases()
 
-            SettingsUid.DisplayCompletedPurchases -> selectDisplayCompletedPurchases()
+            SettingUid.DisplayOtherFields -> invertDisplayOtherFields()
 
-            SettingsUid.DisplayOtherFields -> invertDisplayOtherFields()
+            SettingUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
 
-            SettingsUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
+            SettingUid.CompletedWithCheckbox -> invertCompletedWithCheckbox()
 
-            SettingsUid.CompletedWithCheckbox -> invertCompletedWithCheckbox()
+            SettingUid.DisplayShoppingsProducts -> selectShoppingsProducts()
 
-            SettingsUid.DisplayShoppingsProducts -> selectShoppingsProducts()
+            SettingUid.EnterToSaveProducts -> enterToSaveProducts()
 
-            SettingsUid.EnterToSaveProducts -> enterToSaveProducts()
+            SettingUid.ColoredCheckbox -> invertColoredCheckbox()
 
-            SettingsUid.ColoredCheckbox -> invertColoredCheckbox()
+            SettingUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
 
-            SettingsUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
+            SettingUid.Developer -> return
 
-            SettingsUid.Email -> sendEmailToDeveloper()
+            SettingUid.Email -> sendEmailToDeveloper()
 
-            SettingsUid.Github -> showAppGithub()
+            SettingUid.AppVersion -> return
 
-            SettingsUid.PrivacyPolicy -> showPrivacyPolicy()
+            SettingUid.Github -> showAppGithub()
 
-            SettingsUid.TermsAndConditions -> showTermsAndConditions()
+            SettingUid.PrivacyPolicy -> showPrivacyPolicy()
+
+            SettingUid.TermsAndConditions -> showTermsAndConditions()
         }
     }
 
     private fun selectFontSize() {
-        settingsState.showFontSize()
+        settingsState.onSelectUid(true, SettingUid.FontSize)
     }
 
     private fun backup() = viewModelScope.launch(AppDispatchers.Main) {
@@ -139,7 +142,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun selectShoppingsProducts() {
-        settingsState.showShoppingsProducts()
+        settingsState.onSelectUid(true, SettingUid.DisplayShoppingsProducts)
     }
 
     private fun selectNavigationItem(
@@ -155,7 +158,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun selectDisplayCompletedPurchases() {
-        settingsState.showDisplayCompletedPurchases()
+        settingsState.onSelectUid(true, SettingUid.DisplayCompletedPurchases)
     }
 
     private fun fontSizeSelected(
@@ -235,7 +238,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun sendEmailToDeveloper() = viewModelScope.launch(AppDispatchers.Main) {
-        val event = SettingsScreenEvent.SendEmailToDeveloper(settingsState.getDeveloperEmail())
+        val event = SettingsScreenEvent.SendEmailToDeveloper(settingsState.getSettings().developerEmail)
         _screenEventFlow.emit(event)
     }
 
@@ -248,25 +251,25 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun showAppGithub() = viewModelScope.launch(AppDispatchers.Main) {
-        val link = settingsState.getAppGithubLink()
+        val link = settingsState.getSettings().appGithubLink
         val event = SettingsScreenEvent.ShowAppGithub(link)
         _screenEventFlow.emit(event)
     }
 
     private fun showPrivacyPolicy() = viewModelScope.launch(AppDispatchers.Main) {
-        val link = settingsState.getPrivacyPolicyLink()
+        val link = settingsState.getSettings().privacyPolicyLink
         val event = SettingsScreenEvent.ShowPrivacyPolicy(link)
         _screenEventFlow.emit(event)
     }
 
     private fun showTermsAndConditions() = viewModelScope.launch(AppDispatchers.Main) {
-        val link = settingsState.getTermsAndConditionsLink()
+        val link = settingsState.getSettings().termsAndConditionsLink
         val event = SettingsScreenEvent.ShowTermsAndConditions(link)
         _screenEventFlow.emit(event)
     }
 
     private fun hideFontSize() {
-        settingsState.hideFontSize()
+        settingsState.onSelectUid(false, SettingUid.FontSize)
     }
 
     private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
@@ -274,10 +277,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun hideDisplayCompletedPurchases() {
-        settingsState.hideDisplayCompletedPurchases()
+        settingsState.onSelectUid(false, SettingUid.DisplayCompletedPurchases)
     }
 
     private fun hideDisplayShoppingsProducts() {
-        settingsState.hideDisplayShoppingsProducts()
+        settingsState.onSelectUid(false, SettingUid.DisplayShoppingsProducts)
     }
 }
