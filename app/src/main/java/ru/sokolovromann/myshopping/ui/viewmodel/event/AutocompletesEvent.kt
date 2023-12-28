@@ -1,35 +1,27 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
-import ru.sokolovromann.myshopping.ui.UiRoute
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 
 sealed class AutocompletesEvent {
 
-    object AddAutocomplete : AutocompletesEvent()
+    object OnClickAdd : AutocompletesEvent()
 
-    object ClearAutocompletes : AutocompletesEvent()
+    object OnClickClear : AutocompletesEvent()
 
-    object DeleteAutocompletes : AutocompletesEvent()
+    object OnClickDelete : AutocompletesEvent()
 
-    data class SelectNavigationItem(val route: UiRoute) : AutocompletesEvent()
+    object OnClickBack : AutocompletesEvent()
 
-    object SelectAutocompleteLocation : AutocompletesEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : AutocompletesEvent()
 
-    object SelectAllAutocompletes : AutocompletesEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : AutocompletesEvent()
 
-    data class SelectAutocomplete(val name: String) : AutocompletesEvent()
+    data class OnLocationSelected(val location: AutocompleteLocation) : AutocompletesEvent()
 
-    data class UnselectAutocomplete(val name: String) : AutocompletesEvent()
+    data class OnSelectLocation(val expanded: Boolean) : AutocompletesEvent()
 
-    object CancelSelectingAutocompletes : AutocompletesEvent()
+    data class OnAllAutocompletesSelected(val selected: Boolean) : AutocompletesEvent()
 
-    data class ShowAutocompletes(val location: AutocompleteLocation) : AutocompletesEvent()
-
-    object ShowBackScreen : AutocompletesEvent()
-
-    object ShowNavigationDrawer : AutocompletesEvent()
-
-    object HideNavigationDrawer : AutocompletesEvent()
-
-    object HideAutocompleteLocation : AutocompletesEvent()
+    data class OnAutocompleteSelected(val selected: Boolean, val name: String) : AutocompletesEvent()
 }

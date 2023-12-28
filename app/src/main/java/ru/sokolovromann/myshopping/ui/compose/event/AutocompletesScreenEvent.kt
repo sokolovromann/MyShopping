@@ -1,22 +1,16 @@
 package ru.sokolovromann.myshopping.ui.compose.event
 
+import ru.sokolovromann.myshopping.ui.DrawerScreen
+
 sealed class AutocompletesScreenEvent {
 
-    object AddAutocomplete : AutocompletesScreenEvent()
+    object OnShowBackScreen : AutocompletesScreenEvent()
 
-    data class EditAutocomplete(val uid: String) : AutocompletesScreenEvent()
+    object OnShowAddAutocomplete : AutocompletesScreenEvent()
 
-    object ShowBackScreen : AutocompletesScreenEvent()
+    data class OnShowEditAutocomplete(val uid: String) : AutocompletesScreenEvent()
 
-    object ShowPurchases : AutocompletesScreenEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : AutocompletesScreenEvent()
 
-    object ShowArchive : AutocompletesScreenEvent()
-
-    object ShowTrash : AutocompletesScreenEvent()
-
-    object ShowSettings : AutocompletesScreenEvent()
-
-    object ShowNavigationDrawer : AutocompletesScreenEvent()
-
-    object HideNavigationDrawer : AutocompletesScreenEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : AutocompletesScreenEvent()
 }

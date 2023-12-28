@@ -7,11 +7,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
-import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 import ru.sokolovromann.myshopping.ui.model.AutocompletesState
@@ -28,74 +25,45 @@ class AutocompletesViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<AutocompletesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AutocompletesScreenEvent> = _screenEventFlow
 
-    init {
-        getPersonalAutocompletes()
-    }
+    init { onInit() }
 
     override fun onEvent(event: AutocompletesEvent) {
         when (event) {
-            AutocompletesEvent.AddAutocomplete -> addAutocomplete()
+            AutocompletesEvent.OnClickAdd -> onClickAdd()
 
-            AutocompletesEvent.ClearAutocompletes -> clearAutocompletes()
+            AutocompletesEvent.OnClickClear -> onClickClear()
 
-            AutocompletesEvent.DeleteAutocompletes -> deleteAutocompletes()
+            AutocompletesEvent.OnClickDelete -> onClickDelete()
 
-            is AutocompletesEvent.SelectNavigationItem -> selectNavigationItem(event)
+            AutocompletesEvent.OnClickBack -> onClickBack()
 
-            AutocompletesEvent.SelectAutocompleteLocation -> selectAutocompleteLocation()
+            is AutocompletesEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
-            AutocompletesEvent.SelectAllAutocompletes -> selectAllAutocompletes()
+            is AutocompletesEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
-            is AutocompletesEvent.SelectAutocomplete -> selectAutocomplete(event)
+            is AutocompletesEvent.OnLocationSelected -> onLocationSelected(event)
 
-            is AutocompletesEvent.UnselectAutocomplete -> unselectAutocomplete(event)
+            is AutocompletesEvent.OnSelectLocation -> onSelectLocation(event)
 
-            AutocompletesEvent.CancelSelectingAutocompletes -> cancelSelectingAutocompletes()
+            is AutocompletesEvent.OnAllAutocompletesSelected -> onAllAutocompletesSelected(event)
 
-            is AutocompletesEvent.ShowAutocompletes -> showAutocompletes(event)
-
-            AutocompletesEvent.ShowBackScreen -> showBackScreen()
-
-            AutocompletesEvent.ShowNavigationDrawer -> showNavigationDrawer()
-
-            AutocompletesEvent.HideNavigationDrawer -> hideNavigationDrawer()
-
-            AutocompletesEvent.HideAutocompleteLocation -> hideAutocompleteLocation()
+            is AutocompletesEvent.OnAutocompleteSelected -> onAutocompleteSelected(event)
         }
     }
 
-    private fun getDefaultAutocompletes() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            autocompletesState.onWaiting()
-        }
-
-        autocompletesRepository.getDefaultAutocompletes().collect {
-            autocompletesLoaded(it, AutocompleteLocation.DEFAULT)
-        }
-    }
-
-    private fun getPersonalAutocompletes() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            autocompletesState.onWaiting()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        autocompletesState.onWaiting()
 
         autocompletesRepository.getPersonalAutocompletes().collect {
-            autocompletesLoaded(it, AutocompleteLocation.PERSONAL)
+            autocompletesState.populate(it, AutocompleteLocation.PERSONAL)
         }
     }
 
-    private suspend fun autocompletesLoaded(
-        autocompletes: AutocompletesWithConfig,
-        location: AutocompleteLocation
-    ) = withContext(AppDispatchers.Main) {
-        autocompletesState.populate(autocompletes, location)
+    private fun onClickAdd() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(AutocompletesScreenEvent.OnShowAddAutocomplete)
     }
 
-    private fun addAutocomplete() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(AutocompletesScreenEvent.AddAutocomplete)
-    }
-
-    private fun clearAutocompletes() = viewModelScope.launch {
+    private fun onClickClear() = viewModelScope.launch(AppDispatchers.Main) {
         when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
@@ -106,12 +74,10 @@ class AutocompletesViewModel @Inject constructor(
             }
         }
 
-        withContext(AppDispatchers.Main) {
-            unselectAutocompletes()
-        }
+        autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
-    private fun deleteAutocompletes() = viewModelScope.launch {
+    private fun onClickDelete() = viewModelScope.launch(AppDispatchers.Main) {
         when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> return@launch
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
@@ -122,69 +88,48 @@ class AutocompletesViewModel @Inject constructor(
             }
         }
 
-        withContext(AppDispatchers.Main) {
-            unselectAutocompletes()
-        }
+        autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
-    private fun selectNavigationItem(
-        event: AutocompletesEvent.SelectNavigationItem
+    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(AutocompletesScreenEvent.OnShowBackScreen)
+    }
+
+    private fun onDrawerScreenSelected(
+        event: AutocompletesEvent.OnDrawerScreenSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        when (event.route) {
-            UiRoute.Purchases -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowPurchases)
-            UiRoute.Archive -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowArchive)
-            UiRoute.Trash -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowTrash)
-            UiRoute.Settings -> _screenEventFlow.emit(AutocompletesScreenEvent.ShowSettings)
-            else -> return@launch
-        }
+        _screenEventFlow.emit(AutocompletesScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
-    private fun selectAutocompleteLocation() {
-        autocompletesState.onSelectLocation(true)
+    private fun onSelectDrawerScreen(
+        event: AutocompletesEvent.OnSelectDrawerScreen
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(AutocompletesScreenEvent.OnSelectDrawerScreen(event.display))
     }
 
-    private fun selectAllAutocompletes() {
-        autocompletesState.onAllAutocompletesSelected(true)
-    }
-
-    private fun selectAutocomplete(event: AutocompletesEvent.SelectAutocomplete) {
-        autocompletesState.onAutocompleteSelected(true, event.name)
-    }
-
-    private fun unselectAutocomplete(event: AutocompletesEvent.UnselectAutocomplete) {
-        autocompletesState.onAutocompleteSelected(false, event.name)
-    }
-
-    private fun unselectAutocompletes() {
-        autocompletesState.onAllAutocompletesSelected(false)
-    }
-
-    private fun cancelSelectingAutocompletes() {
-        unselectAutocompletes()
-    }
-
-    private fun showAutocompletes(event: AutocompletesEvent.ShowAutocompletes) {
-        hideAutocompleteLocation()
+    private fun onLocationSelected(
+        event: AutocompletesEvent.OnLocationSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        autocompletesState.onSelectLocation(false)
+        autocompletesState.onWaiting()
 
         when (event.location) {
-            AutocompleteLocation.DEFAULT -> getDefaultAutocompletes()
-            AutocompleteLocation.PERSONAL -> getPersonalAutocompletes()
+            AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
+            AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
+        }.collect {
+            autocompletesState.populate(it, event.location)
         }
     }
 
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(AutocompletesScreenEvent.ShowBackScreen)
+    private fun onSelectLocation(event: AutocompletesEvent.OnSelectLocation) {
+        autocompletesState.onSelectLocation(event.expanded)
     }
 
-    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(AutocompletesScreenEvent.ShowNavigationDrawer)
+    private fun onAllAutocompletesSelected(event: AutocompletesEvent.OnAllAutocompletesSelected) {
+        autocompletesState.onAllAutocompletesSelected(event.selected)
     }
 
-    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(AutocompletesScreenEvent.HideNavigationDrawer)
-    }
-
-    private fun hideAutocompleteLocation() {
-        autocompletesState.onSelectLocation(false)
+    private fun onAutocompleteSelected(event: AutocompletesEvent.OnAutocompleteSelected) {
+        autocompletesState.onAutocompleteSelected(event.selected, event.name)
     }
 }

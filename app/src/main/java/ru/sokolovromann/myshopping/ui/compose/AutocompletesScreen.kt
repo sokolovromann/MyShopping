@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
@@ -48,53 +49,40 @@ fun AutocompletesScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                AutocompletesScreenEvent.AddAutocomplete -> navController.navigate(
+                AutocompletesScreenEvent.OnShowBackScreen -> {
+                    navController.popBackStack()
+                }
+
+                AutocompletesScreenEvent.OnShowAddAutocomplete -> navController.navigate(
                     route = UiRoute.Autocompletes.addAutocompletesScreen
                 )
 
-                is AutocompletesScreenEvent.EditAutocomplete -> navController.navigate(
+                is AutocompletesScreenEvent.OnShowEditAutocomplete -> navController.navigate(
                     route = UiRoute.Autocompletes.editAutocompleteScreen(it.uid)
                 )
 
-                AutocompletesScreenEvent.ShowBackScreen -> navController.popBackStack()
-
-                AutocompletesScreenEvent.ShowPurchases -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Purchases.purchasesScreen)
+                is AutocompletesScreenEvent.OnDrawerScreenSelected -> {
+                    navController.navigateWithDrawerOption(route = it.drawerScreen.getScreen())
                     coroutineScope.launch { scaffoldState.drawerState.close() }
                 }
 
-                AutocompletesScreenEvent.ShowArchive -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                AutocompletesScreenEvent.ShowTrash -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Trash.trashScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                AutocompletesScreenEvent.ShowSettings -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Settings.settingsScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                AutocompletesScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.open()
-                }
-
-                AutocompletesScreenEvent.HideNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.close()
+                is AutocompletesScreenEvent.OnSelectDrawerScreen -> coroutineScope.launch {
+                    if (it.display) {
+                        scaffoldState.drawerState.open()
+                    } else {
+                        scaffoldState.drawerState.close()
+                    }
                 }
             }
         }
     }
 
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
-        viewModel.onEvent(AutocompletesEvent.HideNavigationDrawer)
+        viewModel.onEvent(AutocompletesEvent.OnSelectDrawerScreen(false))
     }
 
     BackHandler(enabled = state.selectedNames != null) {
-        viewModel.onEvent(AutocompletesEvent.CancelSelectingAutocompletes)
+        viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(false))
     }
 
     AppScaffold(
@@ -104,7 +92,7 @@ fun AutocompletesScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ShowNavigationDrawer) }) {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnSelectDrawerScreen(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
                                 contentDescription = stringResource(R.string.autocompletes_contentDescription_navigationIcon)
@@ -116,7 +104,7 @@ fun AutocompletesScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedNames?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.CancelSelectingAutocompletes) }) {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(false)) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelectingAutocompletes)
@@ -124,7 +112,7 @@ fun AutocompletesScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.ClearAutocompletes) }) {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClear) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_autocompletes_clear),
                                 contentDescription = stringResource(R.string.autocompletes_contentDescription_clearAutocompletes)
@@ -132,7 +120,7 @@ fun AutocompletesScreen(
                         }
 
                         if (state.locationValue.selected == AutocompleteLocation.PERSONAL) {
-                            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.DeleteAutocompletes) }) {
+                            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickDelete) }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
                                     contentDescription = stringResource(R.string.autocompletes_contentDescription_deleteAutocompletes)
@@ -140,7 +128,7 @@ fun AutocompletesScreen(
                             }
                         }
 
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.SelectAllAutocompletes) }) {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(true)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_select_all),
                                 contentDescription = stringResource(R.string.autocompletes_contentDescription_selectAllAutocompletes)
@@ -152,16 +140,16 @@ fun AutocompletesScreen(
         },
         drawerContent = {
             AppDrawerContent(
-                selected = UiRoute.Autocompletes,
+                selected = DrawerScreen.AUTOCOMPLETES.toUiRoute(),
                 onItemClick = {
-                    val event = AutocompletesEvent.SelectNavigationItem(it)
+                    val event = AutocompletesEvent.OnDrawerScreenSelected(it.toDrawerScreen())
                     viewModel.onEvent(event)
                 }
             )
         },
         floatingActionButton = {
             if (state.selectedNames == null) {
-                FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.AddAutocomplete) }) {
+                FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickAdd) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
@@ -186,15 +174,9 @@ fun AutocompletesScreen(
                     enabled = state.locationEnabled,
                     fontSize = state.fontSize.button.sp,
                     expanded = state.expandedLocation,
-                    onExpanded = {
-                        if (it) {
-                            viewModel.onEvent(AutocompletesEvent.SelectAutocompleteLocation)
-                        } else {
-                            viewModel.onEvent(AutocompletesEvent.HideAutocompleteLocation)
-                        }
-                    },
+                    onExpanded = { viewModel.onEvent(AutocompletesEvent.OnSelectLocation(it)) },
                     onSelected = {
-                        val event = AutocompletesEvent.ShowAutocompletes(it)
+                        val event = AutocompletesEvent.OnLocationSelected(it)
                         viewModel.onEvent(event)
                     }
                 )
@@ -209,17 +191,19 @@ fun AutocompletesScreen(
             fontSize = state.fontSize,
             onClick = {
                 state.selectedNames?.let { names ->
-                    val event = if (names.contains(it)) {
-                        AutocompletesEvent.UnselectAutocomplete(it)
-                    } else {
-                        AutocompletesEvent.SelectAutocomplete(it)
-                    }
+                    val event = AutocompletesEvent.OnAutocompleteSelected(
+                        selected = !names.contains(it),
+                        name = it
+                    )
                     viewModel.onEvent(event)
                 }
             },
             onLongClick = {
                 if (state.selectedNames == null) {
-                    val event = AutocompletesEvent.SelectAutocomplete(it)
+                    val event = AutocompletesEvent.OnAutocompleteSelected(
+                        selected = true,
+                        name = it
+                    )
                     viewModel.onEvent(event)
                 }
             },
