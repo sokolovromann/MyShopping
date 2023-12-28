@@ -26,6 +26,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
@@ -53,15 +54,19 @@ fun SettingsScreen(
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                SettingsScreenEvent.EditCurrency -> navController.navigate(
+                SettingsScreenEvent.OnShowBackScreen -> {
+                    navController.popBackStack()
+                }
+
+                SettingsScreenEvent.OnEditCurrency -> navController.navigate(
                     route = UiRoute.Settings.editCurrencySymbolScreen
                 )
 
-                SettingsScreenEvent.EditTaxRate -> navController.navigate(
+                SettingsScreenEvent.OnEditTaxRate -> navController.navigate(
                     route = UiRoute.Settings.editTaxRateScreen
                 )
 
-                is SettingsScreenEvent.SendEmailToDeveloper -> navController.chooseNavigate(
+                is SettingsScreenEvent.OnSendEmailToDeveloper -> navController.chooseNavigate(
                     intent = Intent(Intent.ACTION_SENDTO).apply {
                         data = Uri.parse("mailto:")
                         putExtra(Intent.EXTRA_EMAIL, arrayOf(it.email))
@@ -69,68 +74,53 @@ fun SettingsScreen(
                     }
                 )
 
-                SettingsScreenEvent.ShowBackup -> navController.navigate(
+                SettingsScreenEvent.OnShowBackup -> navController.navigate(
                     route = UiRoute.Settings.backupScreen
                 )
 
-                SettingsScreenEvent.ShowBackScreen -> navController.popBackStack()
-
-                SettingsScreenEvent.ShowPurchases -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Purchases.purchasesScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                SettingsScreenEvent.ShowArchive -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Archive.archiveScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                SettingsScreenEvent.ShowTrash -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Trash.trashScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                SettingsScreenEvent.ShowAutocompletes -> {
-                    navController.navigateWithDrawerOption(route = UiRoute.Autocompletes.autocompletesScreen)
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                SettingsScreenEvent.ShowNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.open()
-                }
-
-                is SettingsScreenEvent.ShowAppGithub -> navController.chooseNavigate(
+                is SettingsScreenEvent.OnShowAppGithub -> navController.chooseNavigate(
                     intent = Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse(it.link)
                     )
                 )
 
-                SettingsScreenEvent.HideNavigationDrawer -> coroutineScope.launch {
-                    scaffoldState.drawerState.close()
+                is SettingsScreenEvent.OnShowPrivacyPolicy -> navController.chooseNavigate(
+                    intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(it.link)
+                    )
+                )
+
+                is SettingsScreenEvent.OnShowTermsAndConditions -> navController.chooseNavigate(
+                    intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(it.link)
+                    )
+                )
+
+                SettingsScreenEvent.OnUpdateProductsWidgets -> {
+                    updateProductsWidgets(context)
                 }
 
-                is SettingsScreenEvent.ShowPrivacyPolicy -> navController.chooseNavigate(
-                    intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(it.link)
-                    )
-                )
+                is SettingsScreenEvent.OnDrawerScreenSelected -> {
+                    navController.navigateWithDrawerOption(route = it.drawerScreen.getScreen())
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
 
-                is SettingsScreenEvent.ShowTermsAndConditions -> navController.chooseNavigate(
-                    intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(it.link)
-                    )
-                )
-
-                SettingsScreenEvent.UpdateProductsWidgets -> updateProductsWidgets(context)
+                is SettingsScreenEvent.OnSelectDrawerScreen -> {
+                    if (it.display) {
+                        scaffoldState.drawerState.open()
+                    } else {
+                        scaffoldState.drawerState.close()
+                    }
+                }
             }
         }
     }
 
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
-        viewModel.onEvent(SettingsEvent.HideNavigationDrawer)
+        viewModel.onEvent(SettingsEvent.OnSelectDrawerScreen(false))
     }
 
     AppScaffold(
@@ -139,7 +129,7 @@ fun SettingsScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.settings_header_settings)) },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(SettingsEvent.ShowNavigationDrawer) }) {
+                    IconButton(onClick = { viewModel.onEvent(SettingsEvent.OnSelectDrawerScreen(true)) }) {
                         Icon(
                             imageVector = Icons.Default.Menu,
                             contentDescription = stringResource(R.string.settings_contentDescription_navigationIcon)
@@ -150,9 +140,9 @@ fun SettingsScreen(
         },
         drawerContent = {
             AppDrawerContent(
-                selected = UiRoute.Settings,
+                selected = DrawerScreen.SETTINGS.toUiRoute(),
                 onItemClick = {
-                    val event = SettingsEvent.SelectNavigationItem(it)
+                    val event = SettingsEvent.OnDrawerScreenSelected(it.toDrawerScreen())
                     viewModel.onEvent(event)
                 }
             )
@@ -174,9 +164,12 @@ fun SettingsScreen(
                         SettingsFontSizeMenu(
                             expanded = it == state.selectedUid,
                             fontSize = state.fontSizeValue.selected,
-                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideFontSize) },
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.FontSize)
+                                viewModel.onEvent(event)
+                            },
                             onSelected = { fontSize ->
-                                viewModel.onEvent(SettingsEvent.FontSizeSelected(fontSize))
+                                viewModel.onEvent(SettingsEvent.OnFontSizeSelected(fontSize))
                             }
                         )
                     }
@@ -185,9 +178,12 @@ fun SettingsScreen(
                         SettingsDisplayCompletedMenu(
                             expanded = it == state.selectedUid,
                             displayCompleted = state.displayCompletedValue.selected,
-                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideDisplayCompletedPurchases) },
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.DisplayCompletedPurchases)
+                                viewModel.onEvent(event)
+                            },
                             onSelected = { displayCompleted ->
-                                viewModel.onEvent(SettingsEvent.DisplayCompletedPurchasesSelected(displayCompleted))
+                                viewModel.onEvent(SettingsEvent.OnDisplayCompletedSelected(displayCompleted))
                             }
                         )
                     }
@@ -196,9 +192,12 @@ fun SettingsScreen(
                         SettingsDisplayShoppingsProductsMenu(
                             expanded = it == state.selectedUid,
                             displayProducts = state.displayProductsValue.selected,
-                            onDismissRequest = { viewModel.onEvent(SettingsEvent.HideDisplayShoppingsProducts) },
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.DisplayShoppingsProducts)
+                                viewModel.onEvent(event)
+                            },
                             onSelected = { displayProducts ->
-                                viewModel.onEvent(SettingsEvent.DisplayShoppingsProductsSelected(displayProducts))
+                                viewModel.onEvent(SettingsEvent.OnDisplayProductsSelected(displayProducts))
                             }
                         )
                     }
@@ -207,7 +206,7 @@ fun SettingsScreen(
                 }
             },
             onClick = {
-                val event = SettingsEvent.SelectSettingsItem(it)
+                val event = SettingsEvent.OnSettingItemSelected(it)
                 viewModel.onEvent(event)
             }
         )

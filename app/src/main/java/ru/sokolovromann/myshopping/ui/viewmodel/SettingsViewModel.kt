@@ -6,11 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 import ru.sokolovromann.myshopping.ui.model.SettingsState
@@ -27,260 +24,196 @@ class SettingsViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<SettingsScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<SettingsScreenEvent> = _screenEventFlow
 
-    init {
-        getSettings()
-    }
+    init { onInit() }
 
     override fun onEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.SelectSettingsItem -> selectSettingsItem(event)
+            SettingsEvent.OnClickBack -> onClickBack()
 
-            is SettingsEvent.SelectNavigationItem -> selectNavigationItem(event)
+            is SettingsEvent.OnSettingItemSelected -> onSettingItemSelected(event)
 
-            SettingsEvent.SelectDisplayCompletedPurchases -> selectDisplayCompletedPurchases()
+            is SettingsEvent.OnSelectSettingItem -> onSelectSettingItem(event)
 
-            is SettingsEvent.FontSizeSelected -> fontSizeSelected(event)
+            is SettingsEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
-            is SettingsEvent.DisplayCompletedPurchasesSelected -> displayCompletedPurchasesSelected(event)
+            is SettingsEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
-            is SettingsEvent.DisplayShoppingsProductsSelected -> displayShoppingsProductsSelected(event)
+            is SettingsEvent.OnFontSizeSelected -> onFontSizeSelected(event)
 
-            SettingsEvent.ShowBackScreen -> showBackScreen()
+            is SettingsEvent.OnDisplayCompletedSelected -> onDisplayCompletedSelected(event)
 
-            SettingsEvent.ShowNavigationDrawer -> showNavigationDrawer()
-
-            SettingsEvent.HideFontSize -> hideFontSize()
-
-            SettingsEvent.HideNavigationDrawer -> hideNavigationDrawer()
-
-            SettingsEvent.HideDisplayCompletedPurchases -> hideDisplayCompletedPurchases()
-
-            SettingsEvent.HideDisplayShoppingsProducts -> hideDisplayShoppingsProducts()
+            is SettingsEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
         }
     }
 
-    private fun getSettings() = viewModelScope.launch {
-        withContext(AppDispatchers.Main) {
-            settingsState.onWaiting()
-        }
+    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+        settingsState.onWaiting()
 
         appConfigRepository.getSettingsWithConfig().collect {
-            settingsLoaded(it)
+            settingsState.populate(it)
         }
     }
 
-    private suspend fun settingsLoaded(
-        settingsWithConfig: SettingsWithConfig
-    ) = withContext(AppDispatchers.Main) {
-        settingsState.populate(settingsWithConfig)
+    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(SettingsScreenEvent.OnShowBackScreen)
     }
 
-    private fun editCurrencySymbol() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(SettingsScreenEvent.EditCurrency)
-    }
-
-    private fun editTaxRate() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(SettingsScreenEvent.EditTaxRate)
-    }
-
-    private fun selectSettingsItem(event: SettingsEvent.SelectSettingsItem) {
-        when (event.uid) {
-            SettingUid.NightTheme -> invertNightTheme()
-
-            SettingUid.FontSize -> selectFontSize()
-
-            SettingUid.Backup -> backup()
-
-            SettingUid.DisplayMoney -> invertDisplayMoney()
-
-            SettingUid.Currency -> editCurrencySymbol()
-
-            SettingUid.DisplayCurrencyToLeft -> invertDisplayCurrencyToLeft()
-
-            SettingUid.DisplayMoneyZeros -> invertDisplayMoneyZeros()
-
-            SettingUid.TaxRate -> editTaxRate()
-
-            SettingUid.DisplayDefaultAutocomplete -> invertDisplayDefaultAutocomplete()
-
-            SettingUid.DisplayCompletedPurchases -> selectDisplayCompletedPurchases()
-
-            SettingUid.DisplayOtherFields -> invertDisplayOtherFields()
-
-            SettingUid.EditProductAfterCompleted -> invertEditProductAfterCompleted()
-
-            SettingUid.CompletedWithCheckbox -> invertCompletedWithCheckbox()
-
-            SettingUid.DisplayShoppingsProducts -> selectShoppingsProducts()
-
-            SettingUid.EnterToSaveProducts -> enterToSaveProducts()
-
-            SettingUid.ColoredCheckbox -> invertColoredCheckbox()
-
-            SettingUid.SaveProductToAutocompletes -> invertSaveProductToAutocompletes()
-
-            SettingUid.Developer -> return
-
-            SettingUid.Email -> sendEmailToDeveloper()
-
-            SettingUid.AppVersion -> return
-
-            SettingUid.Github -> showAppGithub()
-
-            SettingUid.PrivacyPolicy -> showPrivacyPolicy()
-
-            SettingUid.TermsAndConditions -> showTermsAndConditions()
-        }
-    }
-
-    private fun selectFontSize() {
-        settingsState.onSelectUid(true, SettingUid.FontSize)
-    }
-
-    private fun backup() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(SettingsScreenEvent.ShowBackup)
-    }
-
-    private fun selectShoppingsProducts() {
-        settingsState.onSelectUid(true, SettingUid.DisplayShoppingsProducts)
-    }
-
-    private fun selectNavigationItem(
-        event: SettingsEvent.SelectNavigationItem
+    private fun onSettingItemSelected(
+        event: SettingsEvent.OnSettingItemSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        when (event.route) {
-            UiRoute.Purchases -> _screenEventFlow.emit(SettingsScreenEvent.ShowPurchases)
-            UiRoute.Archive -> _screenEventFlow.emit(SettingsScreenEvent.ShowArchive)
-            UiRoute.Trash -> _screenEventFlow.emit(SettingsScreenEvent.ShowTrash)
-            UiRoute.Autocompletes -> _screenEventFlow.emit(SettingsScreenEvent.ShowAutocompletes)
-            else -> return@launch
+        when (event.uid) {
+            SettingUid.NightTheme -> {
+                appConfigRepository.invertNightTheme()
+            }
+
+            SettingUid.FontSize -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.FontSize
+                )
+            }
+
+            SettingUid.Backup -> {
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowBackup)
+            }
+
+            SettingUid.DisplayMoney -> {
+                appConfigRepository.invertDisplayMoney()
+                _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
+            }
+
+            SettingUid.Currency -> {
+                _screenEventFlow.emit(SettingsScreenEvent.OnEditCurrency)
+            }
+
+            SettingUid.DisplayCurrencyToLeft -> {
+                appConfigRepository.invertDisplayCurrencyToLeft()
+                _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
+            }
+
+            SettingUid.DisplayMoneyZeros -> {
+                appConfigRepository.invertDisplayMoneyZeros()
+            }
+
+            SettingUid.TaxRate -> {
+                _screenEventFlow.emit(SettingsScreenEvent.OnEditTaxRate)
+            }
+
+            SettingUid.DisplayDefaultAutocomplete -> {
+                appConfigRepository.invertDisplayDefaultAutocompletes()
+            }
+
+            SettingUid.DisplayCompletedPurchases -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.DisplayCompletedPurchases
+                )
+            }
+
+            SettingUid.DisplayOtherFields -> {
+                appConfigRepository.invertDisplayOtherFields()
+            }
+
+            SettingUid.EditProductAfterCompleted -> {
+                appConfigRepository.invertEditProductAfterCompleted()
+            }
+
+            SettingUid.CompletedWithCheckbox -> {
+                appConfigRepository.invertCompletedWithCheckbox()
+                _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
+            }
+
+            SettingUid.DisplayShoppingsProducts -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.DisplayShoppingsProducts
+                )
+            }
+
+            SettingUid.EnterToSaveProducts -> {
+                appConfigRepository.invertEnterToSaveProduct()
+            }
+
+            SettingUid.ColoredCheckbox -> {
+                appConfigRepository.invertColoredCheckbox()
+                _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
+            }
+
+            SettingUid.SaveProductToAutocompletes -> {
+                appConfigRepository.invertSaveProductToAutocompletes()
+            }
+
+            SettingUid.Developer -> {}
+
+            SettingUid.Email -> {
+                val email = settingsState.getSettings().developerEmail
+                _screenEventFlow.emit(SettingsScreenEvent.OnSendEmailToDeveloper(email))
+            }
+
+            SettingUid.AppVersion -> {}
+
+            SettingUid.Github -> {
+                val link = settingsState.getSettings().appGithubLink
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowAppGithub(link))
+            }
+
+            SettingUid.PrivacyPolicy -> {
+                val link = settingsState.getSettings().privacyPolicyLink
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowPrivacyPolicy(link))
+            }
+
+            SettingUid.TermsAndConditions -> {
+                val link = settingsState.getSettings().termsAndConditionsLink
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowTermsAndConditions(link))
+            }
         }
     }
 
-    private fun selectDisplayCompletedPurchases() {
-        settingsState.onSelectUid(true, SettingUid.DisplayCompletedPurchases)
+    private fun onSelectSettingItem(event: SettingsEvent.OnSelectSettingItem) {
+        settingsState.onSelectUid(event.expanded, event.uid)
     }
 
-    private fun fontSizeSelected(
-        event: SettingsEvent.FontSizeSelected
-    ) = viewModelScope.launch {
+    private fun onDrawerScreenSelected(
+        event: SettingsEvent.OnDrawerScreenSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(SettingsScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
+    }
+
+    private fun onSelectDrawerScreen(
+        event: SettingsEvent.OnSelectDrawerScreen
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(SettingsScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onFontSizeSelected(
+        event: SettingsEvent.OnFontSizeSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.saveFontSize(event.fontSize)
-
-        withContext(AppDispatchers.Main) {
-            hideFontSize()
-            _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
-        }
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.FontSize
+        )
+        _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
     }
 
-    private fun displayCompletedPurchasesSelected(
-        event: SettingsEvent.DisplayCompletedPurchasesSelected
-    ) = viewModelScope.launch {
+    private fun onDisplayCompletedSelected(
+        event: SettingsEvent.OnDisplayCompletedSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.displayCompleted(event.displayCompleted)
-
-        withContext(AppDispatchers.Main) {
-            hideDisplayCompletedPurchases()
-            _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
-        }
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.DisplayCompletedPurchases
+        )
+        _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
     }
 
-    private fun displayShoppingsProductsSelected(
-        event: SettingsEvent.DisplayShoppingsProductsSelected
-    ) = viewModelScope.launch {
+    private fun onDisplayProductsSelected(
+        event: SettingsEvent.OnDisplayProductsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.displayShoppingsProducts(event.displayProducts)
-    }
-
-    private fun invertNightTheme() = viewModelScope.launch {
-        appConfigRepository.invertNightTheme()
-    }
-
-    private fun invertDisplayMoney() = viewModelScope.launch {
-        appConfigRepository.invertDisplayMoney()
-        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
-    }
-
-    private fun invertDisplayCurrencyToLeft() = viewModelScope.launch {
-        appConfigRepository.invertDisplayCurrencyToLeft()
-        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
-    }
-
-    private fun invertDisplayMoneyZeros() = viewModelScope.launch {
-        appConfigRepository.invertDisplayMoneyZeros()
-    }
-
-    private fun invertEditProductAfterCompleted() = viewModelScope.launch {
-        appConfigRepository.invertEditProductAfterCompleted()
-    }
-
-    private fun invertCompletedWithCheckbox() = viewModelScope.launch {
-        appConfigRepository.invertCompletedWithCheckbox()
-        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
-    }
-
-    private fun invertSaveProductToAutocompletes() = viewModelScope.launch {
-        appConfigRepository.invertSaveProductToAutocompletes()
-    }
-
-    private fun invertDisplayDefaultAutocomplete() = viewModelScope.launch {
-        appConfigRepository.invertDisplayDefaultAutocompletes()
-    }
-
-    private fun invertDisplayOtherFields() = viewModelScope.launch {
-        appConfigRepository.invertDisplayOtherFields()
-    }
-
-    private fun enterToSaveProducts() = viewModelScope.launch {
-        appConfigRepository.invertEnterToSaveProduct()
-    }
-
-    private fun invertColoredCheckbox() = viewModelScope.launch {
-        appConfigRepository.invertColoredCheckbox()
-        _screenEventFlow.emit(SettingsScreenEvent.UpdateProductsWidgets)
-    }
-
-    private fun sendEmailToDeveloper() = viewModelScope.launch(AppDispatchers.Main) {
-        val event = SettingsScreenEvent.SendEmailToDeveloper(settingsState.getSettings().developerEmail)
-        _screenEventFlow.emit(event)
-    }
-
-    private fun showBackScreen() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(SettingsScreenEvent.ShowBackScreen)
-    }
-
-    private fun showNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(SettingsScreenEvent.ShowNavigationDrawer)
-    }
-
-    private fun showAppGithub() = viewModelScope.launch(AppDispatchers.Main) {
-        val link = settingsState.getSettings().appGithubLink
-        val event = SettingsScreenEvent.ShowAppGithub(link)
-        _screenEventFlow.emit(event)
-    }
-
-    private fun showPrivacyPolicy() = viewModelScope.launch(AppDispatchers.Main) {
-        val link = settingsState.getSettings().privacyPolicyLink
-        val event = SettingsScreenEvent.ShowPrivacyPolicy(link)
-        _screenEventFlow.emit(event)
-    }
-
-    private fun showTermsAndConditions() = viewModelScope.launch(AppDispatchers.Main) {
-        val link = settingsState.getSettings().termsAndConditionsLink
-        val event = SettingsScreenEvent.ShowTermsAndConditions(link)
-        _screenEventFlow.emit(event)
-    }
-
-    private fun hideFontSize() {
-        settingsState.onSelectUid(false, SettingUid.FontSize)
-    }
-
-    private fun hideNavigationDrawer() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(SettingsScreenEvent.HideNavigationDrawer)
-    }
-
-    private fun hideDisplayCompletedPurchases() {
-        settingsState.onSelectUid(false, SettingUid.DisplayCompletedPurchases)
-    }
-
-    private fun hideDisplayShoppingsProducts() {
-        settingsState.onSelectUid(false, SettingUid.DisplayShoppingsProducts)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.DisplayShoppingsProducts
+        )
     }
 }

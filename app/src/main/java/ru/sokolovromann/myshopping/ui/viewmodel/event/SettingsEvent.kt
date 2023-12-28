@@ -3,32 +3,24 @@ package ru.sokolovromann.myshopping.ui.viewmodel.event
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.ui.UiRoute
+import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 
 sealed class SettingsEvent {
 
-    data class SelectSettingsItem(val uid: SettingUid) : SettingsEvent()
+    object OnClickBack : SettingsEvent()
 
-    data class SelectNavigationItem(val route: UiRoute) : SettingsEvent()
+    data class OnSettingItemSelected(val uid: SettingUid) : SettingsEvent()
 
-    object SelectDisplayCompletedPurchases : SettingsEvent()
+    data class OnSelectSettingItem(val expanded: Boolean, val uid: SettingUid) : SettingsEvent()
 
-    data class FontSizeSelected(val fontSize: FontSize) : SettingsEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : SettingsEvent()
 
-    data class DisplayCompletedPurchasesSelected(val displayCompleted: DisplayCompleted) : SettingsEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : SettingsEvent()
 
-    data class DisplayShoppingsProductsSelected(val displayProducts: DisplayProducts) : SettingsEvent()
+    data class OnFontSizeSelected(val fontSize: FontSize) : SettingsEvent()
 
-    object ShowBackScreen : SettingsEvent()
+    data class OnDisplayCompletedSelected(val displayCompleted: DisplayCompleted) : SettingsEvent()
 
-    object ShowNavigationDrawer : SettingsEvent()
-
-    object HideFontSize : SettingsEvent()
-
-    object HideNavigationDrawer : SettingsEvent()
-
-    object HideDisplayCompletedPurchases : SettingsEvent()
-
-    object HideDisplayShoppingsProducts : SettingsEvent()
+    data class OnDisplayProductsSelected(val displayProducts: DisplayProducts) : SettingsEvent()
 }

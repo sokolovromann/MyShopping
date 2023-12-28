@@ -1,34 +1,28 @@
 package ru.sokolovromann.myshopping.ui.compose.event
 
+import ru.sokolovromann.myshopping.ui.DrawerScreen
+
 sealed class SettingsScreenEvent {
 
-    object EditCurrency : SettingsScreenEvent()
+    object OnShowBackScreen : SettingsScreenEvent()
 
-    object EditTaxRate : SettingsScreenEvent()
+    object OnEditCurrency : SettingsScreenEvent()
 
-    data class SendEmailToDeveloper(val email: String) : SettingsScreenEvent()
+    object OnEditTaxRate : SettingsScreenEvent()
 
-    object ShowBackup : SettingsScreenEvent()
+    data class OnSendEmailToDeveloper(val email: String) : SettingsScreenEvent()
 
-    object ShowBackScreen : SettingsScreenEvent()
+    object OnShowBackup : SettingsScreenEvent()
 
-    object ShowPurchases : SettingsScreenEvent()
+    data class OnShowAppGithub(val link: String) : SettingsScreenEvent()
 
-    object ShowArchive : SettingsScreenEvent()
+    data class OnShowPrivacyPolicy(val link: String) : SettingsScreenEvent()
 
-    object ShowTrash : SettingsScreenEvent()
+    data class OnShowTermsAndConditions(val link: String) : SettingsScreenEvent()
 
-    object ShowAutocompletes : SettingsScreenEvent()
+    object OnUpdateProductsWidgets : SettingsScreenEvent()
 
-    object ShowNavigationDrawer : SettingsScreenEvent()
+    data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : SettingsScreenEvent()
 
-    data class ShowAppGithub(val link: String) : SettingsScreenEvent()
-
-    data class ShowPrivacyPolicy(val link: String) : SettingsScreenEvent()
-
-    data class ShowTermsAndConditions(val link: String) : SettingsScreenEvent()
-
-    object HideNavigationDrawer : SettingsScreenEvent()
-
-    object UpdateProductsWidgets : SettingsScreenEvent()
+    data class OnSelectDrawerScreen(val display: Boolean) : SettingsScreenEvent()
 }
