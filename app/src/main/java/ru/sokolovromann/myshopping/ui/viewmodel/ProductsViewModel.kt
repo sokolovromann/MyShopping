@@ -315,7 +315,7 @@ class ProductsViewModel @Inject constructor(
     private fun onShowShoppingMenu(
         event: ProductsEvent.OnShowShoppingMenu
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        productsState.onShowProductsMenu(event.expanded)
+        productsState.onShowShoppingMenu(event.expanded)
     }
 
     private fun onAllProductsSelected(
