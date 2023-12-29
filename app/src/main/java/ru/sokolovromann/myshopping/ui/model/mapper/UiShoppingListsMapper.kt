@@ -266,17 +266,6 @@ object UiShoppingListsMapper {
         }
     }
 
-    fun toOldProductsItems(items: List<ProductItem>): List<ru.sokolovromann.myshopping.ui.compose.state.ProductItem> {
-        return items.map {
-            ru.sokolovromann.myshopping.ui.compose.state.ProductItem(
-                uid = it.uid,
-                nameText = it.name.toUiText(),
-                bodyText = it.body.toUiText(),
-                completed = it.completed
-            )
-        }
-    }
-
     private fun toShoppingListItems(
         shoppingList: ShoppingList,
         deviceConfig: DeviceConfig,

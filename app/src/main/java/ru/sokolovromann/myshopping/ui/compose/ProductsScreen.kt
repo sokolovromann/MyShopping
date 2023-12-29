@@ -36,8 +36,10 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.*
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
-import ru.sokolovromann.myshopping.ui.utils.*
+import ru.sokolovromann.myshopping.ui.model.ProductItem
+import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiString
+import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsEvent
 
@@ -208,7 +210,7 @@ fun ProductsScreen(
                         if (totalValue.text.isNotEmpty()) {
                             ProductsTotalContent(
                                 displayTotal = totalValue.selected,
-                                totalText = totalValue.text.toUiText(),
+                                totalText = totalValue.text,
                                 totalFormatted = state.totalFormatted,
                                 fontSize = state.fontSize.button.sp,
                                 expanded = state.expandedDisplayTotal,
@@ -381,8 +383,8 @@ fun ProductsScreen(
             smartphoneScreen = state.smartphoneScreen,
             coloredCheckbox = state.coloredCheckbox,
             displayCompleted = state.displayCompleted,
-            pinnedItems = UiShoppingListsMapper.toOldProductsItems(state.pinnedProducts),
-            otherItems = UiShoppingListsMapper.toOldProductsItems(state.otherProducts),
+            pinnedItems = state.pinnedProducts,
+            otherItems = state.otherProducts,
             topBar = {
                 if (state.nameText.isNotEmpty() || state.reminderText.isNotEmpty()) {
                     val backgroundColor = if (state.displayCompleted == DisplayCompleted.NO_SPLIT) {
@@ -402,9 +404,9 @@ fun ProductsScreen(
                     ) {
                         if (state.nameText.isNotEmpty()) {
                             ProductsNameContent(
-                                nameText = state.nameText.toUiText(),
+                                nameText = state.nameText,
                                 color = contentColorFor(backgroundColor = backgroundColor),
-                                fontSize = state.oldFontSize
+                                fontSize = state.fontSize
                             )
 
                             if (state.reminderText.isNotEmpty()) {
@@ -414,8 +416,8 @@ fun ProductsScreen(
 
                         if (state.reminderText.isNotEmpty()) {
                             ProductsReminderContent(
-                                reminderText = state.reminderText.toUiText(),
-                                fontSize = state.oldFontSize,
+                                reminderText = state.reminderText,
+                                fontSize = state.fontSize,
                                 onClick = { viewModel.onEvent(ProductsEvent.OnClickEditReminder) }
                             )
                         }
@@ -425,7 +427,7 @@ fun ProductsScreen(
             bottomBar = {
                 if (state.displayHiddenProducts) {
                     ProductsHiddenContent(
-                        fontSize = state.oldFontSize,
+                        fontSize = state.fontSize,
                         onClick = { viewModel.onEvent(ProductsEvent.OnShowHiddenProducts(true)) }
                     )
                 }
@@ -437,7 +439,8 @@ fun ProductsScreen(
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = state.oldFontSize,
+            fontSize = state.fontSize,
+            oldFontSize = state.oldFontSize,
             dropdownMenu = {
                 AppDropdownMenu(
                     expanded = state.expandedItemFavoriteMenu(it),
@@ -509,29 +512,29 @@ fun ProductsScreen(
 
 @Composable
 private fun ProductsNameContent(
-    nameText: UiText,
+    nameText: UiString,
     color: Color,
-    fontSize: FontSize
+    fontSize: UiFontSize
 ) {
     Text(
         modifier = Modifier.padding(ProductsNamePaddings),
         text = nameText.asCompose(),
         color = color,
-        fontSize = fontSize.toHeader6().sp,
+        fontSize = fontSize.itemsHeader.sp,
         style = MaterialTheme.typography.h6
     )
 }
 
 @Composable
 private fun ProductsReminderContent(
-    reminderText: UiText,
-    fontSize: FontSize,
+    reminderText: UiString,
+    fontSize: UiFontSize,
     onClick: () -> Unit
 ) {
     Column {
         TextButton(onClick = onClick) {
             Icon(
-                modifier = Modifier.size(fontSize.toButton().dp),
+                modifier = Modifier.size(fontSize.button.dp),
                 painter = painterResource(R.drawable.ic_all_reminder),
                 contentDescription = "",
                 tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
@@ -539,7 +542,7 @@ private fun ProductsReminderContent(
             Spacer(modifier = Modifier.size(ProductsReminderSpacerSize))
             Text(
                 text = reminderText.asCompose(),
-                fontSize = fontSize.toButton().sp
+                fontSize = fontSize.button.sp
             )
         }
     }
@@ -550,7 +553,7 @@ private fun ProductsTotalContent(
     modifier: Modifier = Modifier,
     displayTotal: DisplayTotal,
     totalFormatted: Boolean,
-    totalText: UiText,
+    totalText: UiString,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
@@ -621,7 +624,8 @@ private fun ProductsGrid(
     topBar: @Composable RowScope.() -> Unit,
     bottomBar: @Composable RowScope.() -> Unit,
     notFound: @Composable ColumnScope.() -> Unit,
-    fontSize: FontSize,
+    fontSize: UiFontSize,
+    oldFontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     completedWithCheckbox: Boolean,
     location: ShoppingLocation?,
@@ -642,7 +646,7 @@ private fun ProductsGrid(
             item(span = StaggeredGridItemSpan.FullLine) {
                 AppTextGridHeader(
                     text = stringResource(R.string.products_text_pinnedProducts),
-                    fontSize = fontSize
+                    fontSize = oldFontSize
                 )
             }
 
@@ -669,8 +673,8 @@ private fun ProductsGrid(
                 AppMultiColumnsItem(
                     multiColumns = multiColumns,
                     left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
-                    title = getProductItemTitleOrNull(item.nameText, fontSize),
-                    body = getProductItemBodyOrNull(item.bodyText, fontSize),
+                    title = getProductItemTitleOrNull(item.name, fontSize),
+                    body = getProductItemBodyOrNull(item.body, fontSize),
                     right = getProductItemRightOrNull(selected),
                     dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                     clickableEnabled = clickableEnabled,
@@ -685,7 +689,7 @@ private fun ProductsGrid(
                 item(span = StaggeredGridItemSpan.FullLine) {
                     AppTextGridHeader(
                         text = stringResource(R.string.products_text_otherProducts),
-                        fontSize = fontSize
+                        fontSize = oldFontSize
                     )
                 }
             }
@@ -714,8 +718,8 @@ private fun ProductsGrid(
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
                 left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
-                title = getProductItemTitleOrNull(item.nameText, fontSize),
-                body = getProductItemBodyOrNull(item.bodyText, fontSize),
+                title = getProductItemTitleOrNull(item.name, fontSize),
+                body = getProductItemBodyOrNull(item.body, fontSize),
                 right = getProductItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 clickableEnabled = clickableEnabled,
@@ -730,7 +734,7 @@ private fun ProductsGrid(
 
 @Composable
 fun ProductsHiddenContent(
-    fontSize: FontSize,
+    fontSize: UiFontSize,
     onClick: () -> Unit
 ) {
     Row(
@@ -740,7 +744,7 @@ fun ProductsHiddenContent(
     ) {
         Text(
             text = stringResource(R.string.products_text_hiddenProducts),
-            fontSize = fontSize.toItemBody().sp,
+            fontSize = fontSize.itemBody.sp,
             color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
             style = MaterialTheme.typography.body1
         )
@@ -795,23 +799,23 @@ private fun getProductItemRightOrNull(
 
 @Composable
 private fun getProductItemTitleOrNull(
-    text: UiText,
-    fontSize: FontSize
+    text: UiString,
+    fontSize: UiFontSize
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
     Text(
         text = text.asCompose(),
-        fontSize = fontSize.toItemTitle().sp
+        fontSize = fontSize.itemTitle.sp
     )
 }
 
 @Composable
 private fun getProductItemBodyOrNull(
-    text: UiText,
-    fontSize: FontSize
+    text: UiString,
+    fontSize: UiFontSize
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
     Text(
         text = text.asCompose(),
-        fontSize = fontSize.toItemBody().sp
+        fontSize = fontSize.itemBody.sp
     )
 }
 
