@@ -25,10 +25,7 @@ import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
-import ru.sokolovromann.myshopping.ui.utils.toButton
-import ru.sokolovromann.myshopping.ui.utils.toItemTitle
 import ru.sokolovromann.myshopping.ui.viewmodel.TrashViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
 
@@ -149,7 +146,7 @@ fun TrashScreen(
             ),
             multiColumns = state.multiColumnsValue.selected,
             smartphoneScreen = state.smartphoneScreen,
-            otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.shoppingLists),
+            otherItems = state.shoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
             coloredCheckbox = state.coloredCheckbox,
@@ -160,18 +157,19 @@ fun TrashScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.trash_action_deleteShoppingLists),
-                        fontSize = state.oldFontSize.toButton().sp
+                        fontSize = state.fontSize.button.sp
                     )
                 }
             },
             notFound = {
                 Text(
                     text = stringResource(R.string.trash_text_shoppingListsNotFound),
-                    fontSize = state.oldFontSize.toItemTitle().sp,
+                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = state.oldFontSize,
+            fontSize = state.fontSize,
+            oldFontSize = state.oldFontSize,
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {

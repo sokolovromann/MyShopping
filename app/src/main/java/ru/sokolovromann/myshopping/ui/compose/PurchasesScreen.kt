@@ -24,7 +24,6 @@ import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.PurchasesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
@@ -152,7 +151,7 @@ fun PurchasesScreen(
                     if (totalValue.text.isNotEmpty()) {
                         ShoppingListsTotalContent(
                             displayTotal = totalValue.selected,
-                            totalText = totalValue.text.toUiText(),
+                            totalText = totalValue.text,
                             fontSize = state.fontSize.button.sp,
                             expanded = state.expandedDisplayTotal,
                             onExpanded = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayTotal(it)) },
@@ -247,15 +246,15 @@ fun PurchasesScreen(
             ),
             multiColumns = state.multiColumnsValue.selected,
             smartphoneScreen = state.smartphoneScreen,
-            pinnedItems = UiShoppingListsMapper.toOldShoppingListItems(state.pinnedShoppingLists),
-            otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.otherShoppingLists),
+            pinnedItems = state.pinnedShoppingLists,
+            otherItems = state.otherShoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
             coloredCheckbox = state.coloredCheckbox,
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
-                        fontSize = state.oldFontSize,
+                        fontSize = state.fontSize,
                         onClick = { viewModel.onEvent(PurchasesEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
@@ -267,7 +266,8 @@ fun PurchasesScreen(
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = state.oldFontSize,
+            fontSize = state.fontSize,
+            oldFontSize = state.oldFontSize,
             dropdownMenu = {
                 AppDropdownMenu(
                     expanded = state.expandedItemFavoriteMenu(it),

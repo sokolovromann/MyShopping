@@ -20,7 +20,6 @@ import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.MoveProductScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.MoveProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MoveProductEvent
@@ -71,8 +70,8 @@ fun MoveProductScreen(
             ),
             multiColumns = state.multiColumnsValue.selected,
             smartphoneScreen = state.smartphoneScreen,
-            pinnedItems = UiShoppingListsMapper.toOldShoppingListItems(state.pinnedShoppingLists),
-            otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.otherShoppingLists),
+            pinnedItems = state.pinnedShoppingLists,
+            otherItems = state.otherShoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
             coloredCheckbox = state.coloredCheckbox,
@@ -101,7 +100,7 @@ fun MoveProductScreen(
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
-                        fontSize = state.oldFontSize,
+                        fontSize = state.fontSize,
                         onClick = { viewModel.onEvent(MoveProductEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
@@ -113,7 +112,8 @@ fun MoveProductScreen(
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = state.oldFontSize,
+            fontSize = state.fontSize,
+            oldFontSize = state.oldFontSize,
             onClick = {
                 val event = MoveProductEvent.OnClickMove(it)
                 viewModel.onEvent(event)

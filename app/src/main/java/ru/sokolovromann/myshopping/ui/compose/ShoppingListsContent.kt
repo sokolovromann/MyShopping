@@ -24,8 +24,9 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem
-import ru.sokolovromann.myshopping.ui.compose.state.UiText
+import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
+import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,7 +44,8 @@ fun ShoppingListsGrid(
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
-    fontSize: FontSize,
+    fontSize: UiFontSize,
+    oldFontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
     onLongClick: (String) -> Unit,
@@ -63,7 +65,7 @@ fun ShoppingListsGrid(
             item(span = StaggeredGridItemSpan.FullLine) {
                 AppTextGridHeader(
                     text = stringResource(R.string.shoppingLists_text_pinnedShoppingLists),
-                    fontSize = fontSize
+                    fontSize = oldFontSize
                 )
             }
 
@@ -71,14 +73,14 @@ fun ShoppingListsGrid(
                 val selected = selectedUids?.contains(item.uid) ?: false
 
                 AppSurfaceItem(
-                    title = getShoppingListItemTitleOrNull(item.nameText, fontSize),
+                    title = getShoppingListItemTitleOrNull(item.name, fontSize),
                     body = {
                         ShoppingListItemBody(
-                            hasName = item.nameText.asCompose().isNotEmpty(),
-                            products = item.productsList,
+                            hasName = item.name.asCompose().isNotEmpty(),
+                            products = item.products,
                             displayProducts = displayProducts,
-                            total = item.totalText,
-                            reminder = item.reminderText,
+                            total = item.total,
+                            reminder = item.reminder,
                             fontSize = fontSize,
                             coloredCheckbox = coloredCheckbox
                         )
@@ -100,7 +102,7 @@ fun ShoppingListsGrid(
                 item(span = StaggeredGridItemSpan.FullLine) {
                     AppTextGridHeader(
                         text = stringResource(R.string.shoppingLists_text_otherShoppingLists),
-                        fontSize = fontSize
+                        fontSize = oldFontSize
                     )
                 }
             }
@@ -110,14 +112,14 @@ fun ShoppingListsGrid(
             val selected = selectedUids?.contains(item.uid) ?: false
 
             AppSurfaceItem(
-                title = getShoppingListItemTitleOrNull(item.nameText, fontSize),
+                title = getShoppingListItemTitleOrNull(item.name, fontSize),
                 body = {
                     ShoppingListItemBody(
-                        hasName = item.nameText.asCompose().isNotEmpty(),
-                        products = item.productsList,
+                        hasName = item.name.asCompose().isNotEmpty(),
+                        products = item.products,
                         displayProducts = displayProducts,
-                        total = item.totalText,
-                        reminder = item.reminderText,
+                        total = item.total,
+                        reminder = item.reminder,
                         fontSize = fontSize,
                         coloredCheckbox = coloredCheckbox
                     )
@@ -141,7 +143,7 @@ fun ShoppingListsGrid(
 fun ShoppingListsTotalContent(
     modifier: Modifier = Modifier,
     displayTotal: DisplayTotal,
-    totalText: UiText,
+    totalText: UiString,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
@@ -219,7 +221,7 @@ fun ShoppingListsLocationContent(
 
 @Composable
 fun ShoppingListsHiddenContent(
-    fontSize: FontSize,
+    fontSize: UiFontSize,
     onClick: () -> Unit
 ) {
     Row(
@@ -229,7 +231,7 @@ fun ShoppingListsHiddenContent(
     ) {
         Text(
             text = stringResource(R.string.shoppingLists_text_hiddenShoppingLists),
-            fontSize = fontSize.toItemBody().sp,
+            fontSize = fontSize.itemBody.sp,
             color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
             style = MaterialTheme.typography.body1
         )
@@ -273,14 +275,14 @@ private fun getShoppingListItemLeftOrNull(
 
 @Composable
 private fun getShoppingListItemTitleOrNull(
-    name: UiText,
-    fontSize: FontSize
+    name: UiString,
+    fontSize: UiFontSize
 ) = itemOrNull(enabled = name.asCompose().isNotEmpty()) {
     Column {
         Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
         Text(
             text = name.asCompose(),
-            fontSize = fontSize.toItemTitle().sp
+            fontSize = fontSize.itemTitle.sp
         )
     }
 }
@@ -288,14 +290,14 @@ private fun getShoppingListItemTitleOrNull(
 @Composable
 private fun ShoppingListItemBody(
     hasName: Boolean,
-    products: List<Pair<Boolean?, UiText>>,
+    products: List<Pair<Boolean?, UiString>>,
     displayProducts: DisplayProducts,
-    total: UiText,
-    reminder: UiText,
-    fontSize: FontSize,
+    total: UiString,
+    reminder: UiString,
+    fontSize: UiFontSize,
     coloredCheckbox: Boolean
 ) {
-    val itemFontSize = fontSize.toItemBody()
+    val itemFontSize = fontSize.itemBody
 
     Column {
         val reminderAsCompose = reminder.asCompose()
@@ -389,13 +391,13 @@ private fun ShoppingListItemBody(
 
 @Composable
 private fun ShoppingsListsItemProducts(
-    products: List<Pair<Boolean?, UiText>>,
+    products: List<Pair<Boolean?, UiString>>,
     spacerAfterIcon: Boolean,
-    fontSize: FontSize,
+    fontSize: UiFontSize,
     showCheckbox: Boolean = true,
     coloredCheckbox: Boolean
 ) {
-    val itemFontSize = fontSize.toItemBody()
+    val itemFontSize = fontSize.itemBody
 
     products.forEach {
         Row(

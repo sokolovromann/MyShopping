@@ -31,7 +31,6 @@ import ru.sokolovromann.myshopping.ui.compose.AppScaffold
 import ru.sokolovromann.myshopping.ui.compose.ShoppingListsGrid
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgetState
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsWidgetConfigViewModel
@@ -123,12 +122,13 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 ),
                 multiColumns = state.multiColumnsValue.selected,
                 smartphoneScreen = state.smartphoneScreen,
-                pinnedItems = UiShoppingListsMapper.toOldShoppingListItems(state.pinnedShoppingLists),
-                otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.otherShoppingLists),
+                pinnedItems = state.pinnedShoppingLists,
+                otherItems = state.otherShoppingLists,
                 displayProducts = state.displayProducts,
                 displayCompleted = state.displayCompleted,
                 coloredCheckbox = state.coloredCheckbox,
-                fontSize = state.oldFontSize,
+                fontSize = state.fontSize,
+                oldFontSize = state.oldFontSize,
                 onClick = {
                     val event = ProductsWidgetConfigEvent.OnShoppingListSelected(it)
                     viewModel.onEvent(event)

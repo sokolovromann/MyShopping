@@ -26,7 +26,6 @@ import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.ArchiveViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
@@ -131,7 +130,7 @@ fun ArchiveScreen(
                     if (totalValue.text.isNotEmpty()) {
                         ShoppingListsTotalContent(
                             displayTotal = totalValue.selected,
-                            totalText = totalValue.text.toUiText(),
+                            totalText = totalValue.text,
                             fontSize = state.fontSize.button.sp,
                             expanded = state.expandedDisplayTotal,
                             onExpanded = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayTotal(it)) },
@@ -220,14 +219,14 @@ fun ArchiveScreen(
             ),
             multiColumns = state.multiColumnsValue.selected,
             smartphoneScreen = state.smartphoneScreen,
-            otherItems = UiShoppingListsMapper.toOldShoppingListItems(state.shoppingLists),
+            otherItems = state.shoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
             coloredCheckbox = state.coloredCheckbox,
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
-                        fontSize = state.oldFontSize,
+                        fontSize = state.fontSize,
                         onClick = { viewModel.onEvent(ArchiveEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
@@ -239,7 +238,8 @@ fun ArchiveScreen(
                     textAlign = TextAlign.Center
                 )
             },
-            fontSize = state.oldFontSize,
+            fontSize = state.fontSize,
+            oldFontSize = state.oldFontSize,
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {

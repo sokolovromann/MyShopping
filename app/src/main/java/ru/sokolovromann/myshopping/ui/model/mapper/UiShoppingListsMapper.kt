@@ -190,21 +190,6 @@ object UiShoppingListsMapper {
         }
     }
 
-    fun toOldShoppingListItems(items: List<ShoppingListItem>): List<ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem> {
-        return items.map {
-            ru.sokolovromann.myshopping.ui.compose.state.ShoppingListItem(
-                uid = it.uid,
-                nameText = it.name.toUiText(),
-                productsList = it.products.map { product ->
-                    Pair(product.first, product.second.toUiText())
-                },
-                totalText = it.total.toUiText(),
-                reminderText = it.reminder.toUiText(),
-                completed = it.completed
-            )
-        }
-    }
-
     fun toSortedProductItems(
         shoppingListWithConfig: ShoppingListWithConfig,
         displayCompleted: DisplayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
