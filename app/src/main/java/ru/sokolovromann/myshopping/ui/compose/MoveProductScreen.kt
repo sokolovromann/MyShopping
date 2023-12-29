@@ -113,7 +113,6 @@ fun MoveProductScreen(
                 )
             },
             fontSize = state.fontSize,
-            oldFontSize = state.oldFontSize,
             onClick = {
                 val event = MoveProductEvent.OnClickMove(it)
                 viewModel.onEvent(event)

@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
@@ -64,9 +63,6 @@ class PurchasesState {
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
-    var oldFontSize: FontSize by mutableStateOf(FontSize.DefaultValue)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -89,7 +85,6 @@ class PurchasesState {
         expandedItemMoreMenu = false
         expandedSort = false
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
-        oldFontSize = userPreferences.fontSize
         waiting = false
     }
 

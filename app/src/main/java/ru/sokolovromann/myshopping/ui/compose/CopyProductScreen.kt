@@ -113,7 +113,6 @@ fun CopyProductScreen(
                 )
             },
             fontSize = state.fontSize,
-            oldFontSize = state.oldFontSize,
             onClick = {
                 val event = CopyProductEvent.OnClickCopy(it)
                 viewModel.onEvent(event)

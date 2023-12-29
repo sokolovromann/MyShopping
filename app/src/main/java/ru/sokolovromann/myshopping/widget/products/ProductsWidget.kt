@@ -47,14 +47,13 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
+import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
-import ru.sokolovromann.myshopping.ui.utils.toWidgetBody
-import ru.sokolovromann.myshopping.ui.utils.toWidgetTitle
 import ru.sokolovromann.myshopping.widget.WidgetKey
 
 class ProductsWidget : GlanceAppWidget() {
@@ -106,7 +105,7 @@ class ProductsWidget : GlanceAppWidget() {
             if (shoppingListWithConfig.isProductsEmpty()) {
                 ProductsWidgetName(
                     name = shopping.name,
-                    fontSize = userPreferences.fontSize,
+                    fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize),
                     completed = shoppingListWithConfig.isCompleted(),
                     noSplit = userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT
                 )
@@ -114,7 +113,7 @@ class ProductsWidget : GlanceAppWidget() {
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
-                    fontSize = userPreferences.fontSize
+                    fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
                 )
             } else {
                 ProductsWidgetProducts(
@@ -124,7 +123,7 @@ class ProductsWidget : GlanceAppWidget() {
                     pinnedItems = UiShoppingListsMapper.toPinnedSortedProductWidgetItems(shoppingListWithConfig),
                     otherItems = UiShoppingListsMapper.toOtherSortedProductWidgetItems(shoppingListWithConfig),
                     displayCompleted = userPreferences.displayCompleted,
-                    fontSize = userPreferences.fontSize,
+                    fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize),
                     coloredCheckbox = userPreferences.coloredCheckbox,
                     completedWithCheckbox = userPreferences.completedWithCheckbox
                 ) {
@@ -156,7 +155,7 @@ class ProductsWidget : GlanceAppWidget() {
                 if (userPreferences.displayMoney) {
                     ProductsWidgetTotal(
                         shopping.total.getDisplayValue(),
-                        userPreferences.fontSize
+                        UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())
@@ -190,7 +189,7 @@ private fun createAction(uid: String): String {
 @Composable
 private fun ProductsWidgetName(
     name: String,
-    fontSize: FontSize,
+    fontSize: UiFontSize,
     completed: Boolean,
     noSplit: Boolean
 ) {
@@ -223,7 +222,7 @@ private fun ProductsWidgetName(
             text = name,
             style = TextDefaults.defaultTextStyle.copy(
                 color = ColorProvider(R.color.black),
-                fontSize = fontSize.toWidgetTitle().sp,
+                fontSize = fontSize.widgetHeader.sp,
                 fontWeight = FontWeight.Bold
             ),
             maxLines = 1
@@ -235,7 +234,7 @@ private fun ProductsWidgetName(
 @Composable
 private fun ProductsWidgetTotal(
     total: String,
-    fontSize: FontSize
+    fontSize: UiFontSize
 ) {
     if (total.isEmpty()) {
         return
@@ -245,7 +244,7 @@ private fun ProductsWidgetTotal(
         text = total,
         style = TextDefaults.defaultTextStyle.copy(
             color = ColorProvider(R.color.black),
-            fontSize = fontSize.toWidgetBody().sp
+            fontSize = fontSize.widgetContent.sp
         ),
         maxLines = 1
     )
@@ -256,7 +255,7 @@ private fun ProductsWidgetTotal(
 private fun ProductsWidgetNotFound(
     modifier: GlanceModifier,
     text: String,
-    fontSize: FontSize
+    fontSize: UiFontSize
 ) {
     Column(
         modifier = GlanceModifier
@@ -274,7 +273,7 @@ private fun ProductsWidgetNotFound(
             text = text,
             style = TextDefaults.defaultTextStyle.copy(
                 color = ColorProvider(R.color.black),
-                fontSize = fontSize.toWidgetBody().sp
+                fontSize = fontSize.widgetContent.sp
             )
         )
     }
@@ -289,7 +288,7 @@ private fun ProductsWidgetProducts(
     pinnedItems: List<ProductWidgetItem>,
     otherItems: List<ProductWidgetItem>,
     displayCompleted: DisplayCompleted,
-    fontSize: FontSize,
+    fontSize: UiFontSize,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
@@ -336,7 +335,7 @@ private fun ProductsWidgetProducts(
 private fun ProductsWidgetItem(
     widgetItem: ProductWidgetItem,
     displayCompleted: DisplayCompleted,
-    fontSize: FontSize,
+    fontSize: UiFontSize,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
@@ -374,7 +373,7 @@ private fun ProductsWidgetItem(
             text = widgetItem.body,
             style = TextDefaults.defaultTextStyle.copy(
                 color = ColorProvider(R.color.black),
-                fontSize = fontSize.toWidgetBody().sp
+                fontSize = fontSize.widgetContent.sp
             )
         )
     }

@@ -239,7 +239,6 @@ fun ArchiveScreen(
                 )
             },
             fontSize = state.fontSize,
-            oldFontSize = state.oldFontSize,
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {

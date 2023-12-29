@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
@@ -98,9 +97,6 @@ class ProductsState {
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
-    var oldFontSize: FontSize by mutableStateOf(FontSize.DefaultValue)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -134,7 +130,6 @@ class ProductsState {
         sortFormatted = shopping.sortFormatted
         expandedSort = false
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
-        oldFontSize = userPreferences.fontSize
         waiting = false
     }
 

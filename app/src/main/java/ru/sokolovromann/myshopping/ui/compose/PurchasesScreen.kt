@@ -267,7 +267,6 @@ fun PurchasesScreen(
                 )
             },
             fontSize = state.fontSize,
-            oldFontSize = state.oldFontSize,
             dropdownMenu = {
                 AppDropdownMenu(
                     expanded = state.expandedItemFavoriteMenu(it),

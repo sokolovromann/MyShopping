@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
@@ -45,9 +44,6 @@ class ProductsWidgetConfigState {
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
-    var oldFontSize: FontSize by mutableStateOf(FontSize.DefaultValue)
-        private set
-
     var waiting: Boolean by mutableStateOf(false)
         private set
 
@@ -64,7 +60,6 @@ class ProductsWidgetConfigState {
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
-        oldFontSize = userPreferences.fontSize
         waiting = false
     }
 

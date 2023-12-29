@@ -21,7 +21,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
@@ -45,7 +44,6 @@ fun ShoppingListsGrid(
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
     fontSize: UiFontSize,
-    oldFontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
     onLongClick: (String) -> Unit,
@@ -65,7 +63,7 @@ fun ShoppingListsGrid(
             item(span = StaggeredGridItemSpan.FullLine) {
                 AppTextGridHeader(
                     text = stringResource(R.string.shoppingLists_text_pinnedShoppingLists),
-                    fontSize = oldFontSize
+                    fontSize = fontSize
                 )
             }
 
@@ -102,7 +100,7 @@ fun ShoppingListsGrid(
                 item(span = StaggeredGridItemSpan.FullLine) {
                     AppTextGridHeader(
                         text = stringResource(R.string.shoppingLists_text_otherShoppingLists),
-                        fontSize = oldFontSize
+                        fontSize = fontSize
                     )
                 }
             }

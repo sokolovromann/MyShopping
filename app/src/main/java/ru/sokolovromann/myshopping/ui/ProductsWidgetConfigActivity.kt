@@ -128,7 +128,6 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 displayCompleted = state.displayCompleted,
                 coloredCheckbox = state.coloredCheckbox,
                 fontSize = state.fontSize,
-                oldFontSize = state.oldFontSize,
                 onClick = {
                     val event = ProductsWidgetConfigEvent.OnShoppingListSelected(it)
                     viewModel.onEvent(event)

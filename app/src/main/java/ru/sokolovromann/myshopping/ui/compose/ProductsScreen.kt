@@ -29,7 +29,6 @@ import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -440,7 +439,6 @@ fun ProductsScreen(
                 )
             },
             fontSize = state.fontSize,
-            oldFontSize = state.oldFontSize,
             dropdownMenu = {
                 AppDropdownMenu(
                     expanded = state.expandedItemFavoriteMenu(it),
@@ -625,7 +623,6 @@ private fun ProductsGrid(
     bottomBar: @Composable RowScope.() -> Unit,
     notFound: @Composable ColumnScope.() -> Unit,
     fontSize: UiFontSize,
-    oldFontSize: FontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     completedWithCheckbox: Boolean,
     location: ShoppingLocation?,
@@ -646,7 +643,7 @@ private fun ProductsGrid(
             item(span = StaggeredGridItemSpan.FullLine) {
                 AppTextGridHeader(
                     text = stringResource(R.string.products_text_pinnedProducts),
-                    fontSize = oldFontSize
+                    fontSize = fontSize
                 )
             }
 
@@ -689,7 +686,7 @@ private fun ProductsGrid(
                 item(span = StaggeredGridItemSpan.FullLine) {
                     AppTextGridHeader(
                         text = stringResource(R.string.products_text_otherProducts),
-                        fontSize = oldFontSize
+                        fontSize = fontSize
                     )
                 }
             }
