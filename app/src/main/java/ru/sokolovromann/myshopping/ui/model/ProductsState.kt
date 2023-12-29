@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
@@ -73,7 +74,7 @@ class ProductsState {
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
-    var smartphoneScreen: Boolean by mutableStateOf(false)
+    var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
     var expandedProductsMenu: Boolean by mutableStateOf(false)
@@ -122,7 +123,7 @@ class ProductsState {
         totalFormatted = shopping.totalFormatted
         displayMoney = userPreferences.displayMoney
         multiColumnsValue = toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
-        smartphoneScreen = shoppingListWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
+        deviceSize = shoppingListWithConfig.getDeviceConfig().getDeviceSize()
         expandedProductsMenu = false
         expandedItemMoreMenu = false
         expandedShoppingMenu = false

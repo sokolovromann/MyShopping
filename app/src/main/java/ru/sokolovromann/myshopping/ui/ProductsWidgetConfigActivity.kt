@@ -30,7 +30,6 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.ui.compose.AppScaffold
 import ru.sokolovromann.myshopping.ui.compose.ShoppingListsGrid
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgetState
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsWidgetConfigViewModel
@@ -116,12 +115,8 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
             }
         ) {
             ShoppingListsGrid(
-                screenState = ScreenState.create(
-                    waiting = state.waiting,
-                    notFound = state.isNotFound()
-                ),
                 multiColumns = state.multiColumnsValue.selected,
-                smartphoneScreen = state.smartphoneScreen,
+                deviceSize = state.deviceSize,
                 pinnedItems = state.pinnedShoppingLists,
                 otherItems = state.otherShoppingLists,
                 displayProducts = state.displayProducts,
@@ -133,13 +128,15 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                     viewModel.onEvent(event)
                 },
                 onLongClick = {},
+                isWaiting = state.waiting,
                 notFound = {
                     Text(
                         text = stringResource(R.string.productsWidgetConfig_text_shoppingListsNotFound),
                         fontSize = state.fontSize.itemTitle.sp,
                         textAlign = TextAlign.Center
                     )
-                }
+                },
+                isNotFound = state.isNotFound()
             )
         }
     }

@@ -25,7 +25,6 @@ import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.ArchiveViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
@@ -213,12 +212,8 @@ fun ArchiveScreen(
     ) { paddings ->
         ShoppingListsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = state.shoppingLists.isEmpty()
-            ),
             multiColumns = state.multiColumnsValue.selected,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             otherItems = state.shoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
@@ -231,6 +226,7 @@ fun ArchiveScreen(
                     )
                 }
             },
+            isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.archive_text_shoppingListsNotFound),
@@ -238,6 +234,7 @@ fun ArchiveScreen(
                     textAlign = TextAlign.Center
                 )
             },
+            isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
                 val uids = state.selectedUids

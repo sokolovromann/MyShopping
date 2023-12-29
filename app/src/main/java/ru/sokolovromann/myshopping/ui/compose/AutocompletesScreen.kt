@@ -24,10 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
@@ -161,12 +161,8 @@ fun AutocompletesScreen(
     ) { paddings ->
         AutocompletesGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = state.isNotFound()
-            ),
             multiColumns = state.multiColumns,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             autocompletes = state.autocompletes,
             topBar = {
                 AutocompleteLocationContent(
@@ -181,6 +177,7 @@ fun AutocompletesScreen(
                     }
                 )
             },
+            isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.autocompletes_text_autocompletesNotFound),
@@ -188,6 +185,7 @@ fun AutocompletesScreen(
                     textAlign = TextAlign.Center
                 )
             },
+            isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
                 state.selectedNames?.let { names ->
@@ -216,12 +214,13 @@ fun AutocompletesScreen(
 @Composable
 private fun AutocompletesGrid(
     modifier: Modifier = Modifier,
-    screenState: ScreenState,
     multiColumns: Boolean,
-    smartphoneScreen: Boolean,
+    deviceSize: DeviceSize,
     autocompletes: List<AutocompleteItem>,
     topBar: @Composable RowScope.() -> Unit,
+    isWaiting: Boolean,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
+    isNotFound: Boolean,
     fontSize: UiFontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
@@ -230,12 +229,13 @@ private fun AutocompletesGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
-        screenState = screenState,
         multiColumns = multiColumns,
         multiColumnsSpace = true,
-        smartphoneScreen = smartphoneScreen,
+        deviceSize = deviceSize,
         topBar = topBar,
-        notFound = notFound
+        isWaiting = isWaiting,
+        notFound = notFound,
+        isNotFound = isNotFound
     ) {
         items(autocompletes) {
             val nameToString = it.name.asCompose()

@@ -19,7 +19,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.CopyProductScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.CopyProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyProductEvent
@@ -64,12 +63,8 @@ fun CopyProductScreen(
     ) { paddings ->
         ShoppingListsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = state.isNotFound()
-            ),
             multiColumns = state.multiColumnsValue.selected,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             pinnedItems = state.pinnedShoppingLists,
             otherItems = state.otherShoppingLists,
             displayProducts = state.displayProducts,
@@ -105,6 +100,7 @@ fun CopyProductScreen(
                     )
                 }
             },
+            isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.copyProduct_text_shoppingListsNotFound),
@@ -112,6 +108,7 @@ fun CopyProductScreen(
                     textAlign = TextAlign.Center
                 )
             },
+            isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
                 val event = CopyProductEvent.OnClickCopy(it)

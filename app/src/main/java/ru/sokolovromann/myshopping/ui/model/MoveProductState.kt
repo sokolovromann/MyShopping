@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.Product
@@ -39,7 +40,7 @@ class MoveProductState {
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
-    var smartphoneScreen: Boolean by mutableStateOf(false)
+    var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
     var locationValue: SelectedValue<ShoppingLocation> by mutableStateOf(SelectedValue(
@@ -72,7 +73,7 @@ class MoveProductState {
         displayCompleted = userPreferences.displayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
-        smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
+        deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         locationValue = UiShoppingListsMapper.toLocationValue(location)
         expandedLocation = false
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)

@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
@@ -31,7 +32,7 @@ class TrashState {
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
-    var smartphoneScreen: Boolean by mutableStateOf(false)
+    var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
@@ -50,7 +51,7 @@ class TrashState {
         displayCompleted = userPreferences.displayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
-        smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
+        deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
         waiting = false
     }
@@ -68,5 +69,9 @@ class TrashState {
 
     fun onWaiting() {
         waiting = true
+    }
+
+    fun isNotFound(): Boolean {
+        return shoppingLists.isEmpty()
     }
 }

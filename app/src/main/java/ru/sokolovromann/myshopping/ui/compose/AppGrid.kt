@@ -16,64 +16,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SmartphoneTabletAppGrid(
     modifier: Modifier = Modifier,
     gridState: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
-    screenState: ScreenState,
     multiColumns: Boolean,
     multiColumnsSpace: Boolean = multiColumns,
-    smartphoneScreen: Boolean,
+    deviceSize: DeviceSize,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
-    loading: @Composable (ColumnScope.() -> Unit)? = { CircularAppGridLoading() },
+    waiting: @Composable (ColumnScope.() -> Unit)? = { CircularAppGridWaiting() },
+    isWaiting: Boolean,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
-    saving: @Composable (ColumnScope.() -> Unit)? = { CircularAppGridLoading() },
+    isNotFound: Boolean,
     bottomSpacer: @Composable (() -> Unit)? = { AppGridBottomSpacer() },
     items: LazyStaggeredGridScope.() -> Unit
 ) {
-    when (screenState) {
-        ScreenState.Nothing -> AppGridNotFound(
+    if (isWaiting) {
+        AppGridWaiting(
             modifier = modifier,
-            topBar = topBar,
-            notFound = notFound
+            waiting = waiting
         )
-
-        ScreenState.Loading -> AppGridLoading(
-            modifier = modifier,
-            loading = loading
-        )
-
-        ScreenState.Showing -> AppGridShowing(
-            modifier = modifier,
-            state = gridState,
-            multiColumns = multiColumns,
-            multiColumnsSpace = multiColumnsSpace,
-            smartphoneScreen = smartphoneScreen,
-            topBar = topBar,
-            bottomBar = bottomBar,
-            bottomSpacer = bottomSpacer,
-            items = items
-        )
-
-        ScreenState.Saving -> AppGridSaving(
-            modifier = modifier,
-            topBar = topBar,
-            saving = saving
-        )
+    } else {
+        if (isNotFound) {
+            AppGridNotFound(
+                modifier = modifier,
+                topBar = topBar,
+                notFound = notFound
+            )
+        } else {
+            AppGridShowing(
+                modifier = modifier,
+                state = gridState,
+                multiColumns = multiColumns,
+                multiColumnsSpace = multiColumnsSpace,
+                deviceSize = deviceSize,
+                topBar = topBar,
+                bottomBar = bottomBar,
+                bottomSpacer = bottomSpacer,
+                items = items
+            )
+        }
     }
 }
 
 @Composable
-private fun AppGridLoading(
+private fun AppGridWaiting(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colors.background,
-    loading: @Composable (ColumnScope.() -> Unit)?
+    waiting: @Composable (ColumnScope.() -> Unit)?
 ) {
-    loading?.let {
+    waiting?.let {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -132,7 +128,7 @@ private fun AppGridShowing(
     state: LazyStaggeredGridState,
     multiColumns: Boolean,
     multiColumnsSpace: Boolean,
-    smartphoneScreen: Boolean,
+    deviceSize: DeviceSize,
     topBar: @Composable (RowScope.() -> Unit)?,
     bottomBar: @Composable (RowScope.() -> Unit)?,
     bottomSpacer: @Composable (() -> Unit)?,
@@ -142,7 +138,10 @@ private fun AppGridShowing(
         if (LocalConfiguration.current.screenWidthDp < AppGridMediumMinColumnSize.value * 2) {
             StaggeredGridCells.Fixed(2)
         } else {
-            val minSize = if (smartphoneScreen) AppGridMediumMinColumnSize else AppGridLargeMinColumnSize
+            val minSize = when (deviceSize) {
+                DeviceSize.Large -> AppGridLargeMinColumnSize
+                else -> AppGridMediumMinColumnSize
+            }
             StaggeredGridCells.Adaptive(minSize)
         }
     } else {
@@ -206,37 +205,6 @@ private fun AppGridShowing(
 }
 
 @Composable
-private fun AppGridSaving(
-    modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.background,
-    topBar: @Composable (RowScope.() -> Unit)?,
-    saving: @Composable (ColumnScope.() -> Unit)?
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(AppGridNothingPaddings)
-    ) {
-        topBar?.let {
-            AppGridBar(content = it)
-        }
-
-        saving?.let {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = backgroundColor)
-                    .padding(AppGridLoadingContentPaddings)
-                    .then(modifier),
-                content = it
-            )
-        }
-    }
-}
-
-@Composable
 private fun AppGridBar(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
@@ -257,8 +225,8 @@ private fun AppGridBottomSpacer() {
 }
 
 @Composable
-private fun CircularAppGridLoading() {
-    AppGridLoading { CircularProgressIndicator() }
+private fun CircularAppGridWaiting() {
+    AppGridWaiting{ CircularProgressIndicator() }
 }
 
 private val AppGridMediumMinColumnSize = 200.dp

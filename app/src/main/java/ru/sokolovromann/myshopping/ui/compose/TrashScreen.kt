@@ -24,7 +24,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.TrashViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
@@ -140,12 +139,8 @@ fun TrashScreen(
     ) { paddings ->
         ShoppingListsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = state.shoppingLists.isEmpty()
-            ),
             multiColumns = state.multiColumnsValue.selected,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             otherItems = state.shoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
@@ -161,6 +156,7 @@ fun TrashScreen(
                     )
                 }
             },
+            isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.trash_text_shoppingListsNotFound),
@@ -168,6 +164,7 @@ fun TrashScreen(
                     textAlign = TextAlign.Center
                 )
             },
+            isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
                 val uids = state.selectedUids

@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
@@ -30,7 +31,6 @@ import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.model.SettingItem
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
@@ -150,13 +150,10 @@ fun SettingsScreen(
     ) { paddings ->
         SettingsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = false
-            ),
             multiColumns = state.multiColumns,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             map = state.settings,
+            isWaiting = state.waiting,
             fontSize = state.fontSize,
             dropdownMenu = {
                 when (it) {
@@ -217,20 +214,21 @@ fun SettingsScreen(
 @Composable
 private fun SettingsGrid(
     modifier: Modifier = Modifier,
-    screenState: ScreenState,
     multiColumns: Boolean,
-    smartphoneScreen: Boolean,
+    deviceSize: DeviceSize,
     map: Map<UiString, List<SettingItem>>,
+    isWaiting: Boolean,
     fontSize: UiFontSize,
     dropdownMenu: @Composable (SettingUid) -> Unit,
     onClick: (SettingUid) -> Unit
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
-        screenState = screenState,
         multiColumns = multiColumns,
         multiColumnsSpace = true,
-        smartphoneScreen = smartphoneScreen
+        deviceSize = deviceSize,
+        isWaiting = isWaiting,
+        isNotFound = false
     ) {
         val headers = map.keys.toList()
         itemsIndexed(map.values.toList()) { index, settingsItems ->

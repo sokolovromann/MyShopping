@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
@@ -43,7 +44,7 @@ class ArchiveState {
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
-    var smartphoneScreen: Boolean by mutableStateOf(false)
+    var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
     var expandedArchiveMenu: Boolean by mutableStateOf(false)
@@ -71,7 +72,7 @@ class ArchiveState {
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())
         expandedDisplayTotal = false
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
-        smartphoneScreen = shoppingListsWithConfig.getDeviceConfig().getDeviceSize().isSmartphoneScreen()
+        deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         expandedArchiveMenu = false
         expandedSort = false
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
@@ -142,6 +143,10 @@ class ArchiveState {
 
     fun onWaiting() {
         waiting = true
+    }
+
+    fun isNotFound(): Boolean {
+        return shoppingLists.isEmpty()
     }
 
     private fun toTotalSelectedValue(total: Money): SelectedValue<DisplayTotal>? {

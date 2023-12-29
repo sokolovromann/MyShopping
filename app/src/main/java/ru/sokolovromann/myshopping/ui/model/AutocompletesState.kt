@@ -22,7 +22,7 @@ class AutocompletesState {
     var multiColumns: Boolean by mutableStateOf(false)
         private set
 
-    var smartphoneScreen: Boolean by mutableStateOf(false)
+    var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
     var locationValue: SelectedValue<AutocompleteLocation> by mutableStateOf(SelectedValue(AutocompleteLocation.DefaultValue))
@@ -44,11 +44,10 @@ class AutocompletesState {
         this.autocompletesWithConfig = autocompletesWithConfig
 
         val userPreferences = autocompletesWithConfig.appConfig.userPreferences
-        val deviceSize = autocompletesWithConfig.appConfig.deviceConfig.getDeviceSize()
         autocompletes = UiAutocompletesMapper.toAutocompleteItems(autocompletesWithConfig)
         selectedNames = null
+        deviceSize = autocompletesWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = deviceSize == DeviceSize.Large
-        smartphoneScreen = deviceSize.isSmartphoneScreen()
         locationValue = UiAutocompletesMapper.toLocationValue(location)
         expandedLocation = false
         locationEnabled = AppLocale.isLanguageSupported() && userPreferences.displayDefaultAutocompletes

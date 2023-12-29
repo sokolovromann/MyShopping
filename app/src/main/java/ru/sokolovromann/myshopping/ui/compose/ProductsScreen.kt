@@ -27,6 +27,7 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
@@ -34,7 +35,6 @@ import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.*
 import ru.sokolovromann.myshopping.ui.model.ProductItem
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
@@ -374,12 +374,8 @@ fun ProductsScreen(
     ) { paddings ->
         ProductsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = state.isNotFound()
-            ),
             multiColumns = state.multiColumnsValue.selected,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             coloredCheckbox = state.coloredCheckbox,
             displayCompleted = state.displayCompleted,
             pinnedItems = state.pinnedProducts,
@@ -431,6 +427,7 @@ fun ProductsScreen(
                     )
                 }
             },
+            isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = state.notFoundText.asCompose(),
@@ -438,6 +435,7 @@ fun ProductsScreen(
                     textAlign = TextAlign.Center
                 )
             },
+            isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             dropdownMenu = {
                 AppDropdownMenu(
@@ -612,16 +610,17 @@ private fun ProductsTotalContent(
 @Composable
 private fun ProductsGrid(
     modifier: Modifier = Modifier,
-    screenState: ScreenState,
     multiColumns: Boolean,
-    smartphoneScreen: Boolean,
+    deviceSize: DeviceSize,
     coloredCheckbox: Boolean,
     displayCompleted: DisplayCompleted,
     pinnedItems: List<ProductItem>,
     otherItems: List<ProductItem>,
     topBar: @Composable RowScope.() -> Unit,
     bottomBar: @Composable RowScope.() -> Unit,
+    isWaiting: Boolean,
     notFound: @Composable ColumnScope.() -> Unit,
+    isNotFound: Boolean,
     fontSize: UiFontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     completedWithCheckbox: Boolean,
@@ -632,12 +631,13 @@ private fun ProductsGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
-        screenState = screenState,
         multiColumns = multiColumns,
-        smartphoneScreen = smartphoneScreen,
+        deviceSize = deviceSize,
         topBar = topBar,
         bottomBar = bottomBar,
-        notFound = notFound
+        isWaiting = isWaiting,
+        notFound = notFound,
+        isNotFound = isNotFound
     ) {
         if (pinnedItems.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {

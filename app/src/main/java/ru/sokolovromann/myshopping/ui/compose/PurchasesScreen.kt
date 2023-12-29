@@ -23,7 +23,6 @@ import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.PurchasesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
@@ -240,12 +239,8 @@ fun PurchasesScreen(
     ) { paddings ->
         ShoppingListsGrid(
             modifier = Modifier.padding(paddings),
-            screenState = ScreenState.create(
-                waiting = state.waiting,
-                notFound = state.isNotFound()
-            ),
             multiColumns = state.multiColumnsValue.selected,
-            smartphoneScreen = state.smartphoneScreen,
+            deviceSize = state.deviceSize,
             pinnedItems = state.pinnedShoppingLists,
             otherItems = state.otherShoppingLists,
             displayProducts = state.displayProducts,
@@ -259,6 +254,7 @@ fun PurchasesScreen(
                     )
                 }
             },
+            isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.purchases_text_shoppingListsNotFound),
@@ -266,6 +262,7 @@ fun PurchasesScreen(
                     textAlign = TextAlign.Center
                 )
             },
+            isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             dropdownMenu = {
                 AppDropdownMenu(

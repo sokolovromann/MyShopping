@@ -10,6 +10,10 @@ sealed class DeviceSize {
 
     data class Error(val exception: Exception) : DeviceSize()
 
+    companion object {
+        val DefaultValue = Medium
+    }
+
     fun isSmartphoneScreen(): Boolean {
         return this == Medium
     }

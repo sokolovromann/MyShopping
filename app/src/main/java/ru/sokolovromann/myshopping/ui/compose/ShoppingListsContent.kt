@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
-import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
@@ -32,9 +32,8 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 @Composable
 fun ShoppingListsGrid(
     modifier: Modifier = Modifier,
-    screenState: ScreenState,
     multiColumns: Boolean,
-    smartphoneScreen: Boolean,
+    deviceSize: DeviceSize,
     pinnedItems: List<ShoppingListItem> = listOf(),
     otherItems: List<ShoppingListItem>,
     displayProducts: DisplayProducts,
@@ -42,7 +41,9 @@ fun ShoppingListsGrid(
     coloredCheckbox: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
+    isWaiting: Boolean,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
+    isNotFound: Boolean,
     fontSize: UiFontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
@@ -51,13 +52,14 @@ fun ShoppingListsGrid(
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
-        screenState = screenState,
         multiColumns = multiColumns,
         multiColumnsSpace = true,
-        smartphoneScreen = smartphoneScreen,
+        deviceSize = deviceSize,
         topBar = topBar,
         bottomBar = bottomBar,
-        notFound = notFound
+        isWaiting = isWaiting,
+        notFound = notFound,
+        isNotFound = isNotFound
     ) {
         if (pinnedItems.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {
