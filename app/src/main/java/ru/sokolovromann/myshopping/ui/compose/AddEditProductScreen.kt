@@ -565,7 +565,7 @@ fun AddEditProductScreen(
                         onClick = { viewModel.onEvent(AddEditProductEvent.OnSelectLockProductElement(true)) }
                     ) {
                         Icon(
-                            painter = state.lockProductElementValue.selected.toButtonIcon().asPainter() ?: return@IconButton,
+                            painter = state.lockProductElementValue.selected.toButtonIcon().asPainter(),
                             contentDescription = "",
                             tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                         )

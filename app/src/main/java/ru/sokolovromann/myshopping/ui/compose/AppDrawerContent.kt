@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.UiRoute
-import ru.sokolovromann.myshopping.ui.compose.state.UiIcon
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 
 @Composable
 fun AppDrawerContent(

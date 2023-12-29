@@ -6,7 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import ru.sokolovromann.myshopping.ui.compose.state.UiIcon
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 
 @Composable
 fun AppDrawerContentItemIcon(
@@ -16,12 +16,11 @@ fun AppDrawerContentItemIcon(
     selectedTint: Color = MaterialTheme.colors.secondary,
     unselectedTint: Color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
 ) {
-    val painter = icon.asPainter() ?: return
     val tint = if (selected) selectedTint else unselectedTint
 
     Icon(
         modifier = modifier,
-        painter = painter,
+        painter = icon.asPainter(),
         contentDescription = "",
         tint = tint
     )

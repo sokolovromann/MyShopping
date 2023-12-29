@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.ui.compose.state
+package ru.sokolovromann.myshopping.ui.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
@@ -9,15 +9,12 @@ import androidx.compose.ui.res.painterResource
 
 sealed class UiIcon {
 
-    object Nothing : UiIcon()
-
     data class FromVector(val imageVector: ImageVector) : UiIcon()
 
     data class FromResources(@DrawableRes val id: Int) : UiIcon()
 
     @Composable
-    fun asPainter(): Painter? = when (this) {
-        Nothing -> null
+    fun asPainter(): Painter = when (this) {
         is FromVector -> rememberVectorPainter(imageVector)
         is FromResources -> painterResource(id)
     }
