@@ -78,7 +78,7 @@ fun CopyProductScreen(
             topBar = {
                 Row {
                     ShoppingListsLocationContent(
-                        location = state.locationValue.selected,
+                        location = state.locationValue,
                         fontSize = state.fontSize.button.sp,
                         expanded = state.expandedLocation,
                         onExpanded = { viewModel.onEvent(CopyProductEvent.OnSelectLocation(it)) },

@@ -24,10 +24,10 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.compose.state.ScreenState
+import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
-import ru.sokolovromann.myshopping.ui.utils.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -184,7 +184,7 @@ fun ShoppingListsTotalContent(
 @Composable
 fun ShoppingListsLocationContent(
     modifier: Modifier = Modifier,
-    location: ShoppingLocation,
+    location: SelectedValue<ShoppingLocation>,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
@@ -197,7 +197,7 @@ fun ShoppingListsLocationContent(
         onClick = { onExpanded(true) }
     ) {
         Text(
-            text = location.getText().asCompose(),
+            text = location.text.asCompose(),
             fontSize = fontSize
         )
         AppDropdownMenu(
@@ -208,12 +208,12 @@ fun ShoppingListsLocationContent(
             AppDropdownMenuItem(
                 onClick = { onSelected(ShoppingLocation.PURCHASES) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectPurchasesLocation)) },
-                right = { CheckmarkAppCheckbox(checked = location == ShoppingLocation.PURCHASES) }
+                right = { CheckmarkAppCheckbox(checked = location.selected == ShoppingLocation.PURCHASES) }
             )
             AppDropdownMenuItem(
                 onClick = { onSelected(ShoppingLocation.ARCHIVE) },
                 text = { Text(text = stringResource(R.string.shoppingLists_action_selectArchiveLocation)) },
-                right = { CheckmarkAppCheckbox(checked = location == ShoppingLocation.ARCHIVE) }
+                right = { CheckmarkAppCheckbox(checked = location.selected == ShoppingLocation.ARCHIVE) }
             )
         }
     }
