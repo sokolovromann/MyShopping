@@ -255,7 +255,8 @@ fun ShoppingListsDisplayProductsMenu(
 ) {
     AppDropdownMenu(
         expanded = expanded,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        header = { Text(text = stringResource(id = R.string.shoppingLists_action_displayProducts)) }
     ) {
         AppDropdownMenuItem(
             onClick = { onSelected(DisplayProducts.VERTICAL) },

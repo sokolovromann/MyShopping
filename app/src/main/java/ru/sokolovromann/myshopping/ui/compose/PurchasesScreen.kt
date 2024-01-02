@@ -184,17 +184,6 @@ fun PurchasesScreen(
                                     text = { Text(text = state.multiColumnsValue.text.asCompose()) }
                                 )
                                 AppDropdownMenuItem(
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                    right = {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowRight,
-                                            contentDescription = "",
-                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                        )
-                                    },
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectSort(true)) }
-                                )
-                                AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
                                     right = {
                                         Icon(
@@ -205,8 +194,31 @@ fun PurchasesScreen(
                                     },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayProducts(true)) }
                                 )
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
+                                    right = {
+                                        Icon(
+                                            imageVector = Icons.Default.KeyboardArrowRight,
+                                            contentDescription = "",
+                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                        )
+                                    },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectSort(true)) }
+                                )
                             }
 
+                            ShoppingListsDisplayProductsMenu(
+                                expanded = state.expandedDisplayProducts,
+                                displayProducts = state.displayProducts,
+                                onDismissRequest = {
+                                    val event = PurchasesEvent.OnSelectDisplayProducts(false)
+                                    viewModel.onEvent(event)
+                                },
+                                onSelected = {
+                                    val event = PurchasesEvent.OnDisplayProductsSelected(it)
+                                    viewModel.onEvent(event)
+                                }
+                            )
                             AppDropdownMenu(
                                 expanded = state.expandedSort,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnSelectSort(false)) },
@@ -234,19 +246,6 @@ fun PurchasesScreen(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
                                 )
                             }
-
-                            ShoppingListsDisplayProductsMenu(
-                                expanded = state.expandedDisplayProducts,
-                                displayProducts = state.displayProducts,
-                                onDismissRequest = {
-                                    val event = PurchasesEvent.OnSelectDisplayProducts(false)
-                                    viewModel.onEvent(event)
-                                },
-                                onSelected = {
-                                    val event = PurchasesEvent.OnDisplayProductsSelected(it)
-                                    viewModel.onEvent(event)
-                                }
-                            )
                         }
                     }
                 }
