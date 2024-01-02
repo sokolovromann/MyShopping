@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -26,6 +27,10 @@ sealed class PurchasesEvent {
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesEvent()
 
     data class OnSelectDrawerScreen(val display: Boolean) : PurchasesEvent()
+
+    data class OnDisplayProductsSelected(val displayProducts: DisplayProducts) : PurchasesEvent()
+
+    data class OnSelectDisplayProducts(val expanded: Boolean) : PurchasesEvent()
 
     data class OnDisplayTotalSelected(val displayTotal: DisplayTotal) : PurchasesEvent()
 

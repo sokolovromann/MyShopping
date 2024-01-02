@@ -41,6 +41,10 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
+            is ArchiveEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
+
+            is ArchiveEvent.OnSelectDisplayProducts -> onSelectDisplayProducts(event)
+
             is ArchiveEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
 
             is ArchiveEvent.OnSelectDisplayTotal -> onSelectDisplayTotal(event)
@@ -104,6 +108,17 @@ class ArchiveViewModel @Inject constructor(
         event: ArchiveEvent.OnSelectDrawerScreen
     ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onDisplayProductsSelected(
+        event: ArchiveEvent.OnDisplayProductsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.displayShoppingsProducts(event.displayProducts)
+        archiveState.onSelectDisplayProducts(expanded = false)
+    }
+
+    private fun onSelectDisplayProducts(event: ArchiveEvent.OnSelectDisplayProducts) {
+        archiveState.onSelectDisplayProducts(event.expanded)
     }
 
     private fun onDisplayTotalSelected(

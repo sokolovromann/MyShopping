@@ -324,11 +324,7 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">Zuerst</string>
     <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Vertikal</string>
-    <string name="settings_action_displayShoppingsProductsRow">Horizontal</string>
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
-    <string name="settings_action_hideShoppingsProducts">Verstecken</string>
-    <string name="settings_action_hideShoppingsProductsIfHasTitle">Nicht mit Titel anzeigen</string>
     <string name="settings_action_noSplitCompletedPurchases">Keine Trennung</string>
     <string name="settings_action_selectHugeFontSize">Riesig</string>
     <string name="settings_action_selectLargeFontSize">Groß</string>
@@ -371,7 +367,6 @@
     <string name="settings_title_displayMoney">Geld anzeigen</string>
     <string name="settings_title_displayMoneyZeros">Nullen nach dem Dezimalpunkt anzeigen</string>
     <string name="settings_title_displayOtherFields">Andere Felder anzeigen</string>
-    <string name="settings_title_displayShoppingsProducts">Produkte anzeigen in Einkäufe</string>
     <string name="settings_title_editProductAfterCompleted">Bearbeiten sie das produkt nach abschluss</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_enterToSaveProduct">Geben Sie ein, um Produkt zu speichern</string>
@@ -388,7 +383,12 @@
     <string name="shoppingLists_action_displayActiveTotal">Aktive produkte</string>
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
     <string name="shoppingLists_action_displayCompletedTotal">Fertige produkte</string>
+    <string name="shoppingLists_action_displayProducts">Produkte anzeigen</string>
+    <string name="shoppingLists_action_displayProductsHorizontally">Horizontal</string>
+    <string name="shoppingLists_action_displayProductsVertical">Vertikal</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Mehrspaltig</string>
+    <string name="shoppingLists_action_hideProducts">Verstecken</string>
+    <string name="shoppingLists_action_hideProductsIfHasTitle">Nicht mit Titel anzeigen</string>
     <string name="shoppingLists_action_reverseSort">Umgekehrte</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Wählen Sie Alle</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>

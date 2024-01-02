@@ -395,11 +395,7 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">First</string>
     <string name="settings_action_displayCompletedPurchasesLast">Last</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Vertical</string>
-    <string name="settings_action_displayShoppingsProductsRow">Horizontally</string>
     <string name="settings_action_hideCompletedPurchases">Hide</string>
-    <string name="settings_action_hideShoppingsProducts">Always hide</string>
-    <string name="settings_action_hideShoppingsProductsIfHasTitle">Hide if there is a title</string>
     <string name="settings_action_noSplitCompletedPurchases">No split</string>
     <string name="settings_action_selectHugeFontSize">Huge</string>
     <string name="settings_action_selectLargeFontSize">Large</string>
@@ -442,7 +438,6 @@
     <string name="settings_title_displayMoney">Display money</string>
     <string name="settings_title_displayMoneyZeros">Display zeros after decimal point</string>
     <string name="settings_title_displayOtherFields">Display other fields</string>
-    <string name="settings_title_displayShoppingsProducts">Display products in Purchases</string>
     <string name="settings_title_editProductAfterCompleted">Edit product after completed</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_enterToSaveProduct">Enter to save product</string>
@@ -459,7 +454,12 @@
     <string name="shoppingLists_action_displayActiveTotal">Active</string>
     <string name="shoppingLists_action_displayAllTotal">All</string>
     <string name="shoppingLists_action_displayCompletedTotal">Completed</string>
+    <string name="shoppingLists_action_displayProducts">Display products</string>
+    <string name="shoppingLists_action_displayProductsHorizontally">Horizontally</string>
+    <string name="shoppingLists_action_displayProductsVertical">Vertical</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Multi-columns</string>
+    <string name="shoppingLists_action_hideProducts">Always hide</string>
+    <string name="shoppingLists_action_hideProductsIfHasTitle">Hide if there is a title</string>
     <string name="shoppingLists_action_reverseSort">Reverse</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Select all</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archive</string>

@@ -167,6 +167,17 @@ fun ArchiveScreen(
                                     },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectSort(true)) }
                                 )
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
+                                    right = {
+                                        Icon(
+                                            imageVector = Icons.Default.KeyboardArrowRight,
+                                            contentDescription = "",
+                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                                        )
+                                    },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayProducts(true)) }
+                                )
                             }
 
                             AppDropdownMenu(
@@ -196,6 +207,19 @@ fun ArchiveScreen(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
                                 )
                             }
+
+                            ShoppingListsDisplayProductsMenu(
+                                expanded = state.expandedDisplayProducts,
+                                displayProducts = state.displayProducts,
+                                onDismissRequest = {
+                                    val event = ArchiveEvent.OnSelectDisplayProducts(false)
+                                    viewModel.onEvent(event)
+                                },
+                                onSelected = {
+                                    val event = ArchiveEvent.OnDisplayProductsSelected(it)
+                                    viewModel.onEvent(event)
+                                }
+                            )
                         }
                     }
                 }

@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -181,20 +180,6 @@ fun SettingsScreen(
                             },
                             onSelected = { displayCompleted ->
                                 viewModel.onEvent(SettingsEvent.OnDisplayCompletedSelected(displayCompleted))
-                            }
-                        )
-                    }
-
-                    SettingUid.DisplayShoppingsProducts -> {
-                        SettingsDisplayShoppingsProductsMenu(
-                            expanded = it == state.selectedUid,
-                            displayProducts = state.displayProductsValue.selected,
-                            onDismissRequest = {
-                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.DisplayShoppingsProducts)
-                                viewModel.onEvent(event)
-                            },
-                            onSelected = { displayProducts ->
-                                viewModel.onEvent(SettingsEvent.OnDisplayProductsSelected(displayProducts))
                             }
                         )
                     }
@@ -357,40 +342,6 @@ private fun SettingsDisplayCompletedMenu(
             onClick = { onSelected(DisplayCompleted.NO_SPLIT) },
             text = { Text(text = stringResource(R.string.settings_action_noSplitCompletedPurchases)) },
             right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.NO_SPLIT) }
-        )
-    }
-}
-
-@Composable
-private fun SettingsDisplayShoppingsProductsMenu(
-    expanded: Boolean,
-    displayProducts: DisplayProducts,
-    onDismissRequest: () -> Unit,
-    onSelected: (DisplayProducts) -> Unit
-) {
-    AppDropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest
-    ) {
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayProducts.VERTICAL) },
-            text = { Text(text = stringResource(R.string.settings_action_displayShoppingsProductsColumns)) },
-            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.VERTICAL) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayProducts.HORIZONTAL) },
-            text = { Text(text = stringResource(R.string.settings_action_displayShoppingsProductsRow)) },
-            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HORIZONTAL) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayProducts.HIDE) },
-            text = { Text(text = stringResource(R.string.settings_action_hideShoppingsProducts)) },
-            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayProducts.HIDE_IF_HAS_TITLE) },
-            text = { Text(text = stringResource(R.string.settings_action_hideShoppingsProductsIfHasTitle)) },
-            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE_IF_HAS_TITLE) }
         )
     }
 }

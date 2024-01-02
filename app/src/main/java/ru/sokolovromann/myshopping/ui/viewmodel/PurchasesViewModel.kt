@@ -51,6 +51,10 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
+            is PurchasesEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
+
+            is PurchasesEvent.OnSelectDisplayProducts -> onSelectDisplayProducts(event)
+
             is PurchasesEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
 
             is PurchasesEvent.OnSelectDisplayTotal -> onSelectDisplayTotal(event)
@@ -152,6 +156,17 @@ class PurchasesViewModel @Inject constructor(
         event: PurchasesEvent.OnSelectDrawerScreen
     ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(PurchasesScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onDisplayProductsSelected(
+        event: PurchasesEvent.OnDisplayProductsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.displayShoppingsProducts(event.displayProducts)
+        purchasesState.onSelectDisplayProducts(expanded = false)
+    }
+
+    private fun onSelectDisplayProducts(event: PurchasesEvent.OnSelectDisplayProducts) {
+        purchasesState.onSelectDisplayProducts(event.expanded)
     }
 
     private fun onDisplayTotalSelected(

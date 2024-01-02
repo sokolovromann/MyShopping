@@ -4,7 +4,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
@@ -145,17 +144,6 @@ object UiAppConfigMapper {
                 title = UiString.FromResources(R.string.settings_title_coloredCheckbox),
                 body = UiString.FromResources(R.string.settings_body_coloredCheckbox),
                 checked = userPreferences.coloredCheckbox
-            ),
-            SettingItem(
-                uid = SettingUid.DisplayShoppingsProducts,
-                title = UiString.FromResources(R.string.settings_title_displayShoppingsProducts),
-                body = when (userPreferences.displayShoppingsProducts) {
-                    DisplayProducts.VERTICAL -> UiString.FromResources(R.string.settings_action_displayShoppingsProductsColumns)
-                    DisplayProducts.HORIZONTAL -> UiString.FromResources(R.string.settings_action_displayShoppingsProductsRow)
-                    DisplayProducts.HIDE -> UiString.FromResources(R.string.settings_action_hideShoppingsProducts)
-                    DisplayProducts.HIDE_IF_HAS_TITLE -> UiString.FromResources(R.string.settings_action_hideShoppingsProductsIfHasTitle)
-                },
-                checked = null
             ),
             SettingItem(
                 uid = SettingUid.DisplayOtherFields,

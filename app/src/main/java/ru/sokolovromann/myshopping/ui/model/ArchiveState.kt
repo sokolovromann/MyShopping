@@ -29,6 +29,9 @@ class ArchiveState {
     var displayProducts: DisplayProducts by mutableStateOf(DisplayProducts.DefaultValue)
         private set
 
+    var expandedDisplayProducts: Boolean by mutableStateOf(false)
+        private set
+
     var displayCompleted: DisplayCompleted by mutableStateOf(DisplayCompleted.DefaultValue)
         private set
 
@@ -67,6 +70,7 @@ class ArchiveState {
         displayHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         selectedUids = null
         displayProducts = userPreferences.displayShoppingsProducts
+        expandedDisplayProducts = false
         displayCompleted = userPreferences.displayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())
@@ -77,6 +81,10 @@ class ArchiveState {
         expandedSort = false
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
         waiting = false
+    }
+
+    fun onSelectDisplayProducts(expanded: Boolean) {
+        expandedDisplayProducts = expanded
     }
 
     fun onSelectDisplayTotal(expanded: Boolean) {

@@ -342,11 +342,7 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">На початку</string>
     <string name="settings_action_displayCompletedPurchasesLast">В кінці</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Вертикально</string>
-    <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Приховувати</string>
-    <string name="settings_action_hideShoppingsProducts">Завжди приховувати</string>
-    <string name="settings_action_hideShoppingsProductsIfHasTitle">Приховувати, якщо є заголовок</string>
     <string name="settings_action_noSplitCompletedPurchases">Без поділу</string>
     <string name="settings_action_selectHugeFontSize">Величезний</string>
     <string name="settings_action_selectLargeFontSize">Великий</string>
@@ -389,7 +385,6 @@
     <string name="settings_title_displayMoney">Показувати гроші</string>
     <string name="settings_title_displayMoneyZeros">Показувати нулі після коми</string>
     <string name="settings_title_displayOtherFields">Показувати додаткові поля</string>
-    <string name="settings_title_displayShoppingsProducts">Показувати товари в Покупках</string>
     <string name="settings_title_editProductAfterCompleted">Редагувати товар після покупки</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_enterToSaveProduct">Enter для збереження товару</string>
@@ -406,7 +401,12 @@
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
     <string name="shoppingLists_action_displayCompletedTotal">Куплені товари</string>
+    <string name="shoppingLists_action_displayProducts">Показувати товари</string>
+    <string name="shoppingLists_action_displayProductsHorizontally">Горизонтально</string>
+    <string name="shoppingLists_action_displayProductsVertical">Вертикально</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Декілька стовпців</string>
+    <string name="shoppingLists_action_hideProducts">Завжди приховувати</string>
+    <string name="shoppingLists_action_hideProductsIfHasTitle">Приховувати, якщо є заголовок</string>
     <string name="shoppingLists_action_reverseSort">У зворотному порядку</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Вибрати усі</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архів</string>

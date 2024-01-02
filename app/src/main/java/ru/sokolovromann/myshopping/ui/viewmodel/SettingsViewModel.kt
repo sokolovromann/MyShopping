@@ -41,8 +41,6 @@ class SettingsViewModel @Inject constructor(
             is SettingsEvent.OnFontSizeSelected -> onFontSizeSelected(event)
 
             is SettingsEvent.OnDisplayCompletedSelected -> onDisplayCompletedSelected(event)
-
-            is SettingsEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
         }
     }
 
@@ -123,13 +121,6 @@ class SettingsViewModel @Inject constructor(
                 _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
             }
 
-            SettingUid.DisplayShoppingsProducts -> {
-                settingsState.onSelectUid(
-                    expanded = true,
-                    settingUid = SettingUid.DisplayShoppingsProducts
-                )
-            }
-
             SettingUid.EnterToSaveProducts -> {
                 appConfigRepository.invertEnterToSaveProduct()
             }
@@ -205,15 +196,5 @@ class SettingsViewModel @Inject constructor(
             settingUid = SettingUid.DisplayCompletedPurchases
         )
         _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
-    }
-
-    private fun onDisplayProductsSelected(
-        event: SettingsEvent.OnDisplayProductsSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.displayShoppingsProducts(event.displayProducts)
-        settingsState.onSelectUid(
-            expanded = false,
-            settingUid = SettingUid.DisplayShoppingsProducts
-        )
     }
 }

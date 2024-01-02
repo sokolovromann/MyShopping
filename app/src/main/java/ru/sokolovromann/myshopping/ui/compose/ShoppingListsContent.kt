@@ -247,6 +247,40 @@ fun ShoppingListsHiddenContent(
 }
 
 @Composable
+fun ShoppingListsDisplayProductsMenu(
+    expanded: Boolean,
+    displayProducts: DisplayProducts,
+    onDismissRequest: () -> Unit,
+    onSelected: (DisplayProducts) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.VERTICAL) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayProductsVertical)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.VERTICAL) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.HORIZONTAL) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayProductsHorizontally)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HORIZONTAL) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.HIDE) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_hideProducts)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(DisplayProducts.HIDE_IF_HAS_TITLE) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_hideProductsIfHasTitle)) },
+            right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE_IF_HAS_TITLE) }
+        )
+    }
+}
+
+@Composable
 private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,

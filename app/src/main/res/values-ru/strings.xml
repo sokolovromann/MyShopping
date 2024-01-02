@@ -389,11 +389,7 @@
 
     <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
     <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
-    <string name="settings_action_displayShoppingsProductsColumns">Вертикально</string>
-    <string name="settings_action_displayShoppingsProductsRow">Горизонтально</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
-    <string name="settings_action_hideShoppingsProducts">Всегда скрывать</string>
-    <string name="settings_action_hideShoppingsProductsIfHasTitle">Скрывать, если есть заголовок</string>
     <string name="settings_action_noSplitCompletedPurchases">Без разделения</string>
     <string name="settings_action_selectHugeFontSize">Огромный</string>
     <string name="settings_action_selectLargeFontSize">Большой</string>
@@ -436,7 +432,6 @@
     <string name="settings_title_displayMoney">Показывать деньги</string>
     <string name="settings_title_displayMoneyZeros">Показывать нули после запятой</string>
     <string name="settings_title_displayOtherFields">Показывать дополнительные поля</string>
-    <string name="settings_title_displayShoppingsProducts">Показывать товары в Покупках</string>
     <string name="settings_title_editProductAfterCompleted">Редактировать товар после покупки</string>
     <string name="settings_title_email">Email</string>
     <string name="settings_title_enterToSaveProduct">Enter для сохранения товара</string>
@@ -453,7 +448,12 @@
     <string name="shoppingLists_action_displayActiveTotal">Не купленные товары</string>
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
     <string name="shoppingLists_action_displayCompletedTotal">Купленные товары</string>
+    <string name="shoppingLists_action_displayProducts">Показывать товары</string>
+    <string name="shoppingLists_action_displayProductsHorizontally">Горизонтально</string>
+    <string name="shoppingLists_action_displayProductsVertical">Вертикально</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Несколько столбцов</string>
+    <string name="shoppingLists_action_hideProducts">Всегда скрывать</string>
+    <string name="shoppingLists_action_hideProductsIfHasTitle">Скрывать, если есть заголовок</string>
     <string name="shoppingLists_action_reverseSort">В обратном порядке</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Выбрать всё</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
