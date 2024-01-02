@@ -269,7 +269,7 @@ object UiShoppingListsMapper {
 
         val maxShoppingProducts = 10
         val totalFormatted = shoppingList.shopping.totalFormatted && displayTotal
-        val productsList = if (shoppingList.products.isEmpty()) {
+        val productsList = if (shoppingList.isProductsEmpty()) {
             val pair = Pair(null, UiString.FromResources(R.string.purchases_text_productsNotFound))
             listOf(pair)
         } else {

@@ -215,7 +215,7 @@ class ProductsState {
             shoppingListWithConfig = shoppingListWithConfig,
             displayCompleted = displayCompleted
         )
-        displayHiddenProducts = display
+        displayHiddenProducts = !display
     }
 
     fun onWaiting() {
@@ -242,7 +242,7 @@ class ProductsState {
     }
 
     fun isNotFound(): Boolean {
-        return pinnedProducts.isEmpty() && otherProducts.isEmpty()
+        return shoppingListWithConfig.isProductsEmpty()
     }
 
     fun expandedItemFavoriteMenu(uid: String): Boolean {

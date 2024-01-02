@@ -75,6 +75,6 @@ class AutocompletesState {
     }
 
     fun isNotFound(): Boolean {
-        return autocompletes.isEmpty()
+        return autocompletesWithConfig.isEmpty()
     }
 }

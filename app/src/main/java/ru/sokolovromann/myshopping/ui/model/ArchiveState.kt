@@ -138,7 +138,7 @@ class ArchiveState {
             shoppingListsWithConfig = shoppingListsWithConfig,
             displayCompleted = displayCompleted
         )
-        displayHiddenShoppingLists = display
+        displayHiddenShoppingLists = !display
     }
 
     fun onWaiting() {
@@ -146,7 +146,7 @@ class ArchiveState {
     }
 
     fun isNotFound(): Boolean {
-        return shoppingLists.isEmpty()
+        return shoppingListsWithConfig.isEmpty()
     }
 
     private fun toTotalSelectedValue(total: Money): SelectedValue<DisplayTotal>? {

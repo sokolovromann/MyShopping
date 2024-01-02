@@ -161,7 +161,7 @@ class PurchasesState {
             shoppingListsWithConfig = shoppingListsWithConfig,
             displayCompleted = displayCompleted
         )
-        displayHiddenShoppingLists = display
+        displayHiddenShoppingLists = !display
     }
 
     fun onWaiting() {
@@ -180,7 +180,7 @@ class PurchasesState {
     }
 
     fun isNotFound(): Boolean {
-        return pinnedShoppingLists.isEmpty() && otherShoppingLists.isEmpty()
+        return shoppingListsWithConfig.isEmpty()
     }
 
     fun expandedItemFavoriteMenu(uid: String): Boolean {

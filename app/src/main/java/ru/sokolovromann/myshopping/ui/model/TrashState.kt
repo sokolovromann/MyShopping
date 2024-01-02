@@ -72,6 +72,6 @@ class TrashState {
     }
 
     fun isNotFound(): Boolean {
-        return shoppingLists.isEmpty()
+        return shoppingListsWithConfig.isEmpty()
     }
 }
