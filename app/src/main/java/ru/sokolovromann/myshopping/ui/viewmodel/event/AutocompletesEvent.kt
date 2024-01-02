@@ -5,11 +5,11 @@ import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 
 sealed class AutocompletesEvent {
 
-    object OnClickAdd : AutocompletesEvent()
+    object OnClickAddAutocomplete : AutocompletesEvent()
 
-    object OnClickClear : AutocompletesEvent()
+    object OnClickClearAutocompletes : AutocompletesEvent()
 
-    object OnClickDelete : AutocompletesEvent()
+    object OnClickDeleteAutocompletes : AutocompletesEvent()
 
     object OnClickBack : AutocompletesEvent()
 

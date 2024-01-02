@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 
@@ -10,9 +11,7 @@ sealed class ArchiveEvent {
 
     object OnClickBack : ArchiveEvent()
 
-    object OnClickMoveToPurchases : ArchiveEvent()
-
-    object OnClickMoveToTrash : ArchiveEvent()
+    data class OnMoveShoppingListSelected(val location: ShoppingLocation) : ArchiveEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : ArchiveEvent()
 

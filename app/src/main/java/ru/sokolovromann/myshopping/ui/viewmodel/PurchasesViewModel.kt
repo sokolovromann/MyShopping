@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -32,21 +33,19 @@ class PurchasesViewModel @Inject constructor(
         when (event) {
             is PurchasesEvent.OnClickShoppingList -> onClickShoppingList(event)
 
-            PurchasesEvent.OnClickAdd -> onClickAdd()
+            PurchasesEvent.OnClickAddShoppingList -> onClickAddShoppingList()
 
             PurchasesEvent.OnClickBack -> onClickBack()
 
-            PurchasesEvent.OnClickMoveToArchive -> onClickMoveToArchive()
+            is PurchasesEvent.OnMoveShoppingListSelected -> onMoveShoppingListSelected(event)
 
-            PurchasesEvent.OnClickMoveToTrash -> onClickMoveToTrash()
+            PurchasesEvent.OnClickPinShoppingLists -> onClickPinShoppingLists()
 
-            PurchasesEvent.OnClickPin -> onClickPin()
+            PurchasesEvent.OnClickCopyShoppingLists -> onClickCopyShoppingLists()
 
-            PurchasesEvent.OnClickCopy -> onClickCopy()
+            is PurchasesEvent.OnClickMoveShoppingListUp -> onClickMoveShoppingListUp(event)
 
-            is PurchasesEvent.OnClickMoveUp -> onClickMoveUp(event)
-
-            is PurchasesEvent.OnClickMoveDown -> onClickMoveDown(event)
+            is PurchasesEvent.OnClickMoveShoppingListDown -> onClickMoveShoppingListDown(event)
 
             is PurchasesEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
@@ -87,12 +86,12 @@ class PurchasesViewModel @Inject constructor(
     private fun onClickShoppingList(
         event: PurchasesEvent.OnClickShoppingList
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(PurchasesScreenEvent.OnShowShoppingList(event.uid))
+        _screenEventFlow.emit(PurchasesScreenEvent.OnShowProductsScreen(event.uid))
     }
 
-    private fun onClickAdd() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickAddShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.addShopping().onSuccess {
-            _screenEventFlow.emit(PurchasesScreenEvent.OnShowShoppingList(it))
+            _screenEventFlow.emit(PurchasesScreenEvent.OnShowProductsScreen(it))
         }
     }
 
@@ -100,21 +99,20 @@ class PurchasesViewModel @Inject constructor(
         _screenEventFlow.emit(PurchasesScreenEvent.OnFinishApp)
     }
 
-    private fun onClickMoveToArchive() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onMoveShoppingListSelected(
+        event: PurchasesEvent.OnMoveShoppingListSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         purchasesState.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToArchive(it)
+            when (event.location) {
+                ShoppingLocation.PURCHASES -> shoppingListsRepository.moveShoppingListsToPurchases(it)
+                ShoppingLocation.ARCHIVE -> shoppingListsRepository.moveShoppingListsToArchive(it)
+                ShoppingLocation.TRASH -> shoppingListsRepository.moveShoppingListsToTrash(it)
+            }
             purchasesState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    private fun onClickMoveToTrash() = viewModelScope.launch(AppDispatchers.Main) {
-        purchasesState.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToTrash(it)
-            purchasesState.onAllShoppingListsSelected(selected = false)
-        }
-    }
-
-    private fun onClickPin() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickPinShoppingLists() = viewModelScope.launch(AppDispatchers.Main) {
         purchasesState.selectedUids?.let {
             if (purchasesState.isOnlyPinned()) {
                 shoppingListsRepository.unpinShoppingLists(it)
@@ -125,21 +123,21 @@ class PurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCopy() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCopyShoppingLists() = viewModelScope.launch(AppDispatchers.Main) {
         purchasesState.selectedUids?.let {
             shoppingListsRepository.copyShoppingLists(it)
             purchasesState.onShowItemMoreMenu(expanded = false)
         }
     }
 
-    private fun onClickMoveUp(
-        event: PurchasesEvent.OnClickMoveUp
+    private fun onClickMoveShoppingListUp(
+        event: PurchasesEvent.OnClickMoveShoppingListUp
     ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.moveShoppingListUp(shoppingUid = event.uid)
     }
 
-    private fun onClickMoveDown(
-        event: PurchasesEvent.OnClickMoveDown
+    private fun onClickMoveShoppingListDown(
+        event: PurchasesEvent.OnClickMoveShoppingListDown
     ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.moveShoppingListDown(shoppingUid = event.uid)
     }

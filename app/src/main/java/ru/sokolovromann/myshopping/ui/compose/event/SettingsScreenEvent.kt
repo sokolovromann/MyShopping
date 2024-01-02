@@ -6,13 +6,13 @@ sealed class SettingsScreenEvent {
 
     object OnShowBackScreen : SettingsScreenEvent()
 
-    object OnEditCurrency : SettingsScreenEvent()
+    object OnEditCurrencyScreen : SettingsScreenEvent()
 
-    object OnEditTaxRate : SettingsScreenEvent()
+    object OnEditTaxRateScreen : SettingsScreenEvent()
 
     data class OnSendEmailToDeveloper(val email: String) : SettingsScreenEvent()
 
-    object OnShowBackup : SettingsScreenEvent()
+    object OnShowBackupScreen : SettingsScreenEvent()
 
     data class OnShowAppGithub(val link: String) : SettingsScreenEvent()
 

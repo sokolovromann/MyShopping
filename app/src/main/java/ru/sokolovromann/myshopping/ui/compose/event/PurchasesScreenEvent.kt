@@ -6,7 +6,7 @@ sealed class PurchasesScreenEvent {
 
     object OnFinishApp : PurchasesScreenEvent()
 
-    data class OnShowShoppingList(val uid: String) : PurchasesScreenEvent()
+    data class OnShowProductsScreen(val shoppingUid: String) : PurchasesScreenEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesScreenEvent()
 

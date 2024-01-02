@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -45,8 +46,8 @@ fun ArchiveScreen(
                     navController.popBackStack()
                 }
 
-                is ArchiveScreenEvent.OnShowShoppingList -> navController.navigate(
-                    route = UiRoute.Products.productsScreen(it.uid)
+                is ArchiveScreenEvent.OnShowProductsScreen -> navController.navigate(
+                    route = UiRoute.Products.productsScreen(it.shoppingUid)
                 )
 
                 is ArchiveScreenEvent.OnDrawerScreenSelected -> {
@@ -100,13 +101,13 @@ fun ArchiveScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnClickMoveToPurchases) }) {
+                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_unarchive),
                                 contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToPurchases)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnClickMoveToTrash) }) {
+                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToTrash)

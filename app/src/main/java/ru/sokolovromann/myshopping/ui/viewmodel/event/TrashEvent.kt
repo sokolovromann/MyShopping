@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 
 sealed class TrashEvent {
@@ -8,11 +9,9 @@ sealed class TrashEvent {
 
     object OnClickBack : TrashEvent()
 
-    object OnClickMoveToPurchases : TrashEvent()
+    data class OnMoveShoppingListSelected(val location: ShoppingLocation) : TrashEvent()
 
-    object OnClickMoveToArchive : TrashEvent()
-
-    object OnClickDelete : TrashEvent()
+    object OnClickDeleteShoppingLists : TrashEvent()
 
     object OnClickEmptyTrash : TrashEvent()
 

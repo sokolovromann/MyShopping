@@ -32,11 +32,11 @@ class MoveProductViewModel @Inject constructor(
 
     override fun onEvent(event: MoveProductEvent) {
         when (event) {
-            MoveProductEvent.OnClickAdd -> onClickAdd()
+            MoveProductEvent.OnClickAddShoppingList -> onClickAddShoppingList()
 
             MoveProductEvent.OnClickCancel -> onClickCancel()
 
-            is MoveProductEvent.OnClickMove -> onClickMove(event)
+            is MoveProductEvent.OnClickMoveProducts -> onClickMoveProducts(event)
 
             is MoveProductEvent.OnLocationSelected -> onLocationSelected(event)
 
@@ -61,7 +61,7 @@ class MoveProductViewModel @Inject constructor(
         }
     }
 
-    private fun onClickAdd() = viewModelScope.launch {
+    private fun onClickAddShoppingList() = viewModelScope.launch {
         shoppingListsRepository.addShopping()
     }
 
@@ -69,12 +69,12 @@ class MoveProductViewModel @Inject constructor(
         _screenEventFlow.emit(MoveProductScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickMove(
-        event: MoveProductEvent.OnClickMove
+    private fun onClickMoveProducts(
+        event: MoveProductEvent.OnClickMoveProducts
     ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.moveProducts(
             products = moveProductState.savedProducts,
-            shoppingUid = event.uid
+            shoppingUid = event.shoppingUid
         )
         _screenEventFlow.emit(MoveProductScreenEvent.OnShowBackScreen)
     }

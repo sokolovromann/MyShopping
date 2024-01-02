@@ -32,11 +32,11 @@ class CopyProductViewModel @Inject constructor(
 
     override fun onEvent(event: CopyProductEvent) {
         when (event) {
-            CopyProductEvent.OnClickAdd -> onClickAdd()
+            CopyProductEvent.OnClickAddShoppingList -> onClickAddShoppingList()
 
             CopyProductEvent.OnClickCancel -> onClickCancel()
 
-            is CopyProductEvent.OnClickCopy -> onClickCopy(event)
+            is CopyProductEvent.OnClickCopyProducts -> onClickCopyProducts(event)
 
             is CopyProductEvent.OnLocationSelected -> onLocationSelected(event)
 
@@ -61,7 +61,7 @@ class CopyProductViewModel @Inject constructor(
         }
     }
 
-    private fun onClickAdd() = viewModelScope.launch {
+    private fun onClickAddShoppingList() = viewModelScope.launch {
         shoppingListsRepository.addShopping()
     }
 
@@ -69,12 +69,12 @@ class CopyProductViewModel @Inject constructor(
         _screenEventFlow.emit(CopyProductScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickCopy(
-        event: CopyProductEvent.OnClickCopy
+    private fun onClickCopyProducts(
+        event: CopyProductEvent.OnClickCopyProducts
     ) = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.copyProducts(
             products = copyProductState.savedProducts,
-            shoppingUid = event.uid
+            shoppingUid = event.shoppingUid
         )
         _screenEventFlow.emit(CopyProductScreenEvent.OnShowBackScreen)
     }

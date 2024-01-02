@@ -4,7 +4,7 @@ sealed class BackupScreenEvent {
 
     object OnShowBackScreen : BackupScreenEvent()
 
-    data class OnShowPermissions(val packageName: String) : BackupScreenEvent()
+    data class OnShowPermissionsScreen(val packageName: String) : BackupScreenEvent()
 
     object OnSelectFile : BackupScreenEvent()
 }

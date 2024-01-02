@@ -39,7 +39,7 @@ fun EditReminderScreen(
             when (it) {
                 EditReminderScreenEvent.OnShowBackScreen -> navController.popBackStack()
 
-                is EditReminderScreenEvent.OnShowPermissions -> {
+                is EditReminderScreenEvent.OnShowPermissionsScreen -> {
                     navController.popBackStack()
                     navController.navigate(
                         intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {

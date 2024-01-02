@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -43,8 +44,8 @@ fun PurchasesScreen(
                     navController.popBackStack()
                 }
 
-                is PurchasesScreenEvent.OnShowShoppingList -> navController.navigate(
-                    route = UiRoute.Products.productsScreen(it.uid)
+                is PurchasesScreenEvent.OnShowProductsScreen -> navController.navigate(
+                    route = UiRoute.Products.productsScreen(it.shoppingUid)
                 )
 
                 is PurchasesScreenEvent.OnDrawerScreenSelected -> {
@@ -98,7 +99,7 @@ fun PurchasesScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickPin) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickPinShoppingLists) }) {
                             Icon(
                                 painter = if (state.isOnlyPinned()) {
                                     painterResource(R.drawable.ic_all_pin)
@@ -108,13 +109,13 @@ fun PurchasesScreen(
                                 contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveToArchive) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_archive),
                                 contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveToTrash) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash)
@@ -130,7 +131,7 @@ fun PurchasesScreen(
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowItemMoreMenu(false)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnClickCopy) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnClickCopyShoppingLists) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_copyShoppingLists)) }
                                 )
                                 AppDropdownMenuItem(
@@ -163,7 +164,7 @@ fun PurchasesScreen(
                 },
                 actionButtons = {
                     if (state.selectedUids == null) {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAdd) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAddShoppingList) }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon)
@@ -271,14 +272,14 @@ fun PurchasesScreen(
                     properties = PopupProperties(focusable = false)
                 ) {
                     Row {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveUp(it)) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListUp(it)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_arrow_up),
                                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUp),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveDown(it)) }) {
+                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListDown(it)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_arrow_down),
                                 contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDown),

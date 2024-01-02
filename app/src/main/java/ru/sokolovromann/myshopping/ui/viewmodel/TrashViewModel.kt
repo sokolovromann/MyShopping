@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
@@ -33,11 +34,9 @@ class TrashViewModel @Inject constructor(
 
             TrashEvent.OnClickBack -> onClickBack()
 
-            TrashEvent.OnClickMoveToPurchases -> onClickMoveToPurchases()
+            is TrashEvent.OnMoveShoppingListSelected -> onMoveShoppingListSelected(event)
 
-            TrashEvent.OnClickMoveToArchive -> onClickMoveToArchive()
-
-            TrashEvent.OnClickDelete -> onClickDelete()
+            TrashEvent.OnClickDeleteShoppingLists -> onClickDeleteShoppingLists()
 
             TrashEvent.OnClickEmptyTrash -> onClickEmptyTrash()
 
@@ -62,28 +61,27 @@ class TrashViewModel @Inject constructor(
     private fun onClickShoppingList(
         event: TrashEvent.OnClickShoppingList
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(TrashScreenEvent.OnShowShoppingList(event.uid))
+        _screenEventFlow.emit(TrashScreenEvent.OnShowProductsScreen(event.uid))
     }
 
     private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(TrashScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickMoveToPurchases() = viewModelScope.launch(AppDispatchers.Main) {
-        trashState.selectedUids?.forEach {
-            shoppingListsRepository.moveShoppingListToPurchases(it)
+    private fun onMoveShoppingListSelected(
+        event: TrashEvent.OnMoveShoppingListSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        trashState.selectedUids?.let {
+            when (event.location) {
+                ShoppingLocation.PURCHASES -> shoppingListsRepository.moveShoppingListsToPurchases(it)
+                ShoppingLocation.ARCHIVE -> shoppingListsRepository.moveShoppingListsToArchive(it)
+                ShoppingLocation.TRASH -> shoppingListsRepository.moveShoppingListsToTrash(it)
+            }
             trashState.onAllShoppingListsSelected(selected = false)
         }
     }
 
-    private fun onClickMoveToArchive() = viewModelScope.launch(AppDispatchers.Main) {
-        trashState.selectedUids?.forEach {
-            shoppingListsRepository.moveShoppingListToArchive(it)
-            trashState.onAllShoppingListsSelected(selected = false)
-        }
-    }
-
-    private fun onClickDelete() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDeleteShoppingLists() = viewModelScope.launch(AppDispatchers.Main) {
         trashState.selectedUids?.let {
             shoppingListsRepository.deleteShoppingLists(it)
             alarmManager.deleteReminders(it)

@@ -53,11 +53,11 @@ fun AutocompletesScreen(
                     navController.popBackStack()
                 }
 
-                AutocompletesScreenEvent.OnShowAddAutocomplete -> navController.navigate(
+                AutocompletesScreenEvent.OnShowAddAutocompleteScreen -> navController.navigate(
                     route = UiRoute.Autocompletes.addAutocompletesScreen
                 )
 
-                is AutocompletesScreenEvent.OnShowEditAutocomplete -> navController.navigate(
+                is AutocompletesScreenEvent.OnShowEditAutocompleteScreen -> navController.navigate(
                     route = UiRoute.Autocompletes.editAutocompleteScreen(it.uid)
                 )
 
@@ -112,7 +112,7 @@ fun AutocompletesScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClear) }) {
+                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClearAutocompletes) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_autocompletes_clear),
                                 contentDescription = stringResource(R.string.autocompletes_contentDescription_clearAutocompletes)
@@ -120,7 +120,7 @@ fun AutocompletesScreen(
                         }
 
                         if (state.locationValue.selected == AutocompleteLocation.PERSONAL) {
-                            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickDelete) }) {
+                            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickDeleteAutocompletes) }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
                                     contentDescription = stringResource(R.string.autocompletes_contentDescription_deleteAutocompletes)
@@ -149,7 +149,7 @@ fun AutocompletesScreen(
         },
         floatingActionButton = {
             if (state.selectedNames == null) {
-                FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickAdd) }) {
+                FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickAddAutocomplete) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),

@@ -50,7 +50,7 @@ fun BackupScreen(
             when (it) {
                 BackupScreenEvent.OnShowBackScreen -> navController.popBackStack()
 
-                is BackupScreenEvent.OnShowPermissions -> {
+                is BackupScreenEvent.OnShowPermissionsScreen -> {
                     navController.popBackStack()
                     navController.navigate(
                         intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {

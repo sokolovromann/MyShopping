@@ -74,7 +74,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             SettingUid.Backup -> {
-                _screenEventFlow.emit(SettingsScreenEvent.OnShowBackup)
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowBackupScreen)
             }
 
             SettingUid.DisplayMoney -> {
@@ -83,7 +83,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             SettingUid.Currency -> {
-                _screenEventFlow.emit(SettingsScreenEvent.OnEditCurrency)
+                _screenEventFlow.emit(SettingsScreenEvent.OnEditCurrencyScreen)
             }
 
             SettingUid.DisplayCurrencyToLeft -> {
@@ -96,7 +96,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             SettingUid.TaxRate -> {
-                _screenEventFlow.emit(SettingsScreenEvent.OnEditTaxRate)
+                _screenEventFlow.emit(SettingsScreenEvent.OnEditTaxRateScreen)
             }
 
             SettingUid.DisplayDefaultAutocomplete -> {

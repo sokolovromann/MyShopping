@@ -6,7 +6,7 @@ sealed class ArchiveScreenEvent {
 
     object OnShowBackScreen : ArchiveScreenEvent()
 
-    data class OnShowShoppingList(val uid: String) : ArchiveScreenEvent()
+    data class OnShowProductsScreen(val shoppingUid: String) : ArchiveScreenEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : ArchiveScreenEvent()
 

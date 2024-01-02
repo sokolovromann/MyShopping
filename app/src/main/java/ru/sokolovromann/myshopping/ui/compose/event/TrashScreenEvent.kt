@@ -6,7 +6,7 @@ sealed class TrashScreenEvent {
 
     object OnShowBackScreen : TrashScreenEvent()
 
-    data class OnShowShoppingList(val uid: String) : TrashScreenEvent()
+    data class OnShowProductsScreen(val shoppingUid: String) : TrashScreenEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : TrashScreenEvent()
 

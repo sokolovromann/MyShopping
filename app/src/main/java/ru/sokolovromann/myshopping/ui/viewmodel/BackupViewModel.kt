@@ -58,7 +58,7 @@ class BackupViewModel @Inject constructor(
     }
 
     private fun onClickOpenPermissions() = viewModelScope.launch(AppDispatchers.Main) {
-        val event = BackupScreenEvent.OnShowPermissions(BuildConfig.APPLICATION_ID)
+        val event = BackupScreenEvent.OnShowPermissionsScreen(BuildConfig.APPLICATION_ID)
         _screenEventFlow.emit(event)
     }
 

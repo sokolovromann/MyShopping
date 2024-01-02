@@ -57,35 +57,35 @@ fun ProductsScreen(
                     navController.popBackStack()
                 }
 
-                is ProductsScreenEvent.OnShowAddProduct -> navController.navigate(
+                is ProductsScreenEvent.OnShowAddProductScreen -> navController.navigate(
                     route = UiRoute.Products.addProductScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.OnShowEditProduct -> navController.navigate(
+                is ProductsScreenEvent.OnShowEditProductScreen -> navController.navigate(
                     route = UiRoute.Products.editProductScreen(it.shoppingUid, it.productUid)
                 )
 
-                is ProductsScreenEvent.OnShowEditName -> navController.navigate(
+                is ProductsScreenEvent.OnShowEditNameScreen -> navController.navigate(
                     route = UiRoute.Products.editShoppingListNameScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.OnShowEditReminder -> navController.navigate(
+                is ProductsScreenEvent.OnShowEditReminderScreen -> navController.navigate(
                     route = UiRoute.Products.editShoppingListReminderScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.OnShowEditTotal -> navController.navigate(
+                is ProductsScreenEvent.OnShowEditTotalScreen -> navController.navigate(
                     route = UiRoute.Products.editShoppingListTotalScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.OnShowCopyProduct -> navController.navigate(
+                is ProductsScreenEvent.OnShowCopyProductScreen -> navController.navigate(
                     route = UiRoute.Products.copyProductToShoppingList(it.productUids)
                 )
 
-                is ProductsScreenEvent.OnShowMoveProduct -> navController.navigate(
+                is ProductsScreenEvent.OnShowMoveProductScreen -> navController.navigate(
                     route = UiRoute.Products.moveProductToShoppingList(it.productUids)
                 )
 
-                is ProductsScreenEvent.OnShowCalculateChange -> navController.navigate(
+                is ProductsScreenEvent.OnShowCalculateChangeScreen -> navController.navigate(
                     route = UiRoute.Products.calculateChange(it.shoppingUid)
                 )
 
@@ -158,7 +158,7 @@ fun ProductsScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickPin) }) {
+                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickPinProducts) }) {
                             Icon(
                                 painter = if (state.isOnlyPinned()) {
                                     painterResource(R.drawable.ic_all_pin)
@@ -184,11 +184,11 @@ fun ProductsScreen(
                                 onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(false)) },
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.OnClickCopyProductsToShoppingList) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.OnClickCopyProducts) },
                                     text = { Text(text = stringResource(R.string.products_action_copyProductsToShoppingList)) }
                                 )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductsToShoppingList) },
+                                    onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProducts) },
                                     text = { Text(text = stringResource(R.string.products_action_moveProductsToShoppingList)) }
                                 )
                                 AppDropdownMenuItem(

@@ -4,5 +4,5 @@ sealed class EditReminderScreenEvent {
 
     object OnShowBackScreen : EditReminderScreenEvent()
 
-    data class OnShowPermissions(val packageName: String) : EditReminderScreenEvent()
+    data class OnShowPermissionsScreen(val packageName: String) : EditReminderScreenEvent()
 }

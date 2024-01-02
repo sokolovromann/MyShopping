@@ -83,7 +83,7 @@ fun CopyProductScreen(
                         }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.OnClickAdd) }) {
+                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.OnClickAddShoppingList) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.copyProduct_contentDescription_addShoppingListIcon),
@@ -111,7 +111,7 @@ fun CopyProductScreen(
             isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
-                val event = CopyProductEvent.OnClickCopy(it)
+                val event = CopyProductEvent.OnClickCopyProducts(it)
                 viewModel.onEvent(event)
             },
             onLongClick = {}

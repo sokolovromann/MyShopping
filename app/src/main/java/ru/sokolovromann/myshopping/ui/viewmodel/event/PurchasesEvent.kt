@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 
@@ -8,21 +9,19 @@ sealed class PurchasesEvent {
 
     data class OnClickShoppingList(val uid: String) : PurchasesEvent()
 
-    object OnClickAdd : PurchasesEvent()
+    object OnClickAddShoppingList : PurchasesEvent()
 
     object OnClickBack : PurchasesEvent()
 
-    object OnClickMoveToArchive : PurchasesEvent()
+    data class OnMoveShoppingListSelected(val location: ShoppingLocation) : PurchasesEvent()
 
-    object OnClickMoveToTrash : PurchasesEvent()
+    object OnClickPinShoppingLists: PurchasesEvent()
 
-    object OnClickPin: PurchasesEvent()
+    object OnClickCopyShoppingLists : PurchasesEvent()
 
-    object OnClickCopy : PurchasesEvent()
+    data class OnClickMoveShoppingListUp(val uid: String) : PurchasesEvent()
 
-    data class OnClickMoveUp(val uid: String) : PurchasesEvent()
-
-    data class OnClickMoveDown(val uid: String) : PurchasesEvent()
+    data class OnClickMoveShoppingListDown(val uid: String) : PurchasesEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesEvent()
 

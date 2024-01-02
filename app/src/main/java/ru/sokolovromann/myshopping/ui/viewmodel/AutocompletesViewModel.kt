@@ -29,11 +29,11 @@ class AutocompletesViewModel @Inject constructor(
 
     override fun onEvent(event: AutocompletesEvent) {
         when (event) {
-            AutocompletesEvent.OnClickAdd -> onClickAdd()
+            AutocompletesEvent.OnClickAddAutocomplete -> onClickAddAutocomplete()
 
-            AutocompletesEvent.OnClickClear -> onClickClear()
+            AutocompletesEvent.OnClickClearAutocompletes -> onClickClearAutocompletes()
 
-            AutocompletesEvent.OnClickDelete -> onClickDelete()
+            AutocompletesEvent.OnClickDeleteAutocompletes -> onClickDeleteAutocompletes()
 
             AutocompletesEvent.OnClickBack -> onClickBack()
 
@@ -59,11 +59,11 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun onClickAdd() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(AutocompletesScreenEvent.OnShowAddAutocomplete)
+    private fun onClickAddAutocomplete() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(AutocompletesScreenEvent.OnShowAddAutocompleteScreen)
     }
 
-    private fun onClickClear() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickClearAutocompletes() = viewModelScope.launch(AppDispatchers.Main) {
         when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
@@ -77,7 +77,7 @@ class AutocompletesViewModel @Inject constructor(
         autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
-    private fun onClickDelete() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDeleteAutocompletes() = viewModelScope.launch(AppDispatchers.Main) {
         when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> return@launch
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()

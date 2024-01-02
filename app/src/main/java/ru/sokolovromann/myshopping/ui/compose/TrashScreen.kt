@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
@@ -44,8 +45,8 @@ fun TrashScreen(
                     navController.popBackStack()
                 }
 
-                is TrashScreenEvent.OnShowShoppingList -> navController.navigate(
-                    route = UiRoute.Products.productsScreen(it.uid)
+                is TrashScreenEvent.OnShowProductsScreen -> navController.navigate(
+                    route = UiRoute.Products.productsScreen(it.shoppingUid)
                 )
 
                 is TrashScreenEvent.OnDrawerScreenSelected -> {
@@ -99,19 +100,19 @@ fun TrashScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnClickMoveToPurchases) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_restore),
                                 contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToPurchases)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnClickMoveToArchive) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_archive),
                                 contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToArchive)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnClickDelete) }) {
+                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.trash_contentDescription_deleteShoppingLists)

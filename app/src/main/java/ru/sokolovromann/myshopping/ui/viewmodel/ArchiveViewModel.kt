@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.Sort
@@ -34,9 +35,7 @@ class ArchiveViewModel @Inject constructor(
 
             ArchiveEvent.OnClickBack -> onClickBack()
 
-            ArchiveEvent.OnClickMoveToPurchases -> onClickMoveToPurchases()
-
-            ArchiveEvent.OnClickMoveToTrash -> onClickMoveToTrash()
+            is ArchiveEvent.OnMoveShoppingListSelected -> onMoveShoppingListSelected(event)
 
             is ArchiveEvent.OnDrawerScreenSelected -> onDrawerScreenSelected(event)
 
@@ -75,23 +74,22 @@ class ArchiveViewModel @Inject constructor(
     private fun onClickShoppingList(
         event: ArchiveEvent.OnClickShoppingList
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ArchiveScreenEvent.OnShowShoppingList(event.uid))
+        _screenEventFlow.emit(ArchiveScreenEvent.OnShowProductsScreen(event.uid))
     }
 
     private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickMoveToPurchases() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onMoveShoppingListSelected(
+        event: ArchiveEvent.OnMoveShoppingListSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
         archiveState.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToPurchases(it)
-            archiveState.onAllShoppingListsSelected(selected = false)
-        }
-    }
-
-    private fun onClickMoveToTrash() = viewModelScope.launch(AppDispatchers.Main) {
-        archiveState.selectedUids?.let {
-            shoppingListsRepository.moveShoppingListsToTrash(it)
+            when (event.location) {
+                ShoppingLocation.PURCHASES -> shoppingListsRepository.moveShoppingListsToPurchases(it)
+                ShoppingLocation.ARCHIVE -> shoppingListsRepository.moveShoppingListsToArchive(it)
+                ShoppingLocation.TRASH -> shoppingListsRepository.moveShoppingListsToTrash(it)
+            }
             archiveState.onAllShoppingListsSelected(selected = false)
         }
     }

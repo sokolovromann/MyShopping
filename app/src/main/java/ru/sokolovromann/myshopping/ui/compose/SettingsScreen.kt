@@ -58,11 +58,11 @@ fun SettingsScreen(
                     navController.popBackStack()
                 }
 
-                SettingsScreenEvent.OnEditCurrency -> navController.navigate(
+                SettingsScreenEvent.OnEditCurrencyScreen -> navController.navigate(
                     route = UiRoute.Settings.editCurrencySymbolScreen
                 )
 
-                SettingsScreenEvent.OnEditTaxRate -> navController.navigate(
+                SettingsScreenEvent.OnEditTaxRateScreen -> navController.navigate(
                     route = UiRoute.Settings.editTaxRateScreen
                 )
 
@@ -74,7 +74,7 @@ fun SettingsScreen(
                     }
                 )
 
-                SettingsScreenEvent.OnShowBackup -> navController.navigate(
+                SettingsScreenEvent.OnShowBackupScreen -> navController.navigate(
                     route = UiRoute.Settings.backupScreen
                 )
 

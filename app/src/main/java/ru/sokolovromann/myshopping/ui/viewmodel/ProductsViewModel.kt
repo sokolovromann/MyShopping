@@ -52,11 +52,11 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.OnClickDeleteTotal -> onClickDeleteTotal()
 
-            ProductsEvent.OnClickPin -> onClickPin()
+            ProductsEvent.OnClickPinProducts -> onClickPinProducts()
 
-            ProductsEvent.OnClickCopyProductsToShoppingList -> onClickCopyProductsToShoppingList()
+            ProductsEvent.OnClickCopyProducts -> onClickCopyProducts()
 
-            ProductsEvent.OnClickMoveProductsToShoppingList -> onClickMoveProductsToShoppingList()
+            ProductsEvent.OnClickMoveProducts -> onClickMoveProducts()
 
             ProductsEvent.OnClickCopyShoppingList -> onClickCopyShoppingList()
 
@@ -116,19 +116,19 @@ class ProductsViewModel @Inject constructor(
         } else {
             shoppingListsRepository.completeProduct(event.productUid)
             if (productsState.isEditProductAfterCompleted()) {
-                _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProduct(shoppingUid, event.productUid))
+                _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, event.productUid))
             }
         }
     }
 
     private fun onClickAddProduct() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.OnShowAddProduct(shoppingUid))
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowAddProductScreen(shoppingUid))
     }
 
     private fun onClickEditProduct(
         event: ProductsEvent.OnClickEditProduct
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProduct(shoppingUid, event.productUid))
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, event.productUid))
         productsState.onAllProductsSelected(selected = false)
     }
 
@@ -137,17 +137,17 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun onClickEditName() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditName(shoppingUid))
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditNameScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
     }
 
     private fun onClickEditReminder() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditReminder(shoppingUid))
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditReminderScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
     }
 
     private fun onClickEditTotal() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditTotal(shoppingUid))
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowEditTotalScreen(shoppingUid))
         productsState.onSelectDisplayTotal(expanded = false)
     }
 
@@ -156,7 +156,7 @@ class ProductsViewModel @Inject constructor(
         productsState.onSelectDisplayTotal(expanded = false)
     }
 
-    private fun onClickPin() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickPinProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
             if (productsState.isOnlyPinned()) {
                 shoppingListsRepository.unpinProducts(it)
@@ -169,19 +169,19 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCopyProductsToShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCopyProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
             val uids = uidsToString(it)
-            _screenEventFlow.emit(ProductsScreenEvent.OnShowCopyProduct(uids))
+            _screenEventFlow.emit(ProductsScreenEvent.OnShowCopyProductScreen(uids))
 
             productsState.onAllProductsSelected(selected = false)
         }
     }
 
-    private fun onClickMoveProductsToShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickMoveProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
             val uids = uidsToString(it)
-            _screenEventFlow.emit(ProductsScreenEvent.OnShowMoveProduct(uids))
+            _screenEventFlow.emit(ProductsScreenEvent.OnShowMoveProductScreen(uids))
 
             productsState.onAllProductsSelected(selected = false)
         }
@@ -230,7 +230,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun onClickCalculateChange() = viewModelScope.launch(AppDispatchers.Main) {
-        _screenEventFlow.emit(ProductsScreenEvent.OnShowCalculateChange(shoppingUid))
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowCalculateChangeScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
     }
 

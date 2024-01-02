@@ -22,11 +22,11 @@ sealed class ProductsEvent {
 
     object OnClickDeleteTotal : ProductsEvent()
 
-    object OnClickPin: ProductsEvent()
+    object OnClickPinProducts: ProductsEvent()
 
-    object OnClickCopyProductsToShoppingList : ProductsEvent()
+    object OnClickCopyProducts : ProductsEvent()
 
-    object OnClickMoveProductsToShoppingList : ProductsEvent()
+    object OnClickMoveProducts : ProductsEvent()
 
     object OnClickCopyShoppingList : ProductsEvent()
 

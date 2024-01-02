@@ -4,21 +4,21 @@ sealed class ProductsScreenEvent {
 
     object OnShowBackScreen : ProductsScreenEvent()
 
-    data class OnShowAddProduct(val shoppingUid: String) : ProductsScreenEvent()
+    data class OnShowAddProductScreen(val shoppingUid: String) : ProductsScreenEvent()
 
-    data class OnShowEditProduct(val shoppingUid: String, val productUid: String) : ProductsScreenEvent()
+    data class OnShowEditProductScreen(val shoppingUid: String, val productUid: String) : ProductsScreenEvent()
 
-    data class OnShowEditName(val shoppingUid: String) : ProductsScreenEvent()
+    data class OnShowEditNameScreen(val shoppingUid: String) : ProductsScreenEvent()
 
-    data class OnShowEditReminder(val shoppingUid: String) : ProductsScreenEvent()
+    data class OnShowEditReminderScreen(val shoppingUid: String) : ProductsScreenEvent()
 
-    data class OnShowEditTotal(val shoppingUid: String) : ProductsScreenEvent()
+    data class OnShowEditTotalScreen(val shoppingUid: String) : ProductsScreenEvent()
 
-    data class OnShowCopyProduct(val productUids: String) : ProductsScreenEvent()
+    data class OnShowCopyProductScreen(val productUids: String) : ProductsScreenEvent()
 
-    data class OnShowMoveProduct(val productUids: String) : ProductsScreenEvent()
+    data class OnShowMoveProductScreen(val productUids: String) : ProductsScreenEvent()
 
-    data class OnShowCalculateChange(val shoppingUid: String) : ProductsScreenEvent()
+    data class OnShowCalculateChangeScreen(val shoppingUid: String) : ProductsScreenEvent()
 
     data class OnShareProducts(val products: String) : ProductsScreenEvent()
 

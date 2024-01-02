@@ -92,7 +92,7 @@ class EditReminderViewModel @Inject constructor(
     }
 
     private fun onClickOpenPermissions() = viewModelScope.launch(AppDispatchers.Main) {
-        val event = EditReminderScreenEvent.OnShowPermissions(BuildConfig.APPLICATION_ID)
+        val event = EditReminderScreenEvent.OnShowPermissionsScreen(BuildConfig.APPLICATION_ID)
         _screenEventFlow.emit(event)
     }
 

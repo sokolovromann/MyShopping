@@ -83,7 +83,7 @@ fun MoveProductScreen(
                         }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.onEvent(MoveProductEvent.OnClickAdd) }) {
+                    IconButton(onClick = { viewModel.onEvent(MoveProductEvent.OnClickAddShoppingList) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.moveProduct_contentDescription_addShoppingListIcon),
@@ -111,7 +111,7 @@ fun MoveProductScreen(
             isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
-                val event = MoveProductEvent.OnClickMove(it)
+                val event = MoveProductEvent.OnClickMoveProducts(it)
                 viewModel.onEvent(event)
             },
             onLongClick = {}

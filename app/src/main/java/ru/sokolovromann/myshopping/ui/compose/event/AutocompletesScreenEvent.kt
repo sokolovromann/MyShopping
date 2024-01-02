@@ -6,9 +6,9 @@ sealed class AutocompletesScreenEvent {
 
     object OnShowBackScreen : AutocompletesScreenEvent()
 
-    object OnShowAddAutocomplete : AutocompletesScreenEvent()
+    object OnShowAddAutocompleteScreen : AutocompletesScreenEvent()
 
-    data class OnShowEditAutocomplete(val uid: String) : AutocompletesScreenEvent()
+    data class OnShowEditAutocompleteScreen(val uid: String) : AutocompletesScreenEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : AutocompletesScreenEvent()
 
