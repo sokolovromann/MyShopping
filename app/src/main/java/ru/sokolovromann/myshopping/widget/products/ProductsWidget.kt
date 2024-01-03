@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
@@ -42,18 +41,16 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
+import ru.sokolovromann.myshopping.ui.model.ProductsWidgetState
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
-import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.widget.WidgetKey
 
 class ProductsWidget : GlanceAppWidget() {
@@ -77,13 +74,10 @@ class ProductsWidget : GlanceAppWidget() {
     @SuppressLint("RestrictedApi")
     @Composable
     private fun ProductsWidgetContent(context: Context) {
-        val shoppingUid = currentState(key = stringPreferencesKey(WidgetKey.SHOPPING_UID.name)) ?: ""
+        val shoppingUid: String? = currentState(key = stringPreferencesKey(WidgetKey.SHOPPING_UID.name))
 
         val coroutineScope = rememberCoroutineScope()
-        val shoppingListWithConfigFlow: MutableStateFlow<ShoppingListWithConfig> = remember {
-            MutableStateFlow(ShoppingListWithConfig())
-        }
-
+        val productsWidgetState: ProductsWidgetState = remember { ProductsWidgetState() }
         val entryPoint = EntryPointAccessors.fromApplication(
             context = context,
             entryPoint = ProductsWidgetEntryPoint::class.java
@@ -92,40 +86,45 @@ class ProductsWidget : GlanceAppWidget() {
         LaunchedEffect(shoppingUid, Unit) {
             coroutineScope.launch {
                 entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collect {
-                    shoppingListWithConfigFlow.emit(it)
+                    productsWidgetState.populate(it)
                 }
             }
         }
 
         Column(modifier = GlanceModifier.fillMaxSize()) {
-            val shoppingListWithConfig = shoppingListWithConfigFlow.collectAsState().value
-            val shopping = shoppingListWithConfig.getShopping()
-            val userPreferences = shoppingListWithConfig.getUserPreferences()
+            if (shoppingUid == null) {
+                ProductsWidgetNotFound(
+                    modifier = GlanceModifier.defaultWeight(),
+                    text = context.getString(R.string.productsWidget_message_loadingError),
+                    fontSize = productsWidgetState.fontSize
+                )
+                return@Column
+            }
 
-            if (shoppingListWithConfig.isProductsEmpty()) {
+            if (productsWidgetState.isNotFound()) {
                 ProductsWidgetName(
-                    name = shopping.name,
-                    fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize),
-                    completed = shoppingListWithConfig.isCompleted(),
-                    noSplit = userPreferences.displayCompleted == DisplayCompleted.NO_SPLIT
+                    name = productsWidgetState.nameText,
+                    fontSize = productsWidgetState.fontSize,
+                    completed = productsWidgetState.completed,
+                    noSplit = productsWidgetState.displayCompleted == DisplayCompleted.NO_SPLIT
                 )
 
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
-                    fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+                    fontSize = productsWidgetState.fontSize
                 )
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),
-                    name = shopping.name,
-                    completed = shoppingListWithConfig.isCompleted(),
-                    pinnedItems = UiShoppingListsMapper.toPinnedSortedProductWidgetItems(shoppingListWithConfig),
-                    otherItems = UiShoppingListsMapper.toOtherSortedProductWidgetItems(shoppingListWithConfig),
-                    displayCompleted = userPreferences.displayCompleted,
-                    fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize),
-                    coloredCheckbox = userPreferences.coloredCheckbox,
-                    completedWithCheckbox = userPreferences.completedWithCheckbox
+                    name = productsWidgetState.nameText,
+                    completed = productsWidgetState.completed,
+                    pinnedItems = productsWidgetState.pinnedProducts,
+                    otherItems = productsWidgetState.otherProducts,
+                    displayCompleted = productsWidgetState.displayCompleted,
+                    fontSize = productsWidgetState.fontSize,
+                    coloredCheckbox = productsWidgetState.coloredCheckbox,
+                    completedWithCheckbox = productsWidgetState.completedWithCheckbox
                 ) {
                     coroutineScope.launch {
                         if (it.completed) {
@@ -152,10 +151,10 @@ class ProductsWidget : GlanceAppWidget() {
                     .background(ColorProvider(R.color.gray_200)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (userPreferences.displayMoney) {
+                if (productsWidgetState.displayMoney) {
                     ProductsWidgetTotal(
-                        shopping.total.getDisplayValue(),
-                        UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+                        total = productsWidgetState.totalText,
+                        fontSize = productsWidgetState.fontSize
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())
@@ -188,7 +187,7 @@ private fun createAction(uid: String): String {
 @SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetName(
-    name: String,
+    name: UiString,
     fontSize: UiFontSize,
     completed: Boolean,
     noSplit: Boolean
@@ -219,7 +218,7 @@ private fun ProductsWidgetName(
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = name,
+            text = name.asCompose(),
             style = TextDefaults.defaultTextStyle.copy(
                 color = ColorProvider(R.color.black),
                 fontSize = fontSize.widgetHeader.sp,
@@ -233,7 +232,7 @@ private fun ProductsWidgetName(
 @SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetTotal(
-    total: String,
+    total: UiString,
     fontSize: UiFontSize
 ) {
     if (total.isEmpty()) {
@@ -241,7 +240,7 @@ private fun ProductsWidgetTotal(
     }
 
     Text(
-        text = total,
+        text = total.asCompose(),
         style = TextDefaults.defaultTextStyle.copy(
             color = ColorProvider(R.color.black),
             fontSize = fontSize.widgetContent.sp
@@ -283,7 +282,7 @@ private fun ProductsWidgetNotFound(
 @Composable
 private fun ProductsWidgetProducts(
     modifier: GlanceModifier,
-    name: String,
+    name: UiString,
     completed: Boolean,
     pinnedItems: List<ProductWidgetItem>,
     otherItems: List<ProductWidgetItem>,

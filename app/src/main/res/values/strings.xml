@@ -168,6 +168,7 @@
 
     <string name="productsWidget_description">Products of the selected shopping list</string>
     <string name="productsWidget_label">Shopping list</string>
+    <string name="productsWidget_message_loadingError">Loading error</string>
     <string name="productsWidget_text_loading">Loading…</string>
     <string name="productsWidget_text_productsNotFound">Shopping list is empty</string>
 

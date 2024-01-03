@@ -274,6 +274,7 @@
 
     <string name="productsWidget_description">Товари з вибраного списку покупок</string>
     <string name="productsWidget_label">Список покупок</string>
+    <string name="productsWidget_message_loadingError">Помилка завантаження</string>
     <string name="productsWidget_text_loading">Завантаження…</string>
     <string name="productsWidget_text_productsNotFound">Список покупок порожній</string>
 
