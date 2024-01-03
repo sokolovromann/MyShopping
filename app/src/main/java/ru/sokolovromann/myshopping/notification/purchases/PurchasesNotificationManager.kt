@@ -16,7 +16,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.utils.toProductsString
 import ru.sokolovromann.myshopping.notification.AppNotificationChannel
-import ru.sokolovromann.myshopping.ui.MainActivity
+import ru.sokolovromann.myshopping.ui.activity.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import javax.inject.Inject
 

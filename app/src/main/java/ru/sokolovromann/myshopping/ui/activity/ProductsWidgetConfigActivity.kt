@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.ui
+package ru.sokolovromann.myshopping.ui.activity
 
 import android.appwidget.AppWidgetManager
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.ui
+package ru.sokolovromann.myshopping.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,16 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.sokolovromann.myshopping.ui.UiRoute
+import ru.sokolovromann.myshopping.ui.UiRouteKey
+import ru.sokolovromann.myshopping.ui.archiveGraph
+import ru.sokolovromann.myshopping.ui.autocompletesGraph
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
+import ru.sokolovromann.myshopping.ui.productsGraph
+import ru.sokolovromann.myshopping.ui.purchasesGraph
+import ru.sokolovromann.myshopping.ui.settingsGraph
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
+import ru.sokolovromann.myshopping.ui.trashGraph
 import ru.sokolovromann.myshopping.ui.viewmodel.MainViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
 

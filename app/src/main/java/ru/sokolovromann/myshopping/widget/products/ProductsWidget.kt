@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.ui.MainActivity
+import ru.sokolovromann.myshopping.ui.activity.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.model.ProductsWidgetState

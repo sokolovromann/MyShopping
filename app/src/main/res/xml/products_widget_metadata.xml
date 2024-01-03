@@ -3,7 +3,7 @@
     android:minWidth="180dp"
     android:minHeight="180dp"
     android:initialLayout="@layout/widget_products"
-    android:configure="ru.sokolovromann.myshopping.ui.ProductsWidgetConfigActivity"
+    android:configure="ru.sokolovromann.myshopping.ui.activity.ProductsWidgetConfigActivity"
     android:description="@string/productsWidget_description"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
