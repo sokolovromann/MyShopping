@@ -41,6 +41,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
@@ -85,7 +86,7 @@ class ProductsWidget : GlanceAppWidget() {
 
         LaunchedEffect(shoppingUid, Unit) {
             coroutineScope.launch {
-                entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collect {
+                entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collectLatest {
                     productsWidgetState.populate(it)
                 }
             }
@@ -114,6 +115,16 @@ class ProductsWidget : GlanceAppWidget() {
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
                     fontSize = productsWidgetState.fontSize
                 )
+
+                if (productsWidgetState.forceLoad) {
+                    LaunchedEffect(Unit) {
+                        coroutineScope.launch {
+                            entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collectLatest {
+                                productsWidgetState.populate(it)
+                            }
+                        }
+                    }
+                }
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),

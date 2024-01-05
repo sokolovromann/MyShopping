@@ -46,6 +46,9 @@ class ProductsWidgetState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
+    var forceLoad: Boolean by mutableStateOf(true)
+        private set
+
     fun populate(shoppingListWithConfig: ShoppingListWithConfig) {
         this.shoppingListWithConfig = shoppingListWithConfig
 
@@ -62,6 +65,7 @@ class ProductsWidgetState {
         displayMoney = userPreferences.displayMoney
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
         waiting = false
+        forceLoad = false
     }
 
     fun isNotFound(): Boolean {
