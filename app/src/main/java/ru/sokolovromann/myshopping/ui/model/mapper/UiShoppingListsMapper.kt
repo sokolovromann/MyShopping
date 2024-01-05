@@ -229,7 +229,7 @@ object UiShoppingListsMapper {
         }
     }
 
-    fun toOtherSortedProductWidgetItems(
+    fun toPinnedSortedProductWidgetItems(
         shoppingListWithConfig: ShoppingListWithConfig,
     ): List<ProductWidgetItem> {
         return shoppingListWithConfig.getPinnedOtherSortedProducts().first.map {
@@ -240,7 +240,7 @@ object UiShoppingListsMapper {
         }
     }
 
-    fun toPinnedSortedProductWidgetItems(
+    fun toOtherSortedProductWidgetItems(
         shoppingListWithConfig: ShoppingListWithConfig,
     ): List<ProductWidgetItem> {
         return shoppingListWithConfig.getPinnedOtherSortedProducts().second.map {
