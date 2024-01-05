@@ -85,6 +85,7 @@ class ArchiveState {
 
     fun onSelectDisplayProducts(expanded: Boolean) {
         expandedDisplayProducts = expanded
+        expandedArchiveMenu = false
     }
 
     fun onSelectDisplayTotal(expanded: Boolean) {

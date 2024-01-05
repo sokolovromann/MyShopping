@@ -95,6 +95,7 @@ class PurchasesState {
 
     fun onSelectDisplayProducts(expanded: Boolean) {
         expandedDisplayProducts = expanded
+        expandedPurchasesMenu = false
     }
 
     fun onSelectDisplayTotal(expanded: Boolean) {
