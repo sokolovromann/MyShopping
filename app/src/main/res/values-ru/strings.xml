@@ -335,6 +335,7 @@
     <string name="products_action_displayActiveTotal">Не купленные товары</string>
     <string name="products_action_displayAllTotal">Все товары</string>
     <string name="products_action_displayCompletedTotal">Купленные товары</string>
+    <string name="products_action_displayLongTotal">Полная</string>
     <string name="products_action_editShoppingListTotal">Редактировать</string>
     <string name="products_action_enableProductsMultiColumns">Несколько столбцов</string>
     <string name="products_action_moveProductsToShoppingList">Переместить в…</string>

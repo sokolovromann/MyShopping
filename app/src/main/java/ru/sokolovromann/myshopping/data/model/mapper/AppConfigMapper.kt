@@ -98,6 +98,7 @@ object AppConfigMapper {
             productsMultiColumns = userPreferences.productsMultiColumns,
             displayCompleted = userPreferences.displayCompleted.toString(),
             displayTotal = userPreferences.displayTotal.toString(),
+            displayLongTotal = userPreferences.displayLongTotal,
             displayOtherFields = userPreferences.displayOtherFields,
             coloredCheckbox = userPreferences.coloredCheckbox,
             displayShoppingsProducts = userPreferences.displayShoppingsProducts.toString(),
@@ -132,6 +133,7 @@ object AppConfigMapper {
             productsMultiColumns = toMultiColumnsOrDefault(entity.productsMultiColumns),
             displayCompleted = DisplayCompleted.valueOfOrDefault(entity.displayCompleted),
             displayTotal = DisplayTotal.valueOfOrDefault(entity.displayTotal),
+            displayLongTotal = toDisplayLongTotalOrDefault(entity.displayLongTotal),
             displayOtherFields = toDisplayOtherFieldsOrDefault(entity.displayOtherFields),
             coloredCheckbox = toColoredCheckboxOrDefault(entity.coloredCheckbox),
             displayShoppingsProducts = DisplayProducts.valueOfOrDefault(entity.displayShoppingsProducts),
@@ -176,6 +178,10 @@ object AppConfigMapper {
 
     private fun toMultiColumnsOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.MULTI_COLUMNS
+    }
+
+    private fun toDisplayLongTotalOrDefault(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.DISPLAY_LONG_TOTAL
     }
 
     private fun toDisplayOtherFieldsOrDefault(value: Boolean?): Boolean {

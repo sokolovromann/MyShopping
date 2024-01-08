@@ -341,15 +341,35 @@ object UiShoppingListsMapper {
             }
 
             val displayQuantity = product.quantity.isNotEmpty()
-            val displayPrice = displayMoney && !totalFormatted && product.total.isNotEmpty()
+            val displayTotal = displayMoney && !totalFormatted && product.total.isNotEmpty()
 
-            if (displayPrice) {
+            if (displayTotal) {
                 builder.append(separator)
-                if (displayQuantity) {
+
+                if (userPreferences.displayLongTotal) {
                     builder.append(product.quantity)
-                    builder.append(separator)
+                    builder.append(" x ")
+                    builder.append(product.price)
+
+                    if (product.discount.isNotEmpty()) {
+                        builder.append(" - ")
+                        builder.append(product.discount.calculateValueFromPercentAsMoney(product.total.value))
+                    }
+
+                    if (product.taxRate.isNotEmpty()) {
+                        builder.append(" + ")
+                        builder.append(product.taxRate.calculateValueFromPercentAsMoney(product.total.value))
+                    }
+
+                    builder.append(" = ")
+                    builder.append(product.total)
+                } else {
+                    if (displayQuantity) {
+                        builder.append(product.quantity)
+                        builder.append(separator)
+                    }
+                    builder.append(product.total)
                 }
-                builder.append(product.total)
             } else {
                 if (displayQuantity) {
                     builder.append(separator)
@@ -442,11 +462,30 @@ object UiShoppingListsMapper {
                 builder.append(separator)
             }
 
-            if (displayQuantity) {
+            if (userPreferences.displayLongTotal) {
                 builder.append(product.quantity)
-                builder.append(separator)
+                builder.append(" x ")
+                builder.append(product.price)
+
+                if (product.discount.isNotEmpty()) {
+                    builder.append(" - ")
+                    builder.append(product.discount.calculateValueFromPercentAsMoney(product.total.value))
+                }
+
+                if (product.taxRate.isNotEmpty()) {
+                    builder.append(" + ")
+                    builder.append(product.taxRate.calculateValueFromPercentAsMoney(product.total.value))
+                }
+
+                builder.append(" = ")
+                builder.append(product.total)
+            } else {
+                if (displayQuantity) {
+                    builder.append(product.quantity)
+                    builder.append(separator)
+                }
+                builder.append(product.total)
             }
-            builder.append(product.total)
         } else {
             if (displayQuantity) {
                 if (builder.isNotEmpty()) {

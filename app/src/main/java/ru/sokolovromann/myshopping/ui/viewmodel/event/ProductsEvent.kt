@@ -46,6 +46,8 @@ sealed class ProductsEvent {
 
     data class OnSelectDisplayTotal(val expanded: Boolean) : ProductsEvent()
 
+    object OnInvertDisplayLongTotal : ProductsEvent()
+
     data class OnSortSelected(val sortBy: SortBy) : ProductsEvent()
 
     object OnReverseSort : ProductsEvent()

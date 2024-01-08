@@ -62,6 +62,9 @@ class ProductsState {
     var totalValue: SelectedValue<DisplayTotal>? by mutableStateOf(SelectedValue(DisplayTotal.DefaultValue))
         private set
 
+    var displayLongTotal: Boolean by mutableStateOf(false)
+        private set
+
     var expandedDisplayTotal: Boolean by mutableStateOf(false)
         private set
 
@@ -119,6 +122,7 @@ class ProductsState {
         coloredCheckbox = userPreferences.coloredCheckbox
         completedWithCheckbox = userPreferences.completedWithCheckbox
         totalValue = toTotalSelectedValue(shopping.total)
+        displayLongTotal = userPreferences.displayLongTotal
         expandedDisplayTotal = false
         totalFormatted = shopping.totalFormatted
         displayMoney = userPreferences.displayMoney

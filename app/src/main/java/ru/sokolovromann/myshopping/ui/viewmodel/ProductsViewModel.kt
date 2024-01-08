@@ -76,6 +76,8 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.OnSelectDisplayTotal -> onSelectDisplayTotal(event)
 
+            ProductsEvent.OnInvertDisplayLongTotal -> onInvertDisplayLongTotal()
+
             is ProductsEvent.OnSortSelected -> onSortSelected(event)
 
             ProductsEvent.OnReverseSort -> onReverseSort()
@@ -265,6 +267,11 @@ class ProductsViewModel @Inject constructor(
         event: ProductsEvent.OnSelectDisplayTotal
     ) = viewModelScope.launch(AppDispatchers.Main) {
         productsState.onSelectDisplayTotal(event.expanded)
+    }
+
+    private fun onInvertDisplayLongTotal() = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.invertLongTotal()
+        productsState.onSelectDisplayTotal(expanded = false)
     }
 
     private fun onSortSelected(

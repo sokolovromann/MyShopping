@@ -9,6 +9,7 @@ data class UserPreferences(
     val productsMultiColumns: Boolean = UserPreferencesDefaults.MULTI_COLUMNS,
     val displayCompleted: DisplayCompleted = UserPreferencesDefaults.DISPLAY_COMPLETED,
     val displayTotal: DisplayTotal = UserPreferencesDefaults.DISPLAY_TOTAL,
+    val displayLongTotal: Boolean = UserPreferencesDefaults.DISPLAY_LONG_TOTAL,
     val displayOtherFields: Boolean = UserPreferencesDefaults.DISPLAY_OTHER_FIELDS,
     val coloredCheckbox: Boolean = UserPreferencesDefaults.COLORED_CHECKBOX,
     val displayShoppingsProducts: DisplayProducts = UserPreferencesDefaults.DISPLAY_SHOPPINGS_PRODUCTS,

@@ -209,6 +209,7 @@ fun ProductsScreen(
                         if (totalValue.text.isNotEmpty()) {
                             ProductsTotalContent(
                                 displayTotal = totalValue.selected,
+                                displayLongTotal = state.displayLongTotal,
                                 totalText = totalValue.text,
                                 totalFormatted = state.totalFormatted,
                                 fontSize = state.fontSize.button.sp,
@@ -218,6 +219,7 @@ fun ProductsScreen(
                                     val event = ProductsEvent.OnDisplayTotalSelected(it)
                                     viewModel.onEvent(event)
                                 },
+                                onInvertDisplayLongTotal = { viewModel.onEvent(ProductsEvent.OnInvertDisplayLongTotal) },
                                 onEditTotal = { viewModel.onEvent(ProductsEvent.OnClickEditTotal) },
                                 onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) }
                             )
@@ -548,12 +550,14 @@ private fun ProductsReminderContent(
 private fun ProductsTotalContent(
     modifier: Modifier = Modifier,
     displayTotal: DisplayTotal,
+    displayLongTotal: Boolean,
     totalFormatted: Boolean,
     totalText: UiString,
     fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
     onSelected: (DisplayTotal) -> Unit,
+    onInvertDisplayLongTotal: () -> Unit,
     onEditTotal: () -> Unit,
     onDeleteTotal: () -> Unit
 ) {
@@ -595,6 +599,12 @@ private fun ProductsTotalContent(
                     onClick = { onSelected(DisplayTotal.ACTIVE) },
                     text = { Text(text = stringResource(R.string.products_action_displayActiveTotal)) },
                     right = { CheckmarkAppCheckbox(checked = displayTotal == DisplayTotal.ACTIVE) }
+                )
+                Divider()
+                AppDropdownMenuItem(
+                    onClick = onInvertDisplayLongTotal,
+                    text = { Text(text = stringResource(R.string.products_action_displayLongTotal)) },
+                    right = { AppSwitch(checked = displayLongTotal) }
                 )
                 Divider()
                 AppDropdownMenuItem(

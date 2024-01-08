@@ -11,6 +11,7 @@ data class UserPreferencesEntity(
     val displayCompleted: String? = null,
     val displayTotal: String? = null,
     val displayOtherFields: Boolean? = null,
+    val displayLongTotal: Boolean? = null,
     val coloredCheckbox: Boolean? = null,
     val displayShoppingsProducts: String? = null,
     val purchasesSeparator: String? = null,

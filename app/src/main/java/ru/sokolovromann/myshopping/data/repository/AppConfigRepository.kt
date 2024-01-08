@@ -127,6 +127,12 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         return@withContext Result.success(Unit)
     }
 
+    suspend fun invertLongTotal(): Result<Unit> = withContext(dispatcher) {
+        val valueIfNull = UserPreferencesDefaults.DISPLAY_LONG_TOTAL
+        appConfigDao.invertLongTotal(valueIfNull)
+        return@withContext Result.success(Unit)
+    }
+
     suspend fun invertDisplayMoney(): Result<Unit> = withContext(dispatcher) {
         val valueIfNull = UserPreferencesDefaults.DISPLAY_MONEY
         appConfigDao.invertDisplayMoney(valueIfNull)

@@ -154,6 +154,14 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun invertLongTotal(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            val oldValue = it[DatasourceKey.User.displayLongTotal]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayLongTotal] = newValue
+        }
+    }
+
     suspend fun invertDisplayMoney(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayMoney]
@@ -324,6 +332,7 @@ class AppConfigDao(appContent: AppContent) {
             productsMultiColumns = preferences[DatasourceKey.User.productsMultiColumns],
             displayCompleted = preferences[DatasourceKey.User.displayCompleted],
             displayTotal = preferences[DatasourceKey.User.displayTotal],
+            displayLongTotal = preferences[DatasourceKey.User.displayLongTotal],
             displayOtherFields = preferences[DatasourceKey.User.displayOtherFields],
             coloredCheckbox = preferences[DatasourceKey.User.coloredCheckbox],
             displayShoppingsProducts = preferences[DatasourceKey.User.displayShoppingsProducts],
@@ -403,6 +412,7 @@ private object DatasourceKey {
         val productsMultiColumns = booleanPreferencesKey("products_multi_columns")
         val displayCompleted = stringPreferencesKey("display_completed_purchases")
         val displayTotal = stringPreferencesKey("display_purchases_total")
+        val displayLongTotal = booleanPreferencesKey("display_long_purchases_total")
         val displayOtherFields = booleanPreferencesKey("display_purchases_other_fields")
         val coloredCheckbox = booleanPreferencesKey("highlight_checkbox")
         val displayShoppingsProducts = stringPreferencesKey("display_shoppings_products")

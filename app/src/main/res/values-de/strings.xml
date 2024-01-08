@@ -270,6 +270,7 @@
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
     <string name="products_action_displayAllTotal">Alle produkte</string>
     <string name="products_action_displayCompletedTotal">Fertige produkte</string>
+    <string name="products_action_displayLongTotal">Lange</string>
     <string name="products_action_editShoppingListTotal">Bearbeiten</string>
     <string name="products_action_enableProductsMultiColumns">Mehrspaltig</string>
     <string name="products_action_moveProductsToShoppingList">Ziehen nach…</string>

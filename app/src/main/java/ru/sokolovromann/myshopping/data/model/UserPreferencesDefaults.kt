@@ -8,6 +8,7 @@ object UserPreferencesDefaults {
     const val NIGHT_THEME = false
     const val MULTI_COLUMNS = false
     const val DISPLAY_OTHER_FIELDS = true
+    const val DISPLAY_LONG_TOTAL = false
     const val COLORED_CHECKBOX = true
     const val PURCHASES_SEPARATOR = " • "
     const val EDIT_PRODUCT_AFTER_COMPLETED = false

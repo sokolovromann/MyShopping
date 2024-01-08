@@ -341,6 +341,7 @@
     <string name="products_action_displayActiveTotal">Active</string>
     <string name="products_action_displayAllTotal">All</string>
     <string name="products_action_displayCompletedTotal">Completed</string>
+    <string name="products_action_displayLongTotal">Long</string>
     <string name="products_action_editShoppingListTotal">Edit</string>
     <string name="products_action_enableProductsMultiColumns">Multi-columns</string>
     <string name="products_action_moveProductsToShoppingList">Move to…</string>

@@ -288,6 +288,7 @@
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
     <string name="products_action_displayCompletedTotal">Куплені товари</string>
+    <string name="products_action_displayLongTotal">Повна</string>
     <string name="products_action_editShoppingListTotal">Редагувати</string>
     <string name="products_action_enableProductsMultiColumns">Декілька стовпців</string>
     <string name="products_action_moveProductsToShoppingList">Перемістити в…</string>
