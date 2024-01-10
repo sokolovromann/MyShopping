@@ -19,7 +19,11 @@ data class Quantity(
     }
 
     fun getDisplayValue(): String {
-        return "${getFormattedValue()} $symbol"
+        return if (symbol.isEmpty()) {
+            getFormattedValue()
+        } else {
+            "${getFormattedValue()} $symbol"
+        }
     }
 
     fun isEmpty(): Boolean {

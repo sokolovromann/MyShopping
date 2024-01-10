@@ -346,30 +346,11 @@ object UiShoppingListsMapper {
             if (displayTotal) {
                 builder.append(separator)
 
-                if (userPreferences.displayLongTotal) {
+                if (displayQuantity) {
                     builder.append(product.quantity)
-                    builder.append(" x ")
-                    builder.append(product.price)
-
-                    if (product.discount.isNotEmpty()) {
-                        builder.append(" - ")
-                        builder.append(product.discount.calculateValueFromPercentAsMoney(product.total.value))
-                    }
-
-                    if (product.taxRate.isNotEmpty()) {
-                        builder.append(" + ")
-                        builder.append(product.taxRate.calculateValueFromPercentAsMoney(product.total.value))
-                    }
-
-                    builder.append(" = ")
-                    builder.append(product.total)
-                } else {
-                    if (displayQuantity) {
-                        builder.append(product.quantity)
-                        builder.append(separator)
-                    }
-                    builder.append(product.total)
+                    builder.append(separator)
                 }
+                builder.append(product.total)
             } else {
                 if (displayQuantity) {
                     builder.append(separator)
@@ -463,22 +444,7 @@ object UiShoppingListsMapper {
             }
 
             if (userPreferences.displayLongTotal) {
-                builder.append(product.quantity)
-                builder.append(" x ")
-                builder.append(product.price)
-
-                if (product.discount.isNotEmpty()) {
-                    builder.append(" - ")
-                    builder.append(product.discount.calculateValueFromPercentAsMoney(product.total.value))
-                }
-
-                if (product.taxRate.isNotEmpty()) {
-                    builder.append(" + ")
-                    builder.append(product.taxRate.calculateValueFromPercentAsMoney(product.total.value))
-                }
-
-                builder.append(" = ")
-                builder.append(product.total)
+                builder.append(getProductLongTotalBody(product))
             } else {
                 if (displayQuantity) {
                     builder.append(product.quantity)
@@ -502,6 +468,39 @@ object UiShoppingListsMapper {
             }
             builder.append(product.note)
         }
+
+        return builder.toString()
+    }
+
+    private fun getProductLongTotalBody(product: Product): String {
+        val builder = StringBuilder()
+        val quantity = if (product.quantity.isEmpty()) {
+            product.quantity.copy(value = 1f)
+        } else {
+            product.quantity
+        }
+        builder.append(quantity)
+        builder.append(" x ")
+
+        val price = if (product.price.isEmpty()) {
+            product.total
+        } else {
+            product.price
+        }
+        builder.append(price)
+
+        if (product.discount.isNotEmpty()) {
+            builder.append(" - ")
+            builder.append(product.discount.calculateValueFromPercentAsMoney(product.total.value))
+        }
+
+        if (product.taxRate.isNotEmpty()) {
+            builder.append(" + ")
+            builder.append(product.taxRate.calculateValueFromPercentAsMoney(product.total.value))
+        }
+
+        builder.append(" = ")
+        builder.append(product.total)
 
         return builder.toString()
     }
