@@ -343,8 +343,9 @@ class ProductsViewModel @Inject constructor(
         productsState.onShowHiddenProducts(event.display)
     }
 
-    private fun onInvertMultiColumns() = viewModelScope.launch {
+    private fun onInvertMultiColumns() = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.invertProductsMultiColumns()
+        productsState.onShowProductsMenu(expanded = false)
     }
 
     private fun uidsToString(uids: List<String>): String {

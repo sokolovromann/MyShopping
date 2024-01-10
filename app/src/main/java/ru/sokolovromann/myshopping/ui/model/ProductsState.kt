@@ -126,7 +126,7 @@ class ProductsState {
         expandedDisplayTotal = false
         totalFormatted = shopping.totalFormatted
         displayMoney = userPreferences.displayMoney
-        multiColumnsValue = toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
+        multiColumnsValue = toMultiColumnsValue(userPreferences.productsMultiColumns)
         deviceSize = shoppingListWithConfig.getDeviceConfig().getDeviceSize()
         expandedProductsMenu = false
         expandedItemMoreMenu = false
