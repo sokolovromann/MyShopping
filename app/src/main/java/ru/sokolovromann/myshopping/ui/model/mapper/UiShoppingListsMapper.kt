@@ -444,7 +444,7 @@ object UiShoppingListsMapper {
             }
 
             if (userPreferences.displayLongTotal) {
-                builder.append(getProductLongTotalBody(product))
+                builder.append(getProductLongTotalBody(product, userPreferences.taxRate))
             } else {
                 if (displayQuantity) {
                     builder.append(product.quantity)
@@ -472,7 +472,10 @@ object UiShoppingListsMapper {
         return builder.toString()
     }
 
-    private fun getProductLongTotalBody(product: Product): String {
+    private fun getProductLongTotalBody(
+        product: Product,
+        userTaxRate: Money
+    ): String {
         val builder = StringBuilder()
         val quantity = if (product.quantity.isEmpty()) {
             product.quantity.copy(value = 1f)
@@ -489,14 +492,28 @@ object UiShoppingListsMapper {
         }
         builder.append(price)
 
+        val totalValue = quantity.value * price.value
+        val totalWithDiscount = totalValue - product.discount.calculateValueFromPercent(totalValue)
+        val totalWithTaxRate = totalWithDiscount + userTaxRate.calculateValueFromPercent(totalWithDiscount)
+
         if (product.discount.isNotEmpty()) {
             builder.append(" - ")
-            builder.append(product.discount.calculateValueFromPercentAsMoney(product.total.value))
+
+            val discount = product.discount.copy(
+                value = totalValue - totalWithDiscount,
+                asPercent = false
+            )
+            builder.append(discount)
         }
 
         if (product.taxRate.isNotEmpty()) {
             builder.append(" + ")
-            builder.append(product.taxRate.calculateValueFromPercentAsMoney(product.total.value))
+
+            val taxRate = userTaxRate.copy(
+                value = totalWithTaxRate - totalWithDiscount,
+                asPercent = false
+            )
+            builder.append(taxRate)
         }
 
         builder.append(" = ")

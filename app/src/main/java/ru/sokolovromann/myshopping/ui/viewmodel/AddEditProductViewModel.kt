@@ -355,10 +355,10 @@ class AddEditProductViewModel @Inject constructor(
                 asPercent = addEditProductState.discountAsPercentValue.selected
             )
             val taxRate = addEditProductState.getCurrentUserPreferences().taxRate
-            val totalWithDiscountAndTaxRate = totalValue - moneyDiscount.calculateValueFromPercent(totalValue) +
-                    taxRate.calculateValueFromPercent(totalValue)
+            val totalWithDiscount = totalValue - moneyDiscount.calculateValueFromPercent(totalValue)
+            val totalWithTaxRate = totalWithDiscount + taxRate.calculateValueFromPercent(totalWithDiscount)
             Money(
-                value = totalWithDiscountAndTaxRate,
+                value = totalWithTaxRate,
                 currency = addEditProductState.getCurrentUserPreferences().currency,
                 asPercent = false,
                 decimalFormat = addEditProductState.getCurrentUserPreferences().moneyDecimalFormat

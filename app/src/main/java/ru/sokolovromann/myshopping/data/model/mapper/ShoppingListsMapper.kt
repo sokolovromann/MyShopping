@@ -222,12 +222,15 @@ object ShoppingListsMapper {
         } else {
             val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
             val total = quantityValue * price.value
-            val discountValue = discount.calculateValueFromPercent(total)
-            val taxRateValue = taxRate.calculateValueFromPercent(total)
 
-            val totalWithDiscountAndTaxRate = total - discountValue + taxRateValue
+            val discountValue = discount.calculateValueFromPercent(total)
+            val totalWithDiscount = total - discountValue
+
+            val taxRateValue = taxRate.calculateValueFromPercent(totalWithDiscount)
+            val totalWithTaxRate = totalWithDiscount + taxRateValue
+
             Money(
-                value = totalWithDiscountAndTaxRate,
+                value = totalWithTaxRate,
                 currency = userPreferences.currency,
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat

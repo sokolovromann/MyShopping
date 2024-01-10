@@ -40,13 +40,6 @@ data class Money(
         return if (asPercent) money * (value / 100) else value
     }
 
-    fun calculateValueFromPercentAsMoney(money: Float): Money {
-        return this.copy(
-            value = calculateValueFromPercent(money),
-            asPercent = false
-        )
-    }
-
     fun isEmpty(): Boolean {
         return value <= 0f
     }
