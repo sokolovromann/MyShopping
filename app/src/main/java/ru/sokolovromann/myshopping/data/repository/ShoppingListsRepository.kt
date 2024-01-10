@@ -264,9 +264,11 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 val exception = InvalidUidException("Uid must not be empty")
                 Result.failure(exception)
             } else {
-                val position = nextPositionOrFirst(
-                    productsDao.getLastPosition(product.shoppingUid).firstOrNull()
-                )
+                val position = if (product.id == IdDefaults.NO_ID) {
+                    nextPositionOrFirst(productsDao.getLastPosition(product.shoppingUid).firstOrNull())
+                } else {
+                    product.position
+                }
                 val newProduct = product.copy(position = position)
                 val productEntity = ShoppingListsMapper.toProductEntity(newProduct)
                 productsDao.insertProduct(productEntity)

@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -106,6 +107,9 @@ class ProductsViewModel @Inject constructor(
         productsState.onWaiting()
 
         shoppingListsRepository.getShoppingListWithConfig(shoppingUid).collect {
+            it.getPinnedOtherSortedProducts().second.forEach { product ->
+                Log.d("MyShoppingList", "${product.position} - ${product.name}")
+            }
             productsState.populate(it)
         }
     }
