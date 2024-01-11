@@ -70,6 +70,152 @@ data class ShoppingList(
         )
     }
 
+    fun calculateCostByProductUids(productUids: List<String>): Money {
+        var total = 0f
+        products.forEach { product ->
+            val totalValue = product.getCost().getFormattedValueWithoutSeparators().toFloat()
+            if (productUids.contains(product.productUid)) {
+                total += totalValue
+            }
+        }
+
+        return Money(
+            value = total,
+            currency = shopping.total.currency,
+            asPercent = false,
+            decimalFormat = shopping.total.decimalFormat
+        )
+    }
+
+    fun calculateCostByDisplayTotal(displayTotal: DisplayTotal): Money {
+        var all = 0f
+        var completed = 0f
+        var active = 0f
+
+        products.forEach { product ->
+            val totalValue = product.getCost()
+                .getFormattedValueWithoutSeparators().toFloat()
+
+            all += totalValue
+            if (product.completed) {
+                completed += totalValue
+            } else {
+                active += totalValue
+            }
+        }
+
+        val total = when (displayTotal) {
+            DisplayTotal.ALL -> all
+            DisplayTotal.COMPLETED -> completed
+            DisplayTotal.ACTIVE -> active
+        }
+
+        return Money(
+            value = total,
+            currency = shopping.total.currency,
+            asPercent = false,
+            decimalFormat = shopping.total.decimalFormat
+        )
+    }
+
+    fun calculateDiscountsByProductUids(productUids: List<String>): Money {
+        var discounts = 0f
+        products.forEach { product ->
+            val discountsValue = product.getDiscountAsMoney()
+                .getFormattedValueWithoutSeparators().toFloat()
+            if (productUids.contains(product.productUid)) {
+                discounts += discountsValue
+            }
+        }
+
+        return Money(
+            value = discounts,
+            currency = shopping.total.currency,
+            asPercent = false,
+            decimalFormat = shopping.total.decimalFormat
+        )
+    }
+
+    fun calculateDiscountsByDisplayTotal(displayTotal: DisplayTotal): Money {
+        var all = 0f
+        var completed = 0f
+        var active = 0f
+
+        products.forEach { product ->
+            val discountsValue = product.getDiscountAsMoney()
+                .getFormattedValueWithoutSeparators().toFloat()
+
+            all += discountsValue
+            if (product.completed) {
+                completed += discountsValue
+            } else {
+                active += discountsValue
+            }
+        }
+
+        val discounts = when (displayTotal) {
+            DisplayTotal.ALL -> all
+            DisplayTotal.COMPLETED -> completed
+            DisplayTotal.ACTIVE -> active
+        }
+
+        return Money(
+            value = discounts,
+            currency = shopping.total.currency,
+            asPercent = false,
+            decimalFormat = shopping.total.decimalFormat
+        )
+    }
+
+    fun calculateTaxRatesByProductUids(productUids: List<String>, userTaxRate: Money): Money {
+        var taxRates = 0f
+        products.forEach { product ->
+            val taxRatesValue = product.getTaxRateAsMoney(userTaxRate)
+                .getFormattedValueWithoutSeparators().toFloat()
+            if (productUids.contains(product.productUid)) {
+                taxRates += taxRatesValue
+            }
+        }
+
+        return Money(
+            value = taxRates,
+            currency = shopping.total.currency,
+            asPercent = false,
+            decimalFormat = shopping.total.decimalFormat
+        )
+    }
+
+    fun calculateTaxRatesByDisplayTotal(displayTotal: DisplayTotal, userTaxRate: Money): Money {
+        var all = 0f
+        var completed = 0f
+        var active = 0f
+
+        products.forEach { product ->
+            val taxRatesValue = product.getTaxRateAsMoney(userTaxRate)
+                .getFormattedValueWithoutSeparators().toFloat()
+
+            all += taxRatesValue
+            if (product.completed) {
+                completed += taxRatesValue
+            } else {
+                active += taxRatesValue
+            }
+        }
+
+        val taxRates = when (displayTotal) {
+            DisplayTotal.ALL -> all
+            DisplayTotal.COMPLETED -> completed
+            DisplayTotal.ACTIVE -> active
+        }
+
+        return Money(
+            value = taxRates,
+            currency = shopping.total.currency,
+            asPercent = false,
+            decimalFormat = shopping.total.decimalFormat
+        )
+    }
+
     fun isCompleted(): Boolean {
         return if (products.isEmpty()) {
             false

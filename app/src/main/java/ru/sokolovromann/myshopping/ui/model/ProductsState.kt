@@ -176,17 +176,10 @@ class ProductsState {
         val uids = if (selected) shoppingListWithConfig.getProductUids() else null
         selectedUids = uids
 
-        val total = if (uids == null) {
-            shoppingListWithConfig.getShopping().total
-        } else {
-            shoppingListWithConfig.calculateTotalByProductUids(uids)
-        }
         totalValue = if (uids == null) {
-            toTotalSelectedValue(total)
+            toTotalSelectedValue(shoppingListWithConfig.getShopping().total)
         } else {
-            totalValue?.copy(
-                text = UiString.FromResourcesWithArgs(R.string.products_text_selectedTotal, total.getDisplayValue())
-            )
+            toTotalSelectedValueByProductUids(uids)
         }
     }
 
@@ -199,17 +192,10 @@ class ProductsState {
         val checkedUids = if (uids.isEmpty()) null else uids
         selectedUids = checkedUids
 
-        val total = if (checkedUids == null) {
-            shoppingListWithConfig.getShopping().total
-        } else {
-            shoppingListWithConfig.calculateTotalByProductUids(uids)
-        }
         totalValue = if (checkedUids == null) {
-            toTotalSelectedValue(total)
+            toTotalSelectedValue(shoppingListWithConfig.getShopping().total)
         } else {
-            totalValue?.copy(
-                text = UiString.FromResourcesWithArgs(R.string.products_text_selectedTotal, total.getDisplayValue())
-            )
+            toTotalSelectedValueByProductUids(uids)
         }
     }
 
@@ -277,13 +263,72 @@ class ProductsState {
                 DisplayTotal.COMPLETED -> R.string.products_text_completedTotal
                 DisplayTotal.ACTIVE -> R.string.products_text_activeTotal
             }
-            UiString.FromResourcesWithArgs(id, total.getDisplayValue())
+
+            val cost = shoppingListWithConfig.calculateCostByDisplayTotal()
+            val discounts = shoppingListWithConfig.calculateDiscountsByDisplayTotal()
+            val taxRates = shoppingListWithConfig.calculateTaxRatesByDisplayTotal()
+            val builder = getLongTotalBuilder(cost, discounts, taxRates, total)
+            UiString.FromResourcesWithArgs(id, builder)
         }
 
         return SelectedValue(
             selected = userPreferences.displayTotal,
             text = text
         )
+    }
+
+    private fun toTotalSelectedValueByProductUids(uids: List<String>): SelectedValue<DisplayTotal>? {
+        val userPreferences = shoppingListWithConfig.getUserPreferences()
+        if (!userPreferences.displayMoney || shoppingListWithConfig.getShopping().totalFormatted) {
+            return null
+        }
+
+        val cost = shoppingListWithConfig.calculateCostByProductUids(uids)
+        val discounts = shoppingListWithConfig.calculateDiscountsByProductUids(uids)
+        val taxRates = shoppingListWithConfig.calculateTaxRatesByProductUids(uids)
+        val total = shoppingListWithConfig.calculateTotalByProductUids(uids)
+        val builder = getLongTotalBuilder(cost, discounts, taxRates, total)
+
+        return totalValue?.copy(
+            text = UiString.FromResourcesWithArgs(R.string.products_text_selectedTotal, builder)
+        )
+    }
+
+    private fun getLongTotalBuilder(
+        cost: Money,
+        discounts: Money,
+        taxRates: Money,
+        total: Money
+    ): StringBuilder {
+        val userPreferences = shoppingListWithConfig.getUserPreferences()
+        val builder = StringBuilder()
+        if (userPreferences.displayLongTotal) {
+            if (cost.isEmpty()) {
+                builder.append(total)
+            } else {
+                if (discounts.isNotEmpty() || taxRates.isNotEmpty()) {
+                    builder.append(cost)
+
+                    if (discounts.isNotEmpty()) {
+                        builder.append(" - ")
+                        builder.append(discounts)
+                    }
+
+                    if (taxRates.isNotEmpty()) {
+                        builder.append(" + ")
+                        builder.append(taxRates)
+                    }
+
+                    builder.append(" = ")
+                }
+
+                builder.append(total)
+            }
+        } else {
+            builder.append(total)
+        }
+
+        return builder
     }
 
     private fun toMultiColumnsValue(multiColumns: Boolean): SelectedValue<Boolean> {

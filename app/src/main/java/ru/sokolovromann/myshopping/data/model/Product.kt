@@ -21,4 +21,32 @@ data class Product(
     val provider: String = "",
     val completed: Boolean = false,
     val pinned: Boolean = false
-)
+) {
+
+    private val totalWithDiscount = getCost().value - discount.calculateValueFromPercent(getCost().value)
+
+    fun getCost(): Money {
+        return if (totalFormatted) {
+            total
+        } else {
+            val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
+            val cost = quantityValue * price.value
+            total.copy(value = cost)
+        }
+    }
+
+    fun getDiscountAsMoney(): Money {
+        return discount.copy(
+            value = getCost().value - totalWithDiscount,
+            asPercent = false
+        )
+    }
+
+    fun getTaxRateAsMoney(userTaxRate: Money): Money {
+        val totalWithTaxRate = totalWithDiscount + userTaxRate.calculateValueFromPercent(totalWithDiscount)
+        return userTaxRate.copy(
+            value = totalWithTaxRate - totalWithDiscount,
+            asPercent = false
+        )
+    }
+}

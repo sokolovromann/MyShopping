@@ -492,28 +492,14 @@ object UiShoppingListsMapper {
         }
         builder.append(price)
 
-        val totalValue = quantity.value * price.value
-        val totalWithDiscount = totalValue - product.discount.calculateValueFromPercent(totalValue)
-        val totalWithTaxRate = totalWithDiscount + userTaxRate.calculateValueFromPercent(totalWithDiscount)
-
         if (product.discount.isNotEmpty()) {
             builder.append(" - ")
-
-            val discount = product.discount.copy(
-                value = totalValue - totalWithDiscount,
-                asPercent = false
-            )
-            builder.append(discount)
+            builder.append(product.getDiscountAsMoney())
         }
 
         if (product.taxRate.isNotEmpty()) {
             builder.append(" + ")
-
-            val taxRate = userTaxRate.copy(
-                value = totalWithTaxRate - totalWithDiscount,
-                asPercent = false
-            )
-            builder.append(taxRate)
+            builder.append(product.getTaxRateAsMoney(userTaxRate))
         }
 
         builder.append(" = ")

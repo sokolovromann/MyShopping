@@ -45,6 +45,36 @@ class ShoppingListWithConfig(
         return shoppingList.calculateTotalByDisplayTotal(displayTotal)
     }
 
+    fun calculateCostByProductUids(productUids: List<String>): Money {
+        return shoppingList.calculateCostByProductUids(productUids)
+    }
+
+    fun calculateCostByDisplayTotal(
+        displayTotal: DisplayTotal = appConfig.userPreferences.displayTotal
+    ): Money {
+        return shoppingList.calculateCostByDisplayTotal(displayTotal)
+    }
+
+    fun calculateDiscountsByProductUids(productUids: List<String>): Money {
+        return shoppingList.calculateDiscountsByProductUids(productUids)
+    }
+
+    fun calculateDiscountsByDisplayTotal(
+        displayTotal: DisplayTotal = appConfig.userPreferences.displayTotal
+    ): Money {
+        return shoppingList.calculateDiscountsByDisplayTotal(displayTotal)
+    }
+
+    fun calculateTaxRatesByProductUids(productUids: List<String>): Money {
+        return shoppingList.calculateTaxRatesByProductUids(productUids, getUserPreferences().taxRate)
+    }
+
+    fun calculateTaxRatesByDisplayTotal(
+        displayTotal: DisplayTotal = appConfig.userPreferences.displayTotal
+    ): Money {
+        return shoppingList.calculateTaxRatesByDisplayTotal(displayTotal, getUserPreferences().taxRate)
+    }
+
     fun calculateChange(userMoneyValue: Float): Money {
         val value = userMoneyValue - shoppingList.shopping.total.value
         return Money(
