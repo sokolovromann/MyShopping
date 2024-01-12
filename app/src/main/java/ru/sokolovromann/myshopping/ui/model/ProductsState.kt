@@ -121,7 +121,8 @@ class ProductsState {
         displayCompleted = userPreferences.displayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
         completedWithCheckbox = userPreferences.completedWithCheckbox
-        totalValue = toTotalSelectedValue(shopping.total)
+        totalValue = selectedUids?.let { toTotalSelectedValueByProductUids(it) }
+            ?: toTotalSelectedValue(shoppingListWithConfig.getShopping().total)
         displayLongTotal = userPreferences.displayLongTotal
         expandedDisplayTotal = false
         totalFormatted = shopping.totalFormatted
