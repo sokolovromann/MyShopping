@@ -284,8 +284,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val products = shoppingListsDao.getShoppingList(shoppingUid).firstOrNull()?.productEntities
-            ?.sortedBy { it.position }
+        val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
+        val products = shoppingListWithConfig?.getSortedProducts()
 
         return@withContext if (products == null || products.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -328,8 +328,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        val products = shoppingListsDao.getShoppingList(shoppingUid).firstOrNull()?.productEntities
-            ?.sortedBy { it.position }
+        val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
+        val products = shoppingListWithConfig?.getSortedProducts()
 
         return@withContext if (products == null || products.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
