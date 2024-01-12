@@ -142,10 +142,10 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = when (location) {
-            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
-            ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
-            ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
-        }.firstOrNull()?.sortedBy { it.shoppingEntity.position }
+            ShoppingLocation.PURCHASES -> getPurchasesWithConfig()
+            ShoppingLocation.ARCHIVE -> getArchiveWithConfig()
+            ShoppingLocation.TRASH -> getTrashWithConfig()
+        }.firstOrNull()?.getSortedShoppingLists()
 
         return@withContext if (shoppingLists == null || shoppingLists.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -154,7 +154,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             var previousIndex = 0
             var currentIndex = 0
             for (index in shoppingLists.indices) {
-                val shopping = shoppingLists[index].shoppingEntity
+                val shopping = shoppingLists[index].shopping
                 if (currentIndex > 0) {
                     previousIndex = index - 1
                 }
@@ -166,14 +166,14 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             }
 
             shoppingListsDao.updatePosition(
-                uid = shoppingLists[currentIndex].shoppingEntity.uid,
-                position = shoppingLists[previousIndex].shoppingEntity.position,
+                uid = shoppingLists[currentIndex].shopping.uid,
+                position = shoppingLists[previousIndex].shopping.position,
                 lastModified = lastModified.millis
             )
 
             shoppingListsDao.updatePosition(
-                uid = shoppingLists[previousIndex].shoppingEntity.uid,
-                position = shoppingLists[currentIndex].shoppingEntity.position,
+                uid = shoppingLists[previousIndex].shopping.uid,
+                position = shoppingLists[currentIndex].shopping.position,
                 lastModified = lastModified.millis
             )
 
@@ -187,10 +187,10 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = when (location) {
-            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
-            ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
-            ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
-        }.firstOrNull()?.sortedBy { it.shoppingEntity.position }
+            ShoppingLocation.PURCHASES -> getPurchasesWithConfig()
+            ShoppingLocation.ARCHIVE -> getArchiveWithConfig()
+            ShoppingLocation.TRASH -> getTrashWithConfig()
+        }.firstOrNull()?.getSortedShoppingLists()
 
         return@withContext if (shoppingLists == null || shoppingLists.size < 2) {
             val exception = UnsupportedOperationException("Move if shopping lists size less than 2 is not supported")
@@ -199,7 +199,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             var currentIndex = 0
             var nextIndex = 0
             for (index in shoppingLists.indices) {
-                val shopping = shoppingLists[index].shoppingEntity
+                val shopping = shoppingLists[index].shopping
 
                 currentIndex = index
                 if (index < shoppingLists.lastIndex) {
@@ -212,14 +212,14 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             }
 
             shoppingListsDao.updatePosition(
-                uid = shoppingLists[currentIndex].shoppingEntity.uid,
-                position = shoppingLists[nextIndex].shoppingEntity.position,
+                uid = shoppingLists[currentIndex].shopping.uid,
+                position = shoppingLists[nextIndex].shopping.position,
                 lastModified = lastModified.millis
             )
 
             shoppingListsDao.updatePosition(
-                uid = shoppingLists[nextIndex].shoppingEntity.uid,
-                position = shoppingLists[currentIndex].shoppingEntity.position,
+                uid = shoppingLists[nextIndex].shopping.uid,
+                position = shoppingLists[currentIndex].shopping.position,
                 lastModified = lastModified.millis
             )
 
