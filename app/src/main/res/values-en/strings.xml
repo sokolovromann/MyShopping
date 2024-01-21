@@ -313,6 +313,16 @@
     <string name="editTaxRate_header">Tax rate</string>
     <string name="editTaxRate_label_taxRate">Rate in percentages</string>
 
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">Cancel</string>
+    <string name="maxAutocompletes_action_minusOne">- 1</string>
+    <string name="maxAutocompletes_action_plusOne">+ 1</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">Save</string>
+    <string name="maxAutocompletes_header">Maximum count</string>
+    <string name="maxAutocompletes_text_moneys">Money (prices, total, etc.)</string>
+    <string name="maxAutocompletes_text_names">Names</string>
+    <string name="maxAutocompletes_text_other">Others (brands, sizes, etc.)</string>
+    <string name="maxAutocompletes_text_quantities">Quantities</string>
+
     <string name="moveProduct_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="moveProduct_contentDescription_navigationIcon">Cancel</string>
     <string name="moveProduct_header">Select a list</string>
@@ -416,6 +426,7 @@
     <string name="settings_body_email">Tap to write email</string>
     <string name="settings_body_enterToSaveProduct">If enabled, a product can be saved by tapping Enter</string>
     <string name="settings_body_github">Tap to open</string>
+    <string name="settings_body_maxAutocompletes">Select how many autocompletes can be displayed</string>
     <string name="settings_body_nightTheme">Except widgets</string>
     <string name="settings_body_privacy_policy">Tap to read</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
@@ -445,6 +456,7 @@
     <string name="settings_title_enterToSaveProduct">Enter to save product</string>
     <string name="settings_title_fontSize">Font size</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_maxAutocompletes">Maximum count</string>
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_privacy_policy">Privacy policy</string>
     <string name="settings_title_saveProductToAutocompletes">Save products</string>

@@ -17,6 +17,7 @@ enum class SettingUid {
     EnterToSaveProducts,
     ColoredCheckbox,
     SaveProductToAutocompletes,
+    MaxAutocompletes,
     Developer,
     Email,
     AppVersion,

@@ -307,6 +307,16 @@
     <string name="editTaxRate_header">Налоговая ставка</string>
     <string name="editTaxRate_label_taxRate">Размер в процентах</string>
 
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">Отмена</string>
+    <string name="maxAutocompletes_action_minusOne">- 1</string>
+    <string name="maxAutocompletes_action_plusOne">+ 1</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">Сохранить</string>
+    <string name="maxAutocompletes_header">Максимальное количество</string>
+    <string name="maxAutocompletes_text_moneys">Деньги (цены, итого и т.д.)</string>
+    <string name="maxAutocompletes_text_names">Названия</string>
+    <string name="maxAutocompletes_text_other">Дополнительные (марки, размеры и т.д.)</string>
+    <string name="maxAutocompletes_text_quantities">Количества</string>
+
     <string name="moveProduct_contentDescription_addShoppingListIcon">Добавить список покупок</string>
     <string name="moveProduct_contentDescription_navigationIcon">Отмена</string>
     <string name="moveProduct_header">Выберите список</string>
@@ -410,6 +420,7 @@
     <string name="settings_body_email">Нажмите, чтобы написать</string>
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
+    <string name="settings_body_maxAutocompletes">Выберите сколько может отображаться подсказок</string>
     <string name="settings_body_nightTheme">Кроме виджетов</string>
     <string name="settings_body_privacy_policy">Нажмите, чтобы прочитать</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
@@ -439,6 +450,7 @@
     <string name="settings_title_enterToSaveProduct">Enter для сохранения товара</string>
     <string name="settings_title_fontSize">Размер текста</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_maxAutocompletes">Максимальное количество</string>
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_title_saveProductToAutocompletes">Сохранять товары</string>

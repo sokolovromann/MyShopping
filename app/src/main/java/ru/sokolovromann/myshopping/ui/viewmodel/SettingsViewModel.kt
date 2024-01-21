@@ -134,6 +134,10 @@ class SettingsViewModel @Inject constructor(
                 appConfigRepository.invertSaveProductToAutocompletes()
             }
 
+            SettingUid.MaxAutocompletes -> {
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowMaxAutocompletes)
+            }
+
             SettingUid.Developer -> {}
 
             SettingUid.Email -> {

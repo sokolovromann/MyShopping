@@ -242,6 +242,16 @@
     <string name="editTaxRate_header">Steuersatz</string>
     <string name="editTaxRate_label_taxRate">Rate in Prozent</string>
 
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">Absagen</string>
+    <string name="maxAutocompletes_action_minusOne">- 1</string>
+    <string name="maxAutocompletes_action_plusOne">+ 1</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">Speichern</string>
+    <string name="maxAutocompletes_header">Maximale Anzahl</string>
+    <string name="maxAutocompletes_text_moneys">Geld (Preise, Gesamtsumme usw.)</string>
+    <string name="maxAutocompletes_text_names">Namen</string>
+    <string name="maxAutocompletes_text_other">Andere (Marken, Größen usw.)</string>
+    <string name="maxAutocompletes_text_quantities">Mengen</string>
+
     <string name="moveProduct_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
     <string name="moveProduct_contentDescription_navigationIcon">Absagen</string>
     <string name="moveProduct_header">Wählen Sie eine Liste aus</string>
@@ -345,6 +355,7 @@
     <string name="settings_body_email">Zum Schreiben tippen</string>
     <string name="settings_body_enterToSaveProduct">Wenn aktiviert, kann ein Produkt durch Tippen auf die Eingabetaste gespeichert werden</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
+    <string name="settings_body_maxAutocompletes">Wählen Sie aus, wie viele Autovervollständigungen angezeigt werden können</string>
     <string name="settings_body_nightTheme">Außer Widgets</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
@@ -374,6 +385,7 @@
     <string name="settings_title_enterToSaveProduct">Geben Sie ein, um Produkt zu speichern</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_maxAutocompletes">Maximale Anzahl</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
     <string name="settings_title_saveProductToAutocompletes">Produkte speichern</string>

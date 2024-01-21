@@ -184,6 +184,15 @@ object UiAppConfigMapper {
             )
         )
 
+        items.add(
+            SettingItem(
+                uid = SettingUid.MaxAutocompletes,
+                title = UiString.FromResources(R.string.settings_title_maxAutocompletes),
+                body = UiString.FromResources(R.string.settings_body_maxAutocompletes),
+                checked = null
+            )
+        )
+
         return items.toList()
     }
 

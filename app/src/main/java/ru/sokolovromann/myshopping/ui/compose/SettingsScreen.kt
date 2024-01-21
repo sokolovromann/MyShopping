@@ -65,6 +65,10 @@ fun SettingsScreen(
                     route = UiRoute.Settings.editTaxRateScreen
                 )
 
+                SettingsScreenEvent.OnShowMaxAutocompletes -> navController.navigate(
+                    route = UiRoute.Settings.maxAutocompletesScreen
+                )
+
                 is SettingsScreenEvent.OnSendEmailToDeveloper -> navController.chooseNavigate(
                     intent = Intent(Intent.ACTION_SENDTO).apply {
                         data = Uri.parse("mailto:")

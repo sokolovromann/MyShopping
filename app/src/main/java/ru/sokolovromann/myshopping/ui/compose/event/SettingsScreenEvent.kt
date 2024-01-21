@@ -14,6 +14,8 @@ sealed class SettingsScreenEvent {
 
     object OnShowBackupScreen : SettingsScreenEvent()
 
+    object OnShowMaxAutocompletes : SettingsScreenEvent()
+
     data class OnShowAppGithub(val link: String) : SettingsScreenEvent()
 
     data class OnShowPrivacyPolicy(val link: String) : SettingsScreenEvent()

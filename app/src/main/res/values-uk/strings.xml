@@ -260,6 +260,16 @@
     <string name="editTaxRate_header">Податкова ставка</string>
     <string name="editTaxRate_label_taxRate">Ставка у відсотках</string>
 
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">Скасування</string>
+    <string name="maxAutocompletes_action_minusOne">- 1</string>
+    <string name="maxAutocompletes_action_plusOne">+ 1</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">Зберегти</string>
+    <string name="maxAutocompletes_header">Максимальна кількість</string>
+    <string name="maxAutocompletes_text_moneys">Гроші (ціни, разом і т.д.)</string>
+    <string name="maxAutocompletes_text_names">Назви</string>
+    <string name="maxAutocompletes_text_other">Додаткові (марки, розміри і т.д.)</string>
+    <string name="maxAutocompletes_text_quantities">Кількості</string>
+
     <string name="moveProduct_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
     <string name="moveProduct_contentDescription_navigationIcon">Скасування</string>
     <string name="moveProduct_header">Виберіть список</string>
@@ -363,6 +373,7 @@
     <string name="settings_body_email">Натисніть, щоб написати</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
+    <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
     <string name="settings_body_nightTheme">Окрім віджетів</string>
     <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
@@ -392,6 +403,7 @@
     <string name="settings_title_enterToSaveProduct">Enter для збереження товару</string>
     <string name="settings_title_fontSize">Розмір тексту</string>
     <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_maxAutocompletes">Максимальна кількість</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_privacy_policy">Політика конфіденційності</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати товари</string>
