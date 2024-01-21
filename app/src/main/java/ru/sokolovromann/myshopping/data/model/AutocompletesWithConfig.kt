@@ -25,7 +25,7 @@ data class AutocompletesWithConfig(
         return autocompletes
             .distinctBy { it.brand }
             .filterIndexed { index, autocomplete ->
-                autocomplete.brand.isNotEmpty() && index < userPreferences.maxAutocompletesOthers
+                autocomplete.brand.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
             }
             .map { it.brand }
     }
@@ -34,7 +34,7 @@ data class AutocompletesWithConfig(
         return autocompletes
             .distinctBy { it.size }
             .filterIndexed { index, autocomplete ->
-                autocomplete.size.isNotEmpty() && index < userPreferences.maxAutocompletesOthers
+                autocomplete.size.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
             }
             .map { it.size }
     }
@@ -43,7 +43,7 @@ data class AutocompletesWithConfig(
         return autocompletes
             .distinctBy { it.color }
             .filterIndexed { index, autocomplete ->
-                autocomplete.color.isNotEmpty() && index < userPreferences.maxAutocompletesOthers
+                autocomplete.color.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
             }
             .map { it.color }
     }
@@ -52,7 +52,7 @@ data class AutocompletesWithConfig(
         return autocompletes
             .distinctBy { it.manufacturer }
             .filterIndexed { index, autocomplete ->
-                autocomplete.manufacturer.isNotEmpty() && index < userPreferences.maxAutocompletesOthers
+                autocomplete.manufacturer.isNotEmpty() && index <= userPreferences.maxAutocompletesOthers
             }
             .map { it.manufacturer }
     }
@@ -61,7 +61,7 @@ data class AutocompletesWithConfig(
         return autocompletes
             .distinctBy { it.quantity.getFormattedValue() }
             .filterIndexed { index, autocomplete ->
-                autocomplete.quantity.isNotEmpty() && index < userPreferences.maxAutocompletesQuantities
+                autocomplete.quantity.isNotEmpty() && index <= userPreferences.maxAutocompletesQuantities
             }
             .map { it.quantity }
     }
@@ -71,7 +71,7 @@ data class AutocompletesWithConfig(
             autocompletes
                 .distinctBy { it.price.getFormattedValue() }
                 .filterIndexed { index, autocomplete ->
-                    autocomplete.price.isNotEmpty() && index < userPreferences.maxAutocompletesMoneys
+                    autocomplete.price.isNotEmpty() && index <= userPreferences.maxAutocompletesMoneys
                 }
                 .map { it.price }
         } else {
@@ -84,7 +84,7 @@ data class AutocompletesWithConfig(
             autocompletes
                 .distinctBy { it.discount.getFormattedValue() }
                 .filterIndexed { index, autocomplete ->
-                    autocomplete.discount.isNotEmpty() && index < userPreferences.maxAutocompletesMoneys
+                    autocomplete.discount.isNotEmpty() && index <= userPreferences.maxAutocompletesMoneys
                 }
                 .map { it.discount }
         } else {
@@ -97,7 +97,7 @@ data class AutocompletesWithConfig(
             autocompletes
                 .distinctBy { it.total.getFormattedValue() }
                 .filterIndexed { index, autocomplete ->
-                    autocomplete.total.isNotEmpty() && index < userPreferences.maxAutocompletesMoneys
+                    autocomplete.total.isNotEmpty() && index <= userPreferences.maxAutocompletesMoneys
                 }
                 .map { it.total }
         } else {

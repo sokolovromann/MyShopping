@@ -451,7 +451,7 @@ class AddEditProductViewModel @Inject constructor(
                 addAll(otherAutocompletes)
             }
             .filterIndexed { index, autocomplete ->
-                autocomplete.name.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesNames
+                autocomplete.name.isNotEmpty() && index < addEditProductState.getCurrentUserPreferences().maxAutocompletesNames
             }
     }
 
