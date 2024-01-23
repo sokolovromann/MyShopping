@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -94,6 +95,8 @@ private fun MaxAutocompletesItem(
     onCLickPlus: () -> Unit,
     fontSize: TextUnit
 ) {
+    val color = MaterialTheme.colors.onSurface
+
     Row(
         modifier = Modifier.height(MaxAutocompletesItemHeight),
         verticalAlignment = Alignment.CenterVertically,
@@ -101,11 +104,13 @@ private fun MaxAutocompletesItem(
     ) {
         Text(
             text = text,
+            color = color,
             fontSize = fontSize
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = maxCount.toString(),
+            color = color,
             fontSize = fontSize
         )
         Spacer(modifier = Modifier.size(MaxAutocompletesSpacerMediumSize))
