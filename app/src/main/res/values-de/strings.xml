@@ -288,6 +288,7 @@
     <string name="products_action_moveShoppingListToPurchases">Unarchivieren</string>
     <string name="products_action_moveShoppingListToTrash">Löschen</string>
     <string name="products_action_reverseSort">Umgekehrte</string>
+    <string name="products_action_search">Suchen</string>
     <string name="products_action_selectAllProducts">Wählen Sie Alle</string>
     <string name="products_action_shareProducts">Teilen</string>
     <string name="products_action_showShoppingListMenu">Einkaufsliste</string>
@@ -297,6 +298,7 @@
     <string name="products_action_sortByName">Nach name</string>
     <string name="products_action_sortByTotal">Nach gesamt</string>
     <string name="products_contentDescription_addProductIcon">Produkt hinzufügen</string>
+    <string name="products_contentDescription_cancelSearchingProducts">Suche abbrechen</string>
     <string name="products_contentDescription_cancelSelectingProducts">Auswahl abbrechen</string>
     <string name="products_contentDescription_deleteProducts">Löschen</string>
     <string name="products_contentDescription_displayCompletedPurchases">Fertige Produkte anzeigen</string>
@@ -310,6 +312,7 @@
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
     <string name="products_contentDescription_showSelectedMenu">Ausgewähltes Menü ein oder ausblenden</string>
     <string name="products_header_displayTotal">Gesamt</string>
+    <string name="products_label_search">Suchen</string>
     <string name="products_text_activeTotal">Aktive: %s</string>
     <string name="products_text_allTotal">Alle: %s</string>
     <string name="products_text_archiveProductsNotFound">Einkaufsliste ist leer</string>
@@ -318,6 +321,7 @@
     <string name="products_text_otherProducts">Andere</string>
     <string name="products_text_pinnedProducts">Angepinnte</string>
     <string name="products_text_purchasesProductsNotFound">Klicken Sie auf \"+\" um ein neues Produkt hinzuzufügen</string>
+    <string name="products_text_searchNotFound">Nicht gefunden</string>
     <string name="products_text_selectedTotal">Ausgewählt: %s</string>
     <string name="products_text_totalFormatted">Bearbeitet: %s</string>
     <string name="products_text_trashProductsNotFound">Einkaufsliste ist leer</string>

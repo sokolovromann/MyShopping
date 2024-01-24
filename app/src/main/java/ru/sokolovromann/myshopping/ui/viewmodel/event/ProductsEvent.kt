@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -39,6 +40,12 @@ sealed class ProductsEvent {
     object OnClickShareProducts : ProductsEvent()
 
     object OnClickCalculateChange : ProductsEvent()
+
+    object OnClickSearchProducts : ProductsEvent()
+
+    data class OnSearchValueChanged(val value: TextFieldValue) : ProductsEvent()
+
+    object OnInvertSearch : ProductsEvent()
 
     data class OnMoveShoppingListSelected(val location: ShoppingLocation) : ProductsEvent()
 

@@ -7,18 +7,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -49,6 +58,8 @@ fun ProductsScreen(
 ) {
     val state = viewModel.productsState
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -101,13 +112,21 @@ fun ProductsScreen(
                     context = context,
                     shoppingUid = it.shoppingUid
                 )
+
+                is ProductsScreenEvent.OnHideKeyboard -> {
+                    focusManager.clearFocus(force = true)
+                }
             }
         }
     }
 
     BackHandler {
         if (state.selectedUids == null) {
-            viewModel.onEvent(ProductsEvent.OnClickBack)
+            if (state.displaySearch) {
+                viewModel.onEvent(ProductsEvent.OnInvertSearch)
+            } else {
+                viewModel.onEvent(ProductsEvent.OnClickBack)
+            }
         } else {
             viewModel.onEvent(ProductsEvent.OnAllProductsSelected(false))
         }
@@ -119,11 +138,20 @@ fun ProductsScreen(
                 AppTopAppBar(
                     title = {},
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) }) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.products_contentDescription_navigationIcon)
-                            )
+                        if (state.displaySearch) {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = stringResource(R.string.products_contentDescription_cancelSearchingProducts)
+                                )
+                            }
+                        } else {
+                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) }) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = stringResource(R.string.products_contentDescription_navigationIcon)
+                                )
+                            }
                         }
                     },
                     actions = {
@@ -205,28 +233,57 @@ fun ProductsScreen(
             if (state.locationValue.selected != ShoppingLocation.TRASH) {
                 AppBottomAppBar(
                     content = {
-                        val totalValue = state.totalValue ?: return@AppBottomAppBar
-                        if (totalValue.text.isNotEmpty()) {
-                            ProductsTotalContent(
-                                displayTotal = totalValue.selected,
-                                displayLongTotal = state.displayLongTotal,
-                                totalText = totalValue.text,
-                                totalFormatted = state.totalFormatted,
-                                fontSize = state.fontSize.button.sp,
-                                expanded = state.expandedDisplayTotal,
-                                onExpanded = { viewModel.onEvent(ProductsEvent.OnSelectDisplayTotal(it)) },
-                                onSelected = {
-                                    val event = ProductsEvent.OnDisplayTotalSelected(it)
+                        if (state.displaySearch) {
+                            OutlinedAppTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .focusRequester(focusRequester),
+                                value = state.searchValue,
+                                valueFontSize = state.fontSize.textField.sp,
+                                onValueChange = {
+                                    val event = ProductsEvent.OnSearchValueChanged(it)
                                     viewModel.onEvent(event)
                                 },
-                                onInvertDisplayLongTotal = { viewModel.onEvent(ProductsEvent.OnInvertDisplayLongTotal) },
-                                onEditTotal = { viewModel.onEvent(ProductsEvent.OnClickEditTotal) },
-                                onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) }
+                                label = { Text(text = stringResource(R.string.products_label_search)) },
+                                keyboardOptions = KeyboardOptions(
+                                    capitalization = KeyboardCapitalization.Sentences,
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Search
+                                ),
+                                keyboardActions = KeyboardActions(onSearch = { viewModel.onEvent(ProductsEvent.OnClickSearchProducts) })
                             )
+
+                            LaunchedEffect(Unit) {
+                                focusRequester.requestFocus()
+                            }
+                        } else {
+                            val totalValue = state.totalValue ?: return@AppBottomAppBar
+                            if (totalValue.text.isNotEmpty()) {
+                                ProductsTotalContent(
+                                    displayTotal = totalValue.selected,
+                                    displayLongTotal = state.displayLongTotal,
+                                    totalText = totalValue.text,
+                                    totalFormatted = state.totalFormatted,
+                                    fontSize = state.fontSize.button.sp,
+                                    expanded = state.expandedDisplayTotal,
+                                    onExpanded = { viewModel.onEvent(ProductsEvent.OnSelectDisplayTotal(it)) },
+                                    onSelected = {
+                                        val event = ProductsEvent.OnDisplayTotalSelected(it)
+                                        viewModel.onEvent(event)
+                                    },
+                                    onInvertDisplayLongTotal = { viewModel.onEvent(ProductsEvent.OnInvertDisplayLongTotal) },
+                                    onEditTotal = { viewModel.onEvent(ProductsEvent.OnClickEditTotal) },
+                                    onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) }
+                                )
+                            }
                         }
                     },
                     actionButtons = {
                         if (state.selectedUids == null) {
+                            if (state.displaySearch) {
+                                return@AppBottomAppBar
+                            }
+
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickAddProduct) }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
@@ -274,6 +331,10 @@ fun ProductsScreen(
                                             onClick = { viewModel.onEvent(ProductsEvent.OnClickCalculateChange) }
                                         )
                                     }
+                                    AppDropdownMenuItem(
+                                        text = { Text(text = stringResource(R.string.products_action_search)) },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) }
+                                    )
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnClickShareProducts) },
                                         text = { Text(text = stringResource(R.string.products_action_shareProducts)) }

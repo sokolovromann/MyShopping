@@ -353,6 +353,7 @@
     <string name="products_action_moveShoppingListToPurchases">Разархивировать</string>
     <string name="products_action_moveShoppingListToTrash">Удалить</string>
     <string name="products_action_reverseSort">В обратном порядке</string>
+    <string name="products_action_search">Поиск</string>
     <string name="products_action_selectAllProducts">Выбрать всё</string>
     <string name="products_action_shareProducts">Поделиться</string>
     <string name="products_action_showShoppingListMenu">Список покупок</string>
@@ -362,6 +363,7 @@
     <string name="products_action_sortByName">По названию</string>
     <string name="products_action_sortByTotal">По стоимости</string>
     <string name="products_contentDescription_addProductIcon">Добавить товар</string>
+    <string name="products_contentDescription_cancelSearchingProducts">Отмена поиска</string>
     <string name="products_contentDescription_cancelSelectingProducts">Отменить выбор</string>
     <string name="products_contentDescription_deleteProducts">Удалить</string>
     <string name="products_contentDescription_displayCompletedPurchases">Показать купленные товары</string>
@@ -375,6 +377,7 @@
     <string name="products_contentDescription_productsMenuIcon">Открыть меню товаров</string>
     <string name="products_contentDescription_showSelectedMenu">Показать или скрыть меню</string>
     <string name="products_header_displayTotal">Итого</string>
+    <string name="products_label_search">Поиск</string>
     <string name="products_text_activeTotal">Не куплено: %s</string>
     <string name="products_text_allTotal">Итого: %s</string>
     <string name="products_text_archiveProductsNotFound">Список покупок пуст</string>
@@ -383,6 +386,7 @@
     <string name="products_text_otherProducts">Другие</string>
     <string name="products_text_pinnedProducts">Закреплённые</string>
     <string name="products_text_purchasesProductsNotFound">Нажмите на \"+\", чтобы добавить товар</string>
+    <string name="products_text_searchNotFound">Не найдено</string>
     <string name="products_text_selectedTotal">Выбрано: %s</string>
     <string name="products_text_totalFormatted">Изменено: %s</string>
     <string name="products_text_trashProductsNotFound">Список покупок пуст</string>

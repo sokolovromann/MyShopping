@@ -306,6 +306,7 @@
     <string name="products_action_moveShoppingListToPurchases">Розархівувати</string>
     <string name="products_action_moveShoppingListToTrash">Видалити</string>
     <string name="products_action_reverseSort">У зворотному порядку</string>
+    <string name="products_action_search">Пошук</string>
     <string name="products_action_selectAllProducts">Вибрати все</string>
     <string name="products_action_shareProducts">Поділитися</string>
     <string name="products_action_showShoppingListMenu">Список покупок</string>
@@ -315,6 +316,7 @@
     <string name="products_action_sortByName">За назвою</string>
     <string name="products_action_sortByTotal">За сумою</string>
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
+    <string name="products_contentDescription_cancelSearchingProducts">Скасування пошуку</string>
     <string name="products_contentDescription_cancelSelectingProducts">Скасувати вибір</string>
     <string name="products_contentDescription_deleteProducts">Видалити</string>
     <string name="products_contentDescription_displayCompletedPurchases">Показати куплені товари</string>
@@ -328,6 +330,7 @@
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
     <string name="products_contentDescription_showSelectedMenu">Показати або приховати меню</string>
     <string name="products_header_displayTotal">Разом</string>
+    <string name="products_label_search">Пошук</string>
     <string name="products_text_activeTotal">Не куплено: %s</string>
     <string name="products_text_allTotal">Разом: %s</string>
     <string name="products_text_archiveProductsNotFound">Список покупок порожній</string>
@@ -336,6 +339,7 @@
     <string name="products_text_otherProducts">Інші</string>
     <string name="products_text_pinnedProducts">Закріплені</string>
     <string name="products_text_purchasesProductsNotFound">Натисніть \"+\", щоб додати товар</string>
+    <string name="products_text_searchNotFound">Не знайдено</string>
     <string name="products_text_selectedTotal">Вибрано: %s</string>
     <string name="products_text_totalFormatted">Змінено: %s</string>
     <string name="products_text_trashProductsNotFound">Список покупок порожній</string>

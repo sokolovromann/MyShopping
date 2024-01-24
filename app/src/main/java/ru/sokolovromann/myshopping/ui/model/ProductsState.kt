@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
@@ -12,6 +13,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.utils.asSearchQuery
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
@@ -98,6 +100,12 @@ class ProductsState {
     var expandedSort: Boolean by mutableStateOf(false)
         private set
 
+    var searchValue: TextFieldValue by mutableStateOf(TextFieldValue())
+        private set
+
+    var displaySearch: Boolean by mutableStateOf(false)
+        private set
+
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
@@ -147,6 +155,36 @@ class ProductsState {
         expandedSort = expanded
         expandedProductsMenu = false
         expandedShoppingMenu = false
+    }
+
+    fun onSearch() {
+        pinnedProducts = UiShoppingListsMapper.toPinnedSortedProductItems(
+            search = searchValue.text,
+            shoppingListWithConfig = shoppingListWithConfig
+        )
+        otherProducts = UiShoppingListsMapper.toOtherSortedProductItems(
+            search = searchValue.text,
+            shoppingListWithConfig = shoppingListWithConfig
+        )
+        notFoundText = toNotFoundText(shoppingListWithConfig.getShopping().location)
+    }
+
+    fun onSearchValueChanged(value: TextFieldValue) {
+        searchValue = value
+    }
+
+    fun onShowSearch(display: Boolean) {
+        if (!display) {
+            pinnedProducts = UiShoppingListsMapper.toPinnedSortedProductItems(shoppingListWithConfig)
+            otherProducts = UiShoppingListsMapper.toOtherSortedProductItems(shoppingListWithConfig)
+            notFoundText = toNotFoundText(shoppingListWithConfig.getShopping().location)
+            searchValue = TextFieldValue()
+        }
+
+        displaySearch = display
+        expandedProductsMenu = false
+        expandedShoppingMenu = false
+        expandedSort = false
     }
 
     fun onShowProductsMenu(expanded: Boolean) {
@@ -233,7 +271,11 @@ class ProductsState {
     }
 
     fun isNotFound(): Boolean {
-        return shoppingListWithConfig.isProductsEmpty()
+        return if (displaySearch) {
+            pinnedProducts.isEmpty() && otherProducts.isEmpty()
+        } else {
+            shoppingListWithConfig.isProductsEmpty()
+        }
     }
 
     fun expandedItemFavoriteMenu(uid: String): Boolean {
@@ -241,12 +283,16 @@ class ProductsState {
     }
 
     private fun toNotFoundText(location: ShoppingLocation): UiString {
-        return when (location) {
-            ShoppingLocation.PURCHASES -> UiString.FromResources(R.string.products_text_purchasesProductsNotFound)
+        return if (displaySearch) {
+            UiString.FromResources(R.string.products_text_searchNotFound)
+        } else {
+            when (location) {
+                ShoppingLocation.PURCHASES -> UiString.FromResources(R.string.products_text_purchasesProductsNotFound)
 
-            ShoppingLocation.ARCHIVE -> UiString.FromResources(R.string.products_text_archiveProductsNotFound)
+                ShoppingLocation.ARCHIVE -> UiString.FromResources(R.string.products_text_archiveProductsNotFound)
 
-            ShoppingLocation.TRASH -> UiString.FromResources(R.string.products_text_trashProductsNotFound)
+                ShoppingLocation.TRASH -> UiString.FromResources(R.string.products_text_trashProductsNotFound)
+            }
         }
     }
 

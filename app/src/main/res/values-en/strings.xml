@@ -359,6 +359,7 @@
     <string name="products_action_moveShoppingListToPurchases">Unarchive</string>
     <string name="products_action_moveShoppingListToTrash">Delete</string>
     <string name="products_action_reverseSort">Reverse</string>
+    <string name="products_action_search">Search</string>
     <string name="products_action_selectAllProducts">Select all</string>
     <string name="products_action_shareProducts">Share</string>
     <string name="products_action_showShoppingListMenu">Shopping list</string>
@@ -368,6 +369,7 @@
     <string name="products_action_sortByName">By name</string>
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
+    <string name="products_contentDescription_cancelSearchingProducts">Cancel searching</string>
     <string name="products_contentDescription_cancelSelectingProducts">Cancel selection</string>
     <string name="products_contentDescription_deleteProducts">Delete</string>
     <string name="products_contentDescription_displayCompletedPurchases">Display completed products</string>
@@ -381,6 +383,7 @@
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_contentDescription_showSelectedMenu">Show or hide selected menu</string>
     <string name="products_header_displayTotal">Display total</string>
+    <string name="products_label_search">Search</string>
     <string name="products_text_activeTotal">Active: %s</string>
     <string name="products_text_allTotal">All: %s</string>
     <string name="products_text_archiveProductsNotFound">Shopping list is empty</string>
@@ -389,6 +392,7 @@
     <string name="products_text_otherProducts">Other</string>
     <string name="products_text_pinnedProducts">Pinned</string>
     <string name="products_text_purchasesProductsNotFound">Tap \"+\" to add new product</string>
+    <string name="products_text_searchNotFound">Not found</string>
     <string name="products_text_selectedTotal">Selected: %s</string>
     <string name="products_text_totalFormatted">Edited: %s</string>
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>

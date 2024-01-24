@@ -13,6 +13,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.UserPreferences
+import ru.sokolovromann.myshopping.data.utils.asSearchQuery
 import ru.sokolovromann.myshopping.ui.model.ProductItem
 import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
@@ -205,9 +206,15 @@ object UiShoppingListsMapper {
 
     fun toPinnedSortedProductItems(
         shoppingListWithConfig: ShoppingListWithConfig,
+        search: String? = null,
         displayCompleted: DisplayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
     ): List<ProductItem> {
-        return shoppingListWithConfig.getPinnedOtherSortedProducts(displayCompleted).first.map {
+        val products = shoppingListWithConfig.getPinnedOtherSortedProducts(displayCompleted).first
+        return (if (search == null) {
+            products
+        } else {
+            products.filter { it.name.asSearchQuery().contains(search.asSearchQuery()) }
+        }).map {
             toProductItem(
                 product = it,
                 shopping = shoppingListWithConfig.getShopping(),
@@ -218,9 +225,15 @@ object UiShoppingListsMapper {
 
     fun toOtherSortedProductItems(
         shoppingListWithConfig: ShoppingListWithConfig,
+        search: String? = null,
         displayCompleted: DisplayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
     ): List<ProductItem> {
-        return shoppingListWithConfig.getPinnedOtherSortedProducts(displayCompleted).second.map {
+        val products = shoppingListWithConfig.getPinnedOtherSortedProducts(displayCompleted).second
+        return (if (search == null) {
+            products
+        } else {
+            products.filter { it.name.asSearchQuery().contains(search.asSearchQuery()) }
+        }).map {
             toProductItem(
                 product = it,
                 shopping = shoppingListWithConfig.getShopping(),

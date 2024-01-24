@@ -23,4 +23,6 @@ sealed class ProductsScreenEvent {
     data class OnShareProducts(val products: String) : ProductsScreenEvent()
 
     data class OnUpdateProductsWidget(val shoppingUid: String) : ProductsScreenEvent()
+
+    object OnHideKeyboard : ProductsScreenEvent()
 }

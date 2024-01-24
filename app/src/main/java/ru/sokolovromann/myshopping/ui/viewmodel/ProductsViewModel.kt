@@ -70,6 +70,12 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.OnClickCalculateChange -> onClickCalculateChange()
 
+            ProductsEvent.OnClickSearchProducts -> onClickSearchProducts()
+
+            is ProductsEvent.OnSearchValueChanged -> onSearchValueChanged(event)
+
+            ProductsEvent.OnInvertSearch -> onInvertSearch()
+
             is ProductsEvent.OnMoveShoppingListSelected -> onMoveShoppingListSelected(event)
 
             is ProductsEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
@@ -234,6 +240,23 @@ class ProductsViewModel @Inject constructor(
     private fun onClickCalculateChange() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowCalculateChangeScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
+    }
+
+    private fun onClickSearchProducts() {
+        productsState.onSearch()
+    }
+
+    private fun onSearchValueChanged(event: ProductsEvent.OnSearchValueChanged) {
+        productsState.onSearchValueChanged(event.value)
+    }
+
+    private fun onInvertSearch() = viewModelScope.launch(AppDispatchers.Main) {
+        val display = !productsState.displaySearch
+        productsState.onShowSearch(display)
+
+        if (!display) {
+            _screenEventFlow.emit(ProductsScreenEvent.OnHideKeyboard)
+        }
     }
 
     private fun onMoveShoppingListSelected(
