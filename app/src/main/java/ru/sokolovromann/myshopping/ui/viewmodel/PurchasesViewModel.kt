@@ -51,6 +51,12 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
+            PurchasesEvent.OnClickSearchShoppingLists -> onClickSearchShoppingLists()
+
+            is PurchasesEvent.OnSearchValueChanged -> onSearchValueChanged(event)
+
+            PurchasesEvent.OnInvertSearch -> onInvertSearch()
+
             is PurchasesEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
 
             is PurchasesEvent.OnSelectDisplayProducts -> onSelectDisplayProducts(event)
@@ -156,6 +162,23 @@ class PurchasesViewModel @Inject constructor(
         event: PurchasesEvent.OnSelectDrawerScreen
     ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(PurchasesScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onClickSearchShoppingLists() {
+        purchasesState.onSearch()
+    }
+
+    private fun onSearchValueChanged(event: PurchasesEvent.OnSearchValueChanged) {
+        purchasesState.onSearchValueChanged(event.value)
+    }
+
+    private fun onInvertSearch() = viewModelScope.launch(AppDispatchers.Main) {
+        val display = !purchasesState.displaySearch
+        purchasesState.onShowSearch(display)
+
+        if (!display) {
+            _screenEventFlow.emit(PurchasesScreenEvent.OnHideKeyboard)
+        }
     }
 
     private fun onDisplayProductsSelected(

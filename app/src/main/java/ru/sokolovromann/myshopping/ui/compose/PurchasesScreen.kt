@@ -2,16 +2,26 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
@@ -36,6 +46,8 @@ fun PurchasesScreen(
     val state = viewModel.purchasesState
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -60,16 +72,28 @@ fun PurchasesScreen(
                         scaffoldState.drawerState.close()
                     }
                 }
+
+                is PurchasesScreenEvent.OnHideKeyboard -> {
+                    focusManager.clearFocus(force = true)
+                }
             }
         }
     }
 
-    BackHandler(enabled = scaffoldState.drawerState.isOpen) {
-        viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(false))
-    }
-
-    BackHandler(enabled = state.selectedUids != null) {
-        viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(false))
+    BackHandler {
+        if (scaffoldState.drawerState.isOpen) {
+            viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(false))
+        } else {
+            if (state.selectedUids == null) {
+                if (state.displaySearch) {
+                    viewModel.onEvent(PurchasesEvent.OnInvertSearch)
+                } else {
+                    viewModel.onEvent(PurchasesEvent.OnClickBack)
+                }
+            } else {
+                viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(false))
+            }
+        }
     }
 
     AppScaffold(
@@ -79,11 +103,20 @@ fun PurchasesScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.purchases_header)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(true)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon)
-                            )
+                        if (state.displaySearch) {
+                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSearchingProducts)
+                                )
+                            }
+                        } else {
+                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(true)) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon)
+                                )
+                            }
                         }
                     }
                 )
@@ -147,23 +180,52 @@ fun PurchasesScreen(
         bottomBar = {
             AppBottomAppBar(
                 content = {
-                    val totalValue = state.totalValue ?: return@AppBottomAppBar
-                    if (totalValue.text.isNotEmpty()) {
-                        ShoppingListsTotalContent(
-                            displayTotal = totalValue.selected,
-                            totalText = totalValue.text,
-                            fontSize = state.fontSize.button.sp,
-                            expanded = state.expandedDisplayTotal,
-                            onExpanded = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayTotal(it)) },
-                            onSelected = {
-                                val event = PurchasesEvent.OnDisplayTotalSelected(it)
+                    if (state.displaySearch) {
+                        OutlinedAppTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester),
+                            value = state.searchValue,
+                            valueFontSize = state.fontSize.textField.sp,
+                            onValueChange = {
+                                val event = PurchasesEvent.OnSearchValueChanged(it)
                                 viewModel.onEvent(event)
-                            }
+                            },
+                            label = { Text(text = stringResource(R.string.shoppingLists_label_search)) },
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Search
+                            ),
+                            keyboardActions = KeyboardActions(onSearch = { viewModel.onEvent(PurchasesEvent.OnClickSearchShoppingLists) })
                         )
+
+                        LaunchedEffect(Unit) {
+                            focusRequester.requestFocus()
+                        }
+                    } else {
+                        val totalValue = state.totalValue ?: return@AppBottomAppBar
+                        if (totalValue.text.isNotEmpty()) {
+                            ShoppingListsTotalContent(
+                                displayTotal = totalValue.selected,
+                                totalText = totalValue.text,
+                                fontSize = state.fontSize.button.sp,
+                                expanded = state.expandedDisplayTotal,
+                                onExpanded = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayTotal(it)) },
+                                onSelected = {
+                                    val event = PurchasesEvent.OnDisplayTotalSelected(it)
+                                    viewModel.onEvent(event)
+                                }
+                            )
+                        }
                     }
                 },
                 actionButtons = {
                     if (state.selectedUids == null) {
+                        if (state.displaySearch) {
+                            return@AppBottomAppBar
+                        }
+
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAddShoppingList) }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -204,6 +266,10 @@ fun PurchasesScreen(
                                         )
                                     },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectSort(true)) }
+                                )
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_search)) },
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }
                                 )
                             }
 
@@ -281,7 +347,7 @@ fun PurchasesScreen(
             isWaiting = state.waiting,
             notFound = {
                 Text(
-                    text = stringResource(R.string.purchases_text_shoppingListsNotFound),
+                    text = state.notFoundText.asCompose(),
                     fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )

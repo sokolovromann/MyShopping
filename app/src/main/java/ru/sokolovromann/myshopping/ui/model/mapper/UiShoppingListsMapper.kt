@@ -130,9 +130,20 @@ object UiShoppingListsMapper {
 
     fun toSortedShoppingListItems(
         shoppingListsWithConfig: ShoppingListsWithConfig,
+        search: String? = null,
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
     ): List<ShoppingListItem> {
-        return shoppingListsWithConfig.getSortedShoppingLists(displayCompleted).map {
+        val shoppingLists = shoppingListsWithConfig.getSortedShoppingLists(displayCompleted)
+        return (if (search == null) {
+            shoppingLists
+        } else {
+            shoppingLists.filter {
+                it.shopping.name.asSearchQuery().contains(search.asSearchQuery()) ||
+                        it.products.any { product ->
+                            product.name.asSearchQuery().contains(search.asSearchQuery())
+                        }
+            }
+        }).map {
             toShoppingListItems(
                 shoppingList = it,
                 deviceConfig = shoppingListsWithConfig.getDeviceConfig(),
@@ -143,9 +154,20 @@ object UiShoppingListsMapper {
 
     fun toPinnedSortedShoppingListItems(
         shoppingListsWithConfig: ShoppingListsWithConfig,
+        search: String? = null,
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
     ): List<ShoppingListItem> {
-        return shoppingListsWithConfig.getPinnedOtherSortedShoppingLists(displayCompleted).first.map {
+        val shoppingLists = shoppingListsWithConfig.getPinnedOtherSortedShoppingLists(displayCompleted).first
+        return (if (search == null) {
+            shoppingLists
+        } else {
+            shoppingLists.filter {
+                it.shopping.name.asSearchQuery().contains(search.asSearchQuery()) ||
+                        it.products.any { product ->
+                            product.name.asSearchQuery().contains(search.asSearchQuery())
+                        }
+            }
+        }).map {
             toShoppingListItems(
                 shoppingList = it,
                 deviceConfig = shoppingListsWithConfig.getDeviceConfig(),
@@ -160,7 +182,7 @@ object UiShoppingListsMapper {
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
     ): List<ShoppingListItem> {
         return if (location == ShoppingLocation.PURCHASES) {
-            toPinnedSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
+            toPinnedSortedShoppingListItems(shoppingListsWithConfig, null, displayCompleted)
         } else {
             listOf()
         }
@@ -168,9 +190,20 @@ object UiShoppingListsMapper {
 
     fun toOtherSortedShoppingListItems(
         shoppingListsWithConfig: ShoppingListsWithConfig,
+        search: String? = null,
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
     ): List<ShoppingListItem> {
-        return shoppingListsWithConfig.getPinnedOtherSortedShoppingLists(displayCompleted).second.map {
+        val shoppingLists = shoppingListsWithConfig.getPinnedOtherSortedShoppingLists(displayCompleted).second
+        return (if (search == null) {
+            shoppingLists
+        } else {
+            shoppingLists.filter {
+                it.shopping.name.asSearchQuery().contains(search.asSearchQuery()) ||
+                        it.products.any { product ->
+                            product.name.asSearchQuery().contains(search.asSearchQuery())
+                        }
+            }
+        }).map {
             toShoppingListItems(
                 shoppingList = it,
                 deviceConfig = shoppingListsWithConfig.getDeviceConfig(),
@@ -185,9 +218,9 @@ object UiShoppingListsMapper {
         displayCompleted: DisplayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
     ): List<ShoppingListItem> {
         return if (location == ShoppingLocation.PURCHASES) {
-            toOtherSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
+            toOtherSortedShoppingListItems(shoppingListsWithConfig, null, displayCompleted)
         } else {
-            toSortedShoppingListItems(shoppingListsWithConfig, displayCompleted)
+            toSortedShoppingListItems(shoppingListsWithConfig, null, displayCompleted)
         }
     }
 

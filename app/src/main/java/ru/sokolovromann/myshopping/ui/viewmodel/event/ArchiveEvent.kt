@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
@@ -17,6 +18,12 @@ sealed class ArchiveEvent {
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : ArchiveEvent()
 
     data class OnSelectDrawerScreen(val display: Boolean) : ArchiveEvent()
+
+    object OnClickSearchShoppingLists : ArchiveEvent()
+
+    data class OnSearchValueChanged(val value: TextFieldValue) : ArchiveEvent()
+
+    object OnInvertSearch : ArchiveEvent()
 
     data class OnDisplayProductsSelected(val displayProducts: DisplayProducts) : ArchiveEvent()
 

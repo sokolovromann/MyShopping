@@ -473,6 +473,7 @@
     <string name="shoppingLists_action_hideProducts">Всегда скрывать</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Скрывать, если есть заголовок</string>
     <string name="shoppingLists_action_reverseSort">В обратном порядке</string>
+    <string name="shoppingLists_action_search">Поиск</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Выбрать всё</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архив</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
@@ -482,11 +483,13 @@
     <string name="shoppingLists_action_sortByLastModified">По редактированию</string>
     <string name="shoppingLists_action_sortByName">По названию</string>
     <string name="shoppingLists_action_sortByTotal">По стоимости</string>
+    <string name="shoppingLists_contentDescription_cancelSearchingProducts">Отмена поиска</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показать купленные списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
+    <string name="shoppingLists_label_search">Поиск</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>
     <string name="shoppingLists_text_allTotal">Итого: %s</string>
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
@@ -494,6 +497,7 @@
     <string name="shoppingLists_text_nameNotFound">Без названия</string>
     <string name="shoppingLists_text_otherShoppingLists">Другие</string>
     <string name="shoppingLists_text_pinnedShoppingLists">Закреплённые</string>
+    <string name="shoppingLists_text_searchNotFound">Не найдено</string>
     <string name="shoppingLists_text_selectedTotal">Выбрано: %s</string>
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
 

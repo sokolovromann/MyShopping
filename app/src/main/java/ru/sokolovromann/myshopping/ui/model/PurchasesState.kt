@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
@@ -23,6 +24,9 @@ class PurchasesState {
         private set
 
     var otherShoppingLists: List<ShoppingListItem> by  mutableStateOf(listOf())
+        private set
+
+    var notFoundText: UiString by mutableStateOf(UiString.FromString(""))
         private set
 
     var displayHiddenShoppingLists: Boolean by mutableStateOf(false)
@@ -64,6 +68,12 @@ class PurchasesState {
     var expandedSort: Boolean by mutableStateOf(false)
         private set
 
+    var searchValue: TextFieldValue by mutableStateOf(TextFieldValue())
+        private set
+
+    var displaySearch: Boolean by mutableStateOf(false)
+        private set
+
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
@@ -76,6 +86,7 @@ class PurchasesState {
         val userPreferences = shoppingListsWithConfig.getUserPreferences()
         pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(shoppingListsWithConfig)
         otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(shoppingListsWithConfig)
+        notFoundText = toNotFoundText()
         displayHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         selectedUids = if (savedSelectedUid.isEmpty()) null else listOf(savedSelectedUid)
         displayProducts = userPreferences.displayShoppingsProducts
@@ -105,6 +116,36 @@ class PurchasesState {
     fun onSelectSort(expanded: Boolean) {
         expandedSort = expanded
         expandedPurchasesMenu = false
+    }
+
+    fun onSearch() {
+        pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(
+            search = searchValue.text,
+            shoppingListsWithConfig = shoppingListsWithConfig
+        )
+        otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(
+            search = searchValue.text,
+            shoppingListsWithConfig = shoppingListsWithConfig
+        )
+        notFoundText = toNotFoundText()
+    }
+
+    fun onSearchValueChanged(value: TextFieldValue) {
+        searchValue = value
+    }
+
+    fun onShowSearch(display: Boolean) {
+        if (!display) {
+            pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(shoppingListsWithConfig)
+            otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(shoppingListsWithConfig)
+            notFoundText = toNotFoundText()
+            searchValue = TextFieldValue()
+        }
+
+        displaySearch = display
+        expandedPurchasesMenu = false
+        expandedItemMoreMenu = false
+        expandedSort = false
     }
 
     fun onShowPurchasesMenu(expanded: Boolean) {
@@ -189,11 +230,23 @@ class PurchasesState {
     }
 
     fun isNotFound(): Boolean {
-        return shoppingListsWithConfig.isEmpty()
+        return if (displaySearch) {
+            pinnedShoppingLists.isEmpty() && otherShoppingLists.isEmpty()
+        } else {
+            shoppingListsWithConfig.isEmpty()
+        }
     }
 
     fun expandedItemFavoriteMenu(uid: String): Boolean {
         return selectedUids?.count() == 1 && selectedUids?.contains(uid) == true
+    }
+
+    private fun toNotFoundText(): UiString {
+        return if (displaySearch) {
+            UiString.FromResources(R.string.shoppingLists_text_searchNotFound)
+        } else {
+            UiString.FromResources(R.string.purchases_text_shoppingListsNotFound)
+        }
     }
 
     private fun toTotalSelectedValue(total: Money): SelectedValue<DisplayTotal>? {

@@ -11,4 +11,6 @@ sealed class PurchasesScreenEvent {
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesScreenEvent()
 
     data class OnSelectDrawerScreen(val display: Boolean) : PurchasesScreenEvent()
+
+    object OnHideKeyboard : PurchasesScreenEvent()
 }

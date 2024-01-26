@@ -41,6 +41,12 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
+            ArchiveEvent.OnClickSearchShoppingLists -> onClickSearchShoppingLists()
+
+            is ArchiveEvent.OnSearchValueChanged -> onSearchValueChanged(event)
+
+            ArchiveEvent.OnInvertSearch -> onInvertSearch()
+
             is ArchiveEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
 
             is ArchiveEvent.OnSelectDisplayProducts -> onSelectDisplayProducts(event)
@@ -108,6 +114,23 @@ class ArchiveViewModel @Inject constructor(
         event: ArchiveEvent.OnSelectDrawerScreen
     ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onClickSearchShoppingLists() {
+        archiveState.onSearch()
+    }
+
+    private fun onSearchValueChanged(event: ArchiveEvent.OnSearchValueChanged) {
+        archiveState.onSearchValueChanged(event.value)
+    }
+
+    private fun onInvertSearch() = viewModelScope.launch(AppDispatchers.Main) {
+        val display = !archiveState.displaySearch
+        archiveState.onShowSearch(display)
+
+        if (!display) {
+            _screenEventFlow.emit(ArchiveScreenEvent.OnHideKeyboard)
+        }
     }
 
     private fun onDisplayProductsSelected(

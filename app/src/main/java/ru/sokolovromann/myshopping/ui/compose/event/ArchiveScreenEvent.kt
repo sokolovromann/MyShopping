@@ -11,4 +11,6 @@ sealed class ArchiveScreenEvent {
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : ArchiveScreenEvent()
 
     data class OnSelectDrawerScreen(val display: Boolean) : ArchiveScreenEvent()
+
+    object OnHideKeyboard : ArchiveScreenEvent()
 }

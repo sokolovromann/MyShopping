@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
@@ -18,6 +19,9 @@ class ArchiveState {
     private var shoppingListsWithConfig by mutableStateOf(ShoppingListsWithConfig())
 
     var shoppingLists: List<ShoppingListItem> by  mutableStateOf(listOf())
+        private set
+
+    var notFoundText: UiString by mutableStateOf(UiString.FromString(""))
         private set
 
     var displayHiddenShoppingLists: Boolean by mutableStateOf(false)
@@ -56,6 +60,12 @@ class ArchiveState {
     var expandedSort: Boolean by mutableStateOf(false)
         private set
 
+    var searchValue: TextFieldValue by mutableStateOf(TextFieldValue())
+        private set
+
+    var displaySearch: Boolean by mutableStateOf(false)
+        private set
+
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
@@ -67,6 +77,7 @@ class ArchiveState {
 
         val userPreferences = shoppingListsWithConfig.getUserPreferences()
         shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(shoppingListsWithConfig)
+        notFoundText = toNotFoundText()
         displayHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         selectedUids = null
         displayProducts = userPreferences.displayShoppingsProducts
@@ -95,6 +106,30 @@ class ArchiveState {
     fun onSelectSort(expanded: Boolean) {
         expandedSort = expanded
         expandedArchiveMenu = false
+    }
+
+    fun onSearch() {
+        shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(
+            search = searchValue.text,
+            shoppingListsWithConfig = shoppingListsWithConfig
+        )
+        notFoundText = toNotFoundText()
+    }
+
+    fun onSearchValueChanged(value: TextFieldValue) {
+        searchValue = value
+    }
+
+    fun onShowSearch(display: Boolean) {
+        if (!display) {
+            shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(shoppingListsWithConfig)
+            notFoundText = toNotFoundText()
+            searchValue = TextFieldValue()
+        }
+
+        displaySearch = display
+        expandedArchiveMenu = false
+        expandedSort = false
     }
 
     fun onShowArchiveMenu(expanded: Boolean) {
@@ -155,7 +190,19 @@ class ArchiveState {
     }
 
     fun isNotFound(): Boolean {
-        return shoppingListsWithConfig.isEmpty()
+        return if (displaySearch) {
+            shoppingLists.isEmpty()
+        } else {
+            shoppingListsWithConfig.isEmpty()
+        }
+    }
+
+    private fun toNotFoundText(): UiString {
+        return if (displaySearch) {
+            UiString.FromResources(R.string.shoppingLists_text_searchNotFound)
+        } else {
+            UiString.FromResources(R.string.archive_text_shoppingListsNotFound)
+        }
     }
 
     private fun toTotalSelectedValue(total: Money): SelectedValue<DisplayTotal>? {

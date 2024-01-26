@@ -426,6 +426,7 @@
     <string name="shoppingLists_action_hideProducts">Завжди приховувати</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Приховувати, якщо є заголовок</string>
     <string name="shoppingLists_action_reverseSort">У зворотному порядку</string>
+    <string name="shoppingLists_action_search">Пошук</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Вибрати усі</string>
     <string name="shoppingLists_action_selectArchiveLocation">Архів</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
@@ -435,11 +436,13 @@
     <string name="shoppingLists_action_sortByLastModified">За редагуванням</string>
     <string name="shoppingLists_action_sortByName">За назвою</string>
     <string name="shoppingLists_action_sortByTotal">За сумою</string>
+    <string name="shoppingLists_contentDescription_cancelSearchingProducts">Скасування пошуку</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
     <string name="shoppingLists_header_displayTotal">Разом</string>
     <string name="shoppingLists_header_location">Показувати</string>
+    <string name="shoppingLists_label_search">Пошук</string>
     <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>
     <string name="shoppingLists_text_allTotal">Разом: %s</string>
     <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
@@ -447,6 +450,7 @@
     <string name="shoppingLists_text_nameNotFound">Без назви</string>
     <string name="shoppingLists_text_otherShoppingLists">Інші</string>
     <string name="shoppingLists_text_pinnedShoppingLists">Закріплені</string>
+    <string name="shoppingLists_text_searchNotFound">Не знайдено</string>
     <string name="shoppingLists_text_selectedTotal">Вибрано: %s</string>
     <string name="shoppingLists_text_totalFormatted">Разом (змінено): %s</string>
 

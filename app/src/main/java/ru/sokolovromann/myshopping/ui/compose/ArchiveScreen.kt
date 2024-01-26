@@ -1,7 +1,10 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -11,10 +14,17 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +48,8 @@ fun ArchiveScreen(
     val state = viewModel.archiveState
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
@@ -62,16 +74,28 @@ fun ArchiveScreen(
                         scaffoldState.drawerState.close()
                     }
                 }
+
+                is ArchiveScreenEvent.OnHideKeyboard -> {
+                    focusManager.clearFocus(force = true)
+                }
             }
         }
     }
 
-    BackHandler(enabled = scaffoldState.drawerState.isOpen) {
-        viewModel.onEvent(ArchiveEvent.OnSelectDrawerScreen(false))
-    }
-
-    BackHandler(enabled = state.selectedUids != null) {
-        viewModel.onEvent(ArchiveEvent.OnAllShoppingListsSelected(false))
+    BackHandler {
+        if (scaffoldState.drawerState.isOpen) {
+            viewModel.onEvent(ArchiveEvent.OnSelectDrawerScreen(false))
+        } else {
+            if (state.selectedUids == null) {
+                if (state.displaySearch) {
+                    viewModel.onEvent(ArchiveEvent.OnInvertSearch)
+                } else {
+                    viewModel.onEvent(ArchiveEvent.OnClickBack)
+                }
+            } else {
+                viewModel.onEvent(ArchiveEvent.OnAllShoppingListsSelected(false))
+            }
+        }
     }
 
     AppScaffold(
@@ -81,11 +105,20 @@ fun ArchiveScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.archive_header)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDrawerScreen(true)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.archive_contentDescription_navigationIcon)
-                            )
+                        if (state.displaySearch) {
+                            IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnInvertSearch) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSearchingProducts)
+                                )
+                            }
+                        } else {
+                            IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDrawerScreen(true)) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = stringResource(R.string.archive_contentDescription_navigationIcon)
+                                )
+                            }
                         }
                     }
                 )
@@ -126,23 +159,52 @@ fun ArchiveScreen(
         bottomBar = {
             AppBottomAppBar(
                 content = {
-                    val totalValue = state.totalValue ?: return@AppBottomAppBar
-                    if (totalValue.text.isNotEmpty()) {
-                        ShoppingListsTotalContent(
-                            displayTotal = totalValue.selected,
-                            totalText = totalValue.text,
-                            fontSize = state.fontSize.button.sp,
-                            expanded = state.expandedDisplayTotal,
-                            onExpanded = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayTotal(it)) },
-                            onSelected = {
-                                val event = ArchiveEvent.OnDisplayTotalSelected(it)
+                    if (state.displaySearch) {
+                        OutlinedAppTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester),
+                            value = state.searchValue,
+                            valueFontSize = state.fontSize.textField.sp,
+                            onValueChange = {
+                                val event = ArchiveEvent.OnSearchValueChanged(it)
                                 viewModel.onEvent(event)
-                            }
+                            },
+                            label = { Text(text = stringResource(R.string.shoppingLists_label_search)) },
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Search
+                            ),
+                            keyboardActions = KeyboardActions(onSearch = { viewModel.onEvent(ArchiveEvent.OnClickSearchShoppingLists) })
                         )
+
+                        LaunchedEffect(Unit) {
+                            focusRequester.requestFocus()
+                        }
+                    } else {
+                        val totalValue = state.totalValue ?: return@AppBottomAppBar
+                        if (totalValue.text.isNotEmpty()) {
+                            ShoppingListsTotalContent(
+                                displayTotal = totalValue.selected,
+                                totalText = totalValue.text,
+                                fontSize = state.fontSize.button.sp,
+                                expanded = state.expandedDisplayTotal,
+                                onExpanded = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayTotal(it)) },
+                                onSelected = {
+                                    val event = ArchiveEvent.OnDisplayTotalSelected(it)
+                                    viewModel.onEvent(event)
+                                }
+                            )
+                        }
                     }
                 },
                 actionButtons = {
                     if (state.selectedUids == null) {
+                        if (state.displaySearch) {
+                            return@AppBottomAppBar
+                        }
+
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnShowArchiveMenu(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
@@ -177,6 +239,10 @@ fun ArchiveScreen(
                                         )
                                     },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectSort(true)) }
+                                )
+                                AppDropdownMenuItem(
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_search)) },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.OnInvertSearch) }
                                 )
                             }
 
@@ -253,7 +319,7 @@ fun ArchiveScreen(
             isWaiting = state.waiting,
             notFound = {
                 Text(
-                    text = stringResource(R.string.archive_text_shoppingListsNotFound),
+                    text = state.notFoundText.asCompose(),
                     fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )

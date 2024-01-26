@@ -408,6 +408,7 @@
     <string name="shoppingLists_action_hideProducts">Verstecken</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Nicht mit Titel anzeigen</string>
     <string name="shoppingLists_action_reverseSort">Umgekehrte</string>
+    <string name="shoppingLists_action_search">Suchen</string>
     <string name="shoppingLists_action_selectAllShoppingLists">Wählen Sie Alle</string>
     <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
     <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
@@ -417,11 +418,13 @@
     <string name="shoppingLists_action_sortByLastModified">Nach zuletzt bearbeitet</string>
     <string name="shoppingLists_action_sortByName">Nach name</string>
     <string name="shoppingLists_action_sortByTotal">Nach gesamt</string>
+    <string name="shoppingLists_contentDescription_cancelSearchingProducts">Suche abbrechen</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
+    <string name="shoppingLists_label_search">Suchen</string>
     <string name="shoppingLists_text_activeTotal">Aktive: %s</string>
     <string name="shoppingLists_text_allTotal">Alle: %s</string>
     <string name="shoppingLists_text_completedTotal">Fertige: %s</string>
@@ -429,6 +432,7 @@
     <string name="shoppingLists_text_nameNotFound">Unbenannt</string>
     <string name="shoppingLists_text_otherShoppingLists">Andere</string>
     <string name="shoppingLists_text_pinnedShoppingLists">Angepinnte</string>
+    <string name="shoppingLists_text_searchNotFound">Nicht gefunden</string>
     <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 
