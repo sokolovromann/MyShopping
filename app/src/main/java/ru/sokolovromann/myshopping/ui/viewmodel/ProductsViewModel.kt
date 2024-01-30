@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -323,9 +324,14 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun onInvertSortFormatted() = viewModelScope.launch(AppDispatchers.Main) {
+        val sort = if (productsState.sortFormatted) {
+            productsState.sortValue.selected
+        } else {
+            Sort(SortBy.CREATED)
+        }
         shoppingListsRepository.sortProducts(
             shoppingUid = shoppingUid,
-            sort = productsState.sortValue.selected,
+            sort = sort,
             automaticSort = !productsState.sortFormatted
         )
     }
