@@ -88,12 +88,12 @@ fun ProductsScreen(
                     route = UiRoute.Products.editShoppingListTotalScreen(it.shoppingUid)
                 )
 
-                is ProductsScreenEvent.OnShowCopyProductScreen -> navController.navigate(
-                    route = UiRoute.Products.copyProductToShoppingList(it.productUids)
+                is ProductsScreenEvent.OnShowCopyProductsScreen -> navController.navigate(
+                    route = UiRoute.Products.copyProductsToShoppingList(it.productUids)
                 )
 
-                is ProductsScreenEvent.OnShowMoveProductScreen -> navController.navigate(
-                    route = UiRoute.Products.moveProductToShoppingList(it.productUids)
+                is ProductsScreenEvent.OnShowMoveProductsScreen -> navController.navigate(
+                    route = UiRoute.Products.moveProductsToShoppingList(it.productUids)
                 )
 
                 is ProductsScreenEvent.OnShowCalculateChangeScreen -> navController.navigate(

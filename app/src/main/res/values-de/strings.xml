@@ -100,10 +100,10 @@
     <string name="calendar_text_yesterday">Gestern</string>
     <string name="calendar_text_yesterdayAt">Gestern um %tH:%tM</string>
 
-    <string name="copyProduct_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
-    <string name="copyProduct_contentDescription_navigationIcon">Absagen</string>
-    <string name="copyProduct_header">Wählen Sie eine Liste aus</string>
-    <string name="copyProduct_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>
+    <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
+    <string name="copyMoveProducts_contentDescription_navigationIcon">Absagen</string>
+    <string name="copyMoveProducts_header">Wählen Sie eine Liste aus</string>
+    <string name="copyMoveProducts_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>
 
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Feedback</string>
@@ -251,11 +251,6 @@
     <string name="maxAutocompletes_text_names">Namen</string>
     <string name="maxAutocompletes_text_other">Andere (Marken, Größen usw.)</string>
     <string name="maxAutocompletes_text_quantities">Mengen</string>
-
-    <string name="moveProduct_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
-    <string name="moveProduct_contentDescription_navigationIcon">Absagen</string>
-    <string name="moveProduct_header">Wählen Sie eine Liste aus</string>
-    <string name="moveProduct_text_shoppingListsNotFound">Sie haben keine Einkäufe</string>
 
     <string name="notificationChannel_description_purchases">Benachrichtigungen über einkäufe</string>
     <string name="notificationChannel_name_purchases">Einkäufe</string>

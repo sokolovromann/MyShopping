@@ -49,12 +49,12 @@ sealed class UiRoute(val graph: String) {
             return "edit-shopping-list-total/$shoppingUid"
         }
 
-        fun copyProductToShoppingList(productUids: String): String {
-            return "copy-product-to-shopping-list/$productUids"
+        fun copyProductsToShoppingList(productUids: String): String {
+            return "copy-products-to-shopping-list/$productUids"
         }
 
-        fun moveProductToShoppingList(productUids: String): String {
-            return "move-product-to-shopping-list/$productUids"
+        fun moveProductsToShoppingList(productUids: String): String {
+            return "move-products-to-shopping-list/$productUids"
         }
 
         fun calculateChange(shoppingUid: String): String {
@@ -101,6 +101,10 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
     AutocompleteUid(
         key = "autocomplete-uid",
         placeholder = "{autocomplete-uid}"
+    ),
+    IsCopy(
+        key = "is-copy",
+        placeholder = "{is-copy}"
     )
 }
 
@@ -175,11 +179,17 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         ) {
             AddEditProductScreen(navController)
         }
-        composable(route = UiRoute.Products.copyProductToShoppingList(UiRouteKey.ProductUid.placeholder)) {
-            CopyProductScreen(navController)
+        composable(
+            route = UiRoute.Products.copyProductsToShoppingList(UiRouteKey.ProductUid.placeholder),
+            arguments = listOf(navArgument(UiRouteKey.IsCopy.key) { defaultValue = true })
+        ) {
+            CopyMoveProductsScreen(navController)
         }
-        composable(route = UiRoute.Products.moveProductToShoppingList(UiRouteKey.ProductUid.placeholder)) {
-            MoveProductScreen(navController)
+        composable(
+            route = UiRoute.Products.moveProductsToShoppingList(UiRouteKey.ProductUid.placeholder),
+            arguments = listOf(navArgument(UiRouteKey.IsCopy.key) { defaultValue = false })
+        ) {
+            CopyMoveProductsScreen(navController)
         }
         dialog(route = UiRoute.Products.editShoppingListNameScreen(UiRouteKey.ShoppingUid.placeholder)) {
             EditShoppingListNameScreen(navController)

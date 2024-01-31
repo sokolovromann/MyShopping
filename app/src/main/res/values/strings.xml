@@ -100,10 +100,10 @@
     <string name="calendar_text_yesterday">Yesterday</string>
     <string name="calendar_text_yesterdayAt">Yesterday at %tH:%tM</string>
 
-    <string name="copyProduct_contentDescription_addShoppingListIcon">Add shopping list</string>
-    <string name="copyProduct_contentDescription_navigationIcon">Cancel</string>
-    <string name="copyProduct_header">Select a list</string>
-    <string name="copyProduct_text_shoppingListsNotFound">You have no shopping lists</string>
+    <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Add shopping list</string>
+    <string name="copyMoveProducts_contentDescription_navigationIcon">Cancel</string>
+    <string name="copyMoveProducts_header">Select a list</string>
+    <string name="copyMoveProducts_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Feedback</string>
@@ -163,11 +163,6 @@
     <string name="maxAutocompletes_text_names">Names</string>
     <string name="maxAutocompletes_text_other">Others (brands, sizes, etc.)</string>
     <string name="maxAutocompletes_text_quantities">Quantities</string>
-
-    <string name="moveProduct_contentDescription_addShoppingListIcon">Add shopping list</string>
-    <string name="moveProduct_contentDescription_navigationIcon">Cancel</string>
-    <string name="moveProduct_header">Select a list</string>
-    <string name="moveProduct_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="notificationChannel_description_purchases">Notifications of shopping lists</string>
     <string name="notificationChannel_name_purchases">Purchases</string>

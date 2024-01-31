@@ -14,9 +14,9 @@ sealed class ProductsScreenEvent {
 
     data class OnShowEditTotalScreen(val shoppingUid: String) : ProductsScreenEvent()
 
-    data class OnShowCopyProductScreen(val productUids: String) : ProductsScreenEvent()
+    data class OnShowCopyProductsScreen(val productUids: String) : ProductsScreenEvent()
 
-    data class OnShowMoveProductScreen(val productUids: String) : ProductsScreenEvent()
+    data class OnShowMoveProductsScreen(val productUids: String) : ProductsScreenEvent()
 
     data class OnShowCalculateChangeScreen(val shoppingUid: String) : ProductsScreenEvent()
 

@@ -181,7 +181,7 @@ class ProductsViewModel @Inject constructor(
     private fun onClickCopyProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
             val uids = uidsToString(it)
-            _screenEventFlow.emit(ProductsScreenEvent.OnShowCopyProductScreen(uids))
+            _screenEventFlow.emit(ProductsScreenEvent.OnShowCopyProductsScreen(uids))
 
             productsState.onAllProductsSelected(selected = false)
         }
@@ -190,7 +190,7 @@ class ProductsViewModel @Inject constructor(
     private fun onClickMoveProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
             val uids = uidsToString(it)
-            _screenEventFlow.emit(ProductsScreenEvent.OnShowMoveProductScreen(uids))
+            _screenEventFlow.emit(ProductsScreenEvent.OnShowMoveProductsScreen(uids))
 
             productsState.onAllProductsSelected(selected = false)
         }

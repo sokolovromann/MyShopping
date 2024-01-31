@@ -4,7 +4,11 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -18,23 +22,24 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.ui.compose.event.CopyProductScreenEvent
+import ru.sokolovromann.myshopping.ui.compose.event.CopyMoveProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
-import ru.sokolovromann.myshopping.ui.viewmodel.CopyProductViewModel
-import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyProductEvent
+import ru.sokolovromann.myshopping.ui.viewmodel.CopyMoveProductsViewModel
+import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyMoveProductsEvent
 
 @Composable
-fun CopyProductScreen(
+fun CopyMoveProductsScreen(
     navController: NavController,
-    viewModel: CopyProductViewModel = hiltViewModel()
+    viewModel: CopyMoveProductsViewModel = hiltViewModel()
 ) {
-    val state = viewModel.copyProductState
+
+    val state = viewModel.copyMoveProductsState
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.screenEventFlow.collect {
             when (it) {
-                CopyProductScreenEvent.OnShowBackScreen -> {
+                CopyMoveProductsScreenEvent.OnShowBackScreen -> {
                     updateProductsWidgets(context)
                     navController.popBackStack()
                 }
@@ -43,18 +48,18 @@ fun CopyProductScreen(
     }
 
     BackHandler {
-        viewModel.onEvent(CopyProductEvent.OnClickCancel)
+        viewModel.onEvent(CopyMoveProductsEvent.OnClickCancel)
     }
 
     AppScaffold(
         topBar = {
             AppTopAppBar(
-                title = { Text(text = stringResource(R.string.copyProduct_header)) },
+                title = { Text(text = stringResource(R.string.copyMoveProducts_header)) },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.OnClickCancel) }) {
+                    IconButton(onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnClickCancel) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.copyProduct_contentDescription_navigationIcon)
+                            contentDescription = stringResource(R.string.copyMoveProducts_contentDescription_navigationIcon)
                         )
                     }
                 }
@@ -76,17 +81,17 @@ fun CopyProductScreen(
                         location = state.locationValue,
                         fontSize = state.fontSize.button.sp,
                         expanded = state.expandedLocation,
-                        onExpanded = { viewModel.onEvent(CopyProductEvent.OnSelectLocation(it)) },
+                        onExpanded = { viewModel.onEvent(CopyMoveProductsEvent.OnSelectLocation(it)) },
                         onSelected = {
-                            val event = CopyProductEvent.OnLocationSelected(it)
+                            val event = CopyMoveProductsEvent.OnLocationSelected(it)
                             viewModel.onEvent(event)
                         }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.onEvent(CopyProductEvent.OnClickAddShoppingList) }) {
+                    IconButton(onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnClickAddShoppingList) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.copyProduct_contentDescription_addShoppingListIcon),
+                            contentDescription = stringResource(R.string.copyMoveProducts_contentDescription_addShoppingListIcon),
                             tint = MaterialTheme.colors.onBackground.copy(ContentAlpha.medium)
                         )
                     }
@@ -96,14 +101,14 @@ fun CopyProductScreen(
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent(
                         fontSize = state.fontSize,
-                        onClick = { viewModel.onEvent(CopyProductEvent.OnShowHiddenShoppingLists(true)) }
+                        onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnShowHiddenShoppingLists(true)) }
                     )
                 }
             },
             isWaiting = state.waiting,
             notFound = {
                 Text(
-                    text = stringResource(R.string.copyProduct_text_shoppingListsNotFound),
+                    text = stringResource(R.string.copyMoveProducts_text_shoppingListsNotFound),
                     fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
@@ -111,7 +116,7 @@ fun CopyProductScreen(
             isNotFound = state.isNotFound(),
             fontSize = state.fontSize,
             onClick = {
-                val event = CopyProductEvent.OnClickCopyProducts(it)
+                val event = CopyMoveProductsEvent.OnClickCopyOrMoveProducts(it)
                 viewModel.onEvent(event)
             },
             onLongClick = {}

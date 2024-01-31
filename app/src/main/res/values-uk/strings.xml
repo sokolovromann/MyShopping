@@ -100,10 +100,10 @@
     <string name="calendar_text_yesterday">Вчора</string>
     <string name="calendar_text_yesterdayAt">Вчора о %tH:%tM</string>
 
-    <string name="copyProduct_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
-    <string name="copyProduct_contentDescription_navigationIcon">Скасування</string>
-    <string name="copyProduct_header">Виберіть список</string>
-    <string name="copyProduct_text_shoppingListsNotFound">У вас немає покупок</string>
+    <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
+    <string name="copyMoveProducts_contentDescription_navigationIcon">Скасування</string>
+    <string name="copyMoveProducts_header">Виберіть список</string>
+    <string name="copyMoveProducts_text_shoppingListsNotFound">У вас немає покупок</string>
 
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Відгук про програму</string>
@@ -269,11 +269,6 @@
     <string name="maxAutocompletes_text_names">Назви</string>
     <string name="maxAutocompletes_text_other">Додаткові (марки, розміри і т.д.)</string>
     <string name="maxAutocompletes_text_quantities">Кількості</string>
-
-    <string name="moveProduct_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
-    <string name="moveProduct_contentDescription_navigationIcon">Скасування</string>
-    <string name="moveProduct_header">Виберіть список</string>
-    <string name="moveProduct_text_shoppingListsNotFound">У вас немає покупок</string>
 
     <string name="notificationChannel_description_purchases">Сповіщення для покупок</string>
     <string name="notificationChannel_name_purchases">Покупки</string>
