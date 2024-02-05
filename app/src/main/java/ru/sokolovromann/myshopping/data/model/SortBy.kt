@@ -13,4 +13,8 @@ enum class SortBy {
             DefaultValue
         }
     }
+
+    override fun toString(): String {
+        return name
+    }
 }
