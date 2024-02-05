@@ -7,7 +7,8 @@ enum class SortBy {
     companion object {
         val DefaultValue: SortBy = POSITION
 
-        fun valueOfOrDefault(value: String): SortBy = try {
+        fun valueOfOrDefault(name: String?): SortBy = try {
+            val value = name ?: throw NullPointerException()
             valueOf(value)
         } catch (e: Exception) {
             DefaultValue
