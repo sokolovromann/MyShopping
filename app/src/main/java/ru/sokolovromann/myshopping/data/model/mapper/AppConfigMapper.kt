@@ -18,6 +18,8 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import java.text.DecimalFormat
@@ -95,6 +97,9 @@ object AppConfigMapper {
             nightTheme = userPreferences.nightTheme,
             fontSize = userPreferences.fontSize.toString(),
             shoppingsMultiColumns = userPreferences.shoppingsMultiColumns,
+            shoppingsSortBy = userPreferences.shoppingsSort.toString(),
+            shoppingsSortAscending = userPreferences.shoppingsSort.ascending,
+            shoppingsSortFormatted = userPreferences.shoppingsSortFormatted,
             productsMultiColumns = userPreferences.productsMultiColumns,
             displayCompleted = userPreferences.displayCompleted.toString(),
             displayTotal = userPreferences.displayTotal.toString(),
@@ -130,6 +135,11 @@ object AppConfigMapper {
             nightTheme = toNightThemeOrDefault(entity.nightTheme),
             fontSize = FontSize.valueOfOrDefault(entity.fontSize),
             shoppingsMultiColumns = toMultiColumnsOrDefault(entity.shoppingsMultiColumns),
+            shoppingsSort = Sort(
+                sortBy = SortBy.valueOfOrDefault(entity.shoppingsSortBy),
+                ascending = toShoppingsSortAscending(entity.shoppingsSortAscending)
+            ),
+            shoppingsSortFormatted = toShoppingsSortFormatted(entity.shoppingsSortFormatted),
             productsMultiColumns = toMultiColumnsOrDefault(entity.productsMultiColumns),
             displayCompleted = DisplayCompleted.valueOfOrDefault(entity.displayCompleted),
             displayTotal = DisplayTotal.valueOfOrDefault(entity.displayTotal),
@@ -178,6 +188,14 @@ object AppConfigMapper {
 
     private fun toMultiColumnsOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.MULTI_COLUMNS
+    }
+
+    private fun toShoppingsSortAscending(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.SORT.ascending
+    }
+
+    private fun toShoppingsSortFormatted(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.SORT_FORMATTED
     }
 
     private fun toDisplayLongTotalOrDefault(value: Boolean?): Boolean {

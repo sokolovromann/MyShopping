@@ -17,8 +17,13 @@ data class ShoppingListsWithConfig(
     fun getPinnedOtherSortedShoppingLists(
         displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
     ): Pair<List<ShoppingList>, List<ShoppingList>> {
+        val sort = if (appConfig.userPreferences.shoppingsSortFormatted) {
+            appConfig.userPreferences.shoppingsSort
+        } else {
+            Sort()
+        }
         return shoppingLists
-            .sortedShoppingLists(displayCompleted = displayCompleted)
+            .sortedShoppingLists(sort, displayCompleted)
             .partition { it.shopping.pinned && it.isActive() }
     }
 

@@ -122,6 +122,28 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun enableAutomaticShoppingsSort(
+        sortBy: String,
+        ascending: Boolean
+    ) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.shoppingsSortBy] = sortBy
+            it[DatasourceKey.User.shoppingsSortAscending] = ascending
+            it[DatasourceKey.User.shoppingsSortFormatted] = true
+        }
+    }
+
+    suspend fun disableAutomaticShoppingsSort(
+        sortBy: String,
+        ascending: Boolean
+    ) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.shoppingsSortBy] = sortBy
+            it[DatasourceKey.User.shoppingsSortAscending] = ascending
+            it[DatasourceKey.User.shoppingsSortFormatted] = false
+        }
+    }
+
     suspend fun displayCompleted(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.displayCompleted] = value
@@ -270,6 +292,9 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.nightTheme] = requireNotNull(entity.nightTheme)
             it[DatasourceKey.User.fontSize] = requireNotNull(entity.fontSize)
             it[DatasourceKey.User.shoppingsMultiColumns] = requireNotNull(entity.shoppingsMultiColumns)
+            it[DatasourceKey.User.shoppingsSortBy] = requireNotNull(entity.shoppingsSortBy)
+            it[DatasourceKey.User.shoppingsSortAscending] = requireNotNull(entity.shoppingsSortAscending)
+            it[DatasourceKey.User.shoppingsSortFormatted] = requireNotNull(entity.shoppingsSortFormatted)
             it[DatasourceKey.User.productsMultiColumns] = requireNotNull(entity.productsMultiColumns)
             it[DatasourceKey.User.displayCompleted] = requireNotNull(entity.displayCompleted)
             it[DatasourceKey.User.displayTotal] = requireNotNull(entity.displayTotal)
@@ -329,6 +354,9 @@ class AppConfigDao(appContent: AppContent) {
             nightTheme = preferences[DatasourceKey.User.nightTheme],
             fontSize = preferences[DatasourceKey.User.fontSize],
             shoppingsMultiColumns = preferences[DatasourceKey.User.shoppingsMultiColumns],
+            shoppingsSortBy = preferences[DatasourceKey.User.shoppingsSortBy],
+            shoppingsSortAscending = preferences[DatasourceKey.User.shoppingsSortAscending],
+            shoppingsSortFormatted = preferences[DatasourceKey.User.shoppingsSortFormatted],
             productsMultiColumns = preferences[DatasourceKey.User.productsMultiColumns],
             displayCompleted = preferences[DatasourceKey.User.displayCompleted],
             displayTotal = preferences[DatasourceKey.User.displayTotal],
@@ -409,6 +437,9 @@ private object DatasourceKey {
         val taxRate = floatPreferencesKey("tax_rate")
         val taxRateAsPercent = booleanPreferencesKey("tax_rate_as_percent")
         val shoppingsMultiColumns = booleanPreferencesKey("shoppings_multi_columns")
+        val shoppingsSortBy = stringPreferencesKey("shoppings_sort_by")
+        val shoppingsSortAscending = booleanPreferencesKey("shoppings_sort_ascending")
+        val shoppingsSortFormatted = booleanPreferencesKey("shoppings_sort_formatted")
         val productsMultiColumns = booleanPreferencesKey("products_multi_columns")
         val displayCompleted = stringPreferencesKey("display_completed_purchases")
         val displayTotal = stringPreferencesKey("display_purchases_total")

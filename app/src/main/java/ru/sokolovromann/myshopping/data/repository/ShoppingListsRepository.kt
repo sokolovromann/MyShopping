@@ -601,63 +601,99 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun sortShoppingLists(
         sort: Sort,
+        automaticSort: Boolean,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingListsWithConfig = getShoppingListsWithConfig().firstOrNull()
         val shoppingLists = shoppingListsWithConfig?.getSortedShoppingLists()
-        return@withContext if (shoppingListsWithConfig == null || shoppingLists.isNullOrEmpty()) {
-            val exception = UnsupportedOperationException("Sort empty list is not supported")
-            Result.failure(exception)
+        return@withContext if (automaticSort) {
+            appConfigDao.enableAutomaticShoppingsSort(
+                sortBy = sort.sortBy.name,
+                ascending = sort.ascending
+            )
+            Result.success(Unit)
         } else {
-            val displayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
-            shoppingLists.sortedShoppingLists(sort, displayCompleted)
-                .forEachIndexed { shoppingIndex, shoppingList ->
-                    shoppingListsDao.updatePosition(
-                        uid = shoppingList.shopping.uid,
-                        position = shoppingIndex,
-                        lastModified = lastModified.millis
-                    )
+            if (shoppingListsWithConfig == null || shoppingLists.isNullOrEmpty()) {
+                val exception = UnsupportedOperationException("Sort empty list is not supported")
+                Result.failure(exception)
+            } else {
+                appConfigDao.disableAutomaticShoppingsSort(
+                    sortBy = sort.sortBy.name,
+                    ascending = sort.ascending
+                )
 
-                    shoppingList.products.forEachIndexed { productIndex, product ->
-                        productsDao.updatePosition(
-                            productUid = product.productUid,
-                            position = productIndex,
+                val displayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
+                shoppingLists.sortedShoppingLists(sort, displayCompleted)
+                    .forEachIndexed { shoppingIndex, shoppingList ->
+                        shoppingListsDao.updatePosition(
+                            uid = shoppingList.shopping.uid,
+                            position = shoppingIndex,
                             lastModified = lastModified.millis
                         )
-                    }
-                }
 
-            Result.success(Unit)
-        }
-    }
-
-    suspend fun reverseShoppingLists(
-        lastModified: DateTime = DateTime.getCurrentDateTime()
-    ): Result<Unit> = withContext(dispatcher) {
-        val shoppingLists = getShoppingListsWithConfig().firstOrNull()?.getSortedShoppingLists()
-        return@withContext if (shoppingLists.isNullOrEmpty()) {
-            val exception = UnsupportedOperationException("Sort empty list is not supported")
-            Result.failure(exception)
-        } else {
-            shoppingLists.reversed()
-                .forEachIndexed { shoppingIndex, shoppingList ->
-                    shoppingListsDao.updatePosition(
-                        uid = shoppingList.shopping.uid,
-                        position = shoppingIndex,
-                        lastModified = lastModified.millis
-                    )
-
-                    shoppingList.products.reversed()
-                        .forEachIndexed { productIndex, product ->
+                        shoppingList.products.forEachIndexed { productIndex, product ->
                             productsDao.updatePosition(
                                 productUid = product.productUid,
                                 position = productIndex,
                                 lastModified = lastModified.millis
                             )
+                        }
                     }
-                }
 
-            Result.success(Unit)
+                Result.success(Unit)
+            }
+        }
+    }
+
+    suspend fun reverseShoppingLists(
+        automaticSort: Boolean,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        val shoppingListsWithConfig = getShoppingListsWithConfig().firstOrNull()
+        return@withContext if (shoppingListsWithConfig == null) {
+            val exception = UnsupportedOperationException("ShoppingList or AppConfig is not exists")
+            Result.failure(exception)
+        } else {
+            val shoppingLists = shoppingListsWithConfig.getSortedShoppingLists()
+            val sort = shoppingListsWithConfig.getUserPreferences().shoppingsSort
+
+            if (automaticSort) {
+                appConfigDao.enableAutomaticShoppingsSort(
+                    sortBy = sort.sortBy.name,
+                    ascending = sort.ascending
+                )
+                Result.success(Unit)
+            } else {
+                if (shoppingLists.isEmpty()) {
+                    val exception = UnsupportedOperationException("Sort empty list is not supported")
+                    Result.failure(exception)
+                } else {
+                    appConfigDao.disableAutomaticShoppingsSort(
+                        sortBy = sort.sortBy.name,
+                        ascending = sort.ascending
+                    )
+
+                    shoppingLists.reversed()
+                        .forEachIndexed { shoppingIndex, shoppingList ->
+                            shoppingListsDao.updatePosition(
+                                uid = shoppingList.shopping.uid,
+                                position = shoppingIndex,
+                                lastModified = lastModified.millis
+                            )
+
+                            shoppingList.products.reversed()
+                                .forEachIndexed { productIndex, product ->
+                                    productsDao.updatePosition(
+                                        productUid = product.productUid,
+                                        position = productIndex,
+                                        lastModified = lastModified.millis
+                                    )
+                                }
+                        }
+
+                    Result.success(Unit)
+                }
+            }
         }
     }
 

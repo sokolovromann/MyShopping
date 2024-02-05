@@ -6,6 +6,8 @@ data class UserPreferences(
     val nightTheme: Boolean = UserPreferencesDefaults.NIGHT_THEME,
     val fontSize: FontSize = UserPreferencesDefaults.FONT_SIZE,
     val shoppingsMultiColumns: Boolean = UserPreferencesDefaults.MULTI_COLUMNS,
+    val shoppingsSort: Sort = UserPreferencesDefaults.SORT,
+    val shoppingsSortFormatted: Boolean = UserPreferencesDefaults.SORT_FORMATTED,
     val productsMultiColumns: Boolean = UserPreferencesDefaults.MULTI_COLUMNS,
     val displayCompleted: DisplayCompleted = UserPreferencesDefaults.DISPLAY_COMPLETED,
     val displayTotal: DisplayTotal = UserPreferencesDefaults.DISPLAY_TOTAL,

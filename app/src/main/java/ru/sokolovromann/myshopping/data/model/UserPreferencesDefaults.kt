@@ -7,6 +7,7 @@ object UserPreferencesDefaults {
 
     const val NIGHT_THEME = false
     const val MULTI_COLUMNS = false
+    const val SORT_FORMATTED = false
     const val DISPLAY_OTHER_FIELDS = true
     const val DISPLAY_LONG_TOTAL = false
     const val COLORED_CHECKBOX = true
@@ -23,6 +24,7 @@ object UserPreferencesDefaults {
     const val DISPLAY_MONEY = true
 
     val FONT_SIZE = FontSize.DefaultValue
+    val SORT = Sort()
     val DISPLAY_COMPLETED = DisplayCompleted.DefaultValue
     val DISPLAY_TOTAL = DisplayTotal.DefaultValue
     val DISPLAY_SHOPPINGS_PRODUCTS = DisplayProducts.DefaultValue
