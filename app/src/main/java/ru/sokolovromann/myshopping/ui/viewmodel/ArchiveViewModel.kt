@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ArchiveState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
@@ -60,6 +61,8 @@ class ArchiveViewModel @Inject constructor(
             ArchiveEvent.OnReverseSort -> onReverseSort()
 
             is ArchiveEvent.OnSelectSort -> onSelectSort(event)
+
+            ArchiveEvent.OnInvertSortFormatted -> onInvertSortFormatted()
 
             is ArchiveEvent.OnShowArchiveMenu -> onShowArchiveMenu(event)
 
@@ -158,17 +161,34 @@ class ArchiveViewModel @Inject constructor(
     private fun onSortSelected(
         event: ArchiveEvent.OnSortSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        shoppingListsRepository.sortShoppingLists(sort = Sort(event.sortBy))
+        shoppingListsRepository.sortShoppingLists(
+            sort = Sort(event.sortBy),
+            automaticSort = archiveState.sortFormatted
+        )
         archiveState.onSelectSort(expanded = false)
     }
 
     private fun onReverseSort() = viewModelScope.launch(AppDispatchers.Main) {
-        shoppingListsRepository.reverseShoppingLists()
+        shoppingListsRepository.reverseShoppingLists(
+            automaticSort = archiveState.sortFormatted
+        )
         archiveState.onSelectSort(expanded = false)
     }
 
     private fun onSelectSort(event: ArchiveEvent.OnSelectSort) {
         archiveState.onSelectSort(event.expanded)
+    }
+
+    private fun onInvertSortFormatted() = viewModelScope.launch(AppDispatchers.Main) {
+        val sort = if (archiveState.sortFormatted) {
+            archiveState.sortValue.selected
+        } else {
+            Sort(SortBy.CREATED)
+        }
+        shoppingListsRepository.sortShoppingLists(
+            sort = sort,
+            automaticSort = !archiveState.sortFormatted
+        )
     }
 
     private fun onShowArchiveMenu(event: ArchiveEvent.OnShowArchiveMenu) {

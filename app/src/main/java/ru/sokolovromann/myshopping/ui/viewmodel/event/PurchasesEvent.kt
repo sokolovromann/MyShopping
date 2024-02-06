@@ -49,6 +49,8 @@ sealed class PurchasesEvent {
 
     data class OnSelectSort(val expanded: Boolean) : PurchasesEvent()
 
+    object OnInvertSortFormatted : PurchasesEvent()
+
     data class OnShowPurchasesMenu(val expanded: Boolean) : PurchasesEvent()
 
     data class OnShowItemMoreMenu(val expanded: Boolean) : PurchasesEvent()

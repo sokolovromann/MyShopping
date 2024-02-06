@@ -391,6 +391,7 @@
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 
+    <string name="shoppingLists_action_automaticSorting">Sortierung speichern</string>
     <string name="shoppingLists_action_copyShoppingLists">Kopieren</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Eine Spalte</string>
     <string name="shoppingLists_action_displayActiveTotal">Aktive produkte</string>

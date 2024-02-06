@@ -11,6 +11,8 @@ import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 
@@ -65,6 +67,12 @@ class PurchasesState {
     var expandedItemMoreMenu: Boolean by mutableStateOf(false)
         private set
 
+    var sortValue: SelectedValue<Sort> by mutableStateOf(SelectedValue(Sort()))
+        private set
+
+    var sortFormatted: Boolean by mutableStateOf(false)
+        private set
+
     var expandedSort: Boolean by mutableStateOf(false)
         private set
 
@@ -99,7 +107,8 @@ class PurchasesState {
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         expandedPurchasesMenu = false
         expandedItemMoreMenu = false
-        expandedSort = false
+        sortValue = toSortValue(userPreferences.shoppingsSort)
+        sortFormatted = userPreferences.shoppingsSortFormatted
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
         waiting = false
     }
@@ -254,6 +263,19 @@ class PurchasesState {
             total = total,
             totalFormatted = false,
             userPreferences = shoppingListsWithConfig.getUserPreferences()
+        )
+    }
+
+    private fun toSortValue(sort: Sort): SelectedValue<Sort> {
+        return SelectedValue(
+            selected = sort,
+            text = when (sort.sortBy) {
+                SortBy.POSITION -> UiString.FromString("")
+                SortBy.CREATED -> UiString.FromResources(R.string.shoppingLists_action_sortByCreated)
+                SortBy.LAST_MODIFIED -> UiString.FromResources(R.string.shoppingLists_action_sortByLastModified)
+                SortBy.NAME -> UiString.FromResources(R.string.shoppingLists_action_sortByName)
+                SortBy.TOTAL -> UiString.FromResources(R.string.shoppingLists_action_sortByTotal)
+            }
         )
     }
 }

@@ -456,6 +456,7 @@
     <string name="settings_title_taxRate">Налоговая ставка</string>
     <string name="settings_title_terms_and_conditions">Условия использования</string>
 
+    <string name="shoppingLists_action_automaticSorting">Сохранять сортировку</string>
     <string name="shoppingLists_action_copyShoppingLists">Копировать</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Один столбец</string>
     <string name="shoppingLists_action_displayActiveTotal">Не купленные товары</string>

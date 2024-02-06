@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
@@ -70,6 +71,8 @@ class PurchasesViewModel @Inject constructor(
             PurchasesEvent.OnReverseSort -> onReverseSort()
 
             is PurchasesEvent.OnSelectSort -> onSelectSort(event)
+
+            PurchasesEvent.OnInvertSortFormatted -> onInvertSortFormatted()
 
             is PurchasesEvent.OnShowPurchasesMenu -> onShowPurchasesMenu(event)
 
@@ -206,17 +209,34 @@ class PurchasesViewModel @Inject constructor(
     private fun onSortSelected(
         event: PurchasesEvent.OnSortSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        shoppingListsRepository.sortShoppingLists(sort = Sort(event.sortBy))
+        shoppingListsRepository.sortShoppingLists(
+            sort = Sort(event.sortBy),
+            automaticSort = purchasesState.sortFormatted
+        )
         purchasesState.onSelectSort(expanded = false)
     }
 
     private fun onReverseSort() = viewModelScope.launch(AppDispatchers.Main) {
-        shoppingListsRepository.reverseShoppingLists()
+        shoppingListsRepository.reverseShoppingLists(
+            automaticSort = purchasesState.sortFormatted
+        )
         purchasesState.onSelectSort(expanded = false)
     }
 
     private fun onSelectSort(event: PurchasesEvent.OnSelectSort) {
         purchasesState.onSelectSort(event.expanded)
+    }
+
+    private fun onInvertSortFormatted() = viewModelScope.launch(AppDispatchers.Main) {
+        val sort = if (purchasesState.sortFormatted) {
+            purchasesState.sortValue.selected
+        } else {
+            Sort(SortBy.CREATED)
+        }
+        shoppingListsRepository.sortShoppingLists(
+            sort = sort,
+            automaticSort = !purchasesState.sortFormatted
+        )
     }
 
     private fun onShowPurchasesMenu(event: PurchasesEvent.OnShowPurchasesMenu) {

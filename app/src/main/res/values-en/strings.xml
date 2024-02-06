@@ -462,6 +462,7 @@
     <string name="settings_title_taxRate">Tax rate</string>
     <string name="settings_title_terms_and_conditions">Terms and conditions</string>
 
+    <string name="shoppingLists_action_automaticSorting">Save sort</string>
     <string name="shoppingLists_action_copyShoppingLists">Copy</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">One column</string>
     <string name="shoppingLists_action_displayActiveTotal">Active</string>

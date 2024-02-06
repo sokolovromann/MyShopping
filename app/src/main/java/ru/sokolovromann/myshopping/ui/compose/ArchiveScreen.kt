@@ -265,24 +265,46 @@ fun ArchiveScreen(
                             ) {
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSortSelected(SortBy.CREATED)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) }
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) },
+                                    right = {
+                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.CREATED
+                                        CheckmarkAppCheckbox(checked = checked)
+                                    }
                                 )
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSortSelected(SortBy.LAST_MODIFIED)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) }
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) },
+                                    right = {
+                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.LAST_MODIFIED
+                                        CheckmarkAppCheckbox(checked = checked)
+                                    }
                                 )
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSortSelected(SortBy.NAME)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) }
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) },
+                                    right = {
+                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.NAME
+                                        CheckmarkAppCheckbox(checked = checked)
+                                    }
                                 )
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSortSelected(SortBy.TOTAL)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) }
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) },
+                                    right = {
+                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.TOTAL
+                                        CheckmarkAppCheckbox(checked = checked)
+                                    }
                                 )
                                 Divider()
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnReverseSort) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
+                                )
+                                Divider()
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(ArchiveEvent.OnInvertSortFormatted) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_automaticSorting)) },
+                                    right = { AppSwitch(checked = state.sortFormatted) }
                                 )
                             }
                         }

@@ -39,6 +39,8 @@ sealed class ArchiveEvent {
 
     data class OnSelectSort(val expanded: Boolean) : ArchiveEvent()
 
+    object OnInvertSortFormatted : ArchiveEvent()
+
     data class OnShowArchiveMenu(val expanded: Boolean) : ArchiveEvent()
 
     data class OnAllShoppingListsSelected(val selected: Boolean) : ArchiveEvent()
