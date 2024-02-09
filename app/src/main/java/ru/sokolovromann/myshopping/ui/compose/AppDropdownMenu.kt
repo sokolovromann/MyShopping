@@ -54,7 +54,7 @@ private fun ProvideAppDropdownMenuHeaderTextStyle(
 ) {
     ProvideTextStyle(
         value = MaterialTheme.typography.subtitle1.copy(
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             color = contentColor
         ),
         content = content
