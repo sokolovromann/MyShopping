@@ -237,6 +237,7 @@ fun ProductsScreen(
                             OutlinedAppTextField(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .padding(ProductsSearchPaddings)
                                     .focusRequester(focusRequester),
                                 value = state.searchValue,
                                 valueFontSize = state.fontSize.textField.sp,
@@ -896,3 +897,4 @@ private val ProductsHiddenProductsPaddings = PaddingValues(
 )
 private val ProductsNamePaddings = PaddingValues(horizontal = 8.dp)
 private val ProductsGridBarPaddings = PaddingValues(all = 8.dp)
+private val ProductsSearchPaddings = PaddingValues(horizontal = 8.dp)

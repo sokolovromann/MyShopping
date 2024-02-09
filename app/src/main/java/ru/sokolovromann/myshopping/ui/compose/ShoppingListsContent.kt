@@ -510,3 +510,6 @@ private val ShoppingListsHiddenProductsPaddings = PaddingValues(
 private val ShoppingListsLocationPaddings = PaddingValues(
     horizontal = 8.dp
 )
+val ShoppingListsSearchPaddings = PaddingValues(
+    horizontal = 8.dp
+)

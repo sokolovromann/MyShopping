@@ -163,6 +163,7 @@ fun ArchiveScreen(
                         OutlinedAppTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(ShoppingListsSearchPaddings)
                                 .focusRequester(focusRequester),
                             value = state.searchValue,
                             valueFontSize = state.fontSize.textField.sp,
