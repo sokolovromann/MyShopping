@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.compose
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -23,12 +22,13 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
+import ru.sokolovromann.myshopping.data.model.Sort
+import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ShoppingListsGrid(
     modifier: Modifier = Modifier,
@@ -277,6 +277,67 @@ fun ShoppingListsDisplayProductsMenu(
             onClick = { onSelected(DisplayProducts.HIDE_IF_HAS_TITLE) },
             text = { Text(text = stringResource(R.string.shoppingLists_action_hideProductsIfHasTitle)) },
             right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE_IF_HAS_TITLE) }
+        )
+    }
+}
+
+@Composable
+fun ShoppingListsSortByMenu(
+    expanded: Boolean,
+    sortValue: SelectedValue<Sort>,
+    sortFormatted: Boolean,
+    onDismissRequest: () -> Unit,
+    onSelected: (SortBy) -> Unit,
+    onReverse: () -> Unit,
+    onInvertSortFormatted: () -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(SortBy.CREATED) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) },
+            right = {
+                val checked = sortFormatted && sortValue.selected.sortBy == SortBy.CREATED
+                CheckmarkAppCheckbox(checked = checked)
+            }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(SortBy.LAST_MODIFIED) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) },
+            right = {
+                val checked = sortFormatted && sortValue.selected.sortBy == SortBy.LAST_MODIFIED
+                CheckmarkAppCheckbox(checked = checked)
+            }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(SortBy.NAME) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) },
+            right = {
+                val checked = sortFormatted && sortValue.selected.sortBy == SortBy.NAME
+                CheckmarkAppCheckbox(checked = checked)
+            }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(SortBy.TOTAL) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) },
+            right = {
+                val checked = sortFormatted && sortValue.selected.sortBy == SortBy.TOTAL
+                CheckmarkAppCheckbox(checked = checked)
+            }
+        )
+        Divider()
+        AppDropdownMenuItem(
+            onClick = onReverse,
+            text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
+        )
+        Divider()
+        AppDropdownMenuItem(
+            onClick = onInvertSortFormatted ,
+            text = { Text(text = stringResource(R.string.shoppingLists_action_automaticSorting)) },
+            right = { AppSwitch(checked = sortFormatted) }
         )
     }
 }

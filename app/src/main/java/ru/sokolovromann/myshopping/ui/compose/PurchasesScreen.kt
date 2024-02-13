@@ -30,7 +30,6 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
-import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
@@ -286,55 +285,18 @@ fun PurchasesScreen(
                                     viewModel.onEvent(event)
                                 }
                             )
-                            AppDropdownMenu(
+                            ShoppingListsSortByMenu(
                                 expanded = state.expandedSort,
+                                sortValue = state.sortValue,
+                                sortFormatted = state.sortFormatted,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnSelectSort(false)) },
-                                header = { Text(text = stringResource(id = R.string.shoppingLists_action_sort)) }
-                            ) {
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.CREATED)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByCreated)) },
-                                    right = {
-                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.CREATED
-                                        CheckmarkAppCheckbox(checked = checked)
-                                    }
-                                )
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.LAST_MODIFIED)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByLastModified)) },
-                                    right = {
-                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.LAST_MODIFIED
-                                        CheckmarkAppCheckbox(checked = checked)
-                                    }
-                                )
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.NAME)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByName)) },
-                                    right = {
-                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.NAME
-                                        CheckmarkAppCheckbox(checked = checked)
-                                    }
-                                )
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSortSelected(SortBy.TOTAL)) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_sortByTotal)) },
-                                    right = {
-                                        val checked = state.sortFormatted && state.sortValue.selected.sortBy == SortBy.TOTAL
-                                        CheckmarkAppCheckbox(checked = checked)
-                                    }
-                                )
-                                Divider()
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnReverseSort) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
-                                )
-                                Divider()
-                                AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnInvertSortFormatted) },
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_automaticSorting)) },
-                                    right = { AppSwitch(checked = state.sortFormatted) }
-                                )
-                            }
+                                onSelected = {
+                                    val event = PurchasesEvent.OnSortSelected(it)
+                                    viewModel.onEvent(event)
+                                },
+                                onReverse = { viewModel.onEvent(PurchasesEvent.OnReverseSort) },
+                                onInvertSortFormatted = { viewModel.onEvent(PurchasesEvent.OnInvertSortFormatted) }
+                            )
                         }
                     }
                 }
