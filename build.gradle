@@ -17,7 +17,7 @@ buildscript {
         compose_version = '1.5.4'
         system_ui_controller_version = "0.32.0"
         activity_compose_version = '1.8.2'
-        navigation_compose_version = '2.7.6'
+        navigation_compose_version = '2.7.7'
         lifecycle_version = '2.7.0'
         room_version = '2.6.1'
         hilt_version = '2.50'
