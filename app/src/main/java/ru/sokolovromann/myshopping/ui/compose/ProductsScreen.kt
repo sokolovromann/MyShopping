@@ -148,12 +148,14 @@ fun ProductsScreen(
                                 }
                             )
                         } else {
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = stringResource(R.string.products_contentDescription_navigationIcon)
-                                )
-                            }
+                            IconButton(
+                                onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) },
+                                content = {
+                                    BackScreenIcon(
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_backScreenIcon)
+                                    )
+                                }
+                            )
                         }
                     },
                     actions = {

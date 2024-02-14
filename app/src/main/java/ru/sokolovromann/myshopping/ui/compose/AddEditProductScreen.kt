@@ -7,7 +7,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
@@ -75,13 +75,13 @@ fun AddEditProductScreen(
                 navigationIcon = {
                     IconButton(
                         enabled = !state.waiting,
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickCancel) }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_navigationIcon)
-                        )
-                    }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickCancel) },
+                        content = {
+                            BackScreenIcon(
+                                contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_previousScreenIcon)
+                            )
+                        }
+                    )
                 },
                 actions = {
                     TextButton(

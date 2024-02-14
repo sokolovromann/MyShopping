@@ -15,7 +15,7 @@
     <string name="addEditProduct_action_selectProductLockPrice">Price</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Quantity</string>
     <string name="addEditProduct_action_selectProductLockTotal">Total</string>
-    <string name="addEditProduct_contentDescription_navigationIcon">Back</string>
+    <string name="addEditProduct_contentDescription_previousScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="addEditProduct_contentDescription_showNameOtherFields">Show or hide other fields</string>
     <string name="addEditProduct_contentDescription_showPriceOtherFields">Show or hide other fields</string>
     <string name="addEditProduct_header_productLock">Lock</string>
@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Add name</string>
     <string name="addEditProduct_message_uidError">Add correct ID</string>
 
+    <string name="all_contentDescription_backScreenIcon">Back</string>
     <string name="all_contentDescription_cancelSearch">Cancel search</string>
     <string name="all_contentDescription_cancelSelection">Cancel selection</string>
     <string name="all_contentDescription_openNavigation">Open navigation</string>
@@ -365,6 +366,7 @@
     <string name="products_action_sortByName">By name</string>
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
+    <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="products_contentDescription_deleteProducts">Delete</string>
@@ -374,7 +376,6 @@
     <string name="products_contentDescription_editShoppingListReminder">Edit reminder</string>
     <string name="products_contentDescription_moveProductDown">Move down</string>
     <string name="products_contentDescription_moveProductUp">Move up</string>
-    <string name="products_contentDescription_navigationIcon">Back</string>
     <string name="products_contentDescription_pinOrUnpinProduct">Pin or unpin product</string>
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_contentDescription_showSelectedMenu">Show or hide selected menu</string>

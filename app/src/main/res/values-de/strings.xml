@@ -15,7 +15,7 @@
     <string name="addEditProduct_action_selectProductLockPrice">Preis</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Menge</string>
     <string name="addEditProduct_action_selectProductLockTotal">Gesamt</string>
-    <string name="addEditProduct_contentDescription_navigationIcon">Zurück</string>
+    <string name="addEditProduct_contentDescription_previousScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="addEditProduct_contentDescription_showNameOtherFields">Andere Felder ein oder ausblenden</string>
     <string name="addEditProduct_contentDescription_showPriceOtherFields">Andere Felder ein oder ausblenden</string>
     <string name="addEditProduct_header_productLock">Block</string>
@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Name hinzufügen</string>
     <string name="addEditProduct_message_uidError">ID hinzufügen</string>
 
+    <string name="all_contentDescription_backScreenIcon">Zurück</string>
     <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
     <string name="all_contentDescription_cancelSelection">Auswahl abbrechen</string>
     <string name="all_contentDescription_openNavigation">Navigation öffnen</string>
@@ -294,6 +295,7 @@
     <string name="products_action_sortByName">Nach name</string>
     <string name="products_action_sortByTotal">Nach gesamt</string>
     <string name="products_contentDescription_addProductIcon">Produkt hinzufügen</string>
+    <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="products_contentDescription_deleteProducts">Löschen</string>
@@ -303,7 +305,6 @@
     <string name="products_contentDescription_editShoppingListReminder">Erinnerung bearbeiten</string>
     <string name="products_contentDescription_moveProductDown">Nach unten verschieben</string>
     <string name="products_contentDescription_moveProductUp">Nach oben verschieben</string>
-    <string name="products_contentDescription_navigationIcon">Zurück</string>
     <string name="products_contentDescription_pinOrUnpinProduct">Produkt anheften oder loslösen</string>
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
     <string name="products_contentDescription_showSelectedMenu">Ausgewähltes Menü ein oder ausblenden</string>

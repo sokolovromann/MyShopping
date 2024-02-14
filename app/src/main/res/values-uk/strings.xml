@@ -15,7 +15,7 @@
     <string name="addEditProduct_action_selectProductLockPrice">Ціна</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Кількість</string>
     <string name="addEditProduct_action_selectProductLockTotal">Вартість</string>
-    <string name="addEditProduct_contentDescription_navigationIcon">Назад</string>
+    <string name="addEditProduct_contentDescription_previousScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="addEditProduct_contentDescription_showNameOtherFields">Показати або сховати інші поля</string>
     <string name="addEditProduct_contentDescription_showPriceOtherFields">Показати або сховати інші поля</string>
     <string name="addEditProduct_header_productLock">Заблокувати</string>
@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Додайте назву</string>
     <string name="addEditProduct_message_uidError">Додати коректний ID</string>
 
+    <string name="all_contentDescription_backScreenIcon">Назад</string>
     <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
     <string name="all_contentDescription_cancelSelection">Скасувати вибір</string>
     <string name="all_contentDescription_openNavigation">Показати навігацію</string>
@@ -312,6 +313,7 @@
     <string name="products_action_sortByName">За назвою</string>
     <string name="products_action_sortByTotal">За сумою</string>
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
+    <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="products_contentDescription_deleteProducts">Видалити</string>
@@ -321,7 +323,6 @@
     <string name="products_contentDescription_editShoppingListReminder">Редагувати нагадування</string>
     <string name="products_contentDescription_moveProductDown">Перемістити вниз</string>
     <string name="products_contentDescription_moveProductUp">Перемістити вгору</string>
-    <string name="products_contentDescription_navigationIcon">Назад</string>
     <string name="products_contentDescription_pinOrUnpinProduct">Закріпити чи відкріпити товари</string>
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
     <string name="products_contentDescription_showSelectedMenu">Показати або приховати меню</string>
