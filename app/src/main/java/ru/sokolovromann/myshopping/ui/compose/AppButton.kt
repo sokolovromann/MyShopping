@@ -39,7 +39,7 @@ fun AppDialogActionButton(
 fun AppCancelSearchButton(
     modifier: Modifier = Modifier,
     contentDescription: String? = stringResource(R.string.all_contentDescription_cancelSearch),
-    tint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+    tint: Color = DefaultIconButtonTint,
     onClick: () -> Unit
 ) {
     IconButton(
@@ -53,3 +53,9 @@ fun AppCancelSearchButton(
         )
     }
 }
+
+private val DefaultIconButtonTint: Color
+    @Composable
+    get() = LocalContentColor.current.copy(
+        alpha = LocalContentAlpha.current
+    )
