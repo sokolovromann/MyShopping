@@ -37,7 +37,7 @@
     <string name="all_contentDescription_backScreenIcon">Back</string>
     <string name="all_contentDescription_cancelSearch">Cancel search</string>
     <string name="all_contentDescription_cancelSelection">Cancel selection</string>
-    <string name="all_contentDescription_openNavigation">Open navigation</string>
+    <string name="all_contentDescription_navigationMenuIcon">Open navigation</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchive</string>
@@ -64,7 +64,7 @@
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Clear</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Delete</string>
-    <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Select all autocompletes</string>
     <string name="autocompletes_header_autocompletes">Autocompletes</string>
     <string name="autocompletes_header_location">Display</string>
@@ -271,7 +271,7 @@
     <string name="settings_body_privacy_policy">Tap to read</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_terms_and_conditions">Tap to read</string>
-    <string name="settings_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_aboutApp">About</string>
     <string name="settings_header_autocompletes">Autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
@@ -331,7 +331,7 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Display completed shopping lists</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Move down</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Move up</string>
-    <string name="shoppingLists_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_label_search">Search</string>

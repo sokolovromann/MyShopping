@@ -37,7 +37,7 @@
     <string name="all_contentDescription_backScreenIcon">Назад</string>
     <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
     <string name="all_contentDescription_cancelSelection">Скасувати вибір</string>
-    <string name="all_contentDescription_openNavigation">Показати навігацію</string>
+    <string name="all_contentDescription_navigationMenuIcon">Показати навігацію</string>
     <string name="all_header_appName">Мої покупки</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Розархівувати</string>
@@ -64,7 +64,7 @@
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Очистити</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Видалити</string>
-    <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Вибрати всі підказки</string>
     <string name="autocompletes_header_autocompletes">Підказки</string>
     <string name="autocompletes_header_location">Показувати</string>
@@ -377,7 +377,7 @@
     <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_terms_and_conditions">Натисніть, щоб прочитати</string>
-    <string name="settings_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_aboutApp">Про програму</string>
     <string name="settings_header_autocompletes">Підказки</string>
     <string name="settings_header_generalSettings">Загальні</string>
@@ -437,7 +437,7 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
-    <string name="shoppingLists_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="shoppingLists_header_displayTotal">Разом</string>
     <string name="shoppingLists_header_location">Показувати</string>
     <string name="shoppingLists_label_search">Пошук</string>

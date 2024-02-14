@@ -37,7 +37,7 @@
     <string name="all_contentDescription_backScreenIcon">Zurück</string>
     <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
     <string name="all_contentDescription_cancelSelection">Auswahl abbrechen</string>
-    <string name="all_contentDescription_openNavigation">Navigation öffnen</string>
+    <string name="all_contentDescription_navigationMenuIcon">Navigation öffnen</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
@@ -64,7 +64,7 @@
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Klar</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Löschen</string>
-    <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Wählen Sie alle Autovervollständigungen</string>
     <string name="autocompletes_header_autocompletes">Autovervollständigungen</string>
     <string name="autocompletes_header_location">Anzeige</string>
@@ -359,7 +359,7 @@
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>
-    <string name="settings_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_aboutApp">Um</string>
     <string name="settings_header_autocompletes">Autovervollständigungen</string>
     <string name="settings_header_generalSettings">Allgemein</string>
@@ -419,7 +419,7 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
-    <string name="shoppingLists_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
+    <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
     <string name="shoppingLists_label_search">Suchen</string>

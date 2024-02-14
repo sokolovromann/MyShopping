@@ -56,10 +56,10 @@ fun AppTopBarIcon(
 }
 
 @Composable
-fun OpenNavigationIcon(
+fun NavigationMenuIcon(
     modifier: Modifier = Modifier,
     size: Dp = DefaultIconSize,
-    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_openNavigation),
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_navigationMenuIcon),
     tint: Color = DefaultIconTint
 ) {
     AppTopBarIcon(

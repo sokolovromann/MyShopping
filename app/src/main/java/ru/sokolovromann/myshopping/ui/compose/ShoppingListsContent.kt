@@ -345,8 +345,8 @@ fun ShoppingListsSortByMenu(
 @Composable
 fun ShoppingListsOpenNavigationButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
-        OpenNavigationIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_openNavigation)
+        NavigationMenuIcon(
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_navigationMenuIcon)
         )
     }
 }

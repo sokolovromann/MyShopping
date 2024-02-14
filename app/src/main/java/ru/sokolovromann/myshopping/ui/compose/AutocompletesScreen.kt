@@ -96,8 +96,8 @@ fun AutocompletesScreen(
                                 viewModel.onEvent(event)
                             },
                             content = {
-                                OpenNavigationIcon(
-                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_openNavigation)
+                                NavigationMenuIcon(
+                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_navigationMenuIcon)
                                 )
                             }
                         )

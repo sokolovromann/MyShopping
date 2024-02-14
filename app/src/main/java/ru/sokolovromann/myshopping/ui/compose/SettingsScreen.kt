@@ -136,8 +136,8 @@ fun SettingsScreen(
                             viewModel.onEvent(event)
                         },
                         content = {
-                            OpenNavigationIcon(
-                                contentDescription = UiString.FromResources(R.string.settings_contentDescription_openNavigation)
+                            NavigationMenuIcon(
+                                contentDescription = UiString.FromResources(R.string.settings_contentDescription_navigationMenuIcon)
                             )
                         }
                     )
