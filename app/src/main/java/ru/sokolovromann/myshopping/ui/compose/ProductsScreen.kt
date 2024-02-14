@@ -176,12 +176,13 @@ fun ProductsScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnAllProductsSelected(false)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.products_contentDescription_cancelSelectingProducts)
-                            )
-                        }
+                        AppCancelSelectionButton(
+                            contentDescription = stringResource(R.string.products_contentDescription_cancelSelection),
+                            onClick = {
+                                val event = ProductsEvent.OnAllProductsSelected(selected = false)
+                                viewModel.onEvent(event)
+                            }
+                        )
                     },
                     actions = {
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickPinProducts) }) {

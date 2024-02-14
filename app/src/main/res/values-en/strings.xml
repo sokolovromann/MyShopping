@@ -35,13 +35,13 @@
     <string name="addEditProduct_message_uidError">Add correct ID</string>
 
     <string name="all_contentDescription_cancelSearch">Cancel search</string>
+    <string name="all_contentDescription_cancelSelection">Cancel selection</string>
     <string name="all_contentDescription_openNavigation">Open navigation</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">Delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Open archive menu</string>
-    <string name="archive_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchive</string>
     <string name="archive_contentDescription_moveShoppingListsToTrash">Delete</string>
     <string name="archive_header">Archive</string>
@@ -60,7 +60,7 @@
     <string name="autocompletes_body_sizes">Sizes: %s</string>
     <string name="autocompletes_body_totals">Totals: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Add autocomplete</string>
-    <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Cancel selection</string>
+    <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Clear</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Delete</string>
     <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
@@ -366,7 +366,7 @@
     <string name="products_action_sortByTotal">By total</string>
     <string name="products_contentDescription_addProductIcon">Add product</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
-    <string name="products_contentDescription_cancelSelectingProducts">Cancel selection</string>
+    <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="products_contentDescription_deleteProducts">Delete</string>
     <string name="products_contentDescription_displayCompletedPurchases">Display completed products</string>
     <string name="products_contentDescription_editProduct">Edit</string>
@@ -394,7 +394,6 @@
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
-    <string name="purchases_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Delete</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Pin or unpin shopping lists</string>
@@ -486,6 +485,7 @@
     <string name="shoppingLists_action_sortByName">By name</string>
     <string name="shoppingLists_action_sortByTotal">By total</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
+    <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Display completed shopping lists</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Move down</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Move up</string>
@@ -505,7 +505,6 @@
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
-    <string name="trash_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
     <string name="trash_contentDescription_deleteShoppingLists">Delete</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Restore</string>

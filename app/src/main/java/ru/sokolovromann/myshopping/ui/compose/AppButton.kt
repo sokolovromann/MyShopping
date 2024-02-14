@@ -74,6 +74,25 @@ fun AppCancelSearchButton(
     }
 }
 
+@Composable
+fun AppCancelSelectionButton(
+    modifier: Modifier = Modifier,
+    contentDescription: String? = stringResource(R.string.all_contentDescription_cancelSelection),
+    tint: Color = DefaultIconButtonTint,
+    onClick: () -> Unit
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = onClick
+    ) {
+        Icon(
+            imageVector = Icons.Default.Clear,
+            contentDescription = contentDescription,
+            tint = tint
+        )
+    }
+}
+
 private val DefaultIconButtonTint: Color
     @Composable
     get() = LocalContentColor.current.copy(

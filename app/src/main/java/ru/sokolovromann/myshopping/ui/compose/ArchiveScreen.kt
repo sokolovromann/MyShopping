@@ -7,7 +7,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
@@ -117,11 +116,9 @@ fun ArchiveScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnAllShoppingListsSelected(false)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.archive_contentDescription_cancelSelectingShoppingLists)
-                            )
+                        ShoppingListsCancelSelectionButton {
+                            val event = ArchiveEvent.OnAllShoppingListsSelected(selected = false)
+                            viewModel.onEvent(event)
                         }
                     },
                     actions = {

@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -104,12 +103,13 @@ fun AutocompletesScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedNames?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(false)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelectingAutocompletes)
-                            )
-                        }
+                        AppCancelSelectionButton(
+                            contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelection),
+                            onClick = {
+                                val event = AutocompletesEvent.OnAllAutocompletesSelected(selected = false)
+                                viewModel.onEvent(event)
+                            }
+                        )
                     },
                     actions = {
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClearAutocompletes) }) {

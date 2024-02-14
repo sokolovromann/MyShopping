@@ -35,13 +35,13 @@
     <string name="addEditProduct_message_uidError">Добавьте корректный ID</string>
 
     <string name="all_contentDescription_cancelSearch">Отмена поиска</string>
+    <string name="all_contentDescription_cancelSelection">Отменить выбор</string>
     <string name="all_contentDescription_openNavigation">Показать навигацию</string>
     <string name="all_header_appName">Мои покупки</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Разархивировать</string>
     <string name="archive_action_moveShoppingListsToTrash">Удалить</string>
     <string name="archive_contentDescription_archiveMenuIcon">Открыть меню архива</string>
-    <string name="archive_contentDescription_cancelSelectingShoppingLists">Отменить выбор</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Разархивировать</string>
     <string name="archive_contentDescription_moveShoppingListsToTrash">Удалить</string>
     <string name="archive_header">Архив</string>
@@ -60,7 +60,7 @@
     <string name="autocompletes_body_sizes">Размеры: %s</string>
     <string name="autocompletes_body_totals">Стоимости: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
-    <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Отменить выбор</string>
+    <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Очистить</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Удалить</string>
     <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
@@ -360,7 +360,7 @@
     <string name="products_action_sortByTotal">По стоимости</string>
     <string name="products_contentDescription_addProductIcon">Добавить товар</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
-    <string name="products_contentDescription_cancelSelectingProducts">Отменить выбор</string>
+    <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="products_contentDescription_deleteProducts">Удалить</string>
     <string name="products_contentDescription_displayCompletedPurchases">Показать купленные товары</string>
     <string name="products_contentDescription_editProduct">Редактировать</string>
@@ -388,7 +388,6 @@
     <string name="products_text_trashProductsNotFound">Список покупок пуст</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Добавить список покупок</string>
-    <string name="purchases_contentDescription_cancelSelectingShoppingLists">Отменить выбор</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Архивировать</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Удалить</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закрепить или открепить списки покупок</string>
@@ -480,6 +479,7 @@
     <string name="shoppingLists_action_sortByName">По названию</string>
     <string name="shoppingLists_action_sortByTotal">По стоимости</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
+    <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показать купленные списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
@@ -499,7 +499,6 @@
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
-    <string name="trash_contentDescription_cancelSelectingShoppingLists">Отменить выбор</string>
     <string name="trash_contentDescription_deleteShoppingLists">Удалить навсегда</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Архивировать</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Восстановить</string>

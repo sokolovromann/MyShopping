@@ -116,11 +116,9 @@ fun PurchasesScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(false)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_cancelSelectingShoppingLists)
-                            )
+                        ShoppingListsCancelSelectionButton {
+                            val event = PurchasesEvent.OnAllShoppingListsSelected(selected = false)
+                            viewModel.onEvent(event)
                         }
                     },
                     actions = {

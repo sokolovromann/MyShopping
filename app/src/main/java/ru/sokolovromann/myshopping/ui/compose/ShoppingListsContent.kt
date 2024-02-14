@@ -359,6 +359,14 @@ fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
 }
 
 @Composable
+fun ShoppingListsCancelSelectionButton(onClick: () -> Unit) {
+    AppCancelSelectionButton(
+        contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSelection),
+        onClick = onClick
+    )
+}
+
+@Composable
 private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,

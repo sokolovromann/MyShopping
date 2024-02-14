@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -89,11 +88,9 @@ fun TrashScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnAllShoppingListsSelected(false)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.trash_contentDescription_cancelSelectingShoppingLists)
-                            )
+                        ShoppingListsCancelSelectionButton {
+                            val event = TrashEvent.OnAllShoppingListsSelected(selected = false)
+                            viewModel.onEvent(event)
                         }
                     },
                     actions = {
