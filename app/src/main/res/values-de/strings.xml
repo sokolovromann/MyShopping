@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Name hinzufügen</string>
     <string name="addEditProduct_message_uidError">ID hinzufügen</string>
 
+    <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
@@ -293,7 +294,7 @@
     <string name="products_action_sortByName">Nach name</string>
     <string name="products_action_sortByTotal">Nach gesamt</string>
     <string name="products_contentDescription_addProductIcon">Produkt hinzufügen</string>
-    <string name="products_contentDescription_cancelSearchingProducts">Suche abbrechen</string>
+    <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelectingProducts">Auswahl abbrechen</string>
     <string name="products_contentDescription_deleteProducts">Löschen</string>
     <string name="products_contentDescription_displayCompletedPurchases">Fertige Produkte anzeigen</string>
@@ -414,7 +415,7 @@
     <string name="shoppingLists_action_sortByLastModified">Nach zuletzt bearbeitet</string>
     <string name="shoppingLists_action_sortByName">Nach name</string>
     <string name="shoppingLists_action_sortByTotal">Nach gesamt</string>
-    <string name="shoppingLists_contentDescription_cancelSearchingProducts">Suche abbrechen</string>
+    <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>

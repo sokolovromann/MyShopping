@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Добавьте название</string>
     <string name="addEditProduct_message_uidError">Добавьте корректный ID</string>
 
+    <string name="all_contentDescription_cancelSearch">Отмена поиска</string>
     <string name="all_header_appName">Мои покупки</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Разархивировать</string>
@@ -358,7 +359,7 @@
     <string name="products_action_sortByName">По названию</string>
     <string name="products_action_sortByTotal">По стоимости</string>
     <string name="products_contentDescription_addProductIcon">Добавить товар</string>
-    <string name="products_contentDescription_cancelSearchingProducts">Отмена поиска</string>
+    <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelectingProducts">Отменить выбор</string>
     <string name="products_contentDescription_deleteProducts">Удалить</string>
     <string name="products_contentDescription_displayCompletedPurchases">Показать купленные товары</string>
@@ -479,7 +480,7 @@
     <string name="shoppingLists_action_sortByLastModified">По редактированию</string>
     <string name="shoppingLists_action_sortByName">По названию</string>
     <string name="shoppingLists_action_sortByTotal">По стоимости</string>
-    <string name="shoppingLists_contentDescription_cancelSearchingProducts">Отмена поиска</string>
+    <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показать купленные списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>

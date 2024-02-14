@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Додайте назву</string>
     <string name="addEditProduct_message_uidError">Додати коректний ID</string>
 
+    <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
     <string name="all_header_appName">Мої покупки</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Розархівувати</string>
@@ -311,7 +312,7 @@
     <string name="products_action_sortByName">За назвою</string>
     <string name="products_action_sortByTotal">За сумою</string>
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
-    <string name="products_contentDescription_cancelSearchingProducts">Скасування пошуку</string>
+    <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelectingProducts">Скасувати вибір</string>
     <string name="products_contentDescription_deleteProducts">Видалити</string>
     <string name="products_contentDescription_displayCompletedPurchases">Показати куплені товари</string>
@@ -432,7 +433,7 @@
     <string name="shoppingLists_action_sortByLastModified">За редагуванням</string>
     <string name="shoppingLists_action_sortByName">За назвою</string>
     <string name="shoppingLists_action_sortByTotal">За сумою</string>
-    <string name="shoppingLists_contentDescription_cancelSearchingProducts">Скасування пошуку</string>
+    <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>

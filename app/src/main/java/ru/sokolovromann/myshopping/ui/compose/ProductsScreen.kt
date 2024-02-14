@@ -139,12 +139,10 @@ fun ProductsScreen(
                     title = {},
                     navigationIcon = {
                         if (state.displaySearch) {
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = stringResource(R.string.products_contentDescription_cancelSearchingProducts)
-                                )
-                            }
+                            AppCancelSearchButton(
+                                contentDescription = stringResource(R.string.products_contentDescription_cancelSearch),
+                                onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) }
+                            )
                         } else {
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) }) {
                                 Icon(

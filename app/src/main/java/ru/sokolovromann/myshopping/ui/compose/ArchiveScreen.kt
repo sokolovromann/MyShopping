@@ -105,12 +105,7 @@ fun ArchiveScreen(
                     title = { Text(text = stringResource(R.string.archive_header)) },
                     navigationIcon = {
                         if (state.displaySearch) {
-                            IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnInvertSearch) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSearchingProducts)
-                                )
-                            }
+                            ShoppingListsCancelSearchButton { viewModel.onEvent(ArchiveEvent.OnInvertSearch) }
                         } else {
                             IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDrawerScreen(true)) }) {
                                 Icon(

@@ -103,12 +103,7 @@ fun PurchasesScreen(
                     title = { Text(text = stringResource(R.string.purchases_header)) },
                     navigationIcon = {
                         if (state.displaySearch) {
-                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSearchingProducts)
-                                )
-                            }
+                            ShoppingListsCancelSearchButton { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }
                         } else {
                             IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(true)) }) {
                                 Icon(
