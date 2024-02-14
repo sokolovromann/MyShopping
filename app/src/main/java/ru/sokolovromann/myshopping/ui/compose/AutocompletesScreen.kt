@@ -90,11 +90,15 @@ fun AutocompletesScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
                     navigationIcon = {
-                        AppOpenNavigationButton(
-                            contentDescription = stringResource(R.string.autocompletes_contentDescription_openNavigation),
+                        IconButton(
                             onClick = {
                                 val event = AutocompletesEvent.OnSelectDrawerScreen(display = true)
                                 viewModel.onEvent(event)
+                            },
+                            content = {
+                                OpenNavigationIcon(
+                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_openNavigation)
+                                )
                             }
                         )
                     }
@@ -103,11 +107,15 @@ fun AutocompletesScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedNames?.size.toString()) },
                     navigationIcon = {
-                        AppCancelSelectionButton(
-                            contentDescription = stringResource(R.string.autocompletes_contentDescription_cancelSelection),
+                        IconButton(
                             onClick = {
                                 val event = AutocompletesEvent.OnAllAutocompletesSelected(selected = false)
                                 viewModel.onEvent(event)
+                            },
+                            content = {
+                                CancelSelectionIcon(
+                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_cancelSelection)
+                                )
                             }
                         )
                     },

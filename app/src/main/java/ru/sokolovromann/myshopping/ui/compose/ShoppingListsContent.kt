@@ -344,26 +344,29 @@ fun ShoppingListsSortByMenu(
 
 @Composable
 fun ShoppingListsOpenNavigationButton(onClick: () -> Unit) {
-    AppOpenNavigationButton(
-        contentDescription = stringResource(R.string.shoppingLists_contentDescription_openNavigation),
-        onClick = onClick
-    )
+    IconButton(onClick = onClick) {
+        OpenNavigationIcon(
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_openNavigation)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
-    AppCancelSearchButton(
-        contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSearch),
-        onClick = onClick
-    )
+    IconButton(onClick = onClick) {
+        CancelSearchIcon(
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearch)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsCancelSelectionButton(onClick: () -> Unit) {
-    AppCancelSelectionButton(
-        contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSelection),
-        onClick = onClick
-    )
+    IconButton(onClick = onClick) {
+        CancelSelectionIcon(
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelection),
+        )
+    }
 }
 
 @Composable

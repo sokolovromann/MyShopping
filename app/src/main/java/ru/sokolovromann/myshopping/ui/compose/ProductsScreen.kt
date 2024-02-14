@@ -139,9 +139,13 @@ fun ProductsScreen(
                     title = {},
                     navigationIcon = {
                         if (state.displaySearch) {
-                            AppCancelSearchButton(
-                                contentDescription = stringResource(R.string.products_contentDescription_cancelSearch),
-                                onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) }
+                            IconButton(
+                                onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) },
+                                content = {
+                                    CancelSearchIcon(
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSearch)
+                                    )
+                                }
                             )
                         } else {
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) }) {
@@ -176,11 +180,15 @@ fun ProductsScreen(
                 AppTopAppBar(
                     title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
-                        AppCancelSelectionButton(
-                            contentDescription = stringResource(R.string.products_contentDescription_cancelSelection),
+                        IconButton(
                             onClick = {
                                 val event = ProductsEvent.OnAllProductsSelected(selected = false)
                                 viewModel.onEvent(event)
+                            },
+                            content = {
+                                CancelSelectionIcon(
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSelection)
+                                )
                             }
                         )
                     },

@@ -130,11 +130,15 @@ fun SettingsScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.settings_header_settings)) },
                 navigationIcon = {
-                    AppOpenNavigationButton(
-                        contentDescription = stringResource(R.string.settings_contentDescription_openNavigation),
+                    IconButton(
                         onClick = {
                             val event = SettingsEvent.OnSelectDrawerScreen(display = true)
                             viewModel.onEvent(event)
+                        },
+                        content = {
+                            OpenNavigationIcon(
+                                contentDescription = UiString.FromResources(R.string.settings_contentDescription_openNavigation)
+                            )
                         }
                     )
                 }
