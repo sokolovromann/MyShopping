@@ -8,8 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -132,12 +130,13 @@ fun SettingsScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.settings_header_settings)) },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(SettingsEvent.OnSelectDrawerScreen(true)) }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = stringResource(R.string.settings_contentDescription_navigationIcon)
-                        )
-                    }
+                    AppOpenNavigationButton(
+                        contentDescription = stringResource(R.string.settings_contentDescription_openNavigation),
+                        onClick = {
+                            val event = SettingsEvent.OnSelectDrawerScreen(display = true)
+                            viewModel.onEvent(event)
+                        }
+                    )
                 }
             )
         },

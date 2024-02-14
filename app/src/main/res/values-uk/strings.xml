@@ -35,6 +35,7 @@
     <string name="addEditProduct_message_uidError">Додати коректний ID</string>
 
     <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
+    <string name="all_contentDescription_openNavigation">Показати навігацію</string>
     <string name="all_header_appName">Мої покупки</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Розархівувати</string>
@@ -43,7 +44,6 @@
     <string name="archive_contentDescription_cancelSelectingShoppingLists">Скасувати вибір</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Розархівувати</string>
     <string name="archive_contentDescription_moveShoppingListsToTrash">Видалити</string>
-    <string name="archive_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="archive_header">Архів</string>
     <string name="archive_text_productsNotFound">Список покупок порожній</string>
     <string name="archive_text_shoppingListsNotFound">Архів порожній</string>
@@ -63,7 +63,7 @@
     <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Скасувати вибір</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Очистити</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Видалити</string>
-    <string name="autocompletes_contentDescription_navigationIcon">Показати навігацію</string>
+    <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Вибрати всі підказки</string>
     <string name="autocompletes_header_autocompletes">Підказки</string>
     <string name="autocompletes_header_location">Показувати</string>
@@ -344,7 +344,6 @@
     <string name="purchases_contentDescription_cancelSelectingShoppingLists">Скасувати вибір</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Архівувати</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Видалити</string>
-    <string name="purchases_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закріпити або відкріпити списки покупок</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Відкрити меню покупок</string>
     <string name="purchases_header">Покупки</string>
@@ -378,7 +377,7 @@
     <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_terms_and_conditions">Натисніть, щоб прочитати</string>
-    <string name="settings_contentDescription_navigationIcon">Показати навігацію</string>
+    <string name="settings_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="settings_header_aboutApp">Про програму</string>
     <string name="settings_header_autocompletes">Підказки</string>
     <string name="settings_header_generalSettings">Загальні</string>
@@ -437,6 +436,7 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
+    <string name="shoppingLists_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="shoppingLists_header_displayTotal">Разом</string>
     <string name="shoppingLists_header_location">Показувати</string>
     <string name="shoppingLists_label_search">Пошук</string>
@@ -456,7 +456,6 @@
     <string name="trash_contentDescription_deleteShoppingLists">Видалити</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Архівувати</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Відновити</string>
-    <string name="trash_contentDescription_navigationIcon">Показати навігацію</string>
     <string name="trash_header">Кошик</string>
     <string name="trash_text_productsNotFound">Список покупок порожній</string>
     <string name="trash_text_shoppingListsNotFound">Кошик порожній</string>

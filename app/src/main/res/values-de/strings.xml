@@ -35,6 +35,7 @@
     <string name="addEditProduct_message_uidError">ID hinzufügen</string>
 
     <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
+    <string name="all_contentDescription_openNavigation">Navigation öffnen</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
@@ -43,7 +44,6 @@
     <string name="archive_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchivieren</string>
     <string name="archive_contentDescription_moveShoppingListsToTrash">Löschen</string>
-    <string name="archive_contentDescription_navigationIcon">Navigation anzeigen</string>
     <string name="archive_header">Archiv</string>
     <string name="archive_text_productsNotFound">Einkaufsliste ist leer</string>
     <string name="archive_text_shoppingListsNotFound">Archiv ist leer</string>
@@ -63,7 +63,7 @@
     <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Auswahl abbrechen</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Klar</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Löschen</string>
-    <string name="autocompletes_contentDescription_navigationIcon">Navigation anzeigen</string>
+    <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Wählen Sie alle Autovervollständigungen</string>
     <string name="autocompletes_header_autocompletes">Autovervollständigungen</string>
     <string name="autocompletes_header_location">Anzeige</string>
@@ -326,7 +326,6 @@
     <string name="purchases_contentDescription_cancelSelectingShoppingLists">Auswahl abbrechen</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Archivieren</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Löschen</string>
-    <string name="purchases_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Einkaufslisten anheften oder loslösen</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
@@ -360,7 +359,7 @@
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>
-    <string name="settings_contentDescription_navigationIcon">Navigation öffnen</string>
+    <string name="settings_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="settings_header_aboutApp">Um</string>
     <string name="settings_header_autocompletes">Autovervollständigungen</string>
     <string name="settings_header_generalSettings">Allgemein</string>
@@ -419,6 +418,7 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
+    <string name="shoppingLists_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
     <string name="shoppingLists_label_search">Suchen</string>
@@ -438,7 +438,6 @@
     <string name="trash_contentDescription_deleteShoppingLists">Löschen</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Archivieren</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Wiederherstellen</string>
-    <string name="trash_contentDescription_navigationIcon">Navigation öffnen</string>
     <string name="trash_header">Müll</string>
     <string name="trash_text_productsNotFound">Einkaufsliste ist leer</string>
     <string name="trash_text_shoppingListsNotFound">Müll ist leer</string>

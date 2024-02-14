@@ -7,7 +7,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -80,11 +79,9 @@ fun TrashScreen(
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.trash_header)) },
                     navigationIcon = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnSelectDrawerScreen(true)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.trash_contentDescription_navigationIcon)
-                            )
+                        ShoppingListsOpenNavigationButton {
+                            val event = TrashEvent.OnSelectDrawerScreen(display = true)
+                            viewModel.onEvent(event)
                         }
                     }
                 )

@@ -105,11 +105,9 @@ fun PurchasesScreen(
                         if (state.displaySearch) {
                             ShoppingListsCancelSearchButton { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }
                         } else {
-                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDrawerScreen(true)) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = stringResource(R.string.purchases_contentDescription_navigationIcon)
-                                )
+                            ShoppingListsOpenNavigationButton {
+                                val event = PurchasesEvent.OnSelectDrawerScreen(display = true)
+                                viewModel.onEvent(event)
                             }
                         }
                     }

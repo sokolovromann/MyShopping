@@ -35,6 +35,7 @@
     <string name="addEditProduct_message_uidError">Add correct ID</string>
 
     <string name="all_contentDescription_cancelSearch">Cancel search</string>
+    <string name="all_contentDescription_openNavigation">Open navigation</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchive</string>
@@ -43,7 +44,6 @@
     <string name="archive_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchive</string>
     <string name="archive_contentDescription_moveShoppingListsToTrash">Delete</string>
-    <string name="archive_contentDescription_navigationIcon">Show navigation</string>
     <string name="archive_header">Archive</string>
     <string name="archive_text_productsNotFound">Shopping list is empty</string>
     <string name="archive_text_shoppingListsNotFound">Archive is empty</string>
@@ -63,7 +63,7 @@
     <string name="autocompletes_contentDescription_cancelSelectingAutocompletes">Cancel selection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Clear</string>
     <string name="autocompletes_contentDescription_deleteAutocompletes">Delete</string>
-    <string name="autocompletes_contentDescription_navigationIcon">Show navigation</string>
+    <string name="autocompletes_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Select all autocompletes</string>
     <string name="autocompletes_header_autocompletes">Autocompletes</string>
     <string name="autocompletes_header_location">Display</string>
@@ -238,7 +238,6 @@
     <string name="purchases_contentDescription_cancelSelectingShoppingLists">Cancel selection</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="purchases_contentDescription_moveShoppingListsToTrash">Delete</string>
-    <string name="purchases_contentDescription_navigationIcon">Open navigation</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Pin or unpin shopping lists</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
     <string name="purchases_header">Purchases</string>
@@ -272,7 +271,7 @@
     <string name="settings_body_privacy_policy">Tap to read</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_terms_and_conditions">Tap to read</string>
-    <string name="settings_contentDescription_navigationIcon">Open navigation</string>
+    <string name="settings_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="settings_header_aboutApp">About</string>
     <string name="settings_header_autocompletes">Autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
@@ -331,6 +330,7 @@
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Display completed shopping lists</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Move down</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Move up</string>
+    <string name="shoppingLists_contentDescription_openNavigation">@string/all_contentDescription_openNavigation</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_label_search">Search</string>
@@ -350,7 +350,6 @@
     <string name="trash_contentDescription_deleteShoppingLists">Delete</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Restore</string>
-    <string name="trash_contentDescription_navigationIcon">Open navigation</string>
     <string name="trash_header">Trash</string>
     <string name="trash_text_productsNotFound">Shopping list is empty</string>
     <string name="trash_text_shoppingListsNotFound">Trash is empty</string>

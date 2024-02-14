@@ -343,6 +343,14 @@ fun ShoppingListsSortByMenu(
 }
 
 @Composable
+fun ShoppingListsOpenNavigationButton(onClick: () -> Unit) {
+    AppOpenNavigationButton(
+        contentDescription = stringResource(R.string.shoppingLists_contentDescription_openNavigation),
+        onClick = onClick
+    )
+}
+
+@Composable
 fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
     AppCancelSearchButton(
         contentDescription = stringResource(R.string.shoppingLists_contentDescription_cancelSearch),

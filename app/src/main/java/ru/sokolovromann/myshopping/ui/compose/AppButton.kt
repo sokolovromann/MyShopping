@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +32,25 @@ fun AppDialogActionButton(
             modifier = modifier,
             enabled = enabled,
             content = content
+        )
+    }
+}
+
+@Composable
+fun AppOpenNavigationButton(
+    modifier: Modifier = Modifier,
+    contentDescription: String? = stringResource(R.string.all_contentDescription_openNavigation),
+    tint: Color = DefaultIconButtonTint,
+    onClick: () -> Unit
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = onClick
+    ) {
+        Icon(
+            imageVector = Icons.Default.Menu,
+            contentDescription = contentDescription,
+            tint = tint
         )
     }
 }

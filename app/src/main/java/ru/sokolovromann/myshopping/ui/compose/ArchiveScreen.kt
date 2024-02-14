@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -107,11 +106,9 @@ fun ArchiveScreen(
                         if (state.displaySearch) {
                             ShoppingListsCancelSearchButton { viewModel.onEvent(ArchiveEvent.OnInvertSearch) }
                         } else {
-                            IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDrawerScreen(true)) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = stringResource(R.string.archive_contentDescription_navigationIcon)
-                                )
+                            ShoppingListsOpenNavigationButton {
+                                val event = ArchiveEvent.OnSelectDrawerScreen(display = true)
+                                viewModel.onEvent(event)
                             }
                         }
                     }
