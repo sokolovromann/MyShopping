@@ -64,7 +64,7 @@
     <string name="autocompletes_body_totals">Gesamten: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Autovervollständigung hinzufügen</string>
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
-    <string name="autocompletes_contentDescription_clearAutocompletes">Klar</string>
+    <string name="autocompletes_contentDescription_clearAutocompletesIcon">Klar</string>
     <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>

@@ -64,7 +64,7 @@
     <string name="autocompletes_body_totals">Стоимости: %s</string>
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
-    <string name="autocompletes_contentDescription_clearAutocompletes">Очистить</string>
+    <string name="autocompletes_contentDescription_clearAutocompletesIcon">Очистить</string>
     <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>

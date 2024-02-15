@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
@@ -29,6 +28,7 @@ import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
@@ -119,12 +119,15 @@ fun AutocompletesScreen(
                         )
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClearAutocompletes) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_autocompletes_clear),
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_clearAutocompletes)
-                            )
-                        }
+                        IconButton(
+                            onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClearAutocompletes) },
+                            content = {
+                                AppTopBarIcon(
+                                    icon = UiIcon.FromResources(R.drawable.ic_autocompletes_clear),
+                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_clearAutocompletesIcon)
+                                )
+                            }
+                        )
 
                         if (state.locationValue.selected == AutocompleteLocation.PERSONAL) {
                             IconButton(
