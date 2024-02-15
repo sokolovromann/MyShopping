@@ -46,7 +46,6 @@
     <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
     <string name="archive_action_moveShoppingListsToTrash">Löschen</string>
     <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
-    <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchivieren</string>
     <string name="archive_header">Archiv</string>
     <string name="archive_text_productsNotFound">Einkaufsliste ist leer</string>
     <string name="archive_text_shoppingListsNotFound">Archiv ist leer</string>
@@ -326,7 +325,6 @@
     <string name="products_text_trashProductsNotFound">Einkaufsliste ist leer</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
-    <string name="purchases_contentDescription_moveShoppingListsToArchive">Archivieren</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Einkaufslisten anheften oder loslösen</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
@@ -415,6 +413,7 @@
     <string name="shoppingLists_action_sortByLastModified">Nach zuletzt bearbeitet</string>
     <string name="shoppingLists_action_sortByName">Nach name</string>
     <string name="shoppingLists_action_sortByTotal">Nach gesamt</string>
+    <string name="shoppingLists_contentDescription_archiveIcon">Archivieren</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
@@ -422,6 +421,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="shoppingLists_contentDescription_unarchiveIcon">Unarchivieren</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
     <string name="shoppingLists_label_search">Suchen</string>
@@ -437,7 +437,6 @@
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
-    <string name="trash_contentDescription_moveShoppingListsToArchive">Archivieren</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Wiederherstellen</string>
     <string name="trash_header">Müll</string>
     <string name="trash_text_productsNotFound">Einkaufsliste ist leer</string>

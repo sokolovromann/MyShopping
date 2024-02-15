@@ -379,6 +379,26 @@ fun ShoppingListsDeleteDataButton(onClick: () -> Unit) {
 }
 
 @Composable
+fun ShoppingListsArchiveDataButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(R.drawable.ic_all_archive),
+            contentDescription = stringResource(R.string.shoppingLists_contentDescription_archiveIcon)
+        )
+    }
+}
+
+@Composable
+fun ShoppingListsUnarchiveDataButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(R.drawable.ic_all_unarchive),
+            contentDescription = stringResource(R.string.shoppingLists_contentDescription_unarchiveIcon)
+        )
+    }
+}
+
+@Composable
 private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,

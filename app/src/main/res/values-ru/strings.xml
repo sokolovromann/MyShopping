@@ -46,7 +46,6 @@
     <string name="archive_action_moveShoppingListsToPurchases">Разархивировать</string>
     <string name="archive_action_moveShoppingListsToTrash">Удалить</string>
     <string name="archive_contentDescription_archiveMenuIcon">Открыть меню архива</string>
-    <string name="archive_contentDescription_moveShoppingListsToPurchases">Разархивировать</string>
     <string name="archive_header">Архив</string>
     <string name="archive_text_productsNotFound">Список покупок пуст</string>
     <string name="archive_text_shoppingListsNotFound">Архив пуст</string>
@@ -391,7 +390,6 @@
     <string name="products_text_trashProductsNotFound">Список покупок пуст</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Добавить список покупок</string>
-    <string name="purchases_contentDescription_moveShoppingListsToArchive">Архивировать</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закрепить или открепить списки покупок</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Открыть меню покупок</string>
     <string name="purchases_header">Покупки</string>
@@ -480,6 +478,7 @@
     <string name="shoppingLists_action_sortByLastModified">По редактированию</string>
     <string name="shoppingLists_action_sortByName">По названию</string>
     <string name="shoppingLists_action_sortByTotal">По стоимости</string>
+    <string name="shoppingLists_contentDescription_archiveIcon">Архивировать</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
@@ -487,6 +486,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Переместить вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="shoppingLists_contentDescription_unarchiveIcon">Разархивировать</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
     <string name="shoppingLists_label_search">Поиск</string>
@@ -502,7 +502,6 @@
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
-    <string name="trash_contentDescription_moveShoppingListsToArchive">Архивировать</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Восстановить</string>
     <string name="trash_header">Корзина</string>
     <string name="trash_text_productsNotFound">Список покупок пуст</string>

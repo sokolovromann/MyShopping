@@ -132,11 +132,9 @@ fun PurchasesScreen(
                                 contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_archive),
-                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive)
-                            )
+                        ShoppingListsArchiveDataButton {
+                            val event = PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)
+                            viewModel.onEvent(event)
                         }
                         ShoppingListsDeleteDataButton {
                             val event = PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)

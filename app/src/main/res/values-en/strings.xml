@@ -46,7 +46,6 @@
     <string name="archive_action_moveShoppingListsToPurchases">Unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">Delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Open archive menu</string>
-    <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchive</string>
     <string name="archive_header">Archive</string>
     <string name="archive_text_productsNotFound">Shopping list is empty</string>
     <string name="archive_text_shoppingListsNotFound">Archive is empty</string>
@@ -397,7 +396,6 @@
     <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
-    <string name="purchases_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Pin or unpin shopping lists</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
     <string name="purchases_header">Purchases</string>
@@ -486,6 +484,7 @@
     <string name="shoppingLists_action_sortByLastModified">By last modified</string>
     <string name="shoppingLists_action_sortByName">By name</string>
     <string name="shoppingLists_action_sortByTotal">By total</string>
+    <string name="shoppingLists_contentDescription_archiveIcon">Archive</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
@@ -493,6 +492,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Move down</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Move up</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="shoppingLists_contentDescription_unarchiveIcon">Unarchive</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_label_search">Search</string>
@@ -508,7 +508,6 @@
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
-    <string name="trash_contentDescription_moveShoppingListsToArchive">Archive</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Restore</string>
     <string name="trash_header">Trash</string>
     <string name="trash_text_productsNotFound">Shopping list is empty</string>

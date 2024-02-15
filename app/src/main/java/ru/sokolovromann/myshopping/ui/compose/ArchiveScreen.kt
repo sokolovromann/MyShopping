@@ -121,11 +121,9 @@ fun ArchiveScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_unarchive),
-                                contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToPurchases)
-                            )
+                        ShoppingListsUnarchiveDataButton {
+                            val event = ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)
+                            viewModel.onEvent(event)
                         }
                         ShoppingListsDeleteDataButton {
                             val event = ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
