@@ -41,6 +41,7 @@
     <string name="all_contentDescription_closeScreenIcon">Absagen</string>
     <string name="all_contentDescription_deleteDataIcon">Löschen</string>
     <string name="all_contentDescription_navigationMenuIcon">Navigation öffnen</string>
+    <string name="all_contentDescription_selectAllDataIcon">Wählen Sie Alle</string>
     <string name="all_header_appName">My Shopping List</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
@@ -66,7 +67,7 @@
     <string name="autocompletes_contentDescription_clearAutocompletes">Klar</string>
     <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
-    <string name="autocompletes_contentDescription_selectAllAutocompletes">Wählen Sie alle Autovervollständigungen</string>
+    <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="autocompletes_header_autocompletes">Autovervollständigungen</string>
     <string name="autocompletes_header_location">Anzeige</string>
     <string name="autocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
@@ -422,6 +423,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="shoppingLists_contentDescription_restoreIcon">Wiederherstellen</string>
+    <string name="shoppingLists_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="shoppingLists_contentDescription_unarchiveIcon">Unarchivieren</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>

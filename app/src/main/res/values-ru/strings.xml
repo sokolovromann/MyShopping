@@ -41,6 +41,7 @@
     <string name="all_contentDescription_closeScreenIcon">Отмена</string>
     <string name="all_contentDescription_deleteDataIcon">Удалить</string>
     <string name="all_contentDescription_navigationMenuIcon">Показать навигацию</string>
+    <string name="all_contentDescription_selectAllDataIcon">Выбрать всё</string>
     <string name="all_header_appName">Мои покупки</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">Разархивировать</string>
@@ -66,7 +67,7 @@
     <string name="autocompletes_contentDescription_clearAutocompletes">Очистить</string>
     <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
-    <string name="autocompletes_contentDescription_selectAllAutocompletes">Выбрать все подсказки</string>
+    <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="autocompletes_header_autocompletes">Подсказки</string>
     <string name="autocompletes_header_location">Показать</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
@@ -487,6 +488,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Переместить вверх</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="shoppingLists_contentDescription_restoreIcon">Восстановить</string>
+    <string name="shoppingLists_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="shoppingLists_contentDescription_unarchiveIcon">Разархивировать</string>
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>

@@ -137,12 +137,17 @@ fun AutocompletesScreen(
                             )
                         }
 
-                        IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(true)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.autocompletes_contentDescription_selectAllAutocompletes)
-                            )
-                        }
+                        IconButton(
+                            onClick = {
+                                val event = AutocompletesEvent.OnAllAutocompletesSelected(selected = true)
+                                viewModel.onEvent(event)
+                            },
+                            content = {
+                                SelectAllDataIcon(
+                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_selectAllDataIcon)
+                                )
+                            }
+                        )
                     }
                 )
             }

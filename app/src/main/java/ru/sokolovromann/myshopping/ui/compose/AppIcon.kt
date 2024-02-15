@@ -153,6 +153,22 @@ fun DeleteDataIcon(
     )
 }
 
+@Composable
+fun SelectAllDataIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_selectAllDataIcon),
+    tint: Color = DefaultIconTint
+) {
+    AppTopBarIcon(
+        icon = UiIcon.FromResources(R.drawable.ic_all_select_all),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
+        tint = tint
+    )
+}
+
 private val DefaultIconTint: Color
     @Composable
     get() = LocalContentColor.current.copy(

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -129,11 +128,9 @@ fun ArchiveScreen(
                             val event = ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
                             viewModel.onEvent(event)
                         }
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnAllShoppingListsSelected(true)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)
-                            )
+                        ShoppingListsSelectAllDataButton {
+                            val event = ArchiveEvent.OnAllShoppingListsSelected(true)
+                            viewModel.onEvent(event)
                         }
                     }
                 )

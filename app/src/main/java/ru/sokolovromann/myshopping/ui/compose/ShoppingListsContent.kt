@@ -410,6 +410,15 @@ fun ShoppingListsRestoreDataButton(onClick: () -> Unit) {
 }
 
 @Composable
+fun ShoppingListsSelectAllDataButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        SelectAllDataIcon(
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_selectAllDataIcon)
+        )
+    }
+}
+
+@Composable
 private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,

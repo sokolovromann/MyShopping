@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -104,11 +103,9 @@ fun TrashScreen(
                             val event = TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
                             viewModel.onEvent(event)
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnAllShoppingListsSelected(true)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_select_all),
-                                contentDescription = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)
-                            )
+                        ShoppingListsSelectAllDataButton {
+                            val event = TrashEvent.OnAllShoppingListsSelected(true)
+                            viewModel.onEvent(event)
                         }
                     }
                 )
