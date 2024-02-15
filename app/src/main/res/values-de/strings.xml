@@ -39,6 +39,7 @@
     <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
     <string name="all_contentDescription_cancelSelection">Auswahl abbrechen</string>
     <string name="all_contentDescription_closeScreenIcon">Absagen</string>
+    <string name="all_contentDescription_deleteDataIcon">Löschen</string>
     <string name="all_contentDescription_navigationMenuIcon">Navigation öffnen</string>
     <string name="all_header_appName">My Shopping List</string>
 
@@ -46,7 +47,6 @@
     <string name="archive_action_moveShoppingListsToTrash">Löschen</string>
     <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Unarchivieren</string>
-    <string name="archive_contentDescription_moveShoppingListsToTrash">Löschen</string>
     <string name="archive_header">Archiv</string>
     <string name="archive_text_productsNotFound">Einkaufsliste ist leer</string>
     <string name="archive_text_shoppingListsNotFound">Archiv ist leer</string>
@@ -65,7 +65,7 @@
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Autovervollständigung hinzufügen</string>
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Klar</string>
-    <string name="autocompletes_contentDescription_deleteAutocompletes">Löschen</string>
+    <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Wählen Sie alle Autovervollständigungen</string>
     <string name="autocompletes_header_autocompletes">Autovervollständigungen</string>
@@ -300,7 +300,7 @@
     <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
-    <string name="products_contentDescription_deleteProducts">Löschen</string>
+    <string name="products_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="products_contentDescription_displayCompletedPurchases">Fertige Produkte anzeigen</string>
     <string name="products_contentDescription_editProduct">Bearbeiten</string>
     <string name="products_contentDescription_editShoppingListName">Bearbeiten Sie den Namen der Einkaufsliste</string>
@@ -327,7 +327,6 @@
 
     <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Archivieren</string>
-    <string name="purchases_contentDescription_moveShoppingListsToTrash">Löschen</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Einkaufslisten anheften oder loslösen</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
@@ -418,6 +417,7 @@
     <string name="shoppingLists_action_sortByTotal">Nach gesamt</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
+    <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
@@ -437,7 +437,6 @@
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
-    <string name="trash_contentDescription_deleteShoppingLists">Löschen</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Archivieren</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Wiederherstellen</string>
     <string name="trash_header">Müll</string>

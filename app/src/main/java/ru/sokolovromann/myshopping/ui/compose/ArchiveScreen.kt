@@ -7,7 +7,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
@@ -128,11 +127,9 @@ fun ArchiveScreen(
                                 contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToPurchases)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.archive_contentDescription_moveShoppingListsToTrash)
-                            )
+                        ShoppingListsDeleteDataButton {
+                            val event = ArchiveEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
+                            viewModel.onEvent(event)
                         }
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnAllShoppingListsSelected(true)) }) {
                             Icon(

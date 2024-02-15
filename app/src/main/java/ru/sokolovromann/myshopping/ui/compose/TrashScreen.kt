@@ -4,8 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -106,11 +104,9 @@ fun TrashScreen(
                                 contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToArchive)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.trash_contentDescription_deleteShoppingLists)
-                            )
+                        ShoppingListsDeleteDataButton {
+                            val event = TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
+                            viewModel.onEvent(event)
                         }
                         IconButton(onClick = { viewModel.onEvent(TrashEvent.OnAllShoppingListsSelected(true)) }) {
                             Icon(

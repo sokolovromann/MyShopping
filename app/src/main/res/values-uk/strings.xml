@@ -39,6 +39,7 @@
     <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
     <string name="all_contentDescription_cancelSelection">Скасувати вибір</string>
     <string name="all_contentDescription_closeScreenIcon">Скасування</string>
+    <string name="all_contentDescription_deleteDataIcon">Видалити</string>
     <string name="all_contentDescription_navigationMenuIcon">Показати навігацію</string>
     <string name="all_header_appName">Мої покупки</string>
 
@@ -46,7 +47,6 @@
     <string name="archive_action_moveShoppingListsToTrash">Видалити</string>
     <string name="archive_contentDescription_archiveMenuIcon">Відкрити меню архіву</string>
     <string name="archive_contentDescription_moveShoppingListsToPurchases">Розархівувати</string>
-    <string name="archive_contentDescription_moveShoppingListsToTrash">Видалити</string>
     <string name="archive_header">Архів</string>
     <string name="archive_text_productsNotFound">Список покупок порожній</string>
     <string name="archive_text_shoppingListsNotFound">Архів порожній</string>
@@ -65,7 +65,7 @@
     <string name="autocompletes_contentDescription_addAutocompleteIcon">Додати підказку</string>
     <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
     <string name="autocompletes_contentDescription_clearAutocompletes">Очистити</string>
-    <string name="autocompletes_contentDescription_deleteAutocompletes">Видалити</string>
+    <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllAutocompletes">Вибрати всі підказки</string>
     <string name="autocompletes_header_autocompletes">Підказки</string>
@@ -318,7 +318,7 @@
     <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
-    <string name="products_contentDescription_deleteProducts">Видалити</string>
+    <string name="products_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="products_contentDescription_displayCompletedPurchases">Показати куплені товари</string>
     <string name="products_contentDescription_editProduct">Редагувати</string>
     <string name="products_contentDescription_editShoppingListName">Редагувати назву списку покупок</string>
@@ -345,7 +345,6 @@
 
     <string name="purchases_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
     <string name="purchases_contentDescription_moveShoppingListsToArchive">Архівувати</string>
-    <string name="purchases_contentDescription_moveShoppingListsToTrash">Видалити</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закріпити або відкріпити списки покупок</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Відкрити меню покупок</string>
     <string name="purchases_header">Покупки</string>
@@ -436,6 +435,7 @@
     <string name="shoppingLists_action_sortByTotal">За сумою</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
+    <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="shoppingLists_contentDescription_displayCompletedPurchases">Показати куплені списки покупок</string>
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
@@ -455,7 +455,6 @@
     <string name="shoppingLists_text_totalFormatted">Разом (змінено): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Очистити корзину</string>
-    <string name="trash_contentDescription_deleteShoppingLists">Видалити</string>
     <string name="trash_contentDescription_moveShoppingListsToArchive">Архівувати</string>
     <string name="trash_contentDescription_moveShoppingListsToPurchases">Відновити</string>
     <string name="trash_header">Кошик</string>

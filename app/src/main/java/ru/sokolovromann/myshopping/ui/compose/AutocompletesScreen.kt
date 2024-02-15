@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -128,12 +127,14 @@ fun AutocompletesScreen(
                         }
 
                         if (state.locationValue.selected == AutocompleteLocation.PERSONAL) {
-                            IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickDeleteAutocompletes) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Delete,
-                                    contentDescription = stringResource(R.string.autocompletes_contentDescription_deleteAutocompletes)
-                                )
-                            }
+                            IconButton(
+                                onClick = { viewModel.onEvent(AutocompletesEvent.OnClickDeleteAutocompletes) },
+                                content = {
+                                    DeleteDataIcon(
+                                        contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_deleteDataIcon)
+                                    )
+                                }
+                            )
                         }
 
                         IconButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(true)) }) {

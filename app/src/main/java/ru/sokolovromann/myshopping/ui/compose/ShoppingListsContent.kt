@@ -370,6 +370,15 @@ fun ShoppingListsCancelSelectionButton(onClick: () -> Unit) {
 }
 
 @Composable
+fun ShoppingListsDeleteDataButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        DeleteDataIcon(
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_deleteDataIcon),
+        )
+    }
+}
+
+@Composable
 private fun getShoppingListItemLeftOrNull(
     highlightCheckbox: Boolean,
     checked: Boolean,

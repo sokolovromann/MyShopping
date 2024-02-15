@@ -205,12 +205,14 @@ fun ProductsScreen(
                                 contentDescription = stringResource(R.string.products_contentDescription_pinOrUnpinProduct)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.products_contentDescription_deleteProducts)
-                            )
-                        }
+                        IconButton(
+                            onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) },
+                            content = {
+                                DeleteDataIcon(
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_deleteDataIcon)
+                                )
+                            }
+                        )
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(true)) }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
@@ -542,9 +544,8 @@ fun ProductsScreen(
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.products_contentDescription_deleteProducts),
+                            DeleteDataIcon(
+                                contentDescription = UiString.FromResources(R.string.products_contentDescription_deleteDataIcon),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }

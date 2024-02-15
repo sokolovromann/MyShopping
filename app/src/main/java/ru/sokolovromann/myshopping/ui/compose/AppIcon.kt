@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -129,6 +130,22 @@ fun CloseScreenIcon(
 ) {
     AppTopBarIcon(
         icon = UiIcon.FromVector(Icons.Default.Close),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
+        tint = tint
+    )
+}
+
+@Composable
+fun DeleteDataIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_deleteDataIcon),
+    tint: Color = DefaultIconTint
+) {
+    AppTopBarIcon(
+        icon = UiIcon.FromVector(Icons.Default.Delete),
         modifier = modifier,
         size = size,
         contentDescription = contentDescription,

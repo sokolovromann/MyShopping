@@ -138,11 +138,9 @@ fun PurchasesScreen(
                                 contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToArchive)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_moveShoppingListsToTrash)
-                            )
+                        ShoppingListsDeleteDataButton {
+                            val event = PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
+                            viewModel.onEvent(event)
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowItemMoreMenu(true)) }) {
                             Icon(
