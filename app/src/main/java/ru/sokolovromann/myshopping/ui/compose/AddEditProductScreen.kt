@@ -86,10 +86,9 @@ fun AddEditProductScreen(
                 actions = {
                     TextButton(
                         enabled = !state.waiting,
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickSave) }
-                    ) {
-                        Text(text = stringResource(R.string.addEditProduct_action_saveProduct).uppercase())
-                    }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickSave) },
+                        content = { SaveDataText(text = UiString.FromResources(R.string.addEditProduct_action_saveProduct)) }
+                    )
                 }
             )
         },

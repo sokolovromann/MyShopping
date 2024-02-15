@@ -9,7 +9,7 @@
 
     <string name="addEditProduct_action_quantityMinusOne">- 1</string>
     <string name="addEditProduct_action_quantityPlusOne">+ 1</string>
-    <string name="addEditProduct_action_saveProduct">Save</string>
+    <string name="addEditProduct_action_saveProduct">@string/all_action_save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Money</string>
     <string name="addEditProduct_action_selectDiscountAsPercents">Percents</string>
     <string name="addEditProduct_action_selectProductLockPrice">Price</string>
@@ -34,6 +34,7 @@
     <string name="addEditProduct_message_nameError">Add name</string>
     <string name="addEditProduct_message_uidError">Add correct ID</string>
 
+    <string name="all_action_save">Save</string>
     <string name="all_contentDescription_backScreenIcon">Back</string>
     <string name="all_contentDescription_cancelSearch">Cancel search</string>
     <string name="all_contentDescription_cancelSelection">Cancel selection</string>

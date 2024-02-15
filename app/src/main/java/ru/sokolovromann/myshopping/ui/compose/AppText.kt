@@ -8,8 +8,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 
@@ -43,7 +46,43 @@ fun AppTextGridHeader(
     )
 }
 
+@Composable
+fun AppTopBarActionText(
+    modifier: Modifier = Modifier,
+    text: UiString,
+    color: Color = DefaultAppTopBarText,
+    fontSize: TextUnit = DefaultAppTopBarFontSize
+) {
+    Text(
+        modifier = modifier,
+        text = text.asCompose().uppercase(),
+        color = color,
+        fontSize = fontSize
+    )
+}
+
+@Composable
+fun SaveDataText(
+    modifier: Modifier = Modifier,
+    text: UiString = UiString.FromResources(R.string.all_action_save),
+    color: Color = DefaultAppTopBarText,
+    fontSize: TextUnit = DefaultAppTopBarFontSize
+) {
+    AppTopBarActionText(
+        modifier = modifier,
+        text = text,
+        color = color,
+        fontSize = fontSize
+    )
+}
+
 private val AppTextGridHeaderPaddings = PaddingValues(
     horizontal = 16.dp,
     vertical = 8.dp
 )
+
+private val DefaultAppTopBarText: Color
+    get() = Color.Unspecified
+
+private val DefaultAppTopBarFontSize: TextUnit
+    get() = TextUnit.Unspecified
