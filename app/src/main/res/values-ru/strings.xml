@@ -38,6 +38,7 @@
     <string name="all_contentDescription_backScreenIcon">Назад</string>
     <string name="all_contentDescription_cancelSearch">Отмена поиска</string>
     <string name="all_contentDescription_cancelSelection">Отменить выбор</string>
+    <string name="all_contentDescription_closeScreenIcon">Отмена</string>
     <string name="all_contentDescription_navigationMenuIcon">Показать навигацию</string>
     <string name="all_header_appName">Мои покупки</string>
 
@@ -104,7 +105,7 @@
     <string name="calendar_text_yesterdayAt">Вчера в %tH:%tM</string>
 
     <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Добавить список покупок</string>
-    <string name="copyMoveProducts_contentDescription_navigationIcon">Отмена</string>
+    <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="copyMoveProducts_header">Выберите список</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">У вас нет покупок</string>
 

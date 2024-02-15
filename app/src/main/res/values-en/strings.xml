@@ -38,6 +38,7 @@
     <string name="all_contentDescription_backScreenIcon">Back</string>
     <string name="all_contentDescription_cancelSearch">Cancel search</string>
     <string name="all_contentDescription_cancelSelection">Cancel selection</string>
+    <string name="all_contentDescription_closeScreenIcon">Cancel</string>
     <string name="all_contentDescription_navigationMenuIcon">Open navigation</string>
     <string name="all_header_appName">My Shopping List</string>
 
@@ -104,7 +105,7 @@
     <string name="calendar_text_yesterdayAt">Yesterday at %tH:%tM</string>
 
     <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Add shopping list</string>
-    <string name="copyMoveProducts_contentDescription_navigationIcon">Cancel</string>
+    <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="copyMoveProducts_header">Select a list</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">You have no shopping lists</string>
 

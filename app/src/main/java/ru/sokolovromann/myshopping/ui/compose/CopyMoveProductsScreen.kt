@@ -11,7 +11,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -23,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.CopyMoveProductsScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.CopyMoveProductsViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyMoveProductsEvent
@@ -56,12 +56,14 @@ fun CopyMoveProductsScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.copyMoveProducts_header)) },
                 navigationIcon = {
-                    IconButton(onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnClickCancel) }) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.copyMoveProducts_contentDescription_navigationIcon)
-                        )
-                    }
+                    IconButton(
+                        onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnClickCancel) },
+                        content = {
+                            CloseScreenIcon(
+                                contentDescription = UiString.FromResources(R.string.copyMoveProducts_contentDescription_closeScreenIcon)
+                            )
+                        }
+                    )
                 }
             )
         }

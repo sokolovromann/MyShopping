@@ -38,6 +38,7 @@
     <string name="all_contentDescription_backScreenIcon">Назад</string>
     <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
     <string name="all_contentDescription_cancelSelection">Скасувати вибір</string>
+    <string name="all_contentDescription_closeScreenIcon">Скасування</string>
     <string name="all_contentDescription_navigationMenuIcon">Показати навігацію</string>
     <string name="all_header_appName">Мої покупки</string>
 
@@ -104,7 +105,7 @@
     <string name="calendar_text_yesterdayAt">Вчора о %tH:%tM</string>
 
     <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Додати перелік покупок</string>
-    <string name="copyMoveProducts_contentDescription_navigationIcon">Скасування</string>
+    <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="copyMoveProducts_header">Виберіть список</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">У вас немає покупок</string>
 

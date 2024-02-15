@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -119,6 +120,21 @@ fun BackScreenIcon(
     )
 }
 
+@Composable
+fun CloseScreenIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_closeScreenIcon),
+    tint: Color = DefaultIconTint
+) {
+    AppTopBarIcon(
+        icon = UiIcon.FromVector(Icons.Default.Close),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
+        tint = tint
+    )
+}
 
 private val DefaultIconTint: Color
     @Composable
