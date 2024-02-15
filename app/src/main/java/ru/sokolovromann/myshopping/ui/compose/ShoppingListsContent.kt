@@ -27,6 +27,7 @@ import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 
 @Composable
@@ -381,9 +382,9 @@ fun ShoppingListsDeleteDataButton(onClick: () -> Unit) {
 @Composable
 fun ShoppingListsArchiveDataButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
-        Icon(
-            painter = painterResource(R.drawable.ic_all_archive),
-            contentDescription = stringResource(R.string.shoppingLists_contentDescription_archiveIcon)
+        AppTopBarIcon(
+            icon = UiIcon.FromResources(R.drawable.ic_all_archive),
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveIcon)
         )
     }
 }
@@ -391,9 +392,19 @@ fun ShoppingListsArchiveDataButton(onClick: () -> Unit) {
 @Composable
 fun ShoppingListsUnarchiveDataButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
-        Icon(
-            painter = painterResource(R.drawable.ic_all_unarchive),
-            contentDescription = stringResource(R.string.shoppingLists_contentDescription_unarchiveIcon)
+        AppTopBarIcon(
+            icon = UiIcon.FromResources(R.drawable.ic_all_unarchive),
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_unarchiveIcon)
+        )
+    }
+}
+
+@Composable
+fun ShoppingListsRestoreDataButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        AppTopBarIcon(
+            icon = UiIcon.FromResources(R.drawable.ic_all_restore),
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_restoreIcon)
         )
     }
 }

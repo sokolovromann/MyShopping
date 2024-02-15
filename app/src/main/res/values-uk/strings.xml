@@ -439,6 +439,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Перемістити вниз</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Перемістити вгору</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="shoppingLists_contentDescription_restoreIcon">Відновити</string>
     <string name="shoppingLists_contentDescription_unarchiveIcon">Розархівувати</string>
     <string name="shoppingLists_header_displayTotal">Разом</string>
     <string name="shoppingLists_header_location">Показувати</string>
@@ -455,7 +456,6 @@
     <string name="shoppingLists_text_totalFormatted">Разом (змінено): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Очистити корзину</string>
-    <string name="trash_contentDescription_moveShoppingListsToPurchases">Відновити</string>
     <string name="trash_header">Кошик</string>
     <string name="trash_text_productsNotFound">Список покупок порожній</string>
     <string name="trash_text_shoppingListsNotFound">Кошик порожній</string>

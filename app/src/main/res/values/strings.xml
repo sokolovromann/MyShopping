@@ -333,6 +333,7 @@
     <string name="shoppingLists_contentDescription_moveShoppingListDown">Move down</string>
     <string name="shoppingLists_contentDescription_moveShoppingListUp">Move up</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="shoppingLists_contentDescription_restoreIcon">Restore</string>
     <string name="shoppingLists_contentDescription_unarchiveIcon">Unarchive</string>
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
@@ -349,7 +350,6 @@
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
-    <string name="trash_contentDescription_moveShoppingListsToPurchases">Restore</string>
     <string name="trash_header">Trash</string>
     <string name="trash_text_productsNotFound">Shopping list is empty</string>
     <string name="trash_text_shoppingListsNotFound">Trash is empty</string>

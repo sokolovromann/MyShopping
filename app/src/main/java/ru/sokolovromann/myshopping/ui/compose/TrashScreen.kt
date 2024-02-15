@@ -92,11 +92,9 @@ fun TrashScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_restore),
-                                contentDescription = stringResource(R.string.trash_contentDescription_moveShoppingListsToPurchases)
-                            )
+                        ShoppingListsRestoreDataButton {
+                            val event = TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.PURCHASES)
+                            viewModel.onEvent(event)
                         }
                         ShoppingListsArchiveDataButton {
                             val event = TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)
