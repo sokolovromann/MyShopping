@@ -78,7 +78,7 @@ fun AddEditProductScreen(
                         onClick = { viewModel.onEvent(AddEditProductEvent.OnClickCancel) },
                         content = {
                             BackScreenIcon(
-                                contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_previousScreenIcon)
+                                contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_backScreenIcon)
                             )
                         }
                     )

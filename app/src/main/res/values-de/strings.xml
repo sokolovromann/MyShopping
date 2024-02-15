@@ -15,7 +15,7 @@
     <string name="addEditProduct_action_selectProductLockPrice">Preis</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Menge</string>
     <string name="addEditProduct_action_selectProductLockTotal">Gesamt</string>
-    <string name="addEditProduct_contentDescription_previousScreenIcon">@string/all_contentDescription_backScreenIcon</string>
+    <string name="addEditProduct_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="addEditProduct_contentDescription_showNameOtherFields">Andere Felder ein oder ausblenden</string>
     <string name="addEditProduct_contentDescription_showPriceOtherFields">Andere Felder ein oder ausblenden</string>
     <string name="addEditProduct_header_productLock">Block</string>

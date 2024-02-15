@@ -15,7 +15,7 @@
     <string name="addEditProduct_action_selectProductLockPrice">Ціна</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Кількість</string>
     <string name="addEditProduct_action_selectProductLockTotal">Вартість</string>
-    <string name="addEditProduct_contentDescription_previousScreenIcon">@string/all_contentDescription_backScreenIcon</string>
+    <string name="addEditProduct_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="addEditProduct_contentDescription_showNameOtherFields">Показати або сховати інші поля</string>
     <string name="addEditProduct_contentDescription_showPriceOtherFields">Показати або сховати інші поля</string>
     <string name="addEditProduct_header_productLock">Заблокувати</string>
