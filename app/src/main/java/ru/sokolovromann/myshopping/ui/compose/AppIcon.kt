@@ -169,10 +169,34 @@ fun SelectAllDataIcon(
     )
 }
 
+@Composable
+fun AppDropdownMenuIcon(
+    icon: UiIcon,
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = null,
+    tint: Color = OnSurfaceTint
+) {
+    Icon(
+        modifier = Modifier
+            .size(size)
+            .then(modifier),
+        painter = icon.asPainter(),
+        contentDescription = contentDescription?.asCompose(),
+        tint = tint
+    )
+}
+
 private val DefaultIconTint: Color
     @Composable
     get() = LocalContentColor.current.copy(
         alpha = LocalContentAlpha.current
+    )
+
+private val OnSurfaceTint: Color
+    @Composable
+    get() = MaterialTheme.colors.onSurface.copy(
+        alpha = ContentAlpha.medium
     )
 
 private val DefaultIconSize: Dp
