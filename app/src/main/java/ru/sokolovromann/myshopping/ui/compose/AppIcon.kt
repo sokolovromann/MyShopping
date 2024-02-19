@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -183,6 +184,22 @@ fun AppDropdownMenuIcon(
             .then(modifier),
         painter = icon.asPainter(),
         contentDescription = contentDescription?.asCompose(),
+        tint = tint
+    )
+}
+
+@Composable
+fun MoreMenuIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = null,
+    tint: Color = OnSurfaceTint
+) {
+    AppDropdownMenuIcon(
+        icon = UiIcon.FromVector(Icons.Default.KeyboardArrowRight),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
         tint = tint
     )
 }

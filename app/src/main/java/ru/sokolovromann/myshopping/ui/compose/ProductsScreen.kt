@@ -313,13 +313,7 @@ fun ProductsScreen(
                                 ) {
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) },
-                                        right = {
-                                            Icon(
-                                                imageVector = Icons.Default.KeyboardArrowRight,
-                                                contentDescription = "",
-                                                tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                            )
-                                        },
+                                        right = { MoreMenuIcon() },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnShowShoppingMenu(true)) }
                                     )
                                     AppDropdownMenuItem(
@@ -328,13 +322,7 @@ fun ProductsScreen(
                                     )
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_sort)) },
-                                        right = {
-                                            Icon(
-                                                imageVector = Icons.Default.KeyboardArrowRight,
-                                                contentDescription = "",
-                                                tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                            )
-                                        },
+                                        right = { MoreMenuIcon() },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnSelectSort(true)) }
                                     )
                                     if (state.displayMoney) {

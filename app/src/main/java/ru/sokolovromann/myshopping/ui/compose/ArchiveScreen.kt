@@ -7,7 +7,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -201,24 +200,12 @@ fun ArchiveScreen(
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-                                    right = {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowRight,
-                                            contentDescription = "",
-                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                        )
-                                    },
+                                    right = { MoreMenuIcon() },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayProducts(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                    right = {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowRight,
-                                            contentDescription = "",
-                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                        )
-                                    },
+                                    right = { MoreMenuIcon() },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectSort(true)) }
                                 )
                                 AppDropdownMenuItem(

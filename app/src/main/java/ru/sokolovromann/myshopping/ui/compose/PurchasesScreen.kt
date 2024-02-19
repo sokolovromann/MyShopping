@@ -234,24 +234,12 @@ fun PurchasesScreen(
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-                                    right = {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowRight,
-                                            contentDescription = "",
-                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                        )
-                                    },
+                                    right = { MoreMenuIcon() },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayProducts(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                    right = {
-                                        Icon(
-                                            imageVector = Icons.Default.KeyboardArrowRight,
-                                            contentDescription = "",
-                                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                                        )
-                                    },
+                                    right = { MoreMenuIcon() },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectSort(true)) }
                                 )
                                 AppDropdownMenuItem(
