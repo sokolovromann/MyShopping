@@ -46,6 +46,7 @@ import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ProductItem
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsViewModel
@@ -162,15 +163,15 @@ fun ProductsScreen(
                         when (state.locationValue.selected) {
                             ShoppingLocation.PURCHASES, ShoppingLocation.ARCHIVE -> {
                                 IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditName) }) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_all_rename),
-                                        contentDescription = stringResource(R.string.products_contentDescription_editShoppingListName)
+                                    AppTopBarIcon(
+                                        icon = UiIcon.FromResources(R.drawable.ic_all_rename),
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListName)
                                     )
                                 }
                                 IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditReminder) }) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_all_reminder),
-                                        contentDescription = stringResource(R.string.products_contentDescription_editShoppingListReminder)
+                                    AppTopBarIcon(
+                                        icon = UiIcon.FromResources(R.drawable.ic_all_reminder),
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListReminder)
                                     )
                                 }
                             }
@@ -196,13 +197,14 @@ fun ProductsScreen(
                     },
                     actions = {
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickPinProducts) }) {
-                            Icon(
-                                painter = if (state.isOnlyPinned()) {
-                                    painterResource(R.drawable.ic_all_pin)
-                                } else {
-                                    painterResource(R.drawable.ic_all_unpin)
-                                },
-                                contentDescription = stringResource(R.string.products_contentDescription_pinOrUnpinProduct)
+                            val iconResId = if (state.isOnlyPinned()) {
+                                R.drawable.ic_all_pin
+                            } else {
+                                R.drawable.ic_all_unpin
+                            }
+                            AppTopBarIcon(
+                                icon = UiIcon.FromResources(iconResId),
+                                contentDescription = UiString.FromResources(R.string.products_contentDescription_pinOrUnpinProduct)
                             )
                         }
                         IconButton(
@@ -214,10 +216,7 @@ fun ProductsScreen(
                             }
                         )
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(true)) }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = ""
-                            )
+                            AppTopBarIcon(icon = UiIcon.FromVector(Icons.Default.MoreVert))
                             AppDropdownMenu(
                                 expanded = state.expandedItemMoreMenu,
                                 onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(false)) },
