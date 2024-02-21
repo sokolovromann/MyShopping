@@ -296,10 +296,7 @@ fun ProductsScreen(
                             }
 
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickAddProduct) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(R.string.products_contentDescription_addProductIcon)
-                                )
+                                AddDataIcon(contentDescription = UiString.FromResources(R.string.products_contentDescription_addProductIcon))
                             }
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(true)) }) {
                                 MoreIcon(contentDescription = UiString.FromResources(R.string.products_contentDescription_productsMenuIcon))

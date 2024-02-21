@@ -215,10 +215,7 @@ fun PurchasesScreen(
                         }
 
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAddShoppingList) }) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_addShoppingListIcon)
-                            )
+                            AddDataIcon(contentDescription = UiString.FromResources(R.string.purchases_contentDescription_addShoppingListIcon))
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(true)) }) {
                             MoreIcon(contentDescription = UiString.FromResources(R.string.purchases_contentDescription_purchasesMenuIcon))

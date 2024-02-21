@@ -7,6 +7,7 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
@@ -232,6 +233,22 @@ fun MoreIcon(
 ) {
     AppBottomBarIcon(
         icon = UiIcon.FromVector(Icons.Default.MoreVert),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
+        tint = tint
+    )
+}
+
+@Composable
+fun AddDataIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = null,
+    tint: Color = OnSurfaceTint
+) {
+    AppBottomBarIcon(
+        icon = UiIcon.FromVector(Icons.Default.Add),
         modifier = modifier,
         size = size,
         contentDescription = contentDescription,
