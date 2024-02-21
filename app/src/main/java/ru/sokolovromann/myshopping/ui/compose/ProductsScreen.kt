@@ -302,10 +302,7 @@ fun ProductsScreen(
                                 )
                             }
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(true)) }) {
-                                Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = stringResource(R.string.products_contentDescription_productsMenuIcon)
-                                )
+                                MoreIcon(contentDescription = UiString.FromResources(R.string.products_contentDescription_productsMenuIcon))
                                 AppDropdownMenu(
                                     expanded = state.expandedProductsMenu,
                                     onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(false)) }

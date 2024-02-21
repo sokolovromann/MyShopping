@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -197,6 +198,40 @@ fun MoreMenuIcon(
 ) {
     AppDropdownMenuIcon(
         icon = UiIcon.FromVector(Icons.Default.KeyboardArrowRight),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
+        tint = tint
+    )
+}
+
+@Composable
+fun AppBottomBarIcon(
+    icon: UiIcon,
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = null,
+    tint: Color = DefaultIconTint
+) {
+    Icon(
+        modifier = Modifier
+            .size(size)
+            .then(modifier),
+        painter = icon.asPainter(),
+        contentDescription = contentDescription?.asCompose(),
+        tint = tint
+    )
+}
+
+@Composable
+fun MoreIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = null,
+    tint: Color = OnSurfaceTint
+) {
+    AppBottomBarIcon(
+        icon = UiIcon.FromVector(Icons.Default.MoreVert),
         modifier = modifier,
         size = size,
         contentDescription = contentDescription,

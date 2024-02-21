@@ -33,6 +33,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.PurchasesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
@@ -220,10 +221,7 @@ fun PurchasesScreen(
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(true)) }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.purchases_contentDescription_purchasesMenuIcon)
-                            )
+                            MoreIcon(contentDescription = UiString.FromResources(R.string.purchases_contentDescription_purchasesMenuIcon))
                             AppDropdownMenu(
                                 expanded = state.expandedPurchasesMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(false)) }
