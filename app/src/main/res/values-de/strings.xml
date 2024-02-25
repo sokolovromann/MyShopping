@@ -439,6 +439,9 @@
     <string name="shoppingLists_text_selectedTotal">Ausgewählt: %s</string>
     <string name="shoppingLists_text_totalFormatted">Alle (Bearbeitet): %s</string>
 
+    <string name="shortcuts_longLabel_addShoppingList">Neue Einkaufsliste</string>
+    <string name="shortcuts_shortLabel_addShoppingList">Neue Liste</string>
+
     <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
     <string name="trash_header">Müll</string>
     <string name="trash_text_productsNotFound">Einkaufsliste ist leer</string>

@@ -36,6 +36,9 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity android:name=".ui.activity.ProductsWidgetConfigActivity"/>
         <receiver android:name=".notification.purchases.PurchasesBroadcastReceiver"/>

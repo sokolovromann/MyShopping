@@ -504,6 +504,9 @@
     <string name="shoppingLists_text_selectedTotal">Выбрано: %s</string>
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
 
+    <string name="shortcuts_longLabel_addShoppingList">Новый список покупок</string>
+    <string name="shortcuts_shortLabel_addShoppingList">Новый список</string>
+
     <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
     <string name="trash_header">Корзина</string>
     <string name="trash_text_productsNotFound">Список покупок пуст</string>

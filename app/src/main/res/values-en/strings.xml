@@ -510,6 +510,9 @@
     <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
 
+    <string name="shortcuts_longLabel_addShoppingList">New shopping list</string>
+    <string name="shortcuts_shortLabel_addShoppingList">New list</string>
+
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
     <string name="trash_header">Trash</string>
     <string name="trash_text_productsNotFound">Shopping list is empty</string>

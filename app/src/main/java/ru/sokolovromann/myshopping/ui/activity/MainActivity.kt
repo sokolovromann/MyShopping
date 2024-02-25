@@ -55,8 +55,10 @@ class MainActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
 
-        val shoppingUid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
-        val event = MainEvent.OnSaveShoppingUid(shoppingUid)
+        val event = MainEvent.OnSaveIntent(
+            action = intent.action,
+            uid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
+        )
         viewModel.onEvent(event)
     }
 
@@ -68,7 +70,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val event = MainEvent.OnSaveShoppingUid(uid = null)
+        val event = MainEvent.OnSaveIntent(
+            action = null,
+            uid = null
+        )
         viewModel.onEvent(event)
         super.onStop()
     }

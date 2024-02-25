@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.BuildConfig
+import ru.sokolovromann.myshopping.app.AppAction
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
@@ -51,7 +52,7 @@ class MainViewModel @Inject constructor(
         when (event) {
             is MainEvent.OnCreate -> onCreate(event)
 
-            is MainEvent.OnSaveShoppingUid -> onSaveShoppingUid(event)
+            is MainEvent.OnSaveIntent -> onSaveIntent(event)
         }
     }
 
@@ -84,8 +85,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onSaveShoppingUid(event: MainEvent.OnSaveShoppingUid) {
-        mainState.saveShoppingUid(event.uid)
+    private fun onSaveIntent(event: MainEvent.OnSaveIntent) {
+        if (event.action == AppAction.SHORTCUTS_ADD_SHOPPING_LIST) {
+            onAddShoppingList()
+        } else {
+            if (event.action?.contains(AppAction.WIDGETS_OPEN_PRODUCTS_PREFIX) == true) {
+                mainState.saveShoppingUid(event.uid)
+            } else {
+                mainState.saveShoppingUid(null)
+            }
+        }
+    }
+
+    private fun onAddShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+        shoppingListsRepository.addShopping()
+            .onSuccess { mainState.saveShoppingUid(it) }
     }
 
     private fun onAddDefaultAppConfig(

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="shortcuts_add_shopping_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_add_shopping_list"
+        android:shortcutShortLabel="@string/shortcuts_shortLabel_addShoppingList"
+        android:shortcutLongLabel="@string/shortcuts_longLabel_addShoppingList">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="ru.sokolovromann.myshopping"
+            android:targetClass="ru.sokolovromann.myshopping.ui.activity.MainActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>
