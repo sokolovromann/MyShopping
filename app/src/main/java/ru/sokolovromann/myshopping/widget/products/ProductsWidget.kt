@@ -44,6 +44,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.app.AppAction
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.ui.activity.MainActivity
@@ -182,17 +183,13 @@ class ProductsWidget : GlanceAppWidget() {
 
 private fun startMainActivity(context: Context, uid: String) {
     val intent = Intent(context, MainActivity::class.java).apply {
-        action = createAction(uid)
+        action = AppAction.createWidgetsOpenProducts(uid)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         val args = Bundle().apply { putExtra(UiRouteKey.ShoppingUid.key, uid) }
         putExtras(args)
     }
     context.startActivity(intent)
-}
-
-private fun createAction(uid: String): String {
-    return "ru.sokolovromann.myshopping.products_widget_$uid"
 }
 
 @SuppressLint("RestrictedApi")

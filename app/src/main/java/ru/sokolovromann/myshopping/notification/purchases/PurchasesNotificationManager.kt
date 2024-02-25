@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.app.AppAction
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.utils.toProductsString
 import ru.sokolovromann.myshopping.notification.AppNotificationChannel
@@ -75,7 +76,7 @@ class PurchasesNotificationManager @Inject constructor(
     private fun toPendingIntent(uid: String): PendingIntent {
         val requestCode = 0
         val intent: Intent = Intent(context, MainActivity::class.java).apply {
-            action = PurchasesWorker.createAction(uid)
+            action = AppAction.createNotificationsOpenProducts(uid)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             val extras = Bundle().apply { putString(UiRouteKey.ShoppingUid.key, uid) }
             putExtras(extras)

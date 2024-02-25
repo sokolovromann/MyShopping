@@ -20,9 +20,6 @@ class PurchasesWorker(
 
     companion object {
         const val UID_KEY: String = "UID_KEY"
-        fun createAction(uid: String): String {
-            return "ru.sokolovromann.myshopping.notification_$uid"
-        }
     }
 
     @EntryPoint

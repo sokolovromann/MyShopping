@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
+import ru.sokolovromann.myshopping.app.AppAction
 import javax.inject.Inject
 
 class PurchasesAlarmManager @Inject constructor(
@@ -54,7 +55,7 @@ class PurchasesAlarmManager @Inject constructor(
     private fun toPendingIntent(uid: String): PendingIntent {
         val requestCode = 0
         val intent: Intent = Intent(context, PurchasesBroadcastReceiver::class.java).apply {
-            action = PurchasesWorker.createAction(uid)
+            action = AppAction.createNotificationsOpenProducts(uid)
             val args = Bundle().apply { putString(PurchasesWorker.UID_KEY, uid) }
             putExtras(args)
         }
