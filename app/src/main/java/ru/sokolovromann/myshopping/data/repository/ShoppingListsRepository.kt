@@ -59,6 +59,18 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         )
     }
 
+    suspend fun getShortcuts(limit: Int): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+        return@withContext shoppingListsDao.getShortcuts(limit).combine(
+            flow = appConfigDao.getAppConfig(),
+            transform = { shoppingListEntities, appConfigEntity ->
+                ShoppingListsMapper.toShoppingListsWithConfig(
+                    entities = shoppingListEntities,
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
+                )
+            }
+        )
+    }
+
     suspend fun getShoppingListWithConfig(
         shoppingUid: String?
     ): Flow<ShoppingListWithConfig> = withContext(dispatcher) {
