@@ -30,6 +30,7 @@ import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
 import ru.sokolovromann.myshopping.ui.model.MainState
+import ru.sokolovromann.myshopping.ui.shortcut.AppShortcutManager
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
 import javax.inject.Inject
 
@@ -40,7 +41,8 @@ class MainViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
     private val autocompletesRepository: AutocompletesRepository,
     private val notificationManager: PurchasesNotificationManager,
-    private val alarmManager: PurchasesAlarmManager
+    private val alarmManager: PurchasesAlarmManager,
+    private val appShortcutManager: AppShortcutManager
 ) : ViewModel(), ViewModelEvent<MainEvent> {
 
     val mainState = MainState()
@@ -59,10 +61,11 @@ class MainViewModel @Inject constructor(
     private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch(AppDispatchers.Main) {
         mainState.onWaiting(displaySplashScreen = true)
 
-        appConfigRepository.getAppConfig().collect {
-            mainState.populate(it)
+        val shortcutsLimit = 2
+        shoppingListsRepository.getShortcuts(shortcutsLimit).collect {
+            mainState.populate(it.getUserPreferences())
 
-            when (it.appBuildConfig.getOpenHelper()) {
+            when (it.getAppBuildConfig().getOpenHelper()) {
                 AppOpenHelper.Open -> {
                     mainState.onWaiting(displaySplashScreen = false)
                 }
@@ -72,7 +75,7 @@ class MainViewModel @Inject constructor(
                 }
 
                 AppOpenHelper.Migrate -> {
-                    when (it.appBuildConfig.userCodeVersion) {
+                    when (it.getAppBuildConfig().userCodeVersion) {
                         AppBuildConfig.CODE_VERSION_14 -> onMigrateFromCodeVersion14(event)
                         else -> appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
                     }
@@ -82,12 +85,21 @@ class MainViewModel @Inject constructor(
                     _screenEventFlow.emit(MainScreenEvent.OnFinishApp)
                 }
             }
+
+            appShortcutManager.removeAllShoppingListsShortcuts()
+            val filteredShoppingLists = it.getSortedShoppingLists()
+                .filter { shoppingLists -> shoppingLists.isActive() }
+            appShortcutManager.updateShoppingListsShortcuts(filteredShoppingLists)
         }
     }
 
     private fun onSaveIntent(event: MainEvent.OnSaveIntent) {
-        if (event.action == AppAction.SHORTCUTS_ADD_SHOPPING_LIST) {
-            onAddShoppingList()
+        if (event.action == AppAction.SHORTCUTS) {
+            if (event.uid == null) {
+                onAddShoppingList()
+            } else {
+                mainState.saveShoppingUid(event.uid)
+            }
         } else {
             if (event.action?.contains(AppAction.WIDGETS_OPEN_PRODUCTS_PREFIX) == true) {
                 mainState.saveShoppingUid(event.uid)

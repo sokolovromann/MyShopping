@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.app
 
 object AppAction {
 
-    const val SHORTCUTS_ADD_SHOPPING_LIST: String = "android.intent.action.VIEW"
+    const val SHORTCUTS: String = "android.intent.action.VIEW"
     const val NOTIFICATIONS_OPEN_PRODUCTS_PREFIX: String = "ru.sokolovromann.myshopping.notification_"
     const val WIDGETS_OPEN_PRODUCTS_PREFIX: String = "ru.sokolovromann.myshopping.products_widget_"
 
