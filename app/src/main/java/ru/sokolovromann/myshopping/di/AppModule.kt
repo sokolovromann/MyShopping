@@ -15,6 +15,7 @@ import ru.sokolovromann.myshopping.data.repository.*
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
+import ru.sokolovromann.myshopping.ui.shortcut.AppShortcutManager
 import javax.inject.Singleton
 
 @Module
@@ -91,5 +92,10 @@ object AppModule {
     @Provides
     fun providesBackupMediaStore(@ApplicationContext context: Context): BackupMediaStore {
         return BackupMediaStore(context)
+    }
+
+    @Provides
+    fun providesAppShortcutManager(@ApplicationContext context: Context): AppShortcutManager {
+        return AppShortcutManager(context)
     }
 }
