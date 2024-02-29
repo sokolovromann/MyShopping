@@ -89,7 +89,7 @@ fun BackupScreen(
                     onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
                     primaryButton = true,
                     content = {
-                        Text(text = stringResource(R.string.backup_action_showPermissions))
+                        Text(text = stringResource(R.string.backup_action_openPermissions))
                     }
                 )
             }

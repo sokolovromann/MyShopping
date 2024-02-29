@@ -81,7 +81,7 @@ fun EditReminderScreen(
                             onClick = { viewModel.onEvent(EditReminderEvent.OnClickOpenPermissions) },
                             primaryButton = true,
                             content = {
-                                Text(text = stringResource(R.string.editReminder_action_showPermissions))
+                                Text(text = stringResource(R.string.editReminder_action_openPermissions))
                             }
                         )
                     } else {

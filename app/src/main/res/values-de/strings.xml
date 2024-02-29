@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">Absagen</string>
-    <string name="addEditAutocomplete_action_saveAutocomplete">Speichern</string>
+    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
+    <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">Hinzufügen</string>
     <string name="addEditAutocomplete_header_editAutocomplete">Bearbeiten</string>
     <string name="addEditAutocomplete_label_name">Name</string>
     <string name="addEditAutocomplete_message_nameError">Name hinzufügen</string>
 
-    <string name="addEditProduct_action_quantityMinusOne">- 1</string>
-    <string name="addEditProduct_action_quantityPlusOne">+ 1</string>
+    <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
+    <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>
     <string name="addEditProduct_action_saveProduct">@string/all_action_save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Geld</string>
     <string name="addEditProduct_action_selectDiscountAsPercents">Prozent</string>
@@ -34,7 +34,26 @@
     <string name="addEditProduct_message_nameError">Name hinzufügen</string>
     <string name="addEditProduct_message_uidError">ID hinzufügen</string>
 
+    <string name="all_action_add">Hinzufügen</string>
+    <string name="all_action_archive">Archivieren</string>
+    <string name="all_action_back">Zurück</string>
+    <string name="all_action_cancel">Absagen</string>
+    <string name="all_action_copy">Kopieren</string>
+    <string name="all_action_delete">Löschen</string>
+    <string name="all_action_minusOne">- 1</string>
+    <string name="all_action_openPermissions">Öffnen Sie Berechtigungen</string>
+    <string name="all_action_plusOne">+ 1</string>
+    <string name="all_action_reverseSort">Umgekehrte</string>
     <string name="all_action_save">Speichern</string>
+    <string name="all_action_saveSort">Sortierung speichern</string>
+    <string name="all_action_search">Suchen</string>
+    <string name="all_action_selectAll">Wählen Sie Alle</string>
+    <string name="all_action_sort">Sortieren</string>
+    <string name="all_action_sortByCreated">Nach Erstellt</string>
+    <string name="all_action_sortByLastModified">Nach zuletzt bearbeitet</string>
+    <string name="all_action_sortByName">Nach name</string>
+    <string name="all_action_sortByTotal">Nach gesamt</string>
+    <string name="all_action_unarchive">Unarchivieren</string>
     <string name="all_contentDescription_backScreenIcon">Zurück</string>
     <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
     <string name="all_contentDescription_cancelSelection">Auswahl abbrechen</string>
@@ -44,8 +63,8 @@
     <string name="all_contentDescription_selectAllDataIcon">Wählen Sie Alle</string>
     <string name="all_header_appName">My Shopping List</string>
 
-    <string name="archive_action_moveShoppingListsToPurchases">Unarchivieren</string>
-    <string name="archive_action_moveShoppingListsToTrash">Löschen</string>
+    <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
+    <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
     <string name="archive_header">Archiv</string>
     <string name="archive_text_productsNotFound">Einkaufsliste ist leer</string>
@@ -72,10 +91,10 @@
     <string name="autocompletes_header_location">Anzeige</string>
     <string name="autocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
-    <string name="backup_action_closeBackup">Zurück</string>
+    <string name="backup_action_closeBackup">@string/all_action_back</string>
     <string name="backup_action_export">Exportieren</string>
     <string name="backup_action_import">Importieren</string>
-    <string name="backup_action_showPermissions">Öffnen Sie Berechtigungen</string>
+    <string name="backup_action_openPermissions">@string/all_action_openPermissions</string>
     <string name="backup_header">Sicherung</string>
     <string name="backup_message_exportError">Datenexport fehlgeschlagen</string>
     <string name="backup_message_exportLocation">Standort: %s</string>
@@ -85,7 +104,7 @@
     <string name="backup_message_permissionError">Sie haben keine Berechtigung zum Exportieren von Daten</string>
     <string name="backup_message_warning">Bearbeiten Sie die Datei nicht. Es kann zu Datenverlust kommen!</string>
 
-    <string name="calculateChange_action_closeCalculatingChange">Zurück</string>
+    <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Veränderung berechnen</string>
     <string name="calculateChange_label_userMoney">Geld</string>
     <string name="calculateChange_text_change">Veränderung: %s</string>
@@ -215,41 +234,41 @@
     <string name="drawer_action_openTrash">@string/trash_header</string>
     <string name="drawer_header">@string/all_header_appName</string>
 
-    <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Absagen</string>
-    <string name="editCurrencySymbol_action_saveCurrencySymbol">Speichern</string>
+    <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">@string/all_action_cancel</string>
+    <string name="editCurrencySymbol_action_saveCurrencySymbol">@string/all_action_save</string>
     <string name="editCurrencySymbol_header">Währung</string>
     <string name="editCurrencySymbol_label_symbol">Symbol</string>
 
-    <string name="editReminder_action_cancelSavingReminder">Absagen</string>
+    <string name="editReminder_action_cancelSavingReminder">@string/all_action_cancel</string>
     <string name="editReminder_action_deleteReminder">Erinnerung löschen</string>
-    <string name="editReminder_action_saveReminder">Speichern</string>
-    <string name="editReminder_action_showPermissions">Öffnen Sie Berechtigungen</string>
+    <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
+    <string name="editReminder_action_saveReminder">@string/all_action_save</string>
     <string name="editReminder_header_addReminder">Hinzufügen</string>
     <string name="editReminder_header_editReminder">Bearbeiten</string>
     <string name="editReminder_message_permissionError">Sie sind nicht berechtigt, Benachrichtigungen anzuzeigen. Benachrichtigungen werden nicht ohne Erlaubnis angezeigt.</string>
 
-    <string name="editShoppingListName_action_cancelSavingShoppingListName">Absagen</string>
-    <string name="editShoppingListName_action_saveShoppingListName">Speichern</string>
+    <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>
+    <string name="editShoppingListName_action_saveShoppingListName">@string/all_action_save</string>
     <string name="editShoppingListName_header_addShoppingListName">Hinzufügen</string>
     <string name="editShoppingListName_header_editShoppingListName">Bearbeiten</string>
     <string name="editShoppingListName_label_name">Listennamen</string>
 
-    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">Absagen</string>
-    <string name="editShoppingListTotal_action_saveShoppingListTotal">Speichern</string>
+    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
+    <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
     <string name="editShoppingListTotal_header_addShoppingListTotal">Hinzufügen</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">Bearbeiten</string>
     <string name="editShoppingListTotal_label_total">Liste gesamt</string>
     <string name="editShoppingListTotal_message_totalWarning">Produktpreise werden ausgeblendet</string>
 
-    <string name="editTaxRate_action_cancelSavingTaxRate">Absagen</string>
-    <string name="editTaxRate_action_saveTaxRate">Speichern</string>
+    <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
+    <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
     <string name="editTaxRate_header">Steuersatz</string>
     <string name="editTaxRate_label_taxRate">Rate in Prozent</string>
 
-    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">Absagen</string>
-    <string name="maxAutocompletes_action_minusOne">- 1</string>
-    <string name="maxAutocompletes_action_plusOne">+ 1</string>
-    <string name="maxAutocompletes_action_saveMaxAutocompletes">Speichern</string>
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
+    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
+    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
     <string name="maxAutocompletes_header">Maximale Anzahl</string>
     <string name="maxAutocompletes_text_moneys">Geld (Preise, Gesamtsumme usw.)</string>
     <string name="maxAutocompletes_text_names">Namen</string>
@@ -269,12 +288,12 @@
     <string name="productsWidget_text_loading">Wird geladen…</string>
     <string name="productsWidget_text_productsNotFound">Einkaufsliste ist leer</string>
 
-    <string name="products_action_addShoppingListTotal">Hinzufügen</string>
-    <string name="products_action_automaticSorting">Sortierung speichern</string>
+    <string name="products_action_addShoppingListTotal">@string/all_action_add</string>
+    <string name="products_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="products_action_calculateChange">Veränderung berechnen</string>
     <string name="products_action_copyProductsToShoppingList">Kopieren nach…</string>
-    <string name="products_action_copyShoppingList">Kopieren</string>
-    <string name="products_action_deleteShoppingListTotal">Löschen</string>
+    <string name="products_action_copyShoppingList">@string/all_action_copy</string>
+    <string name="products_action_deleteShoppingListTotal">@string/all_action_delete</string>
     <string name="products_action_disableProductsMultiColumns">Eine Spalte</string>
     <string name="products_action_displayActiveTotal">Aktive produkte</string>
     <string name="products_action_displayAllTotal">Alle produkte</string>
@@ -283,19 +302,19 @@
     <string name="products_action_editShoppingListTotal">Bearbeiten</string>
     <string name="products_action_enableProductsMultiColumns">Mehrspaltig</string>
     <string name="products_action_moveProductsToShoppingList">Ziehen nach…</string>
-    <string name="products_action_moveShoppingListToArchive">Archivieren</string>
-    <string name="products_action_moveShoppingListToPurchases">Unarchivieren</string>
-    <string name="products_action_moveShoppingListToTrash">Löschen</string>
-    <string name="products_action_reverseSort">Umgekehrte</string>
-    <string name="products_action_search">Suchen</string>
-    <string name="products_action_selectAllProducts">Wählen Sie Alle</string>
+    <string name="products_action_moveShoppingListToArchive">@string/all_action_archive</string>
+    <string name="products_action_moveShoppingListToPurchases">@string/all_action_unarchive</string>
+    <string name="products_action_moveShoppingListToTrash">@string/all_action_delete</string>
+    <string name="products_action_reverseSort">@string/all_action_reverseSort</string>
+    <string name="products_action_search">@string/all_action_search</string>
+    <string name="products_action_selectAllProducts">@string/all_action_selectAll</string>
     <string name="products_action_shareProducts">Teilen</string>
     <string name="products_action_showShoppingListMenu">Einkaufsliste</string>
-    <string name="products_action_sort">Sortieren</string>
-    <string name="products_action_sortByCreated">Nach Erstellt</string>
-    <string name="products_action_sortByLastModified">Nach zuletzt bearbeitet</string>
-    <string name="products_action_sortByName">Nach name</string>
-    <string name="products_action_sortByTotal">Nach gesamt</string>
+    <string name="products_action_sort">@string/all_action_sort</string>
+    <string name="products_action_sortByCreated">@string/all_action_sortByCreated</string>
+    <string name="products_action_sortByLastModified">@string/all_action_sortByLastModified</string>
+    <string name="products_action_sortByName">@string/all_action_sortByName</string>
+    <string name="products_action_sortByTotal">@string/all_action_sortByTotal</string>
     <string name="products_contentDescription_addProductIcon">Produkt hinzufügen</string>
     <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
@@ -391,8 +410,8 @@
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 
-    <string name="shoppingLists_action_automaticSorting">Sortierung speichern</string>
-    <string name="shoppingLists_action_copyShoppingLists">Kopieren</string>
+    <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
+    <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Eine Spalte</string>
     <string name="shoppingLists_action_displayActiveTotal">Aktive produkte</string>
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
@@ -403,17 +422,17 @@
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Mehrspaltig</string>
     <string name="shoppingLists_action_hideProducts">Verstecken</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Nicht mit Titel anzeigen</string>
-    <string name="shoppingLists_action_reverseSort">Umgekehrte</string>
-    <string name="shoppingLists_action_search">Suchen</string>
-    <string name="shoppingLists_action_selectAllShoppingLists">Wählen Sie Alle</string>
-    <string name="shoppingLists_action_selectArchiveLocation">Archiv</string>
-    <string name="shoppingLists_action_selectPurchasesLocation">Einkäufe</string>
-    <string name="shoppingLists_action_selectTrashLocation">Müll</string>
-    <string name="shoppingLists_action_sort">Sortieren</string>
-    <string name="shoppingLists_action_sortByCreated">Nach Erstellt</string>
-    <string name="shoppingLists_action_sortByLastModified">Nach zuletzt bearbeitet</string>
-    <string name="shoppingLists_action_sortByName">Nach name</string>
-    <string name="shoppingLists_action_sortByTotal">Nach gesamt</string>
+    <string name="shoppingLists_action_reverseSort">@string/all_action_reverseSort</string>
+    <string name="shoppingLists_action_search">@string/all_action_search</string>
+    <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
+    <string name="shoppingLists_action_selectArchiveLocation">@string/archive_header</string>
+    <string name="shoppingLists_action_selectPurchasesLocation">@string/purchases_header</string>
+    <string name="shoppingLists_action_selectTrashLocation">@string/trash_header</string>
+    <string name="shoppingLists_action_sort">@string/all_action_sort</string>
+    <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
+    <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>
+    <string name="shoppingLists_action_sortByName">@string/all_action_sortByName</string>
+    <string name="shoppingLists_action_sortByTotal">@string/all_action_sortByTotal</string>
     <string name="shoppingLists_contentDescription_archiveIcon">Archivieren</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>

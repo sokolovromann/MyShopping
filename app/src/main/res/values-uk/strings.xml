@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">Скасування</string>
-    <string name="addEditAutocomplete_action_saveAutocomplete">Зберегти</string>
+    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
+    <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">Додати назву підказки</string>
     <string name="addEditAutocomplete_header_editAutocomplete">Редагувати назву підказки</string>
     <string name="addEditAutocomplete_label_name">Назва</string>
     <string name="addEditAutocomplete_message_nameError">Додайте назву</string>
 
-    <string name="addEditProduct_action_quantityMinusOne">- 1</string>
-    <string name="addEditProduct_action_quantityPlusOne">+ 1</string>
+    <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
+    <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>
     <string name="addEditProduct_action_saveProduct">@string/all_action_save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Гроші</string>
     <string name="addEditProduct_action_selectDiscountAsPercents">Відсотки</string>
@@ -34,7 +34,26 @@
     <string name="addEditProduct_message_nameError">Додайте назву</string>
     <string name="addEditProduct_message_uidError">Додати коректний ID</string>
 
+    <string name="all_action_add">Додати</string>
+    <string name="all_action_archive">Архівувати</string>
+    <string name="all_action_back">Назад</string>
+    <string name="all_action_cancel">Скасування</string>
+    <string name="all_action_copy">Копіювати</string>
+    <string name="all_action_delete">Видалити</string>
+    <string name="all_action_minusOne">- 1</string>
+    <string name="all_action_openPermissions">Відкрити дозволи</string>
+    <string name="all_action_plusOne">+ 1</string>
+    <string name="all_action_reverseSort">У зворотному порядку</string>
     <string name="all_action_save">Зберегти</string>
+    <string name="all_action_saveSort">Зберігати сортування</string>
+    <string name="all_action_search">Пошук</string>
+    <string name="all_action_selectAll">Вибрати все</string>
+    <string name="all_action_sort">Сортувати</string>
+    <string name="all_action_sortByCreated">За створеним</string>
+    <string name="all_action_sortByLastModified">За редагуванням</string>
+    <string name="all_action_sortByName">За назвою</string>
+    <string name="all_action_sortByTotal">За сумою</string>
+    <string name="all_action_unarchive">Розархівувати</string>
     <string name="all_contentDescription_backScreenIcon">Назад</string>
     <string name="all_contentDescription_cancelSearch">Скасування пошуку</string>
     <string name="all_contentDescription_cancelSelection">Скасувати вибір</string>
@@ -44,8 +63,8 @@
     <string name="all_contentDescription_selectAllDataIcon">Вибрати усі</string>
     <string name="all_header_appName">Мої покупки</string>
 
-    <string name="archive_action_moveShoppingListsToPurchases">Розархівувати</string>
-    <string name="archive_action_moveShoppingListsToTrash">Видалити</string>
+    <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
+    <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Відкрити меню архіву</string>
     <string name="archive_header">Архів</string>
     <string name="archive_text_productsNotFound">Список покупок порожній</string>
@@ -72,10 +91,10 @@
     <string name="autocompletes_header_location">Показувати</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
-    <string name="backup_action_closeBackup">Назад</string>
+    <string name="backup_action_closeBackup">@string/all_action_back</string>
     <string name="backup_action_export">Експорт</string>
     <string name="backup_action_import">Імпорт</string>
-    <string name="backup_action_showPermissions">Відкрити дозволи</string>
+    <string name="backup_action_openPermissions">@string/all_action_openPermissions</string>
     <string name="backup_header">Резервне копіювання</string>
     <string name="backup_message_exportError">Експортувати дані не вдалося</string>
     <string name="backup_message_exportLocation">Розташування: %s</string>
@@ -85,7 +104,7 @@
     <string name="backup_message_permissionError">У вас немає дозволу на експорт даних</string>
     <string name="backup_message_warning">Не редагуйте файл. Це може призвести до повної втрати даних!</string>
 
-    <string name="calculateChange_action_closeCalculatingChange">Назад</string>
+    <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Порахувати здачу</string>
     <string name="calculateChange_label_userMoney">Гроші</string>
     <string name="calculateChange_text_change">Здача: %s</string>
@@ -233,41 +252,41 @@
     <string name="drawer_action_openTrash">@string/trash_header</string>
     <string name="drawer_header">@string/all_header_appName</string>
 
-    <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">Скасування</string>
-    <string name="editCurrencySymbol_action_saveCurrencySymbol">Зберегти</string>
+    <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">@string/all_action_cancel</string>
+    <string name="editCurrencySymbol_action_saveCurrencySymbol">@string/all_action_save</string>
     <string name="editCurrencySymbol_header">Валюта</string>
     <string name="editCurrencySymbol_label_symbol">Символ</string>
 
-    <string name="editReminder_action_cancelSavingReminder">Скасування</string>
+    <string name="editReminder_action_cancelSavingReminder">@string/all_action_cancel</string>
     <string name="editReminder_action_deleteReminder">Видалити нагадування</string>
-    <string name="editReminder_action_saveReminder">Зберегти</string>
-    <string name="editReminder_action_showPermissions">Відкрити дозволи</string>
+    <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
+    <string name="editReminder_action_saveReminder">@string/all_action_save</string>
     <string name="editReminder_header_addReminder">Додати</string>
     <string name="editReminder_header_editReminder">Редагувати</string>
     <string name="editReminder_message_permissionError">Ви не маєте дозволу показувати сповіщення. Сповіщення не відображатимуться без дозволу.</string>
 
-    <string name="editShoppingListName_action_cancelSavingShoppingListName">Скасування</string>
-    <string name="editShoppingListName_action_saveShoppingListName">Зберегти</string>
+    <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>
+    <string name="editShoppingListName_action_saveShoppingListName">@string/all_action_save</string>
     <string name="editShoppingListName_header_addShoppingListName">Додати</string>
     <string name="editShoppingListName_header_editShoppingListName">Редагувати</string>
     <string name="editShoppingListName_label_name">Назва списку</string>
 
-    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">Скасування</string>
-    <string name="editShoppingListTotal_action_saveShoppingListTotal">Зберегти</string>
+    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
+    <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
     <string name="editShoppingListTotal_header_addShoppingListTotal">Додати</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">Редагувати</string>
     <string name="editShoppingListTotal_label_total">Разом списку</string>
     <string name="editShoppingListTotal_message_totalWarning">Ціни на товари будуть приховані</string>
 
-    <string name="editTaxRate_action_cancelSavingTaxRate">Скасування</string>
-    <string name="editTaxRate_action_saveTaxRate">Зберегти</string>
+    <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
+    <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
     <string name="editTaxRate_header">Податкова ставка</string>
     <string name="editTaxRate_label_taxRate">Ставка у відсотках</string>
 
-    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">Скасування</string>
-    <string name="maxAutocompletes_action_minusOne">- 1</string>
-    <string name="maxAutocompletes_action_plusOne">+ 1</string>
-    <string name="maxAutocompletes_action_saveMaxAutocompletes">Зберегти</string>
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
+    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
+    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
     <string name="maxAutocompletes_header">Максимальна кількість</string>
     <string name="maxAutocompletes_text_moneys">Гроші (ціни, разом і т.д.)</string>
     <string name="maxAutocompletes_text_names">Назви</string>
@@ -287,12 +306,12 @@
     <string name="productsWidget_text_loading">Завантаження…</string>
     <string name="productsWidget_text_productsNotFound">Список покупок порожній</string>
 
-    <string name="products_action_addShoppingListTotal">Додати</string>
-    <string name="products_action_automaticSorting">Зберігати сортування</string>
+    <string name="products_action_addShoppingListTotal">@string/all_action_add</string>
+    <string name="products_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="products_action_calculateChange">Порахувати здачу</string>
     <string name="products_action_copyProductsToShoppingList">Копіювати в…</string>
-    <string name="products_action_copyShoppingList">Копіювати</string>
-    <string name="products_action_deleteShoppingListTotal">Видалити</string>
+    <string name="products_action_copyShoppingList">@string/all_action_copy</string>
+    <string name="products_action_deleteShoppingListTotal">@string/all_action_delete</string>
     <string name="products_action_disableProductsMultiColumns">Один стовпець</string>
     <string name="products_action_displayActiveTotal">Не куплені товари</string>
     <string name="products_action_displayAllTotal">Усі товари</string>
@@ -301,19 +320,19 @@
     <string name="products_action_editShoppingListTotal">Редагувати</string>
     <string name="products_action_enableProductsMultiColumns">Декілька стовпців</string>
     <string name="products_action_moveProductsToShoppingList">Перемістити в…</string>
-    <string name="products_action_moveShoppingListToArchive">Архівувати</string>
-    <string name="products_action_moveShoppingListToPurchases">Розархівувати</string>
-    <string name="products_action_moveShoppingListToTrash">Видалити</string>
-    <string name="products_action_reverseSort">У зворотному порядку</string>
-    <string name="products_action_search">Пошук</string>
-    <string name="products_action_selectAllProducts">Вибрати все</string>
+    <string name="products_action_moveShoppingListToArchive">@string/all_action_archive</string>
+    <string name="products_action_moveShoppingListToPurchases">@string/all_action_unarchive</string>
+    <string name="products_action_moveShoppingListToTrash">@string/all_action_delete</string>
+    <string name="products_action_reverseSort">@string/all_action_reverseSort</string>
+    <string name="products_action_search">@string/all_action_search</string>
+    <string name="products_action_selectAllProducts">@string/all_action_selectAll</string>
     <string name="products_action_shareProducts">Поділитися</string>
     <string name="products_action_showShoppingListMenu">Список покупок</string>
-    <string name="products_action_sort">Сортувати</string>
-    <string name="products_action_sortByCreated">За створеним</string>
-    <string name="products_action_sortByLastModified">За редагуванням</string>
-    <string name="products_action_sortByName">За назвою</string>
-    <string name="products_action_sortByTotal">За сумою</string>
+    <string name="products_action_sort">@string/all_action_sort</string>
+    <string name="products_action_sortByCreated">@string/all_action_sortByCreated</string>
+    <string name="products_action_sortByLastModified">@string/all_action_sortByLastModified</string>
+    <string name="products_action_sortByName">@string/all_action_sortByName</string>
+    <string name="products_action_sortByTotal">@string/all_action_sortByTotal</string>
     <string name="products_contentDescription_addProductIcon">Додати товар</string>
     <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
     <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
@@ -409,8 +428,8 @@
     <string name="settings_title_taxRate">Податкова ставка</string>
     <string name="settings_title_terms_and_conditions">Умови використання</string>
 
-    <string name="shoppingLists_action_automaticSorting">Зберігати сортування</string>
-    <string name="shoppingLists_action_copyShoppingLists">Копіювати</string>
+    <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
+    <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Один стовпець</string>
     <string name="shoppingLists_action_displayActiveTotal">Не куплені товари</string>
     <string name="shoppingLists_action_displayAllTotal">Усі товари</string>
@@ -421,17 +440,17 @@
     <string name="shoppingLists_action_enableShoppingsMultiColumns">Декілька стовпців</string>
     <string name="shoppingLists_action_hideProducts">Завжди приховувати</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Приховувати, якщо є заголовок</string>
-    <string name="shoppingLists_action_reverseSort">У зворотному порядку</string>
-    <string name="shoppingLists_action_search">Пошук</string>
-    <string name="shoppingLists_action_selectAllShoppingLists">Вибрати усі</string>
-    <string name="shoppingLists_action_selectArchiveLocation">Архів</string>
-    <string name="shoppingLists_action_selectPurchasesLocation">Покупки</string>
-    <string name="shoppingLists_action_selectTrashLocation">Кошик</string>
-    <string name="shoppingLists_action_sort">Сортувати</string>
-    <string name="shoppingLists_action_sortByCreated">За створеним</string>
-    <string name="shoppingLists_action_sortByLastModified">За редагуванням</string>
-    <string name="shoppingLists_action_sortByName">За назвою</string>
-    <string name="shoppingLists_action_sortByTotal">За сумою</string>
+    <string name="shoppingLists_action_reverseSort">@string/all_action_reverseSort</string>
+    <string name="shoppingLists_action_search">@string/all_action_search</string>
+    <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
+    <string name="shoppingLists_action_selectArchiveLocation">@string/archive_header</string>
+    <string name="shoppingLists_action_selectPurchasesLocation">@string/purchases_header</string>
+    <string name="shoppingLists_action_selectTrashLocation">@string/trash_header</string>
+    <string name="shoppingLists_action_sort">@string/all_action_sort</string>
+    <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
+    <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>
+    <string name="shoppingLists_action_sortByName">@string/all_action_sortByName</string>
+    <string name="shoppingLists_action_sortByTotal">@string/all_action_sortByTotal</string>
     <string name="shoppingLists_contentDescription_archiveIcon">Архівувати</string>
     <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
     <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
