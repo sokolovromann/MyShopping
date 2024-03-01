@@ -143,7 +143,7 @@ fun TrashScreen(
             isWaiting = state.waiting,
             notFound = {
                 Text(
-                    text = stringResource(R.string.trash_text_shoppingListsNotFound),
+                    text = stringResource(R.string.shoppingLists_text_trashShoppingListsNotFound),
                     fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )

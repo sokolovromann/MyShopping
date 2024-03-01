@@ -62,13 +62,20 @@
     <string name="all_contentDescription_navigationMenuIcon">Open navigation</string>
     <string name="all_contentDescription_selectAllDataIcon">Select all</string>
     <string name="all_header_appName">My Shopping List</string>
+    <string name="all_text_activeTotal">Active: %s</string>
+    <string name="all_text_allTotal">All: %s</string>
+    <string name="all_text_completedTotal">Completed: %s</string>
+    <string name="all_text_otherList">Other</string>
+    <string name="all_text_pinnedList">Pinned</string>
+    <string name="all_text_productsNotFound">Shopping list is empty</string>
+    <string name="all_text_searchNotFound">Not found</string>
+    <string name="all_text_selectedTotal">Selected: %s</string>
+    <string name="all_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Open archive menu</string>
     <string name="archive_header">Archive</string>
-    <string name="archive_text_productsNotFound">Shopping list is empty</string>
-    <string name="archive_text_shoppingListsNotFound">Archive is empty</string>
 
     <string name="autocompletes_action_selectDefaultLocation">Default</string>
     <string name="autocompletes_action_selectPersonalLocation">Personal</string>
@@ -126,7 +133,7 @@
     <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="copyMoveProducts_header">Select a list</string>
-    <string name="copyMoveProducts_text_shoppingListsNotFound">You have no shopping lists</string>
+    <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Feedback</string>
@@ -192,13 +199,13 @@
 
     <string name="productsWidgetConfig_contentDescription_navigationIcon">Cancel</string>
     <string name="productsWidgetConfig_header">Select a list</string>
-    <string name="productsWidgetConfig_text_shoppingListsNotFound">You have no shopping lists</string>
+    <string name="productsWidgetConfig_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="productsWidget_description">Products of the selected shopping list</string>
     <string name="productsWidget_label">Shopping list</string>
     <string name="productsWidget_message_loadingError">Loading error</string>
     <string name="productsWidget_text_loading">Loading…</string>
-    <string name="productsWidget_text_productsNotFound">Shopping list is empty</string>
+    <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
 
     <string name="products_action_addShoppingListTotal">@string/all_action_add</string>
     <string name="products_action_automaticSorting">@string/all_action_saveSort</string>
@@ -243,26 +250,24 @@
     <string name="products_contentDescription_showSelectedMenu">Show or hide selected menu</string>
     <string name="products_header_displayTotal">Display total</string>
     <string name="products_label_search">Search</string>
-    <string name="products_text_activeTotal">Active: %s</string>
-    <string name="products_text_allTotal">All: %s</string>
-    <string name="products_text_archiveProductsNotFound">Shopping list is empty</string>
-    <string name="products_text_completedTotal">Completed: %s</string>
+    <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
+    <string name="products_text_allTotal">@string/all_text_allTotal</string>
+    <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
+    <string name="products_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="products_text_hiddenProducts">You have hidden products</string>
-    <string name="products_text_otherProducts">Other</string>
-    <string name="products_text_pinnedProducts">Pinned</string>
+    <string name="products_text_otherProducts">@string/all_text_otherList</string>
+    <string name="products_text_pinnedProducts">@string/all_text_pinnedList</string>
     <string name="products_text_purchasesProductsNotFound">Tap \"+\" to add new product</string>
-    <string name="products_text_searchNotFound">Not found</string>
-    <string name="products_text_selectedTotal">Selected: %s</string>
+    <string name="products_text_searchNotFound">@string/all_text_searchNotFound</string>
+    <string name="products_text_selectedTotal">@string/all_text_selectedTotal</string>
     <string name="products_text_totalFormatted">Edited: %s</string>
-    <string name="products_text_trashProductsNotFound">Shopping list is empty</string>
+    <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Add shopping list</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Pin or unpin shopping lists</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Open purchases menu</string>
     <string name="purchases_header">Purchases</string>
     <string name="purchases_text_moreProducts">…</string>
-    <string name="purchases_text_productsNotFound">Shopping list is empty</string>
-    <string name="purchases_text_shoppingListsNotFound">You have no shopping lists</string>
 
     <string name="settings_action_displayCompletedPurchasesFirst">First</string>
     <string name="settings_action_displayCompletedPurchasesLast">Last</string>
@@ -359,22 +364,24 @@
     <string name="shoppingLists_header_displayTotal">Display total</string>
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_label_search">Search</string>
-    <string name="shoppingLists_text_activeTotal">Active: %s</string>
-    <string name="shoppingLists_text_allTotal">All: %s</string>
-    <string name="shoppingLists_text_completedTotal">Completed: %s</string>
+    <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
+    <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
+    <string name="shoppingLists_text_archiveShoppingListsNotFound">Archive is empty</string>
+    <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
     <string name="shoppingLists_text_nameNotFound">Unnamed</string>
-    <string name="shoppingLists_text_otherShoppingLists">Other</string>
-    <string name="shoppingLists_text_pinnedShoppingLists">Pinned</string>
-    <string name="shoppingLists_text_searchNotFound">Not found</string>
-    <string name="shoppingLists_text_selectedTotal">Selected: %s</string>
+    <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
+    <string name="shoppingLists_text_productsNotFound">@string/all_text_productsNotFound</string>
+    <string name="shoppingLists_text_purchasesShoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
+    <string name="shoppingLists_text_searchNotFound">@string/all_text_searchNotFound</string>
+    <string name="shoppingLists_text_selectedTotal">@string/all_text_selectedTotal</string>
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
+    <string name="shoppingLists_text_trashShoppingListsNotFound">Trash is empty</string>
 
     <string name="shortcuts_longLabel_addShoppingList">New shopping list</string>
     <string name="shortcuts_shortLabel_addShoppingList">New list</string>
 
     <string name="trash_action_deleteShoppingLists">Empty trash</string>
     <string name="trash_header">Trash</string>
-    <string name="trash_text_productsNotFound">Shopping list is empty</string>
-    <string name="trash_text_shoppingListsNotFound">Trash is empty</string>
 </resources>

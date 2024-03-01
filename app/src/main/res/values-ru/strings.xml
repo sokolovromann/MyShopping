@@ -62,13 +62,20 @@
     <string name="all_contentDescription_navigationMenuIcon">Показать навигацию</string>
     <string name="all_contentDescription_selectAllDataIcon">Выбрать всё</string>
     <string name="all_header_appName">Мои покупки</string>
+    <string name="all_text_activeTotal">Не куплено: %s</string>
+    <string name="all_text_allTotal">Итого: %s</string>
+    <string name="all_text_completedTotal">Куплено: %s</string>
+    <string name="all_text_otherList">Другие</string>
+    <string name="all_text_pinnedList">Закреплённые</string>
+    <string name="all_text_productsNotFound">Список покупок пуст</string>
+    <string name="all_text_searchNotFound">Не найдено</string>
+    <string name="all_text_selectedTotal">Выбрано: %s</string>
+    <string name="all_text_shoppingListsNotFound">У вас нет покупок</string>
 
     <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
     <string name="archive_contentDescription_archiveMenuIcon">Открыть меню архива</string>
     <string name="archive_header">Архив</string>
-    <string name="archive_text_productsNotFound">Список покупок пуст</string>
-    <string name="archive_text_shoppingListsNotFound">Архив пуст</string>
 
     <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
     <string name="autocompletes_action_selectPersonalLocation">Личные</string>
@@ -126,7 +133,7 @@
     <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Добавить список покупок</string>
     <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="copyMoveProducts_header">Выберите список</string>
-    <string name="copyMoveProducts_text_shoppingListsNotFound">У вас нет покупок</string>
+    <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Отзыв о приложении</string>
@@ -345,13 +352,13 @@
 
     <string name="productsWidgetConfig_contentDescription_navigationIcon">Отмена</string>
     <string name="productsWidgetConfig_header">Выберите список</string>
-    <string name="productsWidgetConfig_text_shoppingListsNotFound">У вас нет покупок</string>
+    <string name="productsWidgetConfig_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="productsWidget_description">Товары из выбранного списка покупок</string>
     <string name="productsWidget_label">Список покупок</string>
     <string name="productsWidget_message_loadingError">Ошибка загрузки</string>
     <string name="productsWidget_text_loading">Загрузка…</string>
-    <string name="productsWidget_text_productsNotFound">Список покупок пуст</string>
+    <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
 
     <string name="products_action_addShoppingListTotal">@string/all_action_add</string>
     <string name="products_action_automaticSorting">@string/all_action_saveSort</string>
@@ -396,26 +403,24 @@
     <string name="products_contentDescription_showSelectedMenu">Показать или скрыть меню</string>
     <string name="products_header_displayTotal">Итого</string>
     <string name="products_label_search">Поиск</string>
-    <string name="products_text_activeTotal">Не куплено: %s</string>
-    <string name="products_text_allTotal">Итого: %s</string>
-    <string name="products_text_archiveProductsNotFound">Список покупок пуст</string>
-    <string name="products_text_completedTotal">Куплено: %s</string>
+    <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
+    <string name="products_text_allTotal">@string/all_text_allTotal</string>
+    <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
+    <string name="products_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="products_text_hiddenProducts">У вас есть скрытые товары</string>
-    <string name="products_text_otherProducts">Другие</string>
-    <string name="products_text_pinnedProducts">Закреплённые</string>
+    <string name="products_text_otherProducts">@string/all_text_otherList</string>
+    <string name="products_text_pinnedProducts">@string/all_text_pinnedList</string>
     <string name="products_text_purchasesProductsNotFound">Нажмите на \"+\", чтобы добавить товар</string>
-    <string name="products_text_searchNotFound">Не найдено</string>
-    <string name="products_text_selectedTotal">Выбрано: %s</string>
+    <string name="products_text_searchNotFound">@string/all_text_searchNotFound</string>
+    <string name="products_text_selectedTotal">@string/all_text_selectedTotal</string>
     <string name="products_text_totalFormatted">Изменено: %s</string>
-    <string name="products_text_trashProductsNotFound">Список покупок пуст</string>
+    <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
     <string name="purchases_contentDescription_addShoppingListIcon">Добавить список покупок</string>
     <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Закрепить или открепить списки покупок</string>
     <string name="purchases_contentDescription_purchasesMenuIcon">Открыть меню покупок</string>
     <string name="purchases_header">Покупки</string>
     <string name="purchases_text_moreProducts">…</string>
-    <string name="purchases_text_productsNotFound">Список покупок пуст</string>
-    <string name="purchases_text_shoppingListsNotFound">У вас нет покупок</string>
 
     <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
     <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
@@ -512,22 +517,24 @@
     <string name="shoppingLists_header_displayTotal">Итого</string>
     <string name="shoppingLists_header_location">Показать</string>
     <string name="shoppingLists_label_search">Поиск</string>
-    <string name="shoppingLists_text_activeTotal">Не куплено: %s</string>
-    <string name="shoppingLists_text_allTotal">Итого: %s</string>
-    <string name="shoppingLists_text_completedTotal">Куплено: %s</string>
+    <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
+    <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
+    <string name="shoppingLists_text_archiveShoppingListsNotFound">Архив пуст</string>
+    <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
     <string name="shoppingLists_text_nameNotFound">Без названия</string>
-    <string name="shoppingLists_text_otherShoppingLists">Другие</string>
-    <string name="shoppingLists_text_pinnedShoppingLists">Закреплённые</string>
-    <string name="shoppingLists_text_searchNotFound">Не найдено</string>
-    <string name="shoppingLists_text_selectedTotal">Выбрано: %s</string>
+    <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
+    <string name="shoppingLists_text_productsNotFound">@string/all_text_productsNotFound</string>
+    <string name="shoppingLists_text_purchasesShoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
+    <string name="shoppingLists_text_searchNotFound">@string/all_text_searchNotFound</string>
+    <string name="shoppingLists_text_selectedTotal">@string/all_text_selectedTotal</string>
     <string name="shoppingLists_text_totalFormatted">Итого (изменено): %s</string>
+    <string name="shoppingLists_text_trashShoppingListsNotFound">Корзина пуста</string>
 
     <string name="shortcuts_longLabel_addShoppingList">Новый список покупок</string>
     <string name="shortcuts_shortLabel_addShoppingList">Новый список</string>
 
     <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
     <string name="trash_header">Корзина</string>
-    <string name="trash_text_productsNotFound">Список покупок пуст</string>
-    <string name="trash_text_shoppingListsNotFound">Корзина пуста</string>
 </resources>

@@ -254,7 +254,7 @@ class PurchasesState {
         return if (displaySearch) {
             UiString.FromResources(R.string.shoppingLists_text_searchNotFound)
         } else {
-            UiString.FromResources(R.string.purchases_text_shoppingListsNotFound)
+            UiString.FromResources(R.string.shoppingLists_text_purchasesShoppingListsNotFound)
         }
     }
 

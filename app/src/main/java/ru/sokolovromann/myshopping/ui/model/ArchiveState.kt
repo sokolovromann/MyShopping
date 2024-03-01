@@ -210,7 +210,7 @@ class ArchiveState {
         return if (displaySearch) {
             UiString.FromResources(R.string.shoppingLists_text_searchNotFound)
         } else {
-            UiString.FromResources(R.string.archive_text_shoppingListsNotFound)
+            UiString.FromResources(R.string.shoppingLists_text_archiveShoppingListsNotFound)
         }
     }
 
