@@ -105,7 +105,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                         IconButton(onClick = { viewModel.onEvent(ProductsWidgetConfigEvent.OnClickCancel) }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.productsWidgetConfig_contentDescription_navigationIcon),
+                                contentDescription = stringResource(R.string.productsWidgetConfig_contentDescription_closeScreenIcon),
                                 tint = contentColorFor(MaterialTheme.colors.primarySurface).copy(
                                     ContentAlpha.medium)
                             )

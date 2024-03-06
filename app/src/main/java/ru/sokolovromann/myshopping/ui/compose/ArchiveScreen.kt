@@ -185,7 +185,7 @@ fun ArchiveScreen(
                         }
 
                         IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnShowArchiveMenu(true)) }) {
-                            MoreIcon(contentDescription = UiString.FromResources(R.string.archive_contentDescription_archiveMenuIcon))
+                            MoreIcon(contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveMenuIcon))
                             AppDropdownMenu(
                                 expanded = state.expandedArchiveMenu,
                                 onDismissRequest = { viewModel.onEvent(ArchiveEvent.OnShowArchiveMenu(false)) }

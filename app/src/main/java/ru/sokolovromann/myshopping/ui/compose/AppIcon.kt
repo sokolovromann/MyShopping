@@ -80,7 +80,7 @@ fun NavigationMenuIcon(
 fun CancelSearchIcon(
     modifier: Modifier = Modifier,
     size: Dp = DefaultIconSize,
-    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_cancelSearch),
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_cancelSearchIcon),
     tint: Color = DefaultIconTint
 ) {
     AppTopBarIcon(
@@ -96,7 +96,7 @@ fun CancelSearchIcon(
 fun CancelSelectionIcon(
     modifier: Modifier = Modifier,
     size: Dp = DefaultIconSize,
-    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_cancelSelection),
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_cancelSelectionIcon),
     tint: Color = DefaultIconTint
 ) {
     AppTopBarIcon(

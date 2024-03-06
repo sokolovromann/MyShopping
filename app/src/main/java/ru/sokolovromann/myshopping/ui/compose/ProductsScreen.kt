@@ -144,7 +144,7 @@ fun ProductsScreen(
                                 onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) },
                                 content = {
                                     CancelSearchIcon(
-                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSearch)
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSearchIcon)
                                     )
                                 }
                             )
@@ -165,13 +165,13 @@ fun ProductsScreen(
                                 IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditName) }) {
                                     AppTopBarIcon(
                                         icon = UiIcon.FromResources(R.drawable.ic_all_rename),
-                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListName)
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListNameIcon)
                                     )
                                 }
                                 IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditReminder) }) {
                                     AppTopBarIcon(
                                         icon = UiIcon.FromResources(R.drawable.ic_all_reminder),
-                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListReminder)
+                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListReminderIcon)
                                     )
                                 }
                             }
@@ -190,7 +190,7 @@ fun ProductsScreen(
                             },
                             content = {
                                 CancelSelectionIcon(
-                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSelection)
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSelectionIcon)
                                 )
                             }
                         )
@@ -204,7 +204,7 @@ fun ProductsScreen(
                             }
                             AppTopBarIcon(
                                 icon = UiIcon.FromResources(iconResId),
-                                contentDescription = UiString.FromResources(R.string.products_contentDescription_pinOrUnpinProduct)
+                                contentDescription = UiString.FromResources(R.string.products_contentDescription_pinOrUnpinProductIcon)
                             )
                         }
                         IconButton(
@@ -504,14 +504,14 @@ fun ProductsScreen(
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductUp(it)) }) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_all_arrow_up),
-                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUp),
+                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUpIcon),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductDown(it)) }) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_all_arrow_down),
-                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDown),
+                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDownIcon),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
@@ -520,7 +520,7 @@ fun ProductsScreen(
                         IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditProduct(it)) }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
-                                contentDescription = stringResource(id = R.string.products_contentDescription_editProduct),
+                                contentDescription = stringResource(id = R.string.products_contentDescription_editProductIcon),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
@@ -812,7 +812,7 @@ fun ProductsHiddenContent(
         IconButton(onClick = onClick) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = stringResource(R.string.products_contentDescription_displayCompletedPurchases),
+                contentDescription = stringResource(R.string.products_contentDescription_displayCompletedPurchasesIcon),
                 tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
         }

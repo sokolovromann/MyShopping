@@ -130,7 +130,7 @@ fun PurchasesScreen(
                                 } else {
                                     painterResource(R.drawable.ic_all_unpin)
                                 },
-                                contentDescription = stringResource(R.string.purchases_contentDescription_pinOrUnpinShoppingLists)
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_pinOrUnpinShoppingListsIcon)
                             )
                         }
                         ShoppingListsArchiveDataButton {
@@ -215,10 +215,10 @@ fun PurchasesScreen(
                         }
 
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAddShoppingList) }) {
-                            AddDataIcon(contentDescription = UiString.FromResources(R.string.purchases_contentDescription_addShoppingListIcon))
+                            AddDataIcon(contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_addShoppingListIcon))
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(true)) }) {
-                            MoreIcon(contentDescription = UiString.FromResources(R.string.purchases_contentDescription_purchasesMenuIcon))
+                            MoreIcon(contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_purchasesMenuIcon))
                             AppDropdownMenu(
                                 expanded = state.expandedPurchasesMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(false)) }
@@ -319,14 +319,14 @@ fun PurchasesScreen(
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListUp(it)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_arrow_up),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUp),
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUpIcon),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
                         IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListDown(it)) }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_all_arrow_down),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDown),
+                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDownIcon),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }

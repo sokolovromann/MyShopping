@@ -152,7 +152,7 @@ fun AddEditProductScreen(
                             } else {
                                 Icons.Default.KeyboardArrowDown
                             },
-                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_showNameOtherFields),
+                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_showNameOtherFieldsIcon),
                             tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                         )
                     }
@@ -448,7 +448,7 @@ fun AddEditProductScreen(
                             } else {
                                 Icons.Default.KeyboardArrowDown
                             },
-                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_showPriceOtherFields),
+                            contentDescription = stringResource(R.string.addEditProduct_contentDescription_showPriceOtherFieldsIcon),
                             tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                         )
                     }

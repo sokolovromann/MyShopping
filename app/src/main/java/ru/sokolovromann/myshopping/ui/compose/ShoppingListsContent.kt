@@ -240,7 +240,7 @@ fun ShoppingListsHiddenContent(
         IconButton(onClick = onClick) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedPurchases),
+                contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedPurchasesIcon),
                 tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
         }
@@ -356,7 +356,7 @@ fun ShoppingListsOpenNavigationButton(onClick: () -> Unit) {
 fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         CancelSearchIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearch)
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearchIcon)
         )
     }
 }
@@ -365,7 +365,7 @@ fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
 fun ShoppingListsCancelSelectionButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         CancelSelectionIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelection),
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelectionIcon),
         )
     }
 }

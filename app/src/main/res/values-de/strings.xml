@@ -16,8 +16,8 @@
     <string name="addEditProduct_action_selectProductLockQuantity">Menge</string>
     <string name="addEditProduct_action_selectProductLockTotal">Gesamt</string>
     <string name="addEditProduct_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
-    <string name="addEditProduct_contentDescription_showNameOtherFields">Andere Felder ein oder ausblenden</string>
-    <string name="addEditProduct_contentDescription_showPriceOtherFields">Andere Felder ein oder ausblenden</string>
+    <string name="addEditProduct_contentDescription_showNameOtherFieldsIcon">@string/all_contentDescription_showOrHideOtherFieldsIcon</string>
+    <string name="addEditProduct_contentDescription_showPriceOtherFieldsIcon">@string/all_contentDescription_showOrHideOtherFieldsIcon</string>
     <string name="addEditProduct_header_productLock">Block</string>
     <string name="addEditProduct_label_brand">Marke</string>
     <string name="addEditProduct_label_color">Farbe</string>
@@ -54,13 +54,25 @@
     <string name="all_action_sortByName">Nach name</string>
     <string name="all_action_sortByTotal">Nach gesamt</string>
     <string name="all_action_unarchive">Unarchivieren</string>
-    <string name="all_contentDescription_backScreenIcon">Zurück</string>
-    <string name="all_contentDescription_cancelSearch">Suche abbrechen</string>
-    <string name="all_contentDescription_cancelSelection">Auswahl abbrechen</string>
-    <string name="all_contentDescription_closeScreenIcon">Absagen</string>
-    <string name="all_contentDescription_deleteDataIcon">Löschen</string>
+    <string name="all_contentDescription_addAutocompleteIcon">Autovervollständigung hinzufügen</string>
+    <string name="all_contentDescription_addProductIcon">Produkt hinzufügen</string>
+    <string name="all_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
+    <string name="all_contentDescription_archiveIcon">@string/all_action_archive</string>
+    <string name="all_contentDescription_backScreenIcon">@string/all_action_back</string>
+    <string name="all_contentDescription_cancelSearchIcon">Suche abbrechen</string>
+    <string name="all_contentDescription_cancelSelectionIcon">Auswahl abbrechen</string>
+    <string name="all_contentDescription_clearIcon">Klar</string>
+    <string name="all_contentDescription_closeScreenIcon">@string/all_action_cancel</string>
+    <string name="all_contentDescription_deleteDataIcon">@string/all_action_delete</string>
+    <string name="all_contentDescription_editProductIcon">Bearbeiten</string>
+    <string name="all_contentDescription_moveDownIcon">Nach unten verschieben</string>
+    <string name="all_contentDescription_moveUpIcon">Nach oben verschieben</string>
     <string name="all_contentDescription_navigationMenuIcon">Navigation öffnen</string>
+    <string name="all_contentDescription_pinOrUnpinIcon">Anheften oder loslösen</string>
+    <string name="all_contentDescription_restoreIcon">Wiederherstellen</string>
     <string name="all_contentDescription_selectAllDataIcon">Wählen Sie Alle</string>
+    <string name="all_contentDescription_showOrHideOtherFieldsIcon">Andere Felder ein oder ausblenden</string>
+    <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
     <string name="all_header_appName">My Shopping List</string>
     <string name="all_text_activeTotal">Aktive: %s</string>
     <string name="all_text_allTotal">Alle: %s</string>
@@ -74,7 +86,6 @@
 
     <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
-    <string name="archive_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
     <string name="archive_header">Archiv</string>
 
     <string name="autocompletes_action_selectDefaultLocation">Standard</string>
@@ -88,9 +99,9 @@
     <string name="autocompletes_body_quantities">Mengen: %s</string>
     <string name="autocompletes_body_sizes">Größen: %s</string>
     <string name="autocompletes_body_totals">Gesamten: %s</string>
-    <string name="autocompletes_contentDescription_addAutocompleteIcon">Autovervollständigung hinzufügen</string>
-    <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
-    <string name="autocompletes_contentDescription_clearAutocompletesIcon">Klar</string>
+    <string name="autocompletes_contentDescription_addAutocompleteIcon">@string/all_contentDescription_addAutocompleteIcon</string>
+    <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelectionIcon</string>
+    <string name="autocompletes_contentDescription_clearAutocompletesIcon">@string/all_contentDescription_clearIcon</string>
     <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
@@ -130,7 +141,7 @@
     <string name="calendar_text_yesterday">Gestern</string>
     <string name="calendar_text_yesterdayAt">Gestern um %tH:%tM</string>
 
-    <string name="copyMoveProducts_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
+    <string name="copyMoveProducts_contentDescription_addShoppingListIcon">@string/all_contentDescription_addShoppingListIcon</string>
     <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="copyMoveProducts_header">Wählen Sie eine Liste aus</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
@@ -285,7 +296,7 @@
     <string name="notificationChannel_description_purchases">Benachrichtigungen über einkäufe</string>
     <string name="notificationChannel_name_purchases">Einkäufe</string>
 
-    <string name="productsWidgetConfig_contentDescription_navigationIcon">Absagen</string>
+    <string name="productsWidgetConfig_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
     <string name="productsWidgetConfig_header">Wählen Sie eine Liste aus</string>
     <string name="productsWidgetConfig_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
@@ -322,20 +333,20 @@
     <string name="products_action_sortByLastModified">@string/all_action_sortByLastModified</string>
     <string name="products_action_sortByName">@string/all_action_sortByName</string>
     <string name="products_action_sortByTotal">@string/all_action_sortByTotal</string>
-    <string name="products_contentDescription_addProductIcon">Produkt hinzufügen</string>
+    <string name="products_contentDescription_addProductIcon">@string/all_contentDescription_addProductIcon</string>
     <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
-    <string name="products_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
-    <string name="products_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
+    <string name="products_contentDescription_cancelSearchIcon">@string/all_contentDescription_cancelSearchIcon</string>
+    <string name="products_contentDescription_cancelSelectionIcon">@string/all_contentDescription_cancelSelectionIcon</string>
     <string name="products_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
-    <string name="products_contentDescription_displayCompletedPurchases">Fertige Produkte anzeigen</string>
-    <string name="products_contentDescription_editProduct">Bearbeiten</string>
-    <string name="products_contentDescription_editShoppingListName">Bearbeiten Sie den Namen der Einkaufsliste</string>
-    <string name="products_contentDescription_editShoppingListReminder">Erinnerung bearbeiten</string>
-    <string name="products_contentDescription_moveProductDown">Nach unten verschieben</string>
-    <string name="products_contentDescription_moveProductUp">Nach oben verschieben</string>
-    <string name="products_contentDescription_pinOrUnpinProduct">Produkt anheften oder loslösen</string>
+    <string name="products_contentDescription_displayCompletedPurchasesIcon">Fertige Produkte anzeigen</string>
+    <string name="products_contentDescription_editProductIcon">@string/all_contentDescription_editProductIcon</string>
+    <string name="products_contentDescription_editShoppingListNameIcon">Bearbeiten Sie den Namen der Einkaufsliste</string>
+    <string name="products_contentDescription_editShoppingListReminderIcon">Erinnerung bearbeiten</string>
+    <string name="products_contentDescription_moveProductDownIcon">@string/all_contentDescription_moveDownIcon</string>
+    <string name="products_contentDescription_moveProductUpIcon">@string/all_contentDescription_moveUpIcon</string>
+    <string name="products_contentDescription_pinOrUnpinProductIcon">@string/all_contentDescription_pinOrUnpinIcon</string>
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
-    <string name="products_contentDescription_showSelectedMenu">Ausgewähltes Menü ein oder ausblenden</string>
+    <string name="products_contentDescription_showSelectedMenuIcon">Ausgewähltes Menü ein oder ausblenden</string>
     <string name="products_header_displayTotal">Gesamt</string>
     <string name="products_label_search">Suchen</string>
     <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
@@ -351,9 +362,6 @@
     <string name="products_text_totalFormatted">Bearbeitet: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="purchases_contentDescription_addShoppingListIcon">Einkaufsliste hinzufügen</string>
-    <string name="purchases_contentDescription_pinOrUnpinShoppingLists">Einkaufslisten anheften oder loslösen</string>
-    <string name="purchases_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
     <string name="purchases_header">Einkäufe</string>
     <string name="purchases_text_moreProducts">…</string>
 
@@ -438,17 +446,21 @@
     <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>
     <string name="shoppingLists_action_sortByName">@string/all_action_sortByName</string>
     <string name="shoppingLists_action_sortByTotal">@string/all_action_sortByTotal</string>
-    <string name="shoppingLists_contentDescription_archiveIcon">Archivieren</string>
-    <string name="shoppingLists_contentDescription_cancelSearch">@string/all_contentDescription_cancelSearch</string>
-    <string name="shoppingLists_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelection</string>
+    <string name="shoppingLists_contentDescription_addShoppingListIcon">@string/all_contentDescription_addShoppingListIcon</string>
+    <string name="shoppingLists_contentDescription_archiveIcon">@string/all_contentDescription_archiveIcon</string>
+    <string name="shoppingLists_contentDescription_archiveMenuIcon">Archivmenü öffnen</string>
+    <string name="shoppingLists_contentDescription_cancelSearchIcon">@string/all_contentDescription_cancelSearchIcon</string>
+    <string name="shoppingLists_contentDescription_cancelSelectionIcon">@string/all_contentDescription_cancelSelectionIcon</string>
     <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
-    <string name="shoppingLists_contentDescription_displayCompletedPurchases">Abgeschlossene Einkaufslisten anzeigen</string>
-    <string name="shoppingLists_contentDescription_moveShoppingListDown">Nach unten verschieben</string>
-    <string name="shoppingLists_contentDescription_moveShoppingListUp">Nach oben verschieben</string>
+    <string name="shoppingLists_contentDescription_displayCompletedPurchasesIcon">Abgeschlossene Einkaufslisten anzeigen</string>
+    <string name="shoppingLists_contentDescription_moveShoppingListDownIcon">@string/all_contentDescription_moveDownIcon</string>
+    <string name="shoppingLists_contentDescription_moveShoppingListUpIcon">@string/all_contentDescription_moveUpIcon</string>
     <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
-    <string name="shoppingLists_contentDescription_restoreIcon">Wiederherstellen</string>
+    <string name="shoppingLists_contentDescription_pinOrUnpinShoppingListsIcon">@string/all_contentDescription_pinOrUnpinIcon</string>
+    <string name="shoppingLists_contentDescription_purchasesMenuIcon">Einkaufsmenü öffnen</string>
+    <string name="shoppingLists_contentDescription_restoreIcon">@string/all_contentDescription_restoreIcon</string>
     <string name="shoppingLists_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
-    <string name="shoppingLists_contentDescription_unarchiveIcon">Unarchivieren</string>
+    <string name="shoppingLists_contentDescription_unarchiveIcon">@string/all_contentDescription_unarchiveIcon</string>
     <string name="shoppingLists_header_displayTotal">Gesamt</string>
     <string name="shoppingLists_header_location">Anzeige</string>
     <string name="shoppingLists_label_search">Suchen</string>
