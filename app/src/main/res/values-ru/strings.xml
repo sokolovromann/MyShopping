@@ -96,9 +96,6 @@
     <string name="all_text_selectedTotal">Выбрано: %s</string>
     <string name="all_text_shoppingListsNotFound">У вас нет покупок</string>
 
-    <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
-    <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
-
     <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
     <string name="autocompletes_action_selectPersonalLocation">Личные</string>
     <string name="autocompletes_body_brands">Марки: %s</string>
@@ -438,8 +435,6 @@
     <string name="products_text_totalFormatted">Изменено: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="purchases_text_moreProducts">…</string>
-
     <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
     <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
@@ -500,6 +495,7 @@
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
+    <string name="shoppingLists_action_deleteShoppingLists">Очистить корзину</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Один столбец</string>
     <string name="shoppingLists_action_displayActiveTotal">Не купленные товары</string>
     <string name="shoppingLists_action_displayAllTotal">Все товары</string>
@@ -547,6 +543,7 @@
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Архив пуст</string>
     <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="shoppingLists_text_hiddenShoppingLists">У вас есть скрытые покупки</string>
+    <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Без названия</string>
     <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
     <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
@@ -559,6 +556,4 @@
 
     <string name="shortcuts_longLabel_addShoppingList">Новый список покупок</string>
     <string name="shortcuts_shortLabel_addShoppingList">Новый список</string>
-
-    <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
 </resources>

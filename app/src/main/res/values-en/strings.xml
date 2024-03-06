@@ -96,9 +96,6 @@
     <string name="all_text_selectedTotal">Selected: %s</string>
     <string name="all_text_shoppingListsNotFound">You have no shopping lists</string>
 
-    <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
-    <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
-
     <string name="autocompletes_action_selectDefaultLocation">Default</string>
     <string name="autocompletes_action_selectPersonalLocation">Personal</string>
     <string name="autocompletes_body_brands">Brands: %s</string>
@@ -444,8 +441,6 @@
     <string name="products_text_totalFormatted">Edited: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="purchases_text_moreProducts">…</string>
-
     <string name="settings_action_displayCompletedPurchasesFirst">First</string>
     <string name="settings_action_displayCompletedPurchasesLast">Last</string>
     <string name="settings_action_hideCompletedPurchases">Hide</string>
@@ -506,6 +501,7 @@
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
+    <string name="shoppingLists_action_deleteShoppingLists">Empty trash</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">One column</string>
     <string name="shoppingLists_action_displayActiveTotal">Active</string>
     <string name="shoppingLists_action_displayAllTotal">All</string>
@@ -553,6 +549,7 @@
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Archive is empty</string>
     <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="shoppingLists_text_hiddenShoppingLists">You have hidden shopping lists</string>
+    <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Unnamed</string>
     <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
     <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
@@ -565,6 +562,4 @@
 
     <string name="shortcuts_longLabel_addShoppingList">New shopping list</string>
     <string name="shortcuts_shortLabel_addShoppingList">New list</string>
-
-    <string name="trash_action_deleteShoppingLists">Empty trash</string>
 </resources>

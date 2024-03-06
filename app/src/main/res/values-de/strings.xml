@@ -96,9 +96,6 @@
     <string name="all_text_selectedTotal">Ausgewählt: %s</string>
     <string name="all_text_shoppingListsNotFound">Sie haben keine Einkaufslisten</string>
 
-    <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
-    <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
-
     <string name="autocompletes_action_selectDefaultLocation">Standard</string>
     <string name="autocompletes_action_selectPersonalLocation">Persönliche</string>
     <string name="autocompletes_body_brands">Marken: %s</string>
@@ -373,8 +370,6 @@
     <string name="products_text_totalFormatted">Bearbeitet: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="purchases_text_moreProducts">…</string>
-
     <string name="settings_action_displayCompletedPurchasesFirst">Zuerst</string>
     <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
@@ -435,6 +430,7 @@
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
+    <string name="shoppingLists_action_deleteShoppingLists">Leerer Müll</string>
     <string name="shoppingLists_action_disableShoppingsMultiColumns">Eine Spalte</string>
     <string name="shoppingLists_action_displayActiveTotal">Aktive produkte</string>
     <string name="shoppingLists_action_displayAllTotal">Alle produkte</string>
@@ -482,6 +478,7 @@
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Archiv ist leer</string>
     <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
+    <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Unbenannt</string>
     <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
     <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
@@ -494,6 +491,4 @@
 
     <string name="shortcuts_longLabel_addShoppingList">Neue Einkaufsliste</string>
     <string name="shortcuts_shortLabel_addShoppingList">Neue Liste</string>
-
-    <string name="trash_action_deleteShoppingLists">Leerer Müll</string>
 </resources>

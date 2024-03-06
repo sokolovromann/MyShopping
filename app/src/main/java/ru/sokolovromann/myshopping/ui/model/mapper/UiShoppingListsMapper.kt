@@ -332,7 +332,7 @@ object UiShoppingListsMapper {
                 }.toMutableList()
 
             if (shoppingList.products.size > maxShoppingProducts) {
-                val moreProducts = Pair(null, UiString.FromResources(R.string.purchases_text_moreProducts))
+                val moreProducts = Pair(null, UiString.FromResources(R.string.shoppingLists_text_moreProducts))
                 products.add(moreProducts)
             }
 

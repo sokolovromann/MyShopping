@@ -135,7 +135,7 @@ fun TrashScreen(
                     onClick = { viewModel.onEvent(TrashEvent.OnClickEmptyTrash) }
                 ) {
                     Text(
-                        text = stringResource(R.string.trash_action_deleteShoppingLists),
+                        text = stringResource(R.string.shoppingLists_action_deleteShoppingLists),
                         fontSize = state.fontSize.button.sp
                     )
                 }
