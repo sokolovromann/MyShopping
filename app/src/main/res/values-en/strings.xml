@@ -5,7 +5,7 @@
     <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
     <string name="addEditAutocomplete_header_editAutocomplete">@string/all_header_editDataScreen</string>
     <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
-    <string name="addEditAutocomplete_message_nameError">Add name</string>
+    <string name="addEditAutocomplete_message_nameError">@string/all_message_nameError</string>
 
     <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
     <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>
@@ -31,7 +31,7 @@
     <string name="addEditProduct_label_size">Size</string>
     <string name="addEditProduct_label_total">Total</string>
     <string name="addEditProduct_label_uid">ID</string>
-    <string name="addEditProduct_message_nameError">Add name</string>
+    <string name="addEditProduct_message_nameError">@string/all_message_nameError</string>
     <string name="addEditProduct_message_uidError">Add correct ID</string>
 
     <string name="all_action_add">Add</string>
@@ -85,6 +85,7 @@
     <string name="all_header_trash">Trash</string>
     <string name="all_label_name">Name</string>
     <string name="all_label_search">Search</string>
+    <string name="all_message_nameError">Add name</string>
     <string name="all_text_activeTotal">Active: %s</string>
     <string name="all_text_allTotal">All: %s</string>
     <string name="all_text_completedTotal">Completed: %s</string>
