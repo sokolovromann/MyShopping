@@ -4,7 +4,7 @@
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
     <string name="addEditAutocomplete_header_editAutocomplete">@string/all_header_editDataScreen</string>
-    <string name="addEditAutocomplete_label_name">Name</string>
+    <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
     <string name="addEditAutocomplete_message_nameError">Add name</string>
 
     <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
@@ -23,7 +23,7 @@
     <string name="addEditProduct_label_color">Color</string>
     <string name="addEditProduct_label_discount">Discount</string>
     <string name="addEditProduct_label_manufacturer">Manufacturer</string>
-    <string name="addEditProduct_label_name">Name</string>
+    <string name="addEditProduct_label_name">@string/all_label_name</string>
     <string name="addEditProduct_label_note">Note</string>
     <string name="addEditProduct_label_price">Price per unit</string>
     <string name="addEditProduct_label_quantity">Quantity</string>
@@ -83,6 +83,8 @@
     <string name="all_header_selectShoppingList">Select a list</string>
     <string name="all_header_settings">Settings</string>
     <string name="all_header_trash">Trash</string>
+    <string name="all_label_name">Name</string>
+    <string name="all_label_search">Search</string>
     <string name="all_text_activeTotal">Active: %s</string>
     <string name="all_text_allTotal">All: %s</string>
     <string name="all_text_completedTotal">Completed: %s</string>
@@ -268,7 +270,7 @@
     <string name="products_contentDescription_productsMenuIcon">Open products menu</string>
     <string name="products_contentDescription_showSelectedMenuIcon">Show or hide selected menu</string>
     <string name="products_header_displayTotal">@string/all_header_displayTotal</string>
-    <string name="products_label_search">Search</string>
+    <string name="products_label_search">@string/all_label_search</string>
     <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="products_text_allTotal">@string/all_text_allTotal</string>
     <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
@@ -385,7 +387,7 @@
     <string name="shoppingLists_header_location">Display</string>
     <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
     <string name="shoppingLists_header_trash">@string/all_header_trash</string>
-    <string name="shoppingLists_label_search">Search</string>
+    <string name="shoppingLists_label_search">@string/all_label_search</string>
     <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Archive is empty</string>

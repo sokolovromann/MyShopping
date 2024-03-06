@@ -4,7 +4,7 @@
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
     <string name="addEditAutocomplete_header_editAutocomplete">@string/all_header_editDataScreen</string>
-    <string name="addEditAutocomplete_label_name">Назва</string>
+    <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
     <string name="addEditAutocomplete_message_nameError">Додайте назву</string>
 
     <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
@@ -23,7 +23,7 @@
     <string name="addEditProduct_label_color">Колір</string>
     <string name="addEditProduct_label_discount">Знижка</string>
     <string name="addEditProduct_label_manufacturer">Виробник</string>
-    <string name="addEditProduct_label_name">Назва</string>
+    <string name="addEditProduct_label_name">@string/all_label_name</string>
     <string name="addEditProduct_label_note">Нотатка</string>
     <string name="addEditProduct_label_price">Ціна за одиницю</string>
     <string name="addEditProduct_label_quantity">Кількість</string>
@@ -83,6 +83,8 @@
     <string name="all_header_selectShoppingList">Виберіть список</string>
     <string name="all_header_settings">Налаштування</string>
     <string name="all_header_trash">Кошик</string>
+    <string name="all_label_name">Назва</string>
+    <string name="all_label_search">Пошук</string>
     <string name="all_text_activeTotal">Не куплено: %s</string>
     <string name="all_text_allTotal">Разом: %s</string>
     <string name="all_text_completedTotal">Куплено: %s</string>
@@ -374,7 +376,7 @@
     <string name="products_contentDescription_productsMenuIcon">Відкрити меню продуктів</string>
     <string name="products_contentDescription_showSelectedMenuIcon">Показати або приховати меню</string>
     <string name="products_header_displayTotal">@string/all_header_displayTotal</string>
-    <string name="products_label_search">Пошук</string>
+    <string name="products_label_search">@string/all_label_search</string>
     <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="products_text_allTotal">@string/all_text_allTotal</string>
     <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
@@ -491,7 +493,7 @@
     <string name="shoppingLists_header_location">Показувати</string>
     <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
     <string name="shoppingLists_header_trash">@string/all_header_trash</string>
-    <string name="shoppingLists_label_search">Пошук</string>
+    <string name="shoppingLists_label_search">@string/all_label_search</string>
     <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Архів порожній</string>
