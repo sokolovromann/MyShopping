@@ -101,7 +101,7 @@ fun PurchasesScreen(
         topBar = {
             if (state.selectedUids == null) {
                 AppTopAppBar(
-                    title = { Text(text = stringResource(R.string.purchases_header)) },
+                    title = { Text(text = stringResource(R.string.shoppingLists_header_purchases)) },
                     navigationIcon = {
                         if (state.displaySearch) {
                             ShoppingListsCancelSearchButton { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }

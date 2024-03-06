@@ -73,7 +73,7 @@ fun TrashScreen(
         topBar = {
             if (state.selectedUids == null) {
                 AppTopAppBar(
-                    title = { Text(text = stringResource(R.string.trash_header)) },
+                    title = { Text(text = stringResource(R.string.shoppingLists_header_trash)) },
                     navigationIcon = {
                         ShoppingListsOpenNavigationButton {
                             val event = TrashEvent.OnSelectDrawerScreen(display = true)

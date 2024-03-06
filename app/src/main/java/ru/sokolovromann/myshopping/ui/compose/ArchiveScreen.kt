@@ -96,7 +96,7 @@ fun ArchiveScreen(
         topBar = {
             if (state.selectedUids == null) {
                 AppTopAppBar(
-                    title = { Text(text = stringResource(R.string.archive_header)) },
+                    title = { Text(text = stringResource(R.string.shoppingLists_header_archive)) },
                     navigationIcon = {
                         if (state.displaySearch) {
                             ShoppingListsCancelSearchButton { viewModel.onEvent(ArchiveEvent.OnInvertSearch) }

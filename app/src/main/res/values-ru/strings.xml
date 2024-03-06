@@ -2,8 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
-    <string name="addEditAutocomplete_header_addAutocomplete">Добавить</string>
-    <string name="addEditAutocomplete_header_editAutocomplete">Редактировать</string>
+    <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
+    <string name="addEditAutocomplete_header_editAutocomplete">@string/all_header_editDataScreen</string>
     <string name="addEditAutocomplete_label_name">Название</string>
     <string name="addEditAutocomplete_message_nameError">Добавьте название</string>
 
@@ -73,7 +73,16 @@
     <string name="all_contentDescription_selectAllDataIcon">Выбрать всё</string>
     <string name="all_contentDescription_showOrHideOtherFieldsIcon">Показать или скрыть другие поля</string>
     <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
+    <string name="all_header_addDataScreen">@string/all_action_add</string>
     <string name="all_header_appName">Мои покупки</string>
+    <string name="all_header_archive">Архив</string>
+    <string name="all_header_autocompletes">Подсказки</string>
+    <string name="all_header_displayTotal">Итого</string>
+    <string name="all_header_editDataScreen">Редактировать</string>
+    <string name="all_header_purchases">Покупки</string>
+    <string name="all_header_selectShoppingList">Выберите список</string>
+    <string name="all_header_settings">Настройки</string>
+    <string name="all_header_trash">Корзина</string>
     <string name="all_text_activeTotal">Не куплено: %s</string>
     <string name="all_text_allTotal">Итого: %s</string>
     <string name="all_text_completedTotal">Куплено: %s</string>
@@ -86,7 +95,6 @@
 
     <string name="archive_action_moveShoppingListsToPurchases">@string/all_action_unarchive</string>
     <string name="archive_action_moveShoppingListsToTrash">@string/all_action_delete</string>
-    <string name="archive_header">Архив</string>
 
     <string name="autocompletes_action_selectDefaultLocation">По-умолчанию</string>
     <string name="autocompletes_action_selectPersonalLocation">Личные</string>
@@ -105,7 +113,7 @@
     <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
-    <string name="autocompletes_header_autocompletes">Подсказки</string>
+    <string name="autocompletes_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="autocompletes_header_location">Показать</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
@@ -143,7 +151,7 @@
 
     <string name="copyMoveProducts_contentDescription_addShoppingListIcon">@string/all_contentDescription_addShoppingListIcon</string>
     <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
-    <string name="copyMoveProducts_header">Выберите список</string>
+    <string name="copyMoveProducts_header">@string/all_header_selectShoppingList</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="data_email_developer">developer.myshopping@gmail.com</string>
@@ -310,42 +318,42 @@
     <string name="data_text_developerName">Роман Соколов</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
-    <string name="drawer_action_openArchive">@string/archive_header</string>
-    <string name="drawer_action_openAutocompletes">@string/autocompletes_header_autocompletes</string>
-    <string name="drawer_action_openPurchases">@string/purchases_header</string>
-    <string name="drawer_action_openSettings">@string/settings_header_settings</string>
-    <string name="drawer_action_openTrash">@string/trash_header</string>
+    <string name="drawer_action_openArchive">@string/all_header_archive</string>
+    <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
+    <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
+    <string name="drawer_action_openSettings">@string/all_header_settings</string>
+    <string name="drawer_action_openTrash">@string/all_header_trash</string>
     <string name="drawer_header">@string/all_header_appName</string>
 
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">@string/all_action_cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">@string/all_action_save</string>
-    <string name="editCurrencySymbol_header">Валюта</string>
+    <string name="editCurrencySymbol_header">@string/all_header_editDataScreen</string>
     <string name="editCurrencySymbol_label_symbol">Символ</string>
 
     <string name="editReminder_action_cancelSavingReminder">@string/all_action_cancel</string>
     <string name="editReminder_action_deleteReminder">Удалить напоминание</string>
     <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
     <string name="editReminder_action_saveReminder">@string/all_action_save</string>
-    <string name="editReminder_header_addReminder">Добавить напоминание</string>
-    <string name="editReminder_header_editReminder">Редактировать напоминание</string>
+    <string name="editReminder_header_addReminder">@string/all_header_addDataScreen</string>
+    <string name="editReminder_header_editReminder">@string/all_header_editDataScreen</string>
     <string name="editReminder_message_permissionError">У вас нет разрешения на показ уведомлений. Уведомления не будут отображаться без разрешения.</string>
 
     <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>
     <string name="editShoppingListName_action_saveShoppingListName">@string/all_action_save</string>
-    <string name="editShoppingListName_header_addShoppingListName">Добавить</string>
-    <string name="editShoppingListName_header_editShoppingListName">Редактировать</string>
+    <string name="editShoppingListName_header_addShoppingListName">@string/all_header_addDataScreen</string>
+    <string name="editShoppingListName_header_editShoppingListName">@string/all_header_editDataScreen</string>
     <string name="editShoppingListName_label_name">Название списка</string>
 
     <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
     <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
-    <string name="editShoppingListTotal_header_addShoppingListTotal">Добавить</string>
-    <string name="editShoppingListTotal_header_editShoppingListTotal">Редактировать</string>
+    <string name="editShoppingListTotal_header_addShoppingListTotal">@string/all_header_addDataScreen</string>
+    <string name="editShoppingListTotal_header_editShoppingListTotal">@string/all_header_editDataScreen</string>
     <string name="editShoppingListTotal_label_total">Итого списка</string>
     <string name="editShoppingListTotal_message_totalWarning">Цены на товары будут скрыты</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
     <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
-    <string name="editTaxRate_header">Налоговая ставка</string>
+    <string name="editTaxRate_header">@string/all_header_editDataScreen</string>
     <string name="editTaxRate_label_taxRate">Размер в процентах</string>
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
@@ -362,7 +370,7 @@
     <string name="notificationChannel_name_purchases">Покупки</string>
 
     <string name="productsWidgetConfig_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
-    <string name="productsWidgetConfig_header">Выберите список</string>
+    <string name="productsWidgetConfig_header">@string/all_header_selectShoppingList</string>
     <string name="productsWidgetConfig_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="productsWidget_description">Товары из выбранного списка покупок</string>
@@ -412,7 +420,7 @@
     <string name="products_contentDescription_pinOrUnpinProductIcon">@string/all_contentDescription_pinOrUnpinIcon</string>
     <string name="products_contentDescription_productsMenuIcon">Открыть меню товаров</string>
     <string name="products_contentDescription_showSelectedMenuIcon">Показать или скрыть меню</string>
-    <string name="products_header_displayTotal">Итого</string>
+    <string name="products_header_displayTotal">@string/all_header_displayTotal</string>
     <string name="products_label_search">Поиск</string>
     <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="products_text_allTotal">@string/all_text_allTotal</string>
@@ -427,7 +435,6 @@
     <string name="products_text_totalFormatted">Изменено: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="purchases_header">Покупки</string>
     <string name="purchases_text_moreProducts">…</string>
 
     <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
@@ -458,12 +465,12 @@
     <string name="settings_body_terms_and_conditions">Нажмите, чтобы прочитать</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_aboutApp">О приложении</string>
-    <string name="settings_header_autocompletes">Подсказки</string>
+    <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Общие</string>
     <string name="settings_header_migration">Обновление</string>
     <string name="settings_header_money">Деньги</string>
-    <string name="settings_header_purchases">Покупки</string>
-    <string name="settings_header_settings">Настройки</string>
+    <string name="settings_header_purchases">@string/all_header_purchases</string>
+    <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_appVersion">Версия приложения</string>
     <string name="settings_title_backup">Резервное копирование</string>
     <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>
@@ -503,9 +510,9 @@
     <string name="shoppingLists_action_reverseSort">@string/all_action_reverseSort</string>
     <string name="shoppingLists_action_search">@string/all_action_search</string>
     <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
-    <string name="shoppingLists_action_selectArchiveLocation">@string/archive_header</string>
-    <string name="shoppingLists_action_selectPurchasesLocation">@string/purchases_header</string>
-    <string name="shoppingLists_action_selectTrashLocation">@string/trash_header</string>
+    <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
+    <string name="shoppingLists_action_selectPurchasesLocation">@string/shoppingLists_header_purchases</string>
+    <string name="shoppingLists_action_selectTrashLocation">@string/shoppingLists_header_trash</string>
     <string name="shoppingLists_action_sort">@string/all_action_sort</string>
     <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
     <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>
@@ -526,8 +533,11 @@
     <string name="shoppingLists_contentDescription_restoreIcon">@string/all_contentDescription_restoreIcon</string>
     <string name="shoppingLists_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="shoppingLists_contentDescription_unarchiveIcon">@string/all_contentDescription_unarchiveIcon</string>
-    <string name="shoppingLists_header_displayTotal">Итого</string>
+    <string name="shoppingLists_header_archive">@string/all_header_archive</string>
+    <string name="shoppingLists_header_displayTotal">@string/all_header_displayTotal</string>
     <string name="shoppingLists_header_location">Показать</string>
+    <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
+    <string name="shoppingLists_header_trash">@string/all_header_trash</string>
     <string name="shoppingLists_label_search">Поиск</string>
     <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
@@ -548,5 +558,4 @@
     <string name="shortcuts_shortLabel_addShoppingList">Новый список</string>
 
     <string name="trash_action_deleteShoppingLists">Очистить корзину</string>
-    <string name="trash_header">Корзина</string>
 </resources>
