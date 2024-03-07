@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calendar_text_currentYear">%ta, %tb %td</string>
+    <string name="calendar_text_currentYearAt">%ta, %tb %td à %tH:%tM</string>
+    <string name="calendar_text_other">%tY %tb %td</string>
+    <string name="calendar_text_otherAt">%tY %tb %td à %tH:%tM</string>
+    <string name="calendar_text_time">%tH:%tM</string>
+    <string name="calendar_text_today">Aujourd\'hui</string>
+    <string name="calendar_text_todayAt">Aujourd\'hui à  %tH:%tM</string>
+    <string name="calendar_text_tomorrow">Demain</string>
+    <string name="calendar_text_tomorrowAt">Demain à %tH:%tM</string>
+    <string name="calendar_text_yesterday">Hier</string>
+    <string name="calendar_text_yesterdayAt">Hier à %tH:%tM</string>
+
+    <string name="data_text_defaultCurrency">$</string>
+    <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
+</resources>

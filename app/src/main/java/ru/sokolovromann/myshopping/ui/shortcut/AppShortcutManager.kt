@@ -19,39 +19,41 @@ class AppShortcutManager @Inject constructor(
 
     fun updateShoppingListsShortcuts(shoppingLists: List<ShoppingList>) {
         shoppingLists.forEachIndexed { index, shoppingList ->
-            val shoppingUid = shoppingList.shopping.uid
-            val label = shoppingList.shopping.name.ifEmpty {
-                val builder = StringBuilder()
+            if (!shoppingList.isProductsEmpty()) {
+                val shoppingUid = shoppingList.shopping.uid
+                val label = shoppingList.shopping.name.ifEmpty {
+                    val builder = StringBuilder()
 
-                val maxCount = 2
-                val sortedProducts = shoppingList.getSortedProducts(DisplayCompleted.LAST)
-                val products = sortedProducts.filterIndexed { index, _ -> index < maxCount }
-                builder.append(products.joinToString { it.name })
+                    val maxCount = 2
+                    val sortedProducts = shoppingList.getSortedProducts(DisplayCompleted.LAST)
+                    val products = sortedProducts.filterIndexed { index, _ -> index < maxCount }
+                    builder.append(products.joinToString { it.name })
 
-                if (sortedProducts.size > maxCount) {
-                    builder.append("...")
+                    if (sortedProducts.size > maxCount) {
+                        builder.append("...")
+                    }
+
+                    builder.toString()
+                }
+                val icon = IconCompat.createWithResource(context, R.drawable.ic_shortcut_shopping_list)
+                val intent = Intent(context, MainActivity::class.java).apply {
+                    action = Intent.ACTION_VIEW
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                    val args = Bundle().apply { putExtra(UiRouteKey.ShoppingUid.key, shoppingUid) }
+                    putExtras(args)
                 }
 
-                builder.toString()
+                val shortcut = ShortcutInfoCompat.Builder(context, shoppingUid)
+                    .setShortLabel(label)
+                    .setLongLabel(label)
+                    .setIcon(icon)
+                    .setIntent(intent)
+                    .setRank(index)
+                    .build()
+
+                ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
             }
-            val icon = IconCompat.createWithResource(context, R.drawable.ic_shortcut_shopping_list)
-            val intent = Intent(context, MainActivity::class.java).apply {
-                action = Intent.ACTION_VIEW
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                val args = Bundle().apply { putExtra(UiRouteKey.ShoppingUid.key, shoppingUid) }
-                putExtras(args)
-            }
-
-            val shortcut = ShortcutInfoCompat.Builder(context, shoppingUid)
-                .setShortLabel(label)
-                .setLongLabel(label)
-                .setIcon(icon)
-                .setIntent(intent)
-                .setRank(index)
-                .build()
-
-            ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
         }
     }
 

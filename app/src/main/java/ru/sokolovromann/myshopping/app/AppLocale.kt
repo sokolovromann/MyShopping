@@ -4,7 +4,7 @@ import java.util.Locale
 
 object AppLocale {
 
-    private val supportedLanguages = listOf("en", "de", "ru", "uk")
+    private val supportedLanguages = listOf("en", "de", "fr", "ru", "uk")
 
     fun getCurrentLanguage(): String {
         return getDefault().language
