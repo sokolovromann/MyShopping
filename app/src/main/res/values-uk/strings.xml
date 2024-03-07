@@ -465,7 +465,7 @@
     <string name="shoppingLists_action_displayCompletedTotal">@string/all_action_displayCompletedTotal</string>
     <string name="shoppingLists_action_displayProducts">Показувати товари</string>
     <string name="shoppingLists_action_displayProductsHorizontally">Горизонтально</string>
-    <string name="shoppingLists_action_displayProductsVertical">Вертикально</string>
+    <string name="shoppingLists_action_displayProductsVertically">Вертикально</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">@string/all_action_enableMultiColumns</string>
     <string name="shoppingLists_action_hideProducts">Завжди приховувати</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Приховувати, якщо є заголовок</string>

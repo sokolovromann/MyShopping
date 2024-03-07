@@ -261,7 +261,7 @@ fun ShoppingListsDisplayProductsMenu(
     ) {
         AppDropdownMenuItem(
             onClick = { onSelected(DisplayProducts.VERTICAL) },
-            text = { Text(text = stringResource(R.string.shoppingLists_action_displayProductsVertical)) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayProductsVertically)) },
             right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.VERTICAL) }
         )
         AppDropdownMenuItem(

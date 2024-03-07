@@ -90,7 +90,7 @@ class SettingsState {
         return SelectedValue(
             selected = displayProducts,
             text = when (displayProducts) {
-                DisplayProducts.VERTICAL -> UiString.FromResources(R.string.shoppingLists_action_displayProductsVertical)
+                DisplayProducts.VERTICAL -> UiString.FromResources(R.string.shoppingLists_action_displayProductsVertically)
                 DisplayProducts.HORIZONTAL -> UiString.FromResources(R.string.shoppingLists_action_displayProductsHorizontally)
                 DisplayProducts.HIDE -> UiString.FromResources(R.string.shoppingLists_action_hideProducts)
                 DisplayProducts.HIDE_IF_HAS_TITLE -> UiString.FromResources(R.string.shoppingLists_action_hideProductsIfHasTitle)

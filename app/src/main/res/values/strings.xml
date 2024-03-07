@@ -359,7 +359,7 @@
     <string name="shoppingLists_action_displayCompletedTotal">@string/all_action_displayCompletedTotal</string>
     <string name="shoppingLists_action_displayProducts">Display products</string>
     <string name="shoppingLists_action_displayProductsHorizontally">Horizontally</string>
-    <string name="shoppingLists_action_displayProductsVertical">Vertical</string>
+    <string name="shoppingLists_action_displayProductsVertically">Vertically</string>
     <string name="shoppingLists_action_enableShoppingsMultiColumns">@string/all_action_enableMultiColumns</string>
     <string name="shoppingLists_action_hideProducts">Always hide</string>
     <string name="shoppingLists_action_hideProductsIfHasTitle">Hide if there is a title</string>
