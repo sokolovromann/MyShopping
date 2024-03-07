@@ -137,7 +137,7 @@
     <string name="backup_message_exportSuccessful">Дані успішно експортовано</string>
     <string name="backup_message_importError">Імпортувати дані не вдалося</string>
     <string name="backup_message_importSuccessful">Дані успішно імпортовано</string>
-    <string name="backup_message_permissionError">У вас немає дозволу на експорт даних</string>
+    <string name="backup_message_permissionError">У вас немає дозволу на експорт або імпорт даних</string>
     <string name="backup_message_warning">Не редагуйте файл. Це може призвести до повної втрати даних!</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>

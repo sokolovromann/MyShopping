@@ -137,7 +137,7 @@
     <string name="backup_message_exportSuccessful">Daten erfolgreich exportiert</string>
     <string name="backup_message_importError">Datenimport fehlgeschlagen</string>
     <string name="backup_message_importSuccessful">Daten erfolgreich importiert</string>
-    <string name="backup_message_permissionError">Sie haben keine Berechtigung zum Exportieren von Daten</string>
+    <string name="backup_message_permissionError">Sie haben keine Berechtigung zum Exportieren oder Importieren von Daten</string>
     <string name="backup_message_warning">Bearbeiten Sie die Datei nicht. Es kann zu Datenverlust kommen!</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>

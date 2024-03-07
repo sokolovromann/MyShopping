@@ -137,7 +137,7 @@
     <string name="backup_message_exportSuccessful">Data exported successfully</string>
     <string name="backup_message_importError">Failed to import data</string>
     <string name="backup_message_importSuccessful">Data imported successfully</string>
-    <string name="backup_message_permissionError">You do not have permission to export data</string>
+    <string name="backup_message_permissionError">You do not have permission to export or import data</string>
     <string name="backup_message_warning">Do not edit the file. You may lose data!</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
