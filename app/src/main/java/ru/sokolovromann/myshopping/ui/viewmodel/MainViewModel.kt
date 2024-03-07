@@ -89,7 +89,9 @@ class MainViewModel @Inject constructor(
             appShortcutManager.removeAllShoppingListsShortcuts()
             val filteredShoppingLists = it.getSortedShoppingLists()
                 .filter { shoppingLists -> shoppingLists.isActive() }
-            appShortcutManager.updateShoppingListsShortcuts(filteredShoppingLists)
+            if (filteredShoppingLists.isNotEmpty()) {
+                appShortcutManager.updateShoppingListsShortcuts(filteredShoppingLists)
+            }
         }
     }
 
