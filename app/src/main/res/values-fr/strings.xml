@@ -86,7 +86,7 @@
     <string name="all_header_appName">My Shopping List</string>
     <string name="all_header_archive">Archive</string>
     <string name="all_header_autocompletes">Saisie automatique</string>
-    <string name="all_header_displayTotal">Total</string>
+    <string name="all_header_displayTotal">Afficher le total</string>
     <string name="all_header_editDataScreen">Modifier</string>
     <string name="all_header_location">Afficher</string>
     <string name="all_header_purchases">Achats</string>
@@ -97,7 +97,7 @@
     <string name="all_label_search">Recherche</string>
     <string name="all_message_nameError">Ajouter le nom</string>
     <string name="all_text_activeTotal">Non acheté: %s</string>
-    <string name="all_text_allTotal">Total: %s</string>
+    <string name="all_text_allTotal">Tout: %s</string>
     <string name="all_text_completedTotal">Acheté: %s</string>
     <string name="all_text_otherList">Autres</string>
     <string name="all_text_pinnedList">Épinglées</string>
@@ -565,7 +565,7 @@
     <string name="shoppingLists_text_purchasesShoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
     <string name="shoppingLists_text_searchNotFound">@string/all_text_searchNotFound</string>
     <string name="shoppingLists_text_selectedTotal">@string/all_text_selectedTotal</string>
-    <string name="shoppingLists_text_totalFormatted">Total (Édité): %s</string>
+    <string name="shoppingLists_text_totalFormatted">Tout (édité): %s</string>
     <string name="shoppingLists_text_trashShoppingListsNotFound">La corbeille est vide</string>
 
     <string name="shortcuts_longLabel_addShoppingList">Nouvelle liste de courses</string>
