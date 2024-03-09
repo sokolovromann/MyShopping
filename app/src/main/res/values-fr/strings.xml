@@ -11,7 +11,7 @@
     <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>
     <string name="addEditProduct_action_saveProduct">@string/all_action_save</string>
     <string name="addEditProduct_action_selectDiscountAsMoney">Argent</string>
-    <string name="addEditProduct_action_selectDiscountAsPercents">Intérêt</string>
+    <string name="addEditProduct_action_selectDiscountAsPercents">Pourcentages</string>
     <string name="addEditProduct_action_selectProductLockPrice">Prix</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Quantité</string>
     <string name="addEditProduct_action_selectProductLockTotal">Total</string>
@@ -25,7 +25,7 @@
     <string name="addEditProduct_label_manufacturer">Fabricant</string>
     <string name="addEditProduct_label_name">@string/all_label_name</string>
     <string name="addEditProduct_label_note">Note</string>
-    <string name="addEditProduct_label_price">Prix</string>
+    <string name="addEditProduct_label_price">Prix par unité</string>
     <string name="addEditProduct_label_quantity">Quantité</string>
     <string name="addEditProduct_label_quantitySymbol">Symbole</string>
     <string name="addEditProduct_label_size">Taille</string>
@@ -461,7 +461,7 @@
     <string name="settings_action_selectVeryLargeFontSize">Très grand</string>
     <string name="settings_body_backup">Exporter/importer toutes les données de l\'application</string>
     <string name="settings_body_coloredCheckbox">Si activé, les cases à cocher seront colorées en rouge ou en vert</string>
-    <string name="settings_body_completedWithCheckbox">Si activé, complété en cliquant sur la case à cocher</string>
+    <string name="settings_body_completedWithCheckbox">Si activé, le produit acheté est marqué en cliquant sur la case à cocher</string>
     <string name="settings_body_currencySymbol">Symbole: %s</string>
     <string name="settings_body_displayMoney">Si activé, l\'argent et les champs seront affichés</string>
     <string name="settings_body_displayMoneyZeros">Si activé, les zéros seront toujours affichés</string>
@@ -491,17 +491,17 @@
     <string name="settings_title_developer">Développeur</string>
     <string name="settings_title_displayCompletedPurchases">Afficher les articles achetés</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Afficher la devise à gauche</string>
-    <string name="settings_title_displayDefaultAutocompletes">Afficher les saisies semi-automatiques par défaut</string>
+    <string name="settings_title_displayDefaultAutocompletes">Afficher les saisies automatiques par défaut</string>
     <string name="settings_title_displayMoney">Afficher l\'argent</string>
     <string name="settings_title_displayMoneyZeros">Afficher les zéros après la virgule décimale</string>
     <string name="settings_title_displayOtherFields">Afficher d\'autres champs</string>
     <string name="settings_title_editProductAfterCompleted">Modifier le produit après l\'achat</string>
     <string name="settings_title_email">E-mail</string>
-    <string name="settings_title_enterToSaveProduct">Entrez pour enregistrer le produit</string>
+    <string name="settings_title_enterToSaveProduct">Entrée pour enregistrer le produit</string>
     <string name="settings_title_fontSize">Taille de police</string>
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_maxAutocompletes">Nombre maximum</string>
-    <string name="settings_title_nightTheme">Thème de nuit</string>
+    <string name="settings_title_nightTheme">Thème sombre</string>
     <string name="settings_title_privacy_policy">Politique de confidentialité</string>
     <string name="settings_title_saveProductToAutocompletes">Enregistrer les produits</string>
     <string name="settings_title_taxRate">Taux d\'imposition</string>
