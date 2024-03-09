@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
+    <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
+    <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
+    <string name="addEditAutocomplete_header_editAutocomplete">@string/all_header_editDataScreen</string>
+    <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
+    <string name="addEditAutocomplete_message_nameError">@string/all_message_nameError</string>
+
+    <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
+    <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>
+    <string name="addEditProduct_action_saveProduct">@string/all_action_save</string>
+    <string name="addEditProduct_action_selectDiscountAsMoney">Dinero</string>
+    <string name="addEditProduct_action_selectDiscountAsPercents">Porcentajes</string>
+    <string name="addEditProduct_action_selectProductLockPrice">Precio</string>
+    <string name="addEditProduct_action_selectProductLockQuantity">Cantidad</string>
+    <string name="addEditProduct_action_selectProductLockTotal">Total</string>
+    <string name="addEditProduct_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
+    <string name="addEditProduct_contentDescription_showNameOtherFieldsIcon">@string/all_contentDescription_showOrHideOtherFieldsIcon</string>
+    <string name="addEditProduct_contentDescription_showPriceOtherFieldsIcon">@string/all_contentDescription_showOrHideOtherFieldsIcon</string>
+    <string name="addEditProduct_header_productLock">Cerrar</string>
+    <string name="addEditProduct_label_brand">Marca</string>
+    <string name="addEditProduct_label_color">Color</string>
+    <string name="addEditProduct_label_discount">Descuento</string>
+    <string name="addEditProduct_label_manufacturer">Fabricante</string>
+    <string name="addEditProduct_label_name">@string/all_label_name</string>
+    <string name="addEditProduct_label_note">La nota</string>
+    <string name="addEditProduct_label_price">Precio por unidad</string>
+    <string name="addEditProduct_label_quantity">Cantidad</string>
+    <string name="addEditProduct_label_quantitySymbol">Símbolo</string>
+    <string name="addEditProduct_label_size">Tamaño</string>
+    <string name="addEditProduct_label_total">Total</string>
+    <string name="addEditProduct_label_uid">ID</string>
+    <string name="addEditProduct_message_nameError">@string/all_message_nameError</string>
+    <string name="addEditProduct_message_uidError">Añadir ID correcto</string>
+
+    <string name="all_action_add">Añadir</string>
+    <string name="all_action_archive">Archivar</string>
+    <string name="all_action_back">Atrás</string>
+    <string name="all_action_cancel">Cancelar</string>
+    <string name="all_action_copy">Copiar</string>
+    <string name="all_action_copyTo">Copiar en…</string>
+    <string name="all_action_delete">Eliminar</string>
+    <string name="all_action_disableMultiColumns">Una columna</string>
+    <string name="all_action_displayActiveTotal">Productos no comprados</string>
+    <string name="all_action_displayAllTotal">Todos los productos</string>
+    <string name="all_action_displayCompletedTotal">Productos comprados</string>
+    <string name="all_action_edit">Modificar</string>
+    <string name="all_action_enableMultiColumns">Varias columnas</string>
+    <string name="all_action_minusOne">- 1</string>
+    <string name="all_action_moveTo">Mover a…</string>
+    <string name="all_action_openPermissions">Permisos abiertos</string>
+    <string name="all_action_plusOne">+ 1</string>
+    <string name="all_action_reverseSort">Inverso</string>
+    <string name="all_action_save">Guardar</string>
+    <string name="all_action_saveSort">Guardar ordenar</string>
+    <string name="all_action_search">Buscar</string>
+    <string name="all_action_selectAll">Seleccionar todo</string>
+    <string name="all_action_share">Enviar</string>
+    <string name="all_action_sort">Clasificar</string>
+    <string name="all_action_sortByCreated">Por creado</string>
+    <string name="all_action_sortByLastModified">Por modificado</string>
+    <string name="all_action_sortByName">Por nombre</string>
+    <string name="all_action_sortByTotal">Por total</string>
+    <string name="all_action_unarchive">Desarchivar</string>
+    <string name="all_contentDescription_addAutocompleteIcon">Añadir autocompletar</string>
+    <string name="all_contentDescription_addProductIcon">Añadir producto</string>
+    <string name="all_contentDescription_addShoppingListIcon">Añadir lista de compras</string>
+    <string name="all_contentDescription_archiveIcon">@string/all_action_archive</string>
+    <string name="all_contentDescription_backScreenIcon">@string/all_action_back</string>
+    <string name="all_contentDescription_cancelSearchIcon">Cancelar búsqueda</string>
+    <string name="all_contentDescription_cancelSelectionIcon">Cancelar selección</string>
+    <string name="all_contentDescription_clearIcon">Claro</string>
+    <string name="all_contentDescription_closeScreenIcon">@string/all_action_cancel</string>
+    <string name="all_contentDescription_deleteDataIcon">@string/all_action_delete</string>
+    <string name="all_contentDescription_editProductIcon">Modificar producto</string>
+    <string name="all_contentDescription_moveDownIcon">Mover a la parte inferior</string>
+    <string name="all_contentDescription_moveUpIcon">Mover a la parte superior</string>
+    <string name="all_contentDescription_navigationMenuIcon">Abrir navegación</string>
+    <string name="all_contentDescription_pinOrUnpinIcon">Anclar o desanclar</string>
+    <string name="all_contentDescription_restoreIcon">Restaurar</string>
+    <string name="all_contentDescription_selectAllDataIcon">Seleccionar todo</string>
+    <string name="all_contentDescription_showOrHideOtherFieldsIcon">Mostrar u ocultar otros campos</string>
+    <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
+    <string name="all_header_addDataScreen">@string/all_action_add</string>
+    <string name="all_header_appName">My Shopping List</string>
+    <string name="all_header_archive">Archivo</string>
+    <string name="all_header_autocompletes">Autocompletar</string>
+    <string name="all_header_displayTotal">Mostrar total</string>
+    <string name="all_header_editDataScreen">Modificar</string>
+    <string name="all_header_location">Mostrar</string>
+    <string name="all_header_purchases">Compras</string>
+    <string name="all_header_selectShoppingList">Seleccione una lista</string>
+    <string name="all_header_settings">Ajustes</string>
+    <string name="all_header_trash">Papelera</string>
+    <string name="all_label_name">Nombre</string>
+    <string name="all_label_search">Buscar</string>
+    <string name="all_message_nameError">Añadir nombre</string>
+    <string name="all_text_activeTotal">No comprado: %s</string>
+    <string name="all_text_allTotal">Todo: %s</string>
+    <string name="all_text_completedTotal">Comprado: %s</string>
+    <string name="all_text_otherList">Otras</string>
+    <string name="all_text_pinnedList">Fijadas</string>
+    <string name="all_text_productsNotFound">La lista de compras está vacía</string>
+    <string name="all_text_searchNotFound">Extraviado</string>
+    <string name="all_text_selectedTotal">Seleccionado: %s</string>
+    <string name="all_text_shoppingListsNotFound">No tienes listas de compras</string>
+
+    <string name="autocompletes_action_selectDefaultLocation">Por defecto</string>
+    <string name="autocompletes_action_selectPersonalLocation">Personal</string>
+    <string name="autocompletes_body_brands">Marcas: %s</string>
+    <string name="autocompletes_body_colors">Colores: %s</string>
+    <string name="autocompletes_body_dataNotFound">Sin datos</string>
+    <string name="autocompletes_body_discounts">Descuentos: %s</string>
+    <string name="autocompletes_body_manufacturers">Fabricantes: %s</string>
+    <string name="autocompletes_body_prices">Precios: %s</string>
+    <string name="autocompletes_body_quantities">Cantidades: %s</string>
+    <string name="autocompletes_body_sizes">Tallas: %s</string>
+    <string name="autocompletes_body_totals">Totales: %s</string>
+    <string name="autocompletes_contentDescription_addAutocompleteIcon">@string/all_contentDescription_addAutocompleteIcon</string>
+    <string name="autocompletes_contentDescription_cancelSelection">@string/all_contentDescription_cancelSelectionIcon</string>
+    <string name="autocompletes_contentDescription_clearAutocompletesIcon">@string/all_contentDescription_clearIcon</string>
+    <string name="autocompletes_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
+    <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
+    <string name="autocompletes_header_autocompletes">@string/all_header_autocompletes</string>
+    <string name="autocompletes_header_location">@string/all_header_location</string>
+    <string name="autocompletes_text_autocompletesNotFound">No tienes autocompletados</string>
+
+    <string name="backup_action_closeBackup">@string/all_action_back</string>
+    <string name="backup_action_export">Exportar</string>
+    <string name="backup_action_import">Importar</string>
+    <string name="backup_action_openPermissions">@string/all_action_openPermissions</string>
+    <string name="backup_header">Respaldo</string>
+    <string name="backup_message_exportError">No se pudieron exportar datos</string>
+    <string name="backup_message_exportLocation">Ubicación: %s</string>
+    <string name="backup_message_exportSuccessful">Datos exportados exitosamente</string>
+    <string name="backup_message_importError">No se pudieron importar datos</string>
+    <string name="backup_message_importSuccessful">Datos importados exitosamente</string>
+    <string name="backup_message_permissionError">No tienes permiso para exportar o importar datos</string>
+    <string name="backup_message_warning">No modifique el archivo. ¡Puedes perder datos!</string>
+
+    <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
+    <string name="calculateChange_header">Calcular cambio</string>
+    <string name="calculateChange_label_userMoney">Dinero</string>
+    <string name="calculateChange_text_change">Cambio: %s</string>
+    <string name="calculateChange_text_noChange">Cambio: ningún cambio</string>
+    <string name="calculateChange_text_total">Total: %s</string>
+
+    <string name="calendar_text_currentYear">%ta, %td %tb</string>
+    <string name="calendar_text_currentYearAt">%ta, %td %tb a las %tH:%tM</string>
+    <string name="calendar_text_other">%td %tb %tY</string>
+    <string name="calendar_text_otherAt">%td %tb %tY a las %tH:%tM</string>
+    <string name="calendar_text_time">%tH:%tM</string>
+    <string name="calendar_text_today">Hoy</string>
+    <string name="calendar_text_todayAt">Hoy a las %tH:%tM</string>
+    <string name="calendar_text_tomorrow">Mañana</string>
+    <string name="calendar_text_tomorrowAt">Mañana a las %tH:%tM</string>
+    <string name="calendar_text_yesterday">Ayer</string>
+    <string name="calendar_text_yesterdayAt">Ayer a las %tH:%tM</string>
+
+    <string name="copyMoveProducts_contentDescription_addShoppingListIcon">@string/all_contentDescription_addShoppingListIcon</string>
+    <string name="copyMoveProducts_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
+    <string name="copyMoveProducts_header">@string/all_header_selectShoppingList</string>
+    <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
+
+    <string name="data_email_developer">developer.myshopping@gmail.com</string>
+    <string name="data_email_subject">Comentario</string>
+    <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
+    <string name="data_link_privacy_policy">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
+    <string name="data_link_terms_and_conditions">https://sokolovromann.github.io/MyShopping/terms_and_conditions.html</string>
+    <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
+        <item>Aceite de girasol</item>
+        <item>Aceite de oliva</item>
+        <item>Aceite vegetal</item>
+        <item>Aceitunas</item>
+        <item>Agua</item>
+        <item>Agua con gas</item>
+        <item>Aguacates</item>
+        <item>Ajo</item>
+        <item>Albahaca</item>
+        <item>Apio</item>
+        <item>Arroz</item>
+        <item>Arándano</item>
+        <item>Avellanas</item>
+        <item>Azúcar</item>
+        <item>Bagels</item>
+        <item>Berenjena</item>
+        <item>Bife</item>
+        <item>Bolsas de basura</item>
+        <item>Brócoli</item>
+        <item>Café</item>
+        <item>Calabacín</item>
+        <item>Calabaza</item>
+        <item>Camarón</item>
+        <item>Canela</item>
+        <item>Caqui</item>
+        <item>Carne de res</item>
+        <item>Carne molida</item>
+        <item>Cebollas</item>
+        <item>Cerdo</item>
+        <item>Cereza</item>
+        <item>Champú</item>
+        <item>Chicle</item>
+        <item>Chocolate</item>
+        <item>Cilantro</item>
+        <item>Coco</item>
+        <item>Coles de Bruselas</item>
+        <item>Coliflor</item>
+        <item>Cordero</item>
+        <item>Crema agria</item>
+        <item>Crutones</item>
+        <item>Cuajada</item>
+        <item>Desodorante</item>
+        <item>Detergente de lavandería</item>
+        <item>Donas</item>
+        <item>Dulce</item>
+        <item>Embutido</item>
+        <item>Eneldo</item>
+        <item>Espinaca</item>
+        <item>Esponja</item>
+        <item>Espárragos</item>
+        <item>Fideos</item>
+        <item>Fresa</item>
+        <item>Frijoles</item>
+        <item>Frutas pasionales</item>
+        <item>Galletas</item>
+        <item>Galletas saladas</item>
+        <item>Gofres</item>
+        <item>Granadas</item>
+        <item>Guisantes</item>
+        <item>Habas</item>
+        <item>Harina</item>
+        <item>Helado</item>
+        <item>Hielo</item>
+        <item>Higos</item>
+        <item>Hoja de laurel</item>
+        <item>Hongos</item>
+        <item>Hot dog</item>
+        <item>Huevos</item>
+        <item>Jabón</item>
+        <item>Jabón para lavar platos</item>
+        <item>Jamón</item>
+        <item>Judías verdes</item>
+        <item>Jugo</item>
+        <item>Kiwis</item>
+        <item>Langosta</item>
+        <item>Leche</item>
+        <item>Lechuga</item>
+        <item>Limas</item>
+        <item>Limones</item>
+        <item>Limpiador de inodoro</item>
+        <item>Magdalenas</item>
+        <item>Mandarinas</item>
+        <item>Mangos</item>
+        <item>Manteca</item>
+        <item>Mantequilla de maní</item>
+        <item>Manzanas</item>
+        <item>Mayonesa</item>
+        <item>Maíz</item>
+        <item>Melocotones</item>
+        <item>Melón</item>
+        <item>Mermelada</item>
+        <item>Miel</item>
+        <item>Migas de pan</item>
+        <item>Miseria</item>
+        <item>Mora</item>
+        <item>Mostaza</item>
+        <item>Naranjas</item>
+        <item>Navajas de afeitar</item>
+        <item>Nueces</item>
+        <item>Nueces de almendra</item>
+        <item>Palomitas</item>
+        <item>Pan</item>
+        <item>Papas</item>
+        <item>Papas fritas</item>
+        <item>Papaya</item>
+        <item>Pasta</item>
+        <item>Pasta dental</item>
+        <item>Pastel</item>
+        <item>Pavo</item>
+        <item>Pepinos</item>
+        <item>Peras</item>
+        <item>Perejil</item>
+        <item>Pez</item>
+        <item>Pimienta</item>
+        <item>Pimientos</item>
+        <item>Pizza</item>
+        <item>Piña</item>
+        <item>Plátanos</item>
+        <item>Pollo</item>
+        <item>Pomelos</item>
+        <item>Queso</item>
+        <item>Raíz de remolacha</item>
+        <item>Relleno</item>
+        <item>Repollo</item>
+        <item>Rábano</item>
+        <item>Sal</item>
+        <item>Salsa de tomate</item>
+        <item>Sandía</item>
+        <item>Servilletas</item>
+        <item>Sopa</item>
+        <item>Toallas de papel</item>
+        <item>Tocino</item>
+        <item>Tomates</item>
+        <item>Tortillas</item>
+        <item>Té</item>
+        <item>Uvas</item>
+        <item>Vinagre</item>
+        <item>Yogur</item>
+        <item>Zanahorias</item>
+    </string-array>
+    <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
+        <item>und</item>
+        <item>kg</item>
+        <item>L</item>
+        <item>pqt</item>
+    </string-array>
+    <string name="data_text_defaultCurrency">€</string>
+    <string name="data_text_developerName">Roman Sokolov</string>
+    <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
+
+    <string name="drawer_action_openArchive">@string/all_header_archive</string>
+    <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
+    <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
+    <string name="drawer_action_openSettings">@string/all_header_settings</string>
+    <string name="drawer_action_openTrash">@string/all_header_trash</string>
+    <string name="drawer_header">@string/all_header_appName</string>
+
+    <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">@string/all_action_cancel</string>
+    <string name="editCurrencySymbol_action_saveCurrencySymbol">@string/all_action_save</string>
+    <string name="editCurrencySymbol_header">@string/all_header_editDataScreen</string>
+    <string name="editCurrencySymbol_label_symbol">Símbolo</string>
+
+    <string name="editReminder_action_cancelSavingReminder">@string/all_action_cancel</string>
+    <string name="editReminder_action_deleteReminder">Eliminar recordatorio</string>
+    <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
+    <string name="editReminder_action_saveReminder">@string/all_action_save</string>
+    <string name="editReminder_header_addReminder">@string/all_header_addDataScreen</string>
+    <string name="editReminder_header_editReminder">@string/all_header_editDataScreen</string>
+    <string name="editReminder_message_permissionError">No tienes permiso para mostrar notificaciones. Las notificaciones no se mostrarán sin permiso.</string>
+
+    <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>
+    <string name="editShoppingListName_action_saveShoppingListName">@string/all_action_save</string>
+    <string name="editShoppingListName_header_addShoppingListName">@string/all_header_addDataScreen</string>
+    <string name="editShoppingListName_header_editShoppingListName">@string/all_header_editDataScreen</string>
+    <string name="editShoppingListName_label_name">Lista de nombres</string>
+
+    <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
+    <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
+    <string name="editShoppingListTotal_header_addShoppingListTotal">@string/all_header_addDataScreen</string>
+    <string name="editShoppingListTotal_header_editShoppingListTotal">@string/all_header_editDataScreen</string>
+    <string name="editShoppingListTotal_label_total">Lista total</string>
+    <string name="editShoppingListTotal_message_totalWarning">Los precios de los productos estarán ocultos</string>
+
+    <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
+    <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
+    <string name="editTaxRate_header">@string/all_header_editDataScreen</string>
+    <string name="editTaxRate_label_taxRate">Tasa en porcentajes</string>
+
+    <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
+    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
+    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
+    <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
+    <string name="maxAutocompletes_header">Número máximo</string>
+    <string name="maxAutocompletes_text_moneys">Dinero (precios, total, etc.)</string>
+    <string name="maxAutocompletes_text_names">Nombres</string>
+    <string name="maxAutocompletes_text_other">Otros (marcas, tallas, etc.)</string>
+    <string name="maxAutocompletes_text_quantities">Cantidades</string>
+
+    <string name="notificationChannel_description_purchases">Notificaciones de listas de compras</string>
+    <string name="notificationChannel_name_purchases">Compras</string>
+
+    <string name="productsWidgetConfig_contentDescription_closeScreenIcon">@string/all_contentDescription_closeScreenIcon</string>
+    <string name="productsWidgetConfig_header">@string/all_header_selectShoppingList</string>
+    <string name="productsWidgetConfig_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
+
+    <string name="productsWidget_description">Productos de la lista de compras seleccionada</string>
+    <string name="productsWidget_label">Lista de la compra</string>
+    <string name="productsWidget_message_loadingError">Error de carga</string>
+    <string name="productsWidget_text_loading">Cargando…</string>
+    <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
+
+    <string name="products_action_addShoppingListTotal">@string/all_action_add</string>
+    <string name="products_action_automaticSorting">@string/all_action_saveSort</string>
+    <string name="products_action_calculateChange">Calcular cambio</string>
+    <string name="products_action_copyProductsToShoppingList">@string/all_action_copyTo</string>
+    <string name="products_action_copyShoppingList">@string/all_action_copy</string>
+    <string name="products_action_deleteShoppingListTotal">@string/all_action_delete</string>
+    <string name="products_action_disableProductsMultiColumns">@string/all_action_disableMultiColumns</string>
+    <string name="products_action_displayActiveTotal">@string/all_action_displayActiveTotal</string>
+    <string name="products_action_displayAllTotal">@string/all_action_displayAllTotal</string>
+    <string name="products_action_displayCompletedTotal">@string/all_action_displayCompletedTotal</string>
+    <string name="products_action_displayLongTotal">Largo</string>
+    <string name="products_action_editShoppingListTotal">@string/all_action_edit</string>
+    <string name="products_action_enableProductsMultiColumns">@string/all_action_enableMultiColumns</string>
+    <string name="products_action_moveProductsToShoppingList">@string/all_action_moveTo</string>
+    <string name="products_action_moveShoppingListToArchive">@string/all_action_archive</string>
+    <string name="products_action_moveShoppingListToPurchases">@string/all_action_unarchive</string>
+    <string name="products_action_moveShoppingListToTrash">@string/all_action_delete</string>
+    <string name="products_action_reverseSort">@string/all_action_reverseSort</string>
+    <string name="products_action_search">@string/all_action_search</string>
+    <string name="products_action_selectAllProducts">@string/all_action_selectAll</string>
+    <string name="products_action_shareProducts">@string/all_action_share</string>
+    <string name="products_action_showShoppingListMenu">Lista de la compra</string>
+    <string name="products_action_sort">@string/all_action_sort</string>
+    <string name="products_action_sortByCreated">@string/all_action_sortByCreated</string>
+    <string name="products_action_sortByLastModified">@string/all_action_sortByLastModified</string>
+    <string name="products_action_sortByName">@string/all_action_sortByName</string>
+    <string name="products_action_sortByTotal">@string/all_action_sortByTotal</string>
+    <string name="products_contentDescription_addProductIcon">@string/all_contentDescription_addProductIcon</string>
+    <string name="products_contentDescription_backScreenIcon">@string/all_contentDescription_backScreenIcon</string>
+    <string name="products_contentDescription_cancelSearchIcon">@string/all_contentDescription_cancelSearchIcon</string>
+    <string name="products_contentDescription_cancelSelectionIcon">@string/all_contentDescription_cancelSelectionIcon</string>
+    <string name="products_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
+    <string name="products_contentDescription_displayCompletedPurchasesIcon">Mostrar productos comprados</string>
+    <string name="products_contentDescription_editProductIcon">@string/all_contentDescription_editProductIcon</string>
+    <string name="products_contentDescription_editShoppingListNameIcon">Modificar el nombre de la lista de compras</string>
+    <string name="products_contentDescription_editShoppingListReminderIcon">Modificar recordatorio</string>
+    <string name="products_contentDescription_moveProductDownIcon">@string/all_contentDescription_moveDownIcon</string>
+    <string name="products_contentDescription_moveProductUpIcon">@string/all_contentDescription_moveUpIcon</string>
+    <string name="products_contentDescription_pinOrUnpinProductIcon">@string/all_contentDescription_pinOrUnpinIcon</string>
+    <string name="products_contentDescription_productsMenuIcon">Abrir menú de productos</string>
+    <string name="products_contentDescription_showSelectedMenuIcon">Mostrar u ocultar el menú seleccionado</string>
+    <string name="products_header_displayTotal">@string/all_header_displayTotal</string>
+    <string name="products_label_search">@string/all_label_search</string>
+    <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
+    <string name="products_text_allTotal">@string/all_text_allTotal</string>
+    <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
+    <string name="products_text_completedTotal">@string/all_text_completedTotal</string>
+    <string name="products_text_hiddenProducts">Tienes productos ocultos</string>
+    <string name="products_text_otherProducts">@string/all_text_otherList</string>
+    <string name="products_text_pinnedProducts">@string/all_text_pinnedList</string>
+    <string name="products_text_purchasesProductsNotFound">Toque \"+\" para agregar un nuevo producto</string>
+    <string name="products_text_searchNotFound">@string/all_text_searchNotFound</string>
+    <string name="products_text_selectedTotal">@string/all_text_selectedTotal</string>
+    <string name="products_text_totalFormatted">Modificado: %s</string>
+    <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
+
+    <string name="settings_action_displayCompletedPurchasesFirst">Primero</string>
+    <string name="settings_action_displayCompletedPurchasesLast">Último</string>
+    <string name="settings_action_hideCompletedPurchases">Esconder</string>
+    <string name="settings_action_noSplitCompletedPurchases">Sin división</string>
+    <string name="settings_action_selectHugeFontSize">Enorme</string>
+    <string name="settings_action_selectLargeFontSize">Grande</string>
+    <string name="settings_action_selectMediumFontSize">Medio</string>
+    <string name="settings_action_selectSmallFontSize">Pequeño</string>
+    <string name="settings_action_selectVeryHugeFontSize">Muy enorme</string>
+    <string name="settings_action_selectVeryLargeFontSize">Very large</string>
+    <string name="settings_body_backup">Exportar/importar todos los datos de la aplicación</string>
+    <string name="settings_body_coloredCheckbox">Si está habilitado, las casillas de verificación serán de color rojo o verde</string>
+    <string name="settings_body_completedWithCheckbox">Si está habilitado, el producto adquirido se marca haciendo clic en la casilla de verificación</string>
+    <string name="settings_body_currencySymbol">Símbolo: %s</string>
+    <string name="settings_body_displayMoney">Si está habilitado, se mostrarán los campos de dinero y de entrada</string>
+    <string name="settings_body_displayMoneyZeros">Si está habilitado, los ceros siempre se mostrarán</string>
+    <string name="settings_body_displayOtherFields">Marca, talla, color, etc.</string>
+    <string name="settings_body_editProductAfterCompleted">Se abrirá la pantalla para editar (excepto los widgets)</string>
+    <string name="settings_body_email">Toca para escribir correo electrónico</string>
+    <string name="settings_body_enterToSaveProduct">Si está habilitado, el producto se puede guardar tocando Enter</string>
+    <string name="settings_body_github">Toque para abrir</string>
+    <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>
+    <string name="settings_body_nightTheme">Excepto widgets</string>
+    <string name="settings_body_privacy_policy">Toca para leer</string>
+    <string name="settings_body_saveProductToAutocompletes">Cualquier producto quedará guardado</string>
+    <string name="settings_body_terms_and_conditions">Toca para leer</string>
+    <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="settings_header_aboutApp">Informacion de la applicacion</string>
+    <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
+    <string name="settings_header_generalSettings">General</string>
+    <string name="settings_header_migration">Migración</string>
+    <string name="settings_header_money">Dinero</string>
+    <string name="settings_header_purchases">@string/all_header_purchases</string>
+    <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_appVersion">Version de aplicacion</string>
+    <string name="settings_title_backup">Respaldo</string>
+    <string name="settings_title_coloredCheckbox">Casillas de verificación de colores</string>
+    <string name="settings_title_completedWithCheckbox">Compra el producto haciendo clic en la casilla de verificación</string>
+    <string name="settings_title_currencySymbol">Moneda</string>
+    <string name="settings_title_developer">Desarrollador</string>
+    <string name="settings_title_displayCompletedPurchases">Mostrar productos comprados</string>
+    <string name="settings_title_displayCurrencySymbolToLeft">Mostrar moneda a la izquierda</string>
+    <string name="settings_title_displayDefaultAutocompletes">Mostrar autocompletados predeterminados</string>
+    <string name="settings_title_displayMoney">Mostrar dinero</string>
+    <string name="settings_title_displayMoneyZeros">Mostrar ceros después del punto decimal</string>
+    <string name="settings_title_displayOtherFields">Mostrar otros campos</string>
+    <string name="settings_title_editProductAfterCompleted">Modificar producto después de la compra</string>
+    <string name="settings_title_email">Correo electrónico</string>
+    <string name="settings_title_enterToSaveProduct">Entrar para guardar el producto</string>
+    <string name="settings_title_fontSize">Tamaño de fuente</string>
+    <string name="settings_title_github">GitHub</string>
+    <string name="settings_title_maxAutocompletes">Número máximo</string>
+    <string name="settings_title_nightTheme">Tema oscuro</string>
+    <string name="settings_title_privacy_policy">Política de privacidad</string>
+    <string name="settings_title_saveProductToAutocompletes">Guardar products</string>
+    <string name="settings_title_taxRate">Tasa de impuesto</string>
+    <string name="settings_title_terms_and_conditions">Términos y condiciones</string>
+
+    <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
+    <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
+    <string name="shoppingLists_action_deleteShoppingLists">Vaciar papelera</string>
+    <string name="shoppingLists_action_disableShoppingsMultiColumns">@string/all_action_disableMultiColumns</string>
+    <string name="shoppingLists_action_displayActiveTotal">@string/all_action_displayActiveTotal</string>
+    <string name="shoppingLists_action_displayAllTotal">@string/all_action_displayAllTotal</string>
+    <string name="shoppingLists_action_displayCompletedTotal">@string/all_action_displayCompletedTotal</string>
+    <string name="shoppingLists_action_displayProducts">Mostrar productos</string>
+    <string name="shoppingLists_action_displayProductsHorizontally">Horizontalmente</string>
+    <string name="shoppingLists_action_displayProductsVertically">Verticalmente</string>
+    <string name="shoppingLists_action_enableShoppingsMultiColumns">@string/all_action_enableMultiColumns</string>
+    <string name="shoppingLists_action_hideProducts">Escóndete siempre</string>
+    <string name="shoppingLists_action_hideProductsIfHasTitle">Ocultar si hay un título</string>
+    <string name="shoppingLists_action_reverseSort">@string/all_action_reverseSort</string>
+    <string name="shoppingLists_action_search">@string/all_action_search</string>
+    <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
+    <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
+    <string name="shoppingLists_action_selectPurchasesLocation">@string/shoppingLists_header_purchases</string>
+    <string name="shoppingLists_action_selectTrashLocation">@string/shoppingLists_header_trash</string>
+    <string name="shoppingLists_action_sort">@string/all_action_sort</string>
+    <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
+    <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>
+    <string name="shoppingLists_action_sortByName">@string/all_action_sortByName</string>
+    <string name="shoppingLists_action_sortByTotal">@string/all_action_sortByTotal</string>
+    <string name="shoppingLists_contentDescription_addShoppingListIcon">@string/all_contentDescription_addShoppingListIcon</string>
+    <string name="shoppingLists_contentDescription_archiveIcon">@string/all_contentDescription_archiveIcon</string>
+    <string name="shoppingLists_contentDescription_archiveMenuIcon">Abrir menú de archivo</string>
+    <string name="shoppingLists_contentDescription_cancelSearchIcon">@string/all_contentDescription_cancelSearchIcon</string>
+    <string name="shoppingLists_contentDescription_cancelSelectionIcon">@string/all_contentDescription_cancelSelectionIcon</string>
+    <string name="shoppingLists_contentDescription_deleteDataIcon">@string/all_contentDescription_deleteDataIcon</string>
+    <string name="shoppingLists_contentDescription_displayCompletedPurchasesIcon">Mostrar listas de compras compradas</string>
+    <string name="shoppingLists_contentDescription_moveShoppingListDownIcon">@string/all_contentDescription_moveDownIcon</string>
+    <string name="shoppingLists_contentDescription_moveShoppingListUpIcon">@string/all_contentDescription_moveUpIcon</string>
+    <string name="shoppingLists_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
+    <string name="shoppingLists_contentDescription_pinOrUnpinShoppingListsIcon">@string/all_contentDescription_pinOrUnpinIcon</string>
+    <string name="shoppingLists_contentDescription_purchasesMenuIcon">Abrir menú de compras</string>
+    <string name="shoppingLists_contentDescription_restoreIcon">@string/all_contentDescription_restoreIcon</string>
+    <string name="shoppingLists_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
+    <string name="shoppingLists_contentDescription_unarchiveIcon">@string/all_contentDescription_unarchiveIcon</string>
+    <string name="shoppingLists_header_archive">@string/all_header_archive</string>
+    <string name="shoppingLists_header_displayTotal">@string/all_header_displayTotal</string>
+    <string name="shoppingLists_header_location">@string/all_header_location</string>
+    <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
+    <string name="shoppingLists_header_trash">@string/all_header_trash</string>
+    <string name="shoppingLists_label_search">@string/all_label_search</string>
+    <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
+    <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
+    <string name="shoppingLists_text_archiveShoppingListsNotFound">El archivo está vacío</string>
+    <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
+    <string name="shoppingLists_text_hiddenShoppingLists">Tienes listas de compras ocultas</string>
+    <string name="shoppingLists_text_moreProducts">…</string>
+    <string name="shoppingLists_text_nameNotFound">Lista sin título</string>
+    <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
+    <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
+    <string name="shoppingLists_text_productsNotFound">@string/all_text_productsNotFound</string>
+    <string name="shoppingLists_text_purchasesShoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
+    <string name="shoppingLists_text_searchNotFound">@string/all_text_searchNotFound</string>
+    <string name="shoppingLists_text_selectedTotal">@string/all_text_selectedTotal</string>
+    <string name="shoppingLists_text_totalFormatted">Todo (modificado): %s</string>
+    <string name="shoppingLists_text_trashShoppingListsNotFound">La papelera está vacía</string>
+
+    <string name="shortcuts_longLabel_addShoppingList">Nueva lista de compras</string>
+    <string name="shortcuts_shortLabel_addShoppingList">Lista nueva</string>
+</resources>

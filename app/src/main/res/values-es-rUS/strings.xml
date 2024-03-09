@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="calendar_text_currentYear">%ta, %tb %td</string>
+    <string name="calendar_text_currentYearAt">%ta, %tb %td a las %tl:%tM %Tp</string>
+    <string name="calendar_text_other">%tb %td, %tY</string>
+    <string name="calendar_text_otherAt">%tb %td, %tY a las %tl:%tM %Tp</string>
+    <string name="calendar_text_time">%tl:%tM %Tp</string>
+    <string name="calendar_text_today">Hoy</string>
+    <string name="calendar_text_todayAt">Hoy a las %tl:%tM %Tp</string>
+    <string name="calendar_text_tomorrow">Mañana</string>
+    <string name="calendar_text_tomorrowAt">Mañana a las %tl:%tM %Tp</string>
+    <string name="calendar_text_yesterday">Ayer</string>
+    <string name="calendar_text_yesterdayAt">Ayer a las %tl:%tM %Tp</string>
+
+    <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays">
+        <item>und</item>
+        <item>lb</item>
+        <item>onz</item>
+        <item>gal</item>
+        <item>pqt</item>
+    </string-array>
+    <string name="data_text_defaultCurrency">$</string>
+    <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
+</resources>
