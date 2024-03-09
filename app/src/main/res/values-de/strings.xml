@@ -428,7 +428,7 @@
     <string name="settings_title_displayOtherFields">Andere Felder anzeigen</string>
     <string name="settings_title_editProductAfterCompleted">Bearbeiten sie das produkt nach abschluss</string>
     <string name="settings_title_email">Email</string>
-    <string name="settings_title_enterToSaveProduct">Geben Sie ein, um Produkt zu speichern</string>
+    <string name="settings_title_enterToSaveProduct">Eingabetaste um Produkt zu speichern</string>
     <string name="settings_title_fontSize">Schriftgröße</string>
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_maxAutocompletes">Maximale Anzahl</string>
