@@ -217,7 +217,7 @@
     <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
     <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
-    <string name="maxAutocompletes_header">Maximum count</string>
+    <string name="maxAutocompletes_header">Maximum amount</string>
     <string name="maxAutocompletes_text_moneys">Money (prices, total, etc.)</string>
     <string name="maxAutocompletes_text_names">Names</string>
     <string name="maxAutocompletes_text_other">Others (brands, sizes, etc.)</string>
@@ -343,7 +343,7 @@
     <string name="settings_title_enterToSaveProduct">Enter to save product</string>
     <string name="settings_title_fontSize">Font size</string>
     <string name="settings_title_github">GitHub</string>
-    <string name="settings_title_maxAutocompletes">Maximum count</string>
+    <string name="settings_title_maxAutocompletes">Maximum amount</string>
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_privacy_policy">Privacy policy</string>
     <string name="settings_title_saveProductToAutocompletes">Save products</string>
