@@ -70,28 +70,28 @@ fun MaxAutocompletesScreen(
                 maxCount = state.maxNames,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneName) },
                 onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneName) },
-                fontSize = state.fontSize.itemBody.sp
+                fontSize = state.fontSize.itemTitle.sp
             )
             MaxAutocompletesItem(
                 text = stringResource(R.string.maxAutocompletes_text_quantities),
                 maxCount = state.maxQuantities,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneQuantity) },
                 onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneQuantity) },
-                fontSize = state.fontSize.itemBody.sp
+                fontSize = state.fontSize.itemTitle.sp
             )
             MaxAutocompletesItem(
                 text = stringResource(R.string.maxAutocompletes_text_moneys),
                 maxCount = state.maxMoneys,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneMoney) },
                 onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneMoney) },
-                fontSize = state.fontSize.itemBody.sp
+                fontSize = state.fontSize.itemTitle.sp
             )
             MaxAutocompletesItem(
                 text = stringResource(R.string.maxAutocompletes_text_other),
                 maxCount = state.maxOthers,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneOther) },
                 onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneOther) },
-                fontSize = state.fontSize.itemBody.sp
+                fontSize = state.fontSize.itemTitle.sp
             )
         }
     }
