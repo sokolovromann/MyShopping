@@ -1,10 +1,15 @@
 package ru.sokolovromann.myshopping.ui.compose
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -56,34 +61,39 @@ fun MaxAutocompletesScreen(
             )
         }
     ) {
-        MaxAutocompletesItem(
-            text = stringResource(R.string.maxAutocompletes_text_names),
-            maxCount = state.maxNames,
-            onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneName) },
-            onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneName) },
-            fontSize = state.fontSize.itemBody.sp
-        )
-        MaxAutocompletesItem(
-            text = stringResource(R.string.maxAutocompletes_text_quantities),
-            maxCount = state.maxQuantities,
-            onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneQuantity) },
-            onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneQuantity) },
-            fontSize = state.fontSize.itemBody.sp
-        )
-        MaxAutocompletesItem(
-            text = stringResource(R.string.maxAutocompletes_text_moneys),
-            maxCount = state.maxMoneys,
-            onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneMoney) },
-            onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneMoney) },
-            fontSize = state.fontSize.itemBody.sp
-        )
-        MaxAutocompletesItem(
-            text = stringResource(R.string.maxAutocompletes_text_other),
-            maxCount = state.maxOthers,
-            onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneOther) },
-            onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneOther) },
-            fontSize = state.fontSize.itemBody.sp
-        )
+        val scrollState = rememberScrollState()
+        Column(modifier = Modifier
+            .scrollable(scrollState, Orientation.Vertical)
+        ) {
+            MaxAutocompletesItem(
+                text = stringResource(R.string.maxAutocompletes_text_names),
+                maxCount = state.maxNames,
+                onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneName) },
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneName) },
+                fontSize = state.fontSize.itemBody.sp
+            )
+            MaxAutocompletesItem(
+                text = stringResource(R.string.maxAutocompletes_text_quantities),
+                maxCount = state.maxQuantities,
+                onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneQuantity) },
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneQuantity) },
+                fontSize = state.fontSize.itemBody.sp
+            )
+            MaxAutocompletesItem(
+                text = stringResource(R.string.maxAutocompletes_text_moneys),
+                maxCount = state.maxMoneys,
+                onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneMoney) },
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneMoney) },
+                fontSize = state.fontSize.itemBody.sp
+            )
+            MaxAutocompletesItem(
+                text = stringResource(R.string.maxAutocompletes_text_other),
+                maxCount = state.maxOthers,
+                onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneOther) },
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneOther) },
+                fontSize = state.fontSize.itemBody.sp
+            )
+        }
     }
 }
 
@@ -98,22 +108,22 @@ private fun MaxAutocompletesItem(
     val color = MaterialTheme.colors.onSurface
 
     Row(
-        modifier = Modifier.height(MaxAutocompletesItemHeight),
+        modifier = Modifier.defaultMinSize(minHeight = MinAutocompletesItemHeight),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
+            modifier = Modifier.weight(1f),
             text = text,
             color = color,
             fontSize = fontSize
         )
-        Spacer(modifier = Modifier.weight(1f))
         Text(
+            modifier = Modifier.padding(horizontal = MaxAutocompletesSpacerMediumSize),
             text = maxCount.toString(),
             color = color,
             fontSize = fontSize
         )
-        Spacer(modifier = Modifier.size(MaxAutocompletesSpacerMediumSize))
         AppChip(onClick = onClickMinus) {
             Text(
                 text = stringResource(R.string.maxAutocompletes_action_minusOne),
@@ -130,6 +140,6 @@ private fun MaxAutocompletesItem(
     }
 }
 
-private val MaxAutocompletesItemHeight = 48.dp
+private val MinAutocompletesItemHeight = 48.dp
 private val MaxAutocompletesSpacerSmallSize = 4.dp
 private val MaxAutocompletesSpacerMediumSize = 8.dp
