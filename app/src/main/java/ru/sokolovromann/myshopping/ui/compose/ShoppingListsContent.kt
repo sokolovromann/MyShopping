@@ -332,7 +332,11 @@ fun ShoppingListsSortByMenu(
         Divider()
         AppDropdownMenuItem(
             onClick = onReverse,
-            text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) }
+            text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) },
+            right = {
+                val checked = !sortValue.selected.ascending
+                CheckmarkAppCheckbox(checked = checked)
+            }
         )
         Divider()
         AppDropdownMenuItem(

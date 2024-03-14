@@ -667,7 +667,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             Result.failure(exception)
         } else {
             val shoppingLists = shoppingListsWithConfig.getSortedShoppingLists()
-            val sort = shoppingListsWithConfig.getUserPreferences().shoppingsSort
+            val shoppingsSort = shoppingListsWithConfig.getUserPreferences().shoppingsSort
+            val sort = shoppingsSort.copy(ascending = !shoppingsSort.ascending)
 
             if (automaticSort) {
                 appConfigDao.enableAutomaticShoppingsSort(
