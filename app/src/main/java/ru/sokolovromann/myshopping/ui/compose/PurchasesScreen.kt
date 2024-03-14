@@ -316,19 +316,21 @@ fun PurchasesScreen(
                     properties = PopupProperties(focusable = false)
                 ) {
                     Row {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListUp(it)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_arrow_up),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUpIcon),
-                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
-                            )
-                        }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListDown(it)) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_all_arrow_down),
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDownIcon),
-                                tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
-                            )
+                        if (!state.sortFormatted) {
+                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListUp(it)) }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_all_arrow_up),
+                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUpIcon),
+                                    tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                                )
+                            }
+                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListDown(it)) }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_all_arrow_down),
+                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDownIcon),
+                                    tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
+                                )
+                            }
                         }
                     }
                 }
