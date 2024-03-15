@@ -36,7 +36,7 @@ interface ShoppingListsDao {
     fun getReminders(): Flow<List<ShoppingListEntity>>
 
     @Transaction
-    @Query("SELECT * FROM shoppings ORDER BY last_modified DESC LIMIT :limit")
+    @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 0 ORDER BY last_modified DESC LIMIT :limit")
     fun getShortcuts(limit: Int): Flow<List<ShoppingListEntity>>
 
     @Transaction
