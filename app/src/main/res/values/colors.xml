@@ -3,11 +3,15 @@
     <color name="black">#FF000000</color>
     <color name="black_opacity_75">#BF000000</color>
 
+    <color name="error_opacity_75">#BFFF0000</color>
+
+    <color name="gray_100">#FFF5F5F5</color>
     <color name="gray_200">#FFEEEEEE</color>
     <color name="gray_200_opacity_75">#BFEEEEEE</color>
 
     <color name="green_300">#FF81C784</color>
     <color name="green_900">#FF1B5E20</color>
+    <color name="green_900_opacity_75">#BF1B5E20</color>
 
     <color name="white">#FFFFFFFF</color>
 </resources>

@@ -35,7 +35,12 @@ class AppShortcutManager @Inject constructor(
 
                     builder.toString()
                 }
-                val icon = IconCompat.createWithResource(context, R.drawable.ic_shortcut_shopping_list)
+                val iconResId = if (shoppingList.isCompleted()) {
+                    R.drawable.ic_shortcut_completed_shopping_list
+                } else {
+                    R.drawable.ic_shortcut_active_shopping_list
+                }
+                val icon = IconCompat.createWithResource(context, iconResId)
                 val intent = Intent(context, MainActivity::class.java).apply {
                     action = Intent.ACTION_VIEW
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
