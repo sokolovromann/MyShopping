@@ -83,7 +83,7 @@
     <string name="all_contentDescription_showOrHideOtherFieldsIcon">Mostrar u ocultar otros campos</string>
     <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
     <string name="all_header_addDataScreen">@string/all_action_add</string>
-    <string name="all_header_appName">My Shopping List</string>
+    <string name="all_header_appName">Mis compras</string>
     <string name="all_header_archive">Archivo</string>
     <string name="all_header_autocompletes">Autocompletar</string>
     <string name="all_header_displayTotal">Mostrar total</string>
