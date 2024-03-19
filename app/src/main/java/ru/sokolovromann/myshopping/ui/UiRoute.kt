@@ -129,13 +129,16 @@ enum class DrawerScreen {
     }
 }
 
-fun NavGraphBuilder.purchasesGraph(navController: NavController) {
+fun NavGraphBuilder.purchasesGraph(
+    navController: NavController,
+    onFinishApp: () -> Unit
+) {
     navigation(
         startDestination = UiRoute.Purchases.purchasesScreen,
         route = UiRoute.Purchases.graph
     ) {
         composable(route = UiRoute.Purchases.purchasesScreen) {
-            PurchasesScreen(navController)
+            PurchasesScreen(navController, onFinishApp)
         }
     }
 }

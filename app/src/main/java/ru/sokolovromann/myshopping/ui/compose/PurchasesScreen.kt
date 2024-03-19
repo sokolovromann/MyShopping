@@ -41,6 +41,7 @@ import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
 @Composable
 fun PurchasesScreen(
     navController: NavController,
+    onFinishApp: () -> Unit,
     viewModel: PurchasesViewModel = hiltViewModel()
 ) {
     val state = viewModel.purchasesState
@@ -53,7 +54,7 @@ fun PurchasesScreen(
         viewModel.screenEventFlow.collect {
             when (it) {
                 is PurchasesScreenEvent.OnFinishApp -> {
-                    navController.popBackStack()
+                    onFinishApp()
                 }
 
                 is PurchasesScreenEvent.OnShowProductsScreen -> navController.navigate(

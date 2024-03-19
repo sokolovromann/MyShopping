@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
             navController = navController,
             startDestination = UiRoute.Purchases.graph,
             builder = {
-                purchasesGraph(navController)
+                purchasesGraph(navController) { finish() }
                 archiveGraph(navController)
                 trashGraph(navController)
                 productsGraph(navController)
