@@ -16,7 +16,6 @@ android {
         targetSdk target_sdk_version
         versionCode app_code_version
         versionName app_name_version
-        resConfigs "en", "de", "es", "fr", "ru", "uk"
 
         vectorDrawables {
             useSupportLibrary true
