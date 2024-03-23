@@ -51,7 +51,7 @@ fun List<ShoppingList>.sortedShoppingLists(
         displayCompleted
     }
     val sortedShoppingList = sortedShoppings.map {
-        val productsSort = if (it.shopping.sortFormatted) it.shopping.sort else sort
+        val productsSort = Sort(sortBy = SortBy.POSITION, ascending = true)
         it.copy(products = it.products.sortedProducts(productsSort, productsDisplayCompleted))
     }
     val partition = sortedShoppingList.partition { it.isCompleted() }
