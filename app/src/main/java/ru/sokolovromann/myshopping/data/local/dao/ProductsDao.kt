@@ -34,20 +34,20 @@ interface ProductsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(product: ProductEntity)
 
-    @Query("UPDATE products SET position = :position, last_modified = :lastModified WHERE product_uid = :productUid")
-    fun updatePosition(productUid: String, position: Int, lastModified: Long)
+    @Query("UPDATE products SET position = :position WHERE product_uid = :productUid")
+    fun updatePosition(productUid: String, position: Int)
 
-    @Query("UPDATE products SET completed = 1, last_modified = :lastModified WHERE product_uid = :productUid")
-    fun completeProduct(productUid: String, lastModified: Long)
+    @Query("UPDATE products SET completed = 1 WHERE product_uid = :productUid")
+    fun completeProduct(productUid: String)
 
-    @Query("UPDATE products SET completed = 0, last_modified = :lastModified WHERE product_uid = :productUid")
-    fun activeProduct(productUid: String, lastModified: Long)
+    @Query("UPDATE products SET completed = 0 WHERE product_uid = :productUid")
+    fun activeProduct(productUid: String)
 
-    @Query("UPDATE products SET pinned = 1, last_modified = :lastModified WHERE product_uid IN (:productUids)")
-    fun pinProducts(productUids: List<String>, lastModified: Long)
+    @Query("UPDATE products SET pinned = 1 WHERE product_uid IN (:productUids)")
+    fun pinProducts(productUids: List<String>)
 
-    @Query("UPDATE products SET pinned = 0, last_modified = :lastModified WHERE product_uid IN (:productUids)")
-    fun unpinProducts(productUids: List<String>, lastModified: Long)
+    @Query("UPDATE products SET pinned = 0 WHERE product_uid IN (:productUids)")
+    fun unpinProducts(productUids: List<String>)
 
     @Query("DELETE FROM products")
     fun deleteAllProducts()

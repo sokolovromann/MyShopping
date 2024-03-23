@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -150,8 +151,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListUp(
         shoppingUid: String,
-        location: ShoppingLocation = ShoppingLocation.PURCHASES,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
+        location: ShoppingLocation = ShoppingLocation.PURCHASES
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = when (location) {
             ShoppingLocation.PURCHASES -> getPurchasesWithConfig()
@@ -179,14 +179,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             shoppingListsDao.updatePosition(
                 uid = shoppingLists[currentIndex].shopping.uid,
-                position = shoppingLists[previousIndex].shopping.position,
-                lastModified = lastModified.millis
+                position = shoppingLists[previousIndex].shopping.position
             )
 
             shoppingListsDao.updatePosition(
                 uid = shoppingLists[previousIndex].shopping.uid,
-                position = shoppingLists[currentIndex].shopping.position,
-                lastModified = lastModified.millis
+                position = shoppingLists[currentIndex].shopping.position
             )
 
             Result.success(Unit)
@@ -195,8 +193,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun moveShoppingListDown(
         shoppingUid: String,
-        location: ShoppingLocation = ShoppingLocation.PURCHASES,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
+        location: ShoppingLocation = ShoppingLocation.PURCHASES
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingLists = when (location) {
             ShoppingLocation.PURCHASES -> getPurchasesWithConfig()
@@ -225,14 +222,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             shoppingListsDao.updatePosition(
                 uid = shoppingLists[currentIndex].shopping.uid,
-                position = shoppingLists[nextIndex].shopping.position,
-                lastModified = lastModified.millis
+                position = shoppingLists[nextIndex].shopping.position
             )
 
             shoppingListsDao.updatePosition(
                 uid = shoppingLists[nextIndex].shopping.uid,
-                position = shoppingLists[currentIndex].shopping.position,
-                lastModified = lastModified.millis
+                position = shoppingLists[currentIndex].shopping.position
             )
 
             Result.success(Unit)
@@ -319,14 +314,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             productsDao.updatePosition(
                 productUid = products[currentIndex].productUid,
-                position = products[previousIndex].position,
-                lastModified = lastModified.millis
+                position = products[previousIndex].position
             )
 
             productsDao.updatePosition(
                 productUid = products[previousIndex].productUid,
-                position = products[currentIndex].position,
-                lastModified = lastModified.millis
+                position = products[currentIndex].position
             )
 
             shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
@@ -364,14 +357,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             productsDao.updatePosition(
                 productUid = products[currentIndex].productUid,
-                position = products[nextIndex].position,
-                lastModified = lastModified.millis
+                position = products[nextIndex].position
             )
 
             productsDao.updatePosition(
                 productUid = products[nextIndex].productUid,
-                position = products[currentIndex].position,
-                lastModified = lastModified.millis
+                position = products[currentIndex].position
             )
 
             shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
@@ -384,7 +375,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        productsDao.completeProduct(productUid, lastModified.millis)
+        productsDao.completeProduct(productUid)
+
+        productsDao.getProduct(productUid).first()?.shoppingUid?.let {
+            shoppingListsDao.updateLastModified(it, lastModified.millis)
+        }
+
         return@withContext Result.success(Unit)
     }
 
@@ -392,32 +388,31 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        productsDao.activeProduct(productUid, lastModified.millis)
+        productsDao.activeProduct(productUid)
+
+        productsDao.getProduct(productUid).first()?.shoppingUid?.let {
+            shoppingListsDao.updateLastModified(it, lastModified.millis)
+        }
+
         return@withContext Result.success(Unit)
     }
 
-    suspend fun pinShoppingLists(
-        shoppingUids: List<String>,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
-    ): Result<Unit> = withContext(dispatcher) {
+    suspend fun pinShoppingLists(shoppingUids: List<String>): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
             Result.failure(exception)
         } else {
-            shoppingListsDao.pinShoppings(shoppingUids, lastModified.millis)
+            shoppingListsDao.pinShoppings(shoppingUids)
             Result.success(Unit)
         }
     }
 
-    suspend fun unpinShoppingLists(
-        shoppingUids: List<String>,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
-    ): Result<Unit> = withContext(dispatcher) {
+    suspend fun unpinShoppingLists(shoppingUids: List<String>): Result<Unit> = withContext(dispatcher) {
         return@withContext if (shoppingUids.isEmpty()) {
             val exception = InvalidUidException("Uids must not be empty")
             Result.failure(exception)
         } else {
-            shoppingListsDao.unpinShoppings(shoppingUids, lastModified.millis)
+            shoppingListsDao.unpinShoppings(shoppingUids)
             Result.success(Unit)
         }
     }
@@ -430,7 +425,14 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             val exception = InvalidUidException("Uids must not be empty")
             Result.failure(exception)
         } else {
-            productsDao.pinProducts(productsUids, lastModified.millis)
+            productsDao.pinProducts(productsUids)
+
+            productsUids.forEach { productUid ->
+                productsDao.getProduct(productUid).first()?.shoppingUid?.let {
+                    shoppingListsDao.updateLastModified(it, lastModified.millis)
+                }
+            }
+
             Result.success(Unit)
         }
     }
@@ -443,7 +445,14 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             val exception = InvalidUidException("Uids must not be empty")
             Result.failure(exception)
         } else {
-            productsDao.unpinProducts(productsUids, lastModified.millis)
+            productsDao.unpinProducts(productsUids)
+
+            productsUids.forEach { productUid ->
+                productsDao.getProduct(productUid).first()?.shoppingUid?.let {
+                    shoppingListsDao.updateLastModified(it, lastModified.millis)
+                }
+            }
+
             Result.success(Unit)
         }
     }
@@ -613,8 +622,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
     suspend fun sortShoppingLists(
         sort: Sort,
-        automaticSort: Boolean,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
+        automaticSort: Boolean
     ): Result<Unit> = withContext(dispatcher) {
         val shoppingListsWithConfig = getShoppingListsWithConfig().firstOrNull()
         val shoppingLists = shoppingListsWithConfig?.getSortedShoppingLists()
@@ -639,17 +647,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     .forEachIndexed { shoppingIndex, shoppingList ->
                         shoppingListsDao.updatePosition(
                             uid = shoppingList.shopping.uid,
-                            position = shoppingIndex,
-                            lastModified = lastModified.millis
+                            position = shoppingIndex
                         )
-
-                        shoppingList.products.forEachIndexed { productIndex, product ->
-                            productsDao.updatePosition(
-                                productUid = product.productUid,
-                                position = productIndex,
-                                lastModified = lastModified.millis
-                            )
-                        }
                     }
 
                 Result.success(Unit)
@@ -657,10 +656,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
-    suspend fun reverseShoppingLists(
-        automaticSort: Boolean,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
-    ): Result<Unit> = withContext(dispatcher) {
+    suspend fun reverseShoppingLists(automaticSort: Boolean): Result<Unit> = withContext(dispatcher) {
         val shoppingListsWithConfig = getShoppingListsWithConfig().firstOrNull()
         return@withContext if (shoppingListsWithConfig == null) {
             val exception = UnsupportedOperationException("ShoppingList or AppConfig is not exists")
@@ -686,23 +682,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                         ascending = sort.ascending
                     )
 
-                    shoppingLists.reversed()
-                        .forEachIndexed { shoppingIndex, shoppingList ->
-                            shoppingListsDao.updatePosition(
-                                uid = shoppingList.shopping.uid,
-                                position = shoppingIndex,
-                                lastModified = lastModified.millis
-                            )
-
-                            shoppingList.products.reversed()
-                                .forEachIndexed { productIndex, product ->
-                                    productsDao.updatePosition(
-                                        productUid = product.productUid,
-                                        position = productIndex,
-                                        lastModified = lastModified.millis
-                                    )
-                                }
-                        }
+                    shoppingLists.reversed().forEachIndexed { shoppingIndex, shoppingList ->
+                        shoppingListsDao.updatePosition(
+                            uid = shoppingList.shopping.uid,
+                            position = shoppingIndex
+                        )
+                    }
 
                     Result.success(Unit)
                 }
@@ -743,8 +728,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(
                             productUid = product.productUid,
-                            position = index,
-                            lastModified = lastModified.millis
+                            position = index
                         )
                     }
 
@@ -795,8 +779,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(
                             productUid = product.productUid,
-                            position = index,
-                            lastModified = lastModified.millis
+                            position = index
                         )
                     }
 

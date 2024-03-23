@@ -55,8 +55,8 @@ interface ShoppingListsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertShopping(shopping: ShoppingEntity)
 
-    @Query("UPDATE shoppings SET position = :position, last_modified = :lastModified WHERE uid = :uid")
-    fun updatePosition(uid: String, position: Int, lastModified: Long)
+    @Query("UPDATE shoppings SET position = :position WHERE uid = :uid")
+    fun updatePosition(uid: String, position: Int)
 
     @Query("UPDATE shoppings SET last_modified = :lastModified WHERE uid = :uid")
     fun updateLastModified(uid: String, lastModified: Long)
@@ -70,11 +70,11 @@ interface ShoppingListsDao {
     @Query("UPDATE shoppings SET total = :total, total_formatted = 1, last_modified = :lastModified WHERE uid = :uid")
     fun updateTotal(uid: String, total: Float, lastModified: Long)
 
-    @Query("UPDATE shoppings SET pinned = 1, last_modified = :lastModified WHERE uid IN (:uids)")
-    fun pinShoppings(uids: List<String>, lastModified: Long)
+    @Query("UPDATE shoppings SET pinned = 1 WHERE uid IN (:uids)")
+    fun pinShoppings(uids: List<String>)
 
-    @Query("UPDATE shoppings SET pinned = 0, last_modified = :lastModified WHERE uid IN (:uids)")
-    fun unpinShoppings(uids: List<String>, lastModified: Long)
+    @Query("UPDATE shoppings SET pinned = 0 WHERE uid IN (:uids)")
+    fun unpinShoppings(uids: List<String>)
 
     @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun moveToPurchases(uids: List<String>, lastModified: Long)
