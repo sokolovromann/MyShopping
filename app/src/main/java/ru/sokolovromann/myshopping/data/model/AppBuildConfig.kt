@@ -17,7 +17,8 @@ data class AppBuildConfig(
 
     fun getDisplayName(): String {
         return if (isDebug()) {
-            "Debug"
+            val nextVersion = appCodeVersion + 1
+            "Debug (future $nextVersion)"
         } else {
             "$appVersionName ($appCodeVersion)"
         }
