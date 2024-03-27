@@ -334,8 +334,10 @@ fun ShoppingListsSortByMenu(
             onClick = onReverse,
             text = { Text(text = stringResource(R.string.shoppingLists_action_reverseSort)) },
             right = {
-                val checked = !sortValue.selected.ascending
-                CheckmarkAppCheckbox(checked = checked)
+                if (sortFormatted) {
+                    val checked = !sortValue.selected.ascending
+                    AppSwitch(checked = checked)
+                }
             }
         )
         Divider()

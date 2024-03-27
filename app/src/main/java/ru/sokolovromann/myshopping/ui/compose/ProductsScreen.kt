@@ -410,8 +410,10 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnReverseSort) },
                                         text = { Text(text = stringResource(R.string.products_action_reverseSort)) },
                                         right = {
-                                            val checked = !state.sortValue.selected.ascending
-                                            CheckmarkAppCheckbox(checked = checked)
+                                            if (state.sortFormatted) {
+                                                val checked = !state.sortValue.selected.ascending
+                                                AppSwitch(checked = checked)
+                                            }
                                         }
                                     )
                                     Divider()
