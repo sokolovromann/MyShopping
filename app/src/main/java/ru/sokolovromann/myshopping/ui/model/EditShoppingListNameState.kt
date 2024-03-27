@@ -32,9 +32,9 @@ class EditShoppingListNameState {
 
         val name = shoppingListWithConfig.getShopping().name
         header = if (name.isEmpty()) {
-            UiString.FromResources(R.string.editShoppingListName_header_editShoppingListName)
-        } else {
             UiString.FromResources(R.string.editShoppingListName_header_addShoppingListName)
+        } else {
+            UiString.FromResources(R.string.editShoppingListName_header_editShoppingListName)
         }
         nameValue = name.toTextFieldValue()
         waiting = false
