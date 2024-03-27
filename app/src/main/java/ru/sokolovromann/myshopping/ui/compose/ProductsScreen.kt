@@ -264,7 +264,7 @@ fun ProductsScreen(
                                 keyboardActions = KeyboardActions(onSearch = { viewModel.onEvent(ProductsEvent.OnClickSearchProducts) })
                             )
 
-                            LaunchedEffect(Unit) {
+                            LaunchedEffect(state.displaySearch) {
                                 focusRequester.requestFocus()
                             }
                         } else {
