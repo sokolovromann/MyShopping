@@ -45,18 +45,24 @@ fun List<ShoppingList>.sortedShoppingLists(
         }
     }
 
-    val productsDisplayCompleted = if (displayCompleted == DisplayCompleted.HIDE) {
-        DisplayCompleted.NO_SPLIT
-    } else {
-        displayCompleted
-    }
     val sortedShoppingList = sortedShoppings.map {
         val productsSort = if (it.shopping.sortFormatted) {
             it.shopping.sort
         } else {
             Sort(sortBy = SortBy.POSITION, ascending = true)
         }
-        it.copy(products = it.products.sortedProducts(productsSort, productsDisplayCompleted))
+        val products = it.products.sortedProducts(
+            sort = productsSort,
+            displayCompleted = displayCompleted
+        )
+        if (displayCompleted == DisplayCompleted.HIDE && it.products.size > products.size) {
+            val productsWithHide = products.toMutableList().apply {
+                add(Product(name = "...", completed = true))
+            }
+            it.copy(products = productsWithHide.toList())
+        } else {
+            it.copy(products = products)
+        }
     }
     val partition = sortedShoppingList.partition { it.isCompleted() }
 
