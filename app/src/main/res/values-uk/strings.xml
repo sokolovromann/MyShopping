@@ -453,6 +453,7 @@
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_privacy_policy">Політика конфіденційності</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати товари</string>
+    <string name="settings_title_strikethroughCompletedProducts">Закреслювати куплені товари</string>
     <string name="settings_title_taxRate">Податкова ставка</string>
     <string name="settings_title_terms_and_conditions">Умови використання</string>
 

@@ -492,6 +492,7 @@
     <string name="settings_title_nightTheme">Tema oscuro</string>
     <string name="settings_title_privacy_policy">Política de privacidad</string>
     <string name="settings_title_saveProductToAutocompletes">Guardar products</string>
+    <string name="settings_title_strikethroughCompletedProducts">Tachar los productos comprados</string>
     <string name="settings_title_taxRate">Tasa de impuesto</string>
     <string name="settings_title_terms_and_conditions">Términos y condiciones</string>
 

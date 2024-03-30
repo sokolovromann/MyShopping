@@ -506,6 +506,7 @@
     <string name="settings_title_nightTheme">Night theme</string>
     <string name="settings_title_privacy_policy">Privacy policy</string>
     <string name="settings_title_saveProductToAutocompletes">Save products</string>
+    <string name="settings_title_strikethroughCompletedProducts">Strikethrough completed products</string>
     <string name="settings_title_taxRate">Tax rate</string>
     <string name="settings_title_terms_and_conditions">Terms and conditions</string>
 

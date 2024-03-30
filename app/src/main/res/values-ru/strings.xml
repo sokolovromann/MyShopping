@@ -500,6 +500,7 @@
     <string name="settings_title_nightTheme">Ночная тема</string>
     <string name="settings_title_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_title_saveProductToAutocompletes">Сохранять товары</string>
+    <string name="settings_title_strikethroughCompletedProducts">Зачёркивать купленные товары</string>
     <string name="settings_title_taxRate">Налоговая ставка</string>
     <string name="settings_title_terms_and_conditions">Условия использования</string>
 

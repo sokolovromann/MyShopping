@@ -435,6 +435,7 @@
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_privacy_policy">Datenschutzbestimmungen</string>
     <string name="settings_title_saveProductToAutocompletes">Produkte speichern</string>
+    <string name="settings_title_strikethroughCompletedProducts">Durchgestrichene fertige Produkte</string>
     <string name="settings_title_taxRate">Steuersatz</string>
     <string name="settings_title_terms_and_conditions">Geschäftsbedingungen</string>
 

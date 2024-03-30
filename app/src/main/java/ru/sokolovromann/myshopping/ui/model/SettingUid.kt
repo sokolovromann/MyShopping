@@ -11,6 +11,7 @@ enum class SettingUid {
     TaxRate,
     DisplayDefaultAutocomplete,
     DisplayCompletedPurchases,
+    StrikethroughCompletedProducts,
     EditProductAfterCompleted,
     CompletedWithCheckbox,
     DisplayOtherFields,

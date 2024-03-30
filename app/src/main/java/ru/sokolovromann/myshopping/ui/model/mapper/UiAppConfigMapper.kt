@@ -128,6 +128,12 @@ object UiAppConfigMapper {
                 checked = null
             ),
             SettingItem(
+                uid = SettingUid.StrikethroughCompletedProducts,
+                title = UiString.FromResources(R.string.settings_title_strikethroughCompletedProducts),
+                body = UiString.FromString(""),
+                checked = userPreferences.strikethroughCompletedProducts
+            ),
+            SettingItem(
                 uid = SettingUid.EditProductAfterCompleted,
                 title = UiString.FromResources(R.string.settings_title_editProductAfterCompleted),
                 body = UiString.FromResources(R.string.settings_body_editProductAfterCompleted),

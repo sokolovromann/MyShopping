@@ -108,6 +108,10 @@ class SettingsViewModel @Inject constructor(
                 )
             }
 
+            SettingUid.StrikethroughCompletedProducts -> {
+                appConfigRepository.invertStrikethroughCompletedProducts()
+            }
+
             SettingUid.DisplayOtherFields -> {
                 appConfigRepository.invertDisplayOtherFields()
             }
