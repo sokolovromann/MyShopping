@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -436,6 +437,7 @@ fun ProductsScreen(
             deviceSize = state.deviceSize,
             coloredCheckbox = state.coloredCheckbox,
             displayCompleted = state.displayCompleted,
+            strikethroughCompletedProducts = state.strikethroughCompletedProducts,
             pinnedItems = state.pinnedProducts,
             otherItems = state.otherProducts,
             topBar = {
@@ -679,6 +681,7 @@ private fun ProductsGrid(
     deviceSize: DeviceSize,
     coloredCheckbox: Boolean,
     displayCompleted: DisplayCompleted,
+    strikethroughCompletedProducts: Boolean,
     pinnedItems: List<ProductItem>,
     otherItems: List<ProductItem>,
     topBar: @Composable RowScope.() -> Unit,
@@ -732,11 +735,17 @@ private fun ProductsGrid(
 
                 val longClickableEnabled = location != ShoppingLocation.TRASH
 
+                val textDecoration = if (strikethroughCompletedProducts && item.completed) {
+                    TextDecoration.LineThrough
+                } else {
+                    TextDecoration.None
+                }
+
                 AppMultiColumnsItem(
                     multiColumns = multiColumns,
                     left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
-                    title = getProductItemTitleOrNull(item.name, fontSize),
-                    body = getProductItemBodyOrNull(item.body, fontSize),
+                    title = getProductItemTitleOrNull(item.name, textDecoration, fontSize),
+                    body = getProductItemBodyOrNull(item.body, textDecoration, fontSize),
                     right = getProductItemRightOrNull(selected),
                     dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                     clickableEnabled = clickableEnabled,
@@ -777,11 +786,17 @@ private fun ProductsGrid(
 
             val longClickableEnabled = location != ShoppingLocation.TRASH
 
+            val textDecoration = if (strikethroughCompletedProducts && item.completed) {
+                TextDecoration.LineThrough
+            } else {
+                TextDecoration.None
+            }
+
             AppMultiColumnsItem(
                 multiColumns = multiColumns,
                 left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
-                title = getProductItemTitleOrNull(item.name, fontSize),
-                body = getProductItemBodyOrNull(item.body, fontSize),
+                title = getProductItemTitleOrNull(item.name, textDecoration, fontSize),
+                body = getProductItemBodyOrNull(item.body, textDecoration, fontSize),
                 right = getProductItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
                 clickableEnabled = clickableEnabled,
@@ -862,10 +877,12 @@ private fun getProductItemRightOrNull(
 @Composable
 private fun getProductItemTitleOrNull(
     text: UiString,
+    textDecoration: TextDecoration,
     fontSize: UiFontSize
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
     Text(
         text = text.asCompose(),
+        textDecoration = textDecoration,
         fontSize = fontSize.itemTitle.sp
     )
 }
@@ -873,10 +890,12 @@ private fun getProductItemTitleOrNull(
 @Composable
 private fun getProductItemBodyOrNull(
     text: UiString,
+    textDecoration: TextDecoration,
     fontSize: UiFontSize
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
     Text(
         text = text.asCompose(),
+        textDecoration = textDecoration,
         fontSize = fontSize.itemBody.sp
     )
 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ fun ShoppingListsGrid(
     otherItems: List<ShoppingListItem>,
     displayProducts: DisplayProducts,
     displayCompleted: DisplayCompleted,
+    strikethroughCompletedProducts: Boolean,
     coloredCheckbox: Boolean,
     topBar: @Composable (RowScope.() -> Unit)? = null,
     bottomBar: @Composable (RowScope.() -> Unit)? = null,
@@ -80,6 +82,7 @@ fun ShoppingListsGrid(
                             hasName = item.name.asCompose().isNotEmpty(),
                             products = item.products,
                             displayProducts = displayProducts,
+                            strikethroughCompletedProducts = strikethroughCompletedProducts,
                             total = item.total,
                             reminder = item.reminder,
                             fontSize = fontSize,
@@ -119,6 +122,7 @@ fun ShoppingListsGrid(
                         hasName = item.name.asCompose().isNotEmpty(),
                         products = item.products,
                         displayProducts = displayProducts,
+                        strikethroughCompletedProducts = strikethroughCompletedProducts,
                         total = item.total,
                         reminder = item.reminder,
                         fontSize = fontSize,
@@ -470,6 +474,7 @@ private fun ShoppingListItemBody(
     hasName: Boolean,
     products: List<Pair<Boolean?, UiString>>,
     displayProducts: DisplayProducts,
+    strikethroughCompletedProducts: Boolean,
     total: UiString,
     reminder: UiString,
     fontSize: UiFontSize,
@@ -509,6 +514,7 @@ private fun ShoppingListItemBody(
 
                 ShoppingsListsItemProducts(
                     products = products,
+                    strikethroughCompletedProducts = strikethroughCompletedProducts,
                     spacerAfterIcon = true,
                     fontSize = fontSize,
                     showCheckbox = true,
@@ -528,10 +534,12 @@ private fun ShoppingListItemBody(
                 Row {
                     ShoppingsListsItemProducts(
                         products = products,
+                        strikethroughCompletedProducts = strikethroughCompletedProducts,
                         spacerAfterIcon = false,
                         fontSize = fontSize,
                         showCheckbox = true,
-                        coloredCheckbox = coloredCheckbox)
+                        coloredCheckbox = coloredCheckbox
+                    )
                 }
             }
 
@@ -542,6 +550,7 @@ private fun ShoppingListItemBody(
                     Row {
                         ShoppingsListsItemProducts(
                             products = products,
+                            strikethroughCompletedProducts = strikethroughCompletedProducts,
                             spacerAfterIcon = false,
                             fontSize = fontSize,
                             showCheckbox = false,
@@ -570,6 +579,7 @@ private fun ShoppingListItemBody(
 @Composable
 private fun ShoppingsListsItemProducts(
     products: List<Pair<Boolean?, UiString>>,
+    strikethroughCompletedProducts: Boolean,
     spacerAfterIcon: Boolean,
     fontSize: UiFontSize,
     showCheckbox: Boolean = true,
@@ -616,9 +626,15 @@ private fun ShoppingsListsItemProducts(
                 }
             }
 
+            val textDecoration = if (strikethroughCompletedProducts && it.first == true) {
+                TextDecoration.LineThrough
+            } else {
+                TextDecoration.None
+            }
             Text(
                 text = it.second.asCompose(),
                 fontSize = itemFontSize.sp,
+                textDecoration = textDecoration,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

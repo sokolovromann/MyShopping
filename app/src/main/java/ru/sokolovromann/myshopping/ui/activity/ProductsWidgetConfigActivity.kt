@@ -121,6 +121,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 otherItems = state.otherShoppingLists,
                 displayProducts = state.displayProducts,
                 displayCompleted = state.displayCompleted,
+                strikethroughCompletedProducts = state.strikethroughCompletedProducts,
                 coloredCheckbox = state.coloredCheckbox,
                 fontSize = state.fontSize,
                 onClick = {

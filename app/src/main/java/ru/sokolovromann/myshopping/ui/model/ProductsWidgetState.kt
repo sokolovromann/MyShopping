@@ -37,6 +37,9 @@ class ProductsWidgetState {
     var displayCompleted: DisplayCompleted by mutableStateOf(DisplayCompleted.DefaultValue)
         private set
 
+    var strikethroughCompletedProducts: Boolean by mutableStateOf(false)
+        private set
+
     var displayMoney: Boolean by mutableStateOf(false)
         private set
 
@@ -62,6 +65,7 @@ class ProductsWidgetState {
         completedWithCheckbox = userPreferences.completedWithCheckbox
         completed = shoppingListWithConfig.isCompleted()
         displayCompleted = userPreferences.displayCompleted
+        strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         displayMoney = userPreferences.displayMoney
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
         waiting = false

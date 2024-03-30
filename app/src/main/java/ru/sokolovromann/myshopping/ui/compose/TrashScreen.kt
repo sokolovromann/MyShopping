@@ -128,6 +128,7 @@ fun TrashScreen(
             otherItems = state.shoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
+            strikethroughCompletedProducts = state.strikethroughCompletedProducts,
             coloredCheckbox = state.coloredCheckbox,
             topBar = {
                 TextButton(

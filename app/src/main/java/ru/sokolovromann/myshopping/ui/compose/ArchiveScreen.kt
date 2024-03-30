@@ -256,6 +256,7 @@ fun ArchiveScreen(
             otherItems = state.shoppingLists,
             displayProducts = state.displayProducts,
             displayCompleted = state.displayCompleted,
+            strikethroughCompletedProducts = state.strikethroughCompletedProducts,
             coloredCheckbox = state.coloredCheckbox,
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {

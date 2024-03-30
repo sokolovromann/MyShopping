@@ -41,6 +41,9 @@ class ArchiveState {
     var displayCompleted: DisplayCompleted by mutableStateOf(DisplayCompleted.DefaultValue)
         private set
 
+    var strikethroughCompletedProducts: Boolean by mutableStateOf(false)
+        private set
+
     var coloredCheckbox: Boolean by mutableStateOf(false)
         private set
 
@@ -91,6 +94,7 @@ class ArchiveState {
         displayProducts = userPreferences.displayShoppingsProducts
         expandedDisplayProducts = false
         displayCompleted = userPreferences.displayCompleted
+        strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())
         expandedDisplayTotal = false

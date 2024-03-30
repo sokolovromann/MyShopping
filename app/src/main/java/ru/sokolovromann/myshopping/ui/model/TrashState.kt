@@ -26,6 +26,9 @@ class TrashState {
     var displayCompleted: DisplayCompleted by mutableStateOf(DisplayCompleted.DefaultValue)
         private set
 
+    var strikethroughCompletedProducts: Boolean by mutableStateOf(false)
+        private set
+
     var coloredCheckbox: Boolean by mutableStateOf(false)
         private set
 
@@ -49,6 +52,7 @@ class TrashState {
         selectedUids = null
         displayProducts = userPreferences.displayShoppingsProducts
         displayCompleted = userPreferences.displayCompleted
+        strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()

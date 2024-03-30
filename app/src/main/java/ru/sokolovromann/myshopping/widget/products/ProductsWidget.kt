@@ -35,6 +35,7 @@ import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
+import androidx.glance.text.TextDecoration
 import androidx.glance.text.TextDefaults
 import androidx.glance.unit.ColorProvider
 import dagger.hilt.EntryPoint
@@ -134,6 +135,7 @@ class ProductsWidget : GlanceAppWidget() {
                     pinnedItems = productsWidgetState.pinnedProducts,
                     otherItems = productsWidgetState.otherProducts,
                     displayCompleted = productsWidgetState.displayCompleted,
+                    strikethroughCompletedProducts = productsWidgetState.strikethroughCompletedProducts,
                     fontSize = productsWidgetState.fontSize,
                     coloredCheckbox = productsWidgetState.coloredCheckbox,
                     completedWithCheckbox = productsWidgetState.completedWithCheckbox
@@ -295,6 +297,7 @@ private fun ProductsWidgetProducts(
     pinnedItems: List<ProductWidgetItem>,
     otherItems: List<ProductWidgetItem>,
     displayCompleted: DisplayCompleted,
+    strikethroughCompletedProducts: Boolean,
     fontSize: UiFontSize,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
@@ -315,9 +318,15 @@ private fun ProductsWidgetProducts(
             )
         }
         items(pinnedItems) {
+            val textDecoration = if (strikethroughCompletedProducts && it.completed) {
+                TextDecoration.LineThrough
+            } else {
+                TextDecoration.None
+            }
             ProductsWidgetItem(
                 widgetItem = it,
                 displayCompleted = displayCompleted,
+                textDecoration = textDecoration,
                 fontSize = fontSize,
                 coloredCheckbox = coloredCheckbox,
                 completedWithCheckbox = completedWithCheckbox,
@@ -325,9 +334,15 @@ private fun ProductsWidgetProducts(
             )
         }
         items(otherItems) {
+            val textDecoration = if (strikethroughCompletedProducts && it.completed) {
+                TextDecoration.LineThrough
+            } else {
+                TextDecoration.None
+            }
             ProductsWidgetItem(
                 widgetItem = it,
                 displayCompleted = displayCompleted,
+                textDecoration = textDecoration,
                 fontSize = fontSize,
                 coloredCheckbox = coloredCheckbox,
                 completedWithCheckbox = completedWithCheckbox,
@@ -342,6 +357,7 @@ private fun ProductsWidgetProducts(
 private fun ProductsWidgetItem(
     widgetItem: ProductWidgetItem,
     displayCompleted: DisplayCompleted,
+    textDecoration: TextDecoration,
     fontSize: UiFontSize,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
@@ -380,7 +396,8 @@ private fun ProductsWidgetItem(
             text = widgetItem.body,
             style = TextDefaults.defaultTextStyle.copy(
                 color = ColorProvider(R.color.black),
-                fontSize = fontSize.widgetContent.sp
+                fontSize = fontSize.widgetContent.sp,
+                textDecoration = textDecoration
             )
         )
     }
