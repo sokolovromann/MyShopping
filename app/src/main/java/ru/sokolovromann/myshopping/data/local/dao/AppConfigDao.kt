@@ -224,6 +224,14 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun invertStrikethroughCompletedProducts(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            val oldValue = it[DatasourceKey.User.strikethroughCompletedProducts]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.strikethroughCompletedProducts] = newValue
+        }
+    }
+
     suspend fun invertDisplayOtherFields(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayOtherFields]
@@ -297,6 +305,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.shoppingsSortFormatted] = entity.shoppingsSortFormatted ?: false
             it[DatasourceKey.User.productsMultiColumns] = requireNotNull(entity.productsMultiColumns)
             it[DatasourceKey.User.displayCompleted] = requireNotNull(entity.displayCompleted)
+            it[DatasourceKey.User.strikethroughCompletedProducts] = entity.strikethroughCompletedProducts ?: false
             it[DatasourceKey.User.displayTotal] = requireNotNull(entity.displayTotal)
             it[DatasourceKey.User.displayOtherFields] = requireNotNull(entity.displayOtherFields)
             it[DatasourceKey.User.coloredCheckbox] = requireNotNull(entity.coloredCheckbox)
@@ -359,6 +368,7 @@ class AppConfigDao(appContent: AppContent) {
             shoppingsSortFormatted = preferences[DatasourceKey.User.shoppingsSortFormatted],
             productsMultiColumns = preferences[DatasourceKey.User.productsMultiColumns],
             displayCompleted = preferences[DatasourceKey.User.displayCompleted],
+            strikethroughCompletedProducts = preferences[DatasourceKey.User.strikethroughCompletedProducts],
             displayTotal = preferences[DatasourceKey.User.displayTotal],
             displayLongTotal = preferences[DatasourceKey.User.displayLongTotal],
             displayOtherFields = preferences[DatasourceKey.User.displayOtherFields],
@@ -442,6 +452,7 @@ private object DatasourceKey {
         val shoppingsSortFormatted = booleanPreferencesKey("shoppings_sort_formatted")
         val productsMultiColumns = booleanPreferencesKey("products_multi_columns")
         val displayCompleted = stringPreferencesKey("display_completed_purchases")
+        val strikethroughCompletedProducts = booleanPreferencesKey("strikethrough_completed_products")
         val displayTotal = stringPreferencesKey("display_purchases_total")
         val displayLongTotal = booleanPreferencesKey("display_long_purchases_total")
         val displayOtherFields = booleanPreferencesKey("display_purchases_other_fields")

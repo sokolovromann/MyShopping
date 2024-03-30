@@ -10,6 +10,7 @@ data class UserPreferences(
     val shoppingsSortFormatted: Boolean = UserPreferencesDefaults.SORT_FORMATTED,
     val productsMultiColumns: Boolean = UserPreferencesDefaults.MULTI_COLUMNS,
     val displayCompleted: DisplayCompleted = UserPreferencesDefaults.DISPLAY_COMPLETED,
+    val strikethroughCompletedProducts: Boolean = UserPreferencesDefaults.STRIKETHROUGH_COMPLETED_PRODUCTS,
     val displayTotal: DisplayTotal = UserPreferencesDefaults.DISPLAY_TOTAL,
     val displayLongTotal: Boolean = UserPreferencesDefaults.DISPLAY_LONG_TOTAL,
     val displayOtherFields: Boolean = UserPreferencesDefaults.DISPLAY_OTHER_FIELDS,

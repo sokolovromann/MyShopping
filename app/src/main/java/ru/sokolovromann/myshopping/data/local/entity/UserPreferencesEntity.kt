@@ -12,6 +12,7 @@ data class UserPreferencesEntity(
     val shoppingsSortFormatted: Boolean? = null,
     val productsMultiColumns: Boolean? = null,
     val displayCompleted: String? = null,
+    val strikethroughCompletedProducts: Boolean? = null,
     val displayTotal: String? = null,
     val displayOtherFields: Boolean? = null,
     val displayLongTotal: Boolean? = null,

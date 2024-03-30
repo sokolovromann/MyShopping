@@ -102,6 +102,7 @@ object AppConfigMapper {
             shoppingsSortFormatted = userPreferences.shoppingsSortFormatted,
             productsMultiColumns = userPreferences.productsMultiColumns,
             displayCompleted = userPreferences.displayCompleted.toString(),
+            strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts,
             displayTotal = userPreferences.displayTotal.toString(),
             displayLongTotal = userPreferences.displayLongTotal,
             displayOtherFields = userPreferences.displayOtherFields,
@@ -142,6 +143,7 @@ object AppConfigMapper {
             shoppingsSortFormatted = toShoppingsSortFormatted(entity.shoppingsSortFormatted),
             productsMultiColumns = toMultiColumnsOrDefault(entity.productsMultiColumns),
             displayCompleted = DisplayCompleted.valueOfOrDefault(entity.displayCompleted),
+            strikethroughCompletedProducts = toStrikethroughCompletedProductsOrDefault(entity.strikethroughCompletedProducts),
             displayTotal = DisplayTotal.valueOfOrDefault(entity.displayTotal),
             displayLongTotal = toDisplayLongTotalOrDefault(entity.displayLongTotal),
             displayOtherFields = toDisplayOtherFieldsOrDefault(entity.displayOtherFields),
@@ -188,6 +190,10 @@ object AppConfigMapper {
 
     private fun toMultiColumnsOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.MULTI_COLUMNS
+    }
+
+    private fun toStrikethroughCompletedProductsOrDefault(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.STRIKETHROUGH_COMPLETED_PRODUCTS
     }
 
     private fun toShoppingsSortAscending(value: Boolean?): Boolean {

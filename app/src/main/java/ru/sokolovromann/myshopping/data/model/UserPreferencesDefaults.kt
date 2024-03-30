@@ -7,6 +7,7 @@ object UserPreferencesDefaults {
 
     const val NIGHT_THEME = false
     const val MULTI_COLUMNS = false
+    const val STRIKETHROUGH_COMPLETED_PRODUCTS = false
     const val SORT_FORMATTED = false
     const val DISPLAY_OTHER_FIELDS = true
     const val DISPLAY_LONG_TOTAL = false

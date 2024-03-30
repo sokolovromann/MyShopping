@@ -189,6 +189,13 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         return@withContext Result.success(Unit)
     }
 
+    suspend fun invertStrikethroughCompletedProducts(): Result<Unit> = withContext(dispatcher) {
+        val valueIfNull = UserPreferencesDefaults.STRIKETHROUGH_COMPLETED_PRODUCTS
+        appConfigDao.invertStrikethroughCompletedProducts(valueIfNull)
+
+        return@withContext Result.success(Unit)
+    }
+
     suspend fun invertDisplayOtherFields(): Result<Unit> = withContext(dispatcher) {
         val valueIfNull = UserPreferencesDefaults.DISPLAY_OTHER_FIELDS
         appConfigDao.invertDisplayOtherFields(valueIfNull)
