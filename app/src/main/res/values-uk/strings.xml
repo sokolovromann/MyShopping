@@ -416,7 +416,7 @@
     <string name="settings_body_displayMoneyZeros">Якщо увімкнено, то нулі завжди відображатимуться</string>
     <string name="settings_body_displayOtherFields">Марка, розмір, колір і т.д.</string>
     <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування (окрім віджетів)</string>
-    <string name="settings_body_email">Натисніть, щоб написати</string>
+    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>

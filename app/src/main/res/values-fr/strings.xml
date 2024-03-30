@@ -468,7 +468,7 @@
     <string name="settings_body_displayMoneyZeros">Si activé, les zéros seront toujours affichés</string>
     <string name="settings_body_displayOtherFields">Marque, taille, couleur, etc.</string>
     <string name="settings_body_editProductAfterCompleted">L\'écran sera-t-il ouvert pour l\'édition (sauf les widgets)</string>
-    <string name="settings_body_email">Appuyez pour écrire e-mail</string>
+    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Si activé, le produit peut être enregistré en appuyant sur Entrée</string>
     <string name="settings_body_github">Appuyez pour ouvrir</string>
     <string name="settings_body_maxAutocompletes">Sélectionnez le nombre de saisies semi-automatiques pouvant être affichées</string>

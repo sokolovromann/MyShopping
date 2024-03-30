@@ -455,7 +455,7 @@
     <string name="settings_body_displayMoneyZeros">Si está habilitado, los ceros siempre se mostrarán</string>
     <string name="settings_body_displayOtherFields">Marca, talla, color, etc.</string>
     <string name="settings_body_editProductAfterCompleted">Se abrirá la pantalla para editar (excepto los widgets)</string>
-    <string name="settings_body_email">Toca para escribir correo electrónico</string>
+    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Si está habilitado, el producto se puede guardar tocando Enter</string>
     <string name="settings_body_github">Toque para abrir</string>
     <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>

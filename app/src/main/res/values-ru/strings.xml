@@ -463,7 +463,7 @@
     <string name="settings_body_displayMoneyZeros">Если включено, то нули будут всегда отображаться</string>
     <string name="settings_body_displayOtherFields">Марка, размер, цвет и т.д.</string>
     <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования (кроме виджетов)</string>
-    <string name="settings_body_email">Нажмите, чтобы написать</string>
+    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
     <string name="settings_body_maxAutocompletes">Выберите сколько может отображаться подсказок</string>
