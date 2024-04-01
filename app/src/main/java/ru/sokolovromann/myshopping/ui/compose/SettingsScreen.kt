@@ -79,6 +79,10 @@ fun SettingsScreen(
                     route = UiRoute.Settings.backupScreen
                 )
 
+                SettingsScreenEvent.OnShowFontSizes -> navController.navigate(
+                    route = UiRoute.Settings.fontSizesScreen
+                )
+
                 is SettingsScreenEvent.OnShowAppGithub -> navController.chooseNavigate(
                     intent = Intent(
                         Intent.ACTION_VIEW,

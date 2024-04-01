@@ -65,10 +65,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             SettingUid.FontSize -> {
-                settingsState.onSelectUid(
-                    expanded = true,
-                    settingUid = SettingUid.FontSize
-                )
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowFontSizes)
             }
 
             SettingUid.Backup -> {

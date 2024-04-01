@@ -371,6 +371,18 @@
     <string name="editTaxRate_header">@string/all_header_editDataScreen</string>
     <string name="editTaxRate_label_taxRate">Taux en pourcentage</string>
 
+    <string name="fontSizes_action_cancelSavingFontSize">@string/all_action_cancel</string>
+    <string name="fontSizes_action_saveFontSize">@string/all_action_save</string>
+    <string name="fontSizes_action_selectHugeFontSize">Énorme</string>
+    <string name="fontSizes_action_selectLargeFontSize">Grand</string>
+    <string name="fontSizes_action_selectMediumFontSize">Moyen</string>
+    <string name="fontSizes_action_selectSmallFontSize">Petit</string>
+    <string name="fontSizes_action_selectVeryHugeFontSize">Très énorme</string>
+    <string name="fontSizes_action_selectVeryLargeFontSize">Très grand</string>
+    <string name="fontSizes_header">Taille de police</string>
+    <string name="fontSizes_text_appFontSize">Application</string>
+    <string name="fontSizes_text_widgetFontSize">Widget</string>
+
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
     <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
     <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
@@ -499,7 +511,7 @@
     <string name="settings_title_editProductAfterCompleted">Modifier le produit après l\'achat</string>
     <string name="settings_title_email">E-mail</string>
     <string name="settings_title_enterToSaveProduct">Entrée pour enregistrer le produit</string>
-    <string name="settings_title_fontSize">Taille de police</string>
+    <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_github">GitHub</string>
     <string name="settings_title_maxAutocompletes">Nombre maximum</string>
     <string name="settings_title_nightTheme">Thème sombre</string>
