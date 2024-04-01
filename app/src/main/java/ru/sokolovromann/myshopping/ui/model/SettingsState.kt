@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
@@ -34,9 +33,6 @@ class SettingsState {
     var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
-    var fontSizeValue: SelectedValue<FontSize> by mutableStateOf(SelectedValue(FontSize.DefaultValue))
-        private set
-
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
@@ -53,7 +49,6 @@ class SettingsState {
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
-        fontSizeValue = toFontSizeValue(userPreferences.appFontSize)
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
@@ -94,20 +89,6 @@ class SettingsState {
                 DisplayProducts.HORIZONTAL -> UiString.FromResources(R.string.shoppingLists_action_displayProductsHorizontally)
                 DisplayProducts.HIDE -> UiString.FromResources(R.string.shoppingLists_action_hideProducts)
                 DisplayProducts.HIDE_IF_HAS_TITLE -> UiString.FromResources(R.string.shoppingLists_action_hideProductsIfHasTitle)
-            }
-        )
-    }
-
-    private fun toFontSizeValue(fontSize: FontSize): SelectedValue<FontSize> {
-        return SelectedValue(
-            selected = fontSize,
-            text = when (fontSize) {
-                FontSize.SMALL -> UiString.FromResources(R.string.settings_action_selectSmallFontSize)
-                FontSize.MEDIUM -> UiString.FromResources(R.string.settings_action_selectMediumFontSize)
-                FontSize.LARGE -> UiString.FromResources(R.string.settings_action_selectLargeFontSize)
-                FontSize.VERY_LARGE -> UiString.FromResources(R.string.settings_action_selectVeryLargeFontSize)
-                FontSize.HUGE -> UiString.FromResources(R.string.settings_action_selectHugeFontSize)
-                FontSize.VERY_HUGE -> UiString.FromResources(R.string.settings_action_selectVeryHugeFontSize)
             }
         )
     }

@@ -461,12 +461,6 @@
     <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
     <string name="settings_action_hideCompletedPurchases">Скрывать</string>
     <string name="settings_action_noSplitCompletedPurchases">Без разделения</string>
-    <string name="settings_action_selectHugeFontSize">Огромный</string>
-    <string name="settings_action_selectLargeFontSize">Большой</string>
-    <string name="settings_action_selectMediumFontSize">Средний</string>
-    <string name="settings_action_selectSmallFontSize">Маленький</string>
-    <string name="settings_action_selectVeryHugeFontSize">Очень огромный</string>
-    <string name="settings_action_selectVeryLargeFontSize">Очень большой</string>
     <string name="settings_body_backup">Экспорт/импорт всех данных приложения</string>
     <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
@@ -477,6 +471,7 @@
     <string name="settings_body_editProductAfterCompleted">Откроется экран для редактирования (кроме виджетов)</string>
     <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
+    <string name="settings_body_fontSize">Нажмите, чтобы выбрать</string>
     <string name="settings_body_github">Нажмите, чтобы открыть</string>
     <string name="settings_body_maxAutocompletes">Выберите сколько может отображаться подсказок</string>
     <string name="settings_body_nightTheme">Кроме виджетов</string>

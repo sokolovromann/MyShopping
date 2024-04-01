@@ -58,14 +58,7 @@ object UiAppConfigMapper {
             SettingItem(
                 uid = SettingUid.FontSize,
                 title = UiString.FromResources(R.string.settings_title_fontSize),
-                body = when (userPreferences.appFontSize) {
-                    FontSize.SMALL -> UiString.FromResources(R.string.settings_action_selectSmallFontSize)
-                    FontSize.MEDIUM -> UiString.FromResources(R.string.settings_action_selectMediumFontSize)
-                    FontSize.LARGE -> UiString.FromResources(R.string.settings_action_selectLargeFontSize)
-                    FontSize.VERY_LARGE -> UiString.FromResources(R.string.settings_action_selectVeryLargeFontSize)
-                    FontSize.HUGE -> UiString.FromResources(R.string.settings_action_selectHugeFontSize)
-                    FontSize.VERY_HUGE -> UiString.FromResources(R.string.settings_action_selectVeryHugeFontSize)
-                },
+                body = UiString.FromResources(R.string.settings_body_fontSize),
                 checked = null
             ),
             SettingItem(

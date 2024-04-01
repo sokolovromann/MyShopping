@@ -466,12 +466,6 @@
     <string name="settings_action_displayCompletedPurchasesLast">À la fin de</string>
     <string name="settings_action_hideCompletedPurchases">Cacher</string>
     <string name="settings_action_noSplitCompletedPurchases">Sans division</string>
-    <string name="settings_action_selectHugeFontSize">Énorme</string>
-    <string name="settings_action_selectLargeFontSize">Grand</string>
-    <string name="settings_action_selectMediumFontSize">Moyen</string>
-    <string name="settings_action_selectSmallFontSize">Petit</string>
-    <string name="settings_action_selectVeryHugeFontSize">Très énorme</string>
-    <string name="settings_action_selectVeryLargeFontSize">Très grand</string>
     <string name="settings_body_backup">Exporter/importer toutes les données de l\'application</string>
     <string name="settings_body_coloredCheckbox">Si activé, les cases à cocher seront colorées en rouge ou en vert</string>
     <string name="settings_body_completedWithCheckbox">Si activé, le produit acheté est marqué en cliquant sur la case à cocher</string>
@@ -482,6 +476,7 @@
     <string name="settings_body_editProductAfterCompleted">L\'écran sera-t-il ouvert pour l\'édition (sauf les widgets)</string>
     <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Si activé, le produit peut être enregistré en appuyant sur Entrée</string>
+    <string name="settings_body_fontSize">Appuyez pour sélectionner</string>
     <string name="settings_body_github">Appuyez pour ouvrir</string>
     <string name="settings_body_maxAutocompletes">Sélectionnez le nombre de saisies semi-automatiques pouvant être affichées</string>
     <string name="settings_body_nightTheme">Sauf les widgets</string>

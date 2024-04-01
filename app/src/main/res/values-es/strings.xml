@@ -453,12 +453,6 @@
     <string name="settings_action_displayCompletedPurchasesLast">Último</string>
     <string name="settings_action_hideCompletedPurchases">Esconder</string>
     <string name="settings_action_noSplitCompletedPurchases">Sin división</string>
-    <string name="settings_action_selectHugeFontSize">Enorme</string>
-    <string name="settings_action_selectLargeFontSize">Grande</string>
-    <string name="settings_action_selectMediumFontSize">Medio</string>
-    <string name="settings_action_selectSmallFontSize">Pequeño</string>
-    <string name="settings_action_selectVeryHugeFontSize">Muy enorme</string>
-    <string name="settings_action_selectVeryLargeFontSize">Very large</string>
     <string name="settings_body_backup">Exportar/importar todos los datos de la aplicación</string>
     <string name="settings_body_coloredCheckbox">Si está habilitado, las casillas de verificación serán de color rojo o verde</string>
     <string name="settings_body_completedWithCheckbox">Si está habilitado, el producto adquirido se marca haciendo clic en la casilla de verificación</string>
@@ -469,6 +463,7 @@
     <string name="settings_body_editProductAfterCompleted">Se abrirá la pantalla para editar (excepto los widgets)</string>
     <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Si está habilitado, el producto se puede guardar tocando Enter</string>
+    <string name="settings_body_fontSize">Toque para seleccionar</string>
     <string name="settings_body_github">Toque para abrir</string>
     <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>
     <string name="settings_body_nightTheme">Excepto widgets</string>

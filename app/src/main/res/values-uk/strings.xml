@@ -414,12 +414,6 @@
     <string name="settings_action_displayCompletedPurchasesLast">В кінці</string>
     <string name="settings_action_hideCompletedPurchases">Приховувати</string>
     <string name="settings_action_noSplitCompletedPurchases">Без поділу</string>
-    <string name="settings_action_selectHugeFontSize">Величезний</string>
-    <string name="settings_action_selectLargeFontSize">Великий</string>
-    <string name="settings_action_selectMediumFontSize">Середній</string>
-    <string name="settings_action_selectSmallFontSize">Маленький</string>
-    <string name="settings_action_selectVeryHugeFontSize">Дуже величезний</string>
-    <string name="settings_action_selectVeryLargeFontSize">Дуже великий</string>
     <string name="settings_body_backup">Експорт/імпорт усіх даних програми</string>
     <string name="settings_body_coloredCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
@@ -430,6 +424,7 @@
     <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування (окрім віджетів)</string>
     <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
+    <string name="settings_body_fontSize">Натисніть, щоб вибрати</string>
     <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
     <string name="settings_body_nightTheme">Окрім віджетів</string>

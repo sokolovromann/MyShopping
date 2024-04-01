@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
-import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
@@ -167,20 +166,6 @@ fun SettingsScreen(
             fontSize = state.fontSize,
             dropdownMenu = {
                 when (it) {
-                    SettingUid.FontSize -> {
-                        SettingsFontSizeMenu(
-                            expanded = it == state.selectedUid,
-                            fontSize = state.fontSizeValue.selected,
-                            onDismissRequest = {
-                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.FontSize)
-                                viewModel.onEvent(event)
-                            },
-                            onSelected = { fontSize ->
-                                viewModel.onEvent(SettingsEvent.OnFontSizeSelected(fontSize))
-                            }
-                        )
-                    }
-
                     SettingUid.DisplayCompletedPurchases -> {
                         SettingsDisplayCompletedMenu(
                             expanded = it == state.selectedUid,
@@ -276,50 +261,6 @@ private fun SettingsSurface(
             )
             items()
         }
-    }
-}
-
-@Composable
-private fun SettingsFontSizeMenu(
-    expanded: Boolean,
-    fontSize: FontSize,
-    onDismissRequest: () -> Unit,
-    onSelected: (FontSize) -> Unit,
-) {
-    AppDropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest
-    ) {
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.SMALL) },
-            text = { Text(text = stringResource(R.string.settings_action_selectSmallFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.SMALL) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.MEDIUM) },
-            text = { Text(text = stringResource(R.string.settings_action_selectMediumFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.MEDIUM) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.LARGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectLargeFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.LARGE) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.VERY_LARGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectVeryLargeFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.VERY_LARGE) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.HUGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectHugeFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.HUGE) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(FontSize.VERY_HUGE) },
-            text = { Text(text = stringResource(R.string.settings_action_selectVeryHugeFontSize)) },
-            right = { CheckmarkAppCheckbox(checked = fontSize == FontSize.VERY_HUGE) }
-        )
     }
 }
 
