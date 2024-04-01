@@ -185,7 +185,7 @@ class MainViewModel @Inject constructor(
         )
 
         val userPreferences = UserPreferences(
-            fontSize = preferences.fontSize,
+            appFontSize = preferences.fontSize,
             currency = preferences.currency,
             taxRate = preferences.taxRate,
             shoppingsMultiColumns = preferences.multiColumns,

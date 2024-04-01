@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserPreferencesEntity(
     val nightTheme: Boolean? = null,
-    val fontSize: String? = null,
+    val appFontSize: String? = null,
+    val widgetFontSize: String? = null,
     val shoppingsMultiColumns: Boolean? = null,
     val shoppingsSortBy: String? = null,
     val shoppingsSortAscending: Boolean? = null,

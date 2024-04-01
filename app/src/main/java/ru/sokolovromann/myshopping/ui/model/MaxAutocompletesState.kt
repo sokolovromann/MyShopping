@@ -34,7 +34,7 @@ class MaxAutocompletesState {
         maxMoneys = userPreferences.maxAutocompletesMoneys
         maxOthers = userPreferences.maxAutocompletesOthers
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
     }
 
     fun onMaxNamesChanged(value: Int) {

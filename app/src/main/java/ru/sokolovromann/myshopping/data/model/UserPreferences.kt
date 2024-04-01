@@ -4,7 +4,8 @@ import java.text.DecimalFormat
 
 data class UserPreferences(
     val nightTheme: Boolean = UserPreferencesDefaults.NIGHT_THEME,
-    val fontSize: FontSize = UserPreferencesDefaults.FONT_SIZE,
+    val appFontSize: FontSize = UserPreferencesDefaults.FONT_SIZE,
+    val widgetFontSize: FontSize = UserPreferencesDefaults.FONT_SIZE,
     val shoppingsMultiColumns: Boolean = UserPreferencesDefaults.MULTI_COLUMNS,
     val shoppingsSort: Sort = UserPreferencesDefaults.SORT,
     val shoppingsSortFormatted: Boolean = UserPreferencesDefaults.SORT_FORMATTED,

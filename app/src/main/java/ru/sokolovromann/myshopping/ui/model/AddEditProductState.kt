@@ -130,7 +130,7 @@ class AddEditProductState {
         expandedLockProductElement = false
         noteValue = product.note.toTextFieldValue()
         autocompletes = AutocompletesSelectedValue()
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         displayMoney = userPreferences.displayMoney
         enterToSaveProduct = userPreferences.enterToSaveProduct
         displayOtherFields = userPreferences.displayOtherFields

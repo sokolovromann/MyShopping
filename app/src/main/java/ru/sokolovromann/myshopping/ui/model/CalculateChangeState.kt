@@ -35,7 +35,7 @@ class CalculateChangeState {
             R.string.calculateChange_text_total,
             shoppingListWithConfig.getShopping().total
         )
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
         waiting = false
     }
 

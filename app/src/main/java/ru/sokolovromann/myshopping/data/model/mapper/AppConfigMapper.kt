@@ -95,7 +95,8 @@ object AppConfigMapper {
     private fun toUserPreferencesEntity(userPreferences: UserPreferences): UserPreferencesEntity {
         return UserPreferencesEntity(
             nightTheme = userPreferences.nightTheme,
-            fontSize = userPreferences.fontSize.toString(),
+            appFontSize = userPreferences.appFontSize.toString(),
+            widgetFontSize = userPreferences.widgetFontSize.toString(),
             shoppingsMultiColumns = userPreferences.shoppingsMultiColumns,
             shoppingsSortBy = userPreferences.shoppingsSort.toString(),
             shoppingsSortAscending = userPreferences.shoppingsSort.ascending,
@@ -134,7 +135,8 @@ object AppConfigMapper {
     private fun toUserPreferences(entity: UserPreferencesEntity): UserPreferences {
         return UserPreferences(
             nightTheme = toNightThemeOrDefault(entity.nightTheme),
-            fontSize = FontSize.valueOfOrDefault(entity.fontSize),
+            appFontSize = FontSize.valueOfOrDefault(entity.appFontSize),
+            widgetFontSize = FontSize.valueOfOrDefault(entity.widgetFontSize),
             shoppingsMultiColumns = toMultiColumnsOrDefault(entity.shoppingsMultiColumns),
             shoppingsSort = Sort(
                 sortBy = SortBy.valueOfOrDefault(entity.shoppingsSortBy),

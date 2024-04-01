@@ -103,7 +103,7 @@ class ArchiveState {
         expandedArchiveMenu = false
         sortValue = toSortValue(userPreferences.shoppingsSort)
         sortFormatted = userPreferences.shoppingsSortFormatted
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

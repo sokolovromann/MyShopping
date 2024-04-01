@@ -51,7 +51,7 @@ class AutocompletesState {
         locationValue = UiAutocompletesMapper.toLocationValue(location)
         expandedLocation = false
         locationEnabled = AppLocale.isLanguageSupported() && userPreferences.displayDefaultAutocompletes
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

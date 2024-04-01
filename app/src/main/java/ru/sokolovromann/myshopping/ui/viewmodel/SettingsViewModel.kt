@@ -187,7 +187,7 @@ class SettingsViewModel @Inject constructor(
     private fun onFontSizeSelected(
         event: SettingsEvent.OnFontSizeSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.saveFontSize(event.fontSize)
+        appConfigRepository.saveFontSize(event.fontSize, event.fontSize)
         settingsState.onSelectUid(
             expanded = false,
             settingUid = SettingUid.FontSize

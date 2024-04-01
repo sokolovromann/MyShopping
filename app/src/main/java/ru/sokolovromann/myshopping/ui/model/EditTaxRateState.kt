@@ -29,7 +29,7 @@ class EditTaxRateState {
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         taxRateValue = userPreferences.taxRate.toTextFieldValue(displayZeroIfEmpty = true)
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
     }
 
     fun onTaxRateValueChanged(value: TextFieldValue) {

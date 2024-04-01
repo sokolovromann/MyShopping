@@ -53,8 +53,8 @@ class SettingsState {
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
-        fontSizeValue = toFontSizeValue(userPreferences.fontSize)
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSizeValue = toFontSizeValue(userPreferences.appFontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

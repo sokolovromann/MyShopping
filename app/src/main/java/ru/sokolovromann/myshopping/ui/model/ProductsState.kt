@@ -145,7 +145,7 @@ class ProductsState {
         expandedShoppingMenu = false
         sortValue = toSortValue(shopping.sort)
         sortFormatted = shopping.sortFormatted
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

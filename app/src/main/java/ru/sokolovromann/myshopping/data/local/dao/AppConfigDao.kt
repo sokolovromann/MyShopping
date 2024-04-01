@@ -44,9 +44,13 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun saveFontSize(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveFontSize(
+        appFontSize: String,
+        widgetFontSize: String
+    ) = withContext(AppDispatchers.IO) {
         preferences.edit {
-            it[DatasourceKey.User.fontSize] = value
+            it[DatasourceKey.User.appFontSize] = appFontSize
+            it[DatasourceKey.User.widgetFontSize] = widgetFontSize
         }
     }
 
@@ -298,7 +302,8 @@ class AppConfigDao(appContent: AppContent) {
     private suspend fun saveUserPreferences(entity: UserPreferencesEntity) {
         preferences.edit {
             it[DatasourceKey.User.nightTheme] = requireNotNull(entity.nightTheme)
-            it[DatasourceKey.User.fontSize] = requireNotNull(entity.fontSize)
+            it[DatasourceKey.User.appFontSize] = entity.appFontSize ?: ""
+            it[DatasourceKey.User.widgetFontSize] = entity.widgetFontSize ?: ""
             it[DatasourceKey.User.shoppingsMultiColumns] = requireNotNull(entity.shoppingsMultiColumns)
             it[DatasourceKey.User.shoppingsSortBy] = entity.shoppingsSortBy ?: ""
             it[DatasourceKey.User.shoppingsSortAscending] = entity.shoppingsSortAscending ?: true
@@ -361,7 +366,8 @@ class AppConfigDao(appContent: AppContent) {
     private fun toUserPreferences(preferences: Preferences): UserPreferencesEntity {
         return UserPreferencesEntity(
             nightTheme = preferences[DatasourceKey.User.nightTheme],
-            fontSize = preferences[DatasourceKey.User.fontSize],
+            appFontSize = preferences[DatasourceKey.User.appFontSize],
+            widgetFontSize = preferences[DatasourceKey.User.widgetFontSize],
             shoppingsMultiColumns = preferences[DatasourceKey.User.shoppingsMultiColumns],
             shoppingsSortBy = preferences[DatasourceKey.User.shoppingsSortBy],
             shoppingsSortAscending = preferences[DatasourceKey.User.shoppingsSortAscending],
@@ -440,7 +446,8 @@ private object DatasourceKey {
 
     object User {
         val nightTheme = booleanPreferencesKey("night_theme")
-        val fontSize = stringPreferencesKey("font_size")
+        val appFontSize = stringPreferencesKey("font_size")
+        val widgetFontSize = stringPreferencesKey("widget_font_size")
         val displayMoney = booleanPreferencesKey("display_money")
         val currency = stringPreferencesKey("currency")
         val displayCurrencyToLeft= booleanPreferencesKey("display_currency_to_left")

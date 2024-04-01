@@ -59,7 +59,7 @@ class EditReminderState {
         displayDateDialog = false
         displayTimeDialog = false
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
     }
 
     fun onDateChanged(year: Int, month: Int, dayOfMonth: Int) {

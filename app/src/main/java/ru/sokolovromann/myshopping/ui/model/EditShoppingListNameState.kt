@@ -38,7 +38,7 @@ class EditShoppingListNameState {
         }
         nameValue = name.toTextFieldValue()
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
     }
 
     fun onNameValueChanged(value: TextFieldValue) {

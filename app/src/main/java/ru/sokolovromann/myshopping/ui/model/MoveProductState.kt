@@ -76,7 +76,7 @@ class MoveProductState {
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         locationValue = UiShoppingListsMapper.toLocationValue(location)
         expandedLocation = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

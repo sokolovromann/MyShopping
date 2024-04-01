@@ -43,7 +43,7 @@ class EditShoppingListTotalState {
             "".toTextFieldValue()
         }
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
     }
 
     fun onTotalValueChanged(value: TextFieldValue) {

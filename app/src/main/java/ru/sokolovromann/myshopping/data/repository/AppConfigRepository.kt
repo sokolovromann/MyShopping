@@ -77,8 +77,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         }
     }
 
-    suspend fun saveFontSize(fontSize: FontSize): Result<Unit> = withContext(dispatcher) {
-        appConfigDao.saveFontSize(fontSize.name)
+    suspend fun saveFontSize(
+        appFontSize: FontSize,
+        widgetFontSize: FontSize
+    ): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveFontSize(appFontSize.name, widgetFontSize.name)
         return@withContext Result.success(Unit)
     }
 

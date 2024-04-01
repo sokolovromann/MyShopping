@@ -28,7 +28,7 @@ class EditCurrencySymbolState {
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         symbolValue = userPreferences.currency.symbol.toTextFieldValue()
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
     }
 
     fun onSymbolValueChanged(value: TextFieldValue) {

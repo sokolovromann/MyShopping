@@ -41,7 +41,7 @@ class AddEditAutocompleteState {
         nameValue = autocompleteWithConfig.autocomplete.name.toTextFieldValue()
         nameError = false
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(autocompleteWithConfig.appConfig.userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(autocompleteWithConfig.appConfig.userPreferences.appFontSize)
     }
 
     fun onNameValueChanged(value: TextFieldValue) {

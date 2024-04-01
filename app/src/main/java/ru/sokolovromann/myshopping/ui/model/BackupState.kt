@@ -31,7 +31,7 @@ class BackupState {
         messageText = UiString.FromString("")
         locationText = UiString.FromString("")
         warningText = UiString.FromString("")
-        fontSize = UiAppConfigMapper.toUiFontSize(appConfig.userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(appConfig.userPreferences.appFontSize)
         permissionError = !correctWriteFilesPermission
         waiting = false
     }

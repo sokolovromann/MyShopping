@@ -67,7 +67,7 @@ class ProductsWidgetState {
         displayCompleted = userPreferences.displayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         displayMoney = userPreferences.displayMoney
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.fontSize)
+        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.widgetFontSize)
         waiting = false
         forceLoad = false
     }
