@@ -302,7 +302,7 @@ class AppConfigDao(appContent: AppContent) {
     private suspend fun saveUserPreferences(entity: UserPreferencesEntity) {
         preferences.edit {
             it[DatasourceKey.User.nightTheme] = requireNotNull(entity.nightTheme)
-            it[DatasourceKey.User.appFontSize] = entity.appFontSize ?: ""
+            it[DatasourceKey.User.appFontSize] = entity.fontSize ?: ""
             it[DatasourceKey.User.widgetFontSize] = entity.widgetFontSize ?: ""
             it[DatasourceKey.User.shoppingsMultiColumns] = requireNotNull(entity.shoppingsMultiColumns)
             it[DatasourceKey.User.shoppingsSortBy] = entity.shoppingsSortBy ?: ""
@@ -366,7 +366,7 @@ class AppConfigDao(appContent: AppContent) {
     private fun toUserPreferences(preferences: Preferences): UserPreferencesEntity {
         return UserPreferencesEntity(
             nightTheme = preferences[DatasourceKey.User.nightTheme],
-            appFontSize = preferences[DatasourceKey.User.appFontSize],
+            fontSize = preferences[DatasourceKey.User.appFontSize],
             widgetFontSize = preferences[DatasourceKey.User.widgetFontSize],
             shoppingsMultiColumns = preferences[DatasourceKey.User.shoppingsMultiColumns],
             shoppingsSortBy = preferences[DatasourceKey.User.shoppingsSortBy],
