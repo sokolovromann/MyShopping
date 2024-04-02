@@ -467,6 +467,10 @@
     <string name="settings_action_displayCompletedPurchasesLast">Last</string>
     <string name="settings_action_hideCompletedPurchases">Hide</string>
     <string name="settings_action_noSplitCompletedPurchases">No split</string>
+    <string name="settings_action_selectAppAndWidgetNightTheme">App and widget</string>
+    <string name="settings_action_selectAppNightTheme">Only app</string>
+    <string name="settings_action_selectDisabledNightTheme">Disabled</string>
+    <string name="settings_action_selectWidgetNightTheme">Only widget</string>
     <string name="settings_body_backup">Export/import all app data</string>
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
@@ -480,7 +484,6 @@
     <string name="settings_body_fontSize">Tap to select</string>
     <string name="settings_body_github">Tap to open</string>
     <string name="settings_body_maxAutocompletes">Select how many autocompletes can be displayed</string>
-    <string name="settings_body_nightTheme">Except widgets</string>
     <string name="settings_body_privacy_policy">Tap to read</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_terms_and_conditions">Tap to read</string>

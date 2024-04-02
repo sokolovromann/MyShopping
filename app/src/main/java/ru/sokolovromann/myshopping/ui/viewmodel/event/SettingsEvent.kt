@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 
@@ -16,6 +17,8 @@ sealed class SettingsEvent {
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : SettingsEvent()
 
     data class OnSelectDrawerScreen(val display: Boolean) : SettingsEvent()
+
+    data class OnNightThemeSelected(val nightTheme: NightTheme) : SettingsEvent()
 
     data class OnFontSizeSelected(val fontSize: FontSize) : SettingsEvent()
 

@@ -5,6 +5,7 @@ import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.utils.displayZerosAfterDecimal
@@ -52,8 +53,13 @@ object UiAppConfigMapper {
             SettingItem(
                 uid = SettingUid.NightTheme,
                 title = UiString.FromResources(R.string.settings_title_nightTheme),
-                body = UiString.FromResources(R.string.settings_body_nightTheme),
-                checked = userPreferences.nightTheme.isAppNightTheme()
+                body = when (userPreferences.nightTheme) {
+                    NightTheme.DISABLED -> UiString.FromResources(R.string.settings_action_selectDisabledNightTheme)
+                    NightTheme.APP -> UiString.FromResources(R.string.settings_action_selectAppNightTheme)
+                    NightTheme.WIDGET -> UiString.FromResources(R.string.settings_action_selectWidgetNightTheme)
+                    NightTheme.APP_AND_WIDGET -> UiString.FromResources(R.string.settings_action_selectAppAndWidgetNightTheme)
+                },
+                checked = null
             ),
             SettingItem(
                 uid = SettingUid.FontSize,

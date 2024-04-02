@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
@@ -166,6 +167,21 @@ fun SettingsScreen(
             fontSize = state.fontSize,
             dropdownMenu = {
                 when (it) {
+                    SettingUid.NightTheme -> {
+                        SettingsNightThemeMenu(
+                            expanded = it == state.selectedUid,
+                            nightTheme = state.nightTheme.selected,
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.NightTheme)
+                                viewModel.onEvent(event)
+                            },
+                            onSelected = { nightTheme ->
+                                val event = SettingsEvent.OnNightThemeSelected(nightTheme)
+                                viewModel.onEvent(event)
+                            }
+                        )
+                    }
+
                     SettingUid.DisplayCompletedPurchases -> {
                         SettingsDisplayCompletedMenu(
                             expanded = it == state.selectedUid,
@@ -261,6 +277,40 @@ private fun SettingsSurface(
             )
             items()
         }
+    }
+}
+
+@Composable
+private fun SettingsNightThemeMenu(
+    expanded: Boolean,
+    nightTheme: NightTheme,
+    onDismissRequest: () -> Unit,
+    onSelected: (NightTheme) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(NightTheme.DISABLED) },
+            text = { Text(text = stringResource(R.string.settings_action_selectDisabledNightTheme)) },
+            right = { CheckmarkAppCheckbox(checked = nightTheme == NightTheme.DISABLED) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(NightTheme.APP) },
+            text = { Text(text = stringResource(R.string.settings_action_selectAppNightTheme)) },
+            right = { CheckmarkAppCheckbox(checked = nightTheme == NightTheme.APP) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(NightTheme.WIDGET) },
+            text = { Text(text = stringResource(R.string.settings_action_selectWidgetNightTheme)) },
+            right = { CheckmarkAppCheckbox(checked = nightTheme == NightTheme.WIDGET) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(NightTheme.APP_AND_WIDGET) },
+            text = { Text(text = stringResource(R.string.settings_action_selectAppAndWidgetNightTheme)) },
+            right = { CheckmarkAppCheckbox(checked = nightTheme == NightTheme.APP_AND_WIDGET) }
+        )
     }
 }
 

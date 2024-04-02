@@ -396,6 +396,10 @@
     <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
     <string name="settings_action_hideCompletedPurchases">Verstecken</string>
     <string name="settings_action_noSplitCompletedPurchases">Keine Trennung</string>
+    <string name="settings_action_selectAppAndWidgetNightTheme">Anwendung und Widget</string>
+    <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
+    <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
+    <string name="settings_action_selectWidgetNightTheme">Nur Widget</string>
     <string name="settings_body_backup">Alle App-Daten exportieren/importieren</string>
     <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
@@ -409,7 +413,6 @@
     <string name="settings_body_fontSize">Zum Auswählen tippen</string>
     <string name="settings_body_github">Antippen zum Öffnen</string>
     <string name="settings_body_maxAutocompletes">Wählen Sie aus, wie viele Autovervollständigungen angezeigt werden können</string>
-    <string name="settings_body_nightTheme">Außer Widgets</string>
     <string name="settings_body_privacy_policy">Zum Lesen tippen</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_terms_and_conditions">Zum Lesen tippen</string>

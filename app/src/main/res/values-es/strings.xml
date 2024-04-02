@@ -453,6 +453,10 @@
     <string name="settings_action_displayCompletedPurchasesLast">Último</string>
     <string name="settings_action_hideCompletedPurchases">Esconder</string>
     <string name="settings_action_noSplitCompletedPurchases">Sin división</string>
+    <string name="settings_action_selectAppAndWidgetNightTheme">Aplicación y widget</string>
+    <string name="settings_action_selectAppNightTheme">Solo aplicacion</string>
+    <string name="settings_action_selectDisabledNightTheme">Desactivado</string>
+    <string name="settings_action_selectWidgetNightTheme">Solo widget</string>
     <string name="settings_body_backup">Exportar/importar todos los datos de la aplicación</string>
     <string name="settings_body_coloredCheckbox">Si está habilitado, las casillas de verificación serán de color rojo o verde</string>
     <string name="settings_body_completedWithCheckbox">Si está habilitado, el producto adquirido se marca haciendo clic en la casilla de verificación</string>
@@ -466,7 +470,6 @@
     <string name="settings_body_fontSize">Toque para seleccionar</string>
     <string name="settings_body_github">Toque para abrir</string>
     <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>
-    <string name="settings_body_nightTheme">Excepto widgets</string>
     <string name="settings_body_privacy_policy">Toca para leer</string>
     <string name="settings_body_saveProductToAutocompletes">Cualquier producto quedará guardado</string>
     <string name="settings_body_terms_and_conditions">Toca para leer</string>

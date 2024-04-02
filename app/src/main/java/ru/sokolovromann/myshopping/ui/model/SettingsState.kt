@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
@@ -21,7 +22,7 @@ class SettingsState {
     var selectedUid: SettingUid? by mutableStateOf(null)
         private set
 
-    var nightTheme: Boolean by mutableStateOf(false)
+    var nightTheme: SelectedValue<NightTheme> by mutableStateOf(SelectedValue(NightTheme.DefaultValue))
         private set
 
     var displayCompletedValue: SelectedValue<DisplayCompleted> by mutableStateOf(SelectedValue(DisplayCompleted.DefaultValue))
@@ -48,7 +49,7 @@ class SettingsState {
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         settings = UiAppConfigMapper.toSettingItems(settingsWithConfig)
         selectedUid = null
-        nightTheme = userPreferences.nightTheme.isAppNightTheme()
+        nightTheme = toNightThemeValue(userPreferences.nightTheme)
         displayCompletedValue = toDisplayCompletedValue(userPreferences.displayCompleted)
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
@@ -67,6 +68,20 @@ class SettingsState {
 
     fun getSettings(): Settings {
         return settingsWithConfig.settings
+    }
+
+    private fun toNightThemeValue(
+        nightTheme: NightTheme
+    ): SelectedValue<NightTheme> {
+        return SelectedValue(
+            selected = nightTheme,
+            text = when (nightTheme) {
+                NightTheme.DISABLED -> UiString.FromResources(R.string.settings_action_selectDisabledNightTheme)
+                NightTheme.APP -> UiString.FromResources(R.string.settings_action_selectAppNightTheme)
+                NightTheme.WIDGET -> UiString.FromResources(R.string.settings_action_selectWidgetNightTheme)
+                NightTheme.APP_AND_WIDGET -> UiString.FromResources(R.string.settings_action_selectAppAndWidgetNightTheme)
+            }
+        )
     }
 
     private fun toDisplayCompletedValue(

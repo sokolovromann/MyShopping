@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingUid
@@ -39,6 +38,8 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
+            is SettingsEvent.OnNightThemeSelected -> onNightThemeSelected(event)
+
             is SettingsEvent.OnFontSizeSelected -> onFontSizeSelected(event)
 
             is SettingsEvent.OnDisplayCompletedSelected -> onDisplayCompletedSelected(event)
@@ -62,12 +63,10 @@ class SettingsViewModel @Inject constructor(
     ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.uid) {
             SettingUid.NightTheme -> {
-                val invertAppNightTheme = !settingsState.nightTheme
-                val nightTheme = NightTheme.valueOfOrDefault(
-                    appNightTheme = invertAppNightTheme,
-                    widgetNightTheme = invertAppNightTheme
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.NightTheme
                 )
-                appConfigRepository.saveNightTheme(nightTheme)
             }
 
             SettingUid.FontSize -> {
@@ -185,6 +184,17 @@ class SettingsViewModel @Inject constructor(
         event: SettingsEvent.OnSelectDrawerScreen
     ) = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(SettingsScreenEvent.OnSelectDrawerScreen(event.display))
+    }
+
+    private fun onNightThemeSelected(
+        event: SettingsEvent.OnNightThemeSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.saveNightTheme(event.nightTheme)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.NightTheme
+        )
+        _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
     }
 
     private fun onFontSizeSelected(
