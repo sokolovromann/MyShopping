@@ -48,6 +48,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppAction
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.activity.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
@@ -62,6 +63,7 @@ class ProductsWidget : GlanceAppWidget() {
         internal val GreenOpacity75Color = Color(0xBF1B5E20)
         internal val RedOpacity75Color = Color(0xBFFF0000)
         internal val BlackOpacity75Color = Color(0xBF000000)
+        internal val WhiteOpacity200Color = Color(0xBFFFFFFF)
     }
 
     @EntryPoint
@@ -99,6 +101,7 @@ class ProductsWidget : GlanceAppWidget() {
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_message_loadingError),
+                    nightTheme = productsWidgetState.nightTheme,
                     fontSize = productsWidgetState.fontSize
                 )
                 return@Column
@@ -107,6 +110,7 @@ class ProductsWidget : GlanceAppWidget() {
             if (productsWidgetState.isNotFound()) {
                 ProductsWidgetName(
                     name = productsWidgetState.nameText,
+                    nightTheme = productsWidgetState.nightTheme,
                     fontSize = productsWidgetState.fontSize,
                     completed = productsWidgetState.completed,
                     noSplit = productsWidgetState.displayCompleted == DisplayCompleted.NO_SPLIT
@@ -115,6 +119,7 @@ class ProductsWidget : GlanceAppWidget() {
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
+                    nightTheme = productsWidgetState.nightTheme,
                     fontSize = productsWidgetState.fontSize
                 )
 
@@ -136,6 +141,7 @@ class ProductsWidget : GlanceAppWidget() {
                     otherItems = productsWidgetState.otherProducts,
                     displayCompleted = productsWidgetState.displayCompleted,
                     strikethroughCompletedProducts = productsWidgetState.strikethroughCompletedProducts,
+                    nightTheme = productsWidgetState.nightTheme,
                     fontSize = productsWidgetState.fontSize,
                     coloredCheckbox = productsWidgetState.coloredCheckbox,
                     completedWithCheckbox = productsWidgetState.completedWithCheckbox
@@ -150,10 +156,20 @@ class ProductsWidget : GlanceAppWidget() {
                 }
             }
 
+            val dividerBackgroundColor = if (productsWidgetState.nightTheme.isWidgetNightTheme()) {
+                R.color.black_opacity_75
+            } else {
+                R.color.gray_200_opacity_75
+            }
+            val rowBackgroundColor = if (productsWidgetState.nightTheme.isWidgetNightTheme()) {
+                R.color.black
+            } else {
+                R.color.gray_200
+            }
             Spacer(modifier = GlanceModifier
                 .fillMaxWidth()
                 .height(ProductsWidgetSpacerHeight)
-                .background(ColorProvider(R.color.gray_200_opacity_75))
+                .background(ColorProvider(dividerBackgroundColor))
             )
             Row(
                 modifier = GlanceModifier
@@ -162,21 +178,28 @@ class ProductsWidget : GlanceAppWidget() {
                         vertical = ProductsWidgetMediumSize,
                         horizontal = ProductsWidgetLargeSize
                     )
-                    .background(ColorProvider(R.color.gray_200)),
+                    .background(ColorProvider(rowBackgroundColor)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (productsWidgetState.displayMoney) {
                     ProductsWidgetTotal(
                         total = productsWidgetState.totalText,
+                        nightTheme = productsWidgetState.nightTheme,
                         fontSize = productsWidgetState.fontSize
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())
+
+                val tintColor = if (productsWidgetState.nightTheme.isWidgetNightTheme()) {
+                    R.color.gray_200_opacity_75
+                } else {
+                    R.color.black_opacity_75
+                }
                 Image(
                     modifier = GlanceModifier.clickable { startMainActivity(context, shoppingUid) },
                     provider = ImageProvider(R.drawable.ic_all_open),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(ColorProvider(R.color.black_opacity_75)),
+                    colorFilter = ColorFilter.tint(ColorProvider(tintColor)),
                 )
             }
         }
@@ -198,6 +221,7 @@ private fun startMainActivity(context: Context, uid: String) {
 @Composable
 private fun ProductsWidgetName(
     name: UiString,
+    nightTheme: NightTheme,
     fontSize: UiFontSize,
     completed: Boolean,
     noSplit: Boolean
@@ -206,20 +230,26 @@ private fun ProductsWidgetName(
         return
     }
 
-    val background = if (noSplit) {
-        R.color.white
-    } else {
-        if (completed) {
-            R.color.gray_200
+    val backgroundColor = if (nightTheme.isWidgetNightTheme()) {
+        if (noSplit) {
+            R.color.gray_900
         } else {
+            if (completed) R.color.black else R.color.gray_900
+        }
+    } else {
+        if (noSplit) {
             R.color.white
+        } else {
+            if (completed) R.color.gray_200 else R.color.white
         }
     }
+
+    val textColor = if (nightTheme.isWidgetNightTheme()) R.color.white else R.color.black
 
     Column(
         modifier = GlanceModifier
             .fillMaxWidth()
-            .background(background)
+            .background(backgroundColor)
             .padding(
                 vertical = ProductsWidgetMediumSize,
                 horizontal = ProductsWidgetLargeSize
@@ -230,7 +260,7 @@ private fun ProductsWidgetName(
         Text(
             text = name.asCompose(),
             style = TextDefaults.defaultTextStyle.copy(
-                color = ColorProvider(R.color.black),
+                color = ColorProvider(textColor),
                 fontSize = fontSize.widgetHeader.sp,
                 fontWeight = FontWeight.Bold
             ),
@@ -243,16 +273,19 @@ private fun ProductsWidgetName(
 @Composable
 private fun ProductsWidgetTotal(
     total: UiString,
+    nightTheme: NightTheme,
     fontSize: UiFontSize
 ) {
     if (total.isEmpty()) {
         return
     }
 
+    val textColor = if (nightTheme.isWidgetNightTheme()) R.color.white else R.color.black
+
     Text(
         text = total.asCompose(),
         style = TextDefaults.defaultTextStyle.copy(
-            color = ColorProvider(R.color.black),
+            color = ColorProvider(textColor),
             fontSize = fontSize.widgetContent.sp
         ),
         maxLines = 1
@@ -264,12 +297,16 @@ private fun ProductsWidgetTotal(
 private fun ProductsWidgetNotFound(
     modifier: GlanceModifier,
     text: String,
+    nightTheme: NightTheme,
     fontSize: UiFontSize
 ) {
+    val backgroundColor = if (nightTheme.isWidgetNightTheme()) R.color.black else R.color.white
+    val textColor = if (nightTheme.isWidgetNightTheme()) R.color.white else R.color.black
+
     Column(
         modifier = GlanceModifier
             .fillMaxWidth()
-            .background(R.color.white)
+            .background(backgroundColor)
             .then(modifier),
         verticalAlignment = Alignment.CenterVertically,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -281,7 +318,7 @@ private fun ProductsWidgetNotFound(
             ),
             text = text,
             style = TextDefaults.defaultTextStyle.copy(
-                color = ColorProvider(R.color.black),
+                color = ColorProvider(textColor),
                 fontSize = fontSize.widgetContent.sp
             )
         )
@@ -298,20 +335,24 @@ private fun ProductsWidgetProducts(
     otherItems: List<ProductWidgetItem>,
     displayCompleted: DisplayCompleted,
     strikethroughCompletedProducts: Boolean,
+    nightTheme: NightTheme,
     fontSize: UiFontSize,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
 ) {
+    val backgroundColor = if (nightTheme.isWidgetNightTheme()) R.color.black else R.color.gray_200
+
     LazyColumn(
         modifier = GlanceModifier
             .fillMaxWidth()
-            .background(ColorProvider(R.color.gray_200))
+            .background(ColorProvider(backgroundColor))
             .then(modifier)
     ) {
         item {
             ProductsWidgetName(
                 name = name,
+                nightTheme = nightTheme,
                 fontSize = fontSize,
                 completed = completed,
                 noSplit = displayCompleted == DisplayCompleted.NO_SPLIT
@@ -327,6 +368,7 @@ private fun ProductsWidgetProducts(
                 widgetItem = it,
                 displayCompleted = displayCompleted,
                 textDecoration = textDecoration,
+                nightTheme = nightTheme,
                 fontSize = fontSize,
                 coloredCheckbox = coloredCheckbox,
                 completedWithCheckbox = completedWithCheckbox,
@@ -343,6 +385,7 @@ private fun ProductsWidgetProducts(
                 widgetItem = it,
                 displayCompleted = displayCompleted,
                 textDecoration = textDecoration,
+                nightTheme = nightTheme,
                 fontSize = fontSize,
                 coloredCheckbox = coloredCheckbox,
                 completedWithCheckbox = completedWithCheckbox,
@@ -358,20 +401,31 @@ private fun ProductsWidgetItem(
     widgetItem: ProductWidgetItem,
     displayCompleted: DisplayCompleted,
     textDecoration: TextDecoration,
+    nightTheme: NightTheme,
     fontSize: UiFontSize,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
 ) {
-    val backgroundColorResId = if (displayCompleted == DisplayCompleted.NO_SPLIT) {
-        R.color.white
+    val backgroundColor = if (nightTheme.isWidgetNightTheme()) {
+        if (displayCompleted == DisplayCompleted.NO_SPLIT) {
+            R.color.gray_900
+        } else {
+            if (widgetItem.completed) R.color.black else R.color.gray_900
+        }
     } else {
-        if (widgetItem.completed) R.color.gray_200 else R.color.white
+        if (displayCompleted == DisplayCompleted.NO_SPLIT) {
+            R.color.white
+        } else {
+            if (widgetItem.completed) R.color.gray_200 else R.color.white
+        }
     }
+
+    val textColor = if (nightTheme.isWidgetNightTheme()) R.color.white else R.color.black
 
     val rowModifier = GlanceModifier
         .fillMaxWidth()
-        .background(ColorProvider(backgroundColorResId))
+        .background(ColorProvider(backgroundColor))
         .padding(all = ProductsWidgetMediumSize)
 
     val rowModifierWithChecked = if (completedWithCheckbox) {
@@ -387,6 +441,7 @@ private fun ProductsWidgetItem(
     ) {
         ProductsWidgetCheckbox(
             checked = widgetItem.completed,
+            nightTheme = nightTheme,
             checkedWithCheckbox = completedWithCheckbox,
             coloredCheckbox = coloredCheckbox,
             onCheckedChange = { onCheckedChange(widgetItem) }
@@ -395,7 +450,7 @@ private fun ProductsWidgetItem(
         Text(
             text = widgetItem.body,
             style = TextDefaults.defaultTextStyle.copy(
-                color = ColorProvider(R.color.black),
+                color = ColorProvider(textColor),
                 fontSize = fontSize.widgetContent.sp,
                 textDecoration = textDecoration
             )
@@ -406,14 +461,20 @@ private fun ProductsWidgetItem(
 @Composable
 private fun ProductsWidgetCheckbox(
     checked: Boolean,
+    nightTheme: NightTheme,
     checkedWithCheckbox: Boolean,
     coloredCheckbox: Boolean,
     onCheckedChange: () -> Unit
 ) {
-    val color = if (coloredCheckbox) {
+
+    val tintColor = if (coloredCheckbox) {
         if (checked) ProductsWidget.GreenOpacity75Color else ProductsWidget.RedOpacity75Color
     } else {
-        ProductsWidget.BlackOpacity75Color
+        if (nightTheme.isWidgetNightTheme()) {
+            ProductsWidget.WhiteOpacity200Color
+        } else {
+            ProductsWidget.BlackOpacity75Color
+        }
     }
 
     val imageResId = if (checked) {
@@ -435,7 +496,7 @@ private fun ProductsWidgetCheckbox(
         modifier = imageModifierWithClickable,
         provider = ImageProvider(imageResId),
         contentDescription = null,
-        colorFilter = ColorFilter.tint(ColorProvider(color))
+        colorFilter = ColorFilter.tint(ColorProvider(tintColor))
     )
 }
 

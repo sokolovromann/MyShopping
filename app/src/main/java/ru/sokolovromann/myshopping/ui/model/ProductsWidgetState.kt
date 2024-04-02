@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
@@ -43,6 +44,9 @@ class ProductsWidgetState {
     var displayMoney: Boolean by mutableStateOf(false)
         private set
 
+    var nightTheme: NightTheme by mutableStateOf(NightTheme.DefaultValue)
+        private set
+
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
@@ -67,6 +71,7 @@ class ProductsWidgetState {
         displayCompleted = userPreferences.displayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         displayMoney = userPreferences.displayMoney
+        nightTheme = userPreferences.nightTheme
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.widgetFontSize)
         waiting = false
         forceLoad = false

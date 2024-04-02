@@ -8,6 +8,7 @@
     <color name="gray_100">#FFF5F5F5</color>
     <color name="gray_200">#FFEEEEEE</color>
     <color name="gray_200_opacity_75">#BFEEEEEE</color>
+    <color name="gray_900">#FF212121</color>
 
     <color name="green_300">#FF81C784</color>
     <color name="green_900">#FF1B5E20</color>
