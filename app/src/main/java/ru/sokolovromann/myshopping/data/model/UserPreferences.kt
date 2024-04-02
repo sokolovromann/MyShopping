@@ -3,7 +3,7 @@ package ru.sokolovromann.myshopping.data.model
 import java.text.DecimalFormat
 
 data class UserPreferences(
-    val nightTheme: Boolean = UserPreferencesDefaults.NIGHT_THEME,
+    val nightTheme: NightTheme = UserPreferencesDefaults.NIGHT_THEME,
     val appFontSize: FontSize = UserPreferencesDefaults.FONT_SIZE,
     val widgetFontSize: FontSize = UserPreferencesDefaults.FONT_SIZE,
     val shoppingsMultiColumns: Boolean = UserPreferencesDefaults.MULTI_COLUMNS,

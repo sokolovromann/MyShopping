@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
@@ -24,7 +25,7 @@ class ProductsWidgetConfigState {
     var otherShoppingLists: List<ShoppingListItem> by  mutableStateOf(listOf())
         private set
 
-    var nightTheme: Boolean by mutableStateOf(false)
+    var nightTheme: NightTheme by mutableStateOf(NightTheme.DefaultValue)
         private set
 
     var displayProducts: DisplayProducts by mutableStateOf(DisplayProducts.DefaultValue)

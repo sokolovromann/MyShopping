@@ -18,6 +18,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.UserPreferences
@@ -94,7 +95,8 @@ object AppConfigMapper {
 
     private fun toUserPreferencesEntity(userPreferences: UserPreferences): UserPreferencesEntity {
         return UserPreferencesEntity(
-            nightTheme = userPreferences.nightTheme,
+            nightTheme = userPreferences.nightTheme.isAppNightTheme(),
+            widgetNightTheme = userPreferences.nightTheme.isWidgetNightTheme(),
             fontSize = userPreferences.appFontSize.toString(),
             widgetFontSize = userPreferences.widgetFontSize.toString(),
             shoppingsMultiColumns = userPreferences.shoppingsMultiColumns,
@@ -134,7 +136,7 @@ object AppConfigMapper {
 
     private fun toUserPreferences(entity: UserPreferencesEntity): UserPreferences {
         return UserPreferences(
-            nightTheme = toNightThemeOrDefault(entity.nightTheme),
+            nightTheme = toNightThemeOrDefault(entity.nightTheme, entity.widgetNightTheme),
             appFontSize = FontSize.valueOfOrDefault(entity.fontSize),
             widgetFontSize = FontSize.valueOfOrDefault(entity.widgetFontSize),
             shoppingsMultiColumns = toMultiColumnsOrDefault(entity.shoppingsMultiColumns),
@@ -186,8 +188,11 @@ object AppConfigMapper {
         return value ?: DeviceConfig.UNKNOWN_SIZE_DP
     }
 
-    private fun toNightThemeOrDefault(value: Boolean?): Boolean {
-        return value ?: UserPreferencesDefaults.NIGHT_THEME
+    private fun toNightThemeOrDefault(
+        appNightTheme: Boolean?,
+        widgetNightTheme: Boolean?
+    ): NightTheme {
+        return NightTheme.valueOfOrDefault(appNightTheme, widgetNightTheme)
     }
 
     private fun toMultiColumnsOrDefault(value: Boolean?): Boolean {

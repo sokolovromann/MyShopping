@@ -18,6 +18,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import javax.inject.Inject
@@ -136,10 +137,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         return@withContext Result.success(Unit)
     }
 
-    suspend fun invertNightTheme(): Result<Unit> = withContext(dispatcher) {
-        val valueIfNull = UserPreferencesDefaults.NIGHT_THEME
-        appConfigDao.invertNightTheme(valueIfNull)
-
+    suspend fun saveNightTheme(nightTheme: NightTheme): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveNightTheme(
+            appNightTheme = nightTheme.isAppNightTheme(),
+            widgetNightTheme = nightTheme.isWidgetNightTheme()
+        )
         return@withContext Result.success(Unit)
     }
 

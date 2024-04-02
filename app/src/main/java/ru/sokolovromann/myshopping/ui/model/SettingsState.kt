@@ -21,6 +21,9 @@ class SettingsState {
     var selectedUid: SettingUid? by mutableStateOf(null)
         private set
 
+    var nightTheme: Boolean by mutableStateOf(false)
+        private set
+
     var displayCompletedValue: SelectedValue<DisplayCompleted> by mutableStateOf(SelectedValue(DisplayCompleted.DefaultValue))
         private set
 
@@ -45,6 +48,7 @@ class SettingsState {
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         settings = UiAppConfigMapper.toSettingItems(settingsWithConfig)
         selectedUid = null
+        nightTheme = userPreferences.nightTheme.isAppNightTheme()
         displayCompletedValue = toDisplayCompletedValue(userPreferences.displayCompleted)
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()

@@ -53,7 +53,7 @@ object UiAppConfigMapper {
                 uid = SettingUid.NightTheme,
                 title = UiString.FromResources(R.string.settings_title_nightTheme),
                 body = UiString.FromResources(R.string.settings_body_nightTheme),
-                checked = userPreferences.nightTheme
+                checked = userPreferences.nightTheme.isAppNightTheme()
             ),
             SettingItem(
                 uid = SettingUid.FontSize,

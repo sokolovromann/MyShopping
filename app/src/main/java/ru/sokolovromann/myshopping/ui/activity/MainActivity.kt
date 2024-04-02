@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyShoppingTheme(
-                darkTheme = mainState.nightTheme,
+                darkTheme = mainState.nightTheme.isAppNightTheme(),
                 content = { MainContent() }
             )
         }

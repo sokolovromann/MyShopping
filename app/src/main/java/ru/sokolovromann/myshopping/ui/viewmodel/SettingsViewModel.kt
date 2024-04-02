@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingUid
@@ -61,7 +62,12 @@ class SettingsViewModel @Inject constructor(
     ) = viewModelScope.launch(AppDispatchers.Main) {
         when (event.uid) {
             SettingUid.NightTheme -> {
-                appConfigRepository.invertNightTheme()
+                val invertAppNightTheme = !settingsState.nightTheme
+                val nightTheme = NightTheme.valueOfOrDefault(
+                    appNightTheme = invertAppNightTheme,
+                    widgetNightTheme = invertAppNightTheme
+                )
+                appConfigRepository.saveNightTheme(nightTheme)
             }
 
             SettingUid.FontSize -> {

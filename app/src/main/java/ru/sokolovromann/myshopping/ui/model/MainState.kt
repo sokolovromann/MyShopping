@@ -3,11 +3,12 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 class MainState {
 
-    var nightTheme: Boolean by mutableStateOf(false)
+    var nightTheme: NightTheme by mutableStateOf(NightTheme.DefaultValue)
         private set
 
     var shoppingUid: String? by mutableStateOf(null)

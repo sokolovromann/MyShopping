@@ -56,7 +56,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
 
         setContent {
             MyShoppingTheme(
-                darkTheme = productsWidgetConfigState.nightTheme,
+                darkTheme = productsWidgetConfigState.nightTheme.isAppNightTheme(),
                 content = { ProductsWidgetConfigContent() }
             )
         }

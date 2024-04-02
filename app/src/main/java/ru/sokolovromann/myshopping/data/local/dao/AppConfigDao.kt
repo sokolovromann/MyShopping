@@ -44,6 +44,16 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun saveNightTheme(
+        appNightTheme: Boolean,
+        widgetNightTheme: Boolean
+    ) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.appNightTheme] = appNightTheme
+            it[DatasourceKey.User.widgetNightTheme] = widgetNightTheme
+        }
+    }
+
     suspend fun saveFontSize(
         appFontSize: String,
         widgetFontSize: String
@@ -172,14 +182,6 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertNightTheme(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            val oldValue = it[DatasourceKey.User.nightTheme]
-            val newValue = if (oldValue == null) valueIfNull else !oldValue
-            it[DatasourceKey.User.nightTheme] = newValue
-        }
-    }
-
     suspend fun invertLongTotal(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayLongTotal]
@@ -301,7 +303,8 @@ class AppConfigDao(appContent: AppContent) {
 
     private suspend fun saveUserPreferences(entity: UserPreferencesEntity) {
         preferences.edit {
-            it[DatasourceKey.User.nightTheme] = requireNotNull(entity.nightTheme)
+            it[DatasourceKey.User.appNightTheme] = entity.nightTheme ?: false
+            it[DatasourceKey.User.widgetNightTheme] = entity.widgetNightTheme ?: false
             it[DatasourceKey.User.appFontSize] = entity.fontSize ?: ""
             it[DatasourceKey.User.widgetFontSize] = entity.widgetFontSize ?: ""
             it[DatasourceKey.User.shoppingsMultiColumns] = requireNotNull(entity.shoppingsMultiColumns)
@@ -365,7 +368,8 @@ class AppConfigDao(appContent: AppContent) {
 
     private fun toUserPreferences(preferences: Preferences): UserPreferencesEntity {
         return UserPreferencesEntity(
-            nightTheme = preferences[DatasourceKey.User.nightTheme],
+            nightTheme = preferences[DatasourceKey.User.appNightTheme],
+            widgetNightTheme = preferences[DatasourceKey.User.widgetNightTheme],
             fontSize = preferences[DatasourceKey.User.appFontSize],
             widgetFontSize = preferences[DatasourceKey.User.widgetFontSize],
             shoppingsMultiColumns = preferences[DatasourceKey.User.shoppingsMultiColumns],
@@ -445,7 +449,8 @@ private object DatasourceKey {
     }
 
     object User {
-        val nightTheme = booleanPreferencesKey("night_theme")
+        val appNightTheme = booleanPreferencesKey("night_theme")
+        val widgetNightTheme = booleanPreferencesKey("widget_night_theme")
         val appFontSize = stringPreferencesKey("font_size")
         val widgetFontSize = stringPreferencesKey("widget_font_size")
         val displayMoney = booleanPreferencesKey("display_money")

@@ -5,7 +5,6 @@ import java.text.DecimalFormat
 
 object UserPreferencesDefaults {
 
-    const val NIGHT_THEME = false
     const val MULTI_COLUMNS = false
     const val STRIKETHROUGH_COMPLETED_PRODUCTS = false
     const val SORT_FORMATTED = false
@@ -24,6 +23,7 @@ object UserPreferencesDefaults {
     const val SAVE_PRODUCT_TO_AUTOCOMPLETES = true
     const val DISPLAY_MONEY = true
 
+    val NIGHT_THEME = NightTheme.DISABLED
     val FONT_SIZE = FontSize.DefaultValue
     val SORT = Sort()
     val DISPLAY_COMPLETED = DisplayCompleted.DefaultValue
