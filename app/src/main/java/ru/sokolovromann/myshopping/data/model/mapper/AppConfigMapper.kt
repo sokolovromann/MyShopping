@@ -135,10 +135,11 @@ object AppConfigMapper {
     }
 
     private fun toUserPreferences(entity: UserPreferencesEntity): UserPreferences {
+        val widgetFontSize = entity.widgetFontSize ?: (entity.fontSize ?: "")
         return UserPreferences(
             nightTheme = toNightThemeOrDefault(entity.nightTheme, entity.widgetNightTheme),
             appFontSize = FontSize.valueOfOrDefault(entity.fontSize),
-            widgetFontSize = FontSize.valueOfOrDefault(entity.widgetFontSize),
+            widgetFontSize = FontSize.valueOfOrDefault(widgetFontSize),
             shoppingsMultiColumns = toMultiColumnsOrDefault(entity.shoppingsMultiColumns),
             shoppingsSort = Sort(
                 sortBy = SortBy.valueOfOrDefault(entity.shoppingsSortBy),

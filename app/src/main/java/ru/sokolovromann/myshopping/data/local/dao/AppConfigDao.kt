@@ -306,7 +306,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.appNightTheme] = entity.nightTheme ?: false
             it[DatasourceKey.User.widgetNightTheme] = entity.widgetNightTheme ?: false
             it[DatasourceKey.User.appFontSize] = entity.fontSize ?: ""
-            it[DatasourceKey.User.widgetFontSize] = entity.widgetFontSize ?: ""
+            it[DatasourceKey.User.widgetFontSize] = entity.widgetFontSize ?: (entity.fontSize ?: "")
             it[DatasourceKey.User.shoppingsMultiColumns] = requireNotNull(entity.shoppingsMultiColumns)
             it[DatasourceKey.User.shoppingsSortBy] = entity.shoppingsSortBy ?: ""
             it[DatasourceKey.User.shoppingsSortAscending] = entity.shoppingsSortAscending ?: true
