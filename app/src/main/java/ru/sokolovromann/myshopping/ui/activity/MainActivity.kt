@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,11 +31,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val event = MainEvent.OnCreate(
+        val onCreateEvent = MainEvent.OnCreate(
             screenWidth = resources.configuration.screenWidthDp,
             screenHeight = resources.configuration.screenHeightDp
         )
-        viewModel.onEvent(event)
+        viewModel.onEvent(onCreateEvent)
 
         val mainState = viewModel.mainState
 
@@ -50,32 +49,14 @@ class MainActivity : ComponentActivity() {
                 content = { MainContent() }
             )
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-        val event = MainEvent.OnSaveIntent(
+        val onSaveIntentEvent = MainEvent.OnSaveIntent(
             action = intent.action,
             uid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
         )
-        viewModel.onEvent(event)
-    }
+        viewModel.onEvent(onSaveIntentEvent)
 
-    override fun onStop() {
-        intent = Intent().apply {
-            val args = intent.extras
-            if (args?.containsKey(UiRouteKey.ShoppingUid.key) == true) {
-                intent.removeExtra(UiRouteKey.ShoppingUid.key)
-            }
-        }
-
-        val event = MainEvent.OnSaveIntent(
-            action = null,
-            uid = null
-        )
-        viewModel.onEvent(event)
-        super.onStop()
+        intent = null
     }
 
     @Composable
@@ -96,6 +77,9 @@ class MainActivity : ComponentActivity() {
 
         viewModel.mainState.shoppingUid?.let {
             navController.navigate(route = UiRoute.Products.productsScreen(it))
+
+            val event = MainEvent.OnSaveIntent(action = null, uid = null)
+            viewModel.onEvent(event)
         }
 
         LaunchedEffect(Unit) {
