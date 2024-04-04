@@ -4,8 +4,8 @@ buildscript {
         min_sdk_version = 23
         target_sdk_version = 34
 
-        app_code_version = 23
-        app_name_version = '2.3.0'
+        app_code_version = 24
+        app_name_version = '2.3.1'
 
         gradle_version = '8.3.1'
         kotlin_version = '1.8.0'
