@@ -552,6 +552,7 @@ private fun ShoppingListItemBody(
                             products = products,
                             strikethroughCompletedProducts = strikethroughCompletedProducts,
                             spacerAfterIcon = false,
+                            commaAfterProduct = true,
                             fontSize = fontSize,
                             showCheckbox = false,
                             coloredCheckbox = coloredCheckbox
@@ -581,13 +582,14 @@ private fun ShoppingsListsItemProducts(
     products: List<Pair<Boolean?, UiString>>,
     strikethroughCompletedProducts: Boolean,
     spacerAfterIcon: Boolean,
+    commaAfterProduct: Boolean = false,
     fontSize: UiFontSize,
     showCheckbox: Boolean = true,
     coloredCheckbox: Boolean
 ) {
     val itemFontSize = fontSize.itemBody
 
-    products.forEach {
+    products.forEachIndexed { index, it ->
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
@@ -638,6 +640,13 @@ private fun ShoppingsListsItemProducts(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+
+            if (commaAfterProduct && index < products.lastIndex) {
+                Text(
+                    text = ",",
+                    fontSize = itemFontSize.sp
+                )
+            }
 
             if (!spacerAfterIcon) {
                 Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
