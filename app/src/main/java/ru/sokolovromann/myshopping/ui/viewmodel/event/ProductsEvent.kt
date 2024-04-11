@@ -47,6 +47,8 @@ sealed class ProductsEvent {
 
     object OnInvertSearch : ProductsEvent()
 
+    object OnInvertPinShoppingList : ProductsEvent()
+
     data class OnMoveShoppingListSelected(val location: ShoppingLocation) : ProductsEvent()
 
     data class OnDisplayTotalSelected(val displayTotal: DisplayTotal) : ProductsEvent()

@@ -343,6 +343,10 @@ fun ProductsScreen(
                                     when (state.locationValue.selected) {
                                         ShoppingLocation.PURCHASES -> {
                                             AppDropdownMenuItem(
+                                                onClick = { viewModel.onEvent(ProductsEvent.OnInvertPinShoppingList) },
+                                                text = { Text(text = state.shoppingListPinnedValue.text.asCompose()) }
+                                            )
+                                            AppDropdownMenuItem(
                                                 onClick = { viewModel.onEvent(ProductsEvent.OnMoveShoppingListSelected(ShoppingLocation.ARCHIVE)) },
                                                 text = { Text(text = stringResource(R.string.products_action_moveShoppingListToArchive)) }
                                             )

@@ -50,6 +50,7 @@
     <string name="all_action_minusOne">- 1</string>
     <string name="all_action_moveTo">Déplacer vers</string>
     <string name="all_action_openPermissions">Autorisations d\'ouverture</string>
+    <string name="all_action_pin">Épingler</string>
     <string name="all_action_plusOne">+ 1</string>
     <string name="all_action_reverseSort">Inverse</string>
     <string name="all_action_save">Enregistrer</string>
@@ -63,6 +64,7 @@
     <string name="all_action_sortByName">Par nom</string>
     <string name="all_action_sortByTotal">Par total</string>
     <string name="all_action_unarchive">Désarchiver</string>
+    <string name="all_action_unpin">Désépingler</string>
     <string name="all_contentDescription_addAutocompleteIcon">Ajouter la saisie semi-automatique</string>
     <string name="all_contentDescription_addProductIcon">Ajouter le produit</string>
     <string name="all_contentDescription_addShoppingListIcon">Ajouter la liste de courses</string>
@@ -536,8 +538,10 @@
     <string name="shoppingLists_action_search">@string/all_action_search</string>
     <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
     <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
+    <string name="shoppingLists_action_selectPinShoppingList">@string/all_action_pin</string>
     <string name="shoppingLists_action_selectPurchasesLocation">@string/shoppingLists_header_purchases</string>
     <string name="shoppingLists_action_selectTrashLocation">@string/shoppingLists_header_trash</string>
+    <string name="shoppingLists_action_selectUnpinShoppingList">@string/all_action_unpin</string>
     <string name="shoppingLists_action_sort">@string/all_action_sort</string>
     <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
     <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>

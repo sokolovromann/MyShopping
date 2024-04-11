@@ -77,6 +77,8 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.OnInvertSearch -> onInvertSearch()
 
+            ProductsEvent.OnInvertPinShoppingList -> onInvertPinShoppingList()
+
             is ProductsEvent.OnMoveShoppingListSelected -> onMoveShoppingListSelected(event)
 
             is ProductsEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
@@ -258,6 +260,16 @@ class ProductsViewModel @Inject constructor(
         if (!display) {
             _screenEventFlow.emit(ProductsScreenEvent.OnHideKeyboard)
         }
+    }
+
+    private fun onInvertPinShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+        if (productsState.shoppingListPinnedValue.selected) {
+            shoppingListsRepository.unpinShoppingLists(listOf(shoppingUid))
+        } else {
+            shoppingListsRepository.pinShoppingLists(listOf(shoppingUid))
+        }
+
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
     }
 
     private fun onMoveShoppingListSelected(

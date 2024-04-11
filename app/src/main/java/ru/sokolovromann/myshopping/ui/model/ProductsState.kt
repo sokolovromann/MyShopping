@@ -39,6 +39,9 @@ class ProductsState {
     var reminderText: UiString by mutableStateOf(UiString.FromString(""))
         private set
 
+    var shoppingListPinnedValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
+        private set
+
     var locationValue: SelectedValue<ShoppingLocation> by mutableStateOf(SelectedValue(ShoppingLocation.DefaultValue))
         private set
 
@@ -124,6 +127,7 @@ class ProductsState {
         notFoundText = toNotFoundText(shopping.location)
         nameText = shopping.name.toUiString()
         reminderText = shopping.reminder?.toCalendar()?.getDisplayDateAndTime() ?: UiString.FromString("")
+        shoppingListPinnedValue = UiShoppingListsMapper.toShoppingListPinned(shopping.pinned)
         locationValue = UiShoppingListsMapper.toLocationValue(shopping.location)
         completed = shoppingListWithConfig.isCompleted()
         displayHiddenProducts = shoppingListWithConfig.hasHiddenProducts()

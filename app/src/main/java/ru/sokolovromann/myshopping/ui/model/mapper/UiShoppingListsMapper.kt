@@ -61,6 +61,17 @@ object UiShoppingListsMapper {
         )
     }
 
+    fun toShoppingListPinned(pinned: Boolean): SelectedValue<Boolean> {
+        return SelectedValue(
+            selected = pinned,
+            text = if (pinned) {
+                UiString.FromResources(R.string.shoppingLists_action_selectUnpinShoppingList)
+            } else {
+                UiString.FromResources(R.string.shoppingLists_action_selectPinShoppingList)
+            }
+        )
+    }
+
     fun toLocationValue(location: ShoppingLocation): SelectedValue<ShoppingLocation> {
         return SelectedValue(
             selected = location,
