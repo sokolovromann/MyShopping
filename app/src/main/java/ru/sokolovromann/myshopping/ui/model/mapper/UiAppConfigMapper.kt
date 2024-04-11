@@ -78,38 +78,51 @@ object UiAppConfigMapper {
 
     private fun toMoneyItems(appConfig: AppConfig): List<SettingItem> {
         val userPreferences = appConfig.userPreferences
-        return listOf(
+        val items = mutableListOf(
             SettingItem(
                 uid = SettingUid.DisplayMoney,
                 title = UiString.FromResources(R.string.settings_title_displayMoney),
                 body = UiString.FromResources(R.string.settings_body_displayMoney),
                 checked = userPreferences.displayMoney
-            ),
-            SettingItem(
-                uid = SettingUid.Currency,
-                title = UiString.FromResources(R.string.settings_title_currencySymbol),
-                body = UiString.FromResourcesWithArgs(R.string.settings_body_currencySymbol, userPreferences.currency.symbol),
-                checked = null
-            ),
-            SettingItem(
-                uid = SettingUid.DisplayCurrencyToLeft,
-                title = UiString.FromResources(R.string.settings_title_displayCurrencySymbolToLeft),
-                body = UiString.FromString(""),
-                checked = userPreferences.currency.displayToLeft
-            ),
-            SettingItem(
-                uid = SettingUid.DisplayMoneyZeros,
-                title = UiString.FromResources(R.string.settings_title_displayMoneyZeros),
-                body = UiString.FromResources(R.string.settings_body_displayMoneyZeros),
-                checked = userPreferences.moneyDecimalFormat.displayZerosAfterDecimal()
-            ),
-            SettingItem(
-                uid = SettingUid.TaxRate,
-                title = UiString.FromResources(R.string.settings_title_taxRate),
-                body = UiString.FromString(appConfig.userPreferences.taxRate.getDisplayValue()),
-                checked = null
             )
         )
+
+        if (userPreferences.displayMoney) {
+            items.add(
+                SettingItem(
+                    uid = SettingUid.Currency,
+                    title = UiString.FromResources(R.string.settings_title_currencySymbol),
+                    body = UiString.FromResourcesWithArgs(R.string.settings_body_currencySymbol, userPreferences.currency.symbol),
+                    checked = null
+                )
+            )
+            items.add(
+                SettingItem(
+                    uid = SettingUid.DisplayCurrencyToLeft,
+                    title = UiString.FromResources(R.string.settings_title_displayCurrencySymbolToLeft),
+                    body = UiString.FromString(""),
+                    checked = userPreferences.currency.displayToLeft
+                )
+            )
+            items.add(
+                SettingItem(
+                    uid = SettingUid.DisplayMoneyZeros,
+                    title = UiString.FromResources(R.string.settings_title_displayMoneyZeros),
+                    body = UiString.FromResources(R.string.settings_body_displayMoneyZeros),
+                    checked = userPreferences.moneyDecimalFormat.displayZerosAfterDecimal()
+                )
+            )
+            items.add(
+                SettingItem(
+                    uid = SettingUid.TaxRate,
+                    title = UiString.FromResources(R.string.settings_title_taxRate),
+                    body = UiString.FromString(appConfig.userPreferences.taxRate.getDisplayValue()),
+                    checked = null
+                )
+            )
+        }
+
+        return items
     }
 
     private fun toPurchasesItems(appConfig: AppConfig): List<SettingItem> {
