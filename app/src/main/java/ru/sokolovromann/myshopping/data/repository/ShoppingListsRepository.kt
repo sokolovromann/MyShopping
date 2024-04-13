@@ -799,6 +799,20 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
+    suspend fun deleteShoppingListsBeforeDateTime(dateTime: DateTime): Result<Unit> = withContext(dispatcher) {
+        val shoppingListEntities = shoppingListsDao.getTrash().firstOrNull()
+        if (shoppingListEntities == null) {
+            val exception = InvalidValueException("List must not be null")
+            return@withContext Result.failure(exception)
+        }
+
+        val shoppingUids = shoppingListEntities
+            .filter { it.shoppingEntity.lastModified <= dateTime.millis }
+            .map { it.shoppingEntity.uid }
+
+        return@withContext deleteShoppingLists(shoppingUids)
+    }
+
     suspend fun deleteProductsByProductUids(
         shoppingUid: String,
         productsUids: List<String>,

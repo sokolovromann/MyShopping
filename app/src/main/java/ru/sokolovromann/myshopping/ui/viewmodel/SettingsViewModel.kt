@@ -131,6 +131,10 @@ class SettingsViewModel @Inject constructor(
                 appConfigRepository.invertEnterToSaveProduct()
             }
 
+            SettingUid.AutomaticallyEmptyTrash -> {
+                appConfigRepository.invertAutomaticallyEmptyTrash()
+            }
+
             SettingUid.ColoredCheckbox -> {
                 appConfigRepository.invertColoredCheckbox()
                 _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)

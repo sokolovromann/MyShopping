@@ -39,5 +39,6 @@ data class UserPreferencesEntity(
     val minMoneyFractionDigits: Int? = null,
     val minQuantityFractionDigits: Int? = null,
     val maxMoneyFractionDigits: Int? = null,
-    val maxQuantityFractionDigits: Int? = null
+    val maxQuantityFractionDigits: Int? = null,
+    val automaticallyEmptyTrash: Boolean? = null
 )

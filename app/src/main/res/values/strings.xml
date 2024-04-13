@@ -314,6 +314,7 @@
     <string name="settings_action_selectAppNightTheme">Only app</string>
     <string name="settings_action_selectDisabledNightTheme">Disabled</string>
     <string name="settings_action_selectWidgetNightTheme">Only widget</string>
+    <string name="settings_body_automaticallyEmptyTrash">If enabled, data older than 10 days will be deleted</string>
     <string name="settings_body_backup">Export/import all app data</string>
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
@@ -339,6 +340,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_appVersion">App version</string>
+    <string name="settings_title_automaticallyEmptyTrash">Automatically empty trash</string>
     <string name="settings_title_backup">Backup</string>
     <string name="settings_title_coloredCheckbox">Colored checkboxes</string>
     <string name="settings_title_completedWithCheckbox">Completed with checkbox</string>

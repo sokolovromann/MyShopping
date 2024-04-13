@@ -249,4 +249,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
 
         return@withContext Result.success(Unit)
     }
+
+    suspend fun invertAutomaticallyEmptyTrash(): Result<Unit> = withContext(dispatcher) {
+        val valueIfNull = !UserPreferencesDefaults.AUTOMATICALLY_EMPTY_TRASH
+        appConfigDao.invertAutomaticallyEmptyTrash(valueIfNull)
+
+        return@withContext Result.success(Unit)
+    }
 }

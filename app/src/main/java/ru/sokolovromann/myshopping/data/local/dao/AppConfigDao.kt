@@ -294,6 +294,14 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun invertAutomaticallyEmptyTrash(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            val oldValue = it[DatasourceKey.User.automaticallyEmptyTrash]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.automaticallyEmptyTrash] = newValue
+        }
+    }
+
     private suspend fun saveBuildConfig(entity: AppBuildConfigEntity) {
         preferences.edit {
             it[DatasourceKey.Build.appFirstTime] = requireNotNull(entity.appFirstTime)
@@ -338,6 +346,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.minQuantityFractionDigits] = requireNotNull(entity.minQuantityFractionDigits)
             it[DatasourceKey.User.maxMoneyFractionDigits] = requireNotNull(entity.maxMoneyFractionDigits)
             it[DatasourceKey.User.maxQuantityFractionDigits] = requireNotNull(entity.maxQuantityFractionDigits)
+            it[DatasourceKey.User.automaticallyEmptyTrash] = entity.automaticallyEmptyTrash ?: false
         }
     }
 
@@ -403,7 +412,8 @@ class AppConfigDao(appContent: AppContent) {
             minMoneyFractionDigits = preferences[DatasourceKey.User.minMoneyFractionDigits],
             minQuantityFractionDigits = preferences[DatasourceKey.User.minQuantityFractionDigits],
             maxMoneyFractionDigits = preferences[DatasourceKey.User.maxMoneyFractionDigits],
-            maxQuantityFractionDigits = preferences[DatasourceKey.User.maxQuantityFractionDigits]
+            maxQuantityFractionDigits = preferences[DatasourceKey.User.maxQuantityFractionDigits],
+            automaticallyEmptyTrash = preferences[DatasourceKey.User.automaticallyEmptyTrash]
         )
     }
 
@@ -485,6 +495,7 @@ private object DatasourceKey {
         val minQuantityFractionDigits = intPreferencesKey("min_quantity_fraction_digits")
         val maxMoneyFractionDigits = intPreferencesKey("max_money_fraction_digits")
         val maxQuantityFractionDigits = intPreferencesKey("max_quantity_fraction_digits")
+        val automaticallyEmptyTrash = booleanPreferencesKey("automatically_empty_trash")
     }
 
     object CodeVersion14 {

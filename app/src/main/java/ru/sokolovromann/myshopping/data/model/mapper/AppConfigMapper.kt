@@ -131,6 +131,7 @@ object AppConfigMapper {
             minQuantityFractionDigits = userPreferences.quantityDecimalFormat.minimumFractionDigits,
             maxMoneyFractionDigits = userPreferences.moneyDecimalFormat.maximumFractionDigits,
             maxQuantityFractionDigits = userPreferences.quantityDecimalFormat.maximumFractionDigits,
+            automaticallyEmptyTrash = userPreferences.automaticallyEmptyTrash
         )
     }
 
@@ -169,7 +170,8 @@ object AppConfigMapper {
             currency = toCurrencyOrDefault(entity),
             taxRate = toTaxRateOrDefault(entity),
             moneyDecimalFormat = toMoneyDecimalFormat(entity),
-            quantityDecimalFormat = toQuantityDecimalFormat(entity)
+            quantityDecimalFormat = toQuantityDecimalFormat(entity),
+            automaticallyEmptyTrash = toAutomaticallyEmptyTrashOrDefault(entity.automaticallyEmptyTrash)
         )
     }
 
@@ -266,6 +268,10 @@ object AppConfigMapper {
 
     private fun toDisplayMoneyOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.DISPLAY_MONEY
+    }
+
+    private fun toAutomaticallyEmptyTrashOrDefault(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.AUTOMATICALLY_EMPTY_TRASH
     }
 
     private fun toCurrencyOrDefault(entity: UserPreferencesEntity): Currency {

@@ -467,6 +467,7 @@
     <string name="settings_action_selectAppNightTheme">Только приложение</string>
     <string name="settings_action_selectDisabledNightTheme">Отключено</string>
     <string name="settings_action_selectWidgetNightTheme">Только виджет</string>
+    <string name="settings_body_automaticallyEmptyTrash">Если включено, то данные старше 10 дней будут удалятся</string>
     <string name="settings_body_backup">Экспорт/импорт всех данных приложения</string>
     <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
@@ -492,6 +493,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_appVersion">Версия приложения</string>
+    <string name="settings_title_automaticallyEmptyTrash">Автоматически очищать корзину</string>
     <string name="settings_title_backup">Резервное копирование</string>
     <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>
     <string name="settings_title_completedWithCheckbox">Покупка товара нажатием на чекбокс</string>

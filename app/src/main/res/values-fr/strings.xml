@@ -472,6 +472,7 @@
     <string name="settings_action_selectAppNightTheme">Uniquement application</string>
     <string name="settings_action_selectDisabledNightTheme">Désactivé</string>
     <string name="settings_action_selectWidgetNightTheme">Uniquement widget</string>
+    <string name="settings_body_automaticallyEmptyTrash">Si activé, les données datant de plus de 10 jours seront supprimées</string>
     <string name="settings_body_backup">Exporter/importer toutes les données de l\'application</string>
     <string name="settings_body_coloredCheckbox">Si activé, les cases à cocher seront colorées en rouge ou en vert</string>
     <string name="settings_body_completedWithCheckbox">Si activé, le produit acheté est marqué en cliquant sur la case à cocher</string>
@@ -497,6 +498,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_appVersion">Version de l\'application</string>
+    <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>
     <string name="settings_title_coloredCheckbox">Cases à cocher colorées</string>
     <string name="settings_title_completedWithCheckbox">Acheter le produit en cliquant sur la case à cocher</string>

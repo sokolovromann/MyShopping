@@ -19,6 +19,7 @@ import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.CodeVersion14
 import ru.sokolovromann.myshopping.data.model.CodeVersion14Preferences
 import ru.sokolovromann.myshopping.data.model.Currency
+import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.UserPreferences
@@ -67,6 +68,7 @@ class MainViewModel @Inject constructor(
 
             when (it.getAppBuildConfig().getOpenHelper()) {
                 AppOpenHelper.Open -> {
+                    onOpenApp(it.getUserPreferences()).await()
                     mainState.onWaiting(displaySplashScreen = false)
                 }
 
@@ -91,6 +93,14 @@ class MainViewModel @Inject constructor(
             if (shoppingLists.isNotEmpty()) {
                 appShortcutManager.updateShoppingListsShortcuts(shoppingLists)
             }
+        }
+    }
+
+    private fun onOpenApp(userPreferences: UserPreferences) = viewModelScope.async {
+        if (userPreferences.automaticallyEmptyTrash) {
+            val millis = DateTime.getCurrentDateTime().millis - 864000000L // 10 days
+            val dateTime = DateTime(millis)
+            shoppingListsRepository.deleteShoppingListsBeforeDateTime(dateTime)
         }
     }
 
@@ -128,7 +138,8 @@ class MainViewModel @Inject constructor(
         )
 
         val userPreferences = UserPreferences(
-            currency = appConfigRepository.getDefaultCurrency().firstOrNull() ?: Currency()
+            currency = appConfigRepository.getDefaultCurrency().firstOrNull() ?: Currency(),
+            automaticallyEmptyTrash = true
         )
 
         val appConfig = AppConfig(
@@ -194,7 +205,8 @@ class MainViewModel @Inject constructor(
             editProductAfterCompleted = preferences.editProductAfterCompleted,
             saveProductToAutocompletes = preferences.saveProductToAutocompletes,
             displayMoney = preferences.displayMoney,
-            completedWithCheckbox = false
+            completedWithCheckbox = false,
+            automaticallyEmptyTrash = true
         )
 
         val appConfig = AppConfig(

@@ -402,6 +402,7 @@
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
     <string name="settings_action_selectWidgetNightTheme">Nur Widget</string>
+    <string name="settings_body_automaticallyEmptyTrash">Wählen Sie aus, Daten die älter als 10 Tage sind, werden gelöscht</string>
     <string name="settings_body_backup">Alle App-Daten exportieren/importieren</string>
     <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
@@ -427,6 +428,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_appVersion">App version</string>
+    <string name="settings_title_automaticallyEmptyTrash">Leeren Sie den Müll automatisch</string>
     <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>
     <string name="settings_title_completedWithCheckbox">Abgeschlossen mit Kontrollkästchen</string>

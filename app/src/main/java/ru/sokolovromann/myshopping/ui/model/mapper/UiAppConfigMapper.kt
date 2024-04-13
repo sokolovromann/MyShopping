@@ -72,6 +72,12 @@ object UiAppConfigMapper {
                 title = UiString.FromResources(R.string.settings_title_backup),
                 body = UiString.FromResources(R.string.settings_body_backup),
                 checked = null
+            ),
+            SettingItem(
+                uid = SettingUid.AutomaticallyEmptyTrash,
+                title = UiString.FromResources(R.string.settings_title_automaticallyEmptyTrash),
+                body = UiString.FromResources(R.string.settings_body_automaticallyEmptyTrash),
+                checked = userPreferences.automaticallyEmptyTrash
             )
         )
     }

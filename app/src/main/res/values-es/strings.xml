@@ -459,6 +459,7 @@
     <string name="settings_action_selectAppNightTheme">Solo aplicacion</string>
     <string name="settings_action_selectDisabledNightTheme">Desactivado</string>
     <string name="settings_action_selectWidgetNightTheme">Solo widget</string>
+    <string name="settings_body_automaticallyEmptyTrash">Si está habilitado, los datos de más de 10 días serán eliminados</string>
     <string name="settings_body_backup">Exportar/importar todos los datos de la aplicación</string>
     <string name="settings_body_coloredCheckbox">Si está habilitado, las casillas de verificación serán de color rojo o verde</string>
     <string name="settings_body_completedWithCheckbox">Si está habilitado, el producto adquirido se marca haciendo clic en la casilla de verificación</string>
@@ -484,6 +485,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_appVersion">Version de aplicacion</string>
+    <string name="settings_title_automaticallyEmptyTrash">Vaciar la papelera automáticamente</string>
     <string name="settings_title_backup">Respaldo</string>
     <string name="settings_title_coloredCheckbox">Casillas de verificación de colores</string>
     <string name="settings_title_completedWithCheckbox">Compra el producto haciendo clic en la casilla de verificación</string>

@@ -32,5 +32,6 @@ data class UserPreferences(
     val currency: Currency = UserPreferencesDefaults.getCurrency(),
     val taxRate: Money = UserPreferencesDefaults.getTaxRate(),
     val moneyDecimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat(),
-    val quantityDecimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat()
+    val quantityDecimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat(),
+    val automaticallyEmptyTrash: Boolean = UserPreferencesDefaults.AUTOMATICALLY_EMPTY_TRASH
 )
