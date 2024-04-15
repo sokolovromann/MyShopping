@@ -3,7 +3,6 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AppConfig
-import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.Settings
@@ -137,12 +136,7 @@ object UiAppConfigMapper {
             SettingItem(
                 uid = SettingUid.DisplayCompletedPurchases,
                 title = UiString.FromResources(R.string.settings_title_displayCompletedPurchases),
-                body = when (userPreferences.displayCompleted) {
-                    DisplayCompleted.FIRST -> UiString.FromResources(R.string.settings_action_displayCompletedPurchasesFirst)
-                    DisplayCompleted.LAST -> UiString.FromResources(R.string.settings_action_displayCompletedPurchasesLast)
-                    DisplayCompleted.HIDE -> UiString.FromResources(R.string.settings_action_hideCompletedPurchases)
-                    DisplayCompleted.NO_SPLIT -> UiString.FromResources(R.string.settings_action_noSplitCompletedPurchases)
-                },
+                body = UiString.FromResources(R.string.settings_body_displayCompletedPurchases),
                 checked = null
             ),
             SettingItem(

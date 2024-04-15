@@ -16,6 +16,8 @@ sealed class SettingsScreenEvent {
 
     object OnShowFontSizes : SettingsScreenEvent()
 
+    object OnShowDisplayCompleted : SettingsScreenEvent()
+
     object OnShowMaxAutocompletes : SettingsScreenEvent()
 
     data class OnShowAppGithub(val link: String) : SettingsScreenEvent()

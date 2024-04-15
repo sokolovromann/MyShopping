@@ -104,10 +104,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             SettingUid.DisplayCompletedPurchases -> {
-                settingsState.onSelectUid(
-                    expanded = true,
-                    settingUid = SettingUid.DisplayCompletedPurchases
-                )
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowDisplayCompleted)
             }
 
             SettingUid.StrikethroughCompletedProducts -> {
@@ -215,7 +212,7 @@ class SettingsViewModel @Inject constructor(
     private fun onDisplayCompletedSelected(
         event: SettingsEvent.OnDisplayCompletedSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.displayCompleted(event.displayCompleted)
+        appConfigRepository.displayCompleted(event.displayCompleted, event.displayCompleted)
         settingsState.onSelectUid(
             expanded = false,
             settingUid = SettingUid.DisplayCompletedPurchases

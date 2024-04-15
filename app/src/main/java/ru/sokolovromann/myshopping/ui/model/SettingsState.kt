@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
-import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.Settings
@@ -23,9 +22,6 @@ class SettingsState {
         private set
 
     var nightTheme: SelectedValue<NightTheme> by mutableStateOf(SelectedValue(NightTheme.DefaultValue))
-        private set
-
-    var displayCompletedValue: SelectedValue<DisplayCompleted> by mutableStateOf(SelectedValue(DisplayCompleted.DefaultValue))
         private set
 
     var displayProductsValue: SelectedValue<DisplayProducts> by mutableStateOf(SelectedValue(DisplayProducts.DefaultValue))
@@ -50,7 +46,6 @@ class SettingsState {
         settings = UiAppConfigMapper.toSettingItems(settingsWithConfig)
         selectedUid = null
         nightTheme = toNightThemeValue(userPreferences.nightTheme)
-        displayCompletedValue = toDisplayCompletedValue(userPreferences.displayCompleted)
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
@@ -80,20 +75,6 @@ class SettingsState {
                 NightTheme.APP -> UiString.FromResources(R.string.settings_action_selectAppNightTheme)
                 NightTheme.WIDGET -> UiString.FromResources(R.string.settings_action_selectWidgetNightTheme)
                 NightTheme.APP_AND_WIDGET -> UiString.FromResources(R.string.settings_action_selectAppAndWidgetNightTheme)
-            }
-        )
-    }
-
-    private fun toDisplayCompletedValue(
-        displayCompleted: DisplayCompleted
-    ): SelectedValue<DisplayCompleted> {
-        return SelectedValue(
-            selected = displayCompleted,
-            text = when (displayCompleted) {
-                DisplayCompleted.FIRST -> UiString.FromResources(R.string.settings_action_displayCompletedPurchasesFirst)
-                DisplayCompleted.LAST -> UiString.FromResources(R.string.settings_action_displayCompletedPurchasesLast)
-                DisplayCompleted.HIDE -> UiString.FromResources(R.string.settings_action_hideCompletedPurchases)
-                DisplayCompleted.NO_SPLIT -> UiString.FromResources(R.string.settings_action_noSplitCompletedPurchases)
             }
         )
     }

@@ -22,7 +22,6 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
-import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
@@ -81,6 +80,10 @@ fun SettingsScreen(
 
                 SettingsScreenEvent.OnShowFontSizes -> navController.navigate(
                     route = UiRoute.Settings.fontSizesScreen
+                )
+
+                SettingsScreenEvent.OnShowDisplayCompleted -> navController.navigate(
+                    route = UiRoute.Settings.displayCompletedScreen
                 )
 
                 is SettingsScreenEvent.OnShowAppGithub -> navController.chooseNavigate(
@@ -178,20 +181,6 @@ fun SettingsScreen(
                             onSelected = { nightTheme ->
                                 val event = SettingsEvent.OnNightThemeSelected(nightTheme)
                                 viewModel.onEvent(event)
-                            }
-                        )
-                    }
-
-                    SettingUid.DisplayCompletedPurchases -> {
-                        SettingsDisplayCompletedMenu(
-                            expanded = it == state.selectedUid,
-                            displayCompleted = state.displayCompletedValue.selected,
-                            onDismissRequest = {
-                                val event = SettingsEvent.OnSelectSettingItem(false, SettingUid.DisplayCompletedPurchases)
-                                viewModel.onEvent(event)
-                            },
-                            onSelected = { displayCompleted ->
-                                viewModel.onEvent(SettingsEvent.OnDisplayCompletedSelected(displayCompleted))
                             }
                         )
                     }
@@ -310,40 +299,6 @@ private fun SettingsNightThemeMenu(
             onClick = { onSelected(NightTheme.APP_AND_WIDGET) },
             text = { Text(text = stringResource(R.string.settings_action_selectAppAndWidgetNightTheme)) },
             right = { CheckmarkAppCheckbox(checked = nightTheme == NightTheme.APP_AND_WIDGET) }
-        )
-    }
-}
-
-@Composable
-private fun SettingsDisplayCompletedMenu(
-    expanded: Boolean,
-    displayCompleted: DisplayCompleted,
-    onDismissRequest: () -> Unit,
-    onSelected: (DisplayCompleted) -> Unit
-) {
-    AppDropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest
-    ) {
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayCompleted.FIRST) },
-            text = { Text(text = stringResource(R.string.settings_action_displayCompletedPurchasesFirst)) },
-            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.FIRST) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayCompleted.LAST) },
-            text = { Text(text = stringResource(R.string.settings_action_displayCompletedPurchasesLast)) },
-            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.LAST) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayCompleted.HIDE) },
-            text = { Text(text = stringResource(R.string.settings_action_hideCompletedPurchases)) },
-            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.HIDE) }
-        )
-        AppDropdownMenuItem(
-            onClick = { onSelected(DisplayCompleted.NO_SPLIT) },
-            text = { Text(text = stringResource(R.string.settings_action_noSplitCompletedPurchases)) },
-            right = { CheckmarkAppCheckbox(checked = displayCompleted == DisplayCompleted.NO_SPLIT) }
         )
     }
 }
