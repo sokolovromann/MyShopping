@@ -330,6 +330,16 @@
     <string name="data_text_developerName">Роман Соколов</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
+    <string name="displayCompleted_action_cancelSavingDisplayCompleted">@string/all_action_cancel</string>
+    <string name="displayCompleted_action_displayCompletedFirst">В начале</string>
+    <string name="displayCompleted_action_displayCompletedLast">В конце</string>
+    <string name="displayCompleted_action_hideCompleted">Скрывать</string>
+    <string name="displayCompleted_action_noSplitCompleted">Без разделения</string>
+    <string name="displayCompleted_action_saveDisplayCompleted">@string/all_action_save</string>
+    <string name="displayCompleted_header">Показывать купленные списки и товары</string>
+    <string name="displayCompleted_text_appDisplayCompleted">Приложение</string>
+    <string name="displayCompleted_text_widgetDisplayCompleted">Виджет</string>
+
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -459,10 +469,6 @@
     <string name="products_text_totalFormatted">Изменено: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="settings_action_displayCompletedPurchasesFirst">В начале</string>
-    <string name="settings_action_displayCompletedPurchasesLast">В конце</string>
-    <string name="settings_action_hideCompletedPurchases">Скрывать</string>
-    <string name="settings_action_noSplitCompletedPurchases">Без разделения</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Приложение и виджет</string>
     <string name="settings_action_selectAppNightTheme">Только приложение</string>
     <string name="settings_action_selectDisabledNightTheme">Отключено</string>
@@ -472,6 +478,7 @@
     <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
+    <string name="settings_body_displayCompletedPurchases">Нажмите, чтобы выбрать</string>
     <string name="settings_body_displayMoney">Если включено, то деньги и поля для ввода будут отображаться</string>
     <string name="settings_body_displayMoneyZeros">Если включено, то нули будут всегда отображаться</string>
     <string name="settings_body_displayOtherFields">Марка, размер, цвет и т.д.</string>
@@ -499,7 +506,7 @@
     <string name="settings_title_completedWithCheckbox">Покупка товара нажатием на чекбокс</string>
     <string name="settings_title_currencySymbol">Валюта</string>
     <string name="settings_title_developer">Разработчик</string>
-    <string name="settings_title_displayCompletedPurchases">Показывать купленные товары</string>
+    <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
     <string name="settings_title_displayDefaultAutocompletes">Показывать подсказки по-умолчанию</string>
     <string name="settings_title_displayMoney">Показывать деньги</string>

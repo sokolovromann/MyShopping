@@ -265,6 +265,16 @@
     <string name="data_text_developerName">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
+    <string name="displayCompleted_action_cancelSavingDisplayCompleted">@string/all_action_cancel</string>
+    <string name="displayCompleted_action_displayCompletedFirst">Zuerst</string>
+    <string name="displayCompleted_action_displayCompletedLast">Letzte</string>
+    <string name="displayCompleted_action_hideCompleted">Verstecken</string>
+    <string name="displayCompleted_action_noSplitCompleted">Keine Trennung</string>
+    <string name="displayCompleted_action_saveDisplayCompleted">@string/all_action_save</string>
+    <string name="displayCompleted_header">Fertige produkte anzeigen</string>
+    <string name="displayCompleted_text_appDisplayCompleted">Anwendung</string>
+    <string name="displayCompleted_text_widgetDisplayCompleted">Widget</string>
+
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -394,10 +404,6 @@
     <string name="products_text_totalFormatted">Bearbeitet: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="settings_action_displayCompletedPurchasesFirst">Zuerst</string>
-    <string name="settings_action_displayCompletedPurchasesLast">Letzte</string>
-    <string name="settings_action_hideCompletedPurchases">Verstecken</string>
-    <string name="settings_action_noSplitCompletedPurchases">Keine Trennung</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Anwendung und Widget</string>
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
@@ -407,6 +413,7 @@
     <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
+    <string name="settings_body_displayCompletedPurchases">Zum Auswählen tippen</string>
     <string name="settings_body_displayMoney">Wenn aktiviert, werden Geld und Felder angezeigt</string>
     <string name="settings_body_displayMoneyZeros">Wenn aktiviert, werden immer Nullen angezeigt</string>
     <string name="settings_body_displayOtherFields">Marke, Größe, Farbe usw.</string>
@@ -434,7 +441,7 @@
     <string name="settings_title_completedWithCheckbox">Abgeschlossen mit Kontrollkästchen</string>
     <string name="settings_title_currencySymbol">Währung</string>
     <string name="settings_title_developer">Entwickler</string>
-    <string name="settings_title_displayCompletedPurchases">Fertige produkte anzeigen</string>
+    <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
     <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
     <string name="settings_title_displayMoney">Geld anzeigen</string>

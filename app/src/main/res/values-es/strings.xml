@@ -322,6 +322,16 @@
     <string name="data_text_developerName">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
+    <string name="displayCompleted_action_cancelSavingDisplayCompleted">@string/all_action_cancel</string>
+    <string name="displayCompleted_action_displayCompletedFirst">Primero</string>
+    <string name="displayCompleted_action_displayCompletedLast">Último</string>
+    <string name="displayCompleted_action_hideCompleted">Esconder</string>
+    <string name="displayCompleted_action_noSplitCompleted">Sin división</string>
+    <string name="displayCompleted_action_saveDisplayCompleted">@string/all_action_save</string>
+    <string name="displayCompleted_header">Mostrar productos comprados</string>
+    <string name="displayCompleted_text_appDisplayCompleted">Aplicación</string>
+    <string name="displayCompleted_text_widgetDisplayCompleted">Widget</string>
+
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -451,10 +461,6 @@
     <string name="products_text_totalFormatted">Modificado: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="settings_action_displayCompletedPurchasesFirst">Primero</string>
-    <string name="settings_action_displayCompletedPurchasesLast">Último</string>
-    <string name="settings_action_hideCompletedPurchases">Esconder</string>
-    <string name="settings_action_noSplitCompletedPurchases">Sin división</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Aplicación y widget</string>
     <string name="settings_action_selectAppNightTheme">Solo aplicacion</string>
     <string name="settings_action_selectDisabledNightTheme">Desactivado</string>
@@ -464,6 +470,7 @@
     <string name="settings_body_coloredCheckbox">Si está habilitado, las casillas de verificación serán de color rojo o verde</string>
     <string name="settings_body_completedWithCheckbox">Si está habilitado, el producto adquirido se marca haciendo clic en la casilla de verificación</string>
     <string name="settings_body_currencySymbol">Símbolo: %s</string>
+    <string name="settings_body_displayCompletedPurchases">Toque para seleccionar</string>
     <string name="settings_body_displayMoney">Si está habilitado, se mostrarán los campos de dinero y de entrada</string>
     <string name="settings_body_displayMoneyZeros">Si está habilitado, los ceros siempre se mostrarán</string>
     <string name="settings_body_displayOtherFields">Marca, talla, color, etc.</string>
@@ -491,7 +498,7 @@
     <string name="settings_title_completedWithCheckbox">Compra el producto haciendo clic en la casilla de verificación</string>
     <string name="settings_title_currencySymbol">Moneda</string>
     <string name="settings_title_developer">Desarrollador</string>
-    <string name="settings_title_displayCompletedPurchases">Mostrar productos comprados</string>
+    <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Mostrar moneda a la izquierda</string>
     <string name="settings_title_displayDefaultAutocompletes">Mostrar autocompletados predeterminados</string>
     <string name="settings_title_displayMoney">Mostrar dinero</string>

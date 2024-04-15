@@ -177,6 +177,16 @@
     <string name="data_text_developerName">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
 
+    <string name="displayCompleted_action_cancelSavingDisplayCompleted">@string/all_action_cancel</string>
+    <string name="displayCompleted_action_displayCompletedFirst">First</string>
+    <string name="displayCompleted_action_displayCompletedLast">Last</string>
+    <string name="displayCompleted_action_hideCompleted">Hide</string>
+    <string name="displayCompleted_action_noSplitCompleted">No split</string>
+    <string name="displayCompleted_action_saveDisplayCompleted">@string/all_action_save</string>
+    <string name="displayCompleted_header">Display completed</string>
+    <string name="displayCompleted_text_appDisplayCompleted">App</string>
+    <string name="displayCompleted_text_widgetDisplayCompleted">Widget</string>
+
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -306,10 +316,6 @@
     <string name="products_text_totalFormatted">Edited: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
 
-    <string name="settings_action_displayCompletedPurchasesFirst">First</string>
-    <string name="settings_action_displayCompletedPurchasesLast">Last</string>
-    <string name="settings_action_hideCompletedPurchases">Hide</string>
-    <string name="settings_action_noSplitCompletedPurchases">No split</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">App and widget</string>
     <string name="settings_action_selectAppNightTheme">Only app</string>
     <string name="settings_action_selectDisabledNightTheme">Disabled</string>
@@ -319,6 +325,7 @@
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
+    <string name="settings_body_displayCompletedPurchases">Tap to select</string>
     <string name="settings_body_displayMoney">If enabled, money and fields will be displayed</string>
     <string name="settings_body_displayMoneyZeros">If enabled, zeros will always be displayed</string>
     <string name="settings_body_displayOtherFields">Brand, size, color, etc.</string>
@@ -346,7 +353,7 @@
     <string name="settings_title_completedWithCheckbox">Completed with checkbox</string>
     <string name="settings_title_currencySymbol">Currency</string>
     <string name="settings_title_developer">Developer</string>
-    <string name="settings_title_displayCompletedPurchases">Display completed</string>
+    <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
     <string name="settings_title_displayMoney">Display money</string>
