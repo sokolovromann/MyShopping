@@ -62,13 +62,16 @@ class ProductsWidgetState {
         val shopping = shoppingListWithConfig.getShopping()
         val userPreferences = shoppingListWithConfig.getUserPreferences()
         pinnedProducts = UiShoppingListsMapper.toPinnedSortedProductWidgetItems(shoppingListWithConfig)
-        otherProducts = UiShoppingListsMapper.toOtherSortedProductWidgetItems(shoppingListWithConfig)
+        otherProducts = UiShoppingListsMapper.toOtherSortedProductWidgetItems(
+            shoppingListWithConfig,
+            userPreferences.widgetDisplayCompleted
+        )
         nameText = shopping.name.toUiString()
         totalText = shopping.total.getDisplayValue().toUiString()
         coloredCheckbox = userPreferences.coloredCheckbox
         completedWithCheckbox = userPreferences.completedWithCheckbox
         completed = shoppingListWithConfig.isCompleted()
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.widgetDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         displayMoney = userPreferences.displayMoney
         nightTheme = userPreferences.nightTheme

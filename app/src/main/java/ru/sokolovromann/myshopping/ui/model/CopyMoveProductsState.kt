@@ -73,7 +73,7 @@ class CopyMoveProductsState {
         )
         displayHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         displayProducts = userPreferences.displayShoppingsProducts
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.appDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)

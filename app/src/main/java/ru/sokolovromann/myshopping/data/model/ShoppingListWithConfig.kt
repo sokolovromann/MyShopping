@@ -10,13 +10,13 @@ class ShoppingListWithConfig(
     }
 
     fun getSortedProducts(
-        displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted
     ): List<Product> {
         return shoppingList.getSortedProducts(displayCompleted)
     }
 
     fun getPinnedOtherSortedProducts(
-        displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted
     ): Pair<List<Product>, List<Product>> {
         return shoppingList.getPinnedOtherSortedProducts(displayCompleted)
     }
@@ -85,7 +85,7 @@ class ShoppingListWithConfig(
     }
 
     fun hasHiddenProducts(): Boolean {
-        val hideCompleted = getUserPreferences().displayCompleted == DisplayCompleted.HIDE
+        val hideCompleted = getUserPreferences().appDisplayCompleted == DisplayCompleted.HIDE
         val hasCompletedProducts = shoppingList.products.find { it.completed } != null
         return hideCompleted && hasCompletedProducts
     }

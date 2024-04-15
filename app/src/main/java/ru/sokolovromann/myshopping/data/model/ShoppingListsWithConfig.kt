@@ -9,13 +9,13 @@ data class ShoppingListsWithConfig(
 ) {
 
     fun getSortedShoppingLists(
-        displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted
     ): List<ShoppingList> {
         return getPinnedOtherSortedShoppingLists(displayCompleted).toShoppingsList()
     }
 
     fun getPinnedOtherSortedShoppingLists(
-        displayCompleted: DisplayCompleted = getUserPreferences().displayCompleted
+        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted
     ): Pair<List<ShoppingList>, List<ShoppingList>> {
         val sort = if (appConfig.userPreferences.shoppingsSortFormatted) {
             appConfig.userPreferences.shoppingsSort
@@ -74,7 +74,7 @@ data class ShoppingListsWithConfig(
     }
 
     fun hasHiddenShoppingLists(): Boolean {
-        val hideCompleted = getUserPreferences().displayCompleted == DisplayCompleted.HIDE
+        val hideCompleted = getUserPreferences().appDisplayCompleted == DisplayCompleted.HIDE
         val hasCompletedShoppingLists = shoppingLists.find { it.isCompleted() } != null
         return hideCompleted && hasCompletedShoppingLists
     }

@@ -642,7 +642,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     ascending = sort.ascending
                 )
 
-                val displayCompleted = shoppingListsWithConfig.getUserPreferences().displayCompleted
+                val displayCompleted = shoppingListsWithConfig.getUserPreferences().appDisplayCompleted
                 shoppingLists.sortedShoppingLists(sort, displayCompleted)
                     .forEachIndexed { shoppingIndex, shoppingList ->
                         shoppingListsDao.updatePosition(
@@ -723,7 +723,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     lastModified = lastModified.millis
                 )
 
-                val displayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
+                val displayCompleted = shoppingListWithConfig.getUserPreferences().appDisplayCompleted
                 products.sortedProducts(sort, displayCompleted)
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(
@@ -774,7 +774,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     )
                 }
 
-                val displayCompleted = shoppingListWithConfig.getUserPreferences().displayCompleted
+                val displayCompleted = shoppingListWithConfig.getUserPreferences().appDisplayCompleted
                 products.sortedProducts(sort, displayCompleted)
                     .forEachIndexed { index, product ->
                         productsDao.updatePosition(

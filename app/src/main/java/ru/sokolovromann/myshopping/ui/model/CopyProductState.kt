@@ -69,7 +69,7 @@ class CopyProductState {
         )
         displayHiddenShoppingLists = shoppingListsWithConfig.hasHiddenShoppingLists()
         displayProducts = userPreferences.displayShoppingsProducts
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.appDisplayCompleted
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()

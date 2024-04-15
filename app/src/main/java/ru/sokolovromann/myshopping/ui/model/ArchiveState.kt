@@ -93,7 +93,7 @@ class ArchiveState {
         selectedUids = null
         displayProducts = userPreferences.displayShoppingsProducts
         expandedDisplayProducts = false
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.appDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())

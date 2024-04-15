@@ -158,9 +158,13 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun displayCompleted(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun displayCompleted(
+        appDisplayCompleted: String,
+        widgetDisplayCompleted: String
+    ) = withContext(AppDispatchers.IO) {
         preferences.edit {
-            it[DatasourceKey.User.displayCompleted] = value
+            it[DatasourceKey.User.displayCompleted] = appDisplayCompleted
+            it[DatasourceKey.User.widgetDisplayCompleted] = widgetDisplayCompleted
         }
     }
 
@@ -320,7 +324,8 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.shoppingsSortAscending] = entity.shoppingsSortAscending ?: true
             it[DatasourceKey.User.shoppingsSortFormatted] = entity.shoppingsSortFormatted ?: false
             it[DatasourceKey.User.productsMultiColumns] = requireNotNull(entity.productsMultiColumns)
-            it[DatasourceKey.User.displayCompleted] = requireNotNull(entity.displayCompleted)
+            it[DatasourceKey.User.displayCompleted] = entity.displayCompleted ?: ""
+            it[DatasourceKey.User.widgetDisplayCompleted] = entity.widgetDisplayCompleted ?: (entity.displayCompleted ?: "")
             it[DatasourceKey.User.strikethroughCompletedProducts] = entity.strikethroughCompletedProducts ?: false
             it[DatasourceKey.User.displayTotal] = requireNotNull(entity.displayTotal)
             it[DatasourceKey.User.displayOtherFields] = requireNotNull(entity.displayOtherFields)
@@ -387,6 +392,7 @@ class AppConfigDao(appContent: AppContent) {
             shoppingsSortFormatted = preferences[DatasourceKey.User.shoppingsSortFormatted],
             productsMultiColumns = preferences[DatasourceKey.User.productsMultiColumns],
             displayCompleted = preferences[DatasourceKey.User.displayCompleted],
+            widgetDisplayCompleted = preferences[DatasourceKey.User.widgetDisplayCompleted],
             strikethroughCompletedProducts = preferences[DatasourceKey.User.strikethroughCompletedProducts],
             displayTotal = preferences[DatasourceKey.User.displayTotal],
             displayLongTotal = preferences[DatasourceKey.User.displayLongTotal],
@@ -474,6 +480,7 @@ private object DatasourceKey {
         val shoppingsSortFormatted = booleanPreferencesKey("shoppings_sort_formatted")
         val productsMultiColumns = booleanPreferencesKey("products_multi_columns")
         val displayCompleted = stringPreferencesKey("display_completed_purchases")
+        val widgetDisplayCompleted = stringPreferencesKey("widget_display_completed_purchases")
         val strikethroughCompletedProducts = booleanPreferencesKey("strikethrough_completed_products")
         val displayTotal = stringPreferencesKey("display_purchases_total")
         val displayLongTotal = booleanPreferencesKey("display_long_purchases_total")

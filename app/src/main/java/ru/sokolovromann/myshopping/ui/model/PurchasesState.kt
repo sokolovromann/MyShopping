@@ -102,7 +102,7 @@ class PurchasesState {
         selectedUids = if (savedSelectedUid.isEmpty()) null else listOf(savedSelectedUid)
         displayProducts = userPreferences.displayShoppingsProducts
         expandedDisplayProducts = false
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.appDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())

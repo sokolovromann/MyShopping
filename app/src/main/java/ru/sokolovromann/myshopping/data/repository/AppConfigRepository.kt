@@ -110,9 +110,13 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
     }
 
     suspend fun displayCompleted(
-        displayCompleted: DisplayCompleted
+        appDisplayCompleted: DisplayCompleted,
+        widgetDisplayCompleted: DisplayCompleted
     ): Result<Unit> = withContext(dispatcher) {
-        appConfigDao.displayCompleted(displayCompleted.name)
+        appConfigDao.displayCompleted(
+            appDisplayCompleted = appDisplayCompleted.name,
+            widgetDisplayCompleted = widgetDisplayCompleted.name
+        )
         return@withContext Result.success(Unit)
     }
 

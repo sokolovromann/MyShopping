@@ -51,7 +51,7 @@ class TrashState {
         shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(shoppingListsWithConfig)
         selectedUids = null
         displayProducts = userPreferences.displayShoppingsProducts
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.appDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)

@@ -132,7 +132,7 @@ class ProductsState {
         completed = shoppingListWithConfig.isCompleted()
         displayHiddenProducts = shoppingListWithConfig.hasHiddenProducts()
         selectedUids = if (savedSelectedUid.isEmpty()) null else listOf(savedSelectedUid)
-        displayCompleted = userPreferences.displayCompleted
+        displayCompleted = userPreferences.appDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
         completedWithCheckbox = userPreferences.completedWithCheckbox
