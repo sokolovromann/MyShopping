@@ -78,6 +78,7 @@ sealed class UiRoute(val graph: String) {
         const val editTaxRateScreen = "edit-tax-rate"
         const val backupScreen = "backup-screen"
         const val maxAutocompletesScreen = "max-autocompletes-screen"
+        const val displayCompletedScreen = "display-completed-screen"
     }
 
     fun toDrawerScreen(): DrawerScreen = when (this) {
@@ -249,6 +250,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         }
         dialog(route = UiRoute.Settings.maxAutocompletesScreen) {
             MaxAutocompletesScreen(navController)
+        }
+        dialog(route = UiRoute.Settings.displayCompletedScreen) {
+            DisplayCompletedScreen(navController)
         }
     }
 }
