@@ -11,7 +11,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -85,7 +84,6 @@ fun AppTimePickerDialog(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun AppDialogImpl(
     modifier: Modifier = Modifier,
@@ -135,7 +133,7 @@ private fun AppDialogImpl(
 @Composable
 private fun ProvideAppDialogHeaderTextStyle(contentColor: Color, content: @Composable () -> Unit) {
     ProvideTextStyle(
-        value = MaterialTheme.typography.h5.copy(color = contentColor),
+        value = MaterialTheme.typography.h6.copy(color = contentColor),
         content = content
     )
 }
