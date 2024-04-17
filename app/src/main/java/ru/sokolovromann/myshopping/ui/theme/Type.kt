@@ -6,79 +6,72 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-sealed class AppTypography(val textStyle: TextStyle) {
-    object H5 : AppTypography(
-        TextStyle(
+fun createTypography(): Typography {
+    return Typography(
+        h1 = TextStyle(
+            fontWeight = FontWeight.Light,
+            fontSize = 96.sp,
+            letterSpacing = (-1.5).sp
+        ),
+        h2 = TextStyle(
+            fontWeight = FontWeight.Light,
+            fontSize = 60.sp,
+            letterSpacing = (-0.5).sp
+        ),
+        h3 = TextStyle(
+            fontWeight = FontWeight.Normal,
+            fontSize = 48.sp,
+            letterSpacing = 0.sp
+        ),
+        h4 = TextStyle(
+            fontWeight = FontWeight.Normal,
+            fontSize = 34.sp,
+            letterSpacing = 0.25.sp
+        ),
+        h5 = TextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 24.sp,
             letterSpacing = 0.sp
-        )
-    )
-
-    object H6 : AppTypography(
-        TextStyle(
+        ),
+        h6 = TextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 20.sp,
             letterSpacing = 0.15.sp
-        )
-    )
-
-    object Subtitle1 : AppTypography(
-        TextStyle(
+        ),
+        subtitle1 = TextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             letterSpacing = 0.15.sp
-        )
-    )
-
-    object Subtitle2 : AppTypography(
-        TextStyle(
+        ),
+        subtitle2 = TextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
             letterSpacing = 0.1.sp
-        )
-    )
-
-    object Body1 : AppTypography(
-        TextStyle(
+        ),
+        body1 = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp
-        )
-    )
-
-    object Body2 : AppTypography(
-        TextStyle(
+        ),
+        body2 = TextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
             letterSpacing = 0.25.sp
-        )
-    )
-
-    object Caption : AppTypography(
-        TextStyle(
+        ),
+        button = TextStyle(
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            letterSpacing = 1.25.sp
+        ),
+        caption = TextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             letterSpacing = 0.4.sp
-        )
-    )
-
-    object Overline : AppTypography(
-        TextStyle(
+        ),
+        overline = TextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 10.sp,
             letterSpacing = 1.5.sp
         )
     )
 }
-
-val Typography = Typography(
-    h5 = AppTypography.H5.textStyle,
-    h6 = AppTypography.H6.textStyle,
-    subtitle1 = AppTypography.Subtitle1.textStyle,
-    subtitle2 = AppTypography.Subtitle2.textStyle,
-    body1 = AppTypography.Body1.textStyle,
-    body2 = AppTypography.Body2.textStyle,
-    caption = AppTypography.Caption.textStyle,
-    overline = AppTypography.Overline.textStyle
-)

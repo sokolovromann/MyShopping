@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.theme
 
+import androidx.compose.material.Typography
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -38,7 +39,11 @@ private val DarkColorPalette = darkColors(
 )
 
 @Composable
-fun MyShoppingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun MyShoppingTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    typography: Typography = createTypography(),
+    content: @Composable () -> Unit
+) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -47,7 +52,7 @@ fun MyShoppingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = typography,
         shapes = Shapes,
         content = content
     )
