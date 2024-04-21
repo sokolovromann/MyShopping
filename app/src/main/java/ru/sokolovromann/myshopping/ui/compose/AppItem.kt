@@ -282,7 +282,7 @@ private fun ProvideAppItemTitleTextStyle(contentColor: Color, content: @Composab
 private fun ProvideAppItemBodyTextStyle(contentColor: Color, content: @Composable () -> Unit) {
     val color = contentColor.copy(alpha = ContentAlpha.medium)
     ProvideTextStyle(
-        value = MaterialTheme.typography.body1.copy(color = color),
+        value = MaterialTheme.typography.body2.copy(color = color),
         content = content
     )
 }
