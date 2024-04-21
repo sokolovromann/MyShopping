@@ -16,6 +16,7 @@ import ru.sokolovromann.myshopping.ui.theme.FontSizeOffset
 
 object UiAppConfigMapper {
 
+    @Deprecated("Use toFontSizeOffset(FontSize)")
     fun toUiFontSize(fontSize: FontSize): UiFontSize {
         val default: UiFontSize = UiFontSize.Default
         val offset: Int = when (fontSize) {

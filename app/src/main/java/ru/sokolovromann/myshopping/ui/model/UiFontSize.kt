@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.model
 
+@Deprecated("Use FontSizeOffset(Int)")
 data class UiFontSize(
     val itemTitle: Int,
     val itemBody: Int,
