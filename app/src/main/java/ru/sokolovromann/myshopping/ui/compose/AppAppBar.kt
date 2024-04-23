@@ -22,7 +22,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -130,7 +129,7 @@ private fun AppAppBarComposition(
     textColor: Color = contentColor,
     content: @Composable () -> Unit
 ) {
-    val textStyle = TextStyle.Default.copy(color = textColor)
+    val textStyle = LocalTextStyle.current.copy(color = textColor)
 
     CompositionLocalProvider(
         values = arrayOf(
