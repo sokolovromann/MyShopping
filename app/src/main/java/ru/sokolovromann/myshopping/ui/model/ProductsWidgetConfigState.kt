@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
+import ru.sokolovromann.myshopping.ui.theme.FontSizeOffset
 
 class ProductsWidgetConfigState {
 
@@ -46,6 +47,9 @@ class ProductsWidgetConfigState {
     var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
+    var fontSizeOffset: FontSizeOffset by mutableStateOf(FontSizeOffset())
+        private set
+
     var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
@@ -65,6 +69,7 @@ class ProductsWidgetConfigState {
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
+        fontSizeOffset = UiAppConfigMapper.toFontSizeOffset(userPreferences.appFontSize)
         fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }

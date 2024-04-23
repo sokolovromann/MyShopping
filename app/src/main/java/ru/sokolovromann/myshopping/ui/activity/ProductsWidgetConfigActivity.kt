@@ -31,6 +31,7 @@ import ru.sokolovromann.myshopping.ui.compose.AppScaffold
 import ru.sokolovromann.myshopping.ui.compose.ShoppingListsGrid
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
+import ru.sokolovromann.myshopping.ui.theme.createTypography
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgetState
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsWidgetConfigViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsWidgetConfigEvent
@@ -57,6 +58,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
         setContent {
             MyShoppingTheme(
                 darkTheme = productsWidgetConfigState.nightTheme.isAppNightTheme(),
+                typography = createTypography(productsWidgetConfigState.fontSizeOffset),
                 content = { ProductsWidgetConfigContent() }
             )
         }

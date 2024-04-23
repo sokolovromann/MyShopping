@@ -19,6 +19,7 @@ import ru.sokolovromann.myshopping.ui.productsGraph
 import ru.sokolovromann.myshopping.ui.purchasesGraph
 import ru.sokolovromann.myshopping.ui.settingsGraph
 import ru.sokolovromann.myshopping.ui.theme.MyShoppingTheme
+import ru.sokolovromann.myshopping.ui.theme.createTypography
 import ru.sokolovromann.myshopping.ui.trashGraph
 import ru.sokolovromann.myshopping.ui.viewmodel.MainViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyShoppingTheme(
                 darkTheme = mainState.nightTheme.isAppNightTheme(),
+                typography = createTypography(mainState.fontSizeOffset),
                 content = { MainContent() }
             )
         }
