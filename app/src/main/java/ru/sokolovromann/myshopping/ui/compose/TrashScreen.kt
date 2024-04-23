@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -133,24 +132,18 @@ fun TrashScreen(
             topBar = {
                 TextButton(
                     modifier = Modifier.padding(TrashGridBarPaddings),
-                    onClick = { viewModel.onEvent(TrashEvent.OnClickEmptyTrash) }
-                ) {
-                    Text(
-                        text = stringResource(R.string.shoppingLists_action_deleteShoppingLists),
-                        fontSize = state.fontSize.button.sp
-                    )
-                }
+                    onClick = { viewModel.onEvent(TrashEvent.OnClickEmptyTrash) },
+                    content = { Text(text = stringResource(R.string.shoppingLists_action_deleteShoppingLists)) }
+                )
             },
             isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.shoppingLists_text_trashShoppingListsNotFound),
-                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
             isNotFound = state.isNotFound(),
-            fontSize = state.fontSize,
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {

@@ -8,7 +8,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
@@ -23,9 +22,6 @@ class EditShoppingListTotalState {
         private set
 
     var waiting: Boolean by mutableStateOf(true)
-        private set
-
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
         private set
 
     fun populate(shoppingListWithConfig: ShoppingListWithConfig) {
@@ -43,7 +39,6 @@ class EditShoppingListTotalState {
             "".toTextFieldValue()
         }
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
     }
 
     fun onTotalValueChanged(value: TextFieldValue) {

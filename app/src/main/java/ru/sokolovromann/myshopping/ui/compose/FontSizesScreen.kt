@@ -13,14 +13,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.ui.compose.event.FontSizesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.viewmodel.FontSizesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.FontSizesEvent
 
@@ -75,8 +73,7 @@ fun FontSizeScreen(
                 onSelected = {
                     val event = FontSizesEvent.OnAppFontSizeSelected(it)
                     viewModel.onEvent(event)
-                },
-                fontSize = state.fontSize
+                }
             )
 
             Spacer(modifier = Modifier.size(FontSizesSpacerSize))
@@ -96,8 +93,7 @@ fun FontSizeScreen(
                 onSelected = {
                     val event = FontSizesEvent.OnWidgetFontSizeSelected(it)
                     viewModel.onEvent(event)
-                },
-                fontSize = state.fontSize
+                }
             )
         }
     }
@@ -110,25 +106,14 @@ private fun FontSizeItem(
     onSelect: () -> Unit,
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    onSelected: (FontSize) -> Unit,
-    fontSize: UiFontSize
+    onSelected: (FontSize) -> Unit
 ) {
     val selected = selectedFontSize.selected
 
     AppItem(
         onClick = onSelect,
-        title = {
-            Text(
-                text = title,
-                fontSize = fontSize.itemTitle.sp
-            )
-        },
-        body = {
-            Text(
-                text = selectedFontSize.text.asCompose(),
-                fontSize = fontSize.itemBody.sp
-            )
-        },
+        title = { Text(text = title) },
+        body = { Text(text = selectedFontSize.text.asCompose()) },
         dropdownMenu = {
             AppDropdownMenu(
                 expanded = expanded,

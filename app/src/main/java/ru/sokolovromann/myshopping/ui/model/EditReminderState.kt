@@ -12,7 +12,6 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.utils.setDate
 import ru.sokolovromann.myshopping.data.utils.setTime
 import ru.sokolovromann.myshopping.data.utils.toDateTime
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import java.util.Calendar
 
 class EditReminderState {
@@ -40,9 +39,6 @@ class EditReminderState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     fun populate(shoppingListWithConfig: ShoppingListWithConfig, correctReminderPermission: Boolean) {
         this.shoppingListWithConfig = shoppingListWithConfig
 
@@ -59,7 +55,6 @@ class EditReminderState {
         displayDateDialog = false
         displayTimeDialog = false
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
     }
 
     fun onDateChanged(year: Int, month: Int, dayOfMonth: Int) {

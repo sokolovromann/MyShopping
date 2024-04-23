@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.FontSize
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 
 class FontSizesState {
 
@@ -22,9 +21,6 @@ class FontSizesState {
     var expandedWidgetFontSize: Boolean by mutableStateOf(false)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -35,7 +31,6 @@ class FontSizesState {
         expandedAppFontSize = false
         widgetFontSizeValue = toFontSizeValue(userPreferences.widgetFontSize)
         expandedWidgetFontSize = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -82,7 +81,6 @@ fun CopyMoveProductsScreen(
                 Row {
                     ShoppingListsLocationContent(
                         location = state.locationValue,
-                        fontSize = state.fontSize.button.sp,
                         expanded = state.expandedLocation,
                         onExpanded = { viewModel.onEvent(CopyMoveProductsEvent.OnSelectLocation(it)) },
                         onSelected = {
@@ -102,22 +100,19 @@ fun CopyMoveProductsScreen(
             },
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
-                    ShoppingListsHiddenContent(
-                        fontSize = state.fontSize,
-                        onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnShowHiddenShoppingLists(true)) }
-                    )
+                    ShoppingListsHiddenContent {
+                        viewModel.onEvent(CopyMoveProductsEvent.OnShowHiddenShoppingLists(true))
+                    }
                 }
             },
             isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = stringResource(R.string.copyMoveProducts_text_shoppingListsNotFound),
-                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
             isNotFound = state.isNotFound(),
-            fontSize = state.fontSize,
             onClick = {
                 val event = CopyMoveProductsEvent.OnClickCopyOrMoveProducts(it)
                 viewModel.onEvent(event)

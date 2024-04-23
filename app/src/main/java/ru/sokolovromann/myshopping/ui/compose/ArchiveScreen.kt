@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -144,7 +143,6 @@ fun ArchiveScreen(
                                 .padding(ShoppingListsSearchPaddings)
                                 .focusRequester(focusRequester),
                             value = state.searchValue,
-                            valueFontSize = state.fontSize.textField.sp,
                             onValueChange = {
                                 val event = ArchiveEvent.OnSearchValueChanged(it)
                                 viewModel.onEvent(event)
@@ -167,7 +165,6 @@ fun ArchiveScreen(
                             ShoppingListsTotalContent(
                                 displayTotal = totalValue.selected,
                                 totalText = totalValue.text,
-                                fontSize = state.fontSize.button.sp,
                                 expanded = state.expandedDisplayTotal,
                                 onExpanded = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayTotal(it)) },
                                 onSelected = {
@@ -260,22 +257,19 @@ fun ArchiveScreen(
             coloredCheckbox = state.coloredCheckbox,
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
-                    ShoppingListsHiddenContent(
-                        fontSize = state.fontSize,
-                        onClick = { viewModel.onEvent(ArchiveEvent.OnShowHiddenShoppingLists(true)) }
-                    )
+                    ShoppingListsHiddenContent {
+                        viewModel.onEvent(ArchiveEvent.OnShowHiddenShoppingLists(true))
+                    }
                 }
             },
             isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = state.notFoundText.asCompose(),
-                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
             isNotFound = state.isNotFound(),
-            fontSize = state.fontSize,
             onClick = {
                 val uids = state.selectedUids
                 val event = if (uids == null) {

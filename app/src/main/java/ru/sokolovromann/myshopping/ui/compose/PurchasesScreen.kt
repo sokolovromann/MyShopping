@@ -23,7 +23,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -175,7 +174,6 @@ fun PurchasesScreen(
                                 .padding(ShoppingListsSearchPaddings)
                                 .focusRequester(focusRequester),
                             value = state.searchValue,
-                            valueFontSize = state.fontSize.textField.sp,
                             onValueChange = {
                                 val event = PurchasesEvent.OnSearchValueChanged(it)
                                 viewModel.onEvent(event)
@@ -198,7 +196,6 @@ fun PurchasesScreen(
                             ShoppingListsTotalContent(
                                 displayTotal = totalValue.selected,
                                 totalText = totalValue.text,
-                                fontSize = state.fontSize.button.sp,
                                 expanded = state.expandedDisplayTotal,
                                 onExpanded = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayTotal(it)) },
                                 onSelected = {
@@ -295,22 +292,19 @@ fun PurchasesScreen(
             coloredCheckbox = state.coloredCheckbox,
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
-                    ShoppingListsHiddenContent(
-                        fontSize = state.fontSize,
-                        onClick = { viewModel.onEvent(PurchasesEvent.OnShowHiddenShoppingLists(true)) }
-                    )
+                    ShoppingListsHiddenContent{
+                        viewModel.onEvent(PurchasesEvent.OnShowHiddenShoppingLists(true))
+                    }
                 }
             },
             isWaiting = state.waiting,
             notFound = {
                 Text(
                     text = state.notFoundText.asCompose(),
-                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
             isNotFound = state.isNotFound(),
-            fontSize = state.fontSize,
             dropdownMenu = {
                 AppDropdownMenu(
                     expanded = state.expandedItemFavoriteMenu(it),

@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 
 class CalculateChangeState {
@@ -22,9 +21,6 @@ class CalculateChangeState {
     var changeText: UiString by mutableStateOf(UiString.FromResources(R.string.calculateChange_text_noChange))
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -35,7 +31,6 @@ class CalculateChangeState {
             R.string.calculateChange_text_total,
             shoppingListWithConfig.getShopping().total
         )
-        fontSize = UiAppConfigMapper.toUiFontSize(shoppingListWithConfig.getUserPreferences().appFontSize)
         waiting = false
     }
 

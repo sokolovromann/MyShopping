@@ -9,7 +9,6 @@ import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 
 class CopyMoveProductsState {
@@ -53,9 +52,6 @@ class CopyMoveProductsState {
     var expandedLocation: Boolean by mutableStateOf(false)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -80,7 +76,6 @@ class CopyMoveProductsState {
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         locationValue = UiShoppingListsMapper.toLocationValue(location)
         expandedLocation = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

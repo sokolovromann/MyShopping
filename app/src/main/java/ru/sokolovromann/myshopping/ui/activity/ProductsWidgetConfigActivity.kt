@@ -18,7 +18,6 @@ import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.lifecycle.lifecycleScope
@@ -125,7 +124,6 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 displayCompleted = state.displayCompleted,
                 strikethroughCompletedProducts = state.strikethroughCompletedProducts,
                 coloredCheckbox = state.coloredCheckbox,
-                fontSize = state.fontSize,
                 onClick = {
                     val event = ProductsWidgetConfigEvent.OnShoppingListSelected(it)
                     viewModel.onEvent(event)
@@ -135,7 +133,6 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
                 notFound = {
                     Text(
                         text = stringResource(R.string.productsWidgetConfig_text_shoppingListsNotFound),
-                        fontSize = state.fontSize.itemTitle.sp,
                         textAlign = TextAlign.Center
                     )
                 },

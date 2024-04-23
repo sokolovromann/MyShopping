@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.DeviceSize
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAutocompletesMapper
 
 class AutocompletesState {
@@ -34,9 +33,6 @@ class AutocompletesState {
     var locationEnabled: Boolean by mutableStateOf(true)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -51,7 +47,6 @@ class AutocompletesState {
         locationValue = UiAutocompletesMapper.toLocationValue(location)
         expandedLocation = false
         locationEnabled = AppLocale.isLanguageSupported() && userPreferences.displayDefaultAutocompletes
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

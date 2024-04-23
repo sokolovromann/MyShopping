@@ -33,9 +33,6 @@ class SettingsState {
     var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -49,7 +46,6 @@ class SettingsState {
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

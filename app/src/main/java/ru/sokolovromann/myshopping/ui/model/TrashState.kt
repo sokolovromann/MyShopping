@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 
 class TrashState {
@@ -38,9 +37,6 @@ class TrashState {
     var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -56,7 +52,6 @@ class TrashState {
         coloredCheckbox = userPreferences.coloredCheckbox
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

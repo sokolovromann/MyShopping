@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -72,7 +71,6 @@ fun EditTaxRateScreen(
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
             value = state.taxRateValue,
-            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = EditTaxRateEvent.OnTaxRateChanged(it)
                 viewModel.onEvent(event)

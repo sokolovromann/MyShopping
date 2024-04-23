@@ -16,7 +16,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -29,7 +28,6 @@ import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingItem
 import ru.sokolovromann.myshopping.ui.model.SettingUid
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
@@ -167,7 +165,6 @@ fun SettingsScreen(
             deviceSize = state.deviceSize,
             map = state.settings,
             isWaiting = state.waiting,
-            fontSize = state.fontSize,
             dropdownMenu = {
                 when (it) {
                     SettingUid.NightTheme -> {
@@ -204,7 +201,6 @@ private fun SettingsGrid(
     deviceSize: DeviceSize,
     map: Map<UiString, List<SettingItem>>,
     isWaiting: Boolean,
-    fontSize: UiFontSize,
     dropdownMenu: @Composable (SettingUid) -> Unit,
     onClick: (SettingUid) -> Unit
 ) {
@@ -222,15 +218,14 @@ private fun SettingsGrid(
                 header = {
                     Text(
                         modifier = Modifier.padding(SettingsSurfaceHeaderPaddings),
-                        text = headers[index].asCompose(),
-                        fontSize = fontSize.itemTitle.sp
+                        text = headers[index].asCompose()
                     )
                 },
                 items = {
                     settingsItems.forEach { item ->
                         AppItem(
-                            title = getSettingsItemTitle(item.title, fontSize),
-                            body = getSettingsItemBodyOrNull(item.body, fontSize),
+                            title = getSettingsItemTitle(item.title),
+                            body = getSettingsItemBodyOrNull(item.body),
                             right = getSettingsItemAfterOrNull(item.checked),
                             dropdownMenu = { dropdownMenu(item.uid) },
                             onClick = { onClick(item.uid) }
@@ -305,24 +300,16 @@ private fun SettingsNightThemeMenu(
 
 @Composable
 private fun getSettingsItemTitle(
-    text: UiString,
-    fontSize: UiFontSize
+    text: UiString
 ): @Composable () -> Unit = {
-    Text(
-        text = text.asCompose(),
-        fontSize = fontSize.itemTitle.sp
-    )
+    Text(text = text.asCompose())
 }
 
 @Composable
 private fun getSettingsItemBodyOrNull(
-    text: UiString,
-    fontSize: UiFontSize
+    text: UiString
 ) = itemOrNull(enabled = text.asCompose().isNotEmpty()) {
-    Text(
-        text = text.asCompose(),
-        fontSize = fontSize.itemBody.sp
-    )
+    Text(text = text.asCompose())
 }
 
 @Composable

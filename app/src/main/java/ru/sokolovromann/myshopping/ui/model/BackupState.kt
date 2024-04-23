@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AppConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 
 class BackupState {
 
@@ -18,9 +17,6 @@ class BackupState {
     var warningText: UiString by mutableStateOf(UiString.FromString(""))
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var permissionError: Boolean by mutableStateOf(false)
         private set
 
@@ -31,7 +27,6 @@ class BackupState {
         messageText = UiString.FromString("")
         locationText = UiString.FromString("")
         warningText = UiString.FromString("")
-        fontSize = UiAppConfigMapper.toUiFontSize(appConfig.userPreferences.appFontSize)
         permissionError = !correctWriteFilesPermission
         waiting = false
     }

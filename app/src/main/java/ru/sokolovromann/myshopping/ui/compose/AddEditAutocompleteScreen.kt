@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -72,7 +71,6 @@ fun AddEditAutocompleteScreen(
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
             value = state.nameValue,
-            valueFontSize = state.fontSize.textField.sp,
             onValueChange = {
                 val event = AddEditAutocompleteEvent.OnNameValueChanged(it)
                 viewModel.onEvent(event)

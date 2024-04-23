@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
@@ -20,16 +19,12 @@ class EditTaxRateState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     fun populate(settingsWithConfig: SettingsWithConfig) {
         this.settingsWithConfig = settingsWithConfig
 
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         taxRateValue = userPreferences.taxRate.toTextFieldValue(displayZeroIfEmpty = true)
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
     }
 
     fun onTaxRateValueChanged(value: TextFieldValue) {

@@ -13,14 +13,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.ui.compose.event.DisplayCompletedScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.viewmodel.DisplayCompletedViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.DisplayCompletedEvent
 
@@ -77,7 +75,6 @@ fun DisplayCompletedScreen(
                     val event = DisplayCompletedEvent.OnAppDisplayCompletedSelected(it)
                     viewModel.onEvent(event)
                 },
-                fontSize = state.fontSize
             )
 
             Spacer(modifier = Modifier.size(DisplayCompletedSpacerSize))
@@ -97,8 +94,7 @@ fun DisplayCompletedScreen(
                 onSelected = {
                     val event = DisplayCompletedEvent.OnWidgetDisplayCompletedSelected(it)
                     viewModel.onEvent(event)
-                },
-                fontSize = state.fontSize
+                }
             )
         }
     }
@@ -111,25 +107,14 @@ private fun DisplayCompletedItem(
     onSelect: () -> Unit,
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    onSelected: (DisplayCompleted) -> Unit,
-    fontSize: UiFontSize
+    onSelected: (DisplayCompleted) -> Unit
 ) {
     val selected = selectedDisplayCompleted.selected
 
     AppItem(
         onClick = onSelect,
-        title = {
-            Text(
-                text = title,
-                fontSize = fontSize.itemTitle.sp
-            )
-        },
-        body = {
-            Text(
-                text = selectedDisplayCompleted.text.asCompose(),
-                fontSize = fontSize.itemBody.sp
-            )
-        },
+        title = { Text(text = title) },
+        body = { Text(text = selectedDisplayCompleted.text.asCompose()) },
         dropdownMenu = {
             AppDropdownMenu(
                 expanded = expanded,

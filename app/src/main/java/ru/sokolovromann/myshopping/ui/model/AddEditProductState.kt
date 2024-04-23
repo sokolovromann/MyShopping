@@ -13,7 +13,6 @@ import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.model.UserPreferences
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
@@ -82,9 +81,6 @@ class AddEditProductState {
     var autocompletes: AutocompletesSelectedValue by mutableStateOf(AutocompletesSelectedValue())
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var displayMoney: Boolean by mutableStateOf(true)
         private set
 
@@ -130,7 +126,6 @@ class AddEditProductState {
         expandedLockProductElement = false
         noteValue = product.note.toTextFieldValue()
         autocompletes = AutocompletesSelectedValue()
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         displayMoney = userPreferences.displayMoney
         enterToSaveProduct = userPreferences.enterToSaveProduct
         displayOtherFields = userPreferences.displayOtherFields

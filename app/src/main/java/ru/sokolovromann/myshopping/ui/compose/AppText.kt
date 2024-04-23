@@ -11,24 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 
 @Composable
 fun AppTextGridHeader(
     modifier: Modifier = Modifier,
     text: String,
-    fontSize: UiFontSize
 ) {
     Row(modifier = modifier) {
         Text(
             modifier = Modifier.padding(AppTextGridHeaderPaddings),
             text = text,
             color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
-            style = MaterialTheme.typography.body1,
-            fontSize = fontSize.itemTitle.sp
+            style = MaterialTheme.typography.body1
         )
     }
 }
@@ -36,13 +32,11 @@ fun AppTextGridHeader(
 @Composable
 fun AppTextGridHeader(
     modifier: Modifier = Modifier,
-    text: UiString,
-    fontSize: UiFontSize
+    text: UiString
 ) {
     AppTextGridHeader(
         modifier = modifier,
-        text = text.asCompose(),
-        fontSize = fontSize
+        text = text.asCompose()
     )
 }
 

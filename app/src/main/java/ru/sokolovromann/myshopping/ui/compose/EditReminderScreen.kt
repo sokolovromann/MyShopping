@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -101,7 +100,6 @@ fun EditReminderScreen(
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = stringResource(R.string.editReminder_message_permissionError),
-                fontSize = state.fontSize.itemBody.sp,
                 style = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.error)
             )
         } else {

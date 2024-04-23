@@ -13,9 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -27,7 +25,6 @@ import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
@@ -185,7 +182,6 @@ fun AutocompletesScreen(
                 AutocompleteLocationContent(
                     locationValue = state.locationValue,
                     enabled = state.locationEnabled,
-                    fontSize = state.fontSize.button.sp,
                     expanded = state.expandedLocation,
                     onExpanded = { viewModel.onEvent(AutocompletesEvent.OnSelectLocation(it)) },
                     onSelected = {
@@ -198,12 +194,10 @@ fun AutocompletesScreen(
             notFound = {
                 Text(
                     text = stringResource(R.string.autocompletes_text_autocompletesNotFound),
-                    fontSize = state.fontSize.itemTitle.sp,
                     textAlign = TextAlign.Center
                 )
             },
             isNotFound = state.isNotFound(),
-            fontSize = state.fontSize,
             onClick = {
                 state.selectedNames?.let { names ->
                     val event = AutocompletesEvent.OnAutocompleteSelected(
@@ -238,7 +232,6 @@ private fun AutocompletesGrid(
     isWaiting: Boolean,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
     isNotFound: Boolean,
-    fontSize: UiFontSize,
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
     onLongClick: (String) -> Unit,
@@ -259,8 +252,8 @@ private fun AutocompletesGrid(
             val selected = selectedNames?.contains(nameToString) ?: false
 
             AppSurfaceItem(
-                title = getAutocompleteItemTitleOrNull(it.name, fontSize),
-                body = getAutocompleteItemBodyOrNull(it, fontSize),
+                title = getAutocompleteItemTitleOrNull(it.name),
+                body = getAutocompleteItemBodyOrNull(it),
                 right = getAutocompleteItemRightOrNull(selected),
                 dropdownMenu = { dropdownMenu?.let { it(nameToString) } },
                 onClick = { onClick(nameToString) },
@@ -276,7 +269,6 @@ private fun AutocompleteLocationContent(
     modifier: Modifier = Modifier,
     locationValue: SelectedValue<AutocompleteLocation>,
     enabled: Boolean,
-    fontSize: TextUnit,
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
     onSelected: (AutocompleteLocation) -> Unit
@@ -288,10 +280,7 @@ private fun AutocompleteLocationContent(
         enabled = enabled,
         onClick = { onExpanded(true) }
     ) {
-        Text(
-            text = locationValue.text.asCompose(),
-            fontSize = fontSize
-        )
+        Text(text = locationValue.text.asCompose())
         AppDropdownMenu(
             expanded = expanded,
             onDismissRequest = { onExpanded(false) },
@@ -313,75 +302,45 @@ private fun AutocompleteLocationContent(
 
 @Composable
 private fun getAutocompleteItemTitleOrNull(
-    name: UiString,
-    fontSize: UiFontSize
+    name: UiString
 ) = itemOrNull(enabled = name.asCompose().isNotEmpty()) {
     Text(
         modifier = Modifier.padding(AutocompleteItemTextPaddings),
-        text = name.asCompose(),
-        fontSize = fontSize.itemTitle.sp
+        text = name.asCompose()
     )
 }
 
 @Composable
 private fun getAutocompleteItemBodyOrNull(
-    autocompleteItems: AutocompleteItem,
-    fontSize: UiFontSize
+    autocompleteItems: AutocompleteItem
 ) = itemOrNull(enabled = true) {
     Column {
         if (autocompleteItems.isNotFound()) {
-            Text(
-                text = stringResource(R.string.autocompletes_body_dataNotFound),
-                fontSize = fontSize.itemBody.sp
-            )
+            Text(text = stringResource(R.string.autocompletes_body_dataNotFound))
         } else {
             if (autocompleteItems.brands.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.brands.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.brands.asCompose())
             }
             if (autocompleteItems.sizes.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.sizes.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.sizes.asCompose())
             }
             if (autocompleteItems.colors.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.colors.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.colors.asCompose())
             }
             if (autocompleteItems.manufacturers.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.manufacturers.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.manufacturers.asCompose())
             }
             if (autocompleteItems.quantities.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.quantities.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.quantities.asCompose())
             }
             if (autocompleteItems.prices.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.prices.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.prices.asCompose())
             }
             if (autocompleteItems.discounts.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.discounts.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.discounts.asCompose())
             }
             if (autocompleteItems.totals.isNotEmpty()) {
-                Text(
-                    text = autocompleteItems.totals.asCompose(),
-                    fontSize = fontSize.itemBody.sp
-                )
+                Text(text = autocompleteItems.totals.asCompose())
             }
         }
     }

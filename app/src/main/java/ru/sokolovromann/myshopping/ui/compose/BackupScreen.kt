@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -99,7 +98,6 @@ fun BackupScreen(
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = stringResource(R.string.backup_message_permissionError),
-                fontSize = state.fontSize.itemBody.sp,
                 style = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.error)
             )
         } else {
@@ -120,13 +118,9 @@ fun BackupScreen(
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = stringResource(R.string.backup_action_export),
-                                fontSize = state.fontSize.button.sp
-                            )
-                        }
+                            horizontalAlignment = Alignment.Start,
+                            content = { Text(text = stringResource(R.string.backup_action_export)) }
+                        )
                     }
 
                     Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
@@ -139,13 +133,9 @@ fun BackupScreen(
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = stringResource(R.string.backup_action_import),
-                                fontSize = state.fontSize.button.sp
-                            )
-                        }
+                            horizontalAlignment = Alignment.Start,
+                            content = { Text(text = stringResource(R.string.backup_action_import)) }
+                        )
                     }
                 }
 
@@ -153,7 +143,6 @@ fun BackupScreen(
                     Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
                     Text(
                         text = state.messageText.asCompose(),
-                        fontSize = state.fontSize.itemTitle.sp,
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface
                         )
@@ -163,7 +152,6 @@ fun BackupScreen(
                 if (state.locationText.isNotEmpty()) {
                     Text(
                         text = state.locationText.asCompose(),
-                        fontSize = state.fontSize.itemBody.sp,
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
                         )
@@ -174,7 +162,6 @@ fun BackupScreen(
                     Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
                     Text(
                         text = state.warningText.asCompose(),
-                        fontSize = state.fontSize.itemBody.sp,
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface
                         )

@@ -8,7 +8,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.DateTime
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class AddEditAutocompleteState {
@@ -27,9 +26,6 @@ class AddEditAutocompleteState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     fun populate(autocompleteWithConfig: AutocompleteWithConfig) {
         this.autocompleteWithConfig = autocompleteWithConfig
 
@@ -41,7 +37,6 @@ class AddEditAutocompleteState {
         nameValue = autocompleteWithConfig.autocomplete.name.toTextFieldValue()
         nameError = false
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(autocompleteWithConfig.appConfig.userPreferences.appFontSize)
     }
 
     fun onNameValueChanged(value: TextFieldValue) {

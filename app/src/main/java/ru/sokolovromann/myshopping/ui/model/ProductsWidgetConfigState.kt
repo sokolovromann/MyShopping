@@ -50,9 +50,6 @@ class ProductsWidgetConfigState {
     var fontSizeOffset: FontSizeOffset by mutableStateOf(FontSizeOffset())
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(false)
         private set
 
@@ -70,7 +67,6 @@ class ProductsWidgetConfigState {
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         fontSizeOffset = UiAppConfigMapper.toFontSizeOffset(userPreferences.appFontSize)
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

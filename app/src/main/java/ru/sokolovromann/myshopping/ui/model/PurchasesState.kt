@@ -13,7 +13,6 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 
 class PurchasesState {
@@ -85,9 +84,6 @@ class PurchasesState {
     var displaySearch: Boolean by mutableStateOf(false)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -113,7 +109,6 @@ class PurchasesState {
         expandedItemMoreMenu = false
         sortValue = toSortValue(userPreferences.shoppingsSort)
         sortFormatted = userPreferences.shoppingsSortFormatted
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
         waiting = false
     }
 

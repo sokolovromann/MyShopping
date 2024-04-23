@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditCurrencySymbolState {
@@ -19,16 +18,12 @@ class EditCurrencySymbolState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     fun populate(settingsWithConfig: SettingsWithConfig) {
         this.settingsWithConfig = settingsWithConfig
 
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         symbolValue = userPreferences.currency.symbol.toTextFieldValue()
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
     }
 
     fun onSymbolValueChanged(value: TextFieldValue) {

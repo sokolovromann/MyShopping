@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 
 class MaxAutocompletesState {
 
@@ -24,9 +23,6 @@ class MaxAutocompletesState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
-        private set
-
     fun populate(settingsWithConfig: SettingsWithConfig) {
         val userPreferences = settingsWithConfig.appConfig.userPreferences
         maxNames = userPreferences.maxAutocompletesNames
@@ -34,7 +30,6 @@ class MaxAutocompletesState {
         maxMoneys = userPreferences.maxAutocompletesMoneys
         maxOthers = userPreferences.maxAutocompletesOthers
         waiting = false
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.appFontSize)
     }
 
     fun onMaxNamesChanged(value: Int) {

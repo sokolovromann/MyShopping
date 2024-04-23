@@ -17,9 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -69,29 +67,25 @@ fun MaxAutocompletesScreen(
                 text = stringResource(R.string.maxAutocompletes_text_names),
                 maxCount = state.maxNames,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneName) },
-                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneName) },
-                fontSize = state.fontSize.itemTitle.sp
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneName) }
             )
             MaxAutocompletesItem(
                 text = stringResource(R.string.maxAutocompletes_text_quantities),
                 maxCount = state.maxQuantities,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneQuantity) },
-                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneQuantity) },
-                fontSize = state.fontSize.itemTitle.sp
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneQuantity) }
             )
             MaxAutocompletesItem(
                 text = stringResource(R.string.maxAutocompletes_text_moneys),
                 maxCount = state.maxMoneys,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneMoney) },
-                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneMoney) },
-                fontSize = state.fontSize.itemTitle.sp
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneMoney) }
             )
             MaxAutocompletesItem(
                 text = stringResource(R.string.maxAutocompletes_text_other),
                 maxCount = state.maxOthers,
                 onClickMinus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickMinusOneOther) },
-                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneOther) },
-                fontSize = state.fontSize.itemTitle.sp
+                onCLickPlus = { viewModel.onEvent(MaxAutocompletesEvent.OnClickPlusOneOther) }
             )
         }
     }
@@ -102,8 +96,7 @@ private fun MaxAutocompletesItem(
     text: String,
     maxCount: Int,
     onClickMinus: () -> Unit,
-    onCLickPlus: () -> Unit,
-    fontSize: TextUnit
+    onCLickPlus: () -> Unit
 ) {
     val color = MaterialTheme.colors.onSurface
 
@@ -115,28 +108,22 @@ private fun MaxAutocompletesItem(
         Text(
             modifier = Modifier.weight(1f),
             text = text,
-            color = color,
-            fontSize = fontSize
+            color = color
         )
         Text(
             modifier = Modifier.padding(horizontal = MaxAutocompletesSpacerMediumSize),
             text = maxCount.toString(),
-            color = color,
-            fontSize = fontSize
+            color = color
         )
-        AppChip(onClick = onClickMinus) {
-            Text(
-                text = stringResource(R.string.maxAutocompletes_action_minusOne),
-                fontSize = fontSize
-            )
-        }
+        AppChip(
+            onClick = onClickMinus,
+            content = { Text(text = stringResource(R.string.maxAutocompletes_action_minusOne)) }
+        )
         Spacer(modifier = Modifier.size(MaxAutocompletesSpacerSmallSize))
-        AppChip(onClick = onCLickPlus) {
-            Text(
-                text = stringResource(R.string.maxAutocompletes_action_plusOne),
-                fontSize = fontSize
-            )
-        }
+        AppChip(
+            onClick = onCLickPlus,
+            content = { Text(text = stringResource(R.string.maxAutocompletes_action_plusOne)) }
+        )
     }
 }
 

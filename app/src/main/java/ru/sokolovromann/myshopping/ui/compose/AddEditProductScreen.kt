@@ -25,7 +25,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -34,7 +33,6 @@ import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
@@ -117,7 +115,6 @@ fun AddEditProductScreen(
                         .weight(1f)
                         .focusRequester(focusRequester),
                     value = state.nameValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnNameValueChanged(it)
                         viewModel.onEvent(event)
@@ -161,7 +158,6 @@ fun AddEditProductScreen(
 
             AddEditProductAutocompleteNames(
                 names = state.autocompletes.names,
-                fontSize = state.fontSize,
                 onClick = {
                     val event = AddEditProductEvent.OnNameSelected(it)
                     viewModel.onEvent(event)
@@ -175,7 +171,6 @@ fun AddEditProductScreen(
                         .padding(AddEditProductElementPaddings)
                         .focusRequester(focusRequester),
                     value = state.brandValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnBrandValueChanged(it)
                         viewModel.onEvent(event)
@@ -191,7 +186,6 @@ fun AddEditProductScreen(
 
                 AddEditProductAutocompleteStrings(
                     list = state.autocompletes.brands,
-                    fontSize = state.fontSize,
                     onClick = {
                         val event = AddEditProductEvent.OnBrandSelected(it)
                         viewModel.onEvent(event)
@@ -204,7 +198,6 @@ fun AddEditProductScreen(
                         .padding(AddEditProductElementPaddings)
                         .focusRequester(focusRequester),
                     value = state.sizeValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnSizeValueChanged(it)
                         viewModel.onEvent(event)
@@ -220,7 +213,6 @@ fun AddEditProductScreen(
 
                 AddEditProductAutocompleteStrings(
                     list = state.autocompletes.sizes,
-                    fontSize = state.fontSize,
                     onClick = {
                         val event = AddEditProductEvent.OnSizeSelected(it)
                         viewModel.onEvent(event)
@@ -233,7 +225,6 @@ fun AddEditProductScreen(
                         .padding(AddEditProductElementPaddings)
                         .focusRequester(focusRequester),
                     value = state.colorValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnColorValueChanged(it)
                         viewModel.onEvent(event)
@@ -249,7 +240,6 @@ fun AddEditProductScreen(
 
                 AddEditProductAutocompleteStrings(
                     list = state.autocompletes.colors,
-                    fontSize = state.fontSize,
                     onClick = {
                         val event = AddEditProductEvent.OnColorSelected(it)
                         viewModel.onEvent(event)
@@ -262,7 +252,6 @@ fun AddEditProductScreen(
                         .padding(AddEditProductElementPaddings)
                         .focusRequester(focusRequester),
                     value = state.manufacturerValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnManufacturerValueChanged(it)
                         viewModel.onEvent(event)
@@ -278,7 +267,6 @@ fun AddEditProductScreen(
 
                 AddEditProductAutocompleteStrings(
                     list = state.autocompletes.manufacturers,
-                    fontSize = state.fontSize,
                     onClick = {
                         val event = AddEditProductEvent.OnManufacturerSelected(it)
                         viewModel.onEvent(event)
@@ -291,7 +279,6 @@ fun AddEditProductScreen(
                         .padding(AddEditProductElementPaddings)
                         .focusRequester(focusRequester),
                     value = state.uidValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnUidValueChanged(it)
                         viewModel.onEvent(event)
@@ -316,7 +303,6 @@ fun AddEditProductScreen(
                 OutlinedAppTextField(
                     modifier = Modifier.weight(0.6f),
                     value = state.quantityValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnQuantityValueChanged(it)
                         viewModel.onEvent(event)
@@ -335,7 +321,6 @@ fun AddEditProductScreen(
                 OutlinedAppTextField(
                     modifier = Modifier.weight(0.4f),
                     value = state.quantitySymbolValue,
-                    valueFontSize = state.fontSize.textField.sp,
                     onValueChange = {
                         val event = AddEditProductEvent.OnQuantitySymbolValueChanged(it)
                         viewModel.onEvent(event)
@@ -353,23 +338,15 @@ fun AddEditProductScreen(
                 quantities = state.autocompletes.quantitySymbols,
                 minusOneQuantityChip = {
                     AppChip(
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickMinusOneQuantity) }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.addEditProduct_action_quantityMinusOne),
-                            fontSize = state.fontSize.itemBody.sp
-                        )
-                    }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickMinusOneQuantity) },
+                        content = { Text(text = stringResource(R.string.addEditProduct_action_quantityMinusOne)) }
+                    )
                 },
                 plusOneQuantityChip = {
                     AppChip(
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickPlusOneQuantity) }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.addEditProduct_action_quantityPlusOne),
-                            fontSize = state.fontSize.itemBody.sp
-                        )
-                    }
+                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickPlusOneQuantity) },
+                        content = { Text(text = stringResource(R.string.addEditProduct_action_quantityPlusOne)) }
+                    )
                 },
                 defaultQuantitySymbolChips = {
                     stringArrayResource(R.array.data_text_defaultAutocompleteQuantitySymbols).forEach {
@@ -378,18 +355,12 @@ fun AddEditProductScreen(
                                 val event = AddEditProductEvent.OnQuantitySymbolValueChanged(it.toTextFieldValue())
                                 viewModel.onEvent(event)
                             },
-                            content = {
-                                Text(
-                                    text = it,
-                                    fontSize = state.fontSize.itemBody.sp
-                                )
-                            }
+                            content = { Text(text = it) }
                         )
                         Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
                     }
                 },
                 defaultQuantitySymbolChipsEnabled = state.autocompletes.displayDefaultQuantitySymbols,
-                fontSize = state.fontSize,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
                     val event = AddEditProductEvent.OnQuantitySymbolSelected(it)
@@ -399,7 +370,6 @@ fun AddEditProductScreen(
 
             AddEditProductAutocompleteQuantities(
                 quantities = state.autocompletes.quantities,
-                fontSize = state.fontSize,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
                     val event = AddEditProductEvent.OnQuantitySelected(it)
@@ -416,7 +386,6 @@ fun AddEditProductScreen(
                     OutlinedAppTextField(
                         modifier = Modifier.weight(1f),
                         value = state.priceValue,
-                        valueFontSize = state.fontSize.textField.sp,
                         onValueChange = {
                             val event = AddEditProductEvent.OnPriceValueChanged(it)
                             viewModel.onEvent(event)
@@ -456,7 +425,6 @@ fun AddEditProductScreen(
 
                 AddEditProductAutocompletePrices(
                     prices = state.autocompletes.prices,
-                    fontSize = state.fontSize,
                     enabled = state.lockProductElementValue.selected != LockProductElement.PRICE,
                     onClick = {
                         val event = AddEditProductEvent.OnPriceSelected(it)
@@ -473,7 +441,6 @@ fun AddEditProductScreen(
                         OutlinedAppTextField(
                             modifier = Modifier.weight(0.6f),
                             value = state.discountValue,
-                            valueFontSize = state.fontSize.textField.sp,
                             onValueChange = {
                                 val event = AddEditProductEvent.OnDiscountValueChanged(it)
                                 viewModel.onEvent(event)
@@ -496,8 +463,7 @@ fun AddEditProductScreen(
                         ) {
                             Text(
                                 text = state.discountAsPercentValue.text.asCompose(),
-                                color = MaterialTheme.colors.onSurface,
-                                fontSize = state.fontSize.button.sp
+                                color = MaterialTheme.colors.onSurface
                             )
 
                             AppDropdownMenu(
@@ -520,7 +486,6 @@ fun AddEditProductScreen(
 
                     AddEditProductAutocompleteDiscounts(
                         discounts = state.autocompletes.discounts,
-                        fontSize = state.fontSize,
                         enabled = state.lockProductElementValue.selected == LockProductElement.TOTAL,
                         onClick = {
                             val event = AddEditProductEvent.OnDiscountSelected(it)
@@ -537,7 +502,6 @@ fun AddEditProductScreen(
                     OutlinedAppTextField(
                         modifier = Modifier.weight(1f),
                         value = state.totalValue,
-                        valueFontSize = state.fontSize.textField.sp,
                         onValueChange = {
                             val event = AddEditProductEvent.OnTotalValueChanged(it)
                             viewModel.onEvent(event)
@@ -604,7 +568,6 @@ fun AddEditProductScreen(
 
                 AddEditProductAutocompleteTotals(
                     totals = state.autocompletes.totals,
-                    fontSize = state.fontSize,
                     enabled = state.lockProductElementValue.selected != LockProductElement.TOTAL,
                     onClick = {
                         val event = AddEditProductEvent.OnTotalSelected(it)
@@ -622,7 +585,6 @@ fun AddEditProductScreen(
                     val event = AddEditProductEvent.OnNoteValueChanged(it)
                     viewModel.onEvent(event)
                 },
-                valueFontSize = state.fontSize.textField.sp,
                 label = { Text(text = stringResource(R.string.addEditProduct_label_note)) },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
@@ -658,18 +620,12 @@ private fun AddEditProductContent(
 @Composable
 private fun AddEditProductAutocompleteNames(
     names: List<Autocomplete>,
-    fontSize: UiFontSize,
     onClick: (Autocomplete) -> Unit
 ) {
     names.forEach {
         AppItem(
             modifier = Modifier.padding(AddEditProductItemPaddings),
-            body = {
-                Text(
-                    text = it.name,
-                    fontSize = fontSize.itemBody.sp
-                )
-            },
+            body = { Text(text = it.name) },
             onClick = { onClick(it) },
             backgroundColor = MaterialTheme.colors.background
         )
@@ -679,7 +635,6 @@ private fun AddEditProductAutocompleteNames(
 @Composable
 private fun AddEditProductAutocompleteStrings(
     list: List<String>,
-    fontSize: UiFontSize,
     onClick: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -692,12 +647,10 @@ private fun AddEditProductAutocompleteStrings(
             .horizontalScroll(scrollState)
     ) {
         list.forEach {
-            AppChip(onClick = { onClick(it) }) {
-                Text(
-                    text = it,
-                    fontSize = fontSize.itemBody.sp
-                )
-            }
+            AppChip(
+                onClick = { onClick(it) },
+                content = { Text(text = it) }
+            )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
     }
@@ -706,7 +659,6 @@ private fun AddEditProductAutocompleteStrings(
 @Composable
 private fun AddEditProductAutocompleteQuantities(
     quantities: List<Quantity>,
-    fontSize: UiFontSize,
     enabled: Boolean,
     onClick: (Quantity) -> Unit
 ) {
@@ -725,12 +677,10 @@ private fun AddEditProductAutocompleteQuantities(
             .horizontalScroll(scrollState)
     ) {
         quantities.forEach {
-            AppChip(onClick = { onClick(it) }) {
-                Text(
-                    text = it.toString(),
-                    fontSize = fontSize.itemBody.sp
-                )
-            }
+            AppChip(
+                onClick = { onClick(it) },
+                content = { Text(text = it.toString()) }
+            )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
     }
@@ -743,7 +693,6 @@ private fun AddEditProductAutocompleteSymbols(
     plusOneQuantityChip: @Composable () -> Unit,
     defaultQuantitySymbolChips: @Composable () -> Unit,
     defaultQuantitySymbolChipsEnabled: Boolean,
-    fontSize: UiFontSize,
     enabled: Boolean,
     onClick: (Quantity) -> Unit
 ) {
@@ -768,12 +717,10 @@ private fun AddEditProductAutocompleteSymbols(
         }
 
         quantities.forEach {
-            AppChip(onClick = { onClick(it) }) {
-                Text(
-                    text = it.symbol,
-                    fontSize = fontSize.itemBody.sp
-                )
-            }
+            AppChip(
+                onClick = { onClick(it) },
+                content = { Text(text = it.symbol) }
+            )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
     }
@@ -782,7 +729,6 @@ private fun AddEditProductAutocompleteSymbols(
 @Composable
 private fun AddEditProductAutocompletePrices(
     prices: List<Money>,
-    fontSize: UiFontSize,
     enabled: Boolean,
     onClick: (Money) -> Unit
 ) {
@@ -800,12 +746,10 @@ private fun AddEditProductAutocompletePrices(
             .horizontalScroll(scrollState)
     ) {
         prices.forEach {
-            AppChip(onClick = { onClick(it) }) {
-                Text(
-                    text = it.toString(),
-                    fontSize = fontSize.itemBody.sp
-                )
-            }
+            AppChip(
+                onClick = { onClick(it) },
+                content = { Text(text = it.toString()) }
+            )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
     }
@@ -814,7 +758,6 @@ private fun AddEditProductAutocompletePrices(
 @Composable
 private fun AddEditProductAutocompleteDiscounts(
     discounts: List<Money>,
-    fontSize: UiFontSize,
     enabled: Boolean,
     onClick: (Money) -> Unit
 ) {
@@ -832,12 +775,10 @@ private fun AddEditProductAutocompleteDiscounts(
             .horizontalScroll(scrollState)
     ) {
         discounts.forEach {
-            AppChip(onClick = { onClick(it) }) {
-                Text(
-                    text = it.toString(),
-                    fontSize = fontSize.itemBody.sp
-                )
-            }
+            AppChip(
+                onClick = { onClick(it) },
+                content = { Text(text = it.toString()) }
+            )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
     }
@@ -846,7 +787,6 @@ private fun AddEditProductAutocompleteDiscounts(
 @Composable
 private fun AddEditProductAutocompleteTotals(
     totals: List<Money>,
-    fontSize: UiFontSize,
     enabled: Boolean,
     onClick: (Money) -> Unit
 ) {
@@ -864,12 +804,10 @@ private fun AddEditProductAutocompleteTotals(
             .horizontalScroll(scrollState)
     ) {
         totals.forEach {
-            AppChip(onClick = { onClick(it) }) {
-                Text(
-                    text = it.toString(),
-                    fontSize = fontSize.itemBody.sp
-                )
-            }
+            AppChip(
+                onClick = { onClick(it) },
+                content = { Text(text = it.toString()) }
+            )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
     }
