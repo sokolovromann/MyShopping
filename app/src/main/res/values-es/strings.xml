@@ -568,6 +568,7 @@
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
     <string name="shoppingLists_text_archiveShoppingListsNotFound">El archivo está vacío</string>
     <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
+    <string name="shoppingLists_text_deleted">Eliminado</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Tienes listas de compras ocultas</string>
     <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Lista sin título</string>

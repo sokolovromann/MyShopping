@@ -19,6 +19,7 @@ import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiString
+import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.utils.toUiString
 
@@ -351,16 +352,28 @@ object UiShoppingListsMapper {
             products.toList()
         }
 
-        val totalText: UiString = toTotalValue(
-            total = shoppingList.shopping.total,
-            totalFormatted = shoppingList.shopping.totalFormatted,
-            userPreferences = userPreferences
-        )?.text ?: UiString.FromString("")
+        val totalText: UiString = if (shoppingList.shopping.location == ShoppingLocation.TRASH) {
+            UiString.FromString("")
+        } else {
+            toTotalValue(
+                total = shoppingList.shopping.total,
+                totalFormatted = shoppingList.shopping.totalFormatted,
+                userPreferences = userPreferences
+            )?.text ?: UiString.FromString("")
+        }
 
         val reminderText: UiString = if (shoppingList.shopping.reminder == null) {
             UiString.FromString("")
         } else {
             shoppingList.shopping.reminder.toCalendar().getDisplayDateAndTime()
+        }
+
+        val lastModified: UiString = shoppingList.shopping.lastModified.toCalendar().getDisplayDate()
+        val separator: UiString = UiString.FromString(": ")
+        val lastModifiedText: UiString = when (shoppingList.shopping.location) {
+            ShoppingLocation.PURCHASES -> UiString.FromString("")
+            ShoppingLocation.ARCHIVE -> UiString.FromString("")
+            ShoppingLocation.TRASH -> UiString.FromResourcesWithUiString(R.string.shoppingLists_text_deleted, lastModified, separator)
         }
 
         return ShoppingListItem(
@@ -369,7 +382,8 @@ object UiShoppingListsMapper {
             products = productsList,
             total = totalText,
             reminder = reminderText,
-            completed = shoppingList.isCompleted()
+            completed = shoppingList.isCompleted(),
+            lastModified = lastModifiedText
         )
     }
 

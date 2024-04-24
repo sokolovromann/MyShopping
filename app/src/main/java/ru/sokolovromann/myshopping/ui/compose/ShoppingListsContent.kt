@@ -78,6 +78,7 @@ fun ShoppingListsGrid(
                             strikethroughCompletedProducts = strikethroughCompletedProducts,
                             total = item.total,
                             reminder = item.reminder,
+                            lastModified = item.lastModified,
                             coloredCheckbox = coloredCheckbox
                         )
                     },
@@ -114,6 +115,7 @@ fun ShoppingListsGrid(
                         strikethroughCompletedProducts = strikethroughCompletedProducts,
                         total = item.total,
                         reminder = item.reminder,
+                        lastModified = item.lastModified,
                         coloredCheckbox = coloredCheckbox
                     )
                 },
@@ -451,6 +453,7 @@ private fun ShoppingListItemBody(
     strikethroughCompletedProducts: Boolean,
     total: UiString,
     reminder: UiString,
+    lastModified: UiString,
     coloredCheckbox: Boolean
 ) {
     Column {
@@ -539,6 +542,18 @@ private fun ShoppingListItemBody(
             Text(
                 modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
                 text = totalAsCompose
+            )
+        }
+
+        val lastModifiedAsCompose = lastModified.asCompose()
+        if (lastModifiedAsCompose.isNotEmpty()) {
+            if (displayProducts == DisplayProducts.VERTICAL) {
+                Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
+            }
+
+            Text(
+                modifier = Modifier.padding(ShoppingListItemTextMediumPaddings),
+                text = lastModifiedAsCompose
             )
         }
     }

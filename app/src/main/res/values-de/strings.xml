@@ -511,6 +511,7 @@
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Archiv ist leer</string>
     <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
+    <string name="shoppingLists_text_deleted">Gelöscht</string>
     <string name="shoppingLists_text_hiddenShoppingLists">Sie haben Einkaufslisten ausgeblendet</string>
     <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Unbenannt</string>

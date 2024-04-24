@@ -6,5 +6,6 @@ data class ShoppingListItem(
     val products: List<Pair<Boolean?, UiString>>,
     val total: UiString,
     val reminder: UiString,
-    val completed: Boolean
+    val completed: Boolean,
+    val lastModified: UiString
 )
