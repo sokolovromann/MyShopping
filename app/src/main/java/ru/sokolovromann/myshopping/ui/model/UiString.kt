@@ -12,11 +12,20 @@ sealed class UiString {
 
     class FromResourcesWithArgs(@StringRes val id: Int, vararg val args: Any) : UiString()
 
+    data class FromResourcesWithUiString(@StringRes val id: Int, val str: UiString, val separator: UiString) : UiString()
+
     @Composable
     fun asCompose(): String = when (this) {
         is FromString -> value
         is FromResources -> stringResource(id)
         is FromResourcesWithArgs -> stringResource(id, *args)
+        is FromResourcesWithUiString -> {
+            StringBuilder().apply {
+                append(stringResource(id))
+                append(separator.asCompose())
+                append(str.asCompose())
+            }.toString()
+        }
     }
 
     @Composable
