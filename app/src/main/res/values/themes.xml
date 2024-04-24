@@ -7,10 +7,10 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="postSplashScreenTheme">@style/Theme.MyShopping</item>
     </style>
-    <style name="Theme.MyShopping.DateTimePicket.Light" parent="android:Theme.Material.Light.Dialog">
+    <style name="Theme.MyShopping.DateTimePicker.Light" parent="android:Theme.Material.Light.Dialog">
         <item name="android:colorAccent">@color/green_900</item>
     </style>
-    <style name="Theme.MyShopping.DateTimePicket.Dark" parent="android:Theme.Material.Dialog">
+    <style name="Theme.MyShopping.DateTimePicker.Dark" parent="android:Theme.Material.Dialog">
         <item name="android:colorAccent">@color/green_300</item>
     </style>
 </resources>

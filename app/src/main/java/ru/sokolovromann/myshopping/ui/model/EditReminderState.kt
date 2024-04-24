@@ -97,9 +97,9 @@ class EditReminderState {
     @Composable
     fun getDialogStyle(): Int {
         return if (MaterialTheme.colors.isLight) {
-            R.style.Theme_MyShopping_DateTimePicket_Light
+            R.style.Theme_MyShopping_DateTimePicker_Light
         } else {
-            R.style.Theme_MyShopping_DateTimePicket_Dark
+            R.style.Theme_MyShopping_DateTimePicker_Dark
         }
     }
 }
