@@ -13,6 +13,7 @@ import ru.sokolovromann.myshopping.ui.model.SettingUid
 import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.theme.FontSizeOffset
+import ru.sokolovromann.myshopping.widget.WidgetFontSizeOffset
 
 object UiAppConfigMapper {
 
@@ -48,6 +49,18 @@ object UiAppConfigMapper {
             FontSize.VERY_HUGE -> 8
         }
         return FontSizeOffset(offset)
+    }
+
+    fun toWidgetFontSizeOffset(fontSize: FontSize): WidgetFontSizeOffset {
+        val offset: Int = when (fontSize) {
+            FontSize.SMALL -> -2
+            FontSize.MEDIUM -> 0
+            FontSize.LARGE -> 2
+            FontSize.VERY_LARGE -> 4
+            FontSize.HUGE -> 6
+            FontSize.VERY_HUGE -> 8
+        }
+        return WidgetFontSizeOffset(offset)
     }
 
     fun toSettingItems(settingsWithConfig: SettingsWithConfig): Map<UiString, List<SettingItem>> {
