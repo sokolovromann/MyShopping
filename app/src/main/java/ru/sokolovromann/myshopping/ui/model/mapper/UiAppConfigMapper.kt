@@ -10,34 +10,11 @@ import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.utils.displayZerosAfterDecimal
 import ru.sokolovromann.myshopping.ui.model.SettingItem
 import ru.sokolovromann.myshopping.ui.model.SettingUid
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.theme.FontSizeOffset
 import ru.sokolovromann.myshopping.widget.WidgetFontSizeOffset
 
 object UiAppConfigMapper {
-
-    @Deprecated("Use toFontSizeOffset(FontSize)")
-    fun toUiFontSize(fontSize: FontSize): UiFontSize {
-        val default: UiFontSize = UiFontSize.Default
-        val offset: Int = when (fontSize) {
-            FontSize.SMALL -> -2
-            FontSize.MEDIUM -> 0
-            FontSize.LARGE -> 2
-            FontSize.VERY_LARGE -> 4
-            FontSize.HUGE -> 6
-            FontSize.VERY_HUGE -> 8
-        }
-        return UiFontSize(
-            itemTitle = default.itemTitle + offset,
-            itemBody = default.itemBody + offset,
-            itemsHeader = default.itemsHeader + offset,
-            widgetHeader = default.widgetHeader + offset,
-            widgetContent = default.widgetContent + offset,
-            button = default.button + offset,
-            textField = default.textField + offset
-        )
-    }
 
     fun toFontSizeOffset(fontSize: FontSize): FontSizeOffset {
         val offset: Int = when (fontSize) {
