@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
@@ -33,10 +32,8 @@ import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
-import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextDecoration
-import androidx.glance.text.TextDefaults
 import androidx.glance.unit.ColorProvider
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -53,9 +50,10 @@ import ru.sokolovromann.myshopping.ui.activity.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.model.ProductWidgetItem
 import ru.sokolovromann.myshopping.ui.model.ProductsWidgetState
-import ru.sokolovromann.myshopping.ui.model.UiFontSize
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.widget.WidgetKey
+import ru.sokolovromann.myshopping.widget.WidgetTypography
+import ru.sokolovromann.myshopping.widget.createWidgetTypography
 
 class ProductsWidget : GlanceAppWidget() {
 
@@ -96,13 +94,15 @@ class ProductsWidget : GlanceAppWidget() {
             }
         }
 
+        val typography: WidgetTypography = createWidgetTypography(productsWidgetState.fontSizeOffset)
+
         Column(modifier = GlanceModifier.fillMaxSize()) {
             if (shoppingUid == null) {
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_message_loadingError),
                     nightTheme = productsWidgetState.nightTheme,
-                    fontSize = productsWidgetState.fontSize
+                    typography = typography
                 )
                 return@Column
             }
@@ -111,7 +111,7 @@ class ProductsWidget : GlanceAppWidget() {
                 ProductsWidgetName(
                     name = productsWidgetState.nameText,
                     nightTheme = productsWidgetState.nightTheme,
-                    fontSize = productsWidgetState.fontSize,
+                    typography = typography,
                     completed = productsWidgetState.completed,
                     noSplit = productsWidgetState.displayCompleted == DisplayCompleted.NO_SPLIT
                 )
@@ -120,7 +120,7 @@ class ProductsWidget : GlanceAppWidget() {
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
                     nightTheme = productsWidgetState.nightTheme,
-                    fontSize = productsWidgetState.fontSize
+                    typography = typography
                 )
 
                 if (productsWidgetState.forceLoad) {
@@ -142,7 +142,7 @@ class ProductsWidget : GlanceAppWidget() {
                     displayCompleted = productsWidgetState.displayCompleted,
                     strikethroughCompletedProducts = productsWidgetState.strikethroughCompletedProducts,
                     nightTheme = productsWidgetState.nightTheme,
-                    fontSize = productsWidgetState.fontSize,
+                    typography = typography,
                     coloredCheckbox = productsWidgetState.coloredCheckbox,
                     completedWithCheckbox = productsWidgetState.completedWithCheckbox
                 ) {
@@ -185,7 +185,7 @@ class ProductsWidget : GlanceAppWidget() {
                     ProductsWidgetTotal(
                         total = productsWidgetState.totalText,
                         nightTheme = productsWidgetState.nightTheme,
-                        fontSize = productsWidgetState.fontSize
+                        typography = typography
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())
@@ -222,7 +222,7 @@ private fun startMainActivity(context: Context, uid: String) {
 private fun ProductsWidgetName(
     name: UiString,
     nightTheme: NightTheme,
-    fontSize: UiFontSize,
+    typography: WidgetTypography,
     completed: Boolean,
     noSplit: Boolean
 ) {
@@ -259,10 +259,8 @@ private fun ProductsWidgetName(
     ) {
         Text(
             text = name.asCompose(),
-            style = TextDefaults.defaultTextStyle.copy(
-                color = ColorProvider(textColor),
-                fontSize = fontSize.widgetHeader.sp,
-                fontWeight = FontWeight.Bold
+            style = typography.title.copy(
+                color = ColorProvider(textColor)
             ),
             maxLines = 1
         )
@@ -274,7 +272,7 @@ private fun ProductsWidgetName(
 private fun ProductsWidgetTotal(
     total: UiString,
     nightTheme: NightTheme,
-    fontSize: UiFontSize
+    typography: WidgetTypography,
 ) {
     if (total.isEmpty()) {
         return
@@ -284,9 +282,8 @@ private fun ProductsWidgetTotal(
 
     Text(
         text = total.asCompose(),
-        style = TextDefaults.defaultTextStyle.copy(
-            color = ColorProvider(textColor),
-            fontSize = fontSize.widgetContent.sp
+        style = typography.body.copy(
+            color = ColorProvider(textColor)
         ),
         maxLines = 1
     )
@@ -298,7 +295,7 @@ private fun ProductsWidgetNotFound(
     modifier: GlanceModifier,
     text: String,
     nightTheme: NightTheme,
-    fontSize: UiFontSize
+    typography: WidgetTypography,
 ) {
     val backgroundColor = if (nightTheme.isWidgetNightTheme()) R.color.black else R.color.white
     val textColor = if (nightTheme.isWidgetNightTheme()) R.color.white else R.color.black
@@ -317,9 +314,8 @@ private fun ProductsWidgetNotFound(
                 horizontal = ProductsWidgetLargeSize
             ),
             text = text,
-            style = TextDefaults.defaultTextStyle.copy(
-                color = ColorProvider(textColor),
-                fontSize = fontSize.widgetContent.sp
+            style = typography.body.copy(
+                color = ColorProvider(textColor)
             )
         )
     }
@@ -336,7 +332,7 @@ private fun ProductsWidgetProducts(
     displayCompleted: DisplayCompleted,
     strikethroughCompletedProducts: Boolean,
     nightTheme: NightTheme,
-    fontSize: UiFontSize,
+    typography: WidgetTypography,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
@@ -353,7 +349,7 @@ private fun ProductsWidgetProducts(
             ProductsWidgetName(
                 name = name,
                 nightTheme = nightTheme,
-                fontSize = fontSize,
+                typography = typography,
                 completed = completed,
                 noSplit = displayCompleted == DisplayCompleted.NO_SPLIT
             )
@@ -369,7 +365,7 @@ private fun ProductsWidgetProducts(
                 displayCompleted = displayCompleted,
                 textDecoration = textDecoration,
                 nightTheme = nightTheme,
-                fontSize = fontSize,
+                typography = typography,
                 coloredCheckbox = coloredCheckbox,
                 completedWithCheckbox = completedWithCheckbox,
                 onCheckedChange = onCheckedChange
@@ -386,7 +382,7 @@ private fun ProductsWidgetProducts(
                 displayCompleted = displayCompleted,
                 textDecoration = textDecoration,
                 nightTheme = nightTheme,
-                fontSize = fontSize,
+                typography = typography,
                 coloredCheckbox = coloredCheckbox,
                 completedWithCheckbox = completedWithCheckbox,
                 onCheckedChange = onCheckedChange
@@ -402,7 +398,7 @@ private fun ProductsWidgetItem(
     displayCompleted: DisplayCompleted,
     textDecoration: TextDecoration,
     nightTheme: NightTheme,
-    fontSize: UiFontSize,
+    typography: WidgetTypography,
     coloredCheckbox: Boolean,
     completedWithCheckbox: Boolean,
     onCheckedChange: (ProductWidgetItem) -> Unit
@@ -449,9 +445,8 @@ private fun ProductsWidgetItem(
 
         Text(
             text = widgetItem.body,
-            style = TextDefaults.defaultTextStyle.copy(
+            style = typography.body.copy(
                 color = ColorProvider(textColor),
-                fontSize = fontSize.widgetContent.sp,
                 textDecoration = textDecoration
             )
         )

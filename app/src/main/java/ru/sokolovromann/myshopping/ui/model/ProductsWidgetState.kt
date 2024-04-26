@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.utils.toUiString
+import ru.sokolovromann.myshopping.widget.WidgetFontSizeOffset
 
 class ProductsWidgetState {
 
@@ -47,7 +48,7 @@ class ProductsWidgetState {
     var nightTheme: NightTheme by mutableStateOf(NightTheme.DefaultValue)
         private set
 
-    var fontSize: UiFontSize by mutableStateOf(UiFontSize.Default)
+    var fontSizeOffset: WidgetFontSizeOffset by mutableStateOf(WidgetFontSizeOffset())
         private set
 
     var waiting: Boolean by mutableStateOf(true)
@@ -75,7 +76,7 @@ class ProductsWidgetState {
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         displayMoney = userPreferences.displayMoney
         nightTheme = userPreferences.nightTheme
-        fontSize = UiAppConfigMapper.toUiFontSize(userPreferences.widgetFontSize)
+        fontSizeOffset = UiAppConfigMapper.toWidgetFontSizeOffset(userPreferences.widgetFontSize)
         waiting = false
         forceLoad = false
     }
