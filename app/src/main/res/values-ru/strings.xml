@@ -409,7 +409,6 @@
 
     <string name="productsWidget_description">Товары из выбранного списка покупок</string>
     <string name="productsWidget_label">Список покупок</string>
-    <string name="productsWidget_message_loadingError">Ошибка загрузки</string>
     <string name="productsWidget_text_loading">Загрузка…</string>
     <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
 

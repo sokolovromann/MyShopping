@@ -5,17 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.ColorFilter
+import androidx.glance.GlanceComposable
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.lazy.LazyColumn
@@ -71,97 +73,92 @@ class ProductsWidget : GlanceAppWidget() {
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        provideContent { ProductsWidgetContent(context) }
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Composable
-    private fun ProductsWidgetContent(context: Context) {
-        val shoppingUid: String? = currentState(key = stringPreferencesKey(WidgetKey.SHOPPING_UID.name))
-
-        val coroutineScope = rememberCoroutineScope()
-        val productsWidgetState: ProductsWidgetState = remember { ProductsWidgetState() }
         val entryPoint = EntryPointAccessors.fromApplication(
             context = context,
             entryPoint = ProductsWidgetEntryPoint::class.java
         )
+        val repository = entryPoint.shoppingListsRepository()
 
-        LaunchedEffect(shoppingUid, Unit) {
-            coroutineScope.launch {
-                entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collectLatest {
-                    productsWidgetState.populate(it)
+        provideContent {
+            val shoppingUid: String = currentState(key = stringPreferencesKey(WidgetKey.SHOPPING_UID.name))
+                ?: return@provideContent
+
+            val productsWidgetState: ProductsWidgetState = remember { ProductsWidgetState() }
+            val coroutineScope = rememberCoroutineScope()
+
+            SideEffect {
+                coroutineScope.launch {
+                    repository.getShoppingListWithConfig(shoppingUid).collectLatest {
+                        productsWidgetState.populate(it)
+                    }
                 }
             }
+
+            ProductsWidgetScreen(
+                onClickItem = { item ->
+                    coroutineScope.launch {
+                        if (item.completed) {
+                            repository.activeProduct(item.uid)
+                        } else {
+                            repository.completeProduct(item.uid)
+                        }
+                    }
+                },
+                onClickOpenProducts = { startMainActivity(context, shoppingUid) },
+                state = productsWidgetState,
+                typography = createWidgetTypography(productsWidgetState.fontSizeOffset)
+            )
         }
+    }
 
-        val typography: WidgetTypography = createWidgetTypography(productsWidgetState.fontSizeOffset)
-
+    @SuppressLint("RestrictedApi")
+    @GlanceComposable @Composable
+    private fun ProductsWidgetScreen(
+        onClickItem: (ProductWidgetItem) -> Unit,
+        onClickOpenProducts: () -> Unit,
+        state: ProductsWidgetState,
+        typography: WidgetTypography
+    ) {
+        val context = LocalContext.current
         Column(modifier = GlanceModifier.fillMaxSize()) {
-            if (shoppingUid == null) {
-                ProductsWidgetNotFound(
-                    modifier = GlanceModifier.defaultWeight(),
-                    text = context.getString(R.string.productsWidget_message_loadingError),
-                    nightTheme = productsWidgetState.nightTheme,
-                    typography = typography
-                )
-                return@Column
-            }
-
-            if (productsWidgetState.isNotFound()) {
+            if (state.isNotFound()) {
                 ProductsWidgetName(
-                    name = productsWidgetState.nameText,
-                    nightTheme = productsWidgetState.nightTheme,
+                    name = state.nameText,
+                    nightTheme = state.nightTheme,
                     typography = typography,
-                    completed = productsWidgetState.completed,
-                    noSplit = productsWidgetState.displayCompleted == DisplayCompleted.NO_SPLIT
+                    completed = state.completed,
+                    noSplit = state.displayCompleted == DisplayCompleted.NO_SPLIT
                 )
 
                 ProductsWidgetNotFound(
                     modifier = GlanceModifier.defaultWeight(),
                     text = context.getString(R.string.productsWidget_text_productsNotFound),
-                    nightTheme = productsWidgetState.nightTheme,
+                    nightTheme = state.nightTheme,
                     typography = typography
                 )
-
-                if (productsWidgetState.forceLoad) {
-                    LaunchedEffect(Unit) {
-                        coroutineScope.launch {
-                            entryPoint.shoppingListsRepository().getShoppingListWithConfig(shoppingUid).collectLatest {
-                                productsWidgetState.populate(it)
-                            }
-                        }
-                    }
-                }
             } else {
                 ProductsWidgetProducts(
                     modifier = GlanceModifier.defaultWeight(),
-                    name = productsWidgetState.nameText,
-                    completed = productsWidgetState.completed,
-                    pinnedItems = productsWidgetState.pinnedProducts,
-                    otherItems = productsWidgetState.otherProducts,
-                    displayCompleted = productsWidgetState.displayCompleted,
-                    strikethroughCompletedProducts = productsWidgetState.strikethroughCompletedProducts,
-                    nightTheme = productsWidgetState.nightTheme,
+                    name = state.nameText,
+                    completed = state.completed,
+                    pinnedItems = state.pinnedProducts,
+                    otherItems = state.otherProducts,
+                    displayCompleted = state.displayCompleted,
+                    strikethroughCompletedProducts = state.strikethroughCompletedProducts,
+                    nightTheme = state.nightTheme,
                     typography = typography,
-                    coloredCheckbox = productsWidgetState.coloredCheckbox,
-                    completedWithCheckbox = productsWidgetState.completedWithCheckbox
-                ) {
-                    coroutineScope.launch {
-                        if (it.completed) {
-                            entryPoint.shoppingListsRepository().activeProduct(it.uid)
-                        } else {
-                            entryPoint.shoppingListsRepository().completeProduct(it.uid)
-                        }
-                    }
-                }
+                    coloredCheckbox = state.coloredCheckbox,
+                    completedWithCheckbox = state.completedWithCheckbox,
+                    onCheckedChange = { onClickItem(it) }
+                )
             }
 
-            val dividerBackgroundColor = if (productsWidgetState.nightTheme.isWidgetNightTheme()) {
+            val dividerBackgroundColor = if (state.nightTheme.isWidgetNightTheme()) {
                 R.color.black_opacity_75
             } else {
                 R.color.gray_200_opacity_75
             }
-            val rowBackgroundColor = if (productsWidgetState.nightTheme.isWidgetNightTheme()) {
+            val rowBackgroundColor = if (state.nightTheme.isWidgetNightTheme()) {
                 R.color.black
             } else {
                 R.color.gray_200
@@ -181,22 +178,22 @@ class ProductsWidget : GlanceAppWidget() {
                     .background(ColorProvider(rowBackgroundColor)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (productsWidgetState.displayMoney) {
+                if (state.displayMoney) {
                     ProductsWidgetTotal(
-                        total = productsWidgetState.totalText,
-                        nightTheme = productsWidgetState.nightTheme,
+                        total = state.totalText,
+                        nightTheme = state.nightTheme,
                         typography = typography
                     )
                 }
                 Spacer(modifier = GlanceModifier.defaultWeight())
 
-                val tintColor = if (productsWidgetState.nightTheme.isWidgetNightTheme()) {
+                val tintColor = if (state.nightTheme.isWidgetNightTheme()) {
                     R.color.gray_200_opacity_75
                 } else {
                     R.color.black_opacity_75
                 }
                 Image(
-                    modifier = GlanceModifier.clickable { startMainActivity(context, shoppingUid) },
+                    modifier = GlanceModifier.clickable { onClickOpenProducts() },
                     provider = ImageProvider(R.drawable.ic_all_open),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(ColorProvider(tintColor)),

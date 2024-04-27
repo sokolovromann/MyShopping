@@ -414,7 +414,6 @@
 
     <string name="productsWidget_description">Produits de la liste de courses sélectionnée</string>
     <string name="productsWidget_label">Liste de courses</string>
-    <string name="productsWidget_message_loadingError">Erreur de chargement</string>
     <string name="productsWidget_text_loading">Chargement…</string>
     <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
 

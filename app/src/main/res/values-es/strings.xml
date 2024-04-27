@@ -401,7 +401,6 @@
 
     <string name="productsWidget_description">Productos de la lista de compras seleccionada</string>
     <string name="productsWidget_label">Lista de la compra</string>
-    <string name="productsWidget_message_loadingError">Error de carga</string>
     <string name="productsWidget_text_loading">Cargando…</string>
     <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
 

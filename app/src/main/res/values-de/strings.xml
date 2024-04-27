@@ -344,7 +344,6 @@
 
     <string name="productsWidget_description">Produkte der ausgewählten Einkaufsliste</string>
     <string name="productsWidget_label">Einkaufsliste</string>
-    <string name="productsWidget_message_loadingError">Ladefehler</string>
     <string name="productsWidget_text_loading">Wird geladen…</string>
     <string name="productsWidget_text_productsNotFound">@string/all_text_productsNotFound</string>
 
