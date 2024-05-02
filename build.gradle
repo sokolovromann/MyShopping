@@ -7,7 +7,7 @@ buildscript {
         app_code_version = 24
         app_name_version = '2.3.1'
 
-        gradle_version = '8.3.2'
+        gradle_version = '8.4.0'
         kotlin_version = '1.8.0'
 
         core_ktx_version = '1.12.0'
