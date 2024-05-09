@@ -99,7 +99,7 @@ fun TrashScreen(
                             viewModel.onEvent(event)
                         }
                         ShoppingListsDeleteDataButton {
-                            val event = TrashEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
+                            val event = TrashEvent.OnClickDeleteShoppingLists
                             viewModel.onEvent(event)
                         }
                         ShoppingListsSelectAllDataButton {
