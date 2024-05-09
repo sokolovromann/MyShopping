@@ -76,22 +76,22 @@ interface ShoppingListsDao {
     @Query("UPDATE shoppings SET pinned = 0 WHERE uid IN (:uids)")
     fun unpinShoppings(uids: List<String>)
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid IN (:uids)")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 0, reminder = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun moveToPurchases(uids: List<String>, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 0, reminder = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveToPurchases(uid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid IN (:uids)")
+    @Query("UPDATE shoppings SET archived = 1, deleted = 0, reminder = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun moveToArchive(uids: List<String>, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 1, deleted = 0, last_modified = :lastModified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 1, deleted = 0, reminder = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveToArchive(uid: String, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = :lastModified WHERE uid IN (:uids)")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 1, reminder = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun moveToTrash(uids: List<String>, lastModified: Long)
 
-    @Query("UPDATE shoppings SET archived = 0, deleted = 1, last_modified = :lastModified WHERE uid = :uid")
+    @Query("UPDATE shoppings SET archived = 0, deleted = 1, reminder = 0, last_modified = :lastModified WHERE uid = :uid")
     fun moveToTrash(uid: String, lastModified: Long)
 
     @Query("UPDATE shoppings SET sort_by = :sortBy, sort_ascending = :sortAscending, sort_formatted = 1, last_modified = :lastModified WHERE uid = :uid")

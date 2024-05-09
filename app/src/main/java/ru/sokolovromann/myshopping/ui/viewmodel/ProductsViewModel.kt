@@ -13,6 +13,7 @@ import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
+import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ProductsState
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
     private val appConfigRepository: AppConfigRepository,
+    private val alarmManager: PurchasesAlarmManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<ProductsEvent> {
 
@@ -288,6 +290,7 @@ class ProductsViewModel @Inject constructor(
                 shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
             }
         }
+        alarmManager.deleteReminder(shoppingUid)
         _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
     }
 

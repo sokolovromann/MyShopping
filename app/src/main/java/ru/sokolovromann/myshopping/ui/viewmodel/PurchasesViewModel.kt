@@ -12,6 +12,7 @@ import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
+import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.PurchasesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.PurchasesEvent
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PurchasesViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val appConfigRepository: AppConfigRepository
+    private val appConfigRepository: AppConfigRepository,
+    private val alarmManager: PurchasesAlarmManager
 ) : ViewModel(), ViewModelEvent<PurchasesEvent> {
 
     val purchasesState: PurchasesState = PurchasesState()
@@ -122,6 +124,7 @@ class PurchasesViewModel @Inject constructor(
                 ShoppingLocation.TRASH -> shoppingListsRepository.moveShoppingListsToTrash(it)
             }
             purchasesState.onAllShoppingListsSelected(selected = false)
+            alarmManager.deleteReminders(it)
         }
     }
 
