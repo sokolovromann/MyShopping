@@ -17,7 +17,9 @@ import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.model.UserPreferences
+import java.util.Calendar
 
 object ShoppingListsMapper {
 
@@ -145,6 +147,35 @@ object ShoppingListsMapper {
             shoppingLists = toShoppingLists(entities, appConfig),
             appConfig = appConfig
         )
+    }
+
+    fun toMinLastModified(
+        period: ShoppingPeriod,
+        currentDateTime: DateTime = DateTime.getCurrentDateTime()
+    ): Long? {
+        return when (period) {
+            ShoppingPeriod.ONE_MONTH -> {
+                currentDateTime.toCalendar()
+                    .apply { add(Calendar.MONTH, -1) }
+                    .timeInMillis
+            }
+            ShoppingPeriod.THREE_MONTHS -> {
+                currentDateTime.toCalendar()
+                    .apply { add(Calendar.MONTH, -3) }
+                    .timeInMillis
+            }
+            ShoppingPeriod.SIX_MONTHS -> {
+                currentDateTime.toCalendar()
+                    .apply { add(Calendar.MONTH, -6) }
+                    .timeInMillis
+            }
+            ShoppingPeriod.ONE_YEAR -> {
+                currentDateTime.toCalendar()
+                    .apply { add(Calendar.YEAR, -1) }
+                    .timeInMillis
+            }
+            ShoppingPeriod.ALL_TIME -> null
+        }
     }
 
     private fun toShopping(
