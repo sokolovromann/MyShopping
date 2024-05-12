@@ -24,6 +24,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.IdDefaults
+import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
 import ru.sokolovromann.myshopping.data.utils.sortedShoppingLists
 import javax.inject.Inject
@@ -40,8 +41,10 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         return@withContext getShoppingListsWithConfig(ShoppingLocation.PURCHASES)
     }
 
-    suspend fun getArchiveWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
-        return@withContext getShoppingListsWithConfig(ShoppingLocation.ARCHIVE)
+    suspend fun getArchiveWithConfig(
+        period: ShoppingPeriod? = null
+    ): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+        return@withContext getShoppingListsWithConfig(ShoppingLocation.ARCHIVE, period)
     }
 
     suspend fun getTrashWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
@@ -870,11 +873,19 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     }
 
     private suspend fun getShoppingListsWithConfig(
-        location: ShoppingLocation? = null
+        location: ShoppingLocation? = null,
+        period: ShoppingPeriod? = null
     ): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
         val shoppingListsFlow = when (location) {
             ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
-            ShoppingLocation.ARCHIVE -> shoppingListsDao.getArchive()
+            ShoppingLocation.ARCHIVE -> {
+                if (period == null || period == ShoppingPeriod.ALL_TIME) {
+                    shoppingListsDao.getArchive()
+                } else {
+                    val minLastModified = ShoppingListsMapper.toMinLastModified(period) ?: 0L
+                    shoppingListsDao.getArchive(minLastModified)
+                }
+            }
             ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
             null -> shoppingListsDao.getAllShoppingLists()
         }

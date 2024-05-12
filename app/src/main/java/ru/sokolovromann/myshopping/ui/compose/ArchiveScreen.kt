@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -19,11 +20,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
+import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
@@ -255,6 +258,67 @@ fun ArchiveScreen(
             displayCompleted = state.displayCompleted,
             strikethroughCompletedProducts = state.strikethroughCompletedProducts,
             coloredCheckbox = state.coloredCheckbox,
+            topBar = {
+                TextButton(
+                    modifier = Modifier.padding(ArchiveGridBarPaddings),
+                    onClick = {
+                        val event = ArchiveEvent.OnSelectArchivePeriod(expanded = true)
+                        viewModel.onEvent(event)
+                    }
+                ) {
+                    Text(text = state.archivePeriod.text.asCompose())
+
+                    AppDropdownMenu(
+                        expanded = state.expandedArchivePeriod,
+                        onDismissRequest = {
+                            val event = ArchiveEvent.OnSelectArchivePeriod(expanded = false)
+                            viewModel.onEvent(event)
+                        },
+                        header = { Text(text = stringResource(R.string.shoppingLists_header_period)) }
+                    ) {
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = ArchiveEvent.OnArchivePeriodSelected(ShoppingPeriod.ONE_MONTH)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.shoppingLists_action_selectOneMonthPeriod)) },
+                            right = { CheckmarkAppCheckbox(checked = state.archivePeriod.selected == ShoppingPeriod.ONE_MONTH) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = ArchiveEvent.OnArchivePeriodSelected(ShoppingPeriod.THREE_MONTHS)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.shoppingLists_action_selectThreeMonthsPeriod)) },
+                            right = { CheckmarkAppCheckbox(checked = state.archivePeriod.selected == ShoppingPeriod.THREE_MONTHS) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = ArchiveEvent.OnArchivePeriodSelected(ShoppingPeriod.SIX_MONTHS)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.shoppingLists_action_selectSixMonthsPeriod)) },
+                            right = { CheckmarkAppCheckbox(checked = state.archivePeriod.selected == ShoppingPeriod.SIX_MONTHS) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = ArchiveEvent.OnArchivePeriodSelected(ShoppingPeriod.ONE_YEAR)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.shoppingLists_action_selectOneYearPeriod)) },
+                            right = { CheckmarkAppCheckbox(checked = state.archivePeriod.selected == ShoppingPeriod.ONE_YEAR) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = {
+                                val event = ArchiveEvent.OnArchivePeriodSelected(ShoppingPeriod.ALL_TIME)
+                                viewModel.onEvent(event)
+                            },
+                            text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllTimePeriod)) },
+                            right = { CheckmarkAppCheckbox(checked = state.archivePeriod.selected == ShoppingPeriod.ALL_TIME) }
+                        )
+                    }
+                }
+            },
             bottomBar = {
                 if (state.displayHiddenShoppingLists) {
                     ShoppingListsHiddenContent {
@@ -295,3 +359,5 @@ fun ArchiveScreen(
         )
     }
 }
+
+private val ArchiveGridBarPaddings = PaddingValues(horizontal = 8.dp)

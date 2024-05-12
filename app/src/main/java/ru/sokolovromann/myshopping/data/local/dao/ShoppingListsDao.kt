@@ -28,6 +28,10 @@ interface ShoppingListsDao {
     fun getArchive(): Flow<List<ShoppingListEntity>>
 
     @Transaction
+    @Query("SELECT * FROM shoppings WHERE archived = 1 AND deleted = 0 AND last_modified >= :minLastModified")
+    fun getArchive(minLastModified: Long): Flow<List<ShoppingListEntity>>
+
+    @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 1")
     fun getTrash(): Flow<List<ShoppingListEntity>>
 

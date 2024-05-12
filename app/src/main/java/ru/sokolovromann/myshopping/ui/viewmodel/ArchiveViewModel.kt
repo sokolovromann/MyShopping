@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
+import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.Sort
@@ -73,14 +75,22 @@ class ArchiveViewModel @Inject constructor(
             is ArchiveEvent.OnShowHiddenShoppingLists -> onShowHiddenShoppingLists(event)
 
             ArchiveEvent.OnInvertMultiColumns -> onInvertMultiColumns()
+
+            is ArchiveEvent.OnSelectArchivePeriod -> onSelectArchivePeriod(event)
+
+            is ArchiveEvent.OnArchivePeriodSelected -> onArchivePeriodSelected(event)
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() {
+        getArchiveAndPopulate(ShoppingPeriod.DefaultValue)
+    }
+
+    private fun getArchiveAndPopulate(period: ShoppingPeriod) = viewModelScope.launch(AppDispatchers.Main) {
         archiveState.onWaiting()
 
-        shoppingListsRepository.getArchiveWithConfig().collect {
-            archiveState.populate(it)
+        shoppingListsRepository.getArchiveWithConfig(period).collectLatest {
+            archiveState.populate(it, period)
         }
     }
 
@@ -209,5 +219,13 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onInvertMultiColumns() = viewModelScope.launch(AppDispatchers.Main) {
         appConfigRepository.invertShoppingListsMultiColumns()
+    }
+
+    private fun onSelectArchivePeriod(event: ArchiveEvent.OnSelectArchivePeriod) {
+        archiveState.onSelectArchivePeriod(event.expanded)
+    }
+
+    private fun onArchivePeriodSelected(event: ArchiveEvent.OnArchivePeriodSelected) {
+        getArchiveAndPopulate(event.period)
     }
 }

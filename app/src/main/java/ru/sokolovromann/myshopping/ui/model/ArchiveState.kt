@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
+import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
@@ -76,10 +77,16 @@ class ArchiveState {
     var displaySearch: Boolean by mutableStateOf(false)
         private set
 
+    var archivePeriod: SelectedValue<ShoppingPeriod> by mutableStateOf(SelectedValue(ShoppingPeriod.DefaultValue))
+        private set
+
+    var expandedArchivePeriod: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(shoppingListsWithConfig: ShoppingListsWithConfig) {
+    fun populate(shoppingListsWithConfig: ShoppingListsWithConfig, period: ShoppingPeriod) {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
         val userPreferences = shoppingListsWithConfig.getUserPreferences()
@@ -99,6 +106,8 @@ class ArchiveState {
         expandedArchiveMenu = false
         sortValue = toSortValue(userPreferences.shoppingsSort)
         sortFormatted = userPreferences.shoppingsSortFormatted
+        archivePeriod = toArchivePeriodValue(period)
+        expandedArchivePeriod = false
         waiting = false
     }
 
@@ -193,6 +202,10 @@ class ArchiveState {
         displayHiddenShoppingLists = !display
     }
 
+    fun onSelectArchivePeriod(expanded: Boolean) {
+        expandedArchivePeriod = expanded
+    }
+
     fun onWaiting() {
         waiting = true
     }
@@ -230,6 +243,19 @@ class ArchiveState {
                 SortBy.LAST_MODIFIED -> UiString.FromResources(R.string.shoppingLists_action_sortByLastModified)
                 SortBy.NAME -> UiString.FromResources(R.string.shoppingLists_action_sortByName)
                 SortBy.TOTAL -> UiString.FromResources(R.string.shoppingLists_action_sortByTotal)
+            }
+        )
+    }
+
+    private fun toArchivePeriodValue(period: ShoppingPeriod): SelectedValue<ShoppingPeriod> {
+        return SelectedValue(
+            selected = period,
+            text = when (period) {
+                ShoppingPeriod.ONE_MONTH -> UiString.FromResources(R.string.shoppingLists_action_selectOneMonthPeriod)
+                ShoppingPeriod.THREE_MONTHS -> UiString.FromResources(R.string.shoppingLists_action_selectThreeMonthsPeriod)
+                ShoppingPeriod.SIX_MONTHS -> UiString.FromResources(R.string.shoppingLists_action_selectSixMonthsPeriod)
+                ShoppingPeriod.ONE_YEAR -> UiString.FromResources(R.string.shoppingLists_action_selectOneYearPeriod)
+                ShoppingPeriod.ALL_TIME -> UiString.FromResources(R.string.shoppingLists_action_selectAllTimePeriod)
             }
         )
     }

@@ -4,6 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
+import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 
@@ -50,4 +51,8 @@ sealed class ArchiveEvent {
     data class OnShowHiddenShoppingLists(val display: Boolean) : ArchiveEvent()
 
     object OnInvertMultiColumns : ArchiveEvent()
+
+    data class OnSelectArchivePeriod(val expanded: Boolean) : ArchiveEvent()
+
+    data class OnArchivePeriodSelected(val period: ShoppingPeriod) : ArchiveEvent()
 }
