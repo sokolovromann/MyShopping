@@ -546,9 +546,14 @@
     <string name="shoppingLists_action_reverseSort">@string/all_action_reverseSort</string>
     <string name="shoppingLists_action_search">@string/all_action_search</string>
     <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
+    <string name="shoppingLists_action_selectAllTimePeriod">All</string>
     <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
+    <string name="shoppingLists_action_selectOneMonthPeriod">One month</string>
+    <string name="shoppingLists_action_selectOneYearPeriod">One year</string>
     <string name="shoppingLists_action_selectPinShoppingList">@string/all_action_pin</string>
     <string name="shoppingLists_action_selectPurchasesLocation">@string/shoppingLists_header_purchases</string>
+    <string name="shoppingLists_action_selectSixMonthsPeriod">Six months</string>
+    <string name="shoppingLists_action_selectThreeMonthsPeriod">Three months</string>
     <string name="shoppingLists_action_selectTrashLocation">@string/shoppingLists_header_trash</string>
     <string name="shoppingLists_action_selectUnpinShoppingList">@string/all_action_unpin</string>
     <string name="shoppingLists_action_sort">@string/all_action_sort</string>
