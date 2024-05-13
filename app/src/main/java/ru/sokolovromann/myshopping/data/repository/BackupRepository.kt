@@ -11,6 +11,8 @@ import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
+import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
+import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Backup
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
@@ -39,12 +41,18 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             listOf(
                 async { shoppingListsDao.deleteAllShoppings() },
                 async { productsDao.deleteAllProducts() },
-                async { autocompletesDao.deleteAllAutocompletes() }
+                async { autocompletesDao.deleteAllAutocompletes() },
             ).awaitAll()
 
             listOf(
-                async { shoppingListsDao.insertShoppings(backupFileEntity.shoppingEntities) },
-                async { productsDao.insertProducts(backupFileEntity.productEntities) },
+                async {
+                    val shoppings = getFilteredShoppings(backupFileEntity.shoppingEntities)
+                    shoppingListsDao.insertShoppings(shoppings)
+                },
+                async {
+                    val products = getFilteredProducts(backupFileEntity.shoppingEntities, backupFileEntity.productEntities)
+                    productsDao.insertProducts(products)
+                },
                 async { autocompletesDao.insertAutocompletes(backupFileEntity.autocompleteEntities) }
             ).awaitAll()
 
@@ -63,8 +71,8 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             flow3 = autocompletesDao.getAllAutocompletes(),
             transform = { shoppingEntities, productEntities, autocompleteEntities ->
                 BackupMapper.toBackupFileEntity(
-                    shoppingEntities = shoppingEntities,
-                    productEntities = productEntities,
+                    shoppingEntities = getFilteredShoppings(shoppingEntities),
+                    productEntities = getFilteredProducts(shoppingEntities, productEntities),
                     autocompleteEntities = autocompleteEntities,
                     appCodeVersion = appCodeVersion
                 )
@@ -109,8 +117,10 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
     }
 
     private suspend fun getNewBackup(): Backup {
-        val shoppingEntities = shoppingListsDao.getAllShoppings().firstOrNull() ?: listOf()
-        val productEntities = productsDao.getAllProducts().firstOrNull() ?: listOf()
+        val shoppingEntities = shoppingListsDao.getAllShoppings().firstOrNull()
+            ?.let { getFilteredShoppings(it) } ?: listOf()
+        val productEntities = productsDao.getAllProducts().firstOrNull()
+            ?.let { getFilteredProducts(shoppingEntities, it) } ?: listOf()
         val autocompleteEntities = autocompletesDao.getAllAutocompletes().firstOrNull() ?: listOf()
         val appConfigEntity = appConfigDao.getAppConfig().firstOrNull() ?: AppConfigEntity()
         val newAppConfig = AppConfigMapper.toAppConfig(appConfigEntity)
@@ -134,4 +144,20 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             fileName = ""
         )
     }
+}
+
+private fun getFilteredShoppings(shoppings: List<ShoppingEntity>): List<ShoppingEntity> {
+    return shoppings.filterNot { it.deleted }.map {
+        it.copy(reminder = 0L)
+    }
+}
+
+private fun getFilteredProducts(
+    shoppings: List<ShoppingEntity>,
+    products: List<ProductEntity>
+): List<ProductEntity> {
+    val shoppingUids = shoppings
+        .filter { it.deleted }
+        .map { it.uid }
+    return products.filterNot { shoppingUids.contains(it.shoppingUid) }
 }

@@ -92,7 +92,6 @@ class BackupViewModel @Inject constructor(
         backupRepository.importBackup(event.uri)
             .onSuccess {
                 deleteRemindersIfExists(it.first.shoppings)
-                createReminderIfExists(it.second.shoppings)
                 backupState.onShowImportMessage(success = true)
             }
             .onFailure {
@@ -104,14 +103,6 @@ class BackupViewModel @Inject constructor(
         shoppings.forEach { shopping ->
             if (shopping.reminder != null) {
                 alarmManager.deleteReminder(shopping.uid)
-            }
-        }
-    }
-
-    private fun createReminderIfExists(shoppings: List<Shopping>) {
-        shoppings.forEach { shopping ->
-            shopping.reminder?.let { dateTime ->
-                alarmManager.createReminder(shopping.uid, dateTime.millis)
             }
         }
     }
