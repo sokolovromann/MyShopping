@@ -9,7 +9,6 @@ import ru.sokolovromann.myshopping.app.AppBase64
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.app.AppJson
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
-import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
 import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
@@ -30,7 +29,6 @@ class FilesDao(appContent: AppContent) {
     private val shoppingPrefix = "$packageNamePrefix.BACKUP_SHOPPING_PREFIX:"
     private val productPrefix = "$packageNamePrefix.BACKUP_PRODUCT_PREFIX:"
     private val autocompletePrefix = "$packageNamePrefix.BACKUP_AUTOCOMPLETE_PREFIX:"
-    private val appConfigPrefix = "$packageNamePrefix.BACKUP_APP_CONFIG_PREFIX:"
 
     suspend fun writeBackup(entity: BackupFileEntity): Result<String> = withContext(dispatcher) {
         return@withContext try {
@@ -103,9 +101,6 @@ class FilesDao(appContent: AppContent) {
 
             val autocompletesJsons = encodeAutocompleteEntities(entity.autocompleteEntities)
             addAll(autocompletesJsons)
-
-            val appConfigJson = encodeAppConfigEntity(entity.appConfigEntity)
-            add(appConfigJson)
         }
 
         var jsonsText = "$codeVersionPrefix${entity.appVersion}\n"
@@ -126,10 +121,6 @@ class FilesDao(appContent: AppContent) {
         return entities.map { "$autocompletePrefix${AppJson.encodeToString(it)}" }
     }
 
-    private fun encodeAppConfigEntity(entity: AppConfigEntity): String {
-        return "$appConfigPrefix${AppJson.encodeToString(entity)}"
-    }
-
     private fun decodePackageName(line: String): Boolean {
         val codeVersionWithPackageName = AppBase64.decode(line).split("\n")[0]
         return codeVersionWithPackageName.startsWith(packageNamePrefix)
@@ -140,7 +131,6 @@ class FilesDao(appContent: AppContent) {
         val shoppingEntities = mutableListOf<ShoppingEntity>()
         val productEntities = mutableListOf<ProductEntity>()
         val autocompleteEntities = mutableListOf<AutocompleteEntity>()
-        var appConfigEntity = AppConfigEntity()
 
         AppBase64.decode(line).split("\n").forEach {
             if (it.startsWith(codeVersionPrefix)) {
@@ -161,18 +151,12 @@ class FilesDao(appContent: AppContent) {
                 val autocompleteEntity = decodeAutocompleteEntity(it)
                 autocompleteEntities.add(autocompleteEntity)
             }
-
-            if (it.startsWith(appConfigPrefix)) {
-                val appConfig = decodeAppConfigEntity(it)
-                appConfigEntity = appConfig
-            }
         }
 
         return BackupFileEntity(
             shoppingEntities = shoppingEntities,
             productEntities = productEntities,
             autocompleteEntities = autocompleteEntities,
-            appConfigEntity = appConfigEntity,
             appVersion = appVersion
         )
     }
@@ -189,11 +173,6 @@ class FilesDao(appContent: AppContent) {
 
     private fun decodeAutocompleteEntity(value: String): AutocompleteEntity {
         val entityJson = value.replace(autocompletePrefix, "")
-        return AppJson.decodeFromString(entityJson)
-    }
-
-    private fun decodeAppConfigEntity(value: String): AppConfigEntity {
-        val entityJson = value.replace(appConfigPrefix, "")
         return AppJson.decodeFromString(entityJson)
     }
 

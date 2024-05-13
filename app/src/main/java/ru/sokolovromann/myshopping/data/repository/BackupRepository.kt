@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
+import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Backup
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
@@ -38,14 +39,13 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             listOf(
                 async { shoppingListsDao.deleteAllShoppings() },
                 async { productsDao.deleteAllProducts() },
-                async { autocompletesDao.deleteAllAutocompletes() },
+                async { autocompletesDao.deleteAllAutocompletes() }
             ).awaitAll()
 
             listOf(
                 async { shoppingListsDao.insertShoppings(backupFileEntity.shoppingEntities) },
                 async { productsDao.insertProducts(backupFileEntity.productEntities) },
-                async { autocompletesDao.insertAutocompletes(backupFileEntity.autocompleteEntities) },
-                async { appConfigDao.saveAppConfig(backupFileEntity.appConfigEntity) }
+                async { autocompletesDao.insertAutocompletes(backupFileEntity.autocompleteEntities) }
             ).awaitAll()
 
             val success = Pair(
@@ -61,13 +61,11 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             flow = shoppingListsDao.getAllShoppings(),
             flow2 = productsDao.getAllProducts(),
             flow3 = autocompletesDao.getAllAutocompletes(),
-            flow4 = appConfigDao.getAppConfig(),
-            transform = { shoppingEntities, productEntities, autocompleteEntities, appConfigEntity ->
+            transform = { shoppingEntities, productEntities, autocompleteEntities ->
                 BackupMapper.toBackupFileEntity(
                     shoppingEntities = shoppingEntities,
                     productEntities = productEntities,
                     autocompleteEntities = autocompleteEntities,
-                    appConfigEntity = appConfigEntity,
                     appCodeVersion = appCodeVersion
                 )
             }
@@ -89,7 +87,7 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
     }
 
     private fun getOldBackup(backupFileEntity: BackupFileEntity): Backup {
-        val oldAppConfig = AppConfigMapper.toAppConfig(backupFileEntity.appConfigEntity)
+        val oldAppConfig = AppConfig()
         return BackupMapper.toBackup(
             shoppings = ShoppingListsMapper.toShoppings(
                 shoppingEntities = backupFileEntity.shoppingEntities,
@@ -106,7 +104,6 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
                 appConfig = oldAppConfig,
                 language = null
             ),
-            appConfig = oldAppConfig,
             fileName = ""
         )
     }
@@ -134,7 +131,6 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
                 appConfig = newAppConfig,
                 language = null
             ),
-            appConfig = newAppConfig,
             fileName = ""
         )
     }
