@@ -141,6 +141,7 @@
     <string name="backup_message_importSuccessful">Données importées avec succès</string>
     <string name="backup_message_permissionError">Vous n\'êtes pas autorisé à exporter ou importer des données</string>
     <string name="backup_message_warning">Ne modifiez pas le fichier. Vous risquez de perdre des données!</string>
+    <string name="backup_text_exportImport">Exporter/importer des listes et des produits à partir Achats, Archives et Saisie automatique</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Calculer la monnaie</string>
@@ -478,7 +479,7 @@
     <string name="settings_action_selectDisabledNightTheme">Désactivé</string>
     <string name="settings_action_selectWidgetNightTheme">Uniquement widget</string>
     <string name="settings_body_automaticallyEmptyTrash">Si activé, les données datant de plus de 10 jours seront supprimées</string>
-    <string name="settings_body_backup">Exporter/importer toutes les données de l\'application</string>
+    <string name="settings_body_backup">Exporter/importer des données l\'application</string>
     <string name="settings_body_coloredCheckbox">Si activé, les cases à cocher seront colorées en rouge ou en vert</string>
     <string name="settings_body_completedWithCheckbox">Si activé, le produit acheté est marqué en cliquant sur la case à cocher</string>
     <string name="settings_body_currencySymbol">Symbole: %s</string>

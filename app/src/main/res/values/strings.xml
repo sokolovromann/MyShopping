@@ -141,6 +141,7 @@
     <string name="backup_message_importSuccessful">Data imported successfully</string>
     <string name="backup_message_permissionError">You do not have permission to export or import data</string>
     <string name="backup_message_warning">Do not edit the file. You may lose data!</string>
+    <string name="backup_text_exportImport">Export/import lists and products from Purchases, Archive and Autocompletes</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Calculate change</string>
@@ -320,7 +321,7 @@
     <string name="settings_action_selectDisabledNightTheme">Disabled</string>
     <string name="settings_action_selectWidgetNightTheme">Only widget</string>
     <string name="settings_body_automaticallyEmptyTrash">If enabled, data older than 10 days will be deleted</string>
-    <string name="settings_body_backup">Export/import all app data</string>
+    <string name="settings_body_backup">Export/import app data</string>
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>

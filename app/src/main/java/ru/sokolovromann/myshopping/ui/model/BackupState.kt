@@ -24,7 +24,7 @@ class BackupState {
         private set
 
     fun populate(appConfig: AppConfig, correctWriteFilesPermission: Boolean) {
-        messageText = UiString.FromString("")
+        messageText = UiString.FromResources(R.string.backup_text_exportImport)
         locationText = UiString.FromString("")
         warningText = UiString.FromString("")
         permissionError = !correctWriteFilesPermission

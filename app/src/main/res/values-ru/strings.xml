@@ -141,6 +141,7 @@
     <string name="backup_message_importSuccessful">Данные успешно импортированы</string>
     <string name="backup_message_permissionError">У вас нет разрешения на экспорт или импорт данных</string>
     <string name="backup_message_warning">Не редактируйте файл. Это может привести к полной потере данных!</string>
+    <string name="backup_text_exportImport">Экспорт/импорт списков и товаров из Покупок, Архива и Подсказок</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Посчитать сдачу</string>
@@ -473,7 +474,7 @@
     <string name="settings_action_selectDisabledNightTheme">Отключено</string>
     <string name="settings_action_selectWidgetNightTheme">Только виджет</string>
     <string name="settings_body_automaticallyEmptyTrash">Если включено, то данные старше 10 дней будут удалятся</string>
-    <string name="settings_body_backup">Экспорт/импорт всех данных приложения</string>
+    <string name="settings_body_backup">Экспорт/импорт данных приложения</string>
     <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>

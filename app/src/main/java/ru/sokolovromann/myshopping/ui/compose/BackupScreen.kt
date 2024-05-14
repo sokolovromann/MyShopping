@@ -8,7 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -76,21 +74,45 @@ fun BackupScreen(
         onDismissRequest = { viewModel.onEvent(BackupEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.backup_header)) },
         actionButtons = {
-            AppDialogActionButton(
-                onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
-                content = {
-                    Text(text = stringResource(R.string.backup_action_closeBackup))
-                }
-            )
-
-            if (state.permissionError) {
-                AppDialogActionButton(
-                    onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
-                    primaryButton = true,
-                    content = {
-                        Text(text = stringResource(R.string.backup_action_openPermissions))
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ) {
+                if (state.permissionError) {
+                    AppDialogActionButton(
+                        onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
+                        primaryButton = true,
+                        content = {
+                            Text(text = stringResource(R.string.backup_action_openPermissions))
+                        }
+                    )
+                } else {
+                    if (state.locationText.isEmpty()) {
+                        Row {
+                            AppDialogActionButton(
+                                onClick = { viewModel.onEvent(BackupEvent.OnClickExport) },
+                                enabled = !state.waiting,
+                                content = {
+                                    Text(text = stringResource(R.string.backup_action_export))
+                                }
+                            )
+                            AppDialogActionButton(
+                                onClick = { viewModel.onEvent(BackupEvent.OnClickImport) },
+                                enabled = !state.waiting,
+                                content = {
+                                    Text(text = stringResource(R.string.backup_action_import))
+                                }
+                            )
+                        }
+                    } else {
+                        AppDialogActionButton(
+                            onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
+                            content = {
+                                Text(text = stringResource(R.string.backup_action_closeBackup))
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     ) {
@@ -109,36 +131,6 @@ fun BackupScreen(
                     content = { CircularProgressIndicator() }
                 )
             } else {
-                Row {
-                    OutlinedButton(
-                        modifier = Modifier.weight(0.5f),
-                        onClick = { viewModel.onEvent(BackupEvent.OnClickExport) },
-                        contentPadding = BackupContentPadding
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.Start,
-                            content = { Text(text = stringResource(R.string.backup_action_export)) }
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
-
-                    OutlinedButton(
-                        modifier = Modifier.weight(0.5f),
-                        onClick = { viewModel.onEvent(BackupEvent.OnClickImport) },
-                        contentPadding = BackupContentPadding
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.Start,
-                            content = { Text(text = stringResource(R.string.backup_action_import)) }
-                        )
-                    }
-                }
-
                 if (state.messageText.isNotEmpty()) {
                     Spacer(modifier = Modifier.size(BackupSpacerMediumSize))
                     Text(
@@ -181,7 +173,4 @@ private fun registerSelectFileForResult(
     }
 }
 
-private val BackupContentPadding = PaddingValues(
-    horizontal = 8.dp
-)
 private val BackupSpacerMediumSize = 8.dp

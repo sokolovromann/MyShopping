@@ -141,6 +141,7 @@
     <string name="backup_message_importSuccessful">Дані успішно імпортовано</string>
     <string name="backup_message_permissionError">У вас немає дозволу на експорт або імпорт даних</string>
     <string name="backup_message_warning">Не редагуйте файл. Це може призвести до повної втрати даних!</string>
+    <string name="backup_text_exportImport">Експорт/імпорт списків та товарів з Покупок, Архіву та Підказок</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Порахувати здачу</string>
@@ -426,7 +427,7 @@
     <string name="settings_action_selectDisabledNightTheme">Вимкнено</string>
     <string name="settings_action_selectWidgetNightTheme">Тільки віджет</string>
     <string name="settings_body_automaticallyEmptyTrash">Якщо включено, то дані старше 10 днів будуть видалятися</string>
-    <string name="settings_body_backup">Експорт/імпорт усіх даних програми</string>
+    <string name="settings_body_backup">Експорт/імпорт даних програми</string>
     <string name="settings_body_coloredCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>

@@ -141,6 +141,7 @@
     <string name="backup_message_importSuccessful">Daten erfolgreich importiert</string>
     <string name="backup_message_permissionError">Sie haben keine Berechtigung zum Exportieren oder Importieren von Daten</string>
     <string name="backup_message_warning">Bearbeiten Sie die Datei nicht. Es kann zu Datenverlust kommen!</string>
+    <string name="backup_text_exportImport">Exportieren/Importieren Sie Listen und Produkte aus Einkäufe, Archiv und Autovervollständigungen</string>
 
     <string name="calculateChange_action_closeCalculatingChange">@string/all_action_back</string>
     <string name="calculateChange_header">Veränderung berechnen</string>
@@ -408,7 +409,7 @@
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
     <string name="settings_action_selectWidgetNightTheme">Nur Widget</string>
     <string name="settings_body_automaticallyEmptyTrash">Wählen Sie aus, Daten die älter als 10 Tage sind, werden gelöscht</string>
-    <string name="settings_body_backup">Alle App-Daten exportieren/importieren</string>
+    <string name="settings_body_backup">App-Daten exportieren/importieren</string>
     <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
