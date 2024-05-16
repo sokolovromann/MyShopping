@@ -87,7 +87,14 @@ fun BackupScreen(
                         }
                     )
                 } else {
-                    if (state.locationText.isEmpty()) {
+                    if (state.displayBack) {
+                        AppDialogActionButton(
+                            onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
+                            content = {
+                                Text(text = stringResource(R.string.backup_action_closeBackup))
+                            }
+                        )
+                    } else {
                         Row {
                             AppDialogActionButton(
                                 onClick = { viewModel.onEvent(BackupEvent.OnClickExport) },
@@ -104,13 +111,6 @@ fun BackupScreen(
                                 }
                             )
                         }
-                    } else {
-                        AppDialogActionButton(
-                            onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
-                            content = {
-                                Text(text = stringResource(R.string.backup_action_closeBackup))
-                            }
-                        )
                     }
                 }
             }

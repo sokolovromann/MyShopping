@@ -20,6 +20,9 @@ class BackupState {
     var permissionError: Boolean by mutableStateOf(false)
         private set
 
+    var displayBack: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -28,6 +31,7 @@ class BackupState {
         locationText = UiString.FromString("")
         warningText = UiString.FromString("")
         permissionError = !correctWriteFilesPermission
+        displayBack = false
         waiting = false
     }
 
@@ -41,6 +45,7 @@ class BackupState {
             locationText = UiString.FromString("")
             warningText = UiString.FromString("")
         }
+        displayBack = true
         waiting = false
     }
 
@@ -52,6 +57,7 @@ class BackupState {
         }
         locationText = UiString.FromString("")
         warningText = UiString.FromString("")
+        displayBack = true
         waiting = false
     }
 
