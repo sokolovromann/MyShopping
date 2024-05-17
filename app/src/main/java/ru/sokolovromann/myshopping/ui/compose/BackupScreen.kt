@@ -79,6 +79,7 @@ fun BackupScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 if (state.permissionError) {
+                    BackupCancelButton { viewModel.onEvent(BackupEvent.OnClickCancel) }
                     AppDialogActionButton(
                         onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
                         primaryButton = true,
@@ -88,12 +89,7 @@ fun BackupScreen(
                     )
                 } else {
                     if (state.displayBack) {
-                        AppDialogActionButton(
-                            onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
-                            content = {
-                                Text(text = stringResource(R.string.backup_action_closeBackup))
-                            }
-                        )
+                        BackupCancelButton { viewModel.onEvent(BackupEvent.OnClickCancel) }
                     } else {
                         Row {
                             AppDialogActionButton(
@@ -171,6 +167,18 @@ private fun registerSelectFileForResult(
     if (result.resultCode == Activity.RESULT_OK) {
         result.data?.data?.let { onResult(it) }
     }
+}
+
+@Composable
+private fun BackupCancelButton(
+    onClick: () -> Unit
+) {
+    AppDialogActionButton(
+        onClick = onClick,
+        content = {
+            Text(text = stringResource(R.string.backup_action_closeBackup))
+        }
+    )
 }
 
 private val BackupSpacerMediumSize = 8.dp
