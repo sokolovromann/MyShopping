@@ -157,6 +157,22 @@ fun DeleteDataIcon(
 }
 
 @Composable
+fun ClearDataIcon(
+    modifier: Modifier = Modifier,
+    size: Dp = DefaultIconSize,
+    contentDescription: UiString? = UiString.FromResources(R.string.all_contentDescription_clearIcon),
+    tint: Color = DefaultIconTint
+) {
+    AppTopBarIcon(
+        icon = UiIcon.FromVector(Icons.Default.Clear),
+        modifier = modifier,
+        size = size,
+        contentDescription = contentDescription,
+        tint = tint
+    )
+}
+
+@Composable
 fun SelectAllDataIcon(
     modifier: Modifier = Modifier,
     size: Dp = DefaultIconSize,
