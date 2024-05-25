@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.compose
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +16,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
@@ -76,6 +78,15 @@ fun EditTaxRateScreen(
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editTaxRate_label_taxRate)) },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        val event = EditTaxRateEvent.OnTaxRateChanged(TextFieldValue())
+                        viewModel.onEvent(event)
+                    },
+                    content = { ClearDataIcon() }
+                )
+            },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
                 imeAction = ImeAction.Done
