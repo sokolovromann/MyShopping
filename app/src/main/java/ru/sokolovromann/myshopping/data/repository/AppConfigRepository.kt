@@ -10,6 +10,7 @@ import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
+import ru.sokolovromann.myshopping.data.model.ContentView
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
@@ -146,6 +147,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
             appNightTheme = nightTheme.isAppNightTheme(),
             widgetNightTheme = nightTheme.isWidgetNightTheme()
         )
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveShoppingsView(view: ContentView): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveShoppingsView(view.name)
         return@withContext Result.success(Unit)
     }
 

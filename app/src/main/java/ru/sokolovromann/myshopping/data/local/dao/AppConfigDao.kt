@@ -136,6 +136,12 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun saveShoppingsView(value: String) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.shoppingsView] = value
+        }
+    }
+
     suspend fun enableAutomaticShoppingsSort(
         sortBy: String,
         ascending: Boolean
@@ -330,6 +336,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.displayTotal] = requireNotNull(entity.displayTotal)
             it[DatasourceKey.User.displayOtherFields] = requireNotNull(entity.displayOtherFields)
             it[DatasourceKey.User.coloredCheckbox] = requireNotNull(entity.coloredCheckbox)
+            it[DatasourceKey.User.shoppingsView] = entity.shoppingsView ?: ""
             it[DatasourceKey.User.displayShoppingsProducts] = requireNotNull(entity.displayShoppingsProducts)
             it[DatasourceKey.User.purchasesSeparator] = requireNotNull(entity.purchasesSeparator)
             it[DatasourceKey.User.editProductAfterCompleted] = requireNotNull(entity.editProductAfterCompleted)
@@ -398,6 +405,7 @@ class AppConfigDao(appContent: AppContent) {
             displayLongTotal = preferences[DatasourceKey.User.displayLongTotal],
             displayOtherFields = preferences[DatasourceKey.User.displayOtherFields],
             coloredCheckbox = preferences[DatasourceKey.User.coloredCheckbox],
+            shoppingsView = preferences[DatasourceKey.User.shoppingsView],
             displayShoppingsProducts = preferences[DatasourceKey.User.displayShoppingsProducts],
             purchasesSeparator = preferences[DatasourceKey.User.purchasesSeparator],
             editProductAfterCompleted = preferences[DatasourceKey.User.editProductAfterCompleted],
@@ -486,6 +494,7 @@ private object DatasourceKey {
         val displayLongTotal = booleanPreferencesKey("display_long_purchases_total")
         val displayOtherFields = booleanPreferencesKey("display_purchases_other_fields")
         val coloredCheckbox = booleanPreferencesKey("highlight_checkbox")
+        val shoppingsView = stringPreferencesKey("shoppings_view")
         val displayShoppingsProducts = stringPreferencesKey("display_shoppings_products")
         val purchasesSeparator = stringPreferencesKey("purchases_separator")
         val editProductAfterCompleted = booleanPreferencesKey("edit_product_after_completed")

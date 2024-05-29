@@ -20,6 +20,7 @@ data class UserPreferencesEntity(
     val displayOtherFields: Boolean? = null,
     val displayLongTotal: Boolean? = null,
     val coloredCheckbox: Boolean? = null,
+    val shoppingsView: String? = null,
     val displayShoppingsProducts: String? = null,
     val purchasesSeparator: String? = null,
     val editProductAfterCompleted: Boolean? = null,
