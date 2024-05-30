@@ -548,6 +548,8 @@
     <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
     <string name="shoppingLists_action_selectAllTimePeriod">Tout</string>
     <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
+    <string name="shoppingLists_action_selectGridView">Grille</string>
+    <string name="shoppingLists_action_selectListView">Liste</string>
     <string name="shoppingLists_action_selectOneMonthPeriod">Un mois</string>
     <string name="shoppingLists_action_selectOneYearPeriod">Un ans</string>
     <string name="shoppingLists_action_selectPinShoppingList">@string/all_action_pin</string>
@@ -556,6 +558,7 @@
     <string name="shoppingLists_action_selectThreeMonthsPeriod">Trois mois</string>
     <string name="shoppingLists_action_selectTrashLocation">@string/shoppingLists_header_trash</string>
     <string name="shoppingLists_action_selectUnpinShoppingList">@string/all_action_unpin</string>
+    <string name="shoppingLists_action_selectView">Voir</string>
     <string name="shoppingLists_action_sort">@string/all_action_sort</string>
     <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
     <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.ContentView
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -262,6 +263,39 @@ fun ShoppingListsDisplayProductsMenu(
             onClick = { onSelected(DisplayProducts.HIDE_IF_HAS_TITLE) },
             text = { Text(text = stringResource(R.string.shoppingLists_action_hideProductsIfHasTitle)) },
             right = { CheckmarkAppCheckbox(checked = displayProducts == DisplayProducts.HIDE_IF_HAS_TITLE) }
+        )
+    }
+}
+
+@Composable
+fun ShoppingListsViewMenu(
+    expanded: Boolean,
+    shoppingsView: ContentView,
+    displayProducts: Boolean,
+    onDismissRequest: () -> Unit,
+    onSelected: (ContentView) -> Unit,
+    onInvertDisplayProducts: () -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectView)) }
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(ContentView.LIST) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectListView)) },
+            right = { CheckmarkAppCheckbox(checked = shoppingsView == ContentView.LIST) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(ContentView.GRID) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectGridView)) },
+            right = { CheckmarkAppCheckbox(checked = shoppingsView == ContentView.GRID) }
+        )
+        Divider()
+        AppDropdownMenuItem(
+            onClick = onInvertDisplayProducts ,
+            text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
+            right = { AppSwitch(checked = displayProducts) }
         )
     }
 }
