@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.compose
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
@@ -18,7 +17,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SmartphoneTabletAppGrid(
     modifier: Modifier = Modifier,
@@ -121,7 +119,6 @@ private fun AppGridNotFound(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppGridShowing(
     modifier: Modifier = Modifier,
