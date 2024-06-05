@@ -221,14 +221,22 @@ fun PurchasesScreen(
                                 expanded = state.expandedPurchasesMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(false)) }
                             ) {
+//                                AppDropdownMenuItem(
+//                                    onClick = { viewModel.onEvent(PurchasesEvent.OnInvertMultiColumns) },
+//                                    text = { Text(text = state.multiColumnsValue.text.asCompose()) }
+//                                )
+//                                AppDropdownMenuItem(
+//                                    text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
+//                                    right = { MoreMenuIcon() },
+//                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayProducts(true)) }
+//                                )
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnInvertMultiColumns) },
-                                    text = { Text(text = state.multiColumnsValue.text.asCompose()) }
-                                )
-                                AppDropdownMenuItem(
-                                    text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
+                                    text = { Text(text = stringResource(R.string.shoppingLists_action_selectView)) },
                                     right = { MoreMenuIcon() },
-                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayProducts(true)) }
+                                    onClick = {
+                                        val event = PurchasesEvent.OnSelectView(true)
+                                        viewModel.onEvent(event)
+                                    }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
@@ -241,17 +249,28 @@ fun PurchasesScreen(
                                 )
                             }
 
-                            ShoppingListsDisplayProductsMenu(
-                                expanded = state.expandedDisplayProducts,
-                                displayProducts = state.displayProducts,
+//                            ShoppingListsDisplayProductsMenu(
+//                                expanded = state.expandedDisplayProducts,
+//                                displayProducts = state.displayProducts,
+//                                onDismissRequest = {
+//                                    val event = PurchasesEvent.OnSelectDisplayProducts(false)
+//                                    viewModel.onEvent(event)
+//                                },
+//                                onSelected = {
+//                                    val event = PurchasesEvent.OnDisplayProductsSelected(it)
+//                                    viewModel.onEvent(event)
+//                                }
+//                            )
+                            ShoppingListsViewMenu(
+                                expanded = state.expandedShoppingsView,
+                                multiColumns = state.multiColumnsValue.selected,
+                                displayProducts = state.displayProducts.isDisplay(),
                                 onDismissRequest = {
-                                    val event = PurchasesEvent.OnSelectDisplayProducts(false)
+                                    val event = PurchasesEvent.OnSelectView(false)
                                     viewModel.onEvent(event)
                                 },
-                                onSelected = {
-                                    val event = PurchasesEvent.OnDisplayProductsSelected(it)
-                                    viewModel.onEvent(event)
-                                }
+                                onInvertMultiColumns = { viewModel.onEvent(PurchasesEvent.OnInvertMultiColumns) },
+                                onInvertDisplayProducts = { viewModel.onEvent(PurchasesEvent.OnInvertDisplayProducts) }
                             )
                             ShoppingListsSortByMenu(
                                 expanded = state.expandedSort,

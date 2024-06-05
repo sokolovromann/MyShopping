@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -63,6 +64,10 @@ class PurchasesViewModel @Inject constructor(
             is PurchasesEvent.OnDisplayProductsSelected -> onDisplayProductsSelected(event)
 
             is PurchasesEvent.OnSelectDisplayProducts -> onSelectDisplayProducts(event)
+
+            is PurchasesEvent.OnSelectView -> onSelectView(event)
+
+            PurchasesEvent.OnInvertDisplayProducts -> onInvertDisplayProducts()
 
             is PurchasesEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
 
@@ -196,6 +201,26 @@ class PurchasesViewModel @Inject constructor(
 
     private fun onSelectDisplayProducts(event: PurchasesEvent.OnSelectDisplayProducts) {
         purchasesState.onSelectDisplayProducts(event.expanded)
+    }
+
+    private fun onSelectView(event: PurchasesEvent.OnSelectView) {
+        purchasesState.onSelectShoppingsView(event.expanded)
+    }
+
+    private fun onInvertDisplayProducts() = viewModelScope.launch(AppDispatchers.Main) {
+        val invertedDisplayProducts = !purchasesState.displayProducts.isDisplay()
+
+        val displayProducts = if (invertedDisplayProducts) {
+            if (purchasesState.multiColumnsValue.selected) {
+                DisplayProducts.VERTICAL
+            } else {
+                DisplayProducts.HORIZONTAL
+            }
+        } else {
+            DisplayProducts.HIDE
+        }
+
+        appConfigRepository.displayShoppingsProducts(displayProducts)
     }
 
     private fun onDisplayTotalSelected(

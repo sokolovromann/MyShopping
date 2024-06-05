@@ -43,6 +43,10 @@ sealed class PurchasesEvent {
 
     data class OnSelectDisplayTotal(val expanded: Boolean) : PurchasesEvent()
 
+    data class OnSelectView(val expanded: Boolean) : PurchasesEvent()
+
+    object OnInvertDisplayProducts : PurchasesEvent()
+
     data class OnSortSelected(val sortBy: SortBy) : PurchasesEvent()
 
     object OnReverseSort : PurchasesEvent()

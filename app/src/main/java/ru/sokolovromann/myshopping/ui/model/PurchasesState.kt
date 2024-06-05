@@ -42,6 +42,9 @@ class PurchasesState {
     var expandedDisplayProducts: Boolean by mutableStateOf(false)
         private set
 
+    var expandedShoppingsView: Boolean by mutableStateOf(false)
+        private set
+
     var displayCompleted: DisplayCompleted by mutableStateOf(DisplayCompleted.DefaultValue)
         private set
 
@@ -98,6 +101,7 @@ class PurchasesState {
         selectedUids = if (savedSelectedUid.isEmpty()) null else listOf(savedSelectedUid)
         displayProducts = userPreferences.displayShoppingsProducts
         expandedDisplayProducts = false
+        expandedShoppingsView = false
         displayCompleted = userPreferences.appDisplayCompleted
         strikethroughCompletedProducts = userPreferences.strikethroughCompletedProducts
         coloredCheckbox = userPreferences.coloredCheckbox
@@ -114,6 +118,11 @@ class PurchasesState {
 
     fun onSelectDisplayProducts(expanded: Boolean) {
         expandedDisplayProducts = expanded
+        expandedPurchasesMenu = false
+    }
+
+    fun onSelectShoppingsView(expanded: Boolean) {
+        expandedShoppingsView = expanded
         expandedPurchasesMenu = false
     }
 
