@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.model.ContentView
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -270,10 +269,10 @@ fun ShoppingListsDisplayProductsMenu(
 @Composable
 fun ShoppingListsViewMenu(
     expanded: Boolean,
-    shoppingsView: ContentView,
+    multiColumns: Boolean,
     displayProducts: Boolean,
     onDismissRequest: () -> Unit,
-    onSelected: (ContentView) -> Unit,
+    onInvertMultiColumns: () -> Unit,
     onInvertDisplayProducts: () -> Unit
 ) {
     AppDropdownMenu(
@@ -282,14 +281,14 @@ fun ShoppingListsViewMenu(
         header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectView)) }
     ) {
         AppDropdownMenuItem(
-            onClick = { onSelected(ContentView.LIST) },
+            onClick = onInvertMultiColumns,
             text = { Text(text = stringResource(R.string.shoppingLists_action_selectListView)) },
-            right = { CheckmarkAppCheckbox(checked = shoppingsView == ContentView.LIST) }
+            right = { CheckmarkAppCheckbox(checked = !multiColumns) }
         )
         AppDropdownMenuItem(
-            onClick = { onSelected(ContentView.GRID) },
+            onClick = onInvertMultiColumns,
             text = { Text(text = stringResource(R.string.shoppingLists_action_selectGridView)) },
-            right = { CheckmarkAppCheckbox(checked = shoppingsView == ContentView.GRID) }
+            right = { CheckmarkAppCheckbox(checked = multiColumns) }
         )
         Divider()
         AppDropdownMenuItem(

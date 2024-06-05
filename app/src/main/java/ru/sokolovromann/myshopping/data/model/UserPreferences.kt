@@ -17,7 +17,6 @@ data class UserPreferences(
     val displayLongTotal: Boolean = UserPreferencesDefaults.DISPLAY_LONG_TOTAL,
     val displayOtherFields: Boolean = UserPreferencesDefaults.DISPLAY_OTHER_FIELDS,
     val coloredCheckbox: Boolean = UserPreferencesDefaults.COLORED_CHECKBOX,
-    val shoppingsView: ContentView = UserPreferencesDefaults.SHOPPINGS_VIEW,
     val displayShoppingsProducts: DisplayProducts = UserPreferencesDefaults.DISPLAY_SHOPPINGS_PRODUCTS,
     val purchasesSeparator: String = UserPreferencesDefaults.PURCHASES_SEPARATOR,
     val editProductAfterCompleted: Boolean = UserPreferencesDefaults.EDIT_PRODUCT_AFTER_COMPLETED,

@@ -8,7 +8,6 @@ import ru.sokolovromann.myshopping.data.local.entity.SettingsResourcesEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
-import ru.sokolovromann.myshopping.data.model.ContentView
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
 import ru.sokolovromann.myshopping.data.model.Settings
@@ -112,7 +111,6 @@ object AppConfigMapper {
             displayLongTotal = userPreferences.displayLongTotal,
             displayOtherFields = userPreferences.displayOtherFields,
             coloredCheckbox = userPreferences.coloredCheckbox,
-            shoppingsView = userPreferences.shoppingsView.toString(),
             displayShoppingsProducts = userPreferences.displayShoppingsProducts.toString(),
             purchasesSeparator = userPreferences.purchasesSeparator,
             editProductAfterCompleted = userPreferences.editProductAfterCompleted,
@@ -158,7 +156,6 @@ object AppConfigMapper {
             displayLongTotal = toDisplayLongTotalOrDefault(entity.displayLongTotal),
             displayOtherFields = toDisplayOtherFieldsOrDefault(entity.displayOtherFields),
             coloredCheckbox = toColoredCheckboxOrDefault(entity.coloredCheckbox),
-            shoppingsView = ContentView.valueOfOrDefault(entity.shoppingsView),
             displayShoppingsProducts = DisplayProducts.valueOfOrDefault(entity.displayShoppingsProducts),
             purchasesSeparator = toPurchasesSeparatorOrDefault(entity.purchasesSeparator),
             editProductAfterCompleted = toEditProductAfterCompletedOrDefault(entity.editProductAfterCompleted),

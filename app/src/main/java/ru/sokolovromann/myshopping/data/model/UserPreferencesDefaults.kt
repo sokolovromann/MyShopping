@@ -29,7 +29,6 @@ object UserPreferencesDefaults {
     val SORT = Sort()
     val DISPLAY_COMPLETED = DisplayCompleted.DefaultValue
     val DISPLAY_TOTAL = DisplayTotal.DefaultValue
-    val SHOPPINGS_VIEW = ContentView.DefaultValue
     val DISPLAY_SHOPPINGS_PRODUCTS = DisplayProducts.DefaultValue
     val LOCK_PRODUCT_ELEMENT = LockProductElement.DefaultValue
 
