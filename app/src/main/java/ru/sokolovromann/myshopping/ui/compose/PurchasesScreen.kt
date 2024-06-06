@@ -221,15 +221,6 @@ fun PurchasesScreen(
                                 expanded = state.expandedPurchasesMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(false)) }
                             ) {
-//                                AppDropdownMenuItem(
-//                                    onClick = { viewModel.onEvent(PurchasesEvent.OnInvertMultiColumns) },
-//                                    text = { Text(text = state.multiColumnsValue.text.asCompose()) }
-//                                )
-//                                AppDropdownMenuItem(
-//                                    text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-//                                    right = { MoreMenuIcon() },
-//                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayProducts(true)) }
-//                                )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_selectView)) },
                                     right = { MoreMenuIcon() },
@@ -248,19 +239,6 @@ fun PurchasesScreen(
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnInvertSearch) }
                                 )
                             }
-
-//                            ShoppingListsDisplayProductsMenu(
-//                                expanded = state.expandedDisplayProducts,
-//                                displayProducts = state.displayProducts,
-//                                onDismissRequest = {
-//                                    val event = PurchasesEvent.OnSelectDisplayProducts(false)
-//                                    viewModel.onEvent(event)
-//                                },
-//                                onSelected = {
-//                                    val event = PurchasesEvent.OnDisplayProductsSelected(it)
-//                                    viewModel.onEvent(event)
-//                                }
-//                            )
                             ShoppingListsViewMenu(
                                 expanded = state.expandedShoppingsView,
                                 multiColumns = state.multiColumnsValue.selected,
