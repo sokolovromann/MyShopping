@@ -232,6 +232,31 @@ fun ShoppingListsHiddenContent(
 }
 
 @Composable
+fun ShoppingListsViewMenu(
+    expanded: Boolean,
+    multiColumns: Boolean,
+    onDismissRequest: () -> Unit,
+    onSelected: (Boolean) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        header = { Text(text = stringResource(id = R.string.shoppingLists_header_view)) }
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(false) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectListView)) },
+            right = { CheckmarkAppCheckbox(checked = !multiColumns) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(true) },
+            text = { Text(text = stringResource(R.string.shoppingLists_action_selectGridView)) },
+            right = { CheckmarkAppCheckbox(checked = multiColumns) }
+        )
+    }
+}
+
+@Composable
 fun ShoppingListsDisplayProductsMenu(
     expanded: Boolean,
     displayProducts: DisplayProducts,

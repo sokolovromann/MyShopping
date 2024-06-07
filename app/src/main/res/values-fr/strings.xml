@@ -585,6 +585,7 @@
     <string name="shoppingLists_header_period">@string/all_header_location</string>
     <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
     <string name="shoppingLists_header_trash">@string/all_header_trash</string>
+    <string name="shoppingLists_header_view">Voir</string>
     <string name="shoppingLists_label_search">@string/all_label_search</string>
     <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>

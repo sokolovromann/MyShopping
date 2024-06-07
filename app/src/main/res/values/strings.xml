@@ -445,6 +445,10 @@
     <string name="shoppingLists_text_totalFormatted">All (edited): %s</string>
     <string name="shoppingLists_text_trashShoppingListsNotFound">Trash is empty</string>
 
+    <string name="shoppingLists_action_selectListView">List</string>
+    <string name="shoppingLists_action_selectGridView">Grid</string>
+    <string name="shoppingLists_header_view">View</string>
+
     <string name="shortcuts_longLabel_addShoppingList">New shopping list</string>
     <string name="shortcuts_shortLabel_addShoppingList">New list</string>
 </resources>

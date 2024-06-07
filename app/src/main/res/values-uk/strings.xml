@@ -496,7 +496,7 @@
     <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
     <string name="shoppingLists_action_selectAllTimePeriod">За весь час</string>
     <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
-    <string name="shoppingLists_action_selectGridView">Сітка</string>
+    <string name="shoppingLists_action_selectGridView">Ескізи</string>
     <string name="shoppingLists_action_selectListView">Список</string>
     <string name="shoppingLists_action_selectOneMonthPeriod">За 1 місяць</string>
     <string name="shoppingLists_action_selectOneYearPeriod">За 1 рік</string>
@@ -506,7 +506,6 @@
     <string name="shoppingLists_action_selectThreeMonthsPeriod">За 3 місяці</string>
     <string name="shoppingLists_action_selectTrashLocation">@string/shoppingLists_header_trash</string>
     <string name="shoppingLists_action_selectUnpinShoppingList">@string/all_action_unpin</string>
-    <string name="shoppingLists_action_selectView">Вид</string>
     <string name="shoppingLists_action_sort">@string/all_action_sort</string>
     <string name="shoppingLists_action_sortByCreated">@string/all_action_sortByCreated</string>
     <string name="shoppingLists_action_sortByLastModified">@string/all_action_sortByLastModified</string>
@@ -533,6 +532,7 @@
     <string name="shoppingLists_header_period">@string/all_header_location</string>
     <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
     <string name="shoppingLists_header_trash">@string/all_header_trash</string>
+    <string name="shoppingLists_header_view">Вид</string>
     <string name="shoppingLists_label_search">@string/all_label_search</string>
     <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>
