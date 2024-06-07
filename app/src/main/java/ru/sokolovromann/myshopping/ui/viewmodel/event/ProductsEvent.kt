@@ -77,5 +77,7 @@ sealed class ProductsEvent {
 
     data class OnShowHiddenProducts(val display: Boolean) : ProductsEvent()
 
-    object OnInvertMultiColumns : ProductsEvent()
+    data class OnSelectView(val expanded: Boolean) : ProductsEvent()
+
+    data class OnViewSelected(val multiColumns: Boolean) : ProductsEvent()
 }

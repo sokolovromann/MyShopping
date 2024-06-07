@@ -57,6 +57,8 @@
     <string name="all_action_saveSort">Sortierung speichern</string>
     <string name="all_action_search">Suchen</string>
     <string name="all_action_selectAll">Wählen Sie Alle</string>
+    <string name="all_action_selectGridView">Rasteransicht</string>
+    <string name="all_action_selectListView">Listenansicht</string>
     <string name="all_action_share">Teilen</string>
     <string name="all_action_sort">Sortieren</string>
     <string name="all_action_sortByCreated">Nach Erstellt</string>
@@ -95,6 +97,7 @@
     <string name="all_header_selectShoppingList">Wählen Sie eine Liste aus</string>
     <string name="all_header_settings">Einstellungen</string>
     <string name="all_header_trash">Müll</string>
+    <string name="all_header_view">Sicht</string>
     <string name="all_label_name">Name</string>
     <string name="all_label_search">Suchen</string>
     <string name="all_message_nameError">Name hinzufügen</string>
@@ -368,6 +371,8 @@
     <string name="products_action_reverseSort">@string/all_action_reverseSort</string>
     <string name="products_action_search">@string/all_action_search</string>
     <string name="products_action_selectAllProducts">@string/all_action_selectAll</string>
+    <string name="products_action_selectGridView">@string/all_action_selectGridView</string>
+    <string name="products_action_selectListView">@string/all_action_selectListView</string>
     <string name="products_action_shareProducts">@string/all_action_share</string>
     <string name="products_action_showShoppingListMenu">Einkaufsliste</string>
     <string name="products_action_sort">@string/all_action_sort</string>
@@ -390,6 +395,7 @@
     <string name="products_contentDescription_productsMenuIcon">Produktmenü öffnen</string>
     <string name="products_contentDescription_showSelectedMenuIcon">Ausgewähltes Menü ein oder ausblenden</string>
     <string name="products_header_displayTotal">@string/all_header_displayTotal</string>
+    <string name="products_header_view">@string/all_header_view</string>
     <string name="products_label_search">@string/all_label_search</string>
     <string name="products_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="products_text_allTotal">@string/all_text_allTotal</string>
@@ -478,8 +484,8 @@
     <string name="shoppingLists_action_selectAllShoppingLists">@string/all_action_selectAll</string>
     <string name="shoppingLists_action_selectAllTimePeriod">Alle</string>
     <string name="shoppingLists_action_selectArchiveLocation">@string/shoppingLists_header_archive</string>
-    <string name="shoppingLists_action_selectGridView">Rasteransicht</string>
-    <string name="shoppingLists_action_selectListView">Listenansicht</string>
+    <string name="shoppingLists_action_selectGridView">@string/all_action_selectGridView</string>
+    <string name="shoppingLists_action_selectListView">@string/all_action_selectListView</string>
     <string name="shoppingLists_action_selectOneMonthPeriod">Ein Monat</string>
     <string name="shoppingLists_action_selectOneYearPeriod">Ein Jahr</string>
     <string name="shoppingLists_action_selectPinShoppingList">@string/all_action_pin</string>
@@ -514,7 +520,7 @@
     <string name="shoppingLists_header_period">@string/all_header_location</string>
     <string name="shoppingLists_header_purchases">@string/all_header_purchases</string>
     <string name="shoppingLists_header_trash">@string/all_header_trash</string>
-    <string name="shoppingLists_header_view">Sicht</string>
+    <string name="shoppingLists_header_view">@string/all_header_view</string>
     <string name="shoppingLists_label_search">@string/all_label_search</string>
     <string name="shoppingLists_text_activeTotal">@string/all_text_activeTotal</string>
     <string name="shoppingLists_text_allTotal">@string/all_text_allTotal</string>

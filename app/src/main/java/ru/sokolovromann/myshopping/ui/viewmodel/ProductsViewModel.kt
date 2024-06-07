@@ -109,7 +109,9 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.OnShowHiddenProducts -> onShowHiddenProducts(event)
 
-            ProductsEvent.OnInvertMultiColumns -> onInvertMultiColumns()
+            is ProductsEvent.OnSelectView -> onSelectView(event)
+
+            is ProductsEvent.OnViewSelected -> onViewSelected(event)
         }
     }
 
@@ -387,9 +389,17 @@ class ProductsViewModel @Inject constructor(
         productsState.onShowHiddenProducts(event.display)
     }
 
-    private fun onInvertMultiColumns() = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.invertProductsMultiColumns()
-        productsState.onShowProductsMenu(expanded = false)
+    private fun onSelectView(event: ProductsEvent.OnSelectView) {
+        productsState.onSelectView(event.expanded)
+    }
+
+    private fun onViewSelected(
+        event: ProductsEvent.OnViewSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        if (event.multiColumns != productsState.multiColumnsValue.selected) {
+            appConfigRepository.invertProductsMultiColumns()
+        }
+        productsState.onSelectView(expanded = false)
     }
 
     private fun uidsToString(uids: List<String>): String {

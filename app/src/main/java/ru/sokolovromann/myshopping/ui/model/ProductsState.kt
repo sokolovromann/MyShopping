@@ -80,6 +80,9 @@ class ProductsState {
     var displayMoney: Boolean by mutableStateOf(false)
         private set
 
+    var expandedViewMenu: Boolean by mutableStateOf(false)
+        private set
+
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
@@ -138,6 +141,7 @@ class ProductsState {
         expandedDisplayTotal = false
         totalFormatted = shopping.totalFormatted
         displayMoney = userPreferences.displayMoney
+        expandedViewMenu = false
         multiColumnsValue = toMultiColumnsValue(userPreferences.productsMultiColumns)
         deviceSize = shoppingListWithConfig.getDeviceConfig().getDeviceSize()
         expandedProductsMenu = false
@@ -150,6 +154,12 @@ class ProductsState {
 
     fun onSelectDisplayTotal(expanded: Boolean) {
         expandedDisplayTotal = expanded
+    }
+
+    fun onSelectView(expanded: Boolean) {
+        expandedViewMenu = expanded
+        expandedProductsMenu = false
+        expandedShoppingMenu = false
     }
 
     fun onSelectSort(expanded: Boolean) {

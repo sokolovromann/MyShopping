@@ -306,8 +306,9 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnShowShoppingMenu(true)) }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.OnInvertMultiColumns) },
-                                        text = { Text(text = state.multiColumnsValue.text.asCompose()) }
+                                        text = { Text(text = stringResource(R.string.products_header_view)) },
+                                        right = { MoreMenuIcon() },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSelectView(true)) }
                                     )
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_sort)) },
@@ -366,6 +367,32 @@ fun ProductsScreen(
                                         }
                                         else -> {}
                                     }
+                                }
+
+                                AppDropdownMenu(
+                                    expanded = state.expandedViewMenu,
+                                    onDismissRequest = {
+                                        val event = ProductsEvent.OnSelectView(false)
+                                        viewModel.onEvent(event)
+                                    },
+                                    header = { Text(text = stringResource(id = R.string.products_header_view)) }
+                                ) {
+                                    AppDropdownMenuItem(
+                                        onClick = {
+                                            val event = ProductsEvent.OnViewSelected(false)
+                                            viewModel.onEvent(event)
+                                        },
+                                        text = { Text(text = stringResource(R.string.products_action_selectListView)) },
+                                        right = { CheckmarkAppCheckbox(checked = !state.multiColumnsValue.selected) }
+                                    )
+                                    AppDropdownMenuItem(
+                                        onClick = {
+                                            val event = ProductsEvent.OnViewSelected(true)
+                                            viewModel.onEvent(event)
+                                        },
+                                        text = { Text(text = stringResource(R.string.products_action_selectGridView)) },
+                                        right = { CheckmarkAppCheckbox(checked = state.multiColumnsValue.selected) }
+                                    )
                                 }
 
                                 AppDropdownMenu(
