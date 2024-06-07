@@ -25,8 +25,4 @@ enum class DisplayProducts(private val displayProductsName: String) {
     override fun toString(): String {
         return displayProductsName
     }
-
-    fun isDisplay(): Boolean {
-        return this == VERTICAL || this == HORIZONTAL
-    }
 }
