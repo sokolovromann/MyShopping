@@ -292,39 +292,6 @@ fun ShoppingListsDisplayProductsMenu(
 }
 
 @Composable
-fun ShoppingListsViewMenu(
-    expanded: Boolean,
-    multiColumns: Boolean,
-    displayProducts: Boolean,
-    onDismissRequest: () -> Unit,
-    onInvertMultiColumns: () -> Unit,
-    onInvertDisplayProducts: () -> Unit
-) {
-    AppDropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest,
-        header = { Text(text = stringResource(id = R.string.shoppingLists_action_selectView)) }
-    ) {
-        AppDropdownMenuItem(
-            onClick = onInvertMultiColumns,
-            text = { Text(text = stringResource(R.string.shoppingLists_action_selectListView)) },
-            right = { CheckmarkAppCheckbox(checked = !multiColumns) }
-        )
-        AppDropdownMenuItem(
-            onClick = onInvertMultiColumns,
-            text = { Text(text = stringResource(R.string.shoppingLists_action_selectGridView)) },
-            right = { CheckmarkAppCheckbox(checked = multiColumns) }
-        )
-        Divider()
-        AppDropdownMenuItem(
-            onClick = onInvertDisplayProducts ,
-            text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-            right = { AppSwitch(checked = displayProducts) }
-        )
-    }
-}
-
-@Composable
 fun ShoppingListsSortByMenu(
     expanded: Boolean,
     sortValue: SelectedValue<Sort>,

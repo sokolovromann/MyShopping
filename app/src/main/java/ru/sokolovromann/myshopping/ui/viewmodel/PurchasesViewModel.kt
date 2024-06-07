@@ -65,8 +65,6 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.OnSelectDisplayProducts -> onSelectDisplayProducts(event)
 
-            is PurchasesEvent.OnSelectView -> onSelectView(event)
-
             PurchasesEvent.OnInvertDisplayProducts -> onInvertDisplayProducts()
 
             is PurchasesEvent.OnDisplayTotalSelected -> onDisplayTotalSelected(event)
@@ -203,10 +201,6 @@ class PurchasesViewModel @Inject constructor(
 
     private fun onSelectDisplayProducts(event: PurchasesEvent.OnSelectDisplayProducts) {
         purchasesState.onSelectDisplayProducts(event.expanded)
-    }
-
-    private fun onSelectView(event: PurchasesEvent.OnSelectView) {
-        purchasesState.onSelectShoppingsView(event.expanded)
     }
 
     private fun onInvertDisplayProducts() = viewModelScope.launch(AppDispatchers.Main) {
