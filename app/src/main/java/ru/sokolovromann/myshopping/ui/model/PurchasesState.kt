@@ -60,6 +60,9 @@ class PurchasesState {
     var expandedDisplayTotal: Boolean by mutableStateOf(false)
         private set
 
+    var expandedViewMenu: Boolean by mutableStateOf(false)
+        private set
+
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
@@ -107,6 +110,7 @@ class PurchasesState {
         coloredCheckbox = userPreferences.coloredCheckbox
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())
         expandedDisplayTotal = false
+        expandedViewMenu = false
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         expandedPurchasesMenu = false
@@ -128,6 +132,11 @@ class PurchasesState {
 
     fun onSelectDisplayTotal(expanded: Boolean) {
         expandedDisplayTotal = expanded
+    }
+
+    fun onSelectView(expanded: Boolean) {
+        expandedViewMenu = expanded
+        expandedPurchasesMenu = false
     }
 
     fun onSelectSort(expanded: Boolean) {

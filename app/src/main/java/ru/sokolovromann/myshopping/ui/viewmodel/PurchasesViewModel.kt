@@ -91,7 +91,9 @@ class PurchasesViewModel @Inject constructor(
 
             is PurchasesEvent.OnShowHiddenShoppingLists -> onShowHiddenShoppingLists(event)
 
-            PurchasesEvent.OnInvertMultiColumns -> onInvertMultiColumns()
+            is PurchasesEvent.OnSelectView -> onSelectView(event)
+
+            is PurchasesEvent.OnViewSelected -> onViewSelected(event)
         }
     }
 
@@ -287,8 +289,16 @@ class PurchasesViewModel @Inject constructor(
         purchasesState.onShowHiddenShoppingLists(event.display)
     }
 
-    private fun onInvertMultiColumns() = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.invertShoppingListsMultiColumns()
-        purchasesState.onShowPurchasesMenu(expanded = false)
+    private fun onSelectView(event: PurchasesEvent.OnSelectView) {
+        purchasesState.onSelectView(event.expanded)
+    }
+
+    private fun onViewSelected(
+        event: PurchasesEvent.OnViewSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        if (event.multiColumns != purchasesState.multiColumnsValue.selected) {
+            appConfigRepository.invertShoppingListsMultiColumns()
+        }
+        purchasesState.onSelectView(expanded = false)
     }
 }

@@ -65,5 +65,7 @@ sealed class PurchasesEvent {
 
     data class OnShowHiddenShoppingLists(val display: Boolean) : PurchasesEvent()
 
-    object OnInvertMultiColumns : PurchasesEvent()
+    data class OnSelectView(val expanded: Boolean) : PurchasesEvent()
+
+    data class OnViewSelected(val multiColumns: Boolean) : PurchasesEvent()
 }
