@@ -53,6 +53,9 @@ class ArchiveState {
     var expandedDisplayTotal: Boolean by mutableStateOf(false)
         private set
 
+    var expandedViewMenu: Boolean by mutableStateOf(false)
+        private set
+
     var multiColumnsValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
@@ -101,6 +104,7 @@ class ArchiveState {
         coloredCheckbox = userPreferences.coloredCheckbox
         totalValue = toTotalSelectedValue(shoppingListsWithConfig.getTotal())
         expandedDisplayTotal = false
+        expandedViewMenu = false
         multiColumnsValue = UiShoppingListsMapper.toMultiColumnsValue(userPreferences.shoppingsMultiColumns)
         deviceSize = shoppingListsWithConfig.getDeviceConfig().getDeviceSize()
         expandedArchiveMenu = false
@@ -113,6 +117,11 @@ class ArchiveState {
 
     fun onSelectDisplayProducts(expanded: Boolean) {
         expandedDisplayProducts = expanded
+        expandedArchiveMenu = false
+    }
+
+    fun onSelectView(expanded: Boolean) {
+        expandedViewMenu = expanded
         expandedArchiveMenu = false
     }
 

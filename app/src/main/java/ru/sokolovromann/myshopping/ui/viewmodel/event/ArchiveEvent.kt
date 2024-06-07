@@ -50,9 +50,10 @@ sealed class ArchiveEvent {
 
     data class OnShowHiddenShoppingLists(val display: Boolean) : ArchiveEvent()
 
-    object OnInvertMultiColumns : ArchiveEvent()
-
     data class OnSelectArchivePeriod(val expanded: Boolean) : ArchiveEvent()
 
     data class OnArchivePeriodSelected(val period: ShoppingPeriod) : ArchiveEvent()
+
+    data class OnSelectView(val expanded: Boolean) : ArchiveEvent()
+    data class OnViewSelected(val multiColumns: Boolean) : ArchiveEvent()
 }

@@ -191,8 +191,9 @@ fun ArchiveScreen(
                                 onDismissRequest = { viewModel.onEvent(ArchiveEvent.OnShowArchiveMenu(false)) }
                             ) {
                                 AppDropdownMenuItem(
-                                    onClick = { viewModel.onEvent(ArchiveEvent.OnInvertMultiColumns) },
-                                    text = { Text(text = state.multiColumnsValue.text.asCompose()) }
+                                    text = { Text(text = stringResource(R.string.shoppingLists_header_view)) },
+                                    right = { MoreMenuIcon() },
+                                    onClick = { viewModel.onEvent(ArchiveEvent.OnSelectView(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
@@ -210,6 +211,18 @@ fun ArchiveScreen(
                                 )
                             }
 
+                            ShoppingListsViewMenu(
+                                expanded = state.expandedViewMenu,
+                                multiColumns = state.multiColumnsValue.selected,
+                                onDismissRequest = {
+                                    val event = ArchiveEvent.OnSelectView(false)
+                                    viewModel.onEvent(event)
+                                },
+                                onSelected = {
+                                    val event = ArchiveEvent.OnViewSelected(it)
+                                    viewModel.onEvent(event)
+                                }
+                            )
                             ShoppingListsDisplayProductsMenu(
                                 expanded = state.expandedDisplayProducts,
                                 displayProducts = state.displayProducts,

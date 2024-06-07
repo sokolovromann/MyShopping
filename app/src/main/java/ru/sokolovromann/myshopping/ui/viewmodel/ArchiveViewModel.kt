@@ -74,11 +74,13 @@ class ArchiveViewModel @Inject constructor(
 
             is ArchiveEvent.OnShowHiddenShoppingLists -> onShowHiddenShoppingLists(event)
 
-            ArchiveEvent.OnInvertMultiColumns -> onInvertMultiColumns()
-
             is ArchiveEvent.OnSelectArchivePeriod -> onSelectArchivePeriod(event)
 
             is ArchiveEvent.OnArchivePeriodSelected -> onArchivePeriodSelected(event)
+
+            is ArchiveEvent.OnSelectView -> onSelectView(event)
+
+            is ArchiveEvent.OnViewSelected -> onViewSelected(event)
         }
     }
 
@@ -217,15 +219,24 @@ class ArchiveViewModel @Inject constructor(
         archiveState.onShowHiddenShoppingLists(event.display)
     }
 
-    private fun onInvertMultiColumns() = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.invertShoppingListsMultiColumns()
-    }
-
     private fun onSelectArchivePeriod(event: ArchiveEvent.OnSelectArchivePeriod) {
         archiveState.onSelectArchivePeriod(event.expanded)
     }
 
     private fun onArchivePeriodSelected(event: ArchiveEvent.OnArchivePeriodSelected) {
         getArchiveAndPopulate(event.period)
+    }
+
+    private fun onSelectView(event: ArchiveEvent.OnSelectView) {
+        archiveState.onSelectView(event.expanded)
+    }
+
+    private fun onViewSelected(
+        event: ArchiveEvent.OnViewSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        if (event.multiColumns != archiveState.multiColumnsValue.selected) {
+            appConfigRepository.invertShoppingListsMultiColumns()
+        }
+        archiveState.onSelectView(expanded = false)
     }
 }
