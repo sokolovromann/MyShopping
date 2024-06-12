@@ -18,9 +18,6 @@ data class ShoppingEntity(
     @ColumnInfo(name = "uid")
     val uid: String = "",
 
-    @ColumnInfo(name = "created")
-    val created: Long = 0L,
-
     @ColumnInfo(name = "last_modified")
     val lastModified: Long = 0L,
 
@@ -30,6 +27,12 @@ data class ShoppingEntity(
     @ColumnInfo(name = "reminder")
     val reminder: Long = 0L,
 
+    @ColumnInfo(name = "discount", defaultValue = "0.0")
+    val discount: Float = 0f,
+
+    @ColumnInfo(name = "discount_products", defaultValue = "")
+    val discountProducts: String = "",
+
     @ColumnInfo(name = "total")
     val total: Float = 0f,
 
@@ -38,6 +41,9 @@ data class ShoppingEntity(
 
     @ColumnInfo(name = "budget")
     val budget: Float = 0f,
+
+    @ColumnInfo(name = "budget_products", defaultValue = "")
+    val budgetProducts: String = "",
 
     @ColumnInfo(name = "archived")
     val archived: Boolean = false,

@@ -15,9 +15,6 @@ data class AutocompleteEntity(
     @ColumnInfo(name = "uid")
     val uid: String = "",
 
-    @ColumnInfo(name = "created")
-    val created: Long = 0L,
-
     @ColumnInfo(name = "last_modified")
     val lastModified: Long = 0L,
 

@@ -21,9 +21,6 @@ data class ProductEntity(
     @ColumnInfo(name = "shopping_uid")
     val shoppingUid: String = "",
 
-    @ColumnInfo(name = "created")
-    val created: Long = 0L,
-
     @ColumnInfo(name = "last_modified")
     val lastModified: Long = 0L,
 

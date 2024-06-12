@@ -16,7 +16,6 @@ object AutocompletesMapper {
         return AutocompleteEntity(
             id = autocomplete.id,
             uid = autocomplete.uid,
-            created = DateTime.NO_DATE_TIME.millis,
             lastModified = autocomplete.lastModified.millis,
             name = autocomplete.name,
             quantity = autocomplete.quantity.value,
