@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
@@ -105,6 +106,18 @@ fun AppDrawerContent(
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openSettings)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.Settings)
+        )
+
+        AppItem(
+            onClick = { onItemClick(UiRoute.About) },
+            left = {
+                AppDrawerContentItemIcon(
+                    icon = UiIcon.FromVector(Icons.Default.Info),
+                    selected = selected == UiRoute.About
+                )
+            },
+            title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openAbout)) },
+            backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.About)
         )
     }
 }

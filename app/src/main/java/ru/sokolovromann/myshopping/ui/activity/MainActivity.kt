@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.UiRouteKey
+import ru.sokolovromann.myshopping.ui.aboutGraph
 import ru.sokolovromann.myshopping.ui.archiveGraph
 import ru.sokolovromann.myshopping.ui.autocompletesGraph
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
@@ -74,6 +75,7 @@ class MainActivity : ComponentActivity() {
                 productsGraph(navController)
                 autocompletesGraph(navController)
                 settingsGraph(navController)
+                aboutGraph(navController)
             }
         )
 

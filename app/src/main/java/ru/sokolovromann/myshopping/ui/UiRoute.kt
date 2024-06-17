@@ -81,6 +81,10 @@ sealed class UiRoute(val graph: String) {
         const val displayCompletedScreen = "display-completed-screen"
     }
 
+    object About : UiRoute(graph = "About") {
+        const val aboutScreen = "about"
+    }
+
     fun toDrawerScreen(): DrawerScreen = when (this) {
         Purchases -> DrawerScreen.PURCHASES
         Archive -> DrawerScreen.ARCHIVE
@@ -88,6 +92,7 @@ sealed class UiRoute(val graph: String) {
         Autocompletes -> DrawerScreen.AUTOCOMPLETES
         Settings -> DrawerScreen.SETTINGS
         Products -> DrawerScreen.PURCHASES
+        About -> DrawerScreen.ABOUT
     }
 }
 
@@ -112,7 +117,7 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
 
 enum class DrawerScreen {
 
-    PURCHASES, ARCHIVE, TRASH, AUTOCOMPLETES, SETTINGS;
+    PURCHASES, ARCHIVE, TRASH, AUTOCOMPLETES, SETTINGS, ABOUT;
 
     fun getScreen(): String = when (this) {
         PURCHASES -> UiRoute.Purchases.purchasesScreen
@@ -120,6 +125,7 @@ enum class DrawerScreen {
         TRASH -> UiRoute.Trash.trashScreen
         AUTOCOMPLETES -> UiRoute.Autocompletes.autocompletesScreen
         SETTINGS -> UiRoute.Settings.settingsScreen
+        ABOUT -> UiRoute.About.aboutScreen
     }
 
     fun toUiRoute(): UiRoute = when (this) {
@@ -128,6 +134,7 @@ enum class DrawerScreen {
         TRASH -> UiRoute.Trash
         AUTOCOMPLETES -> UiRoute.Autocompletes
         SETTINGS -> UiRoute.Settings
+        ABOUT -> UiRoute.About
     }
 }
 
@@ -253,6 +260,17 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         }
         dialog(route = UiRoute.Settings.displayCompletedScreen) {
             DisplayCompletedScreen(navController)
+        }
+    }
+}
+
+fun NavGraphBuilder.aboutGraph(navController: NavController) {
+    navigation(
+        startDestination = UiRoute.About.aboutScreen,
+        route = UiRoute.About.graph
+    ) {
+        composable(route = UiRoute.About.aboutScreen) {
+            AboutScreen(navController)
         }
     }
 }
