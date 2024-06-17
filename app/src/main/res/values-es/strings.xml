@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="about_header_aboutApp">@string/all_header_about</string>
+    <string name="about_text_appVersion">Version de aplicacion</string>
+    <string name="about_text_developer">Desarrollador</string>
+    <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_github">GitHub</string>
+    <string name="about_text_links">Enlaces</string>
+    <string name="about_text_privacy_policy">Política de privacidad</string>
+    <string name="about_text_terms_and_conditions">Términos y condiciones</string>
+
     <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
@@ -86,6 +95,7 @@
     <string name="all_contentDescription_selectAllDataIcon">Seleccionar todo</string>
     <string name="all_contentDescription_showOrHideOtherFieldsIcon">Mostrar u ocultar otros campos</string>
     <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
+    <string name="all_header_about">Informacion de la applicacion</string>
     <string name="all_header_addDataScreen">@string/all_action_add</string>
     <string name="all_header_appName">Mis compras</string>
     <string name="all_header_archive">Archivo</string>
@@ -336,6 +346,7 @@
     <string name="displayCompleted_text_appDisplayCompleted">Aplicación</string>
     <string name="displayCompleted_text_widgetDisplayCompleted">Widget</string>
 
+    <string name="drawer_action_openAbout">@string/all_header_about</string>
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -481,29 +492,22 @@
     <string name="settings_body_displayMoneyZeros">Si está habilitado, los ceros siempre se mostrarán</string>
     <string name="settings_body_displayOtherFields">Marca, talla, color, etc.</string>
     <string name="settings_body_editProductAfterCompleted">Se abrirá la pantalla para editar (excepto los widgets)</string>
-    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Si está habilitado, el producto se puede guardar tocando Enter</string>
     <string name="settings_body_fontSize">Toque para seleccionar</string>
-    <string name="settings_body_github">Toque para abrir</string>
     <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>
-    <string name="settings_body_privacy_policy">Toca para leer</string>
     <string name="settings_body_saveProductToAutocompletes">Cualquier producto quedará guardado</string>
-    <string name="settings_body_terms_and_conditions">Toca para leer</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
-    <string name="settings_header_aboutApp">Informacion de la applicacion</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
     <string name="settings_header_migration">Migración</string>
     <string name="settings_header_money">Dinero</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
-    <string name="settings_title_appVersion">Version de aplicacion</string>
     <string name="settings_title_automaticallyEmptyTrash">Vaciar la papelera automáticamente</string>
     <string name="settings_title_backup">Respaldo</string>
     <string name="settings_title_coloredCheckbox">Casillas de verificación de colores</string>
     <string name="settings_title_completedWithCheckbox">Compra el producto haciendo clic en la casilla de verificación</string>
     <string name="settings_title_currencySymbol">Moneda</string>
-    <string name="settings_title_developer">Desarrollador</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Mostrar moneda a la izquierda</string>
     <string name="settings_title_displayDefaultAutocompletes">Mostrar autocompletados predeterminados</string>
@@ -511,17 +515,13 @@
     <string name="settings_title_displayMoneyZeros">Mostrar ceros después del punto decimal</string>
     <string name="settings_title_displayOtherFields">Mostrar otros campos</string>
     <string name="settings_title_editProductAfterCompleted">Modificar producto después de la compra</string>
-    <string name="settings_title_email">Correo electrónico</string>
     <string name="settings_title_enterToSaveProduct">Entrar para guardar el producto</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
-    <string name="settings_title_github">GitHub</string>
     <string name="settings_title_maxAutocompletes">Número máximo</string>
     <string name="settings_title_nightTheme">Tema oscuro</string>
-    <string name="settings_title_privacy_policy">Política de privacidad</string>
     <string name="settings_title_saveProductToAutocompletes">Guardar products</string>
     <string name="settings_title_strikethroughCompletedProducts">Tachar los productos comprados</string>
     <string name="settings_title_taxRate">Tasa de impuesto</string>
-    <string name="settings_title_terms_and_conditions">Términos y condiciones</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>

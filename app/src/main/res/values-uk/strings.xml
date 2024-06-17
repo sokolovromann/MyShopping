@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="about_header_aboutApp">@string/all_header_about</string>
+    <string name="about_text_appVersion">Версія програми</string>
+    <string name="about_text_developer">Розробник</string>
+    <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_github">GitHub</string>
+    <string name="about_text_links">Посилання</string>
+    <string name="about_text_privacy_policy">Політика конфіденційності</string>
+    <string name="about_text_terms_and_conditions">Умови використання</string>
+
     <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
@@ -86,6 +95,7 @@
     <string name="all_contentDescription_selectAllDataIcon">Вибрати усі</string>
     <string name="all_contentDescription_showOrHideOtherFieldsIcon">Показати або сховати інші поля</string>
     <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
+    <string name="all_header_about">Про програму</string>
     <string name="all_header_addDataScreen">@string/all_action_add</string>
     <string name="all_header_appName">Мої покупки</string>
     <string name="all_header_archive">Архів</string>
@@ -297,6 +307,7 @@
     <string name="displayCompleted_text_appDisplayCompleted">Програма</string>
     <string name="displayCompleted_text_widgetDisplayCompleted">Віджет</string>
 
+    <string name="drawer_action_openAbout">@string/all_header_about</string>
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -442,29 +453,22 @@
     <string name="settings_body_displayMoneyZeros">Якщо увімкнено, то нулі завжди відображатимуться</string>
     <string name="settings_body_displayOtherFields">Марка, розмір, колір і т.д.</string>
     <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування (окрім віджетів)</string>
-    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_fontSize">Натисніть, щоб вибрати</string>
-    <string name="settings_body_github">Натисніть, щоб відкрити</string>
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
-    <string name="settings_body_privacy_policy">Натисніть, щоб прочитати</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
-    <string name="settings_body_terms_and_conditions">Натисніть, щоб прочитати</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
-    <string name="settings_header_aboutApp">Про програму</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Загальні</string>
     <string name="settings_header_migration">Оновлення</string>
     <string name="settings_header_money">Гроші</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
-    <string name="settings_title_appVersion">Версія програми</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматично очищати кошик</string>
     <string name="settings_title_backup">Резервне копіювання</string>
     <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>
     <string name="settings_title_completedWithCheckbox">Купівля товару натисканням на чекбокс</string>
     <string name="settings_title_currencySymbol">Валюта</string>
-    <string name="settings_title_developer">Розробник</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
     <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>
@@ -472,17 +476,13 @@
     <string name="settings_title_displayMoneyZeros">Показувати нулі після коми</string>
     <string name="settings_title_displayOtherFields">Показувати додаткові поля</string>
     <string name="settings_title_editProductAfterCompleted">Редагувати товар після покупки</string>
-    <string name="settings_title_email">Email</string>
     <string name="settings_title_enterToSaveProduct">Enter для збереження товару</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
-    <string name="settings_title_github">GitHub</string>
     <string name="settings_title_maxAutocompletes">Максимальна кількість</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
-    <string name="settings_title_privacy_policy">Політика конфіденційності</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати товари</string>
     <string name="settings_title_strikethroughCompletedProducts">Закреслювати куплені товари</string>
     <string name="settings_title_taxRate">Податкова ставка</string>
-    <string name="settings_title_terms_and_conditions">Умови використання</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>

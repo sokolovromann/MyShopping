@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="about_header_aboutApp">@string/all_header_about</string>
+    <string name="about_text_appVersion">Version de l\'application</string>
+    <string name="about_text_developer">Développeur</string>
+    <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_github">GitHub</string>
+    <string name="about_text_links">Liens</string>
+    <string name="about_text_privacy_policy">Politique de confidentialité</string>
+    <string name="about_text_terms_and_conditions">Termes et conditions</string>
+
     <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
@@ -86,6 +95,7 @@
     <string name="all_contentDescription_selectAllDataIcon">Tout sélectionner</string>
     <string name="all_contentDescription_showOrHideOtherFieldsIcon">Afficher ou masquer d\'autres champs</string>
     <string name="all_contentDescription_unarchiveIcon">@string/all_action_unarchive</string>
+    <string name="all_header_about">Infos sur l\'application</string>
     <string name="all_header_addDataScreen">@string/all_action_add</string>
     <string name="all_header_appName">Mes achats</string>
     <string name="all_header_archive">Archive</string>
@@ -349,6 +359,7 @@
     <string name="displayCompleted_text_appDisplayCompleted">Application</string>
     <string name="displayCompleted_text_widgetDisplayCompleted">Widget</string>
 
+    <string name="drawer_action_openAbout">@string/all_header_about</string>
     <string name="drawer_action_openArchive">@string/all_header_archive</string>
     <string name="drawer_action_openAutocompletes">@string/all_header_autocompletes</string>
     <string name="drawer_action_openPurchases">@string/all_header_purchases</string>
@@ -494,29 +505,22 @@
     <string name="settings_body_displayMoneyZeros">Si activé, les zéros seront toujours affichés</string>
     <string name="settings_body_displayOtherFields">Marque, taille, couleur, etc.</string>
     <string name="settings_body_editProductAfterCompleted">L\'écran sera-t-il ouvert pour l\'édition (sauf les widgets)</string>
-    <string name="settings_body_email">@string/data_email_developer</string>
     <string name="settings_body_enterToSaveProduct">Si activé, le produit peut être enregistré en appuyant sur Entrée</string>
     <string name="settings_body_fontSize">Appuyez pour sélectionner</string>
-    <string name="settings_body_github">Appuyez pour ouvrir</string>
     <string name="settings_body_maxAutocompletes">Sélectionnez le nombre de saisies semi-automatiques pouvant être affichées</string>
-    <string name="settings_body_privacy_policy">Appuyez pour lire</string>
     <string name="settings_body_saveProductToAutocompletes">Tout produit sera enregistré</string>
-    <string name="settings_body_terms_and_conditions">Appuyez pour lire</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
-    <string name="settings_header_aboutApp">Infos sur l\'application</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Général</string>
     <string name="settings_header_migration">Migration</string>
     <string name="settings_header_money">Argent</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
-    <string name="settings_title_appVersion">Version de l\'application</string>
     <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>
     <string name="settings_title_coloredCheckbox">Cases à cocher colorées</string>
     <string name="settings_title_completedWithCheckbox">Acheter le produit en cliquant sur la case à cocher</string>
     <string name="settings_title_currencySymbol">Devise</string>
-    <string name="settings_title_developer">Développeur</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Afficher la devise à gauche</string>
     <string name="settings_title_displayDefaultAutocompletes">Afficher les saisies automatiques par défaut</string>
@@ -524,17 +528,13 @@
     <string name="settings_title_displayMoneyZeros">Afficher les zéros après la virgule décimale</string>
     <string name="settings_title_displayOtherFields">Afficher d\'autres champs</string>
     <string name="settings_title_editProductAfterCompleted">Modifier le produit après l\'achat</string>
-    <string name="settings_title_email">E-mail</string>
     <string name="settings_title_enterToSaveProduct">Entrée pour enregistrer le produit</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
-    <string name="settings_title_github">GitHub</string>
     <string name="settings_title_maxAutocompletes">Nombre maximum</string>
     <string name="settings_title_nightTheme">Thème sombre</string>
-    <string name="settings_title_privacy_policy">Politique de confidentialité</string>
     <string name="settings_title_saveProductToAutocompletes">Enregistrer les produits</string>
     <string name="settings_title_strikethroughCompletedProducts">Barrer les produits achetés</string>
     <string name="settings_title_taxRate">Taux d\'imposition</string>
-    <string name="settings_title_terms_and_conditions">Termes et conditions</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
