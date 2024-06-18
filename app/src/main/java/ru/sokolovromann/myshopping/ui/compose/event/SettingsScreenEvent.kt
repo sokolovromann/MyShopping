@@ -10,6 +10,7 @@ sealed class SettingsScreenEvent {
 
     object OnEditTaxRateScreen : SettingsScreenEvent()
 
+    @Deprecated("")
     data class OnSendEmailToDeveloper(val email: String) : SettingsScreenEvent()
 
     object OnShowBackupScreen : SettingsScreenEvent()
@@ -20,10 +21,13 @@ sealed class SettingsScreenEvent {
 
     object OnShowMaxAutocompletes : SettingsScreenEvent()
 
+    @Deprecated("")
     data class OnShowAppGithub(val link: String) : SettingsScreenEvent()
 
+    @Deprecated("")
     data class OnShowPrivacyPolicy(val link: String) : SettingsScreenEvent()
 
+    @Deprecated("")
     data class OnShowTermsAndConditions(val link: String) : SettingsScreenEvent()
 
     object OnUpdateProductsWidgets : SettingsScreenEvent()

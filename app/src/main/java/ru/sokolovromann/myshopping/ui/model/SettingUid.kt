@@ -20,10 +20,10 @@ enum class SettingUid {
     ColoredCheckbox,
     SaveProductToAutocompletes,
     MaxAutocompletes,
-    Developer,
-    Email,
-    AppVersion,
-    Github,
-    PrivacyPolicy,
-    TermsAndConditions
+    @Deprecated("") Developer,
+    @Deprecated("") Email,
+    @Deprecated("") AppVersion,
+    @Deprecated("") Github,
+    @Deprecated("") PrivacyPolicy,
+    @Deprecated("") TermsAndConditions
 }

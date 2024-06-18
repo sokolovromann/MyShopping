@@ -5,7 +5,6 @@ import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
-import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.utils.displayZerosAfterDecimal
 import ru.sokolovromann.myshopping.ui.model.SettingItem
@@ -46,7 +45,6 @@ object UiAppConfigMapper {
         map[UiString.FromResources(R.string.settings_header_money)] = toMoneyItems(settingsWithConfig.appConfig)
         map[UiString.FromResources(R.string.settings_header_purchases)] = toPurchasesItems(settingsWithConfig.appConfig)
         map[UiString.FromResources(R.string.settings_header_autocompletes)] = toAutocompletesItems(settingsWithConfig.appConfig)
-        map[UiString.FromResources(R.string.settings_header_aboutApp)] = toAboutItems(settingsWithConfig.settings, settingsWithConfig.appConfig)
         return map.toMap()
     }
 
@@ -216,46 +214,5 @@ object UiAppConfigMapper {
         )
 
         return items.toList()
-    }
-
-    private fun toAboutItems(settings: Settings, appConfig: AppConfig): List<SettingItem> {
-        return listOf(
-            SettingItem(
-                uid = SettingUid.Developer,
-                title = UiString.FromResources(R.string.settings_title_developer),
-                body = UiString.FromString(settings.developerName),
-                checked = null
-            ),
-            SettingItem(
-                uid = SettingUid.Email,
-                title = UiString.FromResources(R.string.settings_title_email),
-                body = UiString.FromResources(R.string.settings_body_email),
-                checked = null
-            ),
-            SettingItem(
-                uid = SettingUid.AppVersion,
-                title = UiString.FromResources(R.string.settings_title_appVersion),
-                body = UiString.FromString(appConfig.appBuildConfig.getDisplayName()),
-                checked = null
-            ),
-            SettingItem(
-                uid = SettingUid.Github,
-                title = UiString.FromResources(R.string.settings_title_github),
-                body = UiString.FromResources(R.string.settings_body_github),
-                checked = null
-            ),
-            SettingItem(
-                uid = SettingUid.PrivacyPolicy,
-                title = UiString.FromResources(R.string.settings_title_privacy_policy),
-                body = UiString.FromResources(R.string.settings_body_privacy_policy),
-                checked = null
-            ),
-            SettingItem(
-                uid = SettingUid.TermsAndConditions,
-                title = UiString.FromResources(R.string.settings_title_terms_and_conditions),
-                body = UiString.FromResources(R.string.settings_body_terms_and_conditions),
-                checked = null
-            )
-        )
     }
 }

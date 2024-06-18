@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.model
 
+@Deprecated("")
 data class Settings(
     val developerName: String = "",
     val developerEmail: String = "",
