@@ -4,13 +4,11 @@ import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
-import ru.sokolovromann.myshopping.data.local.entity.SettingsResourcesEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
-import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -44,23 +42,10 @@ object AppConfigMapper {
     }
 
     fun toSettingsWithConfig(
-        resourcesEntity: SettingsResourcesEntity,
         appConfigEntity: AppConfigEntity
     ): SettingsWithConfig {
         return SettingsWithConfig(
-            settings = toSettings(resourcesEntity),
             appConfig = toAppConfig(appConfigEntity)
-        )
-    }
-
-    private fun toSettings(entity: SettingsResourcesEntity): Settings {
-        return Settings(
-            developerEmail = entity.developerEmail,
-            developerName = entity.developerName,
-            appVersion = BuildConfig.VERSION_NAME,
-            appGithubLink = entity.appGithubLink,
-            privacyPolicyLink = entity.privacyPolicyLink,
-            termsAndConditionsLink = entity.termsAndConditionsLink
         )
     }
 

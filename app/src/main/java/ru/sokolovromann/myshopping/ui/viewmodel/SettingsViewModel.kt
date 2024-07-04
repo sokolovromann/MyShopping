@@ -144,30 +144,6 @@ class SettingsViewModel @Inject constructor(
             SettingUid.MaxAutocompletes -> {
                 _screenEventFlow.emit(SettingsScreenEvent.OnShowMaxAutocompletes)
             }
-
-            SettingUid.Developer -> {}
-
-            SettingUid.Email -> {
-                val email = settingsState.getSettings().developerEmail
-                _screenEventFlow.emit(SettingsScreenEvent.OnSendEmailToDeveloper(email))
-            }
-
-            SettingUid.AppVersion -> {}
-
-            SettingUid.Github -> {
-                val link = settingsState.getSettings().appGithubLink
-                _screenEventFlow.emit(SettingsScreenEvent.OnShowAppGithub(link))
-            }
-
-            SettingUid.PrivacyPolicy -> {
-                val link = settingsState.getSettings().privacyPolicyLink
-                _screenEventFlow.emit(SettingsScreenEvent.OnShowPrivacyPolicy(link))
-            }
-
-            SettingUid.TermsAndConditions -> {
-                val link = settingsState.getSettings().termsAndConditionsLink
-                _screenEventFlow.emit(SettingsScreenEvent.OnShowTermsAndConditions(link))
-            }
         }
     }
 

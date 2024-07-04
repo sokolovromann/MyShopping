@@ -1,7 +1,5 @@
 package ru.sokolovromann.myshopping.ui.compose
 
-import android.content.Intent
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -24,7 +22,6 @@ import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
-import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingItem
 import ru.sokolovromann.myshopping.ui.model.SettingUid
@@ -42,7 +39,6 @@ fun SettingsScreen(
     val state = viewModel.settingsState
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    val subjectText = stringResource(R.string.data_email_subject)
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -64,14 +60,6 @@ fun SettingsScreen(
                     route = UiRoute.Settings.maxAutocompletesScreen
                 )
 
-                is SettingsScreenEvent.OnSendEmailToDeveloper -> navController.chooseNavigate(
-                    intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:")
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf(it.email))
-                        putExtra(Intent.EXTRA_SUBJECT, subjectText)
-                    }
-                )
-
                 SettingsScreenEvent.OnShowBackupScreen -> navController.navigate(
                     route = UiRoute.Settings.backupScreen
                 )
@@ -82,27 +70,6 @@ fun SettingsScreen(
 
                 SettingsScreenEvent.OnShowDisplayCompleted -> navController.navigate(
                     route = UiRoute.Settings.displayCompletedScreen
-                )
-
-                is SettingsScreenEvent.OnShowAppGithub -> navController.chooseNavigate(
-                    intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(it.link)
-                    )
-                )
-
-                is SettingsScreenEvent.OnShowPrivacyPolicy -> navController.chooseNavigate(
-                    intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(it.link)
-                    )
-                )
-
-                is SettingsScreenEvent.OnShowTermsAndConditions -> navController.chooseNavigate(
-                    intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(it.link)
-                    )
                 )
 
                 SettingsScreenEvent.OnUpdateProductsWidgets -> {

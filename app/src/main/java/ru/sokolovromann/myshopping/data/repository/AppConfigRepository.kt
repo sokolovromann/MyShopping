@@ -47,11 +47,7 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
 
     suspend fun getSettingsWithConfig(): Flow<SettingsWithConfig> = withContext(dispatcher) {
         return@withContext appConfigDao.getAppConfig().map { appConfigEntity ->
-            val resourcesEntity = resourcesDao.getSettings()
-            AppConfigMapper.toSettingsWithConfig(
-                resourcesEntity = resourcesEntity,
-                appConfigEntity = appConfigEntity
-            )
+            AppConfigMapper.toSettingsWithConfig(appConfigEntity)
         }
     }
 

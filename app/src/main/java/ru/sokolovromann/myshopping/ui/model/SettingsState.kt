@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.NightTheme
-import ru.sokolovromann.myshopping.data.model.Settings
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 
@@ -55,10 +54,6 @@ class SettingsState {
 
     fun onWaiting() {
         waiting = true
-    }
-
-    fun getSettings(): Settings {
-        return settingsWithConfig.settings
     }
 
     private fun toNightThemeValue(

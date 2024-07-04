@@ -19,11 +19,5 @@ enum class SettingUid {
     AutomaticallyEmptyTrash,
     ColoredCheckbox,
     SaveProductToAutocompletes,
-    MaxAutocompletes,
-    @Deprecated("") Developer,
-    @Deprecated("") Email,
-    @Deprecated("") AppVersion,
-    @Deprecated("") Github,
-    @Deprecated("") PrivacyPolicy,
-    @Deprecated("") TermsAndConditions
+    MaxAutocompletes
 }
