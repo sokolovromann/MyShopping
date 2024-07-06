@@ -22,7 +22,14 @@ class PurchasesAlarmManager @Inject constructor(
     fun createReminder(uid: String, reminder: Long) {
         val pendingIntent = toPendingIntent(uid)
         alarmManager.cancel(pendingIntent)
-        alarmManager.set(AlarmManager.RTC_WAKEUP, reminder, pendingIntent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminder, pendingIntent)
+            }
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, reminder, pendingIntent)
+        }
     }
 
     fun deleteReminder(uid: String) {
