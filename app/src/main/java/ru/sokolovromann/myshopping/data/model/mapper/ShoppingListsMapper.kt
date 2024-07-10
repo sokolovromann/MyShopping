@@ -31,9 +31,12 @@ object ShoppingListsMapper {
             lastModified = shopping.lastModified.millis,
             name = shopping.name,
             reminder = (shopping.reminder ?: DateTime.NO_DATE_TIME).millis,
+            discount = shopping.discount.value,
+            discountProducts = shopping.discountProducts.name,
             total = shopping.total.value,
             totalFormatted = shopping.totalFormatted,
             budget = shopping.budget.value,
+            budgetProducts = shopping.budgetProducts.name,
             archived = shopping.location == ShoppingLocation.ARCHIVE,
             deleted = shopping.location == ShoppingLocation.TRASH,
             sortBy = shopping.sort.sortBy.name,
@@ -192,6 +195,27 @@ object ShoppingListsMapper {
             productsTotal
         }
 
+        val discount = Money(
+            value = entity.discount,
+            currency = userPreferences.currency,
+            asPercent = entity.discountAsPercent,
+            decimalFormat = userPreferences.moneyDecimalFormat
+        )
+
+        val discountProducts = DisplayTotal.valueOfOrDefault(entity.discountProducts)
+        val calculatedTotal = if (userPreferences.displayTotal == discountProducts) {
+            val discountValue = discount.calculateValueFromPercent(total.value)
+            val totalWithDiscount = total.value - discountValue
+            Money(
+                value = totalWithDiscount,
+                currency = userPreferences.currency,
+                asPercent = false,
+                decimalFormat = userPreferences.moneyDecimalFormat
+            )
+        } else {
+            total
+        }
+
         return Shopping(
             id = entity.id,
             position = entity.position,
@@ -199,7 +223,9 @@ object ShoppingListsMapper {
             lastModified = DateTime(entity.lastModified),
             name = entity.name,
             reminder = if (entity.reminder == 0L) null else DateTime(entity.reminder),
-            total = total,
+            discount = discount,
+            discountProducts = discountProducts,
+            total = calculatedTotal,
             totalFormatted = entity.totalFormatted,
             budget = Money(
                 value = entity.budget,
@@ -207,6 +233,7 @@ object ShoppingListsMapper {
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
             ),
+            budgetProducts = DisplayTotal.valueOf(entity.budgetProducts),
             location = ShoppingLocation.create(entity.archived, entity.deleted),
             sort = Sort(
                 sortBy = SortBy.valueOfOrDefault(entity.sortBy),
