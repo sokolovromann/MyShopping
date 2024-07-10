@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "4a80b15a0d8239f340088434768b7650",
+    "identityHash": "0bbfd3e52847e7fa6174f1d7ac82a521",
     "entities": [
       {
         "tableName": "autocompletes",
@@ -286,7 +286,7 @@
       },
       {
         "tableName": "shoppings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `position` INTEGER NOT NULL, `uid` TEXT NOT NULL, `last_modified` INTEGER NOT NULL, `name` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `discount` REAL NOT NULL DEFAULT 0.0, `discount_products` TEXT NOT NULL DEFAULT '', `total` REAL NOT NULL, `total_formatted` INTEGER NOT NULL, `budget` REAL NOT NULL, `budget_products` TEXT NOT NULL DEFAULT '', `archived` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `sort_by` TEXT NOT NULL, `sort_ascending` INTEGER NOT NULL, `sort_formatted` INTEGER NOT NULL, `pinned` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `position` INTEGER NOT NULL, `uid` TEXT NOT NULL, `last_modified` INTEGER NOT NULL, `name` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `discount` REAL NOT NULL DEFAULT 0.0, `discount_as_percent` INTEGER NOT NULL DEFAULT 0, `discount_products` TEXT NOT NULL DEFAULT '', `total` REAL NOT NULL, `total_formatted` INTEGER NOT NULL, `budget` REAL NOT NULL, `budget_products` TEXT NOT NULL DEFAULT '', `archived` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `sort_by` TEXT NOT NULL, `sort_ascending` INTEGER NOT NULL, `sort_formatted` INTEGER NOT NULL, `pinned` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -330,6 +330,13 @@
             "affinity": "REAL",
             "notNull": true,
             "defaultValue": "0.0"
+          },
+          {
+            "fieldPath": "discountAsPercent",
+            "columnName": "discount_as_percent",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "discountProducts",
@@ -413,7 +420,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a80b15a0d8239f340088434768b7650')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0bbfd3e52847e7fa6174f1d7ac82a521')"
     ]
   }
 }

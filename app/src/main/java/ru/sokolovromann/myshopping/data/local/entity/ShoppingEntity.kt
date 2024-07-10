@@ -30,6 +30,9 @@ data class ShoppingEntity(
     @ColumnInfo(name = "discount", defaultValue = "0.0")
     val discount: Float = 0f,
 
+    @ColumnInfo(name = "discount_as_percent", defaultValue = "0")
+    val discountAsPercent: Boolean = false,
+
     @ColumnInfo(name = "discount_products", defaultValue = "")
     val discountProducts: String = "",
 
