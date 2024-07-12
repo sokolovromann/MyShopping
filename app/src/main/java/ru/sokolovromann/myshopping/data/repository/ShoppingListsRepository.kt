@@ -258,9 +258,10 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     suspend fun saveShoppingListTotal(
         shoppingUid: String,
         total: Money,
+        discount: Money,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.updateTotal(shoppingUid, total.value, lastModified.millis)
+        shoppingListsDao.updateTotal(shoppingUid, total.value, discount.value, discount.asPercent, lastModified.millis)
         return@withContext Result.success(Unit)
     }
 
