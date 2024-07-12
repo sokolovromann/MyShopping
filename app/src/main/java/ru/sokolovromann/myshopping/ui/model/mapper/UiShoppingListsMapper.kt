@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
-import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
@@ -98,7 +97,6 @@ object UiShoppingListsMapper {
             success.append(":\n")
         }
 
-        val totalFormatted = shopping.totalFormatted
         shoppingListWithConfig.getSortedProducts().forEach {
             if (!it.completed) {
                 success.append("- ")
@@ -111,7 +109,6 @@ object UiShoppingListsMapper {
 
                 val body = getProductBody(
                     product = it,
-                    shoppingTotalFormatted = totalFormatted,
                     userPreferences = userPreferences
                 )
                 if (body.isNotEmpty()) {
@@ -243,7 +240,6 @@ object UiShoppingListsMapper {
         return shoppingListWithConfig.getSortedProducts(displayCompleted).map {
             toProductItem(
                 product = it,
-                shopping = shoppingListWithConfig.getShopping(),
                 userPreferences = shoppingListWithConfig.getUserPreferences()
             )
         }
@@ -262,7 +258,6 @@ object UiShoppingListsMapper {
         }).map {
             toProductItem(
                 product = it,
-                shopping = shoppingListWithConfig.getShopping(),
                 userPreferences = shoppingListWithConfig.getUserPreferences()
             )
         }
@@ -281,7 +276,6 @@ object UiShoppingListsMapper {
         }).map {
             toProductItem(
                 product = it,
-                shopping = shoppingListWithConfig.getShopping(),
                 userPreferences = shoppingListWithConfig.getUserPreferences()
             )
         }
@@ -316,7 +310,6 @@ object UiShoppingListsMapper {
         userPreferences: UserPreferences
     ): ShoppingListItem {
         val displayShoppingsProducts = userPreferences.displayShoppingsProducts
-        val displayTotal = userPreferences.displayTotal == DisplayTotal.ALL
 
         val name = shoppingList.shopping.name
         val displayUnnamed = displayShoppingsProducts == DisplayProducts.HIDE && name.isEmpty()
@@ -327,7 +320,6 @@ object UiShoppingListsMapper {
         }
 
         val maxShoppingProducts = 10
-        val totalFormatted = shoppingList.shopping.totalFormatted && displayTotal
         val productsList = if (shoppingList.isProductsEmpty()) {
             val pair = Pair(null, UiString.FromResources(R.string.shoppingLists_text_productsNotFound))
             listOf(pair)
@@ -338,7 +330,6 @@ object UiShoppingListsMapper {
                 .map {
                     productsToPair(
                         product = it,
-                        totalFormatted = totalFormatted,
                         deviceConfig = deviceConfig,
                         userPreferences = userPreferences
                     )
@@ -389,7 +380,6 @@ object UiShoppingListsMapper {
 
     private fun productsToPair(
         product: Product,
-        totalFormatted: Boolean,
         deviceConfig: DeviceConfig,
         userPreferences: UserPreferences
     ): Pair<Boolean, UiString> {
@@ -413,7 +403,7 @@ object UiShoppingListsMapper {
             }
 
             val displayQuantity = product.quantity.isNotEmpty()
-            val displayTotal = displayMoney && !totalFormatted && product.total.isNotEmpty()
+            val displayTotal = displayMoney && product.total.isNotEmpty()
 
             if (displayTotal) {
                 builder.append(separator)
@@ -445,10 +435,8 @@ object UiShoppingListsMapper {
 
     private fun toProductItem(
         product: Product,
-        shopping: Shopping,
         userPreferences: UserPreferences
     ): ProductItem {
-        val totalFormatted = shopping.totalFormatted
         return ProductItem(
             uid = product.productUid,
             name = getProductName(
@@ -457,7 +445,6 @@ object UiShoppingListsMapper {
             ).toUiString(),
             body = getProductBody(
                 product = product,
-                shoppingTotalFormatted = totalFormatted,
                 userPreferences = userPreferences
             ).toUiString(),
             completed = product.completed
@@ -485,7 +472,6 @@ object UiShoppingListsMapper {
 
     private fun getProductBody(
         product: Product,
-        shoppingTotalFormatted: Boolean,
         userPreferences: UserPreferences
     ): String {
         val displayOtherFields = userPreferences.displayOtherFields
@@ -508,7 +494,7 @@ object UiShoppingListsMapper {
         }
 
         val displayQuantity = product.quantity.isNotEmpty()
-        val displayTotal = displayMoney && !shoppingTotalFormatted && product.total.isNotEmpty()
+        val displayTotal = displayMoney && product.total.isNotEmpty()
 
         if (displayTotal) {
             if (builder.isNotEmpty()) {
