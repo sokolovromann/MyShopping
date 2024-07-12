@@ -33,4 +33,9 @@ data class Shopping(
 
         return calendar.toDateTime()
     }
+
+    fun getTotalWithoutDiscount(): Money {
+        val totalWithoutDiscount = total.value + discount.calculateValueFromPercent(total.value)
+        return total.copy(value = totalWithoutDiscount)
+    }
 }

@@ -36,6 +36,12 @@ class EditShoppingListTotalViewModel @Inject constructor(
             EditShoppingListTotalEvent.OnClickCancel -> onClickCancel()
 
             is EditShoppingListTotalEvent.OnTotalChanged -> onTotalChanged(event)
+
+            is EditShoppingListTotalEvent.OnDiscountChanged -> onDiscountChanged(event)
+
+            is EditShoppingListTotalEvent.OnDiscountAsPercentSelected -> onDiscountAsPercentSelected(event)
+
+            is EditShoppingListTotalEvent.OnSelectDiscountAsPercent -> onSelectDiscountAsPercent(event)
         }
     }
 
@@ -55,7 +61,8 @@ class EditShoppingListTotalViewModel @Inject constructor(
         if (shopping.totalFormatted) {
             shoppingListsRepository.saveShoppingListTotal(
                 shoppingUid = shopping.uid,
-                total = shopping.total
+                total = shopping.total,
+                discount = shopping.discount
             )
         } else {
             shoppingListsRepository.deleteShoppingListTotal(shopping.uid)
@@ -72,5 +79,17 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
     private fun onTotalChanged(event: EditShoppingListTotalEvent.OnTotalChanged) {
         editShoppingListTotalState.onTotalValueChanged(event.value)
+    }
+
+    private fun onDiscountChanged(event: EditShoppingListTotalEvent.OnDiscountChanged) {
+        editShoppingListTotalState.onDiscountValueChanged(event.value)
+    }
+
+    private fun onDiscountAsPercentSelected(event: EditShoppingListTotalEvent.OnDiscountAsPercentSelected) {
+        editShoppingListTotalState.onDiscountAsPercentSelected(event.asPercent)
+    }
+
+    private fun onSelectDiscountAsPercent(event: EditShoppingListTotalEvent.OnSelectDiscountAsPercent) {
+        editShoppingListTotalState.onSelectDiscountAsPercent(event.expanded)
     }
 }

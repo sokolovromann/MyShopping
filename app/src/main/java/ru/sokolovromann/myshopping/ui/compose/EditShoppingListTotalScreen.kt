@@ -1,16 +1,27 @@
 package ru.sokolovromann.myshopping.ui.compose
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
@@ -89,22 +100,94 @@ fun EditShoppingListTotalScreen(
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Decimal,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
+                onNext = { focusManager.moveFocus(FocusDirection.Next) },
             )
         )
 
-        Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSmallSize))
-
-        Text(
-            text = stringResource(R.string.editShoppingListTotal_message_totalWarning),
-            style = MaterialTheme.typography.body1.copy(
-                color = MaterialTheme.colors.onSurface
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(EditShoppingListTotalPaddings)
+        ) {
+            OutlinedAppTextField(
+                modifier = Modifier.weight(0.6f),
+                value = state.discountValue,
+                onValueChange = {
+                    val event = EditShoppingListTotalEvent.OnDiscountChanged(it)
+                    viewModel.onEvent(event)
+                },
+                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_discount)) },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
+                )
             )
+
+            Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
+
+            EditShoppingListTotalDiscountAsPercentButton(
+                modifier = Modifier.weight(0.4f),
+                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(true)) },
+            ) {
+                Text(
+                    text = state.discountAsPercentValue.text.asCompose(),
+                    color = MaterialTheme.colors.onSurface
+                )
+
+                AppDropdownMenu(
+                    expanded = state.expandedDiscountAsPercent,
+                    onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(false)) }
+                ) {
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(true)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsPercents)) },
+                        right = { CheckmarkAppCheckbox(checked = state.discountAsPercentValue.selected) }
+                    )
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(false)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsMoney)) },
+                        right = { CheckmarkAppCheckbox(checked = !state.discountAsPercentValue.selected) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EditShoppingListTotalDiscountAsPercentButton(
+    modifier: Modifier,
+    onClick: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    OutlinedButton(
+        modifier = Modifier
+            .height(EditShoppingListTotalButtonHeight)
+            .padding(EditShoppingListTotalButtonPaddings)
+            .then(modifier),
+        onClick = onClick,
+        contentPadding = EditShoppingListTotalButtonNoContentPadding,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start,
+            content = content
         )
     }
 }
 
-private val EditShoppingListTotalSpacerSmallSize = 8.dp
+private val EditShoppingListTotalSpacerSize = 8.dp
+private val EditShoppingListTotalPaddings = PaddingValues(vertical = 2.dp)
+private val EditShoppingListTotalButtonHeight = 64.dp
+private val EditShoppingListTotalButtonPaddings = PaddingValues(top = 8.dp)
+private val EditShoppingListTotalButtonNoContentPadding = PaddingValues(0.dp)

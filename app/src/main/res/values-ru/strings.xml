@@ -19,8 +19,8 @@
     <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
     <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>
     <string name="addEditProduct_action_saveProduct">@string/all_action_save</string>
-    <string name="addEditProduct_action_selectDiscountAsMoney">Деньги</string>
-    <string name="addEditProduct_action_selectDiscountAsPercents">Проценты</string>
+    <string name="addEditProduct_action_selectDiscountAsMoney">@string/all_action_selectDiscountAsMoney</string>
+    <string name="addEditProduct_action_selectDiscountAsPercents">@string/all_action_selectDiscountAsPercents</string>
     <string name="addEditProduct_action_selectProductLockPrice">Цена</string>
     <string name="addEditProduct_action_selectProductLockQuantity">Количество</string>
     <string name="addEditProduct_action_selectProductLockTotal">Стоимость</string>
@@ -30,7 +30,7 @@
     <string name="addEditProduct_header_productLock">Заблокировать</string>
     <string name="addEditProduct_label_brand">Марка</string>
     <string name="addEditProduct_label_color">Цвет</string>
-    <string name="addEditProduct_label_discount">Скидка</string>
+    <string name="addEditProduct_label_discount">@string/all_label_discount</string>
     <string name="addEditProduct_label_manufacturer">Изготовитель</string>
     <string name="addEditProduct_label_name">@string/all_label_name</string>
     <string name="addEditProduct_label_note">Заметка</string>
@@ -66,6 +66,8 @@
     <string name="all_action_saveSort">Сохранять сортировку</string>
     <string name="all_action_search">Поиск</string>
     <string name="all_action_selectAll">Выбрать всё</string>
+    <string name="all_action_selectDiscountAsMoney">Деньги</string>
+    <string name="all_action_selectDiscountAsPercents">Проценты</string>
     <string name="all_action_selectGridView">Сетка</string>
     <string name="all_action_selectListView">Список</string>
     <string name="all_action_share">Поделиться</string>
@@ -108,6 +110,7 @@
     <string name="all_header_settings">Настройки</string>
     <string name="all_header_trash">Корзина</string>
     <string name="all_header_view">Вид</string>
+    <string name="all_label_discount">Скидка</string>
     <string name="all_label_name">Название</string>
     <string name="all_label_search">Поиск</string>
     <string name="all_message_nameError">Добавьте название</string>
@@ -383,10 +386,12 @@
 
     <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
     <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
+    <string name="editShoppingListTotal_action_selectDiscountAsMoney">@string/all_action_selectDiscountAsMoney</string>
+    <string name="editShoppingListTotal_action_selectDiscountAsPercents">@string/all_action_selectDiscountAsPercents</string>
     <string name="editShoppingListTotal_header_addShoppingListTotal">@string/all_header_addDataScreen</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">@string/all_header_editDataScreen</string>
+    <string name="editShoppingListTotal_label_discount">@string/all_label_discount</string>
     <string name="editShoppingListTotal_label_total">Итого списка</string>
-    <string name="editShoppingListTotal_message_totalWarning">Цены на товары будут скрыты</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
     <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
