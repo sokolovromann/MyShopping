@@ -314,7 +314,11 @@ class ProductsState {
         }
 
         val text: UiString = if (shoppingListWithConfig.getShopping().totalFormatted) {
-            UiString.FromResourcesWithArgs(R.string.products_text_totalFormatted, total.getDisplayValue())
+            val totalWithoutDiscount = shoppingListWithConfig.getTotalWithoutDiscount()
+            val discount = shoppingListWithConfig.getShopping().discount
+            val builder = getLongTotalBuilder(totalWithoutDiscount, discount, total)
+            UiString.FromResourcesWithArgs(R.string.products_text_totalFormatted, builder)
+
         } else {
             val id = when (userPreferences.displayTotal) {
                 DisplayTotal.ALL -> R.string.products_text_allTotal
@@ -350,6 +354,25 @@ class ProductsState {
         return totalValue?.copy(
             text = UiString.FromResourcesWithArgs(R.string.products_text_selectedTotal, builder)
         )
+    }
+
+    private fun getLongTotalBuilder(
+        totalWithoutDiscount: Money,
+        discount: Money,
+        total: Money
+    ): StringBuilder {
+        val userPreferences = shoppingListWithConfig.getUserPreferences()
+        val builder = StringBuilder()
+
+        if (userPreferences.displayLongTotal && discount.isNotEmpty()) {
+            builder.append(totalWithoutDiscount)
+            builder.append(" - ")
+            builder.append(discount)
+            builder.append(" = ")
+        }
+        builder.append(total)
+
+        return builder
     }
 
     private fun getLongTotalBuilder(

@@ -37,6 +37,10 @@ class ShoppingListWithConfig(
         return appConfig.userPreferences
     }
 
+    fun getTotalWithoutDiscount(): Money {
+        return shoppingList.getTotalWithoutDiscount()
+    }
+
     fun calculateTotalByProductUids(productUids: List<String>): Money {
         return shoppingList.calculateTotalByProductUids(productUids)
     }

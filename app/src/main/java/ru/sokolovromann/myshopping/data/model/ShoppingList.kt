@@ -19,6 +19,10 @@ data class ShoppingList(
             .partition { it.pinned && !it.completed }
     }
 
+    fun getTotalWithoutDiscount(): Money {
+        return shopping.getTotalWithoutDiscount()
+    }
+
     fun getProductUids(): List<String> {
         return products.map { it.productUid }
     }
