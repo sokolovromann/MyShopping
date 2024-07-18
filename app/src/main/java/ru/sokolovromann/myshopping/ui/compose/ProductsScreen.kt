@@ -651,6 +651,12 @@ private fun ProductsTotalContent(
                     onClick = onDeleteTotal,
                     text = { Text(text = stringResource(R.string.products_action_deleteShoppingListTotal)) }
                 )
+                Divider()
+                AppDropdownMenuItem(
+                    onClick = onInvertDisplayLongTotal,
+                    text = { Text(text = stringResource(R.string.products_action_displayLongTotal)) },
+                    right = { AppSwitch(checked = displayLongTotal) }
+                )
             } else {
                 AppDropdownMenuItem(
                     onClick = { onSelected(DisplayTotal.ALL) },
