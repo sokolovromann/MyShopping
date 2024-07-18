@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.ui.compose
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
@@ -689,7 +688,6 @@ private fun ProductsTotalContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ProductsGrid(
     modifier: Modifier = Modifier,
