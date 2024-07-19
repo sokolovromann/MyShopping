@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.DateTime
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
@@ -259,9 +260,19 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         shoppingUid: String,
         total: Money,
         discount: Money,
+        budget: Money,
+        budgetProducts: DisplayTotal,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.updateTotal(shoppingUid, total.value, discount.value, discount.asPercent, lastModified.millis)
+        shoppingListsDao.updateTotal(
+            shoppingUid,
+            total.value,
+            discount.value,
+            discount.asPercent,
+            budget.value,
+            budgetProducts.name,
+            lastModified.millis
+        )
         return@withContext Result.success(Unit)
     }
 
