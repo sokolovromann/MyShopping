@@ -7,6 +7,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
+import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
@@ -31,6 +32,15 @@ class EditShoppingListTotalState {
     var expandedDiscountAsPercent: Boolean by mutableStateOf(false)
         private set
 
+    var budgetValue: TextFieldValue by mutableStateOf(TextFieldValue())
+        private set
+
+    var budgetProducts: SelectedValue<DisplayTotal> by mutableStateOf(SelectedValue(DisplayTotal.DefaultValue))
+        private set
+
+    var expandedBudgetProducts: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -47,6 +57,9 @@ class EditShoppingListTotalState {
         discountValue = shopping.discount.toTextFieldValue()
         discountAsPercentValue = toDiscountSelectedValue(shopping.discount.asPercent)
         expandedDiscountAsPercent = false
+        budgetValue = shopping.budget.toTextFieldValue()
+        budgetProducts = toBudgetProductsSelectedValue(shopping.budgetProducts)
+        expandedBudgetProducts = false
         waiting = false
     }
 
@@ -69,6 +82,20 @@ class EditShoppingListTotalState {
         expandedDiscountAsPercent = expanded
     }
 
+    fun onBudgetValueChanged(value: TextFieldValue) {
+        budgetValue = value
+        waiting = false
+    }
+
+    fun onBudgetProductsSelected(products: DisplayTotal) {
+        budgetProducts = toBudgetProductsSelectedValue(products)
+        expandedBudgetProducts = false
+    }
+
+    fun onSelectBudgetProducts(expanded: Boolean) {
+        expandedBudgetProducts = expanded
+    }
+
     fun onWaiting() {
         waiting = true
     }
@@ -81,11 +108,17 @@ class EditShoppingListTotalState {
             value = discountValue.toFloatOrZero(),
             asPercent = discountAsPercentValue.selected
         )
+        val budget = Money(
+            value = budgetValue.toFloatOrZero(),
+            asPercent = false
+        )
         return shoppingListWithConfig.getShopping().copy(
             total = total,
             totalFormatted = total.isNotEmpty(),
             discount = discount,
             discountProducts = DisplayTotal.ALL,
+            budget = budget,
+            budgetProducts = budgetProducts.selected,
             lastModified = DateTime.getCurrentDateTime()
         )
     }
@@ -97,6 +130,17 @@ class EditShoppingListTotalState {
                 UiString.FromResources(R.string.editShoppingListTotal_action_selectDiscountAsPercents)
             } else {
                 UiString.FromResources(R.string.editShoppingListTotal_action_selectDiscountAsMoney)
+            }
+        )
+    }
+
+    private fun toBudgetProductsSelectedValue(budgetProducts: DisplayTotal): SelectedValue<DisplayTotal> {
+        return SelectedValue(
+            selected = budgetProducts,
+            text = when (budgetProducts) {
+                DisplayTotal.ALL -> UiString.FromResources(R.string.editShoppingListTotal_action_selectAllProducts)
+                DisplayTotal.COMPLETED -> UiString.FromResources(R.string.editShoppingListTotal_action_selectCompletedProducts)
+                DisplayTotal.ACTIVE -> UiString.FromResources(R.string.editShoppingListTotal_action_selectActiveProducts)
             }
         )
     }

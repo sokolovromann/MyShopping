@@ -42,6 +42,12 @@ class EditShoppingListTotalViewModel @Inject constructor(
             is EditShoppingListTotalEvent.OnDiscountAsPercentSelected -> onDiscountAsPercentSelected(event)
 
             is EditShoppingListTotalEvent.OnSelectDiscountAsPercent -> onSelectDiscountAsPercent(event)
+
+            is EditShoppingListTotalEvent.OnBudgetChanged -> onBudgetChanged(event)
+
+            is EditShoppingListTotalEvent.OnBudgetProductsSelected -> onBudgetProductsSelected(event)
+
+            is EditShoppingListTotalEvent.OnSelectBudgetProducts -> onSelectBudgetProducts(event)
         }
     }
 
@@ -62,7 +68,9 @@ class EditShoppingListTotalViewModel @Inject constructor(
             shoppingListsRepository.saveShoppingListTotal(
                 shoppingUid = shopping.uid,
                 total = shopping.total,
-                discount = shopping.discount
+                discount = shopping.discount,
+                budget = shopping.budget,
+                budgetProducts = shopping.budgetProducts
             )
         } else {
             shoppingListsRepository.deleteShoppingListTotal(shopping.uid)
@@ -91,5 +99,17 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
     private fun onSelectDiscountAsPercent(event: EditShoppingListTotalEvent.OnSelectDiscountAsPercent) {
         editShoppingListTotalState.onSelectDiscountAsPercent(event.expanded)
+    }
+
+    private fun onBudgetChanged(event: EditShoppingListTotalEvent.OnBudgetChanged) {
+        editShoppingListTotalState.onBudgetValueChanged(event.value)
+    }
+
+    private fun onBudgetProductsSelected(event: EditShoppingListTotalEvent.OnBudgetProductsSelected) {
+        editShoppingListTotalState.onBudgetProductsSelected(event.budgetProducts)
+    }
+
+    private fun onSelectBudgetProducts(event: EditShoppingListTotalEvent.OnSelectBudgetProducts) {
+        editShoppingListTotalState.onSelectBudgetProducts(event.expanded)
     }
 }

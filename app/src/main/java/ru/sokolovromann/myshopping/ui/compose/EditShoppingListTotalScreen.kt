@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.EditShoppingListTotalViewModel
@@ -123,16 +124,16 @@ fun EditShoppingListTotalScreen(
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
                 )
             )
 
             Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
 
-            EditShoppingListTotalDiscountAsPercentButton(
+            EditShoppingListSelectButton(
                 modifier = Modifier.weight(0.4f),
                 onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(true)) },
             ) {
@@ -158,11 +159,68 @@ fun EditShoppingListTotalScreen(
                 }
             }
         }
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(EditShoppingListTotalPaddings)
+        ) {
+            OutlinedAppTextField(
+                modifier = Modifier.weight(0.6f),
+                value = state.budgetValue,
+                onValueChange = {
+                    val event = EditShoppingListTotalEvent.OnBudgetChanged(it)
+                    viewModel.onEvent(event)
+                },
+                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_budget)) },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
+                )
+            )
+
+            Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
+
+            EditShoppingListSelectButton(
+                modifier = Modifier.weight(0.4f),
+                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(true)) },
+            ) {
+                Text(
+                    text = state.budgetProducts.text.asCompose(),
+                    color = MaterialTheme.colors.onSurface
+                )
+
+                AppDropdownMenu(
+                    expanded = state.expandedBudgetProducts,
+                    onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(false)) }
+                ) {
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ALL)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectAllProducts)) },
+                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ALL) }
+                    )
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.COMPLETED)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectCompletedProducts)) },
+                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.COMPLETED) }
+                    )
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ACTIVE)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectActiveProducts)) },
+                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ACTIVE) }
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
-private fun EditShoppingListTotalDiscountAsPercentButton(
+private fun EditShoppingListSelectButton(
     modifier: Modifier,
     onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit

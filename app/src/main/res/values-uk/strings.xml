@@ -339,10 +339,14 @@
 
     <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
     <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
+    <string name="editShoppingListTotal_action_selectActiveProducts">@string/all_action_displayActiveTotal</string>
+    <string name="editShoppingListTotal_action_selectAllProducts">@string/all_action_displayAllTotal</string>
+    <string name="editShoppingListTotal_action_selectCompletedProducts">@string/all_action_displayCompletedTotal</string>
     <string name="editShoppingListTotal_action_selectDiscountAsMoney">@string/all_action_selectDiscountAsMoney</string>
     <string name="editShoppingListTotal_action_selectDiscountAsPercents">@string/all_action_selectDiscountAsPercents</string>
     <string name="editShoppingListTotal_header_addShoppingListTotal">@string/all_header_addDataScreen</string>
     <string name="editShoppingListTotal_header_editShoppingListTotal">@string/all_header_editDataScreen</string>
+    <string name="editShoppingListTotal_label_budget">Бюджет</string>
     <string name="editShoppingListTotal_label_discount">@string/all_label_discount</string>
     <string name="editShoppingListTotal_label_total">Разом списку</string>
 
