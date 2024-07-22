@@ -117,6 +117,7 @@
     <string name="all_text_activeTotal">Не куплено: %s</string>
     <string name="all_text_allTotal">Итого: %s</string>
     <string name="all_text_completedTotal">Куплено: %s</string>
+    <string name="all_text_of">Из</string>
     <string name="all_text_otherList">Другие</string>
     <string name="all_text_pinnedList">Закреплённые</string>
     <string name="all_text_productsNotFound">Список покупок пуст</string>
@@ -487,6 +488,7 @@
     <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
     <string name="products_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="products_text_hiddenProducts">У вас есть скрытые товары</string>
+    <string name="products_text_of">@string/all_text_of</string>
     <string name="products_text_otherProducts">@string/all_text_otherList</string>
     <string name="products_text_pinnedProducts">@string/all_text_pinnedList</string>
     <string name="products_text_purchasesProductsNotFound">Нажмите на \"+\", чтобы добавить товар</string>

@@ -117,6 +117,7 @@
     <string name="all_text_activeTotal">No comprado: %s</string>
     <string name="all_text_allTotal">Todo: %s</string>
     <string name="all_text_completedTotal">Comprado: %s</string>
+    <string name="all_text_of">De</string>
     <string name="all_text_otherList">Otras</string>
     <string name="all_text_pinnedList">Fijadas</string>
     <string name="all_text_productsNotFound">La lista de compras está vacía</string>
@@ -479,6 +480,7 @@
     <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
     <string name="products_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="products_text_hiddenProducts">Tienes productos ocultos</string>
+    <string name="products_text_of">@string/all_text_of</string>
     <string name="products_text_otherProducts">@string/all_text_otherList</string>
     <string name="products_text_pinnedProducts">@string/all_text_pinnedList</string>
     <string name="products_text_purchasesProductsNotFound">Toque \"+\" para agregar un nuevo producto</string>

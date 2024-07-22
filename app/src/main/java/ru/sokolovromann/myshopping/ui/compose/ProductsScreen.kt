@@ -24,11 +24,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -279,7 +282,9 @@ fun ProductsScreen(
                                     },
                                     onInvertDisplayLongTotal = { viewModel.onEvent(ProductsEvent.OnInvertDisplayLongTotal) },
                                     onEditTotal = { viewModel.onEvent(ProductsEvent.OnClickEditTotal) },
-                                    onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) }
+                                    onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) },
+                                    budgetText = state.budgetText,
+                                    isOverBudget = state.isOverBudget()
                                 )
                             }
                         }
@@ -628,13 +633,35 @@ private fun ProductsTotalContent(
     onSelected: (DisplayTotal) -> Unit,
     onInvertDisplayLongTotal: () -> Unit,
     onEditTotal: () -> Unit,
-    onDeleteTotal: () -> Unit
+    onDeleteTotal: () -> Unit,
+    budgetText: UiString,
+    isOverBudget: Boolean
 ) {
     TextButton(
         modifier = modifier,
         onClick = { onExpanded(true) }
     ) {
-        Text(text = totalText.asCompose())
+        Text(
+            text = buildAnnotatedString {
+                append(totalText.asCompose())
+
+                if (budgetText.isNotEmpty()) {
+                    withStyle(
+                        style = SpanStyle(
+                            fontStyle = MaterialTheme.typography.body2.fontStyle,
+                            color = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                        ),
+                        block = {
+                            append(" ")
+                            append(stringResource(R.string.products_text_of).lowercase())
+                            append(" ")
+                            append(budgetText.asCompose())
+                        }
+                    )
+                }
+            },
+            color = if (isOverBudget) MaterialTheme.colors.error else Color.Unspecified
+        )
 
         AppDropdownMenu(
             expanded = expanded,

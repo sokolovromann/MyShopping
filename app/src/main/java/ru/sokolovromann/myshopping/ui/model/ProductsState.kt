@@ -38,6 +38,9 @@ class ProductsState {
     var reminderText: UiString by mutableStateOf(UiString.FromString(""))
         private set
 
+    var budgetText: UiString by mutableStateOf(UiString.FromString(""))
+        private set
+
     var shoppingListPinnedValue: SelectedValue<Boolean> by mutableStateOf(SelectedValue(false))
         private set
 
@@ -126,6 +129,7 @@ class ProductsState {
         notFoundText = toNotFoundText(shopping.location)
         nameText = shopping.name.toUiString()
         reminderText = shopping.reminder?.toCalendar()?.getDisplayDateAndTime() ?: UiString.FromString("")
+        budgetText = toShoppingBudget(shopping.budget, shopping.budgetProducts)
         shoppingListPinnedValue = UiShoppingListsMapper.toShoppingListPinned(shopping.pinned)
         locationValue = UiShoppingListsMapper.toLocationValue(shopping.location)
         completed = shoppingListWithConfig.isCompleted()
@@ -293,6 +297,18 @@ class ProductsState {
         return selectedUids?.count() == 1 && selectedUids?.contains(uid) == true
     }
 
+    fun isOverBudget(): Boolean {
+        val budgetProducts = shoppingListWithConfig.getShopping().budgetProducts
+        val budget = shoppingListWithConfig.getShopping().budget
+        return if (budget.isEmpty()) {
+            false
+        } else {
+            val total = shoppingListWithConfig.calculateTotalByDisplayTotal(budgetProducts)
+            val totalValue = total.getFormattedValueWithoutSeparators().toFloat()
+            totalValue > budget.getFormattedValueWithoutSeparators().toFloat()
+        }
+    }
+
     private fun toNotFoundText(location: ShoppingLocation): UiString {
         return if (displaySearch) {
             UiString.FromResources(R.string.products_text_searchNotFound)
@@ -434,5 +450,13 @@ class ProductsState {
                 SortBy.TOTAL -> UiString.FromResources(R.string.products_action_sortByTotal)
             }
         )
+    }
+
+    private fun toShoppingBudget(budget: Money, budgetProducts: DisplayTotal): UiString {
+        return if (budget.isEmpty() || shoppingListWithConfig.getUserPreferences().displayTotal != budgetProducts) {
+            UiString.FromString("")
+        } else {
+            budget.getDisplayValue().toUiString()
+        }
     }
 }

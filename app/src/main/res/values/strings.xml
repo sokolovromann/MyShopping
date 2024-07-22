@@ -117,6 +117,7 @@
     <string name="all_text_activeTotal">Active: %s</string>
     <string name="all_text_allTotal">All: %s</string>
     <string name="all_text_completedTotal">Completed: %s</string>
+    <string name="all_text_of">Of</string>
     <string name="all_text_otherList">Other</string>
     <string name="all_text_pinnedList">Pinned</string>
     <string name="all_text_productsNotFound">Shopping list is empty</string>
@@ -334,6 +335,7 @@
     <string name="products_text_archiveProductsNotFound">@string/all_text_productsNotFound</string>
     <string name="products_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="products_text_hiddenProducts">You have hidden products</string>
+    <string name="products_text_of">@string/all_text_of</string>
     <string name="products_text_otherProducts">@string/all_text_otherList</string>
     <string name="products_text_pinnedProducts">@string/all_text_pinnedList</string>
     <string name="products_text_purchasesProductsNotFound">Tap \"+\" to add new product</string>
