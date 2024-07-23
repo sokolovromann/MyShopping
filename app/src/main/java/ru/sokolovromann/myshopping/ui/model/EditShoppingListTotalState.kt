@@ -101,20 +101,26 @@ class EditShoppingListTotalState {
     }
 
     fun getCurrentShopping(): Shopping {
-        val total = shoppingListWithConfig.getShopping().total.copy(
+        val oldShopping = shoppingListWithConfig.getShopping()
+
+        val total = oldShopping.total.copy(
             value = totalValue.toFloatOrZero()
         )
-        val discount = shoppingListWithConfig.getShopping().discount.copy(
+        val discount = oldShopping.discount.copy(
             value = discountValue.toFloatOrZero(),
             asPercent = discountAsPercentValue.selected
         )
+        val totalsNotEquals = oldShopping.total.getFormattedValueWithoutSeparators().toFloat() != total.getFormattedValueWithoutSeparators().toFloat()
+        val discountsNotEquals = oldShopping.discount.getFormattedValueWithoutSeparators().toFloat() != discount.getFormattedValueWithoutSeparators().toFloat()
+        val totalsOrDiscountsNotEquals = totalsNotEquals || discountsNotEquals
+        val totalFormatted = total.isNotEmpty() && totalsOrDiscountsNotEquals
         val budget = Money(
             value = budgetValue.toFloatOrZero(),
             asPercent = false
         )
-        return shoppingListWithConfig.getShopping().copy(
+        return oldShopping.copy(
             total = total,
-            totalFormatted = total.isNotEmpty(),
+            totalFormatted = totalFormatted,
             discount = discount,
             discountProducts = DisplayTotal.ALL,
             budget = budget,
