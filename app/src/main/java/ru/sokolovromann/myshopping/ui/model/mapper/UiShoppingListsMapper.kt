@@ -343,14 +343,26 @@ object UiShoppingListsMapper {
             products.toList()
         }
 
-        val totalText: UiString = if (shoppingList.shopping.location == ShoppingLocation.TRASH) {
+        val totalValue = toTotalValue(
+            total = shoppingList.shopping.total,
+            totalFormatted = shoppingList.shopping.totalFormatted,
+            userPreferences = userPreferences
+        )
+        val budget = shoppingList.shopping.budget
+        val budgetText: UiString = if (totalValue == null || budget.isEmpty() || userPreferences.displayTotal != shoppingList.shopping.budgetProducts) {
             UiString.FromString("")
         } else {
-            toTotalValue(
-                total = shoppingList.shopping.total,
-                totalFormatted = shoppingList.shopping.totalFormatted,
-                userPreferences = userPreferences
-            )?.text ?: UiString.FromString("")
+            UiString.FromResourcesWithUiString(
+                R.string.shoppingLists_text_of,
+                budget.getDisplayValue().toUiString(),
+                " ".toUiString(),
+                true
+            )
+        }
+        val totalText: UiString = if (totalValue == null || shoppingList.shopping.location == ShoppingLocation.TRASH) {
+            UiString.FromString("")
+        } else {
+            UiString.FromUiStrings(arrayOf(totalValue.text, budgetText), " ".toUiString())
         }
 
         val reminderText: UiString = if (shoppingList.shopping.reminder == null) {

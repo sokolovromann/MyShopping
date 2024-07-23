@@ -611,6 +611,7 @@
     <string name="shoppingLists_text_hiddenShoppingLists">Vous avez des achats cachés</string>
     <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Liste sans titre</string>
+    <string name="shoppingLists_text_of">@string/all_text_of</string>
     <string name="shoppingLists_text_otherShoppingLists">@string/all_text_otherList</string>
     <string name="shoppingLists_text_pinnedShoppingLists">@string/all_text_pinnedList</string>
     <string name="shoppingLists_text_productsNotFound">@string/all_text_productsNotFound</string>
