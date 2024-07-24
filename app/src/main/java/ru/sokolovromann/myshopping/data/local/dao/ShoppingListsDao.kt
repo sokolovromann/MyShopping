@@ -71,8 +71,11 @@ interface ShoppingListsDao {
     @Query("UPDATE shoppings SET reminder = :reminder, last_modified = :lastModified WHERE uid = :uid")
     fun updateReminder(uid: String, reminder: Long, lastModified: Long)
 
-    @Query("UPDATE shoppings SET total = :total, total_formatted = 1, discount = :discount, discount_as_percent = :discountAsPercent, budget = :budget, budget_products = :budgetProducts, last_modified = :lastModified WHERE uid = :uid")
-    fun updateTotal(uid: String, total: Float, discount: Float, discountAsPercent: Boolean, budget: Float, budgetProducts: String, lastModified: Long)
+    @Query("UPDATE shoppings SET total = :total, total_formatted = 1, discount = :discount, discount_as_percent = :discountAsPercent, last_modified = :lastModified WHERE uid = :uid")
+    fun updateTotal(uid: String, total: Float, discount: Float, discountAsPercent: Boolean, lastModified: Long)
+
+    @Query("UPDATE shoppings SET budget = :budget, budget_products = :budgetProducts, last_modified = :lastModified WHERE uid = :uid")
+    fun updateBudget(uid: String, budget: Float, budgetProducts: String, lastModified: Long)
 
     @Query("UPDATE shoppings SET pinned = 1 WHERE uid IN (:uids)")
     fun pinShoppings(uids: List<String>)

@@ -64,13 +64,17 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
         val shopping = editShoppingListTotalState.getCurrentShopping()
 
+        shoppingListsRepository.saveShoppingListBudget(
+            shoppingUid = shopping.uid,
+            budget = shopping.budget,
+            budgetProducts = shopping.budgetProducts
+        )
+
         if (shopping.totalFormatted) {
             shoppingListsRepository.saveShoppingListTotal(
                 shoppingUid = shopping.uid,
                 total = shopping.total,
-                discount = shopping.discount,
-                budget = shopping.budget,
-                budgetProducts = shopping.budgetProducts
+                discount = shopping.discount
             )
         } else {
             shoppingListsRepository.deleteShoppingListTotal(shopping.uid)

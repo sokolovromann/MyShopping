@@ -260,19 +260,19 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         shoppingUid: String,
         total: Money,
         discount: Money,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        shoppingListsDao.updateTotal(shoppingUid, total.value, discount.value, discount.asPercent, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveShoppingListBudget(
+        shoppingUid: String,
         budget: Money,
         budgetProducts: DisplayTotal,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.updateTotal(
-            shoppingUid,
-            total.value,
-            discount.value,
-            discount.asPercent,
-            budget.value,
-            budgetProducts.name,
-            lastModified.millis
-        )
+        shoppingListsDao.updateBudget(shoppingUid, budget.value, budgetProducts.name, lastModified.millis)
         return@withContext Result.success(Unit)
     }
 
