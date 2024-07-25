@@ -283,6 +283,7 @@ fun ProductsScreen(
                                     onInvertDisplayLongTotal = { viewModel.onEvent(ProductsEvent.OnInvertDisplayLongTotal) },
                                     onEditTotal = { viewModel.onEvent(ProductsEvent.OnClickEditTotal) },
                                     onDeleteTotal = { viewModel.onEvent(ProductsEvent.OnClickDeleteTotal) },
+                                    selectedUidsIsEmpty = state.selectedUids == null,
                                     budgetText = state.budgetText,
                                     isOverBudget = state.isOverBudget()
                                 )
@@ -634,6 +635,7 @@ private fun ProductsTotalContent(
     onInvertDisplayLongTotal: () -> Unit,
     onEditTotal: () -> Unit,
     onDeleteTotal: () -> Unit,
+    selectedUidsIsEmpty: Boolean,
     budgetText: UiString,
     isOverBudget: Boolean
 ) {
@@ -645,7 +647,7 @@ private fun ProductsTotalContent(
             text = buildAnnotatedString {
                 append(totalText.asCompose())
 
-                if (budgetText.isNotEmpty()) {
+                if (selectedUidsIsEmpty && budgetText.isNotEmpty()) {
                     withStyle(
                         style = SpanStyle(
                             fontStyle = MaterialTheme.typography.body2.fontStyle,
@@ -660,7 +662,7 @@ private fun ProductsTotalContent(
                     )
                 }
             },
-            color = if (isOverBudget) MaterialTheme.colors.error else Color.Unspecified
+            color = if (selectedUidsIsEmpty && isOverBudget) MaterialTheme.colors.error else Color.Unspecified
         )
 
         AppDropdownMenu(

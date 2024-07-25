@@ -357,7 +357,7 @@ class ProductsState {
 
     private fun toTotalSelectedValueByProductUids(uids: List<String>): SelectedValue<DisplayTotal>? {
         val userPreferences = shoppingListWithConfig.getUserPreferences()
-        if (!userPreferences.displayMoney || shoppingListWithConfig.getShopping().totalFormatted) {
+        if (!userPreferences.displayMoney) {
             return null
         }
 
