@@ -401,7 +401,7 @@
     <string name="editShoppingListTotal_header_editShoppingListTotal">@string/all_header_editDataScreen</string>
     <string name="editShoppingListTotal_label_budget">Budget</string>
     <string name="editShoppingListTotal_label_discount">@string/all_label_discount</string>
-    <string name="editShoppingListTotal_label_total">Total (sans rabais)</string>
+    <string name="editShoppingListTotal_label_total">Total</string>
 
     <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
     <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>

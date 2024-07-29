@@ -6,13 +6,15 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -88,131 +90,134 @@ fun EditShoppingListTotalScreen(
             )
         }
     ) {
-        OutlinedAppTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester),
-            value = state.totalValue,
-            onValueChange = {
-                val event = EditShoppingListTotalEvent.OnTotalChanged(it)
-                viewModel.onEvent(event)
-            },
-            label = { Text(text = stringResource(R.string.editShoppingListTotal_label_total)) },
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
-                keyboardType = KeyboardType.Decimal,
-                imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Next) },
-            )
-        )
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(EditShoppingListTotalPaddings)
-        ) {
+        val scrollState = rememberScrollState()
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
             OutlinedAppTextField(
-                modifier = Modifier.weight(0.6f),
-                value = state.discountValue,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                value = state.totalValue,
                 onValueChange = {
-                    val event = EditShoppingListTotalEvent.OnDiscountChanged(it)
+                    val event = EditShoppingListTotalEvent.OnTotalChanged(it)
                     viewModel.onEvent(event)
                 },
-                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_discount)) },
+                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_total)) },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     keyboardType = KeyboardType.Decimal,
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
                 )
             )
 
-            Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
-
-            EditShoppingListSelectButton(
-                modifier = Modifier.weight(0.4f),
-                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(true)) },
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(EditShoppingListTotalPaddings)
             ) {
-                Text(
-                    text = state.discountAsPercentValue.text.asCompose(),
-                    color = MaterialTheme.colors.onSurface
+                OutlinedAppTextField(
+                    modifier = Modifier.weight(0.5f),
+                    value = state.discountValue,
+                    onValueChange = {
+                        val event = EditShoppingListTotalEvent.OnDiscountChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.editShoppingListTotal_label_discount)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Decimal,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                    )
                 )
 
-                AppDropdownMenu(
-                    expanded = state.expandedDiscountAsPercent,
-                    onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(false)) }
+                Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
+
+                EditShoppingListSelectButton(
+                    modifier = Modifier.weight(0.5f),
+                    onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(true)) },
                 ) {
-                    AppDropdownMenuItem(
-                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(true)) },
-                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsPercents)) },
-                        right = { CheckmarkAppCheckbox(checked = state.discountAsPercentValue.selected) }
+                    Text(
+                        text = state.discountAsPercentValue.text.asCompose(),
+                        color = MaterialTheme.colors.onSurface
                     )
-                    AppDropdownMenuItem(
-                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(false)) },
-                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsMoney)) },
-                        right = { CheckmarkAppCheckbox(checked = !state.discountAsPercentValue.selected) }
-                    )
+
+                    AppDropdownMenu(
+                        expanded = state.expandedDiscountAsPercent,
+                        onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(false)) }
+                    ) {
+                        AppDropdownMenuItem(
+                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(true)) },
+                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsPercents)) },
+                            right = { CheckmarkAppCheckbox(checked = state.discountAsPercentValue.selected) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(false)) },
+                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsMoney)) },
+                            right = { CheckmarkAppCheckbox(checked = !state.discountAsPercentValue.selected) }
+                        )
+                    }
                 }
             }
-        }
 
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(EditShoppingListTotalPaddings)
-        ) {
-            OutlinedAppTextField(
-                modifier = Modifier.weight(0.6f),
-                value = state.budgetValue,
-                onValueChange = {
-                    val event = EditShoppingListTotalEvent.OnBudgetChanged(it)
-                    viewModel.onEvent(event)
-                },
-                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_budget)) },
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Sentences,
-                    keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
-                )
-            )
-
-            Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
-
-            EditShoppingListSelectButton(
-                modifier = Modifier.weight(0.4f),
-                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(true)) },
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(EditShoppingListTotalPaddings)
             ) {
-                Text(
-                    text = state.budgetProducts.text.asCompose(),
-                    color = MaterialTheme.colors.onSurface
+                OutlinedAppTextField(
+                    modifier = Modifier.weight(0.5f),
+                    value = state.budgetValue,
+                    onValueChange = {
+                        val event = EditShoppingListTotalEvent.OnBudgetChanged(it)
+                        viewModel.onEvent(event)
+                    },
+                    label = { Text(text = stringResource(R.string.editShoppingListTotal_label_budget)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        keyboardType = KeyboardType.Decimal,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
+                    )
                 )
 
-                AppDropdownMenu(
-                    expanded = state.expandedBudgetProducts,
-                    onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(false)) }
+                Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
+
+                EditShoppingListSelectButton(
+                    modifier = Modifier.weight(0.5f),
+                    onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(true)) },
                 ) {
-                    AppDropdownMenuItem(
-                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ALL)) },
-                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectAllProducts)) },
-                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ALL) }
+                    Text(
+                        text = state.budgetProducts.text.asCompose(),
+                        color = MaterialTheme.colors.onSurface
                     )
-                    AppDropdownMenuItem(
-                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.COMPLETED)) },
-                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectCompletedProducts)) },
-                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.COMPLETED) }
-                    )
-                    AppDropdownMenuItem(
-                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ACTIVE)) },
-                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectActiveProducts)) },
-                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ACTIVE) }
-                    )
+
+                    AppDropdownMenu(
+                        expanded = state.expandedBudgetProducts,
+                        onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(false)) }
+                    ) {
+                        AppDropdownMenuItem(
+                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ALL)) },
+                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectAllProducts)) },
+                            right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ALL) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.COMPLETED)) },
+                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectCompletedProducts)) },
+                            right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.COMPLETED) }
+                        )
+                        AppDropdownMenuItem(
+                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ACTIVE)) },
+                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectActiveProducts)) },
+                            right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ACTIVE) }
+                        )
+                    }
                 }
             }
         }
@@ -227,7 +232,7 @@ private fun EditShoppingListSelectButton(
 ) {
     OutlinedButton(
         modifier = Modifier
-            .height(EditShoppingListTotalButtonHeight)
+            .defaultMinSize(minHeight = EditShoppingListTotalButtonHeight)
             .padding(EditShoppingListTotalButtonPaddings)
             .then(modifier),
         onClick = onClick,
