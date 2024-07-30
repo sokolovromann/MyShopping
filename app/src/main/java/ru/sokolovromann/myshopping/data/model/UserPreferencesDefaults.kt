@@ -8,7 +8,7 @@ object UserPreferencesDefaults {
     const val MULTI_COLUMNS = false
     const val STRIKETHROUGH_COMPLETED_PRODUCTS = false
     const val SORT_FORMATTED = false
-    const val DISPLAY_OTHER_FIELDS = true
+    const val DISPLAY_OTHER_FIELDS = false
     const val DISPLAY_LONG_TOTAL = false
     const val COLORED_CHECKBOX = true
     const val PURCHASES_SEPARATOR = " • "
