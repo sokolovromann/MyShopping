@@ -233,7 +233,7 @@ object ShoppingListsMapper {
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
             ),
-            budgetProducts = DisplayTotal.valueOf(entity.budgetProducts),
+            budgetProducts = DisplayTotal.valueOfOrDefault(entity.budgetProducts),
             location = ShoppingLocation.create(entity.archived, entity.deleted),
             sort = Sort(
                 sortBy = SortBy.valueOfOrDefault(entity.sortBy),
