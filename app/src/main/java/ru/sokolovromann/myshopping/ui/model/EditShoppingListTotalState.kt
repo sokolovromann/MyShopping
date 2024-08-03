@@ -113,7 +113,8 @@ class EditShoppingListTotalState {
         val totalsNotEquals = oldShopping.total.getFormattedValueWithoutSeparators().toFloat() != total.getFormattedValueWithoutSeparators().toFloat()
         val discountsNotEquals = oldShopping.discount.getFormattedValueWithoutSeparators().toFloat() != discount.getFormattedValueWithoutSeparators().toFloat()
         val totalsOrDiscountsNotEquals = totalsNotEquals || discountsNotEquals
-        val totalFormatted = total.isNotEmpty() && totalsOrDiscountsNotEquals
+        val oldTotalOrCurrentTotalFormatted = totalsOrDiscountsNotEquals || oldShopping.totalFormatted
+        val totalFormatted = total.isNotEmpty() && oldTotalOrCurrentTotalFormatted
         val budget = Money(
             value = budgetValue.toFloatOrZero(),
             asPercent = false
