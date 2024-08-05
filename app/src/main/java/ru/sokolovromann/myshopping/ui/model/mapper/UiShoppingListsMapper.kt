@@ -349,7 +349,12 @@ object UiShoppingListsMapper {
             userPreferences = userPreferences
         )
         val budget = shoppingList.shopping.budget
-        val budgetText: UiString = if (totalValue == null || budget.isEmpty() || userPreferences.displayTotal != shoppingList.shopping.budgetProducts) {
+        val budgetText: UiString = if (
+            totalValue == null ||
+            budget.isEmpty() ||
+            userPreferences.displayTotal != shoppingList.shopping.budgetProducts ||
+            shoppingList.shopping.totalFormatted
+        ) {
             UiString.FromString("")
         } else {
             UiString.FromResourcesWithUiString(

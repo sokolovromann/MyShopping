@@ -305,7 +305,9 @@ class ProductsState {
         } else {
             val total = shoppingListWithConfig.calculateTotalByDisplayTotal(budgetProducts)
             val totalValue = total.getFormattedValueWithoutSeparators().toFloat()
-            totalValue > budget.getFormattedValueWithoutSeparators().toFloat()
+            totalValue > budget.getFormattedValueWithoutSeparators().toFloat() &&
+                    shoppingListWithConfig.getUserPreferences().displayTotal == budgetProducts &&
+                    !shoppingListWithConfig.getShopping().totalFormatted
         }
     }
 
@@ -453,7 +455,10 @@ class ProductsState {
     }
 
     private fun toShoppingBudget(budget: Money, budgetProducts: DisplayTotal): UiString {
-        return if (budget.isEmpty() || shoppingListWithConfig.getUserPreferences().displayTotal != budgetProducts) {
+        return if (budget.isEmpty() ||
+            shoppingListWithConfig.getUserPreferences().displayTotal != budgetProducts ||
+            shoppingListWithConfig.getShopping().totalFormatted
+        ) {
             UiString.FromString("")
         } else {
             budget.getDisplayValue().toUiString()
