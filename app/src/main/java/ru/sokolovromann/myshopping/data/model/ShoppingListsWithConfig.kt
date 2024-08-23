@@ -46,7 +46,25 @@ data class ShoppingListsWithConfig(
     fun getTotal(): Money {
         var total = 0f
         shoppingLists.forEach {
-            total += it.shopping.total.value
+            if (it.shopping.totalFormatted) {
+                when (getUserPreferences().displayTotal) {
+                    DisplayTotal.ALL -> {
+                        total += it.shopping.total.value
+                    }
+                    DisplayTotal.COMPLETED -> {
+                        if (it.isCompleted()) {
+                            total += it.shopping.total.value
+                        }
+                    }
+                    DisplayTotal.ACTIVE -> {
+                        if (it.isActive()) {
+                            total += it.shopping.total.value
+                        }
+                    }
+                }
+            } else {
+                total += it.shopping.total.value
+            }
         }
 
         return Money(
