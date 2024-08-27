@@ -386,6 +386,15 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
+    suspend fun completeProducts(
+        shoppingUid: String,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        productsDao.completeProducts(shoppingUid)
+        shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+        return@withContext Result.success(Unit)
+    }
+
     suspend fun completeProduct(
         productUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()
@@ -396,6 +405,15 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             shoppingListsDao.updateLastModified(it, lastModified.millis)
         }
 
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun activeProducts(
+        shoppingUid: String,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        productsDao.activeProducts(shoppingUid)
+        shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
         return@withContext Result.success(Unit)
     }
 

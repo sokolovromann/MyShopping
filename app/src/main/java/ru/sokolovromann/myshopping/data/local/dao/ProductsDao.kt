@@ -37,8 +37,14 @@ interface ProductsDao {
     @Query("UPDATE products SET position = :position WHERE product_uid = :productUid")
     fun updatePosition(productUid: String, position: Int)
 
+    @Query("UPDATE products SET completed = 1 WHERE shopping_uid = :shoppingUid")
+    fun completeProducts(shoppingUid: String)
+
     @Query("UPDATE products SET completed = 1 WHERE product_uid = :productUid")
     fun completeProduct(productUid: String)
+
+    @Query("UPDATE products SET completed = 0 WHERE shopping_uid = :shoppingUid")
+    fun activeProducts(shoppingUid: String)
 
     @Query("UPDATE products SET completed = 0 WHERE product_uid = :productUid")
     fun activeProduct(productUid: String)
