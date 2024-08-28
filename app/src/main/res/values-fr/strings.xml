@@ -56,6 +56,7 @@
     <string name="all_action_displayCompletedTotal">Produits achetés</string>
     <string name="all_action_edit">Modifier</string>
     <string name="all_action_enableMultiColumns">Plusieurs colonnes</string>
+    <string name="all_action_markAs">Marquer comme…</string>
     <string name="all_action_minusOne">- 1</string>
     <string name="all_action_moveTo">Déplacer vers</string>
     <string name="all_action_openPermissions">Autorisations d\'ouverture</string>
@@ -501,6 +502,10 @@
     <string name="products_text_selectedTotal">@string/all_text_selectedTotal</string>
     <string name="products_text_totalFormatted">Édité: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
+
+    <string name="purchases_action_markAs">@string/all_action_markAs</string>
+    <string name="purchases_action_markAsActive">Non acheté</string>
+    <string name="purchases_action_markAsCompleted">Acheté</string>
 
     <string name="settings_action_selectAppAndWidgetNightTheme">Application et widget</string>
     <string name="settings_action_selectAppNightTheme">Uniquement application</string>

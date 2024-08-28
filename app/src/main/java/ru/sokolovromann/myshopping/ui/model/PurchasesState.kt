@@ -90,6 +90,9 @@ class PurchasesState {
     var displaySearch: Boolean by mutableStateOf(false)
         private set
 
+    var expandedMarkAsMenu: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -117,6 +120,7 @@ class PurchasesState {
         expandedItemMoreMenu = false
         sortValue = toSortValue(userPreferences.shoppingsSort)
         sortFormatted = userPreferences.shoppingsSortFormatted
+        expandedMarkAsMenu = false
         waiting = false
     }
 
@@ -238,6 +242,13 @@ class PurchasesState {
             displayCompleted = displayCompleted
         )
         displayHiddenShoppingLists = !display
+    }
+
+    fun onSelectMarkAsMenu(expanded: Boolean) {
+        expandedMarkAsMenu = expanded
+        expandedItemMoreMenu = false
+        expandedPurchasesMenu = false
+        expandedSort = false
     }
 
     fun onWaiting() {

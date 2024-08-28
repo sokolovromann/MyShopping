@@ -56,6 +56,7 @@
     <string name="all_action_displayCompletedTotal">Fertige produkte</string>
     <string name="all_action_edit">Bearbeiten</string>
     <string name="all_action_enableMultiColumns">Multi-columns</string>
+    <string name="all_action_markAs">Markieren als…</string>
     <string name="all_action_minusOne">- 1</string>
     <string name="all_action_moveTo">Ziehen nach…</string>
     <string name="all_action_openPermissions">Öffnen Sie Berechtigungen</string>
@@ -431,6 +432,10 @@
     <string name="products_text_selectedTotal">@string/all_text_selectedTotal</string>
     <string name="products_text_totalFormatted">Bearbeitet: %s</string>
     <string name="products_text_trashProductsNotFound">@string/all_text_productsNotFound</string>
+
+    <string name="purchases_action_markAs">@string/all_action_markAs</string>
+    <string name="purchases_action_markAsActive">Aktive</string>
+    <string name="purchases_action_markAsCompleted">Fertige</string>
 
     <string name="settings_action_selectAppAndWidgetNightTheme">Anwendung und Widget</string>
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>

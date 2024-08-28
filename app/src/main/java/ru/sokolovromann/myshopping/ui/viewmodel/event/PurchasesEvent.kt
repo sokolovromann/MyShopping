@@ -64,4 +64,8 @@ sealed class PurchasesEvent {
     data class OnSelectView(val expanded: Boolean) : PurchasesEvent()
 
     data class OnViewSelected(val multiColumns: Boolean) : PurchasesEvent()
+
+    data class OnMarkAsSelected(val completed: Boolean) : PurchasesEvent()
+
+    data class OnSelectMarkAs(val expanded: Boolean) : PurchasesEvent()
 }

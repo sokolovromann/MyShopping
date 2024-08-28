@@ -89,6 +89,10 @@ class PurchasesViewModel @Inject constructor(
             is PurchasesEvent.OnSelectView -> onSelectView(event)
 
             is PurchasesEvent.OnViewSelected -> onViewSelected(event)
+
+            is PurchasesEvent.OnMarkAsSelected -> onMarkAsSelected(event)
+
+            is PurchasesEvent.OnSelectMarkAs -> onSelectMarkAs(event)
         }
     }
 
@@ -275,5 +279,21 @@ class PurchasesViewModel @Inject constructor(
             appConfigRepository.invertShoppingListsMultiColumns()
         }
         purchasesState.onSelectView(expanded = false)
+    }
+
+    private fun onMarkAsSelected(
+        event: PurchasesEvent.OnMarkAsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        purchasesState.selectedUids?.forEach { shoppingUid ->
+            if (event.completed) {
+                shoppingListsRepository.completeProducts(shoppingUid)
+            } else {
+                shoppingListsRepository.activeProducts(shoppingUid)
+            }
+        }
+    }
+
+    private fun onSelectMarkAs(event: PurchasesEvent.OnSelectMarkAs) {
+        purchasesState.onSelectMarkAsMenu(event.expanded)
     }
 }

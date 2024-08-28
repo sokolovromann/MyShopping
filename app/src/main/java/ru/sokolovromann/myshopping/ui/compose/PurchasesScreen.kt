@@ -155,8 +155,27 @@ fun PurchasesScreen(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_copyShoppingLists)) }
                                 )
                                 AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnSelectMarkAs(true)) },
+                                    text = { Text(text = stringResource(id = R.string.purchases_action_markAs)) },
+                                    right = { MoreMenuIcon() }
+                                )
+                                AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(true)) },
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_selectAllShoppingLists)) }
+                                )
+                            }
+                            AppDropdownMenu(
+                                expanded = state.expandedMarkAsMenu,
+                                onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnSelectMarkAs(false)) },
+                                header = { Text(text = stringResource(id = R.string.purchases_action_markAs)) }
+                            ) {
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnMarkAsSelected(true)) },
+                                    text = { Text(text = stringResource(id = R.string.purchases_action_markAsCompleted)) }
+                                )
+                                AppDropdownMenuItem(
+                                    onClick = { viewModel.onEvent(PurchasesEvent.OnMarkAsSelected(false)) },
+                                    text = { Text(text = stringResource(id = R.string.purchases_action_markAsActive)) }
                                 )
                             }
                         }
