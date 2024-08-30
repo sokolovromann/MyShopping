@@ -456,6 +456,9 @@
     <string name="products_action_displayLongTotal">Long</string>
     <string name="products_action_editShoppingListTotal">@string/all_action_edit</string>
     <string name="products_action_enableProductsMultiColumns">@string/all_action_enableMultiColumns</string>
+    <string name="products_action_markAs">@string/all_action_markAs</string>
+    <string name="products_action_markAsActive">Non acheté</string>
+    <string name="products_action_markAsCompleted">Acheté</string>
     <string name="products_action_moveProductsToShoppingList">@string/all_action_moveTo</string>
     <string name="products_action_moveShoppingListToArchive">@string/all_action_archive</string>
     <string name="products_action_moveShoppingListToPurchases">@string/all_action_unarchive</string>

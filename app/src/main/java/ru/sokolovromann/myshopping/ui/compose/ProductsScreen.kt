@@ -320,6 +320,11 @@ fun ProductsScreen(
                                         right = { MoreMenuIcon() },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnSelectSort(true)) }
                                     )
+                                    AppDropdownMenuItem(
+                                        text = { Text(text = stringResource(R.string.products_action_markAs)) },
+                                        right = { MoreMenuIcon() },
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSelectMarkAs(true)) }
+                                    )
                                     if (state.displayMoney) {
                                         AppDropdownMenuItem(
                                             text = { Text(text = stringResource(R.string.products_action_calculateChange)) },
@@ -453,6 +458,21 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnInvertSortFormatted) },
                                         text = { Text(text = stringResource(R.string.products_action_automaticSorting)) },
                                         right = { AppSwitch(checked = state.sortFormatted) }
+                                    )
+                                }
+
+                                AppDropdownMenu(
+                                    expanded = state.expandedMarkAsMenu,
+                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.OnSelectMarkAs(false)) },
+                                    header = { Text(text = stringResource(id = R.string.products_action_markAs)) }
+                                ) {
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnMarkAsSelected(true)) },
+                                        text = { Text(text = stringResource(R.string.products_action_markAsCompleted)) },
+                                    )
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnMarkAsSelected(false)) },
+                                        text = { Text(text = stringResource(R.string.products_action_markAsActive)) },
                                     )
                                 }
                             }

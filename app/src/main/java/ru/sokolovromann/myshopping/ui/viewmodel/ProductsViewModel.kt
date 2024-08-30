@@ -112,6 +112,10 @@ class ProductsViewModel @Inject constructor(
             is ProductsEvent.OnSelectView -> onSelectView(event)
 
             is ProductsEvent.OnViewSelected -> onViewSelected(event)
+
+            is ProductsEvent.OnMarkAsSelected -> onMarkAsSelected(event)
+
+            is ProductsEvent.OnSelectMarkAs -> onSelectMarkAs(event)
         }
     }
 
@@ -400,6 +404,20 @@ class ProductsViewModel @Inject constructor(
             appConfigRepository.invertProductsMultiColumns()
         }
         productsState.onSelectView(expanded = false)
+    }
+
+    private fun onMarkAsSelected(
+        event: ProductsEvent.OnMarkAsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        if (event.completed) {
+            shoppingListsRepository.completeProducts(shoppingUid)
+        } else {
+            shoppingListsRepository.activeProducts(shoppingUid)
+        }
+    }
+
+    private fun onSelectMarkAs(event: ProductsEvent.OnSelectMarkAs) {
+        productsState.onSelectMarkAsMenu(event.expanded)
     }
 
     private fun uidsToString(uids: List<String>): String {

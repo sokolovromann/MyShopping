@@ -80,4 +80,8 @@ sealed class ProductsEvent {
     data class OnSelectView(val expanded: Boolean) : ProductsEvent()
 
     data class OnViewSelected(val multiColumns: Boolean) : ProductsEvent()
+
+    data class OnMarkAsSelected(val completed: Boolean) : ProductsEvent()
+
+    data class OnSelectMarkAs(val expanded: Boolean) : ProductsEvent()
 }
