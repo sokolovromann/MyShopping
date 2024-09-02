@@ -69,7 +69,9 @@ class ProductsViewModel @Inject constructor(
 
             ProductsEvent.OnClickDeleteProducts -> onClickDeleteProducts()
 
-            ProductsEvent.OnClickShareProducts -> onClickShareProducts()
+            is ProductsEvent.OnSelectShareProducts -> onSelectShareProducts(event)
+
+            is ProductsEvent.OnShareProductsSelected -> onShareProductsSelected(event)
 
             ProductsEvent.OnClickCalculateChange -> onClickCalculateChange()
 
@@ -242,8 +244,14 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickShareProducts() = viewModelScope.launch(AppDispatchers.Main) {
-        val shareText = productsState.getShareText()
+    private fun onSelectShareProducts(event: ProductsEvent.OnSelectShareProducts) {
+        productsState.onSelectShareProducts(event.expanded)
+    }
+
+    private fun onShareProductsSelected(
+        event: ProductsEvent.OnShareProductsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        val shareText = productsState.getShareText(event.displayTotal)
         _screenEventFlow.emit(ProductsScreenEvent.OnShareProducts(shareText))
         productsState.onShowProductsMenu(expanded = false)
     }

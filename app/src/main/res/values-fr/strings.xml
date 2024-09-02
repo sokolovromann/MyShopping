@@ -468,6 +468,9 @@
     <string name="products_action_selectAllProducts">@string/all_action_selectAll</string>
     <string name="products_action_selectGridView">@string/all_action_selectGridView</string>
     <string name="products_action_selectListView">@string/all_action_selectListView</string>
+    <string name="products_action_shareActiveProducts">@string/all_action_displayActiveTotal</string>
+    <string name="products_action_shareAllProducts">@string/all_action_displayAllTotal</string>
+    <string name="products_action_shareCompletedProducts">@string/all_action_displayCompletedTotal</string>
     <string name="products_action_shareProducts">@string/all_action_share</string>
     <string name="products_action_showShoppingListMenu">Liste de courses</string>
     <string name="products_action_sort">@string/all_action_sort</string>

@@ -83,7 +83,10 @@ object UiShoppingListsMapper {
         )
     }
 
-    fun toShoppingListString(shoppingListWithConfig: ShoppingListWithConfig): String {
+    fun toShoppingListString(
+        shoppingListWithConfig: ShoppingListWithConfig,
+        displayTotal: DisplayTotal
+    ): String {
         val shopping = shoppingListWithConfig.getShopping()
         val userPreferences = shoppingListWithConfig.getUserPreferences()
         val displayMoney = userPreferences.displayMoney
@@ -98,32 +101,84 @@ object UiShoppingListsMapper {
         }
 
         shoppingListWithConfig.getSortedProducts().forEach {
-            if (!it.completed) {
-                success.append("- ")
+            when (displayTotal) {
+                DisplayTotal.ALL -> {
+                    if (it.completed) {
+                        success.append("+ ")
+                    } else {
+                        success.append("- ")
+                    }
 
-                val title = getProductName(
-                    product = it,
-                    userPreferences = userPreferences
-                )
-                success.append(title)
+                    val title = getProductName(
+                        product = it,
+                        userPreferences = userPreferences
+                    )
+                    success.append(title)
 
-                val body = getProductBody(
-                    product = it,
-                    userPreferences = userPreferences
-                )
-                if (body.isNotEmpty()) {
-                    success.append(userPreferences.purchasesSeparator)
-                    success.append(body)
+                    val body = getProductBody(
+                        product = it,
+                        userPreferences = userPreferences
+                    )
+                    if (body.isNotEmpty()) {
+                        success.append(userPreferences.purchasesSeparator)
+                        success.append(body)
+                    }
+
+                    success.append("\n")
                 }
 
-                success.append("\n")
+                DisplayTotal.COMPLETED -> {
+                    if (it.completed) {
+                        success.append("+ ")
+
+                        val title = getProductName(
+                            product = it,
+                            userPreferences = userPreferences
+                        )
+                        success.append(title)
+
+                        val body = getProductBody(
+                            product = it,
+                            userPreferences = userPreferences
+                        )
+                        if (body.isNotEmpty()) {
+                            success.append(userPreferences.purchasesSeparator)
+                            success.append(body)
+                        }
+
+                        success.append("\n")
+                    }
+                }
+
+                DisplayTotal.ACTIVE -> {
+                    if (!it.completed) {
+                        success.append("- ")
+
+                        val title = getProductName(
+                            product = it,
+                            userPreferences = userPreferences
+                        )
+                        success.append(title)
+
+                        val body = getProductBody(
+                            product = it,
+                            userPreferences = userPreferences
+                        )
+                        if (body.isNotEmpty()) {
+                            success.append(userPreferences.purchasesSeparator)
+                            success.append(body)
+                        }
+
+                        success.append("\n")
+                    }
+                }
             }
         }
 
         val total = if (shopping.totalFormatted) {
             shopping.total
         } else {
-            shoppingListWithConfig.calculateTotalByDisplayTotal(DisplayTotal.ACTIVE)
+            shoppingListWithConfig.calculateTotalByDisplayTotal(displayTotal)
         }
         if (displayMoney && total.isNotEmpty()) {
             success.append("\n= ")

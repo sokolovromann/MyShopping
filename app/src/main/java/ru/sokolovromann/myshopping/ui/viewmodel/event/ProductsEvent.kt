@@ -37,7 +37,9 @@ sealed class ProductsEvent {
 
     object OnClickDeleteProducts : ProductsEvent()
 
-    object OnClickShareProducts : ProductsEvent()
+    data class OnSelectShareProducts(val expanded: Boolean) : ProductsEvent()
+
+    data class OnShareProductsSelected(val displayTotal: DisplayTotal) : ProductsEvent()
 
     object OnClickCalculateChange : ProductsEvent()
 

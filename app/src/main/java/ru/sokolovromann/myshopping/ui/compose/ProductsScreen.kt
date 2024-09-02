@@ -336,8 +336,9 @@ fun ProductsScreen(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) }
                                     )
                                     AppDropdownMenuItem(
-                                        onClick = { viewModel.onEvent(ProductsEvent.OnClickShareProducts) },
-                                        text = { Text(text = stringResource(R.string.products_action_shareProducts)) }
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnSelectShareProducts(true)) },
+                                        text = { Text(text = stringResource(R.string.products_action_shareProducts)) },
+                                        right = { MoreMenuIcon() }
                                     )
                                 }
 
@@ -473,6 +474,25 @@ fun ProductsScreen(
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnMarkAsSelected(false)) },
                                         text = { Text(text = stringResource(R.string.products_action_markAsActive)) },
+                                    )
+                                }
+
+                                AppDropdownMenu(
+                                    expanded = state.expandedShareProducts,
+                                    onDismissRequest = { viewModel.onEvent(ProductsEvent.OnSelectShareProducts(false)) },
+                                    header = { Text(text = stringResource(id = R.string.products_action_shareProducts)) }
+                                ) {
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnShareProductsSelected(DisplayTotal.ALL)) },
+                                        text = { Text(text = stringResource(R.string.products_action_shareAllProducts)) },
+                                    )
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnShareProductsSelected(DisplayTotal.COMPLETED)) },
+                                        text = { Text(text = stringResource(R.string.products_action_shareCompletedProducts)) },
+                                    )
+                                    AppDropdownMenuItem(
+                                        onClick = { viewModel.onEvent(ProductsEvent.OnShareProductsSelected(DisplayTotal.ACTIVE)) },
+                                        text = { Text(text = stringResource(R.string.products_action_shareActiveProducts)) },
                                     )
                                 }
                             }

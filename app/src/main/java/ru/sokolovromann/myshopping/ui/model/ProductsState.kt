@@ -119,6 +119,9 @@ class ProductsState {
     var expandedMarkAsMenu: Boolean by mutableStateOf(false)
         private set
 
+    var expandedShareProducts: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -157,6 +160,7 @@ class ProductsState {
         sortValue = toSortValue(shopping.sort)
         sortFormatted = shopping.sortFormatted
         expandedMarkAsMenu = false
+        expandedShareProducts = false
         waiting = false
     }
 
@@ -273,12 +277,20 @@ class ProductsState {
         expandedSort = false
     }
 
+    fun onSelectShareProducts(expanded: Boolean) {
+        expandedShareProducts = expanded
+        expandedMarkAsMenu = false
+        expandedItemMoreMenu = false
+        expandedProductsMenu = false
+        expandedSort = false
+    }
+
     fun onWaiting() {
         waiting = true
     }
 
-    fun getShareText(): String {
-        return UiShoppingListsMapper.toShoppingListString(shoppingListWithConfig)
+    fun getShareText(displayTotal: DisplayTotal): String {
+        return UiShoppingListsMapper.toShoppingListString(shoppingListWithConfig, displayTotal)
     }
 
     fun isEditProductAfterCompleted(): Boolean {
