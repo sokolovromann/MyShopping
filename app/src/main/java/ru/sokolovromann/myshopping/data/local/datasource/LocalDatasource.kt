@@ -4,7 +4,6 @@ import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
 import ru.sokolovromann.myshopping.data.local.dao.AutocompletesDao
 import ru.sokolovromann.myshopping.data.local.dao.BackupDao
 import ru.sokolovromann.myshopping.data.local.dao.CodeVersion14Dao
-import ru.sokolovromann.myshopping.data.local.dao.FilesDao
 import ru.sokolovromann.myshopping.data.local.dao.ProductsDao
 import ru.sokolovromann.myshopping.data.local.dao.ResourcesDao
 import ru.sokolovromann.myshopping.data.local.dao.ShoppingListsDao
@@ -38,10 +37,6 @@ class LocalDatasource @Inject constructor(
 
     fun getResourcesDao(): ResourcesDao {
         return ResourcesDao(appContent)
-    }
-
-    fun getFilesDao(): FilesDao {
-        return FilesDao(appContent)
     }
 
     fun getBackupDao(): BackupDao {

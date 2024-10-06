@@ -28,7 +28,6 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
     private val productsDao = localDatasource.getProductsDao()
     private val autocompletesDao = localDatasource.getAutocompletesDao()
     private val appConfigDao = localDatasource.getAppConfigDao()
-    private val filesDao = localDatasource.getFilesDao()
     private val backupDao = localDatasource.getBackupDao()
 
     private val dispatcher = AppDispatchers.IO
