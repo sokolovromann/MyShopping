@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
@@ -221,7 +220,6 @@ fun AutocompletesScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AutocompletesGrid(
     modifier: Modifier = Modifier,
