@@ -76,18 +76,6 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun saveTaxRateAsPercent(value: Boolean) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            it[DatasourceKey.User.taxRateAsPercent] = value
-        }
-    }
-
-    suspend fun savePurchasesSeparator(value: String) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            it[DatasourceKey.User.purchasesSeparator] = value
-        }
-    }
-
     suspend fun saveMaxAutocompleteNames(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesNames] = value
@@ -115,24 +103,6 @@ class AppConfigDao(appContent: AppContent) {
     suspend fun saveMinMoneyFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.minMoneyFractionDigits] = value
-        }
-    }
-
-    suspend fun saveMinQuantityFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            it[DatasourceKey.User.minQuantityFractionDigits] = value
-        }
-    }
-
-    suspend fun saveMaxMoneyFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            it[DatasourceKey.User.maxMoneyFractionDigits] = value
-        }
-    }
-
-    suspend fun saveMaxQuantityFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            it[DatasourceKey.User.maxQuantityFractionDigits] = value
         }
     }
 
@@ -207,14 +177,6 @@ class AppConfigDao(appContent: AppContent) {
             val oldValue = it[DatasourceKey.User.displayCurrencyToLeft]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
             it[DatasourceKey.User.displayCurrencyToLeft] = newValue
-        }
-    }
-
-    suspend fun invertTaxRateAsPercent(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            val oldValue = it[DatasourceKey.User.taxRateAsPercent]
-            val newValue = if (oldValue == null) valueIfNull else !oldValue
-            it[DatasourceKey.User.taxRateAsPercent] = newValue
         }
     }
 
