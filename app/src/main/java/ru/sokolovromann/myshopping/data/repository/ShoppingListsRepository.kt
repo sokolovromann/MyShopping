@@ -874,14 +874,6 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
-    suspend fun deleteReminder(
-        shoppingUid: String,
-        lastModified: DateTime = DateTime.getCurrentDateTime()
-    ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.deleteReminder(shoppingUid, lastModified.millis)
-        return@withContext Result.success(Unit)
-    }
-
     suspend fun deleteShoppingListTotal(
         shoppingUid: String,
         lastModified: DateTime = DateTime.getCurrentDateTime()

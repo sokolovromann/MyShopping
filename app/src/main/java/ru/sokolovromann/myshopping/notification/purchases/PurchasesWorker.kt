@@ -47,7 +47,7 @@ class PurchasesWorker(
 
     private suspend fun getShoppingListWithConfig(): ShoppingListWithConfig? {
         val uid = inputData.getString(UID_KEY) ?: return null
-        entryPoint.repository().deleteReminder(uid)
+        entryPoint.repository().deleteReminders(listOf(uid))
 
         return entryPoint.repository().getShoppingListWithConfig(uid).firstOrNull()
     }

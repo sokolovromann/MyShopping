@@ -84,7 +84,7 @@ class EditReminderViewModel @Inject constructor(
         editReminderState.onWaiting()
 
         val shoppingUid = editReminderState.getCurrentShopping().uid
-        shoppingListsRepository.deleteReminder(shoppingUid)
+        shoppingListsRepository.deleteReminders(listOf(shoppingUid))
             .onSuccess {
                 alarmManager.deleteReminder(shoppingUid)
                 _screenEventFlow.emit(EditReminderScreenEvent.OnShowBackScreen)

@@ -116,9 +116,6 @@ interface ShoppingListsDao {
     @Query("UPDATE shoppings SET reminder = 0, last_modified = :lastModified WHERE uid IN (:uids)")
     fun deleteReminders(uids: List<String>, lastModified: Long)
 
-    @Query("UPDATE shoppings SET reminder = 0, last_modified = :lastModified WHERE uid = :uid")
-    fun deleteReminder(uid: String, lastModified: Long)
-
     @Query("UPDATE shoppings SET total = 0, total_formatted = 0, discount = 0, discount_as_percent = 0, last_modified = :lastModified WHERE uid = :uid")
     fun deleteTotal(uid: String, lastModified: Long)
 }
