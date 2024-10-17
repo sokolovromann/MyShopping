@@ -268,6 +268,14 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun invertDisplayListOfAutocompletes(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            val oldValue = it[DatasourceKey.User.displayListOfAutocompletes]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayListOfAutocompletes] = newValue
+        }
+    }
+
     private suspend fun saveBuildConfig(entity: AppBuildConfigEntity) {
         preferences.edit {
             it[DatasourceKey.Build.appFirstTime] = requireNotNull(entity.appFirstTime)
@@ -314,6 +322,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.maxMoneyFractionDigits] = requireNotNull(entity.maxMoneyFractionDigits)
             it[DatasourceKey.User.maxQuantityFractionDigits] = requireNotNull(entity.maxQuantityFractionDigits)
             it[DatasourceKey.User.automaticallyEmptyTrash] = entity.automaticallyEmptyTrash ?: false
+            it[DatasourceKey.User.displayListOfAutocompletes] = entity.displayListOfAutocompletes ?: false
         }
     }
 
@@ -381,7 +390,8 @@ class AppConfigDao(appContent: AppContent) {
             minQuantityFractionDigits = preferences[DatasourceKey.User.minQuantityFractionDigits],
             maxMoneyFractionDigits = preferences[DatasourceKey.User.maxMoneyFractionDigits],
             maxQuantityFractionDigits = preferences[DatasourceKey.User.maxQuantityFractionDigits],
-            automaticallyEmptyTrash = preferences[DatasourceKey.User.automaticallyEmptyTrash]
+            automaticallyEmptyTrash = preferences[DatasourceKey.User.automaticallyEmptyTrash],
+            displayListOfAutocompletes = preferences[DatasourceKey.User.displayListOfAutocompletes]
         )
     }
 
@@ -465,6 +475,7 @@ private object DatasourceKey {
         val maxMoneyFractionDigits = intPreferencesKey("max_money_fraction_digits")
         val maxQuantityFractionDigits = intPreferencesKey("max_quantity_fraction_digits")
         val automaticallyEmptyTrash = booleanPreferencesKey("automatically_empty_trash")
+        val displayListOfAutocompletes = booleanPreferencesKey("display_list_of_autocompletes")
     }
 
     object CodeVersion14 {

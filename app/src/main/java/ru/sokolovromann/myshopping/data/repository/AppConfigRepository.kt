@@ -256,4 +256,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
 
         return@withContext Result.success(Unit)
     }
+
+    suspend fun invertDisplayListOfAutocompletes(): Result<Unit> = withContext(dispatcher) {
+        val valueIfNull = !UserPreferencesDefaults.LIST_OF_AUTOCOMPLETES
+        appConfigDao.invertDisplayListOfAutocompletes(valueIfNull)
+
+        return@withContext Result.success(Unit)
+    }
 }

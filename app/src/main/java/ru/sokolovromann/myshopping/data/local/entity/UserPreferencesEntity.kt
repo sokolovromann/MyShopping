@@ -41,5 +41,6 @@ data class UserPreferencesEntity(
     val minQuantityFractionDigits: Int? = null,
     val maxMoneyFractionDigits: Int? = null,
     val maxQuantityFractionDigits: Int? = null,
-    val automaticallyEmptyTrash: Boolean? = null
+    val automaticallyEmptyTrash: Boolean? = null,
+    val displayListOfAutocompletes: Boolean? = null
 )

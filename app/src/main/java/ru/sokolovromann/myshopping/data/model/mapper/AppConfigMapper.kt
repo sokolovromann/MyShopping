@@ -117,7 +117,8 @@ object AppConfigMapper {
             minQuantityFractionDigits = userPreferences.quantityDecimalFormat.minimumFractionDigits,
             maxMoneyFractionDigits = userPreferences.moneyDecimalFormat.maximumFractionDigits,
             maxQuantityFractionDigits = userPreferences.quantityDecimalFormat.maximumFractionDigits,
-            automaticallyEmptyTrash = userPreferences.automaticallyEmptyTrash
+            automaticallyEmptyTrash = userPreferences.automaticallyEmptyTrash,
+            displayListOfAutocompletes = userPreferences.displayListOfAutocompletes
         )
     }
 
@@ -158,7 +159,8 @@ object AppConfigMapper {
             taxRate = toTaxRateOrDefault(entity),
             moneyDecimalFormat = toMoneyDecimalFormat(entity),
             quantityDecimalFormat = toQuantityDecimalFormat(entity),
-            automaticallyEmptyTrash = toAutomaticallyEmptyTrashOrDefault(entity.automaticallyEmptyTrash)
+            automaticallyEmptyTrash = toAutomaticallyEmptyTrashOrDefault(entity.automaticallyEmptyTrash),
+            displayListOfAutocompletes = toDisplayListOfAutocompletesOrDefault(entity.displayListOfAutocompletes)
         )
     }
 
@@ -259,6 +261,10 @@ object AppConfigMapper {
 
     private fun toAutomaticallyEmptyTrashOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.AUTOMATICALLY_EMPTY_TRASH
+    }
+
+    private fun toDisplayListOfAutocompletesOrDefault(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.LIST_OF_AUTOCOMPLETES
     }
 
     private fun toCurrencyOrDefault(entity: UserPreferencesEntity): Currency {

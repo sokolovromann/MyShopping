@@ -23,6 +23,7 @@ object UserPreferencesDefaults {
     const val SAVE_PRODUCT_TO_AUTOCOMPLETES = true
     const val DISPLAY_MONEY = true
     const val AUTOMATICALLY_EMPTY_TRASH = false
+    const val LIST_OF_AUTOCOMPLETES = false
 
     val NIGHT_THEME = NightTheme.DISABLED
     val FONT_SIZE = FontSize.DefaultValue
