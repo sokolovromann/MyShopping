@@ -518,6 +518,7 @@
     <string name="settings_body_completedWithCheckbox">Если включено, то купленный товар отмечается по нажатию на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_displayCompletedPurchases">Нажмите, чтобы выбрать</string>
+    <string name="settings_body_displayListOfAutocompletes">Если включено, то кнопка будет отображаться</string>
     <string name="settings_body_displayMoney">Если включено, то деньги и поля для ввода будут отображаться</string>
     <string name="settings_body_displayMoneyZeros">Если включено, то нули будут всегда отображаться</string>
     <string name="settings_body_displayOtherFields">Марка, размер, цвет и т.д.</string>
@@ -541,6 +542,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
     <string name="settings_title_displayDefaultAutocompletes">Показывать подсказки по-умолчанию</string>
+    <string name="settings_title_displayListOfAutocompletes">Показывать кнопку "Добавить из подсказок"</string>
     <string name="settings_title_displayMoney">Показывать деньги</string>
     <string name="settings_title_displayMoneyZeros">Показывать нули после запятой</string>
     <string name="settings_title_displayOtherFields">Показывать дополнительные поля</string>

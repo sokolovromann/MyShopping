@@ -524,6 +524,7 @@
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_displayCompletedPurchases">Tap to select</string>
+    <string name="settings_body_displayListOfAutocompletes">If enabled, button will be displayed</string>
     <string name="settings_body_displayMoney">If enabled, money and fields will be displayed</string>
     <string name="settings_body_displayMoneyZeros">If enabled, zeros will always be displayed</string>
     <string name="settings_body_displayOtherFields">Brand, size, color, etc.</string>
@@ -547,6 +548,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
+    <string name="settings_title_displayListOfAutocompletes">Display add from autocompletes button</string>
     <string name="settings_title_displayMoney">Display money</string>
     <string name="settings_title_displayMoneyZeros">Display zeros after decimal point</string>
     <string name="settings_title_displayOtherFields">Display other fields</string>

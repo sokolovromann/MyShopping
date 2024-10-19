@@ -523,6 +523,7 @@
     <string name="settings_body_completedWithCheckbox">Si activé, le produit acheté est marqué en cliquant sur la case à cocher</string>
     <string name="settings_body_currencySymbol">Symbole: %s</string>
     <string name="settings_body_displayCompletedPurchases">Appuyez pour sélectionner</string>
+    <string name="settings_body_displayListOfAutocompletes">Si activé, le bouton sera affiché</string>
     <string name="settings_body_displayMoney">Si activé, l\'argent et les champs seront affichés</string>
     <string name="settings_body_displayMoneyZeros">Si activé, les zéros seront toujours affichés</string>
     <string name="settings_body_displayOtherFields">Marque, taille, couleur, etc.</string>
@@ -546,6 +547,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Afficher la devise à gauche</string>
     <string name="settings_title_displayDefaultAutocompletes">Afficher les saisies automatiques par défaut</string>
+    <string name="settings_title_displayListOfAutocompletes">Afficher le bouton "Ajouter à partir saisie automatique"</string>
     <string name="settings_title_displayMoney">Afficher l\'argent</string>
     <string name="settings_title_displayMoneyZeros">Afficher les zéros après la virgule décimale</string>
     <string name="settings_title_displayOtherFields">Afficher d\'autres champs</string>

@@ -471,6 +471,7 @@
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_displayCompletedPurchases">Натисніть, щоб вибрати</string>
+    <string name="settings_body_displayListOfAutocompletes">Якщо увімкнено, то кнопка відображатиметься</string>
     <string name="settings_body_displayMoney">Якщо увімкнено, то гроші та поля для введення будуть відображатися</string>
     <string name="settings_body_displayMoneyZeros">Якщо увімкнено, то нулі завжди відображатимуться</string>
     <string name="settings_body_displayOtherFields">Марка, розмір, колір і т.д.</string>
@@ -494,6 +495,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
     <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>
+    <string name="settings_title_displayListOfAutocompletes">Показувати кнопку "Додати з підказок"</string>
     <string name="settings_title_displayMoney">Показувати гроші</string>
     <string name="settings_title_displayMoneyZeros">Показувати нулі після коми</string>
     <string name="settings_title_displayOtherFields">Показувати додаткові поля</string>
