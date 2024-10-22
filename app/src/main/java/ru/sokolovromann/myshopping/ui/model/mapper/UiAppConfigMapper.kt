@@ -172,6 +172,12 @@ object UiAppConfigMapper {
                 checked = userPreferences.displayOtherFields
             ),
             SettingItem(
+                uid = SettingUid.DisplayListOfAutocompletes,
+                title = UiString.FromResources(R.string.settings_title_displayListOfAutocompletes),
+                body = UiString.FromResources(R.string.settings_body_displayListOfAutocompletes),
+                checked = userPreferences.displayListOfAutocompletes
+            ),
+            SettingItem(
                 uid = SettingUid.EnterToSaveProducts,
                 title = UiString.FromResources(R.string.settings_title_enterToSaveProduct),
                 body = UiString.FromResources(R.string.settings_body_enterToSaveProduct),

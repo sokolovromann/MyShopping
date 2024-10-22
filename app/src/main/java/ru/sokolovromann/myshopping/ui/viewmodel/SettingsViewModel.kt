@@ -115,6 +115,10 @@ class SettingsViewModel @Inject constructor(
                 appConfigRepository.invertDisplayOtherFields()
             }
 
+            SettingUid.DisplayListOfAutocompletes -> {
+                appConfigRepository.invertDisplayListOfAutocompletes()
+            }
+
             SettingUid.EditProductAfterCompleted -> {
                 appConfigRepository.invertEditProductAfterCompleted()
             }
