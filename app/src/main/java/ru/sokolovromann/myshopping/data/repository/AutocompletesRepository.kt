@@ -27,6 +27,23 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
 
     private val dispatcher = AppDispatchers.IO
 
+    suspend fun getAllAutocompletes(
+        language: String = Locale.getDefault().language
+    ): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
+        return@withContext combine(
+            flow = autocompletesDao.getAllAutocompletes(),
+            flow2 = appConfigDao.getAppConfig(),
+            transform = { autocompleteEntities, appConfigEntity ->
+                AutocompletesMapper.toAutocompletesWithConfig(
+                    entities = autocompleteEntities,
+                    resources = resourcesDao.getAutocompleteNames(),
+                    appConfig = AppConfigMapper.toAppConfig(appConfigEntity),
+                    language = language
+                )
+            }
+        )
+    }
+
     suspend fun getDefaultAutocompletes(
         language: String = Locale.getDefault().language
     ): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
