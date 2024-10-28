@@ -42,6 +42,14 @@ object UiAutocompletesMapper {
         }
     }
 
+    fun toAutocompleteUiNames(
+        autocompletesWithConfig: AutocompletesWithConfig
+    ): List<UiString> {
+        return autocompletesWithConfig.getNames().map {
+            UiString.FromString(it)
+        }
+    }
+
     private fun toBrands(brands: List<String>): UiString {
         return if (brands.isEmpty()) {
             UiString.FromString("")

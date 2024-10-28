@@ -443,6 +443,10 @@
     <string name="purchases_action_markAsActive">Aktive</string>
     <string name="purchases_action_markAsCompleted">Fertige</string>
 
+    <string name="selectFromAutocompletes_action_addToShoppingList">@string/all_action_save</string>
+    <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
+    <string name="selectFromAutocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
+
     <string name="settings_action_selectAppAndWidgetNightTheme">Anwendung und Widget</string>
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>

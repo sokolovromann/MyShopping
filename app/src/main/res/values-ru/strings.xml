@@ -508,6 +508,10 @@
     <string name="purchases_action_markAsActive">Не куплено</string>
     <string name="purchases_action_markAsCompleted">Куплено</string>
 
+    <string name="selectFromAutocompletes_action_addToShoppingList">@string/all_action_save</string>
+    <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
+    <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
+
     <string name="settings_action_selectAppAndWidgetNightTheme">Приложение и виджет</string>
     <string name="settings_action_selectAppNightTheme">Только приложение</string>
     <string name="settings_action_selectDisabledNightTheme">Отключено</string>

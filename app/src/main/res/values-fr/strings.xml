@@ -513,6 +513,10 @@
     <string name="purchases_action_markAsActive">Non acheté</string>
     <string name="purchases_action_markAsCompleted">Acheté</string>
 
+    <string name="selectFromAutocompletes_action_addToShoppingList">@string/all_action_save</string>
+    <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
+    <string name="selectFromAutocompletes_text_autocompletesNotFound">Vous n\'avez pas de saisie automatique</string>
+
     <string name="settings_action_selectAppAndWidgetNightTheme">Application et widget</string>
     <string name="settings_action_selectAppNightTheme">Uniquement application</string>
     <string name="settings_action_selectDisabledNightTheme">Désactivé</string>

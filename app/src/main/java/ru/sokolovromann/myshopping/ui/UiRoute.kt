@@ -60,6 +60,10 @@ sealed class UiRoute(val graph: String) {
         fun calculateChange(shoppingUid: String): String {
             return "calculate-change/$shoppingUid"
         }
+
+        fun selectFromAutocompletes(shoppingUid: String): String {
+            return "select-from-autocompletes/$shoppingUid"
+        }
     }
 
     object Autocompletes : UiRoute(graph = "Autocompletes") {
@@ -202,6 +206,9 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
             arguments = listOf(navArgument(UiRouteKey.IsCopy.key) { defaultValue = false })
         ) {
             CopyMoveProductsScreen(navController)
+        }
+        composable(route = UiRoute.Products.selectFromAutocompletes(UiRouteKey.ShoppingUid.placeholder)) {
+            SelectFromAutocompletesScreen(navController)
         }
         dialog(route = UiRoute.Products.editShoppingListNameScreen(UiRouteKey.ShoppingUid.placeholder)) {
             EditShoppingListNameScreen(navController)

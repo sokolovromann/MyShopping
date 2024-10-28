@@ -514,6 +514,10 @@
     <string name="purchases_action_markAsActive">Active</string>
     <string name="purchases_action_markAsCompleted">Completed</string>
 
+    <string name="selectFromAutocompletes_action_addToShoppingList">@string/all_action_save</string>
+    <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
+    <string name="selectFromAutocompletes_text_autocompletesNotFound">You have no autocompletes</string>
+
     <string name="settings_action_selectAppAndWidgetNightTheme">App and widget</string>
     <string name="settings_action_selectAppNightTheme">Only app</string>
     <string name="settings_action_selectDisabledNightTheme">Disabled</string>
