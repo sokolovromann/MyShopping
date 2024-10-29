@@ -6,6 +6,8 @@ sealed class ProductsScreenEvent {
 
     data class OnShowAddProductScreen(val shoppingUid: String) : ProductsScreenEvent()
 
+    data class OnShowSelectFromAutocompletesScreen(val shoppingUid: String) : ProductsScreenEvent()
+
     data class OnShowEditProductScreen(val shoppingUid: String, val productUid: String) : ProductsScreenEvent()
 
     data class OnShowEditNameScreen(val shoppingUid: String) : ProductsScreenEvent()

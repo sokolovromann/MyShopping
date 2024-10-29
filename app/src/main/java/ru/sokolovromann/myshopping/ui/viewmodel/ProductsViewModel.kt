@@ -43,6 +43,8 @@ class ProductsViewModel @Inject constructor(
 
             is ProductsEvent.OnClickAddProduct -> onClickAddProduct()
 
+            is ProductsEvent.OnClickSelectFromAutocompletes -> onClickSelectFromAutocompletes()
+
             is ProductsEvent.OnClickEditProduct -> onClickEditProduct(event)
 
             ProductsEvent.OnClickBack -> onClickBack()
@@ -144,6 +146,10 @@ class ProductsViewModel @Inject constructor(
 
     private fun onClickAddProduct() = viewModelScope.launch(AppDispatchers.Main) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowAddProductScreen(shoppingUid))
+    }
+
+    private fun onClickSelectFromAutocompletes() = viewModelScope.launch(AppDispatchers.Main) {
+        _screenEventFlow.emit(ProductsScreenEvent.OnShowSelectFromAutocompletesScreen(shoppingUid))
     }
 
     private fun onClickEditProduct(

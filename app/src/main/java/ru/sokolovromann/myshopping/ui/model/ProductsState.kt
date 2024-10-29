@@ -122,6 +122,9 @@ class ProductsState {
     var expandedShareProducts: Boolean by mutableStateOf(false)
         private set
 
+    var displayListOfAutocompletes: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -161,6 +164,7 @@ class ProductsState {
         sortFormatted = shopping.sortFormatted
         expandedMarkAsMenu = false
         expandedShareProducts = false
+        displayListOfAutocompletes = userPreferences.displayListOfAutocompletes
         waiting = false
     }
 

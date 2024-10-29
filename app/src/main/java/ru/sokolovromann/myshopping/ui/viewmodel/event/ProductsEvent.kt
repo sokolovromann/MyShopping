@@ -11,6 +11,8 @@ sealed class ProductsEvent {
 
     object OnClickAddProduct : ProductsEvent()
 
+    object OnClickSelectFromAutocompletes : ProductsEvent()
+
     data class OnClickEditProduct(val productUid: String) : ProductsEvent()
 
     object OnClickBack : ProductsEvent()

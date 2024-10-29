@@ -73,6 +73,10 @@ fun ProductsScreen(
                     route = UiRoute.Products.addProductScreen(it.shoppingUid)
                 )
 
+                is ProductsScreenEvent.OnShowSelectFromAutocompletesScreen -> navController.navigate(
+                    route = UiRoute.Products.selectFromAutocompletes(it.shoppingUid)
+                )
+
                 is ProductsScreenEvent.OnShowEditProductScreen -> navController.navigate(
                     route = UiRoute.Products.editProductScreen(it.shoppingUid, it.productUid)
                 )
@@ -296,6 +300,11 @@ fun ProductsScreen(
                                 return@AppBottomAppBar
                             }
 
+                            if (state.displayListOfAutocompletes) {
+                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickSelectFromAutocompletes) }) {
+                                    AppBottomBarIcon(icon = UiIcon.FromResources(R.drawable.ic_select_from_autocompletes))
+                                }
+                            }
                             IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickAddProduct) }) {
                                 AddDataIcon(contentDescription = UiString.FromResources(R.string.products_contentDescription_addProductIcon))
                             }
