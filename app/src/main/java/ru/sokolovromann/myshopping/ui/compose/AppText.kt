@@ -30,17 +30,6 @@ fun AppTextGridHeader(
 }
 
 @Composable
-fun AppTextGridHeader(
-    modifier: Modifier = Modifier,
-    text: UiString
-) {
-    AppTextGridHeader(
-        modifier = modifier,
-        text = text.asCompose()
-    )
-}
-
-@Composable
 fun AppTopBarActionText(
     modifier: Modifier = Modifier,
     text: UiString,
