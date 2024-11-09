@@ -19,57 +19,6 @@ import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.toFloatOrNull
 
 @Composable
-fun AppTextField(
-    modifier: Modifier = Modifier,
-    value: TextFieldValue,
-    valueColor: Color = MaterialTheme.colors.onSurface,
-    valueFontSize: TextUnit = LocalTextStyle.current.fontSize,
-    onValueChange: (TextFieldValue) -> Unit,
-    enabled: Boolean = true,
-    label: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    error: @Composable (() -> Unit)? = null,
-    showError: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    singleLine: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors()
-) {
-    val textStyle = createAppTextFieldTextStyle(valueColor, valueFontSize)
-
-    AppTextFieldImpl(
-        modifier = modifier,
-        textStyle = textStyle,
-        error = error,
-        showError = showError
-    ) {
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = value,
-            onValueChange = {
-                val textFieldValue = checkTextFieldValue(
-                    oldValue = value,
-                    newValue = it,
-                    keyboardType = keyboardOptions.keyboardType
-                )
-                onValueChange(textFieldValue)
-            },
-            enabled = enabled,
-            textStyle = textStyle,
-            label = createAppTextLabelOrNot(textStyle, label),
-            trailingIcon = trailingIcon,
-            isError = showError,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            colors = colors
-        )
-    }
-}
-
-@Composable
 fun OutlinedAppTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
