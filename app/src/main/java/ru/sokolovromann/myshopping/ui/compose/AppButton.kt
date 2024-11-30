@@ -4,6 +4,30 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import ru.sokolovromann.myshopping.ui.model.UiIcon
+import ru.sokolovromann.myshopping.ui.model.UiString
+
+@Composable
+fun DefaultIconButton(
+    icon: UiIcon,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentDescription: UiString? = null,
+    tint: Color = LocalContentColor.current
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = true
+    ) {
+        Icon(
+            painter = icon.asPainter(),
+            contentDescription = contentDescription?.asCompose(),
+            tint = tint
+        )
+    }
+}
 
 @Composable
 fun AppDialogActionButton(
