@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -221,13 +219,12 @@ fun ShoppingListsHiddenContent(
             style = MaterialTheme.typography.body1
         )
         Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = onClick) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = stringResource(R.string.shoppingLists_contentDescription_displayCompletedPurchasesIcon),
-                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-            )
-        }
+        DefaultIconButton(
+            icon = UiIcon.DisplayHidden,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_displayCompletedPurchasesIcon),
+            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+            onClick = onClick
+        )
     }
 }
 
@@ -360,77 +357,74 @@ fun ShoppingListsSortByMenu(
 
 @Composable
 fun ShoppingListsOpenNavigationButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        NavigationMenuIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_navigationMenuIcon)
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.NavigationMenu,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_navigationMenuIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        CancelSearchIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearchIcon)
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.Cancel,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearchIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsCancelSelectionButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        CancelSelectionIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelectionIcon),
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.Cancel,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelectionIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsDeleteDataButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        DeleteDataIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_deleteDataIcon),
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.Delete,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_deleteDataIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsArchiveDataButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        AppTopBarIcon(
-            icon = UiIcon.FromResources(R.drawable.ic_all_archive),
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveIcon)
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.Archive,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsUnarchiveDataButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        AppTopBarIcon(
-            icon = UiIcon.FromResources(R.drawable.ic_all_unarchive),
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_unarchiveIcon)
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.Unarchive,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_unarchiveIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsRestoreDataButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        AppTopBarIcon(
-            icon = UiIcon.FromResources(R.drawable.ic_all_restore),
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_restoreIcon)
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.Restore,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_restoreIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
 fun ShoppingListsSelectAllDataButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        SelectAllDataIcon(
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_selectAllDataIcon)
-        )
-    }
+    DefaultIconButton(
+        icon = UiIcon.SelectAll,
+        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_selectAllDataIcon),
+        onClick = onClick
+    )
 }
 
 @Composable
