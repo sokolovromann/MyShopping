@@ -11,10 +11,10 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 @Composable
 fun DefaultIconButton(
     icon: UiIcon,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentDescription: UiString? = null,
-    tint: Color = LocalContentColor.current
+    tint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+    onClick: () -> Unit
 ) {
     IconButton(
         onClick = onClick,
