@@ -13,19 +13,22 @@ fun DefaultIconButton(
     icon: UiIcon,
     modifier: Modifier = Modifier,
     contentDescription: UiString? = null,
+    enabled: Boolean = true,
     tint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+    dropDownMenu: @Composable (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     IconButton(
         onClick = onClick,
         modifier = modifier,
-        enabled = true
+        enabled = enabled
     ) {
         Icon(
             painter = icon.asPainter(),
             contentDescription = contentDescription?.asCompose(),
             tint = tint
         )
+        dropDownMenu?.let { it() }
     }
 }
 
