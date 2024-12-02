@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
@@ -31,6 +30,8 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.AboutScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
+import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.AboutViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AboutEvent
@@ -112,13 +113,13 @@ fun AboutScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.about_header_aboutApp)) },
                 navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            val event = AboutEvent.OnSelectDrawerScreen(display = true)
-                            viewModel.onEvent(event)
-                        },
-                        content = { NavigationMenuIcon() }
-                    )
+                    DefaultIconButton(
+                        icon = UiIcon.NavigationMenu,
+                        contentDescription = UiString.FromResources(R.string.all_contentDescription_navigationMenuIcon)
+                    ) {
+                        val event = AboutEvent.OnSelectDrawerScreen(display = true)
+                        viewModel.onEvent(event)
+                    }
                 }
             )
         },
