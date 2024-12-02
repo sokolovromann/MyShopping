@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
@@ -29,6 +30,8 @@ sealed class UiIcon {
         val Close: UiIcon = FromVector(Icons.Default.Close)
         val Delete: UiIcon = FromVector(Icons.Default.Delete)
         val DisplayHidden: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)
+        val DisplayOtherFields: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)
+        val HideOtherFields: UiIcon = FromVector(Icons.Default.KeyboardArrowUp)
         val NavigationMenu: UiIcon = FromVector(Icons.Default.Menu)
         val Reminder: UiIcon = FromResources(R.drawable.ic_all_reminder)
         val Restore: UiIcon = FromResources(R.drawable.ic_all_restore)
