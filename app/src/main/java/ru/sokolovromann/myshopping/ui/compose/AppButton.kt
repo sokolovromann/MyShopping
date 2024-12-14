@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 
+@Deprecated("Use IconButton with DefaultIcon")
 @Composable
 fun DefaultIconButton(
     icon: UiIcon,

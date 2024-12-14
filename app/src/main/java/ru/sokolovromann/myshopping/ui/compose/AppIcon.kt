@@ -24,6 +24,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun AppDrawerContentItemIcon(
     modifier: Modifier = Modifier,
@@ -42,6 +43,7 @@ fun AppDrawerContentItemIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun AppTopBarIcon(
     icon: UiIcon,
@@ -60,6 +62,7 @@ fun AppTopBarIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun NavigationMenuIcon(
     modifier: Modifier = Modifier,
@@ -76,6 +79,7 @@ fun NavigationMenuIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun CancelSearchIcon(
     modifier: Modifier = Modifier,
@@ -92,6 +96,7 @@ fun CancelSearchIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun CancelSelectionIcon(
     modifier: Modifier = Modifier,
@@ -108,6 +113,7 @@ fun CancelSelectionIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun BackScreenIcon(
     modifier: Modifier = Modifier,
@@ -124,6 +130,7 @@ fun BackScreenIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun CloseScreenIcon(
     modifier: Modifier = Modifier,
@@ -140,6 +147,7 @@ fun CloseScreenIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun DeleteDataIcon(
     modifier: Modifier = Modifier,
@@ -156,6 +164,7 @@ fun DeleteDataIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun ClearDataIcon(
     modifier: Modifier = Modifier,
@@ -172,6 +181,7 @@ fun ClearDataIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun SelectAllDataIcon(
     modifier: Modifier = Modifier,
@@ -188,6 +198,7 @@ fun SelectAllDataIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun AppDropdownMenuIcon(
     icon: UiIcon,
@@ -206,6 +217,7 @@ fun AppDropdownMenuIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun MoreMenuIcon(
     modifier: Modifier = Modifier,
@@ -222,6 +234,7 @@ fun MoreMenuIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun AppBottomBarIcon(
     icon: UiIcon,
@@ -240,6 +253,7 @@ fun AppBottomBarIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun MoreIcon(
     modifier: Modifier = Modifier,
@@ -256,6 +270,7 @@ fun MoreIcon(
     )
 }
 
+@Deprecated("Use DefaultIcon")
 @Composable
 fun AddDataIcon(
     modifier: Modifier = Modifier,
