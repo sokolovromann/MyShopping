@@ -3,11 +3,6 @@ package ru.sokolovromann.myshopping.ui.compose
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,9 +46,9 @@ fun AppDrawerContent(
         AppItem(
             onClick = { onItemClick(UiRoute.Purchases) },
             left = {
-                AppDrawerContentItemIcon(
-                    icon = UiIcon.FromResources(R.drawable.ic_all_purchases),
-                    selected = selected == UiRoute.Purchases
+                DefaultIcon(
+                    icon = UiIcon.Purchases,
+                    tint = createIconTint(selected == UiRoute.Purchases)
                 )
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openPurchases)) },
@@ -63,9 +58,9 @@ fun AppDrawerContent(
         AppItem(
             onClick = { onItemClick(UiRoute.Archive) },
             left = {
-                AppDrawerContentItemIcon(
-                    icon = UiIcon.FromResources(R.drawable.ic_all_archive),
-                    selected = selected == UiRoute.Archive
+                DefaultIcon(
+                    icon = UiIcon.Archive,
+                    tint = createIconTint(selected == UiRoute.Archive)
                 )
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openArchive)) },
@@ -75,9 +70,9 @@ fun AppDrawerContent(
         AppItem(
             onClick = { onItemClick(UiRoute.Trash) },
             left = {
-                AppDrawerContentItemIcon(
-                    icon = UiIcon.FromVector(Icons.Default.Delete),
-                    selected = selected == UiRoute.Trash
+                DefaultIcon(
+                    icon = UiIcon.Delete,
+                    tint = createIconTint(selected == UiRoute.Trash)
                 )
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openTrash)) },
@@ -87,9 +82,9 @@ fun AppDrawerContent(
         AppItem(
             onClick = { onItemClick(UiRoute.Autocompletes) },
             left = {
-                AppDrawerContentItemIcon(
-                    icon = UiIcon.FromVector(Icons.Default.List),
-                    selected = selected == UiRoute.Autocompletes
+                DefaultIcon(
+                    icon = UiIcon.Autocompletes,
+                    tint = createIconTint(selected == UiRoute.Autocompletes)
                 )
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openAutocompletes)) },
@@ -99,9 +94,9 @@ fun AppDrawerContent(
         AppItem(
             onClick = { onItemClick(UiRoute.Settings) },
             left = {
-                AppDrawerContentItemIcon(
-                    icon = UiIcon.FromVector(Icons.Default.Settings),
-                    selected = selected == UiRoute.Settings
+                DefaultIcon(
+                    icon = UiIcon.Settings,
+                    tint = createIconTint(selected == UiRoute.Settings)
                 )
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openSettings)) },
@@ -111,14 +106,23 @@ fun AppDrawerContent(
         AppItem(
             onClick = { onItemClick(UiRoute.About) },
             left = {
-                AppDrawerContentItemIcon(
-                    icon = UiIcon.FromVector(Icons.Default.Info),
-                    selected = selected == UiRoute.About
+                DefaultIcon(
+                    icon = UiIcon.About,
+                    tint = createIconTint(selected == UiRoute.About)
                 )
             },
             title = { AppDrawerItemTitle(text = stringResource(R.string.drawer_action_openAbout)) },
             backgroundColor = appDrawerContentBackgroundColor(selected == UiRoute.About)
         )
+    }
+}
+
+@Composable
+private fun createIconTint(selected: Boolean): Color {
+    return if (selected) {
+        MaterialTheme.colors.secondary
+    } else {
+        MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
     }
 }
 
