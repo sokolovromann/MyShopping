@@ -7,8 +7,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -219,12 +217,13 @@ fun ShoppingListsHiddenContent(
             style = MaterialTheme.typography.body1
         )
         Spacer(modifier = Modifier.weight(1f))
-        DefaultIconButton(
-            icon = UiIcon.DisplayHidden,
-            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_displayCompletedPurchasesIcon),
-            tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
-            onClick = onClick
-        )
+        IconButton(onClick) {
+            DefaultIcon(
+                icon = UiIcon.DisplayHidden,
+                contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_displayCompletedPurchasesIcon),
+                tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium),
+            )
+        }
     }
 }
 
@@ -357,74 +356,82 @@ fun ShoppingListsSortByMenu(
 
 @Composable
 fun ShoppingListsOpenNavigationButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.NavigationMenu,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_navigationMenuIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.NavigationMenu,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_navigationMenuIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsCancelSearchButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.Cancel,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearchIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.Cancel,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSearchIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsCancelSelectionButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.Cancel,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelectionIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.Cancel,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_cancelSelectionIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsDeleteDataButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.Delete,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_deleteDataIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.Delete,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_deleteDataIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsArchiveDataButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.Archive,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.Archive,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsUnarchiveDataButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.Unarchive,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_unarchiveIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.Unarchive,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_unarchiveIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsRestoreDataButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.Restore,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_restoreIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.Restore,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_restoreIcon)
+        )
+    }
 }
 
 @Composable
 fun ShoppingListsSelectAllDataButton(onClick: () -> Unit) {
-    DefaultIconButton(
-        icon = UiIcon.SelectAll,
-        contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_selectAllDataIcon),
-        onClick = onClick
-    )
+    IconButton(onClick) {
+        DefaultIcon(
+            icon = UiIcon.SelectAll,
+            contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_selectAllDataIcon)
+        )
+    }
 }
 
 @Composable
@@ -485,10 +492,9 @@ private fun ShoppingListItemBody(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 val iconSize = MaterialTheme.typography.body2.fontSize.value.dp
-                Icon(
+                DefaultIcon(
                     modifier = Modifier.size(iconSize),
-                    painter = painterResource(R.drawable.ic_all_reminder),
-                    contentDescription = "",
+                    icon = UiIcon.Reminder,
                     tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
                 )
                 Spacer(modifier = Modifier.size(ShoppingListItemSpacerMediumSize))
@@ -598,12 +604,6 @@ private fun ShoppingsListsItemProducts(
                     return@let
                 }
 
-                val painter: Painter = if (completed) {
-                    painterResource(R.drawable.ic_all_check_box)
-                } else {
-                    painterResource(R.drawable.ic_all_check_box_outline)
-                }
-
                 val tint = (if (coloredCheckbox) {
                     if (completed) {
                         MaterialTheme.colors.primary
@@ -615,10 +615,9 @@ private fun ShoppingsListsItemProducts(
                 }).copy(ContentAlpha.medium)
 
                 val iconSize = MaterialTheme.typography.body2.fontSize.value.dp
-                Icon(
+                DefaultIcon(
                     modifier = Modifier.size(iconSize),
-                    painter = painter,
-                    contentDescription = "",
+                    icon = if (completed) UiIcon.Checkbox else UiIcon.CheckboxOutline,
                     tint = tint
                 )
 
