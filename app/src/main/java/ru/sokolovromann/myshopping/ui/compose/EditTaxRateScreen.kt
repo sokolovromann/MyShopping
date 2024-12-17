@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.EditTaxRateViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
@@ -83,9 +84,12 @@ fun EditTaxRateScreen(
                     onClick = {
                         val event = EditTaxRateEvent.OnTaxRateChanged(TextFieldValue())
                         viewModel.onEvent(event)
-                    },
-                    content = { ClearDataIcon() }
-                )
+                    }
+                ) {
+                    DefaultIcon(
+                        icon = UiIcon.Clear
+                    )
+                }
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,

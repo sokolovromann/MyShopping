@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.EditCurrencySymbolViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditCurrencySymbolEvent
@@ -87,9 +88,12 @@ fun EditCurrencySymbolScreen(
                     onClick = {
                         val event = EditCurrencySymbolEvent.OnSymbolChanged(TextFieldValue())
                         viewModel.onEvent(event)
-                    },
-                    content = { ClearDataIcon() }
-                )
+                    }
+                ) {
+                    DefaultIcon(
+                        icon = UiIcon.Clear
+                    )
+                }
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,

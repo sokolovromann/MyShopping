@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.EditShoppingListNameViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListNameEvent
@@ -84,9 +85,12 @@ fun EditShoppingListNameScreen(
                     onClick = {
                         val event = EditShoppingListNameEvent.OnNameChanged(TextFieldValue())
                         viewModel.onEvent(event)
-                    },
-                    content = { ClearDataIcon() }
-                )
+                    }
+                ) {
+                    DefaultIcon(
+                        icon = UiIcon.Clear
+                    )
+                }
             },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
