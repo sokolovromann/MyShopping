@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.SelectFromAutocompletesScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.viewmodel.SelectFromAutocompletesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SelectFromAutocompletesEvent
@@ -47,10 +48,16 @@ fun SelectFromAutocompletesScreen(
                 title = {},
                 navigationIcon = {
                     IconButton(
-                        enabled = !state.waiting,
-                        onClick = { viewModel.onEvent(SelectFromAutocompletesEvent.OnClickCancel) },
-                        content = { BackScreenIcon() }
-                    )
+                        onClick = {
+                            val event = SelectFromAutocompletesEvent.OnClickCancel
+                            viewModel.onEvent(event)
+                        },
+                        enabled = !state.waiting
+                    ) {
+                        DefaultIcon(
+                            icon = UiIcon.Back
+                        )
+                    }
                 },
                 actions = {
                     TextButton(

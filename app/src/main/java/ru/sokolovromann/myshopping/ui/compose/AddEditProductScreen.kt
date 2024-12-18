@@ -69,12 +69,18 @@ fun AddEditProductScreen(
             AppTopAppBar(
                 title = {},
                 navigationIcon = {
-                    DefaultIconButton(
-                        icon = UiIcon.Back,
-                        contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_backScreenIcon),
+                    IconButton(
+                        onClick = {
+                            val event = AddEditProductEvent.OnClickCancel
+                            viewModel.onEvent(event)
+                        },
                         enabled = !state.waiting,
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnClickCancel) }
-                    )
+                    ) {
+                        DefaultIcon(
+                            icon = UiIcon.Back,
+                            contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_backScreenIcon)
+                        )
+                    }
                 },
                 actions = {
                     TextButton(
@@ -128,7 +134,7 @@ fun AddEditProductScreen(
                 if (state.displayOtherFields) {
                     Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
 
-                    DefaultIconButton(
+                    IconButton(
                         modifier = Modifier
                             .height(AddEditProductButtonHeight)
                             .padding(AddEditProductButtonPaddings)
@@ -136,15 +142,21 @@ fun AddEditProductScreen(
                                 border = getButtonBorderStroke(),
                                 shape = MaterialTheme.shapes.small
                             ),
-                        icon = if (state.displayNameOtherFields) {
-                            UiIcon.HideOtherFields
-                        } else {
-                            UiIcon.DisplayOtherFields
-                        },
-                        contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_showNameOtherFieldsIcon),
-                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnInvertNameOtherFields) }
-                    )
+                        onClick = {
+                            val event = AddEditProductEvent.OnInvertNameOtherFields
+                            viewModel.onEvent(event)
+                        }
+                    ) {
+                        DefaultIcon(
+                            icon = if (state.displayNameOtherFields) {
+                                UiIcon.HideOtherFields
+                            } else {
+                                UiIcon.DisplayOtherFields
+                            },
+                            contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_showNameOtherFieldsIcon),
+                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                        )
+                    }
                 }
             }
 
@@ -393,7 +405,7 @@ fun AddEditProductScreen(
 
                     Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
 
-                    DefaultIconButton(
+                    IconButton(
                         modifier = Modifier
                             .height(AddEditProductButtonHeight)
                             .padding(AddEditProductButtonPaddings)
@@ -401,15 +413,21 @@ fun AddEditProductScreen(
                                 border = getButtonBorderStroke(),
                                 shape = MaterialTheme.shapes.small
                             ),
-                        icon = if (state.displayPriceOtherFields) {
-                            UiIcon.HideOtherFields
-                        } else {
-                            UiIcon.DisplayOtherFields
-                        },
-                        contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_showPriceOtherFieldsIcon),
-                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
-                        onClick = { viewModel.onEvent(AddEditProductEvent.OnInvertPriceOtherFields) }
-                    )
+                        onClick = {
+                            val event = AddEditProductEvent.OnInvertPriceOtherFields
+                            viewModel.onEvent(event)
+                        }
+                    ) {
+                        DefaultIcon(
+                            icon = if (state.displayPriceOtherFields) {
+                                UiIcon.HideOtherFields
+                            } else {
+                                UiIcon.DisplayOtherFields
+                            },
+                            contentDescription = UiString.FromResources(R.string.addEditProduct_contentDescription_showPriceOtherFieldsIcon),
+                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+                        )
+                    }
                 }
 
                 AddEditProductAutocompletePrices(
@@ -506,7 +524,7 @@ fun AddEditProductScreen(
 
                     Spacer(modifier = Modifier.size(AddEditProductSpacerLargeSize))
 
-                    DefaultIconButton(
+                    IconButton(
                         modifier = Modifier
                             .height(AddEditProductButtonHeight)
                             .padding(AddEditProductButtonPaddings)
@@ -514,45 +532,46 @@ fun AddEditProductScreen(
                                 border = getButtonBorderStroke(),
                                 shape = MaterialTheme.shapes.small
                             ),
-                        icon = state.lockProductElementValue.selected.toButtonIcon(),
-                        tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
-                        dropDownMenu = {
-                            AppDropdownMenu(
-                                expanded = state.expandedLockProductElement,
-                                onDismissRequest = { viewModel.onEvent(AddEditProductEvent.OnSelectLockProductElement(false)) },
-                                header = { Text(text = stringResource(R.string.addEditProduct_header_productLock)) }
-                            ) {
-                                AppDropdownMenuItem(
-                                    onClick = {
-                                        val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.QUANTITY)
-                                        viewModel.onEvent(event)
-                                    },
-                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockQuantity)) },
-                                    right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.QUANTITY) }
-                                )
-                                AppDropdownMenuItem(
-                                    onClick = {
-                                        val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.PRICE)
-                                        viewModel.onEvent(event)
-                                    },
-                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockPrice)) },
-                                    right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.PRICE) }
-                                )
-                                AppDropdownMenuItem(
-                                    onClick = {
-                                        val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.TOTAL)
-                                        viewModel.onEvent(event)
-                                    },
-                                    text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockTotal)) },
-                                    right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.TOTAL) }
-                                )
-                            }
-                        },
                         onClick = {
                             val event = AddEditProductEvent.OnSelectLockProductElement(expanded = true)
                             viewModel.onEvent(event)
                         }
-                    )
+                    ) {
+                        DefaultIcon(
+                            icon = state.lockProductElementValue.selected.toButtonIcon(),
+                            tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                        )
+                        AppDropdownMenu(
+                            expanded = state.expandedLockProductElement,
+                            onDismissRequest = { viewModel.onEvent(AddEditProductEvent.OnSelectLockProductElement(false)) },
+                            header = { Text(text = stringResource(R.string.addEditProduct_header_productLock)) }
+                        ) {
+                            AppDropdownMenuItem(
+                                onClick = {
+                                    val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.QUANTITY)
+                                    viewModel.onEvent(event)
+                                },
+                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockQuantity)) },
+                                right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.QUANTITY) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = {
+                                    val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.PRICE)
+                                    viewModel.onEvent(event)
+                                },
+                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockPrice)) },
+                                right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.PRICE) }
+                            )
+                            AppDropdownMenuItem(
+                                onClick = {
+                                    val event = AddEditProductEvent.OnLockProductElementSelected(LockProductElement.TOTAL)
+                                    viewModel.onEvent(event)
+                                },
+                                text = { Text(text = stringResource(R.string.addEditProduct_action_selectProductLockTotal)) },
+                                right = { CheckmarkAppCheckbox(checked = state.lockProductElementValue.selected == LockProductElement.TOTAL) }
+                            )
+                        }
+                    }
                 }
 
                 AddEditProductAutocompleteTotals(

@@ -5,12 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -21,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.CopyMoveProductsScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
 import ru.sokolovromann.myshopping.ui.viewmodel.CopyMoveProductsViewModel
@@ -56,13 +54,16 @@ fun CopyMoveProductsScreen(
                 title = { Text(text = stringResource(R.string.copyMoveProducts_header)) },
                 navigationIcon = {
                     IconButton(
-                        onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnClickCancel) },
-                        content = {
-                            CloseScreenIcon(
-                                contentDescription = UiString.FromResources(R.string.copyMoveProducts_contentDescription_closeScreenIcon)
-                            )
+                        onClick = {
+                            val event = CopyMoveProductsEvent.OnClickCancel
+                            viewModel.onEvent(event)
                         }
-                    )
+                    ) {
+                        DefaultIcon(
+                            icon = UiIcon.Close,
+                            contentDescription = UiString.FromResources(R.string.copyMoveProducts_contentDescription_closeScreenIcon)
+                        )
+                    }
                 }
             )
         }
@@ -89,10 +90,15 @@ fun CopyMoveProductsScreen(
                         }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.onEvent(CopyMoveProductsEvent.OnClickAddShoppingList) }) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.copyMoveProducts_contentDescription_addShoppingListIcon),
+                    IconButton(
+                        onClick = {
+                            val event = CopyMoveProductsEvent.OnClickAddShoppingList
+                            viewModel.onEvent(event)
+                        }
+                    ) {
+                        DefaultIcon(
+                            icon = UiIcon.Add,
+                            contentDescription = UiString.FromResources(R.string.copyMoveProducts_contentDescription_addShoppingListIcon),
                             tint = MaterialTheme.colors.onBackground.copy(ContentAlpha.medium)
                         )
                     }
