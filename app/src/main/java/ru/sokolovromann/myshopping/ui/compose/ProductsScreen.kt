@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -22,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -145,36 +142,52 @@ fun ProductsScreen(
                     navigationIcon = {
                         if (state.displaySearch) {
                             IconButton(
-                                onClick = { viewModel.onEvent(ProductsEvent.OnInvertSearch) },
-                                content = {
-                                    CancelSearchIcon(
-                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSearchIcon)
-                                    )
+                                onClick = {
+                                    val event = ProductsEvent.OnInvertSearch
+                                    viewModel.onEvent(event)
                                 }
-                            )
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.Cancel,
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSearchIcon)
+                                )
+                            }
                         } else {
                             IconButton(
-                                onClick = { viewModel.onEvent(ProductsEvent.OnClickBack) },
-                                content = {
-                                    BackScreenIcon(
-                                        contentDescription = UiString.FromResources(R.string.products_contentDescription_backScreenIcon)
-                                    )
+                                onClick = {
+                                    val event = ProductsEvent.OnClickBack
+                                    viewModel.onEvent(event)
                                 }
-                            )
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.Back,
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_backScreenIcon)
+                                )
+                            }
                         }
                     },
                     actions = {
                         when (state.locationValue.selected) {
                             ShoppingLocation.PURCHASES, ShoppingLocation.ARCHIVE -> {
-                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditName) }) {
-                                    AppTopBarIcon(
-                                        icon = UiIcon.FromResources(R.drawable.ic_all_rename),
+                                IconButton(
+                                    onClick = {
+                                        val event = ProductsEvent.OnClickEditName
+                                        viewModel.onEvent(event)
+                                    }
+                                ) {
+                                    DefaultIcon(
+                                        icon = UiIcon.Rename,
                                         contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListNameIcon)
                                     )
                                 }
-                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditReminder) }) {
-                                    AppTopBarIcon(
-                                        icon = UiIcon.FromResources(R.drawable.ic_all_reminder),
+                                IconButton(
+                                    onClick = {
+                                        val event = ProductsEvent.OnClickEditReminder
+                                        viewModel.onEvent(event)
+                                    }
+                                ) {
+                                    DefaultIcon(
+                                        icon = UiIcon.Reminder,
                                         contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListReminderIcon)
                                     )
                                 }
@@ -191,36 +204,50 @@ fun ProductsScreen(
                             onClick = {
                                 val event = ProductsEvent.OnAllProductsSelected(selected = false)
                                 viewModel.onEvent(event)
-                            },
-                            content = {
-                                CancelSelectionIcon(
-                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSelectionIcon)
-                                )
                             }
-                        )
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Cancel,
+                                contentDescription = UiString.FromResources(R.string.products_contentDescription_cancelSelectionIcon)
+                            )
+                        }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickPinProducts) }) {
-                            val iconResId = if (state.isOnlyPinned()) {
-                                R.drawable.ic_all_pin
-                            } else {
-                                R.drawable.ic_all_unpin
+                        IconButton(
+                            onClick = {
+                                val event = ProductsEvent.OnClickPinProducts
+                                viewModel.onEvent(event)
                             }
-                            AppTopBarIcon(
-                                icon = UiIcon.FromResources(iconResId),
+                        ) {
+                            DefaultIcon(
+                                icon = if (state.isOnlyPinned()) {
+                                    UiIcon.Pin
+                                } else {
+                                    UiIcon.Unpin
+                                },
                                 contentDescription = UiString.FromResources(R.string.products_contentDescription_pinOrUnpinProductIcon)
                             )
                         }
                         IconButton(
-                            onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) },
-                            content = {
-                                DeleteDataIcon(
-                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_deleteDataIcon)
-                                )
+                            onClick = {
+                                val event = ProductsEvent.OnClickDeleteProducts
+                                viewModel.onEvent(event)
                             }
-                        )
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(true)) }) {
-                            AppTopBarIcon(icon = UiIcon.FromVector(Icons.Default.MoreVert))
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Delete,
+                                contentDescription = UiString.FromResources(R.string.products_contentDescription_deleteDataIcon)
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                val event = ProductsEvent.OnShowItemMoreMenu(expanded = true)
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.More
+                            )
                             AppDropdownMenu(
                                 expanded = state.expandedItemMoreMenu,
                                 onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowItemMoreMenu(false)) },
@@ -301,37 +328,60 @@ fun ProductsScreen(
                             }
 
                             if (state.displayListOfAutocompletes) {
-                                IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickSelectFromAutocompletes) }) {
-                                    AppBottomBarIcon(icon = UiIcon.FromResources(R.drawable.ic_select_from_autocompletes))
+                                IconButton(
+                                    onClick = {
+                                        val event = ProductsEvent.OnClickSelectFromAutocompletes
+                                        viewModel.onEvent(event)
+                                    }
+                                ) {
+                                    DefaultIcon(
+                                        icon = UiIcon.SelectFromAutocompletes
+                                    )
                                 }
                             }
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickAddProduct) }) {
-                                AddDataIcon(contentDescription = UiString.FromResources(R.string.products_contentDescription_addProductIcon))
+                            IconButton(
+                                onClick = {
+                                    val event = ProductsEvent.OnClickAddProduct
+                                    viewModel.onEvent(event)
+                                }
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.Add,
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_addProductIcon)
+                                )
                             }
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(true)) }) {
-                                MoreIcon(contentDescription = UiString.FromResources(R.string.products_contentDescription_productsMenuIcon))
+                            IconButton(
+                                onClick = {
+                                    val event = ProductsEvent.OnShowProductsMenu(expanded = true)
+                                    viewModel.onEvent(event)
+                                }
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.More,
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_productsMenuIcon)
+                                )
                                 AppDropdownMenu(
                                     expanded = state.expandedProductsMenu,
                                     onDismissRequest = { viewModel.onEvent(ProductsEvent.OnShowProductsMenu(false)) }
                                 ) {
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_showShoppingListMenu)) },
-                                        right = { MoreMenuIcon() },
+                                        right = { DefaultIcon(UiIcon.MoreMenu) },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnShowShoppingMenu(true)) }
                                     )
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_header_view)) },
-                                        right = { MoreMenuIcon() },
+                                        right = { DefaultIcon(UiIcon.MoreMenu) },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnSelectView(true)) }
                                     )
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_sort)) },
-                                        right = { MoreMenuIcon() },
+                                        right = { DefaultIcon(UiIcon.MoreMenu) },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnSelectSort(true)) }
                                     )
                                     AppDropdownMenuItem(
                                         text = { Text(text = stringResource(R.string.products_action_markAs)) },
-                                        right = { MoreMenuIcon() },
+                                        right = { DefaultIcon(UiIcon.MoreMenu) },
                                         onClick = { viewModel.onEvent(ProductsEvent.OnSelectMarkAs(true)) }
                                     )
                                     if (state.displayMoney) {
@@ -347,7 +397,7 @@ fun ProductsScreen(
                                     AppDropdownMenuItem(
                                         onClick = { viewModel.onEvent(ProductsEvent.OnSelectShareProducts(true)) },
                                         text = { Text(text = stringResource(R.string.products_action_shareProducts)) },
-                                        right = { MoreMenuIcon() }
+                                        right = { DefaultIcon(UiIcon.MoreMenu) }
                                     )
                                 }
 
@@ -580,31 +630,52 @@ fun ProductsScreen(
                 ) {
                     Row {
                         if (!state.sortFormatted) {
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductUp(it)) }) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_all_arrow_up),
-                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductUpIcon),
+                            IconButton(
+                                onClick = {
+                                    val event = ProductsEvent.OnClickMoveProductUp(it)
+                                    viewModel.onEvent(event)
+                                }
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.MoveUp,
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_moveProductUpIcon),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
-                            IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickMoveProductDown(it)) }) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_all_arrow_down),
-                                    contentDescription = stringResource(id = R.string.products_contentDescription_moveProductDownIcon),
+                            IconButton(
+                                onClick = {
+                                    val event = ProductsEvent.OnClickMoveProductDown(it)
+                                    viewModel.onEvent(event)
+                                }
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.MoveDown,
+                                    contentDescription = UiString.FromResources(R.string.products_contentDescription_moveProductDownIcon),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
                             AppVerticalDivider()
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickEditProduct(it)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = stringResource(id = R.string.products_contentDescription_editProductIcon),
+                        IconButton(
+                            onClick = {
+                                val event = ProductsEvent.OnClickEditProduct(it)
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Edit,
+                                contentDescription = UiString.FromResources(R.string.products_contentDescription_editProductIcon),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
                         }
-                        IconButton(onClick = { viewModel.onEvent(ProductsEvent.OnClickDeleteProducts) }) {
-                            DeleteDataIcon(
+                        IconButton(
+                            onClick = {
+                                val event = ProductsEvent.OnClickDeleteProducts
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Delete,
                                 contentDescription = UiString.FromResources(R.string.products_contentDescription_deleteDataIcon),
                                 tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                             )
@@ -660,9 +731,8 @@ private fun ProductsReminderContent(
 ) {
     Column {
         TextButton(onClick = onClick) {
-            Icon(
-                painter = painterResource(R.drawable.ic_all_reminder),
-                contentDescription = "",
+            DefaultIcon(
+                icon = UiIcon.Reminder,
                 tint = MaterialTheme.colors.primary.copy(ContentAlpha.medium)
             )
             Spacer(modifier = Modifier.size(ProductsReminderSpacerSize))
@@ -910,9 +980,9 @@ fun ProductsHiddenContent(
         )
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = onClick) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = stringResource(R.string.products_contentDescription_displayCompletedPurchasesIcon),
+            DefaultIcon(
+                icon = UiIcon.DisplayHidden,
+                contentDescription = UiString.FromResources(R.string.products_contentDescription_displayCompletedPurchasesIcon),
                 tint = MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
             )
         }

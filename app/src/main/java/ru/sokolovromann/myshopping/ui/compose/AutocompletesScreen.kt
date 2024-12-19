@@ -4,8 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -89,13 +87,13 @@ fun AutocompletesScreen(
                             onClick = {
                                 val event = AutocompletesEvent.OnSelectDrawerScreen(display = true)
                                 viewModel.onEvent(event)
-                            },
-                            content = {
-                                NavigationMenuIcon(
-                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_navigationMenuIcon)
-                                )
                             }
-                        )
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.NavigationMenu,
+                                contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_navigationMenuIcon)
+                            )
+                        }
                     }
                 )
             } else {
@@ -106,47 +104,52 @@ fun AutocompletesScreen(
                             onClick = {
                                 val event = AutocompletesEvent.OnAllAutocompletesSelected(selected = false)
                                 viewModel.onEvent(event)
-                            },
-                            content = {
-                                CancelSelectionIcon(
-                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_cancelSelection)
-                                )
                             }
-                        )
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Cancel,
+                                contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_cancelSelection)
+                            )
+                        }
                     },
                     actions = {
                         IconButton(
-                            onClick = { viewModel.onEvent(AutocompletesEvent.OnClickClearAutocompletes) },
-                            content = {
-                                AppTopBarIcon(
-                                    icon = UiIcon.FromResources(R.drawable.ic_autocompletes_clear),
-                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_clearAutocompletesIcon)
-                                )
+                            onClick = {
+                                val event = AutocompletesEvent.OnClickClearAutocompletes
+                                viewModel.onEvent(event)
                             }
-                        )
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.ClearAutocompletes,
+                                contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_clearAutocompletesIcon)
+                            )
+                        }
 
                         if (state.locationValue.selected == AutocompleteLocation.PERSONAL) {
                             IconButton(
-                                onClick = { viewModel.onEvent(AutocompletesEvent.OnClickDeleteAutocompletes) },
-                                content = {
-                                    DeleteDataIcon(
-                                        contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_deleteDataIcon)
-                                    )
+                                onClick = {
+                                    val event = AutocompletesEvent.OnClickDeleteAutocompletes
+                                    viewModel.onEvent(event)
                                 }
-                            )
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.Delete,
+                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_deleteDataIcon)
+                                )
+                            }
                         }
 
                         IconButton(
                             onClick = {
                                 val event = AutocompletesEvent.OnAllAutocompletesSelected(selected = true)
                                 viewModel.onEvent(event)
-                            },
-                            content = {
-                                SelectAllDataIcon(
-                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_selectAllDataIcon)
-                                )
                             }
-                        )
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.SelectAll,
+                                contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_selectAllDataIcon)
+                            )
+                        }
                     }
                 )
             }
@@ -162,10 +165,15 @@ fun AutocompletesScreen(
         },
         floatingActionButton = {
             if (state.selectedNames == null) {
-                FloatingActionButton(onClick = { viewModel.onEvent(AutocompletesEvent.OnClickAddAutocomplete) }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.autocompletes_contentDescription_addAutocompleteIcon),
+                FloatingActionButton(
+                    onClick = {
+                        val event = AutocompletesEvent.OnClickAddAutocomplete
+                        viewModel.onEvent(event)
+                    }
+                ) {
+                    DefaultIcon(
+                        icon = UiIcon.Add,
+                        contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_addAutocompleteIcon),
                         tint = MaterialTheme.colors.onSecondary
                     )
                 }

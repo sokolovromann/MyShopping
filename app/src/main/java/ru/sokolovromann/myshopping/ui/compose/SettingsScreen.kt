@@ -24,6 +24,7 @@ import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingItem
 import ru.sokolovromann.myshopping.ui.model.SettingUid
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgets
@@ -105,13 +106,13 @@ fun SettingsScreen(
                         onClick = {
                             val event = SettingsEvent.OnSelectDrawerScreen(display = true)
                             viewModel.onEvent(event)
-                        },
-                        content = {
-                            NavigationMenuIcon(
-                                contentDescription = UiString.FromResources(R.string.settings_contentDescription_navigationMenuIcon)
-                            )
                         }
-                    )
+                    ) {
+                        DefaultIcon(
+                            icon = UiIcon.NavigationMenu,
+                            contentDescription = UiString.FromResources(R.string.settings_contentDescription_navigationMenuIcon)
+                        )
+                    }
                 }
             )
         },

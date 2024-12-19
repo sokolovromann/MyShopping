@@ -30,6 +30,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.ArchiveViewModel
@@ -184,25 +185,33 @@ fun ArchiveScreen(
                             return@AppBottomAppBar
                         }
 
-                        IconButton(onClick = { viewModel.onEvent(ArchiveEvent.OnShowArchiveMenu(true)) }) {
-                            MoreIcon(contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveMenuIcon))
+                        IconButton(
+                            onClick = {
+                                val event = ArchiveEvent.OnShowArchiveMenu(true)
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.More,
+                                contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_archiveMenuIcon)
+                            )
                             AppDropdownMenu(
                                 expanded = state.expandedArchiveMenu,
                                 onDismissRequest = { viewModel.onEvent(ArchiveEvent.OnShowArchiveMenu(false)) }
                             ) {
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_header_view)) },
-                                    right = { MoreMenuIcon() },
+                                    right = { DefaultIcon(UiIcon.More) },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectView(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-                                    right = { MoreMenuIcon() },
+                                    right = { DefaultIcon(UiIcon.More) },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayProducts(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                    right = { MoreMenuIcon() },
+                                    right = { DefaultIcon(UiIcon.More) },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectSort(true)) }
                                 )
                                 AppDropdownMenuItem(

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
@@ -113,12 +114,16 @@ fun AboutScreen(
             AppTopAppBar(
                 title = { Text(text = stringResource(R.string.about_header_aboutApp)) },
                 navigationIcon = {
-                    DefaultIconButton(
-                        icon = UiIcon.NavigationMenu,
-                        contentDescription = UiString.FromResources(R.string.all_contentDescription_navigationMenuIcon)
+                    IconButton(
+                        onClick = {
+                            val event = AboutEvent.OnSelectDrawerScreen(display = true)
+                            viewModel.onEvent(event)
+                        }
                     ) {
-                        val event = AboutEvent.OnSelectDrawerScreen(display = true)
-                        viewModel.onEvent(event)
+                        DefaultIcon(
+                            icon = UiIcon.NavigationMenu,
+                            contentDescription = UiString.FromResources(R.string.all_contentDescription_navigationMenuIcon)
+                        )
                     }
                 }
             )

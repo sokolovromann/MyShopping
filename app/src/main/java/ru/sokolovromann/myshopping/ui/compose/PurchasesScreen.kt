@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -17,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -32,6 +29,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.PurchasesScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.PurchasesViewModel
@@ -123,14 +121,15 @@ fun PurchasesScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickPinShoppingLists) }) {
-                            Icon(
-                                painter = if (state.isOnlyPinned()) {
-                                    painterResource(R.drawable.ic_all_pin)
-                                } else {
-                                    painterResource(R.drawable.ic_all_unpin)
-                                },
-                                contentDescription = stringResource(R.string.shoppingLists_contentDescription_pinOrUnpinShoppingListsIcon)
+                        IconButton(
+                            onClick = {
+                                val event = PurchasesEvent.OnClickPinShoppingLists
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = if (state.isOnlyPinned()) UiIcon.Pin else UiIcon.Unpin,
+                                contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_pinOrUnpinShoppingListsIcon)
                             )
                         }
                         ShoppingListsArchiveDataButton {
@@ -141,10 +140,14 @@ fun PurchasesScreen(
                             val event = PurchasesEvent.OnMoveShoppingListSelected(ShoppingLocation.TRASH)
                             viewModel.onEvent(event)
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowItemMoreMenu(true)) }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = ""
+                        IconButton(
+                            onClick = {
+                                val event = PurchasesEvent.OnShowItemMoreMenu(expanded = true)
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.More
                             )
                             AppDropdownMenu(
                                 expanded = state.expandedItemMoreMenu,
@@ -157,7 +160,7 @@ fun PurchasesScreen(
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectMarkAs(true)) },
                                     text = { Text(text = stringResource(id = R.string.purchases_action_markAs)) },
-                                    right = { MoreMenuIcon() }
+                                    right = { DefaultIcon(UiIcon.MoreMenu) }
                                 )
                                 AppDropdownMenuItem(
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnAllShoppingListsSelected(true)) },
@@ -231,28 +234,44 @@ fun PurchasesScreen(
                             return@AppBottomAppBar
                         }
 
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickAddShoppingList) }) {
-                            AddDataIcon(contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_addShoppingListIcon))
+                        IconButton(
+                            onClick = {
+                                val event = PurchasesEvent.OnClickAddShoppingList
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Add,
+                                contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_addShoppingListIcon)
+                            )
                         }
-                        IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(true)) }) {
-                            MoreIcon(contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_purchasesMenuIcon))
+                        IconButton(
+                            onClick = {
+                                val event = PurchasesEvent.OnShowPurchasesMenu(expanded = true)
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.More,
+                                contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_purchasesMenuIcon)
+                            )
                             AppDropdownMenu(
                                 expanded = state.expandedPurchasesMenu,
                                 onDismissRequest = { viewModel.onEvent(PurchasesEvent.OnShowPurchasesMenu(false)) }
                             ) {
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_header_view)) },
-                                    right = { MoreMenuIcon() },
+                                    right = { DefaultIcon(UiIcon.MoreMenu) },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectView(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-                                    right = { MoreMenuIcon() },
+                                    right = { DefaultIcon(UiIcon.MoreMenu) },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectDisplayProducts(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                    right = { MoreMenuIcon() },
+                                    right = { DefaultIcon(UiIcon.MoreMenu) },
                                     onClick = { viewModel.onEvent(PurchasesEvent.OnSelectSort(true)) }
                                 )
                                 AppDropdownMenuItem(
@@ -345,17 +364,27 @@ fun PurchasesScreen(
                 ) {
                     Row {
                         if (!state.sortFormatted) {
-                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListUp(it)) }) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_all_arrow_up),
-                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListUpIcon),
+                            IconButton(
+                                onClick = {
+                                    val event = PurchasesEvent.OnClickMoveShoppingListUp(it)
+                                    viewModel.onEvent(event)
+                                }
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.MoveUp,
+                                    contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_moveShoppingListUpIcon),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
-                            IconButton(onClick = { viewModel.onEvent(PurchasesEvent.OnClickMoveShoppingListDown(it)) }) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_all_arrow_down),
-                                    contentDescription = stringResource(R.string.shoppingLists_contentDescription_moveShoppingListDownIcon),
+                            IconButton(
+                                onClick = {
+                                    val event = PurchasesEvent.OnClickMoveShoppingListDown(it)
+                                    viewModel.onEvent(event)
+                                }
+                            ) {
+                                DefaultIcon(
+                                    icon = UiIcon.MoveDown,
+                                    contentDescription = UiString.FromResources(R.string.shoppingLists_contentDescription_moveShoppingListDownIcon),
                                     tint = contentColorFor(MaterialTheme.colors.background).copy(ContentAlpha.medium)
                                 )
                             }
