@@ -32,6 +32,7 @@ object UserPreferencesDefaults {
     val DISPLAY_TOTAL = DisplayTotal.DefaultValue
     val DISPLAY_SHOPPINGS_PRODUCTS = DisplayProducts.DefaultValue
     val LOCK_PRODUCT_ELEMENT = LockProductElement.DefaultValue
+    val AFTER_SAVE_PRODUCT = AfterSaveProduct.DefaultValue
 
     fun getCurrency(): Currency {
         return Currency(

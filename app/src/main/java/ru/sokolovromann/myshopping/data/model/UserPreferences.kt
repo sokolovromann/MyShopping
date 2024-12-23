@@ -35,5 +35,6 @@ data class UserPreferences(
     val moneyDecimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat(),
     val quantityDecimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat(),
     val automaticallyEmptyTrash: Boolean = UserPreferencesDefaults.AUTOMATICALLY_EMPTY_TRASH,
-    val displayListOfAutocompletes: Boolean = UserPreferencesDefaults.LIST_OF_AUTOCOMPLETES
+    val displayListOfAutocompletes: Boolean = UserPreferencesDefaults.LIST_OF_AUTOCOMPLETES,
+    val afterSaveProduct: AfterSaveProduct = UserPreferencesDefaults.AFTER_SAVE_PRODUCT
 )

@@ -106,6 +106,12 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun saveAfterSaveProduct(value: String) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.afterSaveProduct] = value
+        }
+    }
+
     suspend fun enableAutomaticShoppingsSort(
         sortBy: String,
         ascending: Boolean
@@ -323,6 +329,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.maxQuantityFractionDigits] = requireNotNull(entity.maxQuantityFractionDigits)
             it[DatasourceKey.User.automaticallyEmptyTrash] = entity.automaticallyEmptyTrash ?: false
             it[DatasourceKey.User.displayListOfAutocompletes] = entity.displayListOfAutocompletes ?: false
+            it[DatasourceKey.User.afterSaveProduct] = entity.afterSaveProduct ?: ""
         }
     }
 
@@ -391,7 +398,8 @@ class AppConfigDao(appContent: AppContent) {
             maxMoneyFractionDigits = preferences[DatasourceKey.User.maxMoneyFractionDigits],
             maxQuantityFractionDigits = preferences[DatasourceKey.User.maxQuantityFractionDigits],
             automaticallyEmptyTrash = preferences[DatasourceKey.User.automaticallyEmptyTrash],
-            displayListOfAutocompletes = preferences[DatasourceKey.User.displayListOfAutocompletes]
+            displayListOfAutocompletes = preferences[DatasourceKey.User.displayListOfAutocompletes],
+            afterSaveProduct = preferences[DatasourceKey.User.afterSaveProduct]
         )
     }
 
@@ -476,6 +484,7 @@ private object DatasourceKey {
         val maxQuantityFractionDigits = intPreferencesKey("max_quantity_fraction_digits")
         val automaticallyEmptyTrash = booleanPreferencesKey("automatically_empty_trash")
         val displayListOfAutocompletes = booleanPreferencesKey("display_list_of_autocompletes")
+        val afterSaveProduct = stringPreferencesKey("after_save_product")
     }
 
     object CodeVersion14 {
