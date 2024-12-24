@@ -43,6 +43,8 @@ class SettingsViewModel @Inject constructor(
             is SettingsEvent.OnFontSizeSelected -> onFontSizeSelected(event)
 
             is SettingsEvent.OnDisplayCompletedSelected -> onDisplayCompletedSelected(event)
+
+            is SettingsEvent.OnAfterSaveProductSelected -> onAfterSaveProductSelected(event)
         }
     }
 
@@ -132,6 +134,13 @@ class SettingsViewModel @Inject constructor(
                 appConfigRepository.invertEnterToSaveProduct()
             }
 
+            SettingUid.AfterSaveProduct -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.AfterSaveProduct
+                )
+            }
+
             SettingUid.AutomaticallyEmptyTrash -> {
                 appConfigRepository.invertAutomaticallyEmptyTrash()
             }
@@ -198,5 +207,15 @@ class SettingsViewModel @Inject constructor(
             settingUid = SettingUid.DisplayCompletedPurchases
         )
         _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
+    }
+
+    private fun onAfterSaveProductSelected(
+        event: SettingsEvent.OnAfterSaveProductSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.saveAfterSaveProduct(event.afterSaveProduct)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.AfterSaveProduct
+        )
     }
 }

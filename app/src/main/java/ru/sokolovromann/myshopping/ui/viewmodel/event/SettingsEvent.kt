@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
+import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -23,4 +24,6 @@ sealed class SettingsEvent {
     data class OnFontSizeSelected(val fontSize: FontSize) : SettingsEvent()
 
     data class OnDisplayCompletedSelected(val displayCompleted: DisplayCompleted) : SettingsEvent()
+
+    data class OnAfterSaveProductSelected(val afterSaveProduct: AfterSaveProduct) : SettingsEvent()
 }

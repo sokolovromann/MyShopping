@@ -465,6 +465,9 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
+    <string name="settings_action_closeAfterSaveProduct">Зберегти товар та закрити екран</string>
+    <string name="settings_action_notingAfterSaveProduct">Зберегти товар</string>
+    <string name="settings_action_openAfterSaveProduct">Зберегти товар та відкрити новий екран</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Програма та віджет</string>
     <string name="settings_action_selectAppNightTheme">Тільки програма</string>
     <string name="settings_action_selectDisabledNightTheme">Вимкнено</string>
@@ -491,6 +494,7 @@
     <string name="settings_header_money">Гроші</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterSaveProduct">Дія після натискання на кнопку "Зберегти товар"</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматично очищати кошик</string>
     <string name="settings_title_backup">Резервне копіювання</string>
     <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>

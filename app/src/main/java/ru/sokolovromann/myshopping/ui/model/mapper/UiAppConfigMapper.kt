@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppLocale
+import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -182,6 +183,16 @@ object UiAppConfigMapper {
                 title = UiString.FromResources(R.string.settings_title_enterToSaveProduct),
                 body = UiString.FromResources(R.string.settings_body_enterToSaveProduct),
                 checked = userPreferences.enterToSaveProduct
+            ),
+            SettingItem(
+                uid = SettingUid.AfterSaveProduct,
+                title = UiString.FromResources(R.string.settings_title_afterSaveProduct),
+                body = when (userPreferences.afterSaveProduct) {
+                    AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_notingAfterSaveProduct)
+                    AfterSaveProduct.CLOSE_SCREEN -> UiString.FromResources(R.string.settings_action_closeAfterSaveProduct)
+                    AfterSaveProduct.OPEN_NEW_SCREEN -> UiString.FromResources(R.string.settings_action_openAfterSaveProduct)
+                },
+                checked = null
             )
         )
     }

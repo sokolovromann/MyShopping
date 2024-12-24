@@ -447,6 +447,9 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
+    <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>
+    <string name="settings_action_notingAfterSaveProduct">Produkt speichern</string>
+    <string name="settings_action_openAfterSaveProduct">Produkt speichern und neuen Bildschirm öffnen</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Anwendung und Widget</string>
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
@@ -473,6 +476,7 @@
     <string name="settings_header_money">Geld</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterSaveProduct">Aktion nach dem Tippen auf die Schaltfläche "Produkt speichern"</string>
     <string name="settings_title_automaticallyEmptyTrash">Leeren Sie den Müll automatisch</string>
     <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>

@@ -504,6 +504,9 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">No tienes autocompletados</string>
 
+    <string name="settings_action_closeAfterSaveProduct">Guardar producto y cerrar pantalla</string>
+    <string name="settings_action_notingAfterSaveProduct">Guardar producto</string>
+    <string name="settings_action_openAfterSaveProduct">Guardar producto y abrir nueva pantalla</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Aplicación y widget</string>
     <string name="settings_action_selectAppNightTheme">Solo aplicacion</string>
     <string name="settings_action_selectDisabledNightTheme">Desactivado</string>
@@ -530,6 +533,7 @@
     <string name="settings_header_money">Dinero</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterSaveProduct">Acción después de tocar el botón Guardar producto</string>
     <string name="settings_title_automaticallyEmptyTrash">Vaciar la papelera automáticamente</string>
     <string name="settings_title_backup">Respaldo</string>
     <string name="settings_title_coloredCheckbox">Casillas de verificación de colores</string>

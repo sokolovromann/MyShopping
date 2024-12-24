@@ -517,6 +517,9 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Vous n\'avez pas de saisie automatique</string>
 
+    <string name="settings_action_closeAfterSaveProduct">Enregistrer le produit et fermer l\'écran</string>
+    <string name="settings_action_notingAfterSaveProduct">Enregistrer le produit</string>
+    <string name="settings_action_openAfterSaveProduct">Enregistrer le produit et ouvrir un nouvel écran</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Application et widget</string>
     <string name="settings_action_selectAppNightTheme">Uniquement application</string>
     <string name="settings_action_selectDisabledNightTheme">Désactivé</string>
@@ -543,6 +546,7 @@
     <string name="settings_header_money">Argent</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterSaveProduct">Action après avoir appuyé sur le bouton Enregistrer le produit</string>
     <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>
     <string name="settings_title_coloredCheckbox">Cases à cocher colorées</string>

@@ -512,6 +512,9 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
+    <string name="settings_action_closeAfterSaveProduct">Сохранить товар и закрыть экран</string>
+    <string name="settings_action_notingAfterSaveProduct">Сохранить товар</string>
+    <string name="settings_action_openAfterSaveProduct">Сохранить товар и открыть новый экран</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Приложение и виджет</string>
     <string name="settings_action_selectAppNightTheme">Только приложение</string>
     <string name="settings_action_selectDisabledNightTheme">Отключено</string>
@@ -538,6 +541,7 @@
     <string name="settings_header_money">Деньги</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterSaveProduct">Действие после нажатия на кнопку "Сохранить товар"</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматически очищать корзину</string>
     <string name="settings_title_backup">Резервное копирование</string>
     <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>

@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -21,6 +22,9 @@ class SettingsState {
         private set
 
     var nightTheme: SelectedValue<NightTheme> by mutableStateOf(SelectedValue(NightTheme.DefaultValue))
+        private set
+
+    var afterSaveProduct: SelectedValue<AfterSaveProduct> by mutableStateOf(SelectedValue(AfterSaveProduct.DefaultValue))
         private set
 
     var displayProductsValue: SelectedValue<DisplayProducts> by mutableStateOf(SelectedValue(DisplayProducts.DefaultValue))
@@ -42,6 +46,7 @@ class SettingsState {
         settings = UiAppConfigMapper.toSettingItems(settingsWithConfig)
         selectedUid = null
         nightTheme = toNightThemeValue(userPreferences.nightTheme)
+        afterSaveProduct = toAfterSaveProductValue(userPreferences.afterSaveProduct)
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
@@ -66,6 +71,19 @@ class SettingsState {
                 NightTheme.APP -> UiString.FromResources(R.string.settings_action_selectAppNightTheme)
                 NightTheme.WIDGET -> UiString.FromResources(R.string.settings_action_selectWidgetNightTheme)
                 NightTheme.APP_AND_WIDGET -> UiString.FromResources(R.string.settings_action_selectAppAndWidgetNightTheme)
+            }
+        )
+    }
+
+    private fun toAfterSaveProductValue(
+        afterSaveProduct: AfterSaveProduct
+    ): SelectedValue<AfterSaveProduct> {
+        return SelectedValue(
+            selected = afterSaveProduct,
+            text = when (afterSaveProduct) {
+                AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_notingAfterSaveProduct)
+                AfterSaveProduct.CLOSE_SCREEN -> UiString.FromResources(R.string.settings_action_closeAfterSaveProduct)
+                AfterSaveProduct.OPEN_NEW_SCREEN -> UiString.FromResources(R.string.settings_action_openAfterSaveProduct)
             }
         )
     }
