@@ -29,6 +29,7 @@ import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
+import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
@@ -53,6 +54,20 @@ fun AddEditProductScreen(
                     updateProductsWidget(context, it.shoppingUid)
                     navController.popBackStack()
                     focusManager.clearFocus(force = true)
+                }
+
+                is AddEditProductScreenEvent.OnShowNewScreen -> {
+                    updateProductsWidget(context, it.shoppingUid)
+                    navController.navigate(route = UiRoute.Products.addProductScreen(it.shoppingUid)) {
+                        popUpTo(route = UiRoute.Products.addProductScreen(it.shoppingUid)) {
+                            inclusive = true
+                        }
+                    }
+                    focusManager.clearFocus(force = true)
+                }
+
+                is AddEditProductScreenEvent.OnUpdateProductsWidget -> {
+                    updateProductsWidget(context, it.shoppingUid)
                 }
 
                 AddEditProductScreenEvent.OnShowKeyboard -> {

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.LockProductElement
@@ -96,6 +97,9 @@ class AddEditProductState {
     var displayPriceOtherFields: Boolean by mutableStateOf(false)
         private set
 
+    var afterSaveProduct: AfterSaveProduct by mutableStateOf(AfterSaveProduct.DefaultValue)
+        private set
+
     fun populate(productWithConfig: ProductWithConfig) {
         this.productWithConfig = productWithConfig
 
@@ -137,6 +141,7 @@ class AddEditProductState {
         displayNameOtherFields = userPreferences.displayOtherFields && isFieldsNotEmpty
 
         displayPriceOtherFields = product.discount.isNotEmpty()
+        afterSaveProduct = userPreferences.afterSaveProduct
     }
 
     fun onNameValueChanged(value: TextFieldValue) {
