@@ -33,6 +33,7 @@ object UserPreferencesDefaults {
     val DISPLAY_SHOPPINGS_PRODUCTS = DisplayProducts.DefaultValue
     val LOCK_PRODUCT_ELEMENT = LockProductElement.DefaultValue
     val AFTER_SAVE_PRODUCT = AfterSaveProduct.DefaultValue
+    val AFTER_ADD_SHOPPING = AfterAddShopping.DefaultValue
 
     fun getCurrency(): Currency {
         return Currency(

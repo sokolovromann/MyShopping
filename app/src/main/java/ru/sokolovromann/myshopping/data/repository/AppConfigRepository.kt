@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
@@ -110,6 +111,13 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         afterSaveProduct: AfterSaveProduct
     ): Result<Unit> = withContext(dispatcher) {
         appConfigDao.saveAfterSaveProduct(afterSaveProduct.name)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveAfterAddShopping(
+        afterAddShopping: AfterAddShopping
+    ): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveAfterAddShopping(afterAddShopping.name)
         return@withContext Result.success(Unit)
     }
 

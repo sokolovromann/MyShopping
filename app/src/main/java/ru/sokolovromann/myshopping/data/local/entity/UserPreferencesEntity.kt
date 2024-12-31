@@ -43,5 +43,6 @@ data class UserPreferencesEntity(
     val maxQuantityFractionDigits: Int? = null,
     val automaticallyEmptyTrash: Boolean? = null,
     val displayListOfAutocompletes: Boolean? = null,
-    val afterSaveProduct: String? = null
+    val afterSaveProduct: String? = null,
+    val afterAddShopping: String? = null
 )
