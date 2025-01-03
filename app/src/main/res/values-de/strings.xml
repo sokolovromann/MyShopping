@@ -449,7 +449,10 @@
 
     <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>
     <string name="settings_action_notingAfterSaveProduct">Produkt speichern</string>
+    <string name="settings_action_openAddProductAfterAddShopping">Liste hinzufügen und Bildschirm Produkt hinzufügen öffnen</string>
     <string name="settings_action_openAfterSaveProduct">Produkt speichern und neuen Bildschirm öffnen</string>
+    <string name="settings_action_openEditNameAfterAddShopping">Liste hinzufügen und Bildschirm Namen bearbeiten öffnen</string>
+    <string name="settings_action_openProductsAfterAddShopping">Liste hinzufügen und Bildschirm Produkte öffnen</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">Anwendung und Widget</string>
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
@@ -476,6 +479,7 @@
     <string name="settings_header_money">Geld</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterAddShopping">Aktion nach dem Tippen auf die Schaltfläche "Liste hinzufügen"</string>
     <string name="settings_title_afterSaveProduct">Aktion nach dem Tippen auf die Schaltfläche "Produkt speichern"</string>
     <string name="settings_title_automaticallyEmptyTrash">Leeren Sie den Müll automatisch</string>
     <string name="settings_title_backup">Sicherung</string>

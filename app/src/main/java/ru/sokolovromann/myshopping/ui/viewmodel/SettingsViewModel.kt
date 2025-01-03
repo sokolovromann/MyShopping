@@ -45,6 +45,8 @@ class SettingsViewModel @Inject constructor(
             is SettingsEvent.OnDisplayCompletedSelected -> onDisplayCompletedSelected(event)
 
             is SettingsEvent.OnAfterSaveProductSelected -> onAfterSaveProductSelected(event)
+
+            is SettingsEvent.OnAfterAddShoppingSelected -> onAfterAddShoppingSelected(event)
         }
     }
 
@@ -141,6 +143,13 @@ class SettingsViewModel @Inject constructor(
                 )
             }
 
+            SettingUid.AfterAddShopping -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.AfterAddShopping
+                )
+            }
+
             SettingUid.AutomaticallyEmptyTrash -> {
                 appConfigRepository.invertAutomaticallyEmptyTrash()
             }
@@ -216,6 +225,16 @@ class SettingsViewModel @Inject constructor(
         settingsState.onSelectUid(
             expanded = false,
             settingUid = SettingUid.AfterSaveProduct
+        )
+    }
+
+    private fun onAfterAddShoppingSelected(
+        event: SettingsEvent.OnAfterAddShoppingSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.saveAfterAddShopping(event.afterAddShopping)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.AfterAddShopping
         )
     }
 }

@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -168,6 +169,24 @@ fun SettingsScreen(
                         )
                     }
 
+                    SettingUid.AfterAddShopping -> {
+                        SettingsAfterAddShoppingMenu(
+                            expanded = it == state.selectedUid,
+                            afterAddShopping = state.afterAddShopping.selected,
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(
+                                    expanded = false,
+                                    uid = SettingUid.AfterAddShopping
+                                )
+                                viewModel.onEvent(event)
+                            },
+                            onSelected = { afterAddShopping ->
+                                val event = SettingsEvent.OnAfterAddShoppingSelected(afterAddShopping)
+                                viewModel.onEvent(event)
+                            }
+                        )
+                    }
+
                     else -> {}
                 }
             },
@@ -308,6 +327,35 @@ private fun SettingsAfterSaveProductMenu(
             onClick = { onSelected(AfterSaveProduct.OPEN_NEW_SCREEN) },
             text = { Text(text = stringResource(R.string.settings_action_openAfterSaveProduct)) },
             right = { CheckmarkAppCheckbox(checked = afterSaveProduct == AfterSaveProduct.OPEN_NEW_SCREEN) }
+        )
+    }
+}
+
+@Composable
+private fun SettingsAfterAddShoppingMenu(
+    expanded: Boolean,
+    afterAddShopping: AfterAddShopping,
+    onDismissRequest: () -> Unit,
+    onSelected: (AfterAddShopping) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterAddShopping.OPEN_PRODUCTS_SCREEN) },
+            text = { Text(text = stringResource(R.string.settings_action_openProductsAfterAddShopping)) },
+            right = { CheckmarkAppCheckbox(checked = afterAddShopping == AfterAddShopping.OPEN_PRODUCTS_SCREEN) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN) },
+            text = { Text(text = stringResource(R.string.settings_action_openEditNameAfterAddShopping)) },
+            right = { CheckmarkAppCheckbox(checked = afterAddShopping == AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN) },
+            text = { Text(text = stringResource(R.string.settings_action_openAddProductAfterAddShopping)) },
+            right = { CheckmarkAppCheckbox(checked = afterAddShopping == AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN) }
         )
     }
 }

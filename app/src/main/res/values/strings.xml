@@ -361,7 +361,10 @@
 
     <string name="settings_action_closeAfterSaveProduct">Save product and close screen</string>
     <string name="settings_action_notingAfterSaveProduct">Save product</string>
+    <string name="settings_action_openAddProductAfterAddShopping">Add list and open Add product screen</string>
     <string name="settings_action_openAfterSaveProduct">Save product and open new screen</string>
+    <string name="settings_action_openEditNameAfterAddShopping">Add list and open Edit name screen</string>
+    <string name="settings_action_openProductsAfterAddShopping">Add list and open Products screen</string>
     <string name="settings_action_selectAppAndWidgetNightTheme">App and widget</string>
     <string name="settings_action_selectAppNightTheme">Only app</string>
     <string name="settings_action_selectDisabledNightTheme">Disabled</string>
@@ -388,6 +391,7 @@
     <string name="settings_header_money">Money</string>
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
+    <string name="settings_title_afterAddShopping">Action after tapping by Add list button</string>
     <string name="settings_title_afterSaveProduct">Action after tapping by Save product button</string>
     <string name="settings_title_automaticallyEmptyTrash">Automatically empty trash</string>
     <string name="settings_title_backup">Backup</string>

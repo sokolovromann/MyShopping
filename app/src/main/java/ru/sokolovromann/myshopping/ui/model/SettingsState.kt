@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -27,6 +28,9 @@ class SettingsState {
     var afterSaveProduct: SelectedValue<AfterSaveProduct> by mutableStateOf(SelectedValue(AfterSaveProduct.DefaultValue))
         private set
 
+    var afterAddShopping: SelectedValue<AfterAddShopping> by mutableStateOf(SelectedValue(AfterAddShopping.DefaultValue))
+        private set
+
     var displayProductsValue: SelectedValue<DisplayProducts> by mutableStateOf(SelectedValue(DisplayProducts.DefaultValue))
         private set
 
@@ -47,6 +51,7 @@ class SettingsState {
         selectedUid = null
         nightTheme = toNightThemeValue(userPreferences.nightTheme)
         afterSaveProduct = toAfterSaveProductValue(userPreferences.afterSaveProduct)
+        afterAddShopping = toAfterAddShoppingValue(userPreferences.afterAddShopping)
         displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
@@ -84,6 +89,19 @@ class SettingsState {
                 AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_notingAfterSaveProduct)
                 AfterSaveProduct.CLOSE_SCREEN -> UiString.FromResources(R.string.settings_action_closeAfterSaveProduct)
                 AfterSaveProduct.OPEN_NEW_SCREEN -> UiString.FromResources(R.string.settings_action_openAfterSaveProduct)
+            }
+        )
+    }
+
+    private fun toAfterAddShoppingValue(
+        afterAddShopping: AfterAddShopping
+    ): SelectedValue<AfterAddShopping> {
+        return SelectedValue(
+            selected = afterAddShopping,
+            text = when (afterAddShopping) {
+                AfterAddShopping.OPEN_PRODUCTS_SCREEN -> UiString.FromResources(R.string.settings_action_openProductsAfterAddShopping)
+                AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN -> UiString.FromResources(R.string.settings_action_openEditNameAfterAddShopping)
+                AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> UiString.FromResources(R.string.settings_action_openAddProductAfterAddShopping)
             }
         )
     }

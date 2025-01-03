@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppLocale
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.FontSize
@@ -191,6 +192,16 @@ object UiAppConfigMapper {
                     AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_notingAfterSaveProduct)
                     AfterSaveProduct.CLOSE_SCREEN -> UiString.FromResources(R.string.settings_action_closeAfterSaveProduct)
                     AfterSaveProduct.OPEN_NEW_SCREEN -> UiString.FromResources(R.string.settings_action_openAfterSaveProduct)
+                },
+                checked = null
+            ),
+            SettingItem(
+                uid = SettingUid.AfterAddShopping,
+                title = UiString.FromResources(R.string.settings_title_afterAddShopping),
+                body = when (userPreferences.afterAddShopping) {
+                    AfterAddShopping.OPEN_PRODUCTS_SCREEN -> UiString.FromResources(R.string.settings_action_openProductsAfterAddShopping)
+                    AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN -> UiString.FromResources(R.string.settings_action_openEditNameAfterAddShopping)
+                    AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> UiString.FromResources(R.string.settings_action_openAddProductAfterAddShopping)
                 },
                 checked = null
             )
