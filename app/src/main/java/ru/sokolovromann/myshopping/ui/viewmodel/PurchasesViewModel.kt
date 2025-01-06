@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -112,7 +113,18 @@ class PurchasesViewModel @Inject constructor(
 
     private fun onClickAddShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
         shoppingListsRepository.addShopping().onSuccess {
-            _screenEventFlow.emit(PurchasesScreenEvent.OnShowProductsScreen(it))
+            val event = when (purchasesState.afterAddShopping) {
+                AfterAddShopping.OPEN_PRODUCTS_SCREEN -> {
+                    PurchasesScreenEvent.OnShowProductsScreen(it)
+                }
+                AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN -> {
+                    PurchasesScreenEvent.OnShowEditShoppingListNameScreen(it)
+                }
+                AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> {
+                    PurchasesScreenEvent.OnShowAddEditProductScreen(it)
+                }
+            }
+            _screenEventFlow.emit(event)
         }
     }
 

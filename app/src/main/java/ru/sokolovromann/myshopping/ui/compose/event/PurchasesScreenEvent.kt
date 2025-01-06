@@ -8,6 +8,10 @@ sealed class PurchasesScreenEvent {
 
     data class OnShowProductsScreen(val shoppingUid: String) : PurchasesScreenEvent()
 
+    data class OnShowEditShoppingListNameScreen(val shoppingUid: String) : PurchasesScreenEvent()
+
+    data class OnShowAddEditProductScreen(val shoppingUid: String) : PurchasesScreenEvent()
+
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : PurchasesScreenEvent()
 
     data class OnSelectDrawerScreen(val display: Boolean) : PurchasesScreenEvent()

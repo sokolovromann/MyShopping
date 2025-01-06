@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -93,6 +94,9 @@ class PurchasesState {
     var expandedMarkAsMenu: Boolean by mutableStateOf(false)
         private set
 
+    var afterAddShopping: AfterAddShopping by mutableStateOf(AfterAddShopping.DefaultValue)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -121,6 +125,7 @@ class PurchasesState {
         sortValue = toSortValue(userPreferences.shoppingsSort)
         sortFormatted = userPreferences.shoppingsSortFormatted
         expandedMarkAsMenu = false
+        afterAddShopping = userPreferences.afterAddShopping
         waiting = false
     }
 

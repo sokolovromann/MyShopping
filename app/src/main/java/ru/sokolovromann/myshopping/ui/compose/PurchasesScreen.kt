@@ -58,6 +58,14 @@ fun PurchasesScreen(
                     route = UiRoute.Products.productsScreen(it.shoppingUid)
                 )
 
+                is PurchasesScreenEvent.OnShowEditShoppingListNameScreen -> navController.navigate(
+                    route = UiRoute.Products.editShoppingListNameScreen(it.shoppingUid)
+                )
+
+                is PurchasesScreenEvent.OnShowAddEditProductScreen -> navController.navigate(
+                    route = UiRoute.Products.addProductScreen(it.shoppingUid)
+                )
+
                 is PurchasesScreenEvent.OnDrawerScreenSelected -> {
                     navController.navigateWithDrawerOption(route = it.drawerScreen.getScreen())
                     coroutineScope.launch { scaffoldState.drawerState.close() }
