@@ -20,10 +20,13 @@ class EditShoppingListNameState {
     var nameValue: TextFieldValue by mutableStateOf(TextFieldValue())
         private set
 
+    var isFromPurchases: Boolean by mutableStateOf(false)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(shoppingListWithConfig: ShoppingListWithConfig) {
+    fun populate(shoppingListWithConfig: ShoppingListWithConfig, isFromPurchases: Boolean?) {
         this.shoppingListWithConfig = shoppingListWithConfig
 
         val name = shoppingListWithConfig.getShopping().name
@@ -33,6 +36,7 @@ class EditShoppingListNameState {
             UiString.FromResources(R.string.editShoppingListName_header_editShoppingListName)
         }
         nameValue = name.toTextFieldValue()
+        this.isFromPurchases = isFromPurchases ?: false
         waiting = false
     }
 

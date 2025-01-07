@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
 import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
@@ -44,6 +45,12 @@ fun EditShoppingListNameScreen(
                     updateProductsWidget(context, it.shoppingUid)
                     focusManager.clearFocus(force = true)
                     navController.popBackStack()
+                }
+
+                is EditShoppingListNameScreenEvent.OnShowProductsScreen -> {
+                    updateProductsWidget(context, it.shoppingUid)
+                    focusManager.clearFocus(force = true)
+                    navController.navigate(route = UiRoute.Products.productsScreen(it.shoppingUid))
                 }
 
                 EditShoppingListNameScreenEvent.OnShowKeyboard -> {

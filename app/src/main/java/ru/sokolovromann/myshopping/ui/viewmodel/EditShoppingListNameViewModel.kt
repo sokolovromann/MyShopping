@@ -42,7 +42,8 @@ class EditShoppingListNameViewModel @Inject constructor(
     private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
-            editShoppingListNameState.populate(it)
+            val isFromPurchases = savedStateHandle.get<Boolean>(UiRouteKey.IsFromPurchases.key)
+            editShoppingListNameState.populate(it, isFromPurchases)
             _screenEventFlow.emit(EditShoppingListNameScreenEvent.OnShowKeyboard)
         }
     }
@@ -56,7 +57,11 @@ class EditShoppingListNameViewModel @Inject constructor(
             name = shopping.name
         )
 
-        val event = EditShoppingListNameScreenEvent.OnShowBackScreen(shopping.uid)
+        val event = if (editShoppingListNameState.isFromPurchases) {
+            EditShoppingListNameScreenEvent.OnShowProductsScreen(shopping.uid)
+        } else {
+            EditShoppingListNameScreenEvent.OnShowBackScreen(shopping.uid)
+        }
         _screenEventFlow.emit(event)
     }
 

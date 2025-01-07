@@ -41,6 +41,10 @@ sealed class UiRoute(val graph: String) {
             return "edit-shopping-list-name/$shoppingUid"
         }
 
+        fun editShoppingListNameFromPurchasesScreen(shoppingUid: String): String {
+            return "edit-shopping-list-name-from-purchases/$shoppingUid"
+        }
+
         fun editShoppingListReminderScreen(shoppingUid: String): String {
             return "edit-shopping-list-reminder/$shoppingUid"
         }
@@ -116,6 +120,10 @@ enum class UiRouteKey(val key: String, val placeholder: String) {
     IsCopy(
         key = "is-copy",
         placeholder = "{is-copy}"
+    ),
+    IsFromPurchases(
+        key = "is-from-purchases",
+        placeholder = "{is-from-purchases}"
     )
 }
 
@@ -211,6 +219,12 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
             SelectFromAutocompletesScreen(navController)
         }
         dialog(route = UiRoute.Products.editShoppingListNameScreen(UiRouteKey.ShoppingUid.placeholder)) {
+            EditShoppingListNameScreen(navController)
+        }
+        dialog(
+            route = UiRoute.Products.editShoppingListNameFromPurchasesScreen(UiRouteKey.ShoppingUid.placeholder),
+            arguments = listOf(navArgument(UiRouteKey.IsFromPurchases.key) { defaultValue = true })
+        ) {
             EditShoppingListNameScreen(navController)
         }
         dialog(route = UiRoute.Products.calculateChange(UiRouteKey.ShoppingUid.placeholder)) {

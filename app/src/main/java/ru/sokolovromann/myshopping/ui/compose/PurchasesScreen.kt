@@ -59,7 +59,7 @@ fun PurchasesScreen(
                 )
 
                 is PurchasesScreenEvent.OnShowEditShoppingListNameScreen -> navController.navigate(
-                    route = UiRoute.Products.editShoppingListNameScreen(it.shoppingUid)
+                    route = UiRoute.Products.editShoppingListNameFromPurchasesScreen(it.shoppingUid)
                 )
 
                 is PurchasesScreenEvent.OnShowAddEditProductScreen -> navController.navigate(
