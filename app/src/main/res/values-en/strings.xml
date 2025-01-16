@@ -551,7 +551,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">After adding shopping list</string>
-    <string name="settings_title_afterSaveProduct">After saving product</string>
+    <string name="settings_title_afterSaveProduct">After adding product</string>
     <string name="settings_title_automaticallyEmptyTrash">Automatically empty trash</string>
     <string name="settings_title_backup">Backup</string>
     <string name="settings_title_coloredCheckbox">Colored checkboxes</string>

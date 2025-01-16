@@ -545,7 +545,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">После добавления списка покупок</string>
-    <string name="settings_title_afterSaveProduct">После сохранения товара</string>
+    <string name="settings_title_afterSaveProduct">После добавления товара</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматически очищать корзину</string>
     <string name="settings_title_backup">Резервное копирование</string>
     <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>

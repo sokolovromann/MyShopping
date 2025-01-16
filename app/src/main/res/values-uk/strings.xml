@@ -498,7 +498,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">Після додавання списку покупок</string>
-    <string name="settings_title_afterSaveProduct">Після збереження товару</string>
+    <string name="settings_title_afterSaveProduct">Після додавання товару</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматично очищати кошик</string>
     <string name="settings_title_backup">Резервне копіювання</string>
     <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>

@@ -550,7 +550,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">Après avoir ajouté la liste de courses</string>
-    <string name="settings_title_afterSaveProduct">Après avoir enregistré le produit</string>
+    <string name="settings_title_afterSaveProduct">Après avoir ajouté le produit</string>
     <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>
     <string name="settings_title_coloredCheckbox">Cases à cocher colorées</string>
