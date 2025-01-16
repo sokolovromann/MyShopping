@@ -148,16 +148,21 @@ class AddEditProductViewModel @Inject constructor(
                 }
                 appConfigRepository.lockProductElement(addEditProductState.lockProductElementValue.selected)
 
-                val event = when (addEditProductState.afterSaveProduct) {
-                    AfterSaveProduct.CLOSE_SCREEN -> {
-                        AddEditProductScreenEvent.OnShowBackScreen(product.shoppingUid)
+                val isNewProduct = savedStateHandle.get<String>(UiRouteKey.ProductUid.key) == null
+                val event = if (isNewProduct) {
+                    when (addEditProductState.afterSaveProduct) {
+                        AfterSaveProduct.CLOSE_SCREEN -> {
+                            AddEditProductScreenEvent.OnShowBackScreen(product.shoppingUid)
+                        }
+                        AfterSaveProduct.OPEN_NEW_SCREEN -> {
+                            AddEditProductScreenEvent.OnShowNewScreen(product.shoppingUid)
+                        }
+                        AfterSaveProduct.NOTHING -> {
+                            AddEditProductScreenEvent.OnUpdateProductsWidget(product.shoppingUid)
+                        }
                     }
-                    AfterSaveProduct.OPEN_NEW_SCREEN -> {
-                        AddEditProductScreenEvent.OnShowNewScreen(product.shoppingUid)
-                    }
-                    AfterSaveProduct.NOTHING -> {
-                        AddEditProductScreenEvent.OnUpdateProductsWidget(product.shoppingUid)
-                    }
+                } else {
+                    AddEditProductScreenEvent.OnShowBackScreen(product.shoppingUid)
                 }
                 _screenEventFlow.emit(event)
             }
