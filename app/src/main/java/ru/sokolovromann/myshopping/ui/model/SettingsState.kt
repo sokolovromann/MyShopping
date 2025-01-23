@@ -7,7 +7,6 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.DeviceSize
-import ru.sokolovromann.myshopping.data.model.DisplayProducts
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
@@ -31,9 +30,6 @@ class SettingsState {
     var afterAddShopping: SelectedValue<AfterAddShopping> by mutableStateOf(SelectedValue(AfterAddShopping.DefaultValue))
         private set
 
-    var displayProductsValue: SelectedValue<DisplayProducts> by mutableStateOf(SelectedValue(DisplayProducts.DefaultValue))
-        private set
-
     var multiColumns: Boolean by mutableStateOf(false)
         private set
 
@@ -52,7 +48,6 @@ class SettingsState {
         nightTheme = toNightThemeValue(userPreferences.nightTheme)
         afterSaveProduct = toAfterSaveProductValue(userPreferences.afterSaveProduct)
         afterAddShopping = toAfterAddShoppingValue(userPreferences.afterAddShopping)
-        displayProductsValue = toDisplayProductsValue(userPreferences.displayShoppingsProducts)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
         waiting = false
@@ -102,20 +97,6 @@ class SettingsState {
                 AfterAddShopping.OPEN_PRODUCTS_SCREEN -> UiString.FromResources(R.string.settings_action_openProductsAfterAddShopping)
                 AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN -> UiString.FromResources(R.string.settings_action_openEditNameAfterAddShopping)
                 AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> UiString.FromResources(R.string.settings_action_openAddProductAfterAddShopping)
-            }
-        )
-    }
-
-    private fun toDisplayProductsValue(
-        displayProducts: DisplayProducts
-    ): SelectedValue<DisplayProducts> {
-        return SelectedValue(
-            selected = displayProducts,
-            text = when (displayProducts) {
-                DisplayProducts.VERTICAL -> UiString.FromResources(R.string.shoppingLists_action_displayProductsVertically)
-                DisplayProducts.HORIZONTAL -> UiString.FromResources(R.string.shoppingLists_action_displayProductsHorizontally)
-                DisplayProducts.HIDE -> UiString.FromResources(R.string.shoppingLists_action_hideProducts)
-                DisplayProducts.HIDE_IF_HAS_TITLE -> UiString.FromResources(R.string.shoppingLists_action_hideProductsIfHasTitle)
             }
         )
     }
