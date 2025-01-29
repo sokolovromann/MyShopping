@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.app.AppDispatchers
-import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.media.BackupMediaStore
@@ -21,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class BackupViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
-    private val appConfigRepository: AppConfigRepository,
     private val alarmManager: PurchasesAlarmManager,
     private val mediaStore: BackupMediaStore
 ): ViewModel(), ViewModelEvent<BackupEvent> {
@@ -48,9 +46,7 @@ class BackupViewModel @Inject constructor(
     }
 
     private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
-        appConfigRepository.getAppConfig().collect {
-            backupState.populate(it, mediaStore.checkCorrectWriteFilesPermissions())
-        }
+        backupState.populate(mediaStore.checkCorrectWriteFilesPermissions())
     }
 
     private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {

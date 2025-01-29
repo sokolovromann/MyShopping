@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.model.AppConfig
 
 class BackupState {
 
@@ -26,7 +25,7 @@ class BackupState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(appConfig: AppConfig, correctWriteFilesPermission: Boolean) {
+    fun populate(correctWriteFilesPermission: Boolean) {
         messageText = UiString.FromResources(R.string.backup_text_exportImport)
         locationText = UiString.FromString("")
         warningText = UiString.FromString("")
