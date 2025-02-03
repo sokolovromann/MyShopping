@@ -3,7 +3,6 @@ package ru.sokolovromann.myshopping.data.utils
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.Product
-import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -155,28 +154,6 @@ fun List<Product>.toProductsString(): String {
     val builder = StringBuilder()
     forEachIndexed { index, product ->
         builder.append(product.name)
-        if (index < lastIndex) {
-            builder.append(", ")
-        }
-    }
-    return builder.toString()
-}
-
-fun List<Shopping>.toShoppingsString(): String {
-    val builder = StringBuilder()
-    forEachIndexed { index, shopping ->
-        builder.append(shopping.name)
-        if (index < lastIndex) {
-            builder.append(", ")
-        }
-    }
-    return builder.toString()
-}
-
-fun List<Autocomplete>.toAutocompletesString(): String {
-    val builder = StringBuilder()
-    forEachIndexed { index, autocomplete ->
-        builder.append(autocomplete.name)
         if (index < lastIndex) {
             builder.append(", ")
         }
