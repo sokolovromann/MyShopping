@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
-import ru.sokolovromann.myshopping.data.utils.toProductsList
+import ru.sokolovromann.myshopping.data.utils.toSingleList
 
 data class ShoppingList(
     val shopping: Shopping = Shopping(),
@@ -9,7 +9,7 @@ data class ShoppingList(
 ) {
 
     fun getSortedProducts(displayCompleted: DisplayCompleted): List<Product> {
-        return getPinnedOtherSortedProducts(displayCompleted).toProductsList()
+        return getPinnedOtherSortedProducts(displayCompleted).toSingleList()
     }
 
     fun getPinnedOtherSortedProducts(displayCompleted: DisplayCompleted): Pair<List<Product>, List<Product>> {
