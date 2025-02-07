@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.model.UiString
 
+@Deprecated("Use AppHeaderItem")
 @Composable
 fun AppTextGridHeader(
     modifier: Modifier = Modifier,
@@ -29,6 +30,7 @@ fun AppTextGridHeader(
     }
 }
 
+@Deprecated("Use Text")
 @Composable
 fun AppTopBarActionText(
     modifier: Modifier = Modifier,
@@ -44,6 +46,7 @@ fun AppTopBarActionText(
     )
 }
 
+@Deprecated("Use Text")
 @Composable
 fun SaveDataText(
     modifier: Modifier = Modifier,
