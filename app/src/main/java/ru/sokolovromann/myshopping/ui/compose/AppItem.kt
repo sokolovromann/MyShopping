@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ru.sokolovromann.myshopping.ui.model.UiString
 
 @Composable
 fun AppMultiColumnsItem(
@@ -179,6 +180,27 @@ fun AppSurfaceItem(
 }
 
 @Composable
+fun AppHeaderItem(
+    text: UiString,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = getAppHeaderItemBackgroundColor(),
+    contentColor: Color = contentColorFor(backgroundColor)
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ProvideAppHeaderItemTextStyle(contentColor) {
+            Text(
+                text = text,
+                modifier = Modifier.padding(AppItemPaddings)
+            )
+        }
+    }
+}
+
+@Composable
 fun itemOrNull(enabled: Boolean, content: @Composable () -> Unit): @Composable (() -> Unit)? {
     return if (enabled) content else null
 }
@@ -207,6 +229,11 @@ fun getAppItemBackgroundColor(selected: Boolean): Color {
     } else {
         MaterialTheme.colors.surface
     }
+}
+
+@Composable
+fun getAppHeaderItemBackgroundColor(): Color {
+    return MaterialTheme.colors.background
 }
 
 @Composable
@@ -283,6 +310,15 @@ private fun ProvideAppItemBodyTextStyle(contentColor: Color, content: @Composabl
     val color = contentColor.copy(alpha = ContentAlpha.medium)
     ProvideTextStyle(
         value = MaterialTheme.typography.body2.copy(color = color),
+        content = content
+    )
+}
+
+@Composable
+private fun ProvideAppHeaderItemTextStyle(contentColor: Color, content: @Composable () -> Unit) {
+    val color = contentColor.copy(alpha = ContentAlpha.medium)
+    ProvideTextStyle(
+        value = MaterialTheme.typography.body1.copy(color = color),
         content = content
     )
 }

@@ -869,8 +869,16 @@ private fun ProductsGrid(
         isNotFound = isNotFound
     ) {
         if (pinnedItems.isNotEmpty()) {
+            val headerPaddings = if (multiColumns) {
+                ProductsGridMultiColumnsPaddings
+            } else {
+                ProductsGridSingleColumnsPaddings
+            }
             item(span = StaggeredGridItemSpan.FullLine) {
-                AppTextGridHeader(text = stringResource(R.string.products_text_pinnedProducts))
+                AppHeaderItem(
+                    text = UiString.FromResources(R.string.products_text_pinnedProducts),
+                    modifier = Modifier.padding(headerPaddings)
+                )
             }
 
             items(pinnedItems) { item ->
@@ -916,7 +924,10 @@ private fun ProductsGrid(
 
             if (otherItems.isNotEmpty()) {
                 item(span = StaggeredGridItemSpan.FullLine) {
-                    AppTextGridHeader(text = stringResource(R.string.products_text_otherProducts))
+                    AppHeaderItem(
+                        text = UiString.FromResources(R.string.products_text_otherProducts),
+                        modifier = Modifier.padding(headerPaddings)
+                    )
                 }
             }
         }
@@ -1058,4 +1069,6 @@ private val ProductsHiddenProductsPaddings = PaddingValues(
 )
 private val ProductsNamePaddings = PaddingValues(horizontal = 8.dp)
 private val ProductsGridBarPaddings = PaddingValues(all = 8.dp)
+private val ProductsGridMultiColumnsPaddings = PaddingValues(horizontal = 0.dp)
+private val ProductsGridSingleColumnsPaddings = PaddingValues(horizontal = 4.dp)
 private val ProductsSearchPaddings = PaddingValues(horizontal = 8.dp)

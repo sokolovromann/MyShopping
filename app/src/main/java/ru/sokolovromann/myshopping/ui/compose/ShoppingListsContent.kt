@@ -58,7 +58,7 @@ fun ShoppingListsGrid(
     ) {
         if (pinnedItems.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {
-                AppTextGridHeader(text = stringResource(R.string.shoppingLists_text_pinnedShoppingLists))
+                AppHeaderItem(UiString.FromResources(R.string.shoppingLists_text_pinnedShoppingLists))
             }
 
             items(pinnedItems) { item ->
@@ -93,7 +93,7 @@ fun ShoppingListsGrid(
 
             if (otherItems.isNotEmpty()) {
                 item(span = StaggeredGridItemSpan.FullLine) {
-                    AppTextGridHeader(text = stringResource(R.string.shoppingLists_text_otherShoppingLists))
+                    AppHeaderItem(UiString.FromResources(R.string.shoppingLists_text_otherShoppingLists))
                 }
             }
         }
