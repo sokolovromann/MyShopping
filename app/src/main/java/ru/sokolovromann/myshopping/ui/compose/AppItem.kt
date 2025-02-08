@@ -193,7 +193,7 @@ fun AppHeaderItem(
     ) {
         ProvideAppHeaderItemTextStyle(contentColor) {
             Text(
-                text = text,
+                text = text.asCompose(),
                 modifier = Modifier.padding(AppItemPaddings)
             )
         }

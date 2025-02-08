@@ -101,7 +101,7 @@ fun AddEditProductScreen(
                     TextButton(
                         enabled = !state.waiting,
                         onClick = { viewModel.onEvent(AddEditProductEvent.OnClickSave) },
-                        content = { SaveDataText(text = UiString.FromResources(R.string.addEditProduct_action_saveProduct)) }
+                        content = { Text(stringResource(R.string.addEditProduct_action_saveProduct)) }
                     )
                 }
             )

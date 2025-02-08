@@ -63,7 +63,7 @@ fun SelectFromAutocompletesScreen(
                     TextButton(
                         enabled = !state.waiting,
                         onClick = { viewModel.onEvent(SelectFromAutocompletesEvent.OnClickSave) },
-                        content = { SaveDataText(text = UiString.FromResources(R.string.selectFromAutocompletes_action_addToShoppingList)) }
+                        content = { Text(stringResource(R.string.selectFromAutocompletes_action_addToShoppingList)) }
                     )
                 }
             )
