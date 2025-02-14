@@ -33,6 +33,7 @@ fun DefaultIconButton(
     }
 }
 
+@Deprecated("Use TextButton or OutlinedButton")
 @Composable
 fun AppDialogActionButton(
     modifier: Modifier = Modifier,
