@@ -201,17 +201,17 @@ fun ArchiveScreen(
                             ) {
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_header_view)) },
-                                    right = { DefaultIcon(UiIcon.More) },
+                                    right = { DefaultIcon(UiIcon.MoreMenu) },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectView(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_displayProducts)) },
-                                    right = { DefaultIcon(UiIcon.More) },
+                                    right = { DefaultIcon(UiIcon.MoreMenu) },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectDisplayProducts(true)) }
                                 )
                                 AppDropdownMenuItem(
                                     text = { Text(text = stringResource(R.string.shoppingLists_action_sort)) },
-                                    right = { DefaultIcon(UiIcon.More) },
+                                    right = { DefaultIcon(UiIcon.MoreMenu) },
                                     onClick = { viewModel.onEvent(ArchiveEvent.OnSelectSort(true)) }
                                 )
                                 AppDropdownMenuItem(
