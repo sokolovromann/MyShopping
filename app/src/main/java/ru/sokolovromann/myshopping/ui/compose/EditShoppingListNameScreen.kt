@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -60,20 +61,22 @@ fun EditShoppingListNameScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(EditShoppingListNameEvent.OnClickCancel) },
-        header = { Text(text = state.header.asCompose()) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = EditShoppingListNameEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = { Text(state.header.asCompose()) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditShoppingListNameEvent.OnClickCancel) },
                 enabled = !state.waiting,
-                content = { Text(text = stringResource(R.string.editShoppingListName_action_cancelSavingShoppingListName)) }
+                content = { Text(stringResource(R.string.editShoppingListName_action_cancelSavingShoppingListName)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditShoppingListNameEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
-                content = { Text(text = stringResource(R.string.editShoppingListName_action_saveShoppingListName)) }
+                content = { Text(stringResource(R.string.editShoppingListName_action_saveShoppingListName)) }
             )
         }
     ) {

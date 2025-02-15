@@ -11,13 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -69,155 +68,150 @@ fun EditShoppingListTotalScreen(
         }
     }
 
-    AppDialog(
+    DefaultDialog(
         onDismissRequest = {
-            viewModel.onEvent(EditShoppingListTotalEvent.OnClickCancel)
+            val event = EditShoppingListTotalEvent.OnClickCancel
+            viewModel.onEvent(event)
         },
-        header = { Text(text = state.header.asCompose()) },
+        header = { Text(state.header.asCompose()) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickCancel) },
-                content = {
-                    Text(text = stringResource(R.string.editShoppingListTotal_action_cancelSavingShoppingListTotal))
-                }
+                enabled = !state.waiting,
+                content = { Text(stringResource(R.string.editShoppingListTotal_action_cancelSavingShoppingListTotal)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) },
-                primaryButton = true,
-                content = {
-                    Text(text = stringResource(R.string.editShoppingListTotal_action_saveShoppingListTotal))
-                }
+                enabled = !state.waiting,
+                content = { Text(stringResource(R.string.editShoppingListTotal_action_saveShoppingListTotal)) }
             )
         }
     ) {
-        val scrollState = rememberScrollState()
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
+        OutlinedAppTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
+            value = state.totalValue,
+            onValueChange = {
+                val event = EditShoppingListTotalEvent.OnTotalChanged(it)
+                viewModel.onEvent(event)
+            },
+            label = { Text(text = stringResource(R.string.editShoppingListTotal_label_total)) },
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences,
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) },
+            )
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(EditShoppingListTotalPaddings)
+        ) {
             OutlinedAppTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester),
-                value = state.totalValue,
+                modifier = Modifier.weight(0.5f),
+                value = state.discountValue,
                 onValueChange = {
-                    val event = EditShoppingListTotalEvent.OnTotalChanged(it)
+                    val event = EditShoppingListTotalEvent.OnDiscountChanged(it)
                     viewModel.onEvent(event)
                 },
-                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_total)) },
+                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_discount)) },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     keyboardType = KeyboardType.Decimal,
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
                 )
             )
 
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(EditShoppingListTotalPaddings)
+            Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
+
+            EditShoppingListSelectButton(
+                modifier = Modifier.weight(0.5f),
+                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(true)) },
             ) {
-                OutlinedAppTextField(
-                    modifier = Modifier.weight(0.5f),
-                    value = state.discountValue,
-                    onValueChange = {
-                        val event = EditShoppingListTotalEvent.OnDiscountChanged(it)
-                        viewModel.onEvent(event)
-                    },
-                    label = { Text(text = stringResource(R.string.editShoppingListTotal_label_discount)) },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        keyboardType = KeyboardType.Decimal,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                    )
+                Text(
+                    text = state.discountAsPercentValue.text.asCompose(),
+                    color = MaterialTheme.colors.onSurface
                 )
 
-                Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
-
-                EditShoppingListSelectButton(
-                    modifier = Modifier.weight(0.5f),
-                    onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(true)) },
+                AppDropdownMenu(
+                    expanded = state.expandedDiscountAsPercent,
+                    onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(false)) }
                 ) {
-                    Text(
-                        text = state.discountAsPercentValue.text.asCompose(),
-                        color = MaterialTheme.colors.onSurface
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(true)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsPercents)) },
+                        right = { CheckmarkAppCheckbox(checked = state.discountAsPercentValue.selected) }
                     )
-
-                    AppDropdownMenu(
-                        expanded = state.expandedDiscountAsPercent,
-                        onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectDiscountAsPercent(false)) }
-                    ) {
-                        AppDropdownMenuItem(
-                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(true)) },
-                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsPercents)) },
-                            right = { CheckmarkAppCheckbox(checked = state.discountAsPercentValue.selected) }
-                        )
-                        AppDropdownMenuItem(
-                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(false)) },
-                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsMoney)) },
-                            right = { CheckmarkAppCheckbox(checked = !state.discountAsPercentValue.selected) }
-                        )
-                    }
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnDiscountAsPercentSelected(false)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectDiscountAsMoney)) },
+                        right = { CheckmarkAppCheckbox(checked = !state.discountAsPercentValue.selected) }
+                    )
                 }
             }
+        }
 
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(EditShoppingListTotalPaddings)
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(EditShoppingListTotalPaddings)
+        ) {
+            OutlinedAppTextField(
+                modifier = Modifier.weight(0.5f),
+                value = state.budgetValue,
+                onValueChange = {
+                    val event = EditShoppingListTotalEvent.OnBudgetChanged(it)
+                    viewModel.onEvent(event)
+                },
+                label = { Text(text = stringResource(R.string.editShoppingListTotal_label_budget)) },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
+                )
+            )
+
+            Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
+
+            EditShoppingListSelectButton(
+                modifier = Modifier.weight(0.5f),
+                onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(true)) },
             ) {
-                OutlinedAppTextField(
-                    modifier = Modifier.weight(0.5f),
-                    value = state.budgetValue,
-                    onValueChange = {
-                        val event = EditShoppingListTotalEvent.OnBudgetChanged(it)
-                        viewModel.onEvent(event)
-                    },
-                    label = { Text(text = stringResource(R.string.editShoppingListTotal_label_budget)) },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        keyboardType = KeyboardType.Decimal,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { viewModel.onEvent(EditShoppingListTotalEvent.OnClickSave) }
-                    )
+                Text(
+                    text = state.budgetProducts.text.asCompose(),
+                    color = MaterialTheme.colors.onSurface
                 )
 
-                Spacer(modifier = Modifier.size(EditShoppingListTotalSpacerSize))
-
-                EditShoppingListSelectButton(
-                    modifier = Modifier.weight(0.5f),
-                    onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(true)) },
+                AppDropdownMenu(
+                    expanded = state.expandedBudgetProducts,
+                    onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(false)) }
                 ) {
-                    Text(
-                        text = state.budgetProducts.text.asCompose(),
-                        color = MaterialTheme.colors.onSurface
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ALL)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectAllProducts)) },
+                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ALL) }
                     )
-
-                    AppDropdownMenu(
-                        expanded = state.expandedBudgetProducts,
-                        onDismissRequest = { viewModel.onEvent(EditShoppingListTotalEvent.OnSelectBudgetProducts(false)) }
-                    ) {
-                        AppDropdownMenuItem(
-                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ALL)) },
-                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectAllProducts)) },
-                            right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ALL) }
-                        )
-                        AppDropdownMenuItem(
-                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.COMPLETED)) },
-                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectCompletedProducts)) },
-                            right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.COMPLETED) }
-                        )
-                        AppDropdownMenuItem(
-                            onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ACTIVE)) },
-                            text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectActiveProducts)) },
-                            right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ACTIVE) }
-                        )
-                    }
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.COMPLETED)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectCompletedProducts)) },
+                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.COMPLETED) }
+                    )
+                    AppDropdownMenuItem(
+                        onClick = { viewModel.onEvent(EditShoppingListTotalEvent.OnBudgetProductsSelected(DisplayTotal.ACTIVE)) },
+                        text = { Text(text = stringResource(R.string.editShoppingListTotal_action_selectActiveProducts)) },
+                        right = { CheckmarkAppCheckbox(checked = state.budgetProducts.selected == DisplayTotal.ACTIVE) }
+                    )
                 }
             }
         }

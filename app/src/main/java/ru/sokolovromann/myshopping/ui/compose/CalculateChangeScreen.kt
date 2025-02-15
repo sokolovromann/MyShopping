@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -48,15 +49,17 @@ fun CalculateChangeScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(CalculateChangeEvent.OnClickCancel) },
-        header = { Text(text = stringResource(R.string.calculateChange_header)) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = CalculateChangeEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = { Text(stringResource(R.string.calculateChange_header)) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(CalculateChangeEvent.OnClickCancel) },
-                content = {
-                    Text(text = stringResource(R.string.calculateChange_action_closeCalculatingChange))
-                }
+                enabled = !state.waiting,
+                content = { Text(stringResource(R.string.calculateChange_action_closeCalculatingChange)) }
             )
         }
     ) {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -51,50 +52,32 @@ fun EditReminderScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(EditReminderEvent.OnClickCancel) },
-        header = { Text(text = state.header.asCompose()) },
-        actionButtons = {
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Center
-            ) {
-                if (state.displayDeleteButton) {
-                    AppDialogActionButton(
-                        onClick = { viewModel.onEvent(EditReminderEvent.OnClickDelete) },
-                        content = {
-                            Text(text = stringResource(R.string.editReminder_action_deleteReminder))
-                        }
-                    )
-                }
-                Row {
-                    AppDialogActionButton(
-                        onClick = { viewModel.onEvent(EditReminderEvent.OnClickCancel) },
-                        content = {
-                            Text(text = stringResource(R.string.editReminder_action_cancelSavingReminder))
-                        }
-                    )
-
-                    if (state.displayPermissionError) {
-                        AppDialogActionButton(
-                            onClick = { viewModel.onEvent(EditReminderEvent.OnClickOpenPermissions) },
-                            primaryButton = true,
-                            content = {
-                                Text(text = stringResource(R.string.editReminder_action_openPermissions))
-                            }
-                        )
-                    } else {
-                        AppDialogActionButton(
-                            onClick = { viewModel.onEvent(EditReminderEvent.OnClickSave) },
-                            primaryButton = true,
-                            content = {
-                                Text(text = stringResource(R.string.editReminder_action_saveReminder))
-                            }
-                        )
-                    }
-                }
-            }
+    DefaultDialog(
+        onDismissRequest = {
+            val event = EditReminderEvent.OnClickCancel
+            viewModel.onEvent(event)
         },
+        header = { Text(state.header.asCompose()) },
+        actionButtons = {
+            if (state.displayPermissionError) {
+                TextButton(
+                    onClick = { viewModel.onEvent(EditReminderEvent.OnClickOpenPermissions) },
+                    enabled = !state.waiting,
+                    content = { Text(stringResource(R.string.editReminder_action_openPermissions)) }
+                )
+            } else {
+                TextButton(
+                    onClick = { viewModel.onEvent(EditReminderEvent.OnClickCancel) },
+                    enabled = !state.waiting,
+                    content = { Text(stringResource(R.string.editReminder_action_cancelSavingReminder)) }
+                )
+                TextButton(
+                    onClick = { viewModel.onEvent(EditReminderEvent.OnClickSave) },
+                    enabled = !state.waiting,
+                    content = { Text(stringResource(R.string.editReminder_action_saveReminder)) }
+                )
+            }
+        }
     ) {
         if (state.displayPermissionError) {
             Text(
@@ -131,6 +114,15 @@ fun EditReminderScreen(
                         content = { Text(text = state.calendar.getDisplayTime().asCompose()) }
                     )
                 }
+            }
+            if (state.displayDeleteButton) {
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { viewModel.onEvent(EditReminderEvent.OnClickDelete) },
+                    enabled = !state.waiting,
+                    contentPadding = EditReminderContentPadding,
+                    content = { Text(stringResource(R.string.editReminder_action_deleteReminder)) }
+                )
             }
         }
 
