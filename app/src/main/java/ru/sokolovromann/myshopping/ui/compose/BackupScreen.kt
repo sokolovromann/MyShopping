@@ -8,7 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +16,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -70,44 +70,37 @@ fun BackupScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(BackupEvent.OnClickCancel) },
-        header = { Text(text = stringResource(R.string.backup_header)) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = BackupEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = { Text(stringResource(R.string.backup_header)) },
         actionButtons = {
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Center
-            ) {
-                if (state.permissionError) {
-                    BackupCancelButton { viewModel.onEvent(BackupEvent.OnClickCancel) }
-                    AppDialogActionButton(
-                        onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
-                        primaryButton = true,
-                        content = {
-                            Text(text = stringResource(R.string.backup_action_openPermissions))
-                        }
+            if (state.permissionError) {
+                TextButton(
+                    onClick = { viewModel.onEvent(BackupEvent.OnClickOpenPermissions) },
+                    enabled = !state.waiting,
+                    content = { Text(stringResource(R.string.backup_action_openPermissions)) }
+                )
+            } else {
+                if (state.displayBack) {
+                    TextButton(
+                        onClick = { viewModel.onEvent(BackupEvent.OnClickCancel) },
+                        enabled = !state.waiting,
+                        content = { Text(stringResource(R.string.backup_action_closeBackup)) }
                     )
                 } else {
-                    if (state.displayBack) {
-                        BackupCancelButton { viewModel.onEvent(BackupEvent.OnClickCancel) }
-                    } else {
-                        Row {
-                            AppDialogActionButton(
-                                onClick = { viewModel.onEvent(BackupEvent.OnClickExport) },
-                                enabled = !state.waiting,
-                                content = {
-                                    Text(text = stringResource(R.string.backup_action_export))
-                                }
-                            )
-                            AppDialogActionButton(
-                                onClick = { viewModel.onEvent(BackupEvent.OnClickImport) },
-                                enabled = !state.waiting,
-                                content = {
-                                    Text(text = stringResource(R.string.backup_action_import))
-                                }
-                            )
-                        }
-                    }
+                    TextButton(
+                        onClick = { viewModel.onEvent(BackupEvent.OnClickExport) },
+                        enabled = !state.waiting,
+                        content = { Text(stringResource(R.string.backup_action_export)) }
+                    )
+                    TextButton(
+                        onClick = { viewModel.onEvent(BackupEvent.OnClickImport) },
+                        enabled = !state.waiting,
+                        content = { Text(stringResource(R.string.backup_action_import)) }
+                    )
                 }
             }
         }
@@ -167,18 +160,6 @@ private fun registerSelectFileForResult(
     if (result.resultCode == Activity.RESULT_OK) {
         result.data?.data?.let { onResult(it) }
     }
-}
-
-@Composable
-private fun BackupCancelButton(
-    onClick: () -> Unit
-) {
-    AppDialogActionButton(
-        onClick = onClick,
-        content = {
-            Text(text = stringResource(R.string.backup_action_closeBackup))
-        }
-    )
 }
 
 private val BackupSpacerMediumSize = 8.dp

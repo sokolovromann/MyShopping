@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -45,26 +46,26 @@ fun AddEditAutocompleteScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickCancel) },
-        header = { Text(text = state.header.asCompose()) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = AddEditAutocompleteEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = {
+            Text(state.header.asCompose())
+        },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickCancel) },
                 enabled = !state.waiting,
-                content = {
-                    Text(text = stringResource(R.string.addEditAutocomplete_action_cancelSavingAutocomplete))
-                }
+                content = { Text(stringResource(R.string.addEditAutocomplete_action_cancelSavingAutocomplete)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
-                content = {
-                    Text(text = stringResource(R.string.addEditAutocomplete_action_saveAutocomplete))
-                }
+                content = { Text(stringResource(R.string.addEditAutocomplete_action_saveAutocomplete)) }
             )
-        }
+        },
     ) {
         OutlinedAppTextField(
             modifier = Modifier
