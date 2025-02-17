@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -42,20 +43,22 @@ fun MaxAutocompletesScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(MaxAutocompletesEvent.OnClickCancel) },
-        header = { Text(text = stringResource(R.string.maxAutocompletes_header)) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = MaxAutocompletesEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = { Text(stringResource(R.string.maxAutocompletes_header)) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(MaxAutocompletesEvent.OnClickCancel) },
                 enabled = !state.waiting,
-                content = { Text(text = stringResource(R.string.maxAutocompletes_action_cancelSavingMaxAutocompletes)) }
+                content = { Text(stringResource(R.string.maxAutocompletes_action_cancelSavingMaxAutocompletes)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(MaxAutocompletesEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
-                content = { Text(text = stringResource(R.string.maxAutocompletes_action_saveMaxAutocompletes)) }
+                content = { Text(stringResource(R.string.maxAutocompletes_action_saveMaxAutocompletes)) }
             )
         }
     ) {

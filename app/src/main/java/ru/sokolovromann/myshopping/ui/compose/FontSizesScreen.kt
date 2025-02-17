@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -37,18 +38,17 @@ fun FontSizeScreen(
         }
     }
 
-    AppDialog(
+    DefaultDialog(
         onDismissRequest = { viewModel.onEvent(FontSizesEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.fontSizes_header)) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(FontSizesEvent.OnClickCancel) },
                 enabled = !state.waiting,
                 content = { Text(text = stringResource(R.string.fontSizes_action_cancelSavingFontSize)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(FontSizesEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
                 content = { Text(text = stringResource(R.string.fontSizes_action_saveFontSize)) }
             )

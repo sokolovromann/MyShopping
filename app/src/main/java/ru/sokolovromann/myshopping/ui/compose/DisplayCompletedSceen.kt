@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -38,18 +39,17 @@ fun DisplayCompletedScreen(
         }
     }
 
-    AppDialog(
+    DefaultDialog(
         onDismissRequest = { viewModel.onEvent(DisplayCompletedEvent.OnClickCancel) },
         header = { Text(text = stringResource(R.string.displayCompleted_header)) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(DisplayCompletedEvent.OnClickCancel) },
                 enabled = !state.waiting,
                 content = { Text(text = stringResource(R.string.displayCompleted_action_cancelSavingDisplayCompleted)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(DisplayCompletedEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
                 content = { Text(text = stringResource(R.string.displayCompleted_action_saveDisplayCompleted)) }
             )
