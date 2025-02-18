@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -52,24 +53,22 @@ fun EditCurrencySymbolScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickCancel) },
-        header = { Text(text = stringResource(R.string.editCurrencySymbol_header)) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = EditCurrencySymbolEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = { Text(stringResource(R.string.editCurrencySymbol_header)) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickCancel) },
                 enabled = !state.waiting,
-                content = {
-                    Text(text = stringResource(R.string.editCurrencySymbol_action_cancelSavingCurrencySymbol))
-                }
+                content = { Text(stringResource(R.string.editCurrencySymbol_action_cancelSavingCurrencySymbol)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditCurrencySymbolEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
-                content = {
-                    Text(text = stringResource(R.string.editCurrencySymbol_action_saveCurrencySymbol))
-                }
+                content = { Text(stringResource(R.string.editCurrencySymbol_action_saveCurrencySymbol)) }
             )
         }
     ) {

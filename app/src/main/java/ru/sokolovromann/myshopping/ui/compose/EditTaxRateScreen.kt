@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -52,20 +53,22 @@ fun EditTaxRateScreen(
         }
     }
 
-    AppDialog(
-        onDismissRequest = { viewModel.onEvent(EditTaxRateEvent.OnClickCancel) },
-        header = { Text(text = stringResource(R.string.editTaxRate_header)) },
+    DefaultDialog(
+        onDismissRequest = {
+            val event = EditTaxRateEvent.OnClickCancel
+            viewModel.onEvent(event)
+        },
+        header = { Text(stringResource(R.string.editTaxRate_header)) },
         actionButtons = {
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditTaxRateEvent.OnClickCancel) },
                 enabled = !state.waiting,
-                content = { Text(text = stringResource(R.string.editTaxRate_action_cancelSavingTaxRate)) }
+                content = { Text(stringResource(R.string.editTaxRate_action_cancelSavingTaxRate)) }
             )
-            AppDialogActionButton(
+            TextButton(
                 onClick = { viewModel.onEvent(EditTaxRateEvent.OnClickSave) },
-                primaryButton = true,
                 enabled = !state.waiting,
-                content = { Text(text = stringResource(R.string.editTaxRate_action_saveTaxRate)) }
+                content = { Text(stringResource(R.string.editTaxRate_action_saveTaxRate)) }
             )
         }
     ) {
