@@ -127,7 +127,7 @@ fun EditReminderScreen(
         }
 
         if (state.displayDateDialog) {
-            AppDatePickerDialog(
+            DefaultDatePickerDialog(
                 onDismissRequest = {
                     viewModel.onEvent(EditReminderEvent.OnSelectDate(false))
                 },
@@ -143,7 +143,7 @@ fun EditReminderScreen(
         }
 
         if (state.displayTimeDialog) {
-            AppTimePickerDialog(
+            DefaultTimePickerDialog(
                 onDismissRequest = {
                     viewModel.onEvent(EditReminderEvent.OnSelectTime(false))
                 },

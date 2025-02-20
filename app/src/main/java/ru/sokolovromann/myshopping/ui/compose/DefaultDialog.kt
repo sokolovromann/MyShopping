@@ -1,5 +1,10 @@
 package ru.sokolovromann.myshopping.ui.compose
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.widget.DatePicker
+import android.widget.TimePicker
+import androidx.annotation.StyleRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -63,6 +69,42 @@ fun DefaultDialog(
                 content = actionButtons
             )
         }
+    }
+}
+
+@Composable
+fun DefaultDatePickerDialog(
+    onDismissRequest: () -> Unit,
+    onDateChanged: (Int, Int, Int) -> Unit,
+    @StyleRes dialogStyle: Int,
+    year: Int,
+    monthOfYear: Int,
+    dayOfMonth: Int
+) {
+    val context = LocalContext.current
+    val onDateSetListener = { _: DatePicker, y: Int, m: Int, d: Int -> onDateChanged(y, m, d) }
+
+    DatePickerDialog(context, dialogStyle, onDateSetListener, year, monthOfYear, dayOfMonth).apply {
+        setOnCancelListener { onDismissRequest() }
+        show()
+    }
+}
+
+@Composable
+fun DefaultTimePickerDialog(
+    onDismissRequest: () -> Unit,
+    onTimeChanged: (Int, Int) -> Unit,
+    @StyleRes dialogStyle: Int,
+    hourOfDay: Int,
+    minute: Int,
+    is24HourFormat: Boolean
+) {
+    val context = LocalContext.current
+    val onTimeSetListener = { _: TimePicker, h: Int, m: Int -> onTimeChanged(h, m) }
+
+    TimePickerDialog(context, dialogStyle, onTimeSetListener, hourOfDay, minute, is24HourFormat).apply {
+        setOnCancelListener { onDismissRequest() }
+        show()
     }
 }
 
