@@ -51,9 +51,7 @@ fun AddEditAutocompleteScreen(
             val event = AddEditAutocompleteEvent.OnClickCancel
             viewModel.onEvent(event)
         },
-        header = {
-            Text(state.header.asCompose())
-        },
+        header = { Text(stringResource(R.string.addEditAutocomplete_header)) },
         actionButtons = {
             TextButton(
                 onClick = { viewModel.onEvent(AddEditAutocompleteEvent.OnClickCancel) },

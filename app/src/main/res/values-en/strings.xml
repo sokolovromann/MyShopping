@@ -11,8 +11,7 @@
 
     <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
-    <string name="addEditAutocomplete_header_addAutocomplete">@string/all_header_addDataScreen</string>
-    <string name="addEditAutocomplete_header_editAutocomplete">@string/all_header_editDataScreen</string>
+    <string name="addEditAutocomplete_header">New autocomplete</string>
     <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
     <string name="addEditAutocomplete_message_nameError">@string/all_message_nameError</string>
 

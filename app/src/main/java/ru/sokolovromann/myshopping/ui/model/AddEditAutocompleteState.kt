@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
-import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.DateTime
@@ -13,9 +12,6 @@ import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 class AddEditAutocompleteState {
 
     private var autocompleteWithConfig: AutocompleteWithConfig by mutableStateOf(AutocompleteWithConfig())
-
-    var header: UiString by mutableStateOf(UiString.FromString(""))
-        private set
 
     var nameValue: TextFieldValue by mutableStateOf(TextFieldValue())
         private set
@@ -29,11 +25,6 @@ class AddEditAutocompleteState {
     fun populate(autocompleteWithConfig: AutocompleteWithConfig) {
         this.autocompleteWithConfig = autocompleteWithConfig
 
-        header = if (autocompleteWithConfig.isEmpty()) {
-            UiString.FromResources(R.string.addEditAutocomplete_header_addAutocomplete)
-        } else {
-            UiString.FromResources(R.string.addEditAutocomplete_header_editAutocomplete)
-        }
         nameValue = autocompleteWithConfig.autocomplete.name.toTextFieldValue()
         nameError = false
         waiting = false
