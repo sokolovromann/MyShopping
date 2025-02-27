@@ -310,8 +310,7 @@
     <string name="editReminder_action_deleteReminder">Erinnerung löschen</string>
     <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
     <string name="editReminder_action_saveReminder">@string/all_action_save</string>
-    <string name="editReminder_header_addReminder">@string/all_header_addDataScreen</string>
-    <string name="editReminder_header_editReminder">@string/all_header_editDataScreen</string>
+    <string name="editReminder_header">Erinnerung</string>
     <string name="editReminder_message_permissionError">Sie sind nicht berechtigt, Benachrichtigungen anzuzeigen. Benachrichtigungen werden nicht ohne Erlaubnis angezeigt.</string>
 
     <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>

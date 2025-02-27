@@ -57,7 +57,7 @@ fun EditReminderScreen(
             val event = EditReminderEvent.OnClickCancel
             viewModel.onEvent(event)
         },
-        header = { Text(state.header.asCompose()) },
+        header = { Text(stringResource(R.string.editReminder_header)) },
         actionButtons = {
             if (state.displayPermissionError) {
                 TextButton(

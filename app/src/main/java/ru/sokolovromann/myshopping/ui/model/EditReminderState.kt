@@ -18,9 +18,6 @@ class EditReminderState {
 
     private var shoppingListWithConfig by mutableStateOf(ShoppingListWithConfig())
 
-    var header: UiString by mutableStateOf(UiString.FromString(""))
-        private set
-
     var calendar: Calendar by mutableStateOf(Calendar.getInstance())
         private set
 
@@ -43,11 +40,6 @@ class EditReminderState {
         this.shoppingListWithConfig = shoppingListWithConfig
 
         val shopping = shoppingListWithConfig.getShopping()
-        header = if (shopping.reminder == null) {
-            UiString.FromResources(R.string.editReminder_header_addReminder)
-        } else {
-            UiString.FromResources(R.string.editReminder_header_editReminder)
-        }
         val reminder = shopping.reminder ?: shopping.createDefaultReminder()
         calendar = reminder.toCalendar()
         displayPermissionError = !correctReminderPermission

@@ -375,8 +375,7 @@
     <string name="editReminder_action_deleteReminder">Удалить напоминание</string>
     <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
     <string name="editReminder_action_saveReminder">@string/all_action_save</string>
-    <string name="editReminder_header_addReminder">@string/all_header_addDataScreen</string>
-    <string name="editReminder_header_editReminder">@string/all_header_editDataScreen</string>
+    <string name="editReminder_header">Напоминание</string>
     <string name="editReminder_message_permissionError">У вас нет разрешения на показ уведомлений. Уведомления не будут отображаться без разрешения.</string>
 
     <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>

@@ -381,8 +381,7 @@
     <string name="editReminder_action_deleteReminder">Delete reminder</string>
     <string name="editReminder_action_openPermissions">@string/all_action_openPermissions</string>
     <string name="editReminder_action_saveReminder">@string/all_action_save</string>
-    <string name="editReminder_header_addReminder">@string/all_header_addDataScreen</string>
-    <string name="editReminder_header_editReminder">@string/all_header_editDataScreen</string>
+    <string name="editReminder_header">Reminder</string>
     <string name="editReminder_message_permissionError">You do not have permission to show notifications. Notifications will not be shown without permission.</string>
 
     <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>
