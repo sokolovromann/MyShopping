@@ -66,7 +66,7 @@ fun EditShoppingListNameScreen(
             val event = EditShoppingListNameEvent.OnClickCancel
             viewModel.onEvent(event)
         },
-        header = { Text(state.header.asCompose()) },
+        header = { Text(stringResource(R.string.editShoppingListName_header)) },
         actionButtons = {
             TextButton(
                 onClick = { viewModel.onEvent(EditShoppingListNameEvent.OnClickCancel) },
@@ -89,7 +89,6 @@ fun EditShoppingListNameScreen(
                 val event = EditShoppingListNameEvent.OnNameChanged(it)
                 viewModel.onEvent(event)
             },
-            label = { Text(text = stringResource(R.string.editShoppingListName_label_name)) },
             trailingIcon = {
                 IconButton(
                     onClick = {

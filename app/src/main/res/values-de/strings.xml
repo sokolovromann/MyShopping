@@ -316,9 +316,7 @@
 
     <string name="editShoppingListName_action_cancelSavingShoppingListName">@string/all_action_cancel</string>
     <string name="editShoppingListName_action_saveShoppingListName">@string/all_action_save</string>
-    <string name="editShoppingListName_header_addShoppingListName">@string/all_header_addDataScreen</string>
-    <string name="editShoppingListName_header_editShoppingListName">@string/all_header_editDataScreen</string>
-    <string name="editShoppingListName_label_name">Listennamen</string>
+    <string name="editShoppingListName_header">Name</string>
 
     <string name="editShoppingListTotal_action_cancelSavingShoppingListTotal">@string/all_action_cancel</string>
     <string name="editShoppingListTotal_action_saveShoppingListTotal">@string/all_action_save</string>
