@@ -321,7 +321,7 @@
 
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">@string/all_action_cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">@string/all_action_save</string>
-    <string name="editCurrencySymbol_header">@string/all_header_editDataScreen</string>
+    <string name="editCurrencySymbol_header">Валюта</string>
     <string name="editCurrencySymbol_label_symbol">Символ</string>
 
     <string name="editReminder_action_cancelSavingReminder">@string/all_action_cancel</string>
@@ -499,7 +499,7 @@
     <string name="settings_title_backup">Резервне копіювання</string>
     <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>
     <string name="settings_title_completedWithCheckbox">Купівля товару натисканням на чекбокс</string>
-    <string name="settings_title_currencySymbol">Валюта</string>
+    <string name="settings_title_currencySymbol">@string/editCurrencySymbol_header</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
     <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>

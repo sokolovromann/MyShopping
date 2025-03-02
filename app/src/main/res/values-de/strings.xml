@@ -303,7 +303,7 @@
 
     <string name="editCurrencySymbol_action_cancelSavingCurrencySymbol">@string/all_action_cancel</string>
     <string name="editCurrencySymbol_action_saveCurrencySymbol">@string/all_action_save</string>
-    <string name="editCurrencySymbol_header">@string/all_header_editDataScreen</string>
+    <string name="editCurrencySymbol_header">Währung</string>
     <string name="editCurrencySymbol_label_symbol">Symbol</string>
 
     <string name="editReminder_action_cancelSavingReminder">@string/all_action_cancel</string>
@@ -481,7 +481,7 @@
     <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>
     <string name="settings_title_completedWithCheckbox">Abgeschlossen mit Kontrollkästchen</string>
-    <string name="settings_title_currencySymbol">Währung</string>
+    <string name="settings_title_currencySymbol">@string/editCurrencySymbol_header</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
     <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
