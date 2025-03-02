@@ -350,7 +350,7 @@
 
     <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
     <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
-    <string name="editTaxRate_header">@string/all_header_editDataScreen</string>
+    <string name="editTaxRate_header">Податкова ставка</string>
     <string name="editTaxRate_label_taxRate">Ставка у відсотках</string>
 
     <string name="fontSizes_action_cancelSavingFontSize">@string/all_action_cancel</string>
@@ -514,7 +514,7 @@
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати товари</string>
     <string name="settings_title_strikethroughCompletedProducts">Закреслювати куплені товари</string>
-    <string name="settings_title_taxRate">Податкова ставка</string>
+    <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>

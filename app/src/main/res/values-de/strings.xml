@@ -332,7 +332,7 @@
 
     <string name="editTaxRate_action_cancelSavingTaxRate">@string/all_action_cancel</string>
     <string name="editTaxRate_action_saveTaxRate">@string/all_action_save</string>
-    <string name="editTaxRate_header">@string/all_header_editDataScreen</string>
+    <string name="editTaxRate_header">Steuersatz</string>
     <string name="editTaxRate_label_taxRate">Rate in Prozent</string>
 
     <string name="fontSizes_action_cancelSavingFontSize">@string/all_action_cancel</string>
@@ -496,7 +496,7 @@
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_saveProductToAutocompletes">Produkte speichern</string>
     <string name="settings_title_strikethroughCompletedProducts">Durchgestrichene fertige Produkte</string>
-    <string name="settings_title_taxRate">Steuersatz</string>
+    <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="shoppingLists_action_copyShoppingLists">@string/all_action_copy</string>
