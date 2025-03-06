@@ -127,7 +127,8 @@ class AddEditProductViewModel @Inject constructor(
                 val product = Product(shoppingUid = shoppingUid)
                 it.copy(product = product)
             }
-            addEditProductState.populate(productWithConfig)
+            val isFromPurchases = savedStateHandle.get<String>(UiRouteKey.IsFromPurchases.key).toBoolean()
+            addEditProductState.populate(productWithConfig, isFromPurchases)
 
             if (productUid == null) {
                 _screenEventFlow.emit(AddEditProductScreenEvent.OnShowKeyboard)
@@ -152,10 +153,17 @@ class AddEditProductViewModel @Inject constructor(
                 val event = if (isNewProduct) {
                     when (addEditProductState.afterSaveProduct) {
                         AfterSaveProduct.CLOSE_SCREEN -> {
-                            AddEditProductScreenEvent.OnShowBackScreen(product.shoppingUid)
+                            if (addEditProductState.isFromPurchases) {
+                                AddEditProductScreenEvent.OnShowProductsScreen(product.shoppingUid)
+                            } else {
+                                AddEditProductScreenEvent.OnShowBackScreen(product.shoppingUid)
+                            }
                         }
                         AfterSaveProduct.OPEN_NEW_SCREEN -> {
-                            AddEditProductScreenEvent.OnShowNewScreen(product.shoppingUid)
+                            AddEditProductScreenEvent.OnShowNewScreen(
+                                shoppingUid = product.shoppingUid,
+                                isFromPurchases = addEditProductState.isFromPurchases
+                            )
                         }
                         AfterSaveProduct.NOTHING -> {
                             AddEditProductScreenEvent.OnUpdateProductsWidget(product.shoppingUid)
@@ -177,7 +185,12 @@ class AddEditProductViewModel @Inject constructor(
 
     private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
         val shoppingUid = addEditProductState.getCurrentProduct().shoppingUid
-        _screenEventFlow.emit(AddEditProductScreenEvent.OnShowBackScreen(shoppingUid))
+        val event = if (addEditProductState.isFromPurchases) {
+            AddEditProductScreenEvent.OnShowProductsScreen(shoppingUid)
+        } else {
+            AddEditProductScreenEvent.OnShowBackScreen(shoppingUid)
+        }
+        _screenEventFlow.emit(event)
     }
 
     private fun onNameValueChanged(event: AddEditProductEvent.OnNameValueChanged) {

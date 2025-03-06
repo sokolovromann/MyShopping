@@ -58,8 +58,20 @@ fun AddEditProductScreen(
 
                 is AddEditProductScreenEvent.OnShowNewScreen -> {
                     updateProductsWidget(context, it.shoppingUid)
-                    navController.navigate(route = UiRoute.Products.addProductScreen(it.shoppingUid)) {
-                        popUpTo(route = UiRoute.Products.addProductScreen(it.shoppingUid)) {
+
+                    val isFromPurchases = it.isFromPurchases.toString()
+                    navController.navigate(route = UiRoute.Products.addProductScreen(it.shoppingUid, isFromPurchases)) {
+                        popUpTo(route = UiRoute.Products.addProductScreen(it.shoppingUid, isFromPurchases)) {
+                            inclusive = true
+                        }
+                    }
+                    focusManager.clearFocus(force = true)
+                }
+
+                is AddEditProductScreenEvent.OnShowProductsScreen -> {
+                    updateProductsWidget(context, it.shoppingUid)
+                    navController.navigate(route = UiRoute.Products.productsScreen(it.shoppingUid)) {
+                        popUpTo(route = UiRoute.Products.addProductScreen(it.shoppingUid, "true")) {
                             inclusive = true
                         }
                     }

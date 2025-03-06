@@ -29,8 +29,8 @@ sealed class UiRoute(val graph: String) {
             return "products/$shoppingUid"
         }
 
-        fun addProductScreen(shoppingUid: String): String {
-            return "add-product/$shoppingUid"
+        fun addProductScreen(shoppingUid: String, isFromPurchases: String = "false"): String {
+            return "add-product/$shoppingUid?${UiRouteKey.IsFromPurchases.key}=$isFromPurchases"
         }
 
         fun editProductScreen(shoppingUid: String, productUid: String): String {
@@ -194,7 +194,10 @@ fun NavGraphBuilder.productsGraph(navController: NavController) {
         composable(route = UiRoute.Products.productsScreen(UiRouteKey.ShoppingUid.placeholder)) {
             ProductsScreen(navController)
         }
-        composable(route = UiRoute.Products.addProductScreen(UiRouteKey.ShoppingUid.placeholder)) {
+        composable(
+            route = UiRoute.Products.addProductScreen(UiRouteKey.ShoppingUid.placeholder, UiRouteKey.IsFromPurchases.placeholder),
+            arguments = listOf(navArgument(UiRouteKey.IsFromPurchases.key) { defaultValue = "false" })
+        ) {
             AddEditProductScreen(navController)
         }
         composable(

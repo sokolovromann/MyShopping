@@ -63,7 +63,7 @@ fun PurchasesScreen(
                 )
 
                 is PurchasesScreenEvent.OnShowAddEditProductScreen -> navController.navigate(
-                    route = UiRoute.Products.addProductScreen(it.shoppingUid)
+                    route = UiRoute.Products.addProductScreen(it.shoppingUid, "true")
                 )
 
                 is PurchasesScreenEvent.OnDrawerScreenSelected -> {
