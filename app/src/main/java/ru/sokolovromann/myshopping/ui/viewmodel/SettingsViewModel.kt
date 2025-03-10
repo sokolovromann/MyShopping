@@ -111,6 +111,10 @@ class SettingsViewModel @Inject constructor(
                 _screenEventFlow.emit(SettingsScreenEvent.OnShowDisplayCompleted)
             }
 
+            SettingUid.DisplayEmptyShoppings -> {
+                appConfigRepository.invertDisplayEmptyShoppings()
+            }
+
             SettingUid.StrikethroughCompletedProducts -> {
                 appConfigRepository.invertStrikethroughCompletedProducts()
             }

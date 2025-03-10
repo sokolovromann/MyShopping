@@ -279,4 +279,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
 
         return@withContext Result.success(Unit)
     }
+
+    suspend fun invertDisplayEmptyShoppings(): Result<Unit> = withContext(dispatcher) {
+        val valueIfNull = !UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS
+        appConfigDao.invertDisplayEmptyShoppings(valueIfNull)
+
+        return@withContext Result.success(Unit)
+    }
 }

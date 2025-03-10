@@ -144,6 +144,12 @@ object UiAppConfigMapper {
                 checked = null
             ),
             SettingItem(
+                uid = SettingUid.DisplayEmptyShoppings,
+                title = UiString.FromResources(R.string.settings_title_displayEmptyShoppings),
+                body = UiString.FromString(""),
+                checked = userPreferences.displayEmptyShoppings
+            ),
+            SettingItem(
                 uid = SettingUid.StrikethroughCompletedProducts,
                 title = UiString.FromResources(R.string.settings_title_strikethroughCompletedProducts),
                 body = UiString.FromString(""),

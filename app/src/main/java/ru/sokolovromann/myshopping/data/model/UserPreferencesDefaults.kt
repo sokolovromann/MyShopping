@@ -24,6 +24,7 @@ object UserPreferencesDefaults {
     const val DISPLAY_MONEY = true
     const val AUTOMATICALLY_EMPTY_TRASH = false
     const val LIST_OF_AUTOCOMPLETES = false
+    const val DISPLAY_EMPTY_SHOPPINGS = true
 
     val NIGHT_THEME = NightTheme.DISABLED
     val FONT_SIZE = FontSize.DefaultValue

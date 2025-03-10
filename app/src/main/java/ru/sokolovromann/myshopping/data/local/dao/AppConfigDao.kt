@@ -288,6 +288,14 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun invertDisplayEmptyShoppings(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            val oldValue = it[DatasourceKey.User.displayEmptyShoppings]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.displayEmptyShoppings] = newValue
+        }
+    }
+
     private suspend fun saveBuildConfig(entity: AppBuildConfigEntity) {
         preferences.edit {
             it[DatasourceKey.Build.appFirstTime] = requireNotNull(entity.appFirstTime)
@@ -337,6 +345,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.displayListOfAutocompletes] = entity.displayListOfAutocompletes ?: false
             it[DatasourceKey.User.afterSaveProduct] = entity.afterSaveProduct ?: ""
             it[DatasourceKey.User.afterAddShopping] = entity.afterAddShopping ?: ""
+            it[DatasourceKey.User.displayEmptyShoppings] = entity.displayEmptyShoppings ?: true
         }
     }
 
@@ -407,7 +416,8 @@ class AppConfigDao(appContent: AppContent) {
             automaticallyEmptyTrash = preferences[DatasourceKey.User.automaticallyEmptyTrash],
             displayListOfAutocompletes = preferences[DatasourceKey.User.displayListOfAutocompletes],
             afterSaveProduct = preferences[DatasourceKey.User.afterSaveProduct],
-            afterAddShopping = preferences[DatasourceKey.User.afterAddShopping]
+            afterAddShopping = preferences[DatasourceKey.User.afterAddShopping],
+            displayEmptyShoppings = preferences[DatasourceKey.User.displayEmptyShoppings]
         )
     }
 
@@ -494,6 +504,7 @@ private object DatasourceKey {
         val displayListOfAutocompletes = booleanPreferencesKey("display_list_of_autocompletes")
         val afterSaveProduct = stringPreferencesKey("after_save_product")
         val afterAddShopping = stringPreferencesKey("after_add_shopping")
+        val displayEmptyShoppings = booleanPreferencesKey("display_empty_shoppings")
     }
 
     object CodeVersion14 {

@@ -122,7 +122,8 @@ object AppConfigMapper {
             automaticallyEmptyTrash = userPreferences.automaticallyEmptyTrash,
             displayListOfAutocompletes = userPreferences.displayListOfAutocompletes,
             afterSaveProduct = userPreferences.afterSaveProduct.toString(),
-            afterAddShopping = userPreferences.afterAddShopping.toString()
+            afterAddShopping = userPreferences.afterAddShopping.toString(),
+            displayEmptyShoppings = userPreferences.displayEmptyShoppings
         )
     }
 
@@ -166,7 +167,8 @@ object AppConfigMapper {
             automaticallyEmptyTrash = toAutomaticallyEmptyTrashOrDefault(entity.automaticallyEmptyTrash),
             displayListOfAutocompletes = toDisplayListOfAutocompletesOrDefault(entity.displayListOfAutocompletes),
             afterSaveProduct = AfterSaveProduct.valueOfOrDefault(entity.afterSaveProduct),
-            afterAddShopping = AfterAddShopping.valueOfOrDefault(entity.afterAddShopping)
+            afterAddShopping = AfterAddShopping.valueOfOrDefault(entity.afterAddShopping),
+            displayEmptyShoppings = toDisplayEmptyShoppingsOrDefault(entity.displayEmptyShoppings)
         )
     }
 
@@ -271,6 +273,10 @@ object AppConfigMapper {
 
     private fun toDisplayListOfAutocompletesOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.LIST_OF_AUTOCOMPLETES
+    }
+
+    private fun toDisplayEmptyShoppingsOrDefault(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS
     }
 
     private fun toCurrencyOrDefault(entity: UserPreferencesEntity): Currency {
