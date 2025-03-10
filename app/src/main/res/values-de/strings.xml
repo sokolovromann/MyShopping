@@ -485,6 +485,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
     <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
+    <string name="settings_title_displayEmptyShoppings">Zeigen Sie leere Einkaufslisten</string>
     <string name="settings_title_displayListOfAutocompletes">Schaltfläche "Aus Autovervollständigung hinzufügen" anzeigen</string>
     <string name="settings_title_displayMoney">Geld anzeigen</string>
     <string name="settings_title_displayMoneyZeros">Nullen nach dem Dezimalpunkt anzeigen</string>

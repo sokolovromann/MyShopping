@@ -503,6 +503,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
     <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>
+    <string name="settings_title_displayEmptyShoppings">Показати порожні списки покупок</string>
     <string name="settings_title_displayListOfAutocompletes">Показувати кнопку "Додати з підказок"</string>
     <string name="settings_title_displayMoney">Показувати гроші</string>
     <string name="settings_title_displayMoneyZeros">Показувати нулі після коми</string>

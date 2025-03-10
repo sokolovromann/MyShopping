@@ -550,6 +550,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
     <string name="settings_title_displayDefaultAutocompletes">Показывать подсказки по-умолчанию</string>
+    <string name="settings_title_displayEmptyShoppings">Показывать пустые списки покупок</string>
     <string name="settings_title_displayListOfAutocompletes">Показывать кнопку "Добавить из подсказок"</string>
     <string name="settings_title_displayMoney">Показывать деньги</string>
     <string name="settings_title_displayMoneyZeros">Показывать нули после запятой</string>

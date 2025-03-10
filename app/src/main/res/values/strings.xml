@@ -397,6 +397,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
     <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
+    <string name="settings_title_displayEmptyShoppings">Display empty shopping lists</string>
     <string name="settings_title_displayListOfAutocompletes">Display add from autocompletes button</string>
     <string name="settings_title_displayMoney">Display money</string>
     <string name="settings_title_displayMoneyZeros">Display zeros after decimal point</string>

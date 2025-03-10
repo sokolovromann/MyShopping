@@ -542,6 +542,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Mostrar moneda a la izquierda</string>
     <string name="settings_title_displayDefaultAutocompletes">Mostrar autocompletados predeterminados</string>
+    <string name="settings_title_displayEmptyShoppings">Mostrar listas de compras vacías</string>
     <string name="settings_title_displayListOfAutocompletes">Mostrar el botón "Agregar desde autocompletar"</string>
     <string name="settings_title_displayMoney">Mostrar dinero</string>
     <string name="settings_title_displayMoneyZeros">Mostrar ceros después del punto decimal</string>

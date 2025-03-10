@@ -555,6 +555,7 @@
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Afficher la devise à gauche</string>
     <string name="settings_title_displayDefaultAutocompletes">Afficher les saisies automatiques par défaut</string>
+    <string name="settings_title_displayEmptyShoppings">Afficher les listes de magasinage vides</string>
     <string name="settings_title_displayListOfAutocompletes">Afficher le bouton "Ajouter à partir saisie automatique"</string>
     <string name="settings_title_displayMoney">Afficher l\'argent</string>
     <string name="settings_title_displayMoneyZeros">Afficher les zéros après la virgule décimale</string>
