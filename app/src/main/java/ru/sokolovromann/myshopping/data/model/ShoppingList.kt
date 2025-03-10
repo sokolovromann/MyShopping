@@ -239,4 +239,8 @@ data class ShoppingList(
     fun isProductsEmpty(): Boolean {
         return products.isEmpty()
     }
+
+    fun isProductsNotEmpty(): Boolean {
+        return products.isNotEmpty()
+    }
 }

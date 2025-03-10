@@ -92,12 +92,14 @@ class CopyMoveProductsState {
         pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(
             shoppingListsWithConfig = shoppingListsWithConfig,
             location = locationValue.selected,
-            displayCompleted = displayCompleted
+            displayCompleted = displayCompleted,
+            displayEmptyShoppings = display
         )
         otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(
             shoppingListsWithConfig = shoppingListsWithConfig,
             location = locationValue.selected,
-            displayCompleted = displayCompleted
+            displayCompleted = displayCompleted,
+            displayEmptyShoppings = display
         )
         displayHiddenShoppingLists = display
     }

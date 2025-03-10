@@ -9,13 +9,15 @@ data class ShoppingListsWithConfig(
 ) {
 
     fun getSortedShoppingLists(
-        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted
+        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted,
+        displayEmptyShoppings: Boolean = getUserPreferences().displayEmptyShoppings
     ): List<ShoppingList> {
-        return getPinnedOtherSortedShoppingLists(displayCompleted).toSingleList()
+        return getPinnedOtherSortedShoppingLists(displayCompleted, displayEmptyShoppings).toSingleList()
     }
 
     fun getPinnedOtherSortedShoppingLists(
-        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted
+        displayCompleted: DisplayCompleted = getUserPreferences().appDisplayCompleted,
+        displayEmptyShoppings: Boolean = getUserPreferences().displayEmptyShoppings
     ): Pair<List<ShoppingList>, List<ShoppingList>> {
         val sort = if (appConfig.userPreferences.shoppingsSortFormatted) {
             appConfig.userPreferences.shoppingsSort
@@ -23,7 +25,7 @@ data class ShoppingListsWithConfig(
             Sort()
         }
         return shoppingLists
-            .sortedShoppingLists(sort, displayCompleted)
+            .sortedShoppingLists(sort, displayCompleted, displayEmptyShoppings)
             .partition { it.shopping.pinned && it.isActive() }
     }
 
@@ -93,8 +95,14 @@ data class ShoppingListsWithConfig(
 
     fun hasHiddenShoppingLists(): Boolean {
         val hideCompleted = getUserPreferences().appDisplayCompleted == DisplayCompleted.HIDE
-        val hasCompletedShoppingLists = shoppingLists.find { it.isCompleted() } != null
-        return hideCompleted && hasCompletedShoppingLists
+        val hasCompleted = shoppingLists.find { it.isCompleted() } != null
+        val hideAndHasCompleted = hideCompleted && hasCompleted
+
+        val hideEmpty = !getUserPreferences().displayEmptyShoppings
+        val hasEmpty = shoppingLists.find { it.isProductsEmpty() } != null
+        val hideAndHasEmpty = hideEmpty && hasEmpty
+
+        return hideAndHasCompleted || hideAndHasEmpty
     }
 
     fun isEmpty(): Boolean {

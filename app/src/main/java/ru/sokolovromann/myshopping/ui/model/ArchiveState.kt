@@ -206,7 +206,8 @@ class ArchiveState {
         val displayCompleted = if (display) DisplayCompleted.LAST else DisplayCompleted.HIDE
         shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(
             shoppingListsWithConfig = shoppingListsWithConfig,
-            displayCompleted = displayCompleted
+            displayCompleted = displayCompleted,
+            displayEmptyShoppings = display
         )
         displayHiddenShoppingLists = !display
     }

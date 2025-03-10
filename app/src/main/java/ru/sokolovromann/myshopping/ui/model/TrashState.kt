@@ -44,7 +44,10 @@ class TrashState {
         this.shoppingListsWithConfig = shoppingListsWithConfig
 
         val userPreferences = shoppingListsWithConfig.getUserPreferences()
-        shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(shoppingListsWithConfig)
+        shoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(
+            shoppingListsWithConfig = shoppingListsWithConfig,
+            displayEmptyShoppings = true
+        )
         selectedUids = null
         displayProducts = userPreferences.displayShoppingsProducts
         displayCompleted = userPreferences.appDisplayCompleted

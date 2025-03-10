@@ -6,6 +6,7 @@ import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 
 private val defaultShoppingListsSort: Sort = Sort(
     sortBy = SortBy.POSITION,
@@ -24,23 +25,30 @@ private val defaultAutocompletesSort: Sort = Sort(
 
 fun List<ShoppingList>.sortedShoppingLists(
     sort: Sort = defaultShoppingListsSort,
-    displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue
+    displayCompleted: DisplayCompleted = DisplayCompleted.DefaultValue,
+    displayEmptyShoppings: Boolean = UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS
 ): List<ShoppingList> {
+    val shoppings = if (displayEmptyShoppings) {
+        this
+    } else {
+        this.filter { it.isProductsNotEmpty() }
+    }
+
     val sortedShoppings = if (sort.ascending) {
         when (sort.sortBy) {
-            SortBy.POSITION -> this.sortedBy { it.shopping.position }
-            SortBy.CREATED -> this.sortedBy { it.shopping.id }
-            SortBy.LAST_MODIFIED -> this.sortedBy { it.shopping.lastModified.millis }
-            SortBy.NAME -> this.sortedBy { it.shopping.name }
-            SortBy.TOTAL -> this.sortedBy { it.shopping.total.value }
+            SortBy.POSITION -> shoppings.sortedBy { it.shopping.position }
+            SortBy.CREATED -> shoppings.sortedBy { it.shopping.id }
+            SortBy.LAST_MODIFIED -> shoppings.sortedBy { it.shopping.lastModified.millis }
+            SortBy.NAME -> shoppings.sortedBy { it.shopping.name }
+            SortBy.TOTAL -> shoppings.sortedBy { it.shopping.total.value }
         }
     } else {
         when (sort.sortBy) {
-            SortBy.POSITION -> this.sortedByDescending { it.shopping.position }
-            SortBy.CREATED -> this.sortedByDescending { it.shopping.id }
-            SortBy.LAST_MODIFIED -> this.sortedByDescending { it.shopping.lastModified.millis }
-            SortBy.NAME -> this.sortedByDescending { it.shopping.name }
-            SortBy.TOTAL -> this.sortedByDescending { it.shopping.total.value }
+            SortBy.POSITION -> shoppings.sortedByDescending { it.shopping.position }
+            SortBy.CREATED -> shoppings.sortedByDescending { it.shopping.id }
+            SortBy.LAST_MODIFIED -> shoppings.sortedByDescending { it.shopping.lastModified.millis }
+            SortBy.NAME -> shoppings.sortedByDescending { it.shopping.name }
+            SortBy.TOTAL -> shoppings.sortedByDescending { it.shopping.total.value }
         }
     }
 

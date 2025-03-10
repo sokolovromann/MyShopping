@@ -676,7 +676,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                 )
 
                 val displayCompleted = shoppingListsWithConfig.getUserPreferences().appDisplayCompleted
-                shoppingLists.sortedShoppingLists(sort, displayCompleted)
+                val displayEmptyShoppings = shoppingListsWithConfig.getUserPreferences().displayEmptyShoppings
+                shoppingLists.sortedShoppingLists(sort, displayCompleted, displayEmptyShoppings)
                     .forEachIndexed { shoppingIndex, shoppingList ->
                         shoppingListsDao.updatePosition(
                             uid = shoppingList.shopping.uid,

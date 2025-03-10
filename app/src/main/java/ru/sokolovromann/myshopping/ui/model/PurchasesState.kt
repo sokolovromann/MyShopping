@@ -233,9 +233,16 @@ class PurchasesState {
 
     fun onShowHiddenShoppingLists(display: Boolean) {
         val displayCompleted = if (display) DisplayCompleted.LAST else DisplayCompleted.HIDE
-        otherShoppingLists = UiShoppingListsMapper.toSortedShoppingListItems(
+        pinnedShoppingLists = UiShoppingListsMapper.toPinnedSortedShoppingListItems(
             shoppingListsWithConfig = shoppingListsWithConfig,
-            displayCompleted = displayCompleted
+            search = null,
+            displayEmptyShoppings = display
+        )
+        otherShoppingLists = UiShoppingListsMapper.toOtherSortedShoppingListItems(
+            shoppingListsWithConfig = shoppingListsWithConfig,
+            search = null,
+            displayCompleted = displayCompleted,
+            displayEmptyShoppings = display
         )
         displayHiddenShoppingLists = !display
     }
