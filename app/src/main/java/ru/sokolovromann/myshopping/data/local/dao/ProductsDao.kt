@@ -63,4 +63,10 @@ interface ProductsDao {
 
     @Query("DELETE FROM products WHERE shopping_uid IN (:shoppingUids)")
     fun deleteProductsByShoppingUids(shoppingUids: List<String>)
+
+    @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid AND completed = 1")
+    fun deleteCompletedProductsByShoppingUids(shoppingUid: String)
+
+    @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid AND completed = 0")
+    fun deleteActiveProductsByShoppingUids(shoppingUid: String)
 }

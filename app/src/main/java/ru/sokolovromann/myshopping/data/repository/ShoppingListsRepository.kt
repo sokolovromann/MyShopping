@@ -862,6 +862,27 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
     }
 
+    suspend fun deleteProductsByStatus(
+        shoppingUid: String,
+        status: DisplayTotal,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext when (status) {
+            DisplayTotal.ALL -> {
+                productsDao.deleteProductsByShoppingUids(listOf(shoppingUid))
+            }
+            DisplayTotal.COMPLETED -> {
+                productsDao.deleteCompletedProductsByShoppingUids(shoppingUid)
+            }
+            DisplayTotal.ACTIVE -> {
+                productsDao.deleteActiveProductsByShoppingUids(shoppingUid)
+            }
+        }.let {
+            shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+            Result.success(Unit)
+        }
+    }
+
     suspend fun deleteReminders(
         shoppingUids: List<String>,
         lastModified: DateTime = DateTime.getCurrentDateTime()
