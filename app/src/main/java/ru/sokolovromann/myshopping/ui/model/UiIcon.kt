@@ -40,6 +40,7 @@ sealed class UiIcon {
         val CheckboxOutline: UiIcon = FromResources(R.drawable.ic_all_check_box_outline)
         val Clear: UiIcon = FromVector(Icons.Default.Clear)
         val ClearAutocompletes: UiIcon = FromResources(R.drawable.ic_autocompletes_clear)
+        val ClearProducts: UiIcon = FromResources(R.drawable.ic_autocompletes_clear)
         val Close: UiIcon = FromVector(Icons.Default.Close)
         val Delete: UiIcon = FromVector(Icons.Default.Delete)
         val DisplayHidden: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)

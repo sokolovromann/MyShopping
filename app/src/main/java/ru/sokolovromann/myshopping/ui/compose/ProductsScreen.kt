@@ -191,6 +191,45 @@ fun ProductsScreen(
                                         contentDescription = UiString.FromResources(R.string.products_contentDescription_editShoppingListReminderIcon)
                                     )
                                 }
+                                IconButton(
+                                    onClick = {
+                                        val event = ProductsEvent.OnSelectClearProducts(expanded = true)
+                                        viewModel.onEvent(event)
+                                    }
+                                ) {
+                                    DefaultIcon(UiIcon.ClearProducts)
+
+                                    AppDropdownMenu(
+                                        expanded = state.expandedClearProductsMenu,
+                                        onDismissRequest = {
+                                            val event = ProductsEvent.OnSelectClearProducts(expanded = false)
+                                            viewModel.onEvent(event)
+                                        },
+                                        header = { Text(stringResource(R.string.products_header_clearProducts)) }
+                                    ) {
+                                        AppDropdownMenuItem(
+                                            onClick = {
+                                                val event = ProductsEvent.OnClearProductsSelected(DisplayTotal.ALL)
+                                                viewModel.onEvent(event)
+                                            },
+                                            text = { Text(stringResource(R.string.products_action_clearAllProducts)) },
+                                        )
+                                        AppDropdownMenuItem(
+                                            onClick = {
+                                                val event = ProductsEvent.OnClearProductsSelected(DisplayTotal.COMPLETED)
+                                                viewModel.onEvent(event)
+                                            },
+                                            text = { Text(stringResource(R.string.products_action_clearCompletedProducts)) },
+                                        )
+                                        AppDropdownMenuItem(
+                                            onClick = {
+                                                val event = ProductsEvent.OnClearProductsSelected(DisplayTotal.ACTIVE)
+                                                viewModel.onEvent(event)
+                                            },
+                                            text = { Text(stringResource(R.string.products_action_clearActiveProducts)) },
+                                        )
+                                    }
+                                }
                             }
                             else -> {}
                         }

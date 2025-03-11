@@ -429,6 +429,9 @@
     <string name="products_action_addShoppingListTotal">@string/all_action_add</string>
     <string name="products_action_automaticSorting">@string/all_action_saveSort</string>
     <string name="products_action_calculateChange">Calcular cambio</string>
+    <string name="products_action_clearActiveProducts">@string/all_action_displayActiveTotal</string>
+    <string name="products_action_clearAllProducts">@string/all_action_displayAllTotal</string>
+    <string name="products_action_clearCompletedProducts">@string/all_action_displayCompletedTotal</string>
     <string name="products_action_copyProductsToShoppingList">@string/all_action_copyTo</string>
     <string name="products_action_copyShoppingList">@string/all_action_copy</string>
     <string name="products_action_deleteShoppingListTotal">@string/all_action_delete</string>
@@ -475,6 +478,7 @@
     <string name="products_contentDescription_pinOrUnpinProductIcon">@string/all_contentDescription_pinOrUnpinIcon</string>
     <string name="products_contentDescription_productsMenuIcon">Abrir menú de productos</string>
     <string name="products_contentDescription_showSelectedMenuIcon">Mostrar u ocultar el menú seleccionado</string>
+    <string name="products_header_clearProducts">@string/all_action_delete</string>
     <string name="products_header_displayTotal">@string/all_header_displayTotal</string>
     <string name="products_header_view">@string/all_header_view</string>
     <string name="products_label_search">@string/all_label_search</string>

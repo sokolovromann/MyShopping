@@ -120,6 +120,10 @@ class ProductsViewModel @Inject constructor(
             is ProductsEvent.OnMarkAsSelected -> onMarkAsSelected(event)
 
             is ProductsEvent.OnSelectMarkAs -> onSelectMarkAs(event)
+
+            is ProductsEvent.OnSelectClearProducts -> onSelectClearProducts(event)
+
+            is ProductsEvent.OnClearProductsSelected -> onClearProductsSelected(event)
         }
     }
 
@@ -432,6 +436,19 @@ class ProductsViewModel @Inject constructor(
 
     private fun onSelectMarkAs(event: ProductsEvent.OnSelectMarkAs) {
         productsState.onSelectMarkAsMenu(event.expanded)
+    }
+
+    private fun onSelectClearProducts(event: ProductsEvent.OnSelectClearProducts) {
+        productsState.onSelectClearProducts(event.expanded)
+    }
+
+    private fun onClearProductsSelected(
+        event: ProductsEvent.OnClearProductsSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        shoppingListsRepository.deleteProductsByStatus(
+            shoppingUid = shoppingUid,
+            status = event.status
+        ).let { productsState.onSelectClearProducts(expanded = false) }
     }
 
     private fun uidsToString(uids: List<String>): String {

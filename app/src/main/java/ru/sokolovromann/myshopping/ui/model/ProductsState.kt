@@ -101,6 +101,9 @@ class ProductsState {
     var expandedShoppingMenu: Boolean by mutableStateOf(false)
         private set
 
+    var expandedClearProductsMenu: Boolean by mutableStateOf(false)
+        private set
+
     var sortValue: SelectedValue<Sort> by mutableStateOf(SelectedValue(Sort()))
         private set
 
@@ -160,6 +163,7 @@ class ProductsState {
         expandedProductsMenu = false
         expandedItemMoreMenu = false
         expandedShoppingMenu = false
+        expandedClearProductsMenu = false
         sortValue = toSortValue(shopping.sort)
         sortFormatted = shopping.sortFormatted
         expandedMarkAsMenu = false
@@ -231,6 +235,10 @@ class ProductsState {
         expandedShoppingMenu = expanded
         expandedProductsMenu = false
         expandedSort = false
+    }
+
+    fun onSelectClearProducts(expanded: Boolean) {
+        expandedClearProductsMenu = expanded
     }
 
     fun onAllProductsSelected(selected: Boolean) {
