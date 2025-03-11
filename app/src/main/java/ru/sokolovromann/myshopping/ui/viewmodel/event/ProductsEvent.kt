@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.viewmodel.event
 
 import androidx.compose.ui.text.input.TextFieldValue
-import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
