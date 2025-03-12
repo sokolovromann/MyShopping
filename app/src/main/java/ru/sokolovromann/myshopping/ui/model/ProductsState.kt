@@ -284,14 +284,10 @@ class ProductsState {
 
     fun onSelectMarkAsMenu(expanded: Boolean) {
         expandedMarkAsMenu = expanded
-        expandedItemMoreMenu = false
-        expandedProductsMenu = false
-        expandedSort = false
     }
 
     fun onSelectShareProducts(expanded: Boolean) {
         expandedShareProducts = expanded
-        expandedMarkAsMenu = false
         expandedItemMoreMenu = false
         expandedProductsMenu = false
         expandedSort = false

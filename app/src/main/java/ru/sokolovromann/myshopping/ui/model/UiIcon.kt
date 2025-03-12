@@ -42,6 +42,7 @@ sealed class UiIcon {
         val ClearAutocompletes: UiIcon = FromResources(R.drawable.ic_autocompletes_clear)
         val ClearProducts: UiIcon = FromResources(R.drawable.ic_autocompletes_clear)
         val Close: UiIcon = FromVector(Icons.Default.Close)
+        val CompletedActive: UiIcon = FromResources(R.drawable.ic_all_completed_active)
         val Delete: UiIcon = FromVector(Icons.Default.Delete)
         val DisplayHidden: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)
         val DisplayOtherFields: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)
