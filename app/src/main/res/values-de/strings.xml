@@ -470,7 +470,6 @@
     <string name="settings_body_displayMoney">Wenn aktiviert, werden Geld und Felder angezeigt</string>
     <string name="settings_body_displayMoneyZeros">Wenn aktiviert, werden immer Nullen angezeigt</string>
     <string name="settings_body_displayOtherFields">Marke, Größe, Farbe usw.</string>
-    <string name="settings_body_editProductAfterCompleted">Wird zum Bearbeiten geöffnet (Außer Widgets)</string>
     <string name="settings_body_enterToSaveProduct">Wenn aktiviert, kann ein Produkt durch Tippen auf die Eingabetaste gespeichert werden</string>
     <string name="settings_body_fontSize">Zum Auswählen tippen</string>
     <string name="settings_body_maxAutocompletes">Wählen Sie aus, wie viele Autovervollständigungen angezeigt werden können</string>
@@ -498,7 +497,6 @@
     <string name="settings_title_displayMoney">Geld anzeigen</string>
     <string name="settings_title_displayMoneyZeros">Nullen nach dem Dezimalpunkt anzeigen</string>
     <string name="settings_title_displayOtherFields">Andere Felder anzeigen</string>
-    <string name="settings_title_editProductAfterCompleted">Bearbeiten sie das produkt nach abschluss</string>
     <string name="settings_title_enterToSaveProduct">Eingabetaste um Produkt zu speichern</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Maximale Anzahl</string>

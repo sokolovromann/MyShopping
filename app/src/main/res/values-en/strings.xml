@@ -541,7 +541,6 @@
     <string name="settings_body_displayMoney">If enabled, money and fields will be displayed</string>
     <string name="settings_body_displayMoneyZeros">If enabled, zeros will always be displayed</string>
     <string name="settings_body_displayOtherFields">Brand, size, color, etc.</string>
-    <string name="settings_body_editProductAfterCompleted">Will be open screen to edit (except widgets)</string>
     <string name="settings_body_enterToSaveProduct">If enabled, a product can be saved by tapping Enter</string>
     <string name="settings_body_fontSize">Tap to select</string>
     <string name="settings_body_maxAutocompletes">Select how many autocompletes can be displayed</string>
@@ -569,7 +568,6 @@
     <string name="settings_title_displayMoney">Display money</string>
     <string name="settings_title_displayMoneyZeros">Display zeros after decimal point</string>
     <string name="settings_title_displayOtherFields">Display other fields</string>
-    <string name="settings_title_editProductAfterCompleted">Edit product after completed</string>
     <string name="settings_title_enterToSaveProduct">Enter to save product</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Maximum amount</string>

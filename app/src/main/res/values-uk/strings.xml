@@ -488,7 +488,6 @@
     <string name="settings_body_displayMoney">Якщо увімкнено, то гроші та поля для введення будуть відображатися</string>
     <string name="settings_body_displayMoneyZeros">Якщо увімкнено, то нулі завжди відображатимуться</string>
     <string name="settings_body_displayOtherFields">Марка, розмір, колір і т.д.</string>
-    <string name="settings_body_editProductAfterCompleted">Відкриється екран для редагування (окрім віджетів)</string>
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_fontSize">Натисніть, щоб вибрати</string>
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
@@ -516,7 +515,6 @@
     <string name="settings_title_displayMoney">Показувати гроші</string>
     <string name="settings_title_displayMoneyZeros">Показувати нулі після коми</string>
     <string name="settings_title_displayOtherFields">Показувати додаткові поля</string>
-    <string name="settings_title_editProductAfterCompleted">Редагувати товар після покупки</string>
     <string name="settings_title_enterToSaveProduct">Enter для збереження товару</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Максимальна кількість</string>

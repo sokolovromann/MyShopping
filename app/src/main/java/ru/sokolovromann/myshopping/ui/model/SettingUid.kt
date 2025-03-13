@@ -13,7 +13,6 @@ enum class SettingUid {
     DisplayCompletedPurchases,
     DisplayEmptyShoppings,
     StrikethroughCompletedProducts,
-    EditProductAfterCompleted,
     CompletedWithCheckbox,
     DisplayOtherFields,
     DisplayListOfAutocompletes,

@@ -136,10 +136,6 @@ class SettingsViewModel @Inject constructor(
                 appConfigRepository.invertDisplayListOfAutocompletes()
             }
 
-            SettingUid.EditProductAfterCompleted -> {
-                appConfigRepository.invertEditProductAfterCompleted()
-            }
-
             SettingUid.CompletedWithCheckbox -> {
                 appConfigRepository.invertCompletedWithCheckbox()
                 _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)

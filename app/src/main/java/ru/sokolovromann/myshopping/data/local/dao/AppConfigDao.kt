@@ -239,14 +239,6 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertEditProductAfterCompleted(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
-        preferences.edit {
-            val oldValue = it[DatasourceKey.User.editProductAfterCompleted]
-            val newValue = if (oldValue == null) valueIfNull else !oldValue
-            it[DatasourceKey.User.editProductAfterCompleted] = newValue
-        }
-    }
-
     suspend fun invertCompletedWithCheckbox(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.completedWithCheckbox]

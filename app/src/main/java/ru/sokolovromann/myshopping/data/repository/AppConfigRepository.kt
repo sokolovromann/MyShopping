@@ -240,13 +240,6 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         return@withContext Result.success(Unit)
     }
 
-    suspend fun invertEditProductAfterCompleted(): Result<Unit> = withContext(dispatcher) {
-        val valueIfNull = UserPreferencesDefaults.EDIT_PRODUCT_AFTER_COMPLETED
-        appConfigDao.invertEditProductAfterCompleted(valueIfNull)
-
-        return@withContext Result.success(Unit)
-    }
-
     suspend fun invertCompletedWithCheckbox(): Result<Unit> = withContext(dispatcher) {
         val valueIfNull = UserPreferencesDefaults.COMPLETED_WITH_CHECKBOX
         appConfigDao.invertCompletedWithCheckbox(valueIfNull)

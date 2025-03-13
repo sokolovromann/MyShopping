@@ -527,7 +527,6 @@
     <string name="settings_body_displayMoney">Si está habilitado, se mostrarán los campos de dinero y de entrada</string>
     <string name="settings_body_displayMoneyZeros">Si está habilitado, los ceros siempre se mostrarán</string>
     <string name="settings_body_displayOtherFields">Marca, talla, color, etc.</string>
-    <string name="settings_body_editProductAfterCompleted">Se abrirá la pantalla para editar (excepto los widgets)</string>
     <string name="settings_body_enterToSaveProduct">Si está habilitado, el producto se puede guardar tocando Enter</string>
     <string name="settings_body_fontSize">Toque para seleccionar</string>
     <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>
@@ -555,7 +554,6 @@
     <string name="settings_title_displayMoney">Mostrar dinero</string>
     <string name="settings_title_displayMoneyZeros">Mostrar ceros después del punto decimal</string>
     <string name="settings_title_displayOtherFields">Mostrar otros campos</string>
-    <string name="settings_title_editProductAfterCompleted">Modificar producto después de la compra</string>
     <string name="settings_title_enterToSaveProduct">Entrar para guardar el producto</string>
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Número máximo</string>
