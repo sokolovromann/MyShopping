@@ -46,6 +46,8 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.OnAfterSaveProductSelected -> onAfterSaveProductSelected(event)
 
+            is SettingsEvent.OnAfterProductCompletedSelected -> onAfterProductCompletedSelected(event)
+
             is SettingsEvent.OnAfterAddShoppingSelected -> onAfterAddShoppingSelected(event)
         }
     }
@@ -117,6 +119,13 @@ class SettingsViewModel @Inject constructor(
 
             SettingUid.StrikethroughCompletedProducts -> {
                 appConfigRepository.invertStrikethroughCompletedProducts()
+            }
+
+            SettingUid.AfterProductCompleted -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.AfterProductCompleted
+                )
             }
 
             SettingUid.DisplayOtherFields -> {
@@ -229,6 +238,16 @@ class SettingsViewModel @Inject constructor(
         settingsState.onSelectUid(
             expanded = false,
             settingUid = SettingUid.AfterSaveProduct
+        )
+    }
+
+    private fun onAfterProductCompletedSelected(
+        event: SettingsEvent.OnAfterProductCompletedSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.saveAfterProductCompleted(event.afterProductCompleted)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.AfterProductCompleted
         )
     }
 

@@ -518,6 +518,9 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Vous n\'avez pas de saisie automatique</string>
 
     <string name="settings_action_closeAfterSaveProduct">Fermer l\'écran</string>
+    <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
+    <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
+    <string name="settings_action_nothingAfterProductCompleted">Rien</string>
     <string name="settings_action_notingAfterSaveProduct">Rien</string>
     <string name="settings_action_openAddProductAfterAddShopping">Ouvrir l\'écran Ajouter le produit</string>
     <string name="settings_action_openAfterSaveProduct">Ouvrir le nouvel écran</string>
@@ -550,6 +553,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">Après avoir ajouté la liste de courses</string>
+    <string name="settings_title_afterProductCompleted">Après avoir l\'achèvement le produit (sauf les widgets)</string>
     <string name="settings_title_afterSaveProduct">Après avoir ajouté le produit</string>
     <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>

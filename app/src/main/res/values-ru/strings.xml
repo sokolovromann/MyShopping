@@ -513,6 +513,9 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
     <string name="settings_action_closeAfterSaveProduct">Закрыть экран</string>
+    <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
+    <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
+    <string name="settings_action_nothingAfterProductCompleted">Ничего не делать</string>
     <string name="settings_action_notingAfterSaveProduct">Ничего не делать</string>
     <string name="settings_action_openAddProductAfterAddShopping">Открыть экран \"Добавить товар\"</string>
     <string name="settings_action_openAfterSaveProduct">Открыть новый экран</string>
@@ -545,6 +548,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">После добавления списка покупок</string>
+    <string name="settings_title_afterProductCompleted">После покупки товара (кроме виджетов)</string>
     <string name="settings_title_afterSaveProduct">После добавления товара</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматически очищать корзину</string>
     <string name="settings_title_backup">Резервное копирование</string>

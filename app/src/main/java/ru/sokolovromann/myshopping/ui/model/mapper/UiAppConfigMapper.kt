@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.FontSize
@@ -160,6 +161,16 @@ object UiAppConfigMapper {
                 title = UiString.FromResources(R.string.settings_title_editProductAfterCompleted),
                 body = UiString.FromResources(R.string.settings_body_editProductAfterCompleted),
                 checked = userPreferences.editProductAfterCompleted
+            ),
+            SettingItem(
+                uid = SettingUid.AfterProductCompleted,
+                title = UiString.FromResources(R.string.settings_title_afterProductCompleted),
+                body = when (userPreferences.afterProductCompleted) {
+                    AfterProductCompleted.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterProductCompleted)
+                    AfterProductCompleted.EDIT -> UiString.FromResources(R.string.settings_action_editAfterProductCompleted)
+                    AfterProductCompleted.DELETE -> UiString.FromResources(R.string.settings_action_deleteAfterProductCompleted)
+                },
+                checked = null
             ),
             SettingItem(
                 uid = SettingUid.CompletedWithCheckbox,

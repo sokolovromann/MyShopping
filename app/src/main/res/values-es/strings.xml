@@ -505,6 +505,9 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">No tienes autocompletados</string>
 
     <string name="settings_action_closeAfterSaveProduct">Cerrar pantalla</string>
+    <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
+    <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
+    <string name="settings_action_nothingAfterProductCompleted">Nada</string>
     <string name="settings_action_notingAfterSaveProduct">Nada</string>
     <string name="settings_action_openAddProductAfterAddShopping">Abrir la pantalla Agregar producto</string>
     <string name="settings_action_openAfterSaveProduct">Abrir nueva pantalla</string>
@@ -537,6 +540,7 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">Después de agregar la lista de compras</string>
+    <string name="settings_title_afterProductCompleted">Después de completar el producto (excepto los widgets)</string>
     <string name="settings_title_afterSaveProduct">Después de agregar el producto</string>
     <string name="settings_title_automaticallyEmptyTrash">Vaciar la papelera automáticamente</string>
     <string name="settings_title_backup">Respaldo</string>

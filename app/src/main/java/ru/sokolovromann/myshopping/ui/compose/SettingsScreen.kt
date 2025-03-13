@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -146,6 +147,24 @@ fun SettingsScreen(
                             },
                             onSelected = { nightTheme ->
                                 val event = SettingsEvent.OnNightThemeSelected(nightTheme)
+                                viewModel.onEvent(event)
+                            }
+                        )
+                    }
+
+                    SettingUid.AfterProductCompleted -> {
+                        SettingsAfterProductCompletedMenu(
+                            expanded = it == state.selectedUid,
+                            afterProductCompleted = state.afterProductCompleted.selected,
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(
+                                    expanded = false,
+                                    uid = SettingUid.AfterProductCompleted
+                                )
+                                viewModel.onEvent(event)
+                            },
+                            onSelected = { afterProductCompleted ->
+                                val event = SettingsEvent.OnAfterProductCompletedSelected(afterProductCompleted)
                                 viewModel.onEvent(event)
                             }
                         )
@@ -327,6 +346,35 @@ private fun SettingsAfterSaveProductMenu(
             onClick = { onSelected(AfterSaveProduct.OPEN_NEW_SCREEN) },
             text = { Text(text = stringResource(R.string.settings_action_openAfterSaveProduct)) },
             right = { CheckmarkAppCheckbox(checked = afterSaveProduct == AfterSaveProduct.OPEN_NEW_SCREEN) }
+        )
+    }
+}
+
+@Composable
+private fun SettingsAfterProductCompletedMenu(
+    expanded: Boolean,
+    afterProductCompleted: AfterProductCompleted,
+    onDismissRequest: () -> Unit,
+    onSelected: (AfterProductCompleted) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterProductCompleted.NOTHING) },
+            text = { Text(text = stringResource(R.string.settings_action_nothingAfterProductCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterProductCompleted == AfterProductCompleted.NOTHING) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterProductCompleted.EDIT) },
+            text = { Text(text = stringResource(R.string.settings_action_editAfterProductCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterProductCompleted == AfterProductCompleted.EDIT) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterProductCompleted.DELETE) },
+            text = { Text(text = stringResource(R.string.settings_action_deleteAfterProductCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterProductCompleted == AfterProductCompleted.DELETE) }
         )
     }
 }
