@@ -112,6 +112,13 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun saveAfterProductCompleted(value: String, editAfterCompleted: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.afterProductCompleted] = value
+            it[DatasourceKey.User.editProductAfterCompleted] = editAfterCompleted
+        }
+    }
+
     suspend fun saveAfterAddShopping(value: String) = withContext(AppDispatchers.IO) {
         preferences.edit {
             it[DatasourceKey.User.afterAddShopping] = value
@@ -344,6 +351,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.automaticallyEmptyTrash] = entity.automaticallyEmptyTrash ?: false
             it[DatasourceKey.User.displayListOfAutocompletes] = entity.displayListOfAutocompletes ?: false
             it[DatasourceKey.User.afterSaveProduct] = entity.afterSaveProduct ?: ""
+            it[DatasourceKey.User.afterProductCompleted] = entity.afterProductCompleted ?: ""
             it[DatasourceKey.User.afterAddShopping] = entity.afterAddShopping ?: ""
             it[DatasourceKey.User.displayEmptyShoppings] = entity.displayEmptyShoppings ?: true
         }
@@ -416,6 +424,7 @@ class AppConfigDao(appContent: AppContent) {
             automaticallyEmptyTrash = preferences[DatasourceKey.User.automaticallyEmptyTrash],
             displayListOfAutocompletes = preferences[DatasourceKey.User.displayListOfAutocompletes],
             afterSaveProduct = preferences[DatasourceKey.User.afterSaveProduct],
+            afterProductCompleted = preferences[DatasourceKey.User.afterProductCompleted],
             afterAddShopping = preferences[DatasourceKey.User.afterAddShopping],
             displayEmptyShoppings = preferences[DatasourceKey.User.displayEmptyShoppings]
         )
@@ -503,6 +512,7 @@ private object DatasourceKey {
         val automaticallyEmptyTrash = booleanPreferencesKey("automatically_empty_trash")
         val displayListOfAutocompletes = booleanPreferencesKey("display_list_of_autocompletes")
         val afterSaveProduct = stringPreferencesKey("after_save_product")
+        val afterProductCompleted = stringPreferencesKey("after_product_completed")
         val afterAddShopping = stringPreferencesKey("after_add_shopping")
         val displayEmptyShoppings = booleanPreferencesKey("display_empty_shoppings")
     }

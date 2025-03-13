@@ -6,6 +6,7 @@ import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
@@ -123,6 +124,7 @@ object AppConfigMapper {
             displayListOfAutocompletes = userPreferences.displayListOfAutocompletes,
             afterSaveProduct = userPreferences.afterSaveProduct.toString(),
             afterAddShopping = userPreferences.afterAddShopping.toString(),
+            afterProductCompleted = userPreferences.afterProductCompleted.toString(),
             displayEmptyShoppings = userPreferences.displayEmptyShoppings
         )
     }
@@ -168,6 +170,7 @@ object AppConfigMapper {
             displayListOfAutocompletes = toDisplayListOfAutocompletesOrDefault(entity.displayListOfAutocompletes),
             afterSaveProduct = AfterSaveProduct.valueOfOrDefault(entity.afterSaveProduct),
             afterAddShopping = AfterAddShopping.valueOfOrDefault(entity.afterAddShopping),
+            afterProductCompleted = AfterProductCompleted.valueOfOrDefault(entity.afterProductCompleted, entity.editProductAfterCompleted),
             displayEmptyShoppings = toDisplayEmptyShoppingsOrDefault(entity.displayEmptyShoppings)
         )
     }

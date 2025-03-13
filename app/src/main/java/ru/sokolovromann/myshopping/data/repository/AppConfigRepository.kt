@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
@@ -111,6 +112,14 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         afterSaveProduct: AfterSaveProduct
     ): Result<Unit> = withContext(dispatcher) {
         appConfigDao.saveAfterSaveProduct(afterSaveProduct.name)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveAfterProductCompleted(
+        afterProductCompleted: AfterProductCompleted
+    ): Result<Unit> = withContext(dispatcher) {
+        val editAfterCompleted: Boolean = afterProductCompleted == AfterProductCompleted.EDIT
+        appConfigDao.saveAfterProductCompleted(afterProductCompleted.name, editAfterCompleted)
         return@withContext Result.success(Unit)
     }
 

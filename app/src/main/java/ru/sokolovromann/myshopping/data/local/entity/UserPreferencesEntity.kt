@@ -44,6 +44,7 @@ data class UserPreferencesEntity(
     val automaticallyEmptyTrash: Boolean? = null,
     val displayListOfAutocompletes: Boolean? = null,
     val afterSaveProduct: String? = null,
+    val afterProductCompleted: String? = null,
     val afterAddShopping: String? = null,
     val displayEmptyShoppings: Boolean? = null
 )
