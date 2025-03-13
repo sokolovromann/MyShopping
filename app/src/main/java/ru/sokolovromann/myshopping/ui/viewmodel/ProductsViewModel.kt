@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -142,8 +143,21 @@ class ProductsViewModel @Inject constructor(
             shoppingListsRepository.activeProduct(event.productUid)
         } else {
             shoppingListsRepository.completeProduct(event.productUid)
-            if (productsState.isEditProductAfterCompleted()) {
-                _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, event.productUid))
+            when (productsState.getAfterProductCompleted()) {
+                AfterProductCompleted.NOTHING -> {}
+                AfterProductCompleted.EDIT -> {
+                    val showEditScreenEvent = ProductsScreenEvent.OnShowEditProductScreen(
+                        shoppingUid = shoppingUid,
+                        productUid = event.productUid
+                    )
+                    _screenEventFlow.emit(showEditScreenEvent)
+                }
+                AfterProductCompleted.DELETE -> {
+                    shoppingListsRepository.deleteProductsByProductUids(
+                        shoppingUid = shoppingUid,
+                        productsUids = listOf(event.productUid)
+                    )
+                }
             }
         }
     }

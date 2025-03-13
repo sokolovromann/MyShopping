@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
@@ -301,8 +302,8 @@ class ProductsState {
         return UiShoppingListsMapper.toShoppingListString(shoppingListWithConfig, displayTotal)
     }
 
-    fun isEditProductAfterCompleted(): Boolean {
-        return shoppingListWithConfig.getUserPreferences().editProductAfterCompleted
+    fun getAfterProductCompleted(): AfterProductCompleted {
+        return shoppingListWithConfig.getUserPreferences().afterProductCompleted
     }
 
     fun isOnlyPinned(): Boolean {
