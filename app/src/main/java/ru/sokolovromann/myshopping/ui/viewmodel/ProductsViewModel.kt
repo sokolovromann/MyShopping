@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
@@ -144,19 +145,7 @@ class ProductsViewModel @Inject constructor(
             shoppingListsRepository.activeProduct(event.productUid)
         } else {
             shoppingListsRepository.completeProduct(event.productUid).let {
-                when (productsState.getAfterShoppingCompleted()) {
-                    AfterShoppingCompleted.NOTHING -> {}
-                    AfterShoppingCompleted.ARCHIVE -> {
-                        if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
-                            shoppingListsRepository.moveShoppingListToArchive(shoppingUid)
-                        }
-                    }
-                    AfterShoppingCompleted.DELETE -> {
-                        if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
-                            shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
-                        }
-                    }
-                }
+                doAfterShoppingCompleted()
             }
 
             when (productsState.getAfterProductCompleted()) {
@@ -458,7 +447,9 @@ class ProductsViewModel @Inject constructor(
         event: ProductsEvent.OnMarkAsSelected
     ) = viewModelScope.launch(AppDispatchers.Main) {
         if (event.completed) {
-            shoppingListsRepository.completeProducts(shoppingUid)
+            shoppingListsRepository.completeProducts(shoppingUid).let {
+                doAfterShoppingCompleted()
+            }
         } else {
             shoppingListsRepository.activeProducts(shoppingUid)
         }
@@ -486,5 +477,21 @@ class ProductsViewModel @Inject constructor(
             .replace("[", "")
             .replace("]", "")
             .replace(" ", "")
+    }
+
+    private suspend fun doAfterShoppingCompleted() = withContext(AppDispatchers.Main) {
+        when (productsState.getAfterShoppingCompleted()) {
+            AfterShoppingCompleted.NOTHING -> {}
+            AfterShoppingCompleted.ARCHIVE -> {
+                if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
+                    shoppingListsRepository.moveShoppingListToArchive(shoppingUid)
+                }
+            }
+            AfterShoppingCompleted.DELETE -> {
+                if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
+                    shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
+                }
+            }
+        }
     }
 }
