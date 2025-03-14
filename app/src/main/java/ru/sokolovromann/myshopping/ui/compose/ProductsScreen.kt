@@ -193,6 +193,38 @@ fun ProductsScreen(
                                 }
                                 IconButton(
                                     onClick = {
+                                        val event = ProductsEvent.OnSelectMarkAs(expanded = true)
+                                        viewModel.onEvent(event)
+                                    }
+                                ) {
+                                    DefaultIcon(UiIcon.CompletedActive)
+
+                                    AppDropdownMenu(
+                                        expanded = state.expandedMarkAsMenu,
+                                        onDismissRequest = {
+                                            val event = ProductsEvent.OnSelectMarkAs(expanded = false)
+                                            viewModel.onEvent(event)
+                                        },
+                                        header = { Text(stringResource(R.string.products_action_markAs)) }
+                                    ) {
+                                        AppDropdownMenuItem(
+                                            onClick = {
+                                                val event = ProductsEvent.OnMarkAsSelected(completed = true)
+                                                viewModel.onEvent(event)
+                                            },
+                                            text = { Text(stringResource(R.string.products_action_markAsCompleted)) },
+                                        )
+                                        AppDropdownMenuItem(
+                                            onClick = {
+                                                val event = ProductsEvent.OnMarkAsSelected(completed = false)
+                                                viewModel.onEvent(event)
+                                            },
+                                            text = { Text(stringResource(R.string.products_action_markAsActive)) },
+                                        )
+                                    }
+                                }
+                                IconButton(
+                                    onClick = {
                                         val event = ProductsEvent.OnSelectClearProducts(expanded = true)
                                         viewModel.onEvent(event)
                                     }
@@ -227,38 +259,6 @@ fun ProductsScreen(
                                                 viewModel.onEvent(event)
                                             },
                                             text = { Text(stringResource(R.string.products_action_clearActiveProducts)) },
-                                        )
-                                    }
-                                }
-                                IconButton(
-                                    onClick = {
-                                        val event = ProductsEvent.OnSelectMarkAs(expanded = true)
-                                        viewModel.onEvent(event)
-                                    }
-                                ) {
-                                    DefaultIcon(UiIcon.CompletedActive)
-
-                                    AppDropdownMenu(
-                                        expanded = state.expandedMarkAsMenu,
-                                        onDismissRequest = {
-                                            val event = ProductsEvent.OnSelectMarkAs(expanded = false)
-                                            viewModel.onEvent(event)
-                                        },
-                                        header = { Text(stringResource(R.string.products_action_markAs)) }
-                                    ) {
-                                        AppDropdownMenuItem(
-                                            onClick = {
-                                                val event = ProductsEvent.OnMarkAsSelected(completed = true)
-                                                viewModel.onEvent(event)
-                                            },
-                                            text = { Text(stringResource(R.string.products_action_markAsCompleted)) },
-                                        )
-                                        AppDropdownMenuItem(
-                                            onClick = {
-                                                val event = ProductsEvent.OnMarkAsSelected(completed = false)
-                                                viewModel.onEvent(event)
-                                            },
-                                            text = { Text(stringResource(R.string.products_action_markAsActive)) },
                                         )
                                     }
                                 }
