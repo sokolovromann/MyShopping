@@ -69,4 +69,7 @@ interface ProductsDao {
 
     @Query("DELETE FROM products WHERE shopping_uid = :shoppingUid AND completed = 0")
     fun deleteActiveProductsByShoppingUids(shoppingUid: String)
+
+    @Query("SELECT completed FROM products WHERE shopping_uid = :shoppingUid")
+    fun isProductsCompleted(shoppingUid: String): List<Boolean>
 }

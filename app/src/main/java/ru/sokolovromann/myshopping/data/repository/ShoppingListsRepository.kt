@@ -904,6 +904,15 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         return@withContext Result.success(Unit)
     }
 
+    suspend fun isShoppingListCompleted(shoppingUid: String): Boolean = withContext(dispatcher) {
+        val products = productsDao.isProductsCompleted(shoppingUid)
+        return@withContext if (products.isEmpty()) {
+            false
+        } else {
+            products.find { !it } == null
+        }
+    }
+
     private suspend fun saveShoppingList(shoppingList: ShoppingList): Result<Unit> = withContext(dispatcher) {
         val shoppingEntity = ShoppingListsMapper.toShoppingEntity(shoppingList.shopping)
         shoppingListsDao.insertShopping(shoppingEntity)

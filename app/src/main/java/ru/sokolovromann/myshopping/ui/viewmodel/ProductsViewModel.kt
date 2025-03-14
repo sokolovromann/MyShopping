@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -142,7 +143,22 @@ class ProductsViewModel @Inject constructor(
         if (event.completed) {
             shoppingListsRepository.activeProduct(event.productUid)
         } else {
-            shoppingListsRepository.completeProduct(event.productUid)
+            shoppingListsRepository.completeProduct(event.productUid).let {
+                when (productsState.getAfterShoppingCompleted()) {
+                    AfterShoppingCompleted.NOTHING -> {}
+                    AfterShoppingCompleted.ARCHIVE -> {
+                        if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
+                            shoppingListsRepository.moveShoppingListToArchive(shoppingUid)
+                        }
+                    }
+                    AfterShoppingCompleted.DELETE -> {
+                        if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
+                            shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
+                        }
+                    }
+                }
+            }
+
             when (productsState.getAfterProductCompleted()) {
                 AfterProductCompleted.NOTHING -> {}
                 AfterProductCompleted.EDIT -> {

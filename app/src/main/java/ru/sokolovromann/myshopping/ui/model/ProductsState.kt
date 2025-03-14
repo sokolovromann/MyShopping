@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
@@ -304,6 +305,10 @@ class ProductsState {
 
     fun getAfterProductCompleted(): AfterProductCompleted {
         return shoppingListWithConfig.getUserPreferences().afterProductCompleted
+    }
+
+    fun getAfterShoppingCompleted(): AfterShoppingCompleted {
+        return shoppingListWithConfig.getUserPreferences().afterShoppingCompleted
     }
 
     fun isOnlyPinned(): Boolean {
