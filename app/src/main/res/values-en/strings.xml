@@ -522,7 +522,7 @@
     <string name="settings_action_closeAfterSaveProduct">Close screen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
-    <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
+    <string name="settings_action_editAfterProductCompleted">Edit (except widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nothing</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Nothing</string>
     <string name="settings_action_notingAfterSaveProduct">Nothing</string>
@@ -556,9 +556,9 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">After adding shopping list</string>
-    <string name="settings_title_afterProductCompleted">After product completed (except widgets)</string>
+    <string name="settings_title_afterProductCompleted">After product completed</string>
     <string name="settings_title_afterSaveProduct">After adding product</string>
-    <string name="settings_title_afterShoppingCompleted">After list completed (except widgets)</string>
+    <string name="settings_title_afterShoppingCompleted">After list completed</string>
     <string name="settings_title_automaticallyEmptyTrash">Automatically empty trash</string>
     <string name="settings_title_backup">Backup</string>
     <string name="settings_title_coloredCheckbox">Colored checkboxes</string>

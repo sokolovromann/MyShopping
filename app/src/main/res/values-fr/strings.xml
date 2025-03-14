@@ -521,7 +521,7 @@
     <string name="settings_action_closeAfterSaveProduct">Fermer l\'écran</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
-    <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
+    <string name="settings_action_editAfterProductCompleted">Modifier (sauf les widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Rien</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Rien</string>
     <string name="settings_action_notingAfterSaveProduct">Rien</string>
@@ -555,9 +555,9 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">Après avoir ajouté la liste de courses</string>
-    <string name="settings_title_afterProductCompleted">Après avoir l\'achèvement le produit (sauf les widgets)</string>
+    <string name="settings_title_afterProductCompleted">Après avoir l\'achèvement le produit</string>
     <string name="settings_title_afterSaveProduct">Après avoir ajouté le produit</string>
-    <string name="settings_title_afterShoppingCompleted">Après avoir l\'achèvement la liste de courses (sauf les widgets)</string>
+    <string name="settings_title_afterShoppingCompleted">Après avoir l\'achèvement la liste de courses</string>
     <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>
     <string name="settings_title_coloredCheckbox">Cases à cocher colorées</string>

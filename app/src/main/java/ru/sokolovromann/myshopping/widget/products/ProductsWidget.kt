@@ -45,6 +45,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.app.AppAction
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -100,7 +102,31 @@ class ProductsWidget : GlanceAppWidget() {
                         if (item.completed) {
                             repository.activeProduct(item.uid)
                         } else {
-                            repository.completeProduct(item.uid)
+                            repository.completeProduct(item.uid).let {
+                                when (productsWidgetState.getAfterProductCompleted()) {
+                                    AfterProductCompleted.NOTHING -> {}
+                                    AfterProductCompleted.EDIT -> {}
+                                    AfterProductCompleted.DELETE -> {
+                                        repository.deleteProductsByProductUids(
+                                            shoppingUid = shoppingUid,
+                                            productsUids = listOf(item.uid)
+                                        )
+                                    }
+                                }
+                                when (productsWidgetState.getAfterShoppingCompleted()) {
+                                    AfterShoppingCompleted.NOTHING -> {}
+                                    AfterShoppingCompleted.ARCHIVE -> {
+                                        if (repository.isShoppingListCompleted(shoppingUid)) {
+                                            repository.moveShoppingListToArchive(shoppingUid)
+                                        }
+                                    }
+                                    AfterShoppingCompleted.DELETE -> {
+                                        if (repository.isShoppingListCompleted(shoppingUid)) {
+                                            repository.moveShoppingListToTrash(shoppingUid)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 },

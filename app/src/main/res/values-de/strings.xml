@@ -451,7 +451,7 @@
     <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
-    <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
+    <string name="settings_action_editAfterProductCompleted">Bearbeiten (Außer Widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nichts</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Nichts</string>
     <string name="settings_action_notingAfterSaveProduct">Produkt speichern</string>
@@ -485,9 +485,9 @@
     <string name="settings_header_purchases">@string/all_header_purchases</string>
     <string name="settings_header_settings">@string/all_header_settings</string>
     <string name="settings_title_afterAddShopping">Nach dem Hinzufügen der Einkaufsliste</string>
-    <string name="settings_title_afterProductCompleted">Nach dem Produkt fertig (Außer Widgets)</string>
+    <string name="settings_title_afterProductCompleted">Nach dem Produkt fertig</string>
     <string name="settings_title_afterSaveProduct">Nach dem Hinzufügen des Produkts</string>
-    <string name="settings_title_afterShoppingCompleted">Nach dem Einkaufsliste fertig (Außer Widgets)</string>
+    <string name="settings_title_afterShoppingCompleted">Nach dem Einkaufsliste fertig</string>
     <string name="settings_title_automaticallyEmptyTrash">Leeren Sie den Müll automatisch</string>
     <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>

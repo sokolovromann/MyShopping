@@ -3,6 +3,8 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
@@ -75,6 +77,14 @@ class ProductsWidgetState {
         nightTheme = userPreferences.nightTheme
         fontSizeOffset = UiAppConfigMapper.toWidgetFontSizeOffset(userPreferences.widgetFontSize)
         waiting = false
+    }
+
+    fun getAfterProductCompleted(): AfterProductCompleted {
+        return shoppingListWithConfig.getUserPreferences().afterProductCompleted
+    }
+
+    fun getAfterShoppingCompleted(): AfterShoppingCompleted {
+        return shoppingListWithConfig.getUserPreferences().afterShoppingCompleted
     }
 
     fun isNotFound(): Boolean {
