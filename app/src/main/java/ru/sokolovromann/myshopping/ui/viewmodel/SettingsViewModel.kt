@@ -48,6 +48,8 @@ class SettingsViewModel @Inject constructor(
 
             is SettingsEvent.OnAfterProductCompletedSelected -> onAfterProductCompletedSelected(event)
 
+            is SettingsEvent.OnAfterShoppingCompletedSelected -> onAfterShoppingCompletedSelected(event)
+
             is SettingsEvent.OnAfterAddShoppingSelected -> onAfterAddShoppingSelected(event)
         }
     }
@@ -125,6 +127,13 @@ class SettingsViewModel @Inject constructor(
                 settingsState.onSelectUid(
                     expanded = true,
                     settingUid = SettingUid.AfterProductCompleted
+                )
+            }
+
+            SettingUid.AfterShoppingCompleted -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.AfterShoppingCompleted
                 )
             }
 
@@ -244,6 +253,16 @@ class SettingsViewModel @Inject constructor(
         settingsState.onSelectUid(
             expanded = false,
             settingUid = SettingUid.AfterProductCompleted
+        )
+    }
+
+    private fun onAfterShoppingCompletedSelected(
+        event: SettingsEvent.OnAfterShoppingCompletedSelected
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        appConfigRepository.saveAfterShoppingCompleted(event.afterShoppingCompleted)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.AfterShoppingCompleted
         )
     }
 

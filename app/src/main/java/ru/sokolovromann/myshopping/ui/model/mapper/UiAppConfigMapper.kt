@@ -5,6 +5,7 @@ import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
@@ -163,6 +164,16 @@ object UiAppConfigMapper {
                     AfterProductCompleted.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterProductCompleted)
                     AfterProductCompleted.EDIT -> UiString.FromResources(R.string.settings_action_editAfterProductCompleted)
                     AfterProductCompleted.DELETE -> UiString.FromResources(R.string.settings_action_deleteAfterProductCompleted)
+                },
+                checked = null
+            ),
+            SettingItem(
+                uid = SettingUid.AfterShoppingCompleted,
+                title = UiString.FromResources(R.string.settings_title_afterShoppingCompleted),
+                body = when (userPreferences.afterShoppingCompleted) {
+                    AfterShoppingCompleted.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterShoppingCompleted)
+                    AfterShoppingCompleted.ARCHIVE -> UiString.FromResources(R.string.settings_action_archiveAfterShoppingCompleted)
+                    AfterShoppingCompleted.DELETE -> UiString.FromResources(R.string.settings_action_deleteAfterShoppingCompleted)
                 },
                 checked = null
             ),

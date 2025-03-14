@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
@@ -34,6 +35,9 @@ class SettingsState {
     var afterAddShopping: SelectedValue<AfterAddShopping> by mutableStateOf(SelectedValue(AfterAddShopping.DefaultValue))
         private set
 
+    var afterShoppingCompleted: SelectedValue<AfterShoppingCompleted> by mutableStateOf(SelectedValue(AfterShoppingCompleted.DefaultValue))
+        private set
+
     var multiColumns: Boolean by mutableStateOf(false)
         private set
 
@@ -53,6 +57,7 @@ class SettingsState {
         afterSaveProduct = toAfterSaveProductValue(userPreferences.afterSaveProduct)
         afterProductCompleted = toAfterProductCompletedValue(userPreferences.afterProductCompleted)
         afterAddShopping = toAfterAddShoppingValue(userPreferences.afterAddShopping)
+        afterShoppingCompleted = toAfterShoppingCompletedValue(userPreferences.afterShoppingCompleted)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
         waiting = false
@@ -115,6 +120,19 @@ class SettingsState {
                 AfterAddShopping.OPEN_PRODUCTS_SCREEN -> UiString.FromResources(R.string.settings_action_openProductsAfterAddShopping)
                 AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN -> UiString.FromResources(R.string.settings_action_openEditNameAfterAddShopping)
                 AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> UiString.FromResources(R.string.settings_action_openAddProductAfterAddShopping)
+            }
+        )
+    }
+
+    private fun toAfterShoppingCompletedValue(
+        afterShoppingCompleted: AfterShoppingCompleted
+    ): SelectedValue<AfterShoppingCompleted> {
+        return SelectedValue(
+            selected = afterShoppingCompleted,
+            text = when (afterShoppingCompleted) {
+                AfterShoppingCompleted.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterShoppingCompleted)
+                AfterShoppingCompleted.ARCHIVE -> UiString.FromResources(R.string.settings_action_archiveAfterShoppingCompleted)
+                AfterShoppingCompleted.DELETE -> UiString.FromResources(R.string.settings_action_deleteAfterShoppingCompleted)
             }
         )
     }

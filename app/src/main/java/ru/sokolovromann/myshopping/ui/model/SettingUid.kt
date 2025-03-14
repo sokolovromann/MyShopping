@@ -20,6 +20,7 @@ enum class SettingUid {
     AfterSaveProduct,
     AfterProductCompleted,
     AfterAddShopping,
+    AfterShoppingCompleted,
     AutomaticallyEmptyTrash,
     ColoredCheckbox,
     SaveProductToAutocompletes,

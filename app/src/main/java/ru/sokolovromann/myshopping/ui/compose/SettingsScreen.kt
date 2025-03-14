@@ -20,6 +20,7 @@ import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.DrawerScreen
@@ -201,6 +202,24 @@ fun SettingsScreen(
                             },
                             onSelected = { afterAddShopping ->
                                 val event = SettingsEvent.OnAfterAddShoppingSelected(afterAddShopping)
+                                viewModel.onEvent(event)
+                            }
+                        )
+                    }
+
+                    SettingUid.AfterShoppingCompleted -> {
+                        SettingsAfterShoppingCompletedMenu(
+                            expanded = it == state.selectedUid,
+                            afterShoppingCompleted = state.afterShoppingCompleted.selected,
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(
+                                    expanded = false,
+                                    uid = SettingUid.AfterShoppingCompleted
+                                )
+                                viewModel.onEvent(event)
+                            },
+                            onSelected = { afterShoppingCompleted ->
+                                val event = SettingsEvent.OnAfterShoppingCompletedSelected(afterShoppingCompleted)
                                 viewModel.onEvent(event)
                             }
                         )
@@ -404,6 +423,35 @@ private fun SettingsAfterAddShoppingMenu(
             onClick = { onSelected(AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN) },
             text = { Text(text = stringResource(R.string.settings_action_openAddProductAfterAddShopping)) },
             right = { CheckmarkAppCheckbox(checked = afterAddShopping == AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN) }
+        )
+    }
+}
+
+@Composable
+private fun SettingsAfterShoppingCompletedMenu(
+    expanded: Boolean,
+    afterShoppingCompleted: AfterShoppingCompleted,
+    onDismissRequest: () -> Unit,
+    onSelected: (AfterShoppingCompleted) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterShoppingCompleted.NOTHING) },
+            text = { Text(text = stringResource(R.string.settings_action_nothingAfterShoppingCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.NOTHING) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterShoppingCompleted.ARCHIVE) },
+            text = { Text(text = stringResource(R.string.settings_action_archiveAfterShoppingCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.ARCHIVE) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterShoppingCompleted.DELETE) },
+            text = { Text(text = stringResource(R.string.settings_action_deleteAfterShoppingCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.DELETE) }
         )
     }
 }

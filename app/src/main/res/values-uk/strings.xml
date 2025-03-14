@@ -465,10 +465,13 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
+    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
     <string name="settings_action_closeAfterSaveProduct">Закрити екран</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
     <string name="settings_action_nothingAfterProductCompleted">Нічого не робити</string>
+    <string name="settings_action_nothingAfterShoppingCompleted">Нічого не робити</string>
     <string name="settings_action_notingAfterSaveProduct">Нічого не робити</string>
     <string name="settings_action_openAddProductAfterAddShopping">Відкрити екран \"Додати товар\"</string>
     <string name="settings_action_openAfterSaveProduct">Відкрити новий екран</string>
@@ -502,6 +505,7 @@
     <string name="settings_title_afterAddShopping">Після додавання списку покупок</string>
     <string name="settings_title_afterProductCompleted">Після покупки товарів (окрім віджетів)</string>
     <string name="settings_title_afterSaveProduct">Після додавання товару</string>
+    <string name="settings_title_afterShoppingCompleted">Після покупки списку (окрім віджетів)</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматично очищати кошик</string>
     <string name="settings_title_backup">Резервне копіювання</string>
     <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>

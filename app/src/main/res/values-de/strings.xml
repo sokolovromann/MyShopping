@@ -447,10 +447,13 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
+    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
     <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">@string/all_action_edit</string>
     <string name="settings_action_nothingAfterProductCompleted">Nichts</string>
+    <string name="settings_action_nothingAfterShoppingCompleted">Nichts</string>
     <string name="settings_action_notingAfterSaveProduct">Produkt speichern</string>
     <string name="settings_action_openAddProductAfterAddShopping">Liste hinzufügen und Bildschirm Produkt hinzufügen öffnen</string>
     <string name="settings_action_openAfterSaveProduct">Produkt speichern und neuen Bildschirm öffnen</string>
@@ -484,6 +487,7 @@
     <string name="settings_title_afterAddShopping">Nach dem Hinzufügen der Einkaufsliste</string>
     <string name="settings_title_afterProductCompleted">Nach dem Produkt fertig (Außer Widgets)</string>
     <string name="settings_title_afterSaveProduct">Nach dem Hinzufügen des Produkts</string>
+    <string name="settings_title_afterShoppingCompleted">Nach dem Einkaufsliste fertig (Außer Widgets)</string>
     <string name="settings_title_automaticallyEmptyTrash">Leeren Sie den Müll automatisch</string>
     <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>
