@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
@@ -127,6 +128,13 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         afterAddShopping: AfterAddShopping
     ): Result<Unit> = withContext(dispatcher) {
         appConfigDao.saveAfterAddShopping(afterAddShopping.name)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveAfterShoppingCompleted(
+        afterShoppingCompleted: AfterShoppingCompleted
+    ): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveAfterShoppingCompleted(afterShoppingCompleted.name)
         return@withContext Result.success(Unit)
     }
 

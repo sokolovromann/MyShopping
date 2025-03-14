@@ -8,6 +8,7 @@ import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Currency
@@ -125,6 +126,7 @@ object AppConfigMapper {
             afterSaveProduct = userPreferences.afterSaveProduct.toString(),
             afterAddShopping = userPreferences.afterAddShopping.toString(),
             afterProductCompleted = userPreferences.afterProductCompleted.toString(),
+            afterShoppingCompleted = userPreferences.afterShoppingCompleted.toString(),
             displayEmptyShoppings = userPreferences.displayEmptyShoppings
         )
     }
@@ -171,6 +173,7 @@ object AppConfigMapper {
             afterSaveProduct = AfterSaveProduct.valueOfOrDefault(entity.afterSaveProduct),
             afterAddShopping = AfterAddShopping.valueOfOrDefault(entity.afterAddShopping),
             afterProductCompleted = AfterProductCompleted.valueOfOrDefault(entity.afterProductCompleted, entity.editProductAfterCompleted),
+            afterShoppingCompleted = AfterShoppingCompleted.valueOfOrDefault(entity.afterShoppingCompleted),
             displayEmptyShoppings = toDisplayEmptyShoppingsOrDefault(entity.displayEmptyShoppings)
         )
     }
