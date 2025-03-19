@@ -211,7 +211,7 @@ object UiAppConfigMapper {
                 uid = SettingUid.AfterSaveProduct,
                 title = UiString.FromResources(R.string.settings_title_afterSaveProduct),
                 body = when (userPreferences.afterSaveProduct) {
-                    AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_notingAfterSaveProduct)
+                    AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterSaveProduct)
                     AfterSaveProduct.CLOSE_SCREEN -> UiString.FromResources(R.string.settings_action_closeAfterSaveProduct)
                     AfterSaveProduct.OPEN_NEW_SCREEN -> UiString.FromResources(R.string.settings_action_openAfterSaveProduct)
                 },

@@ -510,8 +510,8 @@
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">Modificar (excepto los widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nada</string>
+    <string name="settings_action_nothingAfterSaveProduct">Nada</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Nada</string>
-    <string name="settings_action_notingAfterSaveProduct">Nada</string>
     <string name="settings_action_openAddProductAfterAddShopping">Abrir la pantalla Agregar producto</string>
     <string name="settings_action_openAfterSaveProduct">Abrir nueva pantalla</string>
     <string name="settings_action_openEditNameAfterAddShopping">Abrir la pantalla Editar nombre de lista</string>

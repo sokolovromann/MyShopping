@@ -471,8 +471,8 @@
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">Редагувати (окрім віджетів)</string>
     <string name="settings_action_nothingAfterProductCompleted">Нічого не робити</string>
+    <string name="settings_action_nothingAfterSaveProduct">Нічого не робити</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Нічого не робити</string>
-    <string name="settings_action_notingAfterSaveProduct">Нічого не робити</string>
     <string name="settings_action_openAddProductAfterAddShopping">Відкрити екран \"Додати товар\"</string>
     <string name="settings_action_openAfterSaveProduct">Відкрити новий екран</string>
     <string name="settings_action_openEditNameAfterAddShopping">Відкрити екран \"Редагувати назву списку\"</string>

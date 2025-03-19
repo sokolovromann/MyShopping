@@ -524,8 +524,8 @@
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">Edit (except widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nothing</string>
+    <string name="settings_action_nothingAfterSaveProduct">Nothing</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Nothing</string>
-    <string name="settings_action_notingAfterSaveProduct">Nothing</string>
     <string name="settings_action_openAddProductAfterAddShopping">Open Add product screen</string>
     <string name="settings_action_openAfterSaveProduct">Open new screen</string>
     <string name="settings_action_openEditNameAfterAddShopping">Open Edit list name screen</string>

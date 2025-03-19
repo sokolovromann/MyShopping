@@ -91,7 +91,7 @@ class SettingsState {
         return SelectedValue(
             selected = afterSaveProduct,
             text = when (afterSaveProduct) {
-                AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_notingAfterSaveProduct)
+                AfterSaveProduct.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterSaveProduct)
                 AfterSaveProduct.CLOSE_SCREEN -> UiString.FromResources(R.string.settings_action_closeAfterSaveProduct)
                 AfterSaveProduct.OPEN_NEW_SCREEN -> UiString.FromResources(R.string.settings_action_openAfterSaveProduct)
             }

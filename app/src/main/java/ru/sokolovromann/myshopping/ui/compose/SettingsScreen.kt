@@ -353,7 +353,7 @@ private fun SettingsAfterSaveProductMenu(
     ) {
         AppDropdownMenuItem(
             onClick = { onSelected(AfterSaveProduct.NOTHING) },
-            text = { Text(text = stringResource(R.string.settings_action_notingAfterSaveProduct)) },
+            text = { Text(text = stringResource(R.string.settings_action_nothingAfterSaveProduct)) },
             right = { CheckmarkAppCheckbox(checked = afterSaveProduct == AfterSaveProduct.NOTHING) }
         )
         AppDropdownMenuItem(

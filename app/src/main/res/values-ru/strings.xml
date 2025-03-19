@@ -518,8 +518,8 @@
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">Редактировать (кроме виджетов)</string>
     <string name="settings_action_nothingAfterProductCompleted">Ничего не делать</string>
+    <string name="settings_action_nothingAfterSaveProduct">Ничего не делать</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Ничего не делать</string>
-    <string name="settings_action_notingAfterSaveProduct">Ничего не делать</string>
     <string name="settings_action_openAddProductAfterAddShopping">Открыть экран \"Добавить товар\"</string>
     <string name="settings_action_openAfterSaveProduct">Открыть новый экран</string>
     <string name="settings_action_openEditNameAfterAddShopping">Открыть экран \"Редактировать название списка\"</string>

@@ -453,8 +453,8 @@
     <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
     <string name="settings_action_editAfterProductCompleted">Bearbeiten (Außer Widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nichts</string>
+    <string name="settings_action_nothingAfterSaveProduct">Produkt speichern</string>
     <string name="settings_action_nothingAfterShoppingCompleted">Nichts</string>
-    <string name="settings_action_notingAfterSaveProduct">Produkt speichern</string>
     <string name="settings_action_openAddProductAfterAddShopping">Liste hinzufügen und Bildschirm Produkt hinzufügen öffnen</string>
     <string name="settings_action_openAfterSaveProduct">Produkt speichern und neuen Bildschirm öffnen</string>
     <string name="settings_action_openEditNameAfterAddShopping">Liste hinzufügen und Bildschirm Namen bearbeiten öffnen</string>
