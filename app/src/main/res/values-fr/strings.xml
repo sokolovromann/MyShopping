@@ -539,6 +539,7 @@
     <string name="settings_body_completedWithCheckbox">Si activé, le produit acheté est marqué en cliquant sur la case à cocher</string>
     <string name="settings_body_currencySymbol">Symbole: %s</string>
     <string name="settings_body_displayCompletedPurchases">Appuyez pour sélectionner</string>
+    <string name="settings_body_displayEmptyShoppings">Si activé, les listes dans Achats et Archive seront affichées</string>
     <string name="settings_body_displayListOfAutocompletes">Si activé, le bouton sera affiché</string>
     <string name="settings_body_displayMoney">Si activé, l\'argent et les champs seront affichés</string>
     <string name="settings_body_displayMoneyZeros">Si activé, les zéros seront toujours affichés</string>

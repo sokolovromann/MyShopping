@@ -469,6 +469,7 @@
     <string name="settings_body_completedWithCheckbox">Wenn aktiviert, durch angeklicktes Kontrollkästchen abgeschlossen</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_displayCompletedPurchases">Zum Auswählen tippen</string>
+    <string name="settings_body_displayEmptyShoppings">Wenn aktiviert, werden Listen in Einkäufe und Archiv angezeigt</string>
     <string name="settings_body_displayListOfAutocompletes">Wenn aktiviert, wird die Schaltfläche angezeigt</string>
     <string name="settings_body_displayMoney">Wenn aktiviert, werden Geld und Felder angezeigt</string>
     <string name="settings_body_displayMoneyZeros">Wenn aktiviert, werden immer Nullen angezeigt</string>

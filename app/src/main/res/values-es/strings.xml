@@ -526,6 +526,7 @@
     <string name="settings_body_completedWithCheckbox">Si está habilitado, el producto adquirido se marca haciendo clic en la casilla de verificación</string>
     <string name="settings_body_currencySymbol">Símbolo: %s</string>
     <string name="settings_body_displayCompletedPurchases">Toque para seleccionar</string>
+    <string name="settings_body_displayEmptyShoppings">Si está habilitado, se mostrarán las listas en Compras y Archivo</string>
     <string name="settings_body_displayListOfAutocompletes">Si está habilitado, se mostrará el botón</string>
     <string name="settings_body_displayMoney">Si está habilitado, se mostrarán los campos de dinero y de entrada</string>
     <string name="settings_body_displayMoneyZeros">Si está habilitado, los ceros siempre se mostrarán</string>

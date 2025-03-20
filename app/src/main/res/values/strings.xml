@@ -381,6 +381,7 @@
     <string name="settings_body_completedWithCheckbox">If enabled, completed by clicked on checkbox</string>
     <string name="settings_body_currencySymbol">Symbol: %s</string>
     <string name="settings_body_displayCompletedPurchases">Tap to select</string>
+    <string name="settings_body_displayEmptyShoppings">If enabled, lists in Purchases and Archive will be displayed</string>
     <string name="settings_body_displayListOfAutocompletes">If enabled, button will be displayed</string>
     <string name="settings_body_displayMoney">If enabled, money and fields will be displayed</string>
     <string name="settings_body_displayMoneyZeros">If enabled, zeros will always be displayed</string>

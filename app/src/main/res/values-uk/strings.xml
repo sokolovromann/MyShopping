@@ -487,6 +487,7 @@
     <string name="settings_body_completedWithCheckbox">Якщо включено, то куплений товар відзначається після натискання на чекбокс</string>
     <string name="settings_body_currencySymbol">Символ: %s</string>
     <string name="settings_body_displayCompletedPurchases">Натисніть, щоб вибрати</string>
+    <string name="settings_body_displayEmptyShoppings">Якщо увімкнено, то списки в Покупках та Архіві будуть відображатися</string>
     <string name="settings_body_displayListOfAutocompletes">Якщо увімкнено, то кнопка відображатиметься</string>
     <string name="settings_body_displayMoney">Якщо увімкнено, то гроші та поля для введення будуть відображатися</string>
     <string name="settings_body_displayMoneyZeros">Якщо увімкнено, то нулі завжди відображатимуться</string>
