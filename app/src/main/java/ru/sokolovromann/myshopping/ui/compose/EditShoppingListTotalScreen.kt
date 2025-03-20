@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -31,12 +32,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
+import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidget
 import ru.sokolovromann.myshopping.ui.viewmodel.EditShoppingListTotalViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListTotalEvent
@@ -97,6 +100,15 @@ fun EditShoppingListTotalScreen(
                 viewModel.onEvent(event)
             },
             label = { Text(text = stringResource(R.string.editShoppingListTotal_label_total)) },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        val event = EditShoppingListTotalEvent.OnTotalChanged(TextFieldValue())
+                        viewModel.onEvent(event)
+                    },
+                    content = { DefaultIcon(UiIcon.Clear) }
+                )
+            },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Decimal,
