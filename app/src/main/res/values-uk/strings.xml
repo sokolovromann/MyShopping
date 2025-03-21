@@ -589,7 +589,7 @@
     <string name="shoppingLists_text_archiveShoppingListsNotFound">Архів порожній</string>
     <string name="shoppingLists_text_completedTotal">@string/all_text_completedTotal</string>
     <string name="shoppingLists_text_deleted">Вилучено</string>
-    <string name="shoppingLists_text_hiddenShoppingLists">У вас є приховані покупки</string>
+    <string name="shoppingLists_text_hiddenShoppingLists">У вас є приховані списки</string>
     <string name="shoppingLists_text_moreProducts">…</string>
     <string name="shoppingLists_text_nameNotFound">Без назви</string>
     <string name="shoppingLists_text_of">@string/all_text_of</string>
