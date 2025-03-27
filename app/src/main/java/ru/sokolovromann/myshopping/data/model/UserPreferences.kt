@@ -40,5 +40,7 @@ data class UserPreferences(
     val afterProductCompleted: AfterProductCompleted = UserPreferencesDefaults.AFTER_PRODUCT_COMPLETED,
     val afterAddShopping: AfterAddShopping = UserPreferencesDefaults.AFTER_ADD_SHOPPING,
     val afterShoppingCompleted: AfterShoppingCompleted = UserPreferencesDefaults.AFTER_SHOPPING_COMPLETED,
-    val displayEmptyShoppings: Boolean = UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS
+    val displayEmptyShoppings: Boolean = UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS,
+    val swipeProductLeft: SwipeProduct = UserPreferencesDefaults.SWIPE_PRODUCT,
+    val swipeProductRight: SwipeProduct = UserPreferencesDefaults.SWIPE_PRODUCT,
 )

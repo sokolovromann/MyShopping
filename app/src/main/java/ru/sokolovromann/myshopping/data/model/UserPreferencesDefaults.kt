@@ -37,6 +37,7 @@ object UserPreferencesDefaults {
     val AFTER_PRODUCT_COMPLETED = AfterProductCompleted.DefaultValue
     val AFTER_ADD_SHOPPING = AfterAddShopping.DefaultValue
     val AFTER_SHOPPING_COMPLETED = AfterShoppingCompleted.DefaultValue
+    val SWIPE_PRODUCT = SwipeProduct.DISABLED
 
     fun getCurrency(): Currency {
         return Currency(

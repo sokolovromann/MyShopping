@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.NightTheme
+import ru.sokolovromann.myshopping.data.model.SwipeProduct
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import javax.inject.Inject
@@ -135,6 +136,15 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         afterShoppingCompleted: AfterShoppingCompleted
     ): Result<Unit> = withContext(dispatcher) {
         appConfigDao.saveAfterShoppingCompleted(afterShoppingCompleted.name)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveSwipeProduct(
+        left: SwipeProduct,
+        right: SwipeProduct
+    ): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveSwipeProductLeft(left.name)
+        appConfigDao.saveSwipeProductRight(right.name)
         return@withContext Result.success(Unit)
     }
 

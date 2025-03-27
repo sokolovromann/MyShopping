@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeProduct
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import java.text.DecimalFormat
@@ -127,7 +128,9 @@ object AppConfigMapper {
             afterAddShopping = userPreferences.afterAddShopping.toString(),
             afterProductCompleted = userPreferences.afterProductCompleted.toString(),
             afterShoppingCompleted = userPreferences.afterShoppingCompleted.toString(),
-            displayEmptyShoppings = userPreferences.displayEmptyShoppings
+            displayEmptyShoppings = userPreferences.displayEmptyShoppings,
+            swipeProductLeft = userPreferences.swipeProductLeft.toString(),
+            swipeProductRight = userPreferences.swipeProductRight.toString()
         )
     }
 
@@ -174,7 +177,9 @@ object AppConfigMapper {
             afterAddShopping = AfterAddShopping.valueOfOrDefault(entity.afterAddShopping),
             afterProductCompleted = AfterProductCompleted.valueOfOrDefault(entity.afterProductCompleted, entity.editProductAfterCompleted),
             afterShoppingCompleted = AfterShoppingCompleted.valueOfOrDefault(entity.afterShoppingCompleted),
-            displayEmptyShoppings = toDisplayEmptyShoppingsOrDefault(entity.displayEmptyShoppings)
+            displayEmptyShoppings = toDisplayEmptyShoppingsOrDefault(entity.displayEmptyShoppings),
+            swipeProductLeft = SwipeProduct.valueOfOrDefault(entity.swipeProductLeft),
+            swipeProductRight = SwipeProduct.valueOfOrDefault(entity.swipeProductRight)
         )
     }
 
