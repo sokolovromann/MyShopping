@@ -64,6 +64,10 @@ fun SettingsScreen(
                     route = UiRoute.Settings.maxAutocompletesScreen
                 )
 
+                SettingsScreenEvent.OnShowSwipeProduct -> navController.navigate(
+                    route = UiRoute.Settings.swipeProduct
+                )
+
                 SettingsScreenEvent.OnShowBackupScreen -> navController.navigate(
                     route = UiRoute.Settings.backupScreen
                 )

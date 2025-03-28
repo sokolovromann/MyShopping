@@ -24,5 +24,6 @@ enum class SettingUid {
     AutomaticallyEmptyTrash,
     ColoredCheckbox,
     SaveProductToAutocompletes,
-    MaxAutocompletes
+    MaxAutocompletes,
+    SwipeProduct
 }

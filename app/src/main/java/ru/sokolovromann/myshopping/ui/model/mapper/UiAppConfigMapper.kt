@@ -226,6 +226,12 @@ object UiAppConfigMapper {
                     AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> UiString.FromResources(R.string.settings_action_openAddProductAfterAddShopping)
                 },
                 checked = null
+            ),
+            SettingItem(
+                uid = SettingUid.SwipeProduct,
+                title = UiString.FromResources(R.string.settings_title_swipeProduct),
+                body = UiString.FromResources(R.string.settings_body_swipeProduct),
+                checked = null
             )
         )
     }

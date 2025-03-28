@@ -18,6 +18,8 @@ sealed class SettingsScreenEvent {
 
     object OnShowMaxAutocompletes : SettingsScreenEvent()
 
+    object OnShowSwipeProduct : SettingsScreenEvent()
+
     object OnUpdateProductsWidgets : SettingsScreenEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : SettingsScreenEvent()

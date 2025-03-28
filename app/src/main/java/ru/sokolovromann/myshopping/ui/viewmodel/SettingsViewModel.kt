@@ -184,6 +184,10 @@ class SettingsViewModel @Inject constructor(
             SettingUid.MaxAutocompletes -> {
                 _screenEventFlow.emit(SettingsScreenEvent.OnShowMaxAutocompletes)
             }
+
+            SettingUid.SwipeProduct -> {
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowSwipeProduct)
+            }
         }
     }
 
