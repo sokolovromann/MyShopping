@@ -496,6 +496,7 @@
     <string name="settings_body_fontSize">Натисніть, щоб вибрати</string>
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
+    <string name="settings_body_swipeProduct">Виберіть дію для змахування вліво або вправо (крім віджетів)</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Загальні</string>
@@ -526,6 +527,7 @@
     <string name="settings_title_nightTheme">Нічна тема</string>
     <string name="settings_title_saveProductToAutocompletes">Зберігати товари</string>
     <string name="settings_title_strikethroughCompletedProducts">Закреслювати куплені товари</string>
+    <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
@@ -604,4 +606,14 @@
 
     <string name="shortcuts_longLabel_addShoppingList">Новий список покупок</string>
     <string name="shortcuts_shortLabel_addShoppingList">Новий список</string>
+
+    <string name="swipeProduct_action_cancel">@string/all_action_cancel</string>
+    <string name="swipeProduct_action_complete">Позначити як куплено/не куплено</string>
+    <string name="swipeProduct_action_delete">@string/all_action_delete</string>
+    <string name="swipeProduct_action_disabled">Вимкнено</string>
+    <string name="swipeProduct_action_edit">@string/all_action_edit</string>
+    <string name="swipeProduct_action_save">@string/all_action_save</string>
+    <string name="swipeProduct_header">Змахування товару</string>
+    <string name="swipeProduct_text_left">Ліворуч</string>
+    <string name="swipeProduct_text_right">Праворуч</string>
 </resources>

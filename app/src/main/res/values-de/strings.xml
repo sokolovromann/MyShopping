@@ -478,6 +478,7 @@
     <string name="settings_body_fontSize">Zum Auswählen tippen</string>
     <string name="settings_body_maxAutocompletes">Wählen Sie aus, wie viele Autovervollständigungen angezeigt werden können</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
+    <string name="settings_body_swipeProduct">Wählen Sie die Aktion zum Wischen nach links und rechts (außer Widgets)</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Allgemein</string>
@@ -508,6 +509,7 @@
     <string name="settings_title_nightTheme">Thema Nacht</string>
     <string name="settings_title_saveProductToAutocompletes">Produkte speichern</string>
     <string name="settings_title_strikethroughCompletedProducts">Durchgestrichene fertige Produkte</string>
+    <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
@@ -586,4 +588,14 @@
 
     <string name="shortcuts_longLabel_addShoppingList">Neue Einkaufsliste</string>
     <string name="shortcuts_shortLabel_addShoppingList">Neue Liste</string>
+
+    <string name="swipeProduct_action_cancel">@string/all_action_cancel</string>
+    <string name="swipeProduct_action_complete">Als fertige/aktive markieren</string>
+    <string name="swipeProduct_action_delete">@string/all_action_delete</string>
+    <string name="swipeProduct_action_disabled">Deaktiviert</string>
+    <string name="swipeProduct_action_edit">@string/all_action_edit</string>
+    <string name="swipeProduct_action_save">@string/all_action_save</string>
+    <string name="swipeProduct_header">Produkt wischen</string>
+    <string name="swipeProduct_text_left">Links</string>
+    <string name="swipeProduct_text_right">Rechts</string>
 </resources>

@@ -87,6 +87,7 @@ sealed class UiRoute(val graph: String) {
         const val backupScreen = "backup-screen"
         const val maxAutocompletesScreen = "max-autocompletes-screen"
         const val displayCompletedScreen = "display-completed-screen"
+        const val swipeProduct = "swipe-product"
     }
 
     object About : UiRoute(graph = "About") {
@@ -284,6 +285,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         }
         dialog(route = UiRoute.Settings.displayCompletedScreen) {
             DisplayCompletedScreen(navController)
+        }
+        dialog(route = UiRoute.Settings.swipeProduct) {
+            SwipeProductScreen(navController)
         }
     }
 }

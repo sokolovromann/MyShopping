@@ -548,6 +548,7 @@
     <string name="settings_body_fontSize">Appuyez pour sélectionner</string>
     <string name="settings_body_maxAutocompletes">Sélectionnez le nombre de saisies semi-automatiques pouvant être affichées</string>
     <string name="settings_body_saveProductToAutocompletes">Tout produit sera enregistré</string>
+    <string name="settings_body_swipeProduct">Sélectionnez l\'action pour balayer vers la gauche et la droite (sauf les widgets)</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Général</string>
@@ -578,6 +579,7 @@
     <string name="settings_title_nightTheme">Thème sombre</string>
     <string name="settings_title_saveProductToAutocompletes">Enregistrer les produits</string>
     <string name="settings_title_strikethroughCompletedProducts">Barrer les produits achetés</string>
+    <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
@@ -656,4 +658,14 @@
 
     <string name="shortcuts_longLabel_addShoppingList">Nouvelle liste de courses</string>
     <string name="shortcuts_shortLabel_addShoppingList">Nouvelle liste</string>
+
+    <string name="swipeProduct_action_cancel">@string/all_action_cancel</string>
+    <string name="swipeProduct_action_complete">Marquer comme achetés/non acheté</string>
+    <string name="swipeProduct_action_delete">@string/all_action_delete</string>
+    <string name="swipeProduct_action_disabled">Désactivé</string>
+    <string name="swipeProduct_action_edit">@string/all_action_edit</string>
+    <string name="swipeProduct_action_save">@string/all_action_save</string>
+    <string name="swipeProduct_header">Glisser le produit</string>
+    <string name="swipeProduct_text_left">Gauche</string>
+    <string name="swipeProduct_text_right">Droit</string>
 </resources>
