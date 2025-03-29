@@ -14,6 +14,7 @@ import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeProduct
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -127,6 +128,10 @@ class ProductsViewModel @Inject constructor(
             is ProductsEvent.OnSelectClearProducts -> onSelectClearProducts(event)
 
             is ProductsEvent.OnClearProductsSelected -> onClearProductsSelected(event)
+
+            is ProductsEvent.OnSwipeProductLeft -> onSwipeProductLeft(event)
+
+            is ProductsEvent.OnSwipeProductRight -> onSwipeProductRight(event)
         }
     }
 
@@ -141,29 +146,8 @@ class ProductsViewModel @Inject constructor(
     private fun onClickProduct(
         event: ProductsEvent.OnClickProduct
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        if (event.completed) {
-            shoppingListsRepository.activeProduct(event.productUid)
-        } else {
-            shoppingListsRepository.completeProduct(event.productUid).let {
-                doAfterShoppingCompleted()
-            }
-
-            when (productsState.getAfterProductCompleted()) {
-                AfterProductCompleted.NOTHING -> {}
-                AfterProductCompleted.EDIT -> {
-                    val showEditScreenEvent = ProductsScreenEvent.OnShowEditProductScreen(
-                        shoppingUid = shoppingUid,
-                        productUid = event.productUid
-                    )
-                    _screenEventFlow.emit(showEditScreenEvent)
-                }
-                AfterProductCompleted.DELETE -> {
-                    shoppingListsRepository.deleteProductsByProductUids(
-                        shoppingUid = shoppingUid,
-                        productsUids = listOf(event.productUid)
-                    )
-                }
-            }
+        invertProductStatus(event.productUid, event.completed).let {
+            doAfterProductCompleted(event.productUid)
         }
     }
 
@@ -472,6 +456,22 @@ class ProductsViewModel @Inject constructor(
         ).let { productsState.onSelectClearProducts(expanded = false) }
     }
 
+    private fun onSwipeProductLeft(
+        event: ProductsEvent.OnSwipeProductLeft
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        doAfterSwipeProduct(event.productUid, productsState.swipeProductLeft).let {
+            _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
+        }
+    }
+
+    private fun onSwipeProductRight(
+        event: ProductsEvent.OnSwipeProductRight
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        doAfterSwipeProduct(event.productUid, productsState.swipeProductRight).let {
+            _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
+        }
+    }
+
     private fun uidsToString(uids: List<String>): String {
         return uids.toString()
             .replace("[", "")
@@ -490,6 +490,65 @@ class ProductsViewModel @Inject constructor(
             AfterShoppingCompleted.DELETE -> {
                 if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
                     shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
+                }
+            }
+        }
+    }
+
+    private suspend fun invertProductStatus(
+        productUid: String,
+        completed: Boolean
+    ) = withContext(AppDispatchers.Main) {
+        if (completed) {
+            shoppingListsRepository.activeProduct(productUid)
+        } else {
+            shoppingListsRepository.completeProduct(productUid).let {
+                doAfterShoppingCompleted()
+            }
+        }
+    }
+
+    private suspend fun doAfterProductCompleted(productUid: String) = withContext(AppDispatchers.Main) {
+        when (productsState.getAfterProductCompleted()) {
+            AfterProductCompleted.NOTHING -> {}
+            AfterProductCompleted.EDIT -> {
+                val showEditScreenEvent = ProductsScreenEvent.OnShowEditProductScreen(
+                    shoppingUid = shoppingUid,
+                    productUid = productUid
+                )
+                _screenEventFlow.emit(showEditScreenEvent)
+            }
+            AfterProductCompleted.DELETE -> {
+                shoppingListsRepository.deleteProductsByProductUids(
+                    shoppingUid = shoppingUid,
+                    productsUids = listOf(productUid)
+                )
+            }
+        }
+    }
+
+    private suspend fun doAfterSwipeProduct(
+        productUid: String,
+        swipeProduct: SwipeProduct
+    ) = withContext(AppDispatchers.Main) {
+        when (swipeProduct) {
+            SwipeProduct.DISABLED -> {}
+            SwipeProduct.EDIT -> {
+                _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, productUid))
+            }
+
+            SwipeProduct.DELETE -> {
+                shoppingListsRepository.deleteProductsByProductUids(
+                    shoppingUid = shoppingUid,
+                    productsUids = listOf(productUid)
+                )
+            }
+
+            SwipeProduct.COMPLETE -> {
+                productsState.isProductCompleted(productUid)?.let { completed ->
+                    invertProductStatus(productUid, completed).let {
+                        doAfterProductCompleted(productUid)
+                    }
                 }
             }
         }

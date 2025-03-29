@@ -15,6 +15,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeProduct
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.utils.toUiString
@@ -130,6 +131,12 @@ class ProductsState {
     var displayListOfAutocompletes: Boolean by mutableStateOf(false)
         private set
 
+    var swipeProductLeft: SwipeProduct by mutableStateOf(SwipeProduct.DefaultValue)
+        private set
+
+    var swipeProductRight: SwipeProduct by mutableStateOf(SwipeProduct.DefaultValue)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -171,6 +178,8 @@ class ProductsState {
         expandedMarkAsMenu = false
         expandedShareProducts = false
         displayListOfAutocompletes = userPreferences.displayListOfAutocompletes
+        swipeProductLeft = userPreferences.swipeProductLeft
+        swipeProductRight = userPreferences.swipeProductRight
         waiting = false
     }
 
@@ -346,6 +355,10 @@ class ProductsState {
                     shoppingListWithConfig.getUserPreferences().displayTotal == budgetProducts &&
                     !shoppingListWithConfig.getShopping().totalFormatted
         }
+    }
+
+    fun isProductCompleted(productUid: String): Boolean? {
+        return shoppingListWithConfig.getSortedProducts().find { it.productUid == productUid }?.completed
     }
 
     private fun toNotFoundText(location: ShoppingLocation): UiString {

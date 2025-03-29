@@ -39,6 +39,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeProduct
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.chooseNavigate
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
@@ -757,6 +758,16 @@ fun ProductsScreen(
                     viewModel.onEvent(event)
                 }
             },
+            swipeProductLeft = state.swipeProductLeft,
+            onSwipeLeft = {
+                val event = ProductsEvent.OnSwipeProductLeft(it)
+                viewModel.onEvent(event)
+            },
+            swipeProductRight = state.swipeProductRight,
+            onSwipeRight = {
+                val event = ProductsEvent.OnSwipeProductRight(it)
+                viewModel.onEvent(event)
+            },
             selectedUids = state.selectedUids
         )
     }
@@ -907,8 +918,16 @@ private fun ProductsGrid(
     location: ShoppingLocation?,
     onClick: (String, Boolean) -> Unit,
     onLongClick: (String) -> Unit,
+    swipeProductLeft: SwipeProduct,
+    onSwipeLeft: (String) -> Unit,
+    swipeProductRight: SwipeProduct,
+    onSwipeRight: (String) -> Unit,
     selectedUids: List<String>?
 ) {
+    val swipeLeftRightEnabled = swipeProductLeft != SwipeProduct.DISABLED ||
+            swipeProductRight != SwipeProduct.DISABLED
+    val swipeEnabled = location != ShoppingLocation.TRASH && selectedUids == null && swipeLeftRightEnabled
+
     SmartphoneTabletAppGrid(
         modifier = modifier,
         multiColumns = multiColumns,
@@ -958,19 +977,28 @@ private fun ProductsGrid(
                     TextDecoration.None
                 }
 
-                AppMultiColumnsItem(
-                    multiColumns = multiColumns,
-                    left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
-                    title = getProductItemTitleOrNull(item.name, textDecoration),
-                    body = getProductItemBodyOrNull(item.body, textDecoration),
-                    right = getProductItemRightOrNull(selected),
-                    dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
-                    clickableEnabled = clickableEnabled,
-                    longClickableEnabled = longClickableEnabled,
-                    onClick = { onClick(item.uid, item.completed) },
-                    onLongClick = { onLongClick(item.uid) },
-                    backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
-                )
+                AppItemSwipeableWrapper(
+                    enabled = swipeEnabled,
+                    left = getSwipeProductContent(swipeProductLeft, item.completed),
+                    onSwipeLeft = { onSwipeLeft(item.uid) },
+                    right = getSwipeProductContent(swipeProductRight, item.completed),
+                    backgroundColor = getSwipeBackgroundColor(item.completed),
+                    onSwipeRight = { onSwipeRight(item.uid) }
+                ) {
+                    AppMultiColumnsItem(
+                        multiColumns = multiColumns,
+                        left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
+                        title = getProductItemTitleOrNull(item.name, textDecoration),
+                        body = getProductItemBodyOrNull(item.body, textDecoration),
+                        right = getProductItemRightOrNull(selected),
+                        dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                        clickableEnabled = clickableEnabled,
+                        longClickableEnabled = longClickableEnabled,
+                        onClick = { onClick(item.uid, item.completed) },
+                        onLongClick = { onLongClick(item.uid) },
+                        backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
+                    )
+                }
             }
 
             if (otherItems.isNotEmpty()) {
@@ -1009,19 +1037,28 @@ private fun ProductsGrid(
                 TextDecoration.None
             }
 
-            AppMultiColumnsItem(
-                multiColumns = multiColumns,
-                left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
-                title = getProductItemTitleOrNull(item.name, textDecoration),
-                body = getProductItemBodyOrNull(item.body, textDecoration),
-                right = getProductItemRightOrNull(selected),
-                dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
-                clickableEnabled = clickableEnabled,
-                longClickableEnabled = longClickableEnabled,
-                onClick = { onClick(item.uid, item.completed) },
-                onLongClick = { onLongClick(item.uid) },
-                backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
-            )
+            AppItemSwipeableWrapper(
+                enabled = swipeEnabled,
+                left = getSwipeProductContent(swipeProductLeft, item.completed),
+                onSwipeLeft = { onSwipeLeft(item.uid) },
+                right = getSwipeProductContent(swipeProductRight, item.completed),
+                backgroundColor = getSwipeBackgroundColor(item.completed),
+                onSwipeRight = { onSwipeRight(item.uid) }
+            ) {
+                AppMultiColumnsItem(
+                    multiColumns = multiColumns,
+                    left = getProductItemLeft(coloredCheckbox, item.completed, leftOnClick),
+                    title = getProductItemTitleOrNull(item.name, textDecoration),
+                    body = getProductItemBodyOrNull(item.body, textDecoration),
+                    right = getProductItemRightOrNull(selected),
+                    dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                    clickableEnabled = clickableEnabled,
+                    longClickableEnabled = longClickableEnabled,
+                    onClick = { onClick(item.uid, item.completed) },
+                    onLongClick = { onLongClick(item.uid) },
+                    backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
+                )
+            }
         }
     }
 }
@@ -1109,6 +1146,43 @@ private fun getProductItemBodyOrNull(
         text = text.asCompose(),
         textDecoration = textDecoration
     )
+}
+
+@Composable
+private fun getSwipeProductContent(
+    swipeProduct: SwipeProduct,
+    completed: Boolean
+): @Composable (() -> Unit)? {
+    return when (swipeProduct) {
+        SwipeProduct.DISABLED -> null
+        SwipeProduct.EDIT -> {
+            { DefaultIcon(UiIcon.Edit) }
+        }
+        SwipeProduct.DELETE -> {
+            {
+                DefaultIcon(
+                    icon = UiIcon.Delete,
+                    tint = MaterialTheme.colors.error
+                )
+            }
+        }
+        SwipeProduct.COMPLETE -> {
+            if (completed) {
+                { DefaultIcon(UiIcon.CheckboxOutline) }
+            } else {
+                { DefaultIcon(UiIcon.Checkbox) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun getSwipeBackgroundColor(completed: Boolean): Color {
+    return if (completed) {
+        MaterialTheme.colors.surface
+    } else {
+        MaterialTheme.colors.background
+    }
 }
 
 private val ProductsReminderSpacerSize = 4.dp
