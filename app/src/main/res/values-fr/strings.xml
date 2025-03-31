@@ -50,12 +50,14 @@
     <string name="all_action_copyTo">Copier vers</string>
     <string name="all_action_delete">Supprimer</string>
     <string name="all_action_disableMultiColumns">Une colonne</string>
+    <string name="all_action_disabled">Désactivé</string>
     <string name="all_action_displayActiveTotal">Produits non achetés</string>
     <string name="all_action_displayAllTotal">Tous les produits</string>
     <string name="all_action_displayCompletedTotal">Produits achetés</string>
     <string name="all_action_edit">Modifier</string>
     <string name="all_action_enableMultiColumns">Plusieurs colonnes</string>
     <string name="all_action_markAs">Marquer comme…</string>
+    <string name="all_action_markAsCompletedOrActive">Marquer comme achetés/non acheté</string>
     <string name="all_action_minusOne">- 1</string>
     <string name="all_action_moveTo">Déplacer vers</string>
     <string name="all_action_openPermissions">Autorisations d\'ouverture</string>
@@ -76,6 +78,8 @@
     <string name="all_action_sortByLastModified">Par dernière modif.</string>
     <string name="all_action_sortByName">Par nom</string>
     <string name="all_action_sortByTotal">Par total</string>
+    <string name="all_action_swipeLeft">Gauche</string>
+    <string name="all_action_swipeRight">Droit</string>
     <string name="all_action_unarchive">Désarchiver</string>
     <string name="all_action_unpin">Désépingler</string>
     <string name="all_contentDescription_addAutocompleteIcon">Ajouter la saisie semi-automatique</string>
@@ -549,6 +553,7 @@
     <string name="settings_body_maxAutocompletes">Sélectionnez le nombre de saisies semi-automatiques pouvant être affichées</string>
     <string name="settings_body_saveProductToAutocompletes">Tout produit sera enregistré</string>
     <string name="settings_body_swipeProduct">Sélectionnez l\'action pour balayer vers la gauche et la droite (sauf les widgets)</string>
+    <string name="settings_body_swipeShopping">Sélectionnez l\'action pour balayer vers la gauche et la droite</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Général</string>
@@ -580,6 +585,7 @@
     <string name="settings_title_saveProductToAutocompletes">Enregistrer les produits</string>
     <string name="settings_title_strikethroughCompletedProducts">Barrer les produits achetés</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
+    <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>
     <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
@@ -660,12 +666,22 @@
     <string name="shortcuts_shortLabel_addShoppingList">Nouvelle liste</string>
 
     <string name="swipeProduct_action_cancel">@string/all_action_cancel</string>
-    <string name="swipeProduct_action_complete">Marquer comme achetés/non acheté</string>
+    <string name="swipeProduct_action_complete">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeProduct_action_delete">@string/all_action_delete</string>
-    <string name="swipeProduct_action_disabled">Désactivé</string>
+    <string name="swipeProduct_action_disabled">@string/all_action_disabled</string>
     <string name="swipeProduct_action_edit">@string/all_action_edit</string>
     <string name="swipeProduct_action_save">@string/all_action_save</string>
     <string name="swipeProduct_header">Glisser le produit</string>
-    <string name="swipeProduct_text_left">Gauche</string>
-    <string name="swipeProduct_text_right">Droit</string>
+    <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
+    <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
+
+    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
+    <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
+    <string name="swipeShopping_action_delete">@string/all_action_delete</string>
+    <string name="swipeShopping_action_disabled">@string/all_action_disabled</string>
+    <string name="swipeShopping_action_save">@string/all_action_save</string>
+    <string name="swipeShopping_header">Glisser liste de courses</string>
+    <string name="swipeShopping_text_left">@string/all_action_swipeLeft</string>
+    <string name="swipeShopping_text_right">@string/all_action_swipeRight</string>
 </resources>

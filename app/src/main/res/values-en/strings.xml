@@ -50,12 +50,14 @@
     <string name="all_action_copyTo">Copy to…</string>
     <string name="all_action_delete">Delete</string>
     <string name="all_action_disableMultiColumns">One column</string>
+    <string name="all_action_disabled">Disabled</string>
     <string name="all_action_displayActiveTotal">Active</string>
     <string name="all_action_displayAllTotal">All</string>
     <string name="all_action_displayCompletedTotal">Completed</string>
     <string name="all_action_edit">Edit</string>
     <string name="all_action_enableMultiColumns">Multi-columns</string>
     <string name="all_action_markAs">Mark as…</string>
+    <string name="all_action_markAsCompletedOrActive">Mark as completed/active</string>
     <string name="all_action_minusOne">- 1</string>
     <string name="all_action_moveTo">Move to…</string>
     <string name="all_action_openPermissions">Open permissions</string>
@@ -76,6 +78,8 @@
     <string name="all_action_sortByLastModified">By last modified</string>
     <string name="all_action_sortByName">By name</string>
     <string name="all_action_sortByTotal">By total</string>
+    <string name="all_action_swipeLeft">Left</string>
+    <string name="all_action_swipeRight">Right</string>
     <string name="all_action_unarchive">Unarchive</string>
     <string name="all_action_unpin">Unpin</string>
     <string name="all_contentDescription_addAutocompleteIcon">Add autocomplete</string>
@@ -550,6 +554,7 @@
     <string name="settings_body_maxAutocompletes">Select how many autocompletes can be displayed</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_swipeProduct">Select action to swipe left and right (except widgets)</string>
+    <string name="settings_body_swipeShopping">Select action to swipe left and right</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
@@ -581,6 +586,7 @@
     <string name="settings_title_saveProductToAutocompletes">Save products</string>
     <string name="settings_title_strikethroughCompletedProducts">Strikethrough completed products</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
+    <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>
     <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
@@ -661,12 +667,22 @@
     <string name="shortcuts_shortLabel_addShoppingList">New list</string>
 
     <string name="swipeProduct_action_cancel">@string/all_action_cancel</string>
-    <string name="swipeProduct_action_complete">Mark as completed/active</string>
+    <string name="swipeProduct_action_complete">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeProduct_action_delete">@string/all_action_delete</string>
-    <string name="swipeProduct_action_disabled">Disabled</string>
+    <string name="swipeProduct_action_disabled">@string/all_action_disabled</string>
     <string name="swipeProduct_action_edit">@string/all_action_edit</string>
     <string name="swipeProduct_action_save">@string/all_action_save</string>
     <string name="swipeProduct_header">Swipe product</string>
-    <string name="swipeProduct_text_left">Left</string>
-    <string name="swipeProduct_text_right">Right</string>
+    <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
+    <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
+
+    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
+    <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
+    <string name="swipeShopping_action_delete">@string/all_action_delete</string>
+    <string name="swipeShopping_action_disabled">@string/all_action_disabled</string>
+    <string name="swipeShopping_action_save">@string/all_action_save</string>
+    <string name="swipeShopping_header">Swipe shopping list</string>
+    <string name="swipeShopping_text_left">@string/all_action_swipeLeft</string>
+    <string name="swipeShopping_text_right">@string/all_action_swipeRight</string>
 </resources>

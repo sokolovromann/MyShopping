@@ -50,12 +50,14 @@
     <string name="all_action_copyTo">Копировать в…</string>
     <string name="all_action_delete">Удалить</string>
     <string name="all_action_disableMultiColumns">Один столбец</string>
+    <string name="all_action_disabled">Отключено</string>
     <string name="all_action_displayActiveTotal">Не купленные товары</string>
     <string name="all_action_displayAllTotal">Все товары</string>
     <string name="all_action_displayCompletedTotal">Купленные товары</string>
     <string name="all_action_edit">Редактировать</string>
     <string name="all_action_enableMultiColumns">Несколько столбцов</string>
     <string name="all_action_markAs">Отметить как…</string>
+    <string name="all_action_markAsCompletedOrActive">Отметить как куплено/не куплено</string>
     <string name="all_action_minusOne">- 1</string>
     <string name="all_action_moveTo">Переместить в…</string>
     <string name="all_action_openPermissions">Открыть разрешения</string>
@@ -76,6 +78,8 @@
     <string name="all_action_sortByLastModified">По редактированию</string>
     <string name="all_action_sortByName">По названию</string>
     <string name="all_action_sortByTotal">По стоимости</string>
+    <string name="all_action_swipeLeft">Влево</string>
+    <string name="all_action_swipeRight">Вправо</string>
     <string name="all_action_unarchive">Разархивировать</string>
     <string name="all_action_unpin">Открепить</string>
     <string name="all_contentDescription_addAutocompleteIcon">Добавить подсказку</string>
@@ -544,6 +548,7 @@
     <string name="settings_body_maxAutocompletes">Выберите сколько может отображаться подсказок</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
     <string name="settings_body_swipeProduct">Выберите действие для смахивания влево или вправо (кроме виджетов)</string>
+    <string name="settings_body_swipeShopping">Выберите действие для смахивания влево или вправо</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Общие</string>
@@ -575,6 +580,7 @@
     <string name="settings_title_saveProductToAutocompletes">Сохранять товары</string>
     <string name="settings_title_strikethroughCompletedProducts">Зачёркивать купленные товары</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
+    <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>
     <string name="settings_title_taxRate">@string/editTaxRate_header</string>
 
     <string name="shoppingLists_action_automaticSorting">@string/all_action_saveSort</string>
@@ -655,12 +661,22 @@
     <string name="shortcuts_shortLabel_addShoppingList">Новый список</string>
 
     <string name="swipeProduct_action_cancel">@string/all_action_cancel</string>
-    <string name="swipeProduct_action_complete">Отметить как куплено/не куплено</string>
+    <string name="swipeProduct_action_complete">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeProduct_action_delete">@string/all_action_delete</string>
-    <string name="swipeProduct_action_disabled">Отключено</string>
+    <string name="swipeProduct_action_disabled">@string/all_action_disabled</string>
     <string name="swipeProduct_action_edit">@string/all_action_edit</string>
     <string name="swipeProduct_action_save">@string/all_action_save</string>
     <string name="swipeProduct_header">Смахивание товара</string>
-    <string name="swipeProduct_text_left">Влево</string>
-    <string name="swipeProduct_text_right">Вправо</string>
+    <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
+    <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
+
+    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
+    <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
+    <string name="swipeShopping_action_delete">@string/all_action_delete</string>
+    <string name="swipeShopping_action_disabled">@string/all_action_disabled</string>
+    <string name="swipeShopping_action_save">@string/all_action_save</string>
+    <string name="swipeShopping_header">Смахивание списка покупок</string>
+    <string name="swipeShopping_text_left">@string/all_action_swipeLeft</string>
+    <string name="swipeShopping_text_right">@string/all_action_swipeRight</string>
 </resources>
