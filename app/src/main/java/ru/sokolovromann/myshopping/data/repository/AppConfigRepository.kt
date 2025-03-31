@@ -24,6 +24,7 @@ import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.SwipeProduct
+import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import javax.inject.Inject
@@ -145,6 +146,15 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
     ): Result<Unit> = withContext(dispatcher) {
         appConfigDao.saveSwipeProductLeft(left.name)
         appConfigDao.saveSwipeProductRight(right.name)
+        return@withContext Result.success(Unit)
+    }
+
+    suspend fun saveSwipeShopping(
+        left: SwipeShopping,
+        right: SwipeShopping
+    ): Result<Unit> = withContext(dispatcher) {
+        appConfigDao.saveSwipeShoppingLeft(left.name)
+        appConfigDao.saveSwipeShoppingRight(right.name)
         return@withContext Result.success(Unit)
     }
 

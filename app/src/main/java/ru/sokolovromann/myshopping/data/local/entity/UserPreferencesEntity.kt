@@ -49,5 +49,7 @@ data class UserPreferencesEntity(
     val afterShoppingCompleted: String? = null,
     val displayEmptyShoppings: Boolean? = null,
     val swipeProductLeft: String? = null,
-    val swipeProductRight: String? = null
+    val swipeProductRight: String? = null,
+    val swipeShoppingLeft: String? = null,
+    val swipeShoppingRight: String? = null
 )

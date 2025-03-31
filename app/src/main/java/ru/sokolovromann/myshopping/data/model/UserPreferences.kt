@@ -43,4 +43,6 @@ data class UserPreferences(
     val displayEmptyShoppings: Boolean = UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS,
     val swipeProductLeft: SwipeProduct = UserPreferencesDefaults.SWIPE_PRODUCT,
     val swipeProductRight: SwipeProduct = UserPreferencesDefaults.SWIPE_PRODUCT,
+    val swipeShoppingLeft: SwipeShopping = UserPreferencesDefaults.SWIPE_SHOPPING,
+    val swipeShoppingRight: SwipeShopping = UserPreferencesDefaults.SWIPE_SHOPPING
 )

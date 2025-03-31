@@ -143,6 +143,18 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun saveSwipeShoppingLeft(value: String) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.swipeShoppingLeft] = value
+        }
+    }
+
+    suspend fun saveSwipeShoppingRight(value: String) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            it[DatasourceKey.User.swipeShoppingRight] = value
+        }
+    }
+
     suspend fun enableAutomaticShoppingsSort(
         sortBy: String,
         ascending: Boolean
@@ -367,6 +379,8 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.displayEmptyShoppings] = entity.displayEmptyShoppings ?: true
             it[DatasourceKey.User.swipeProductLeft] = entity.swipeProductLeft ?: ""
             it[DatasourceKey.User.swipeProductRight] = entity.swipeProductRight ?: ""
+            it[DatasourceKey.User.swipeShoppingLeft] = entity.swipeShoppingLeft ?: ""
+            it[DatasourceKey.User.swipeShoppingRight] = entity.swipeShoppingRight ?: ""
         }
     }
 
@@ -442,7 +456,9 @@ class AppConfigDao(appContent: AppContent) {
             afterShoppingCompleted = preferences[DatasourceKey.User.afterShoppingCompleted],
             displayEmptyShoppings = preferences[DatasourceKey.User.displayEmptyShoppings],
             swipeProductLeft = preferences[DatasourceKey.User.swipeProductLeft],
-            swipeProductRight = preferences[DatasourceKey.User.swipeProductRight]
+            swipeProductRight = preferences[DatasourceKey.User.swipeProductRight],
+            swipeShoppingLeft = preferences[DatasourceKey.User.swipeShoppingLeft],
+            swipeShoppingRight = preferences[DatasourceKey.User.swipeShoppingRight]
         )
     }
 
@@ -534,6 +550,8 @@ private object DatasourceKey {
         val displayEmptyShoppings = booleanPreferencesKey("display_empty_shoppings")
         val swipeProductLeft = stringPreferencesKey("swipe_product_left")
         val swipeProductRight = stringPreferencesKey("swipe_product_right")
+        val swipeShoppingLeft = stringPreferencesKey("swipe_shopping_left")
+        val swipeShoppingRight = stringPreferencesKey("swipe_shopping_right")
     }
 
     object CodeVersion14 {
