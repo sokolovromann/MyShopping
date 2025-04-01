@@ -68,6 +68,10 @@ fun SettingsScreen(
                     route = UiRoute.Settings.swipeProduct
                 )
 
+                SettingsScreenEvent.OnShowSwipeShopping -> navController.navigate(
+                    route = UiRoute.Settings.swipeShopping
+                )
+
                 SettingsScreenEvent.OnShowBackupScreen -> navController.navigate(
                     route = UiRoute.Settings.backupScreen
                 )

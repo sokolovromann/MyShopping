@@ -188,6 +188,10 @@ class SettingsViewModel @Inject constructor(
             SettingUid.SwipeProduct -> {
                 _screenEventFlow.emit(SettingsScreenEvent.OnShowSwipeProduct)
             }
+
+            SettingUid.SwipeShopping -> {
+                _screenEventFlow.emit(SettingsScreenEvent.OnShowSwipeShopping)
+            }
         }
     }
 

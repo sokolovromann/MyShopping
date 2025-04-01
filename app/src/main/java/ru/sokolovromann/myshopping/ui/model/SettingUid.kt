@@ -25,5 +25,6 @@ enum class SettingUid {
     ColoredCheckbox,
     SaveProductToAutocompletes,
     MaxAutocompletes,
-    SwipeProduct
+    SwipeProduct,
+    SwipeShopping
 }

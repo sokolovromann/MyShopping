@@ -232,6 +232,12 @@ object UiAppConfigMapper {
                 title = UiString.FromResources(R.string.settings_title_swipeProduct),
                 body = UiString.FromResources(R.string.settings_body_swipeProduct),
                 checked = null
+            ),
+            SettingItem(
+                uid = SettingUid.SwipeShopping,
+                title = UiString.FromResources(R.string.settings_title_swipeShopping),
+                body = UiString.FromResources(R.string.settings_body_swipeShopping),
+                checked = null
             )
         )
     }

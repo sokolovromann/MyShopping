@@ -20,6 +20,8 @@ sealed class SettingsScreenEvent {
 
     object OnShowSwipeProduct : SettingsScreenEvent()
 
+    object OnShowSwipeShopping : SettingsScreenEvent()
+
     object OnUpdateProductsWidgets : SettingsScreenEvent()
 
     data class OnDrawerScreenSelected(val drawerScreen: DrawerScreen) : SettingsScreenEvent()
