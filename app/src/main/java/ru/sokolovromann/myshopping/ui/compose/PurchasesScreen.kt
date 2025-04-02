@@ -421,6 +421,16 @@ fun PurchasesScreen(
                     viewModel.onEvent(event)
                 }
             },
+            swipeShoppingLeft = state.swipeShoppingLeft,
+            swipeShoppingRight = state.swipeShoppingRight,
+            onSwipeLeft = {
+                val event = PurchasesEvent.OnSwipeShoppingLeft(it)
+                viewModel.onEvent(event)
+            },
+            onSwipeRight = {
+                val event = PurchasesEvent.OnSwipeShoppingRight(it)
+                viewModel.onEvent(event)
+            },
             selectedUids = state.selectedUids
         )
     }

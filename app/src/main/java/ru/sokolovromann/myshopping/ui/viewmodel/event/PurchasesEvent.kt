@@ -68,4 +68,8 @@ sealed class PurchasesEvent {
     data class OnMarkAsSelected(val completed: Boolean) : PurchasesEvent()
 
     data class OnSelectMarkAs(val expanded: Boolean) : PurchasesEvent()
+
+    data class OnSwipeShoppingLeft(val uid: String) : PurchasesEvent()
+
+    data class OnSwipeShoppingRight(val uid: String) : PurchasesEvent()
 }

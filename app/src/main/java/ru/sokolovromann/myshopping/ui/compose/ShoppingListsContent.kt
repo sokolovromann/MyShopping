@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,6 +20,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.ShoppingListItem
 import ru.sokolovromann.myshopping.ui.model.UiIcon
@@ -43,8 +45,16 @@ fun ShoppingListsGrid(
     dropdownMenu: @Composable ((String) -> Unit)? = null,
     onClick: (String) -> Unit,
     onLongClick: (String) -> Unit,
+    swipeShoppingLeft: SwipeShopping = SwipeShopping.DISABLED,
+    onSwipeLeft: (String) -> Unit = {},
+    swipeShoppingRight: SwipeShopping = SwipeShopping.DISABLED,
+    onSwipeRight: (String) -> Unit = {},
     selectedUids: List<String>? = null
 ) {
+    val swipeLeftRightEnabled = swipeShoppingLeft != SwipeShopping.DISABLED ||
+            swipeShoppingRight != SwipeShopping.DISABLED
+    val swipeEnabled = selectedUids == null && swipeLeftRightEnabled
+
     SmartphoneTabletAppGrid(
         modifier = modifier,
         multiColumns = multiColumns,
@@ -64,6 +74,60 @@ fun ShoppingListsGrid(
             items(pinnedItems) { item ->
                 val selected = selectedUids?.contains(item.uid) ?: false
 
+                AppItemSwipeableWrapper(
+                    enabled = swipeEnabled,
+                    left = getSwipeShoppingContent(swipeShoppingLeft, item.completed),
+                    onSwipeLeft = { onSwipeLeft(item.uid) },
+                    right = getSwipeShoppingContent(swipeShoppingRight, item.completed),
+                    backgroundColor = getSwipeBackgroundColor(item.completed),
+                    onSwipeRight = { onSwipeRight(item.uid) }
+                ) {
+                    AppSurfaceItem(
+                        title = getShoppingListItemTitleOrNull(item.name),
+                        body = {
+                            ShoppingListItemBody(
+                                hasName = item.name.asCompose().isNotEmpty(),
+                                products = item.products,
+                                displayProducts = displayProducts,
+                                strikethroughCompletedProducts = strikethroughCompletedProducts,
+                                total = item.total,
+                                reminder = item.reminder,
+                                lastModified = item.lastModified,
+                                coloredCheckbox = coloredCheckbox
+                            )
+                        },
+                        left = getShoppingListItemLeftOrNull(
+                            highlightCheckbox = coloredCheckbox,
+                            checked = item.completed,
+                            displayProducts = displayProducts
+                        ),
+                        right = getShoppingListItemRightOrNull(selected),
+                        dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
+                        onClick = { onClick(item.uid) },
+                        onLongClick = { onLongClick(item.uid) },
+                        backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
+                    )
+                }
+            }
+
+            if (otherItems.isNotEmpty()) {
+                item(span = StaggeredGridItemSpan.FullLine) {
+                    AppHeaderItem(UiString.FromResources(R.string.shoppingLists_text_otherShoppingLists))
+                }
+            }
+        }
+
+        items(otherItems) { item ->
+            val selected = selectedUids?.contains(item.uid) ?: false
+
+            AppItemSwipeableWrapper(
+                enabled = swipeEnabled,
+                left = getSwipeShoppingContent(swipeShoppingLeft, item.completed),
+                onSwipeLeft = { onSwipeLeft(item.uid) },
+                right = getSwipeShoppingContent(swipeShoppingRight, item.completed),
+                backgroundColor = getSwipeBackgroundColor(item.completed),
+                onSwipeRight = { onSwipeRight(item.uid) }
+            ) {
                 AppSurfaceItem(
                     title = getShoppingListItemTitleOrNull(item.name),
                     body = {
@@ -90,42 +154,6 @@ fun ShoppingListsGrid(
                     backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
                 )
             }
-
-            if (otherItems.isNotEmpty()) {
-                item(span = StaggeredGridItemSpan.FullLine) {
-                    AppHeaderItem(UiString.FromResources(R.string.shoppingLists_text_otherShoppingLists))
-                }
-            }
-        }
-
-        items(otherItems) { item ->
-            val selected = selectedUids?.contains(item.uid) ?: false
-
-            AppSurfaceItem(
-                title = getShoppingListItemTitleOrNull(item.name),
-                body = {
-                    ShoppingListItemBody(
-                        hasName = item.name.asCompose().isNotEmpty(),
-                        products = item.products,
-                        displayProducts = displayProducts,
-                        strikethroughCompletedProducts = strikethroughCompletedProducts,
-                        total = item.total,
-                        reminder = item.reminder,
-                        lastModified = item.lastModified,
-                        coloredCheckbox = coloredCheckbox
-                    )
-                },
-                left = getShoppingListItemLeftOrNull(
-                    highlightCheckbox = coloredCheckbox,
-                    checked = item.completed,
-                    displayProducts = displayProducts
-                ),
-                right = getShoppingListItemRightOrNull(selected),
-                dropdownMenu = { dropdownMenu?.let { it(item.uid) } },
-                onClick = { onClick(item.uid) },
-                onLongClick = { onLongClick(item.uid) },
-                backgroundColor = getAppItemBackgroundColor(selected, item.completed, displayCompleted == DisplayCompleted.NO_SPLIT)
-            )
         }
     }
 }
@@ -657,6 +685,43 @@ private fun getShoppingListItemRightOrNull(
         checked = true,
         checkmarkColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
     )
+}
+
+@Composable
+private fun getSwipeShoppingContent(
+    swipeShopping: SwipeShopping,
+    completed: Boolean
+): @Composable (() -> Unit)? {
+    return when (swipeShopping) {
+        SwipeShopping.DISABLED -> null
+        SwipeShopping.ARCHIVE -> {
+            { DefaultIcon(UiIcon.Archive) }
+        }
+        SwipeShopping.DELETE -> {
+            {
+                DefaultIcon(
+                    icon = UiIcon.Delete,
+                    tint = MaterialTheme.colors.error
+                )
+            }
+        }
+        SwipeShopping.COMPLETE -> {
+            if (completed) {
+                { DefaultIcon(UiIcon.CheckboxOutline) }
+            } else {
+                { DefaultIcon(UiIcon.Checkbox) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun getSwipeBackgroundColor(completed: Boolean): Color {
+    return if (completed) {
+        MaterialTheme.colors.surface
+    } else {
+        MaterialTheme.colors.background
+    }
 }
 
 private val ShoppingListItemTextSmallPaddings = PaddingValues(vertical = 2.dp)

@@ -6,11 +6,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
@@ -94,6 +97,10 @@ class PurchasesViewModel @Inject constructor(
             is PurchasesEvent.OnMarkAsSelected -> onMarkAsSelected(event)
 
             is PurchasesEvent.OnSelectMarkAs -> onSelectMarkAs(event)
+
+            is PurchasesEvent.OnSwipeShoppingLeft -> onSwipeShoppingLeft(event)
+
+            is PurchasesEvent.OnSwipeShoppingRight -> onSwipeShoppingRight(event)
         }
     }
 
@@ -307,5 +314,66 @@ class PurchasesViewModel @Inject constructor(
 
     private fun onSelectMarkAs(event: PurchasesEvent.OnSelectMarkAs) {
         purchasesState.onSelectMarkAsMenu(event.expanded)
+    }
+
+    private fun onSwipeShoppingLeft(
+        event: PurchasesEvent.OnSwipeShoppingLeft
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        doAfterSwipeShopping(event.uid, purchasesState.swipeShoppingLeft)
+    }
+
+    private fun onSwipeShoppingRight(
+        event: PurchasesEvent.OnSwipeShoppingRight
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        doAfterSwipeShopping(event.uid, purchasesState.swipeShoppingRight)
+    }
+
+    private suspend fun doAfterSwipeShopping(
+        uid: String,
+        swipeShopping: SwipeShopping
+    ) = withContext(AppDispatchers.Main) {
+        when (swipeShopping) {
+            SwipeShopping.DISABLED -> {}
+            SwipeShopping.ARCHIVE -> {
+                shoppingListsRepository.moveShoppingListToArchive(uid)
+            }
+            SwipeShopping.DELETE -> {
+                shoppingListsRepository.moveShoppingListToTrash(uid)
+            }
+            SwipeShopping.COMPLETE -> {
+                purchasesState.isShoppingListCompleted(uid)?.let { completed ->
+                    invertShoppingStatus(uid, completed).let {
+                        doAfterShoppingCompleted(uid)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun invertShoppingStatus(
+        uid: String,
+        completed: Boolean
+    ) = withContext(AppDispatchers.Main) {
+        if (completed) {
+            shoppingListsRepository.activeProducts(uid)
+        } else {
+            shoppingListsRepository.completeProducts(uid)
+        }
+    }
+
+    private suspend fun doAfterShoppingCompleted(uid: String) = withContext(AppDispatchers.Main) {
+        when (purchasesState.getAfterShoppingCompleted()) {
+            AfterShoppingCompleted.NOTHING -> {}
+            AfterShoppingCompleted.ARCHIVE -> {
+                if (shoppingListsRepository.isShoppingListCompleted(uid)) {
+                    shoppingListsRepository.moveShoppingListToArchive(uid)
+                }
+            }
+            AfterShoppingCompleted.DELETE -> {
+                if (shoppingListsRepository.isShoppingListCompleted(uid)) {
+                    shoppingListsRepository.moveShoppingListToTrash(uid)
+                }
+            }
+        }
     }
 }

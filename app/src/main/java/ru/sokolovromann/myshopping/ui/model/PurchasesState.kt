@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -14,6 +15,7 @@ import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 
 class PurchasesState {
@@ -94,6 +96,12 @@ class PurchasesState {
     var afterAddShopping: AfterAddShopping by mutableStateOf(AfterAddShopping.DefaultValue)
         private set
 
+    var swipeShoppingLeft: SwipeShopping by mutableStateOf(SwipeShopping.DefaultValue)
+        private set
+
+    var swipeShoppingRight: SwipeShopping by mutableStateOf(SwipeShopping.DefaultValue)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -122,6 +130,8 @@ class PurchasesState {
         sortFormatted = userPreferences.shoppingsSortFormatted
         expandedMarkAsMenu = false
         afterAddShopping = userPreferences.afterAddShopping
+        swipeShoppingLeft = userPreferences.swipeShoppingLeft
+        swipeShoppingRight = userPreferences.swipeShoppingRight
         waiting = false
     }
 
@@ -279,6 +289,14 @@ class PurchasesState {
 
     fun expandedItemFavoriteMenu(uid: String): Boolean {
         return selectedUids?.count() == 1 && selectedUids?.contains(uid) == true
+    }
+
+    fun isShoppingListCompleted(uid: String): Boolean? {
+        return shoppingListsWithConfig.getSortedShoppingLists().find { it.shopping.uid == uid }?.isCompleted()
+    }
+
+    fun getAfterShoppingCompleted(): AfterShoppingCompleted {
+        return shoppingListsWithConfig.getUserPreferences().afterShoppingCompleted
     }
 
     private fun toNotFoundText(): UiString {
