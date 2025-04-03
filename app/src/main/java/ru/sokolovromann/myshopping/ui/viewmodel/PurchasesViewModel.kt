@@ -305,7 +305,9 @@ class PurchasesViewModel @Inject constructor(
     ) = viewModelScope.launch(AppDispatchers.Main) {
         purchasesState.selectedUids?.forEach { shoppingUid ->
             if (event.completed) {
-                shoppingListsRepository.completeProducts(shoppingUid)
+                shoppingListsRepository.completeProducts(shoppingUid).let {
+                    doAfterShoppingCompleted(shoppingUid)
+                }
             } else {
                 shoppingListsRepository.activeProducts(shoppingUid)
             }
