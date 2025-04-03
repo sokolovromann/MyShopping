@@ -1178,11 +1178,7 @@ private fun getSwipeProductContent(
 
 @Composable
 private fun getSwipeBackgroundColor(completed: Boolean): Color {
-    return if (completed) {
-        MaterialTheme.colors.surface
-    } else {
-        MaterialTheme.colors.background
-    }
+    return Color.Transparent
 }
 
 private val ProductsReminderSpacerSize = 4.dp

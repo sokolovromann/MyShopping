@@ -717,11 +717,7 @@ private fun getSwipeShoppingContent(
 
 @Composable
 private fun getSwipeBackgroundColor(completed: Boolean): Color {
-    return if (completed) {
-        MaterialTheme.colors.surface
-    } else {
-        MaterialTheme.colors.background
-    }
+    return Color.Transparent
 }
 
 private val ShoppingListItemTextSmallPaddings = PaddingValues(vertical = 2.dp)
