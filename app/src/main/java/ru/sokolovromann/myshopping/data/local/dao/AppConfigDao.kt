@@ -325,6 +325,14 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
+    suspend fun invertArchiveAsCompleted(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+        preferences.edit {
+            val oldValue = it[DatasourceKey.User.archiveAsCompleted]
+            val newValue = if (oldValue == null) valueIfNull else !oldValue
+            it[DatasourceKey.User.archiveAsCompleted] = newValue
+        }
+    }
+
     private suspend fun saveBuildConfig(entity: AppBuildConfigEntity) {
         preferences.edit {
             it[DatasourceKey.Build.appFirstTime] = requireNotNull(entity.appFirstTime)
@@ -381,6 +389,7 @@ class AppConfigDao(appContent: AppContent) {
             it[DatasourceKey.User.swipeProductRight] = entity.swipeProductRight ?: ""
             it[DatasourceKey.User.swipeShoppingLeft] = entity.swipeShoppingLeft ?: ""
             it[DatasourceKey.User.swipeShoppingRight] = entity.swipeShoppingRight ?: ""
+            it[DatasourceKey.User.archiveAsCompleted] = entity.archiveAsCompleted ?: false
         }
     }
 
@@ -458,7 +467,8 @@ class AppConfigDao(appContent: AppContent) {
             swipeProductLeft = preferences[DatasourceKey.User.swipeProductLeft],
             swipeProductRight = preferences[DatasourceKey.User.swipeProductRight],
             swipeShoppingLeft = preferences[DatasourceKey.User.swipeShoppingLeft],
-            swipeShoppingRight = preferences[DatasourceKey.User.swipeShoppingRight]
+            swipeShoppingRight = preferences[DatasourceKey.User.swipeShoppingRight],
+            archiveAsCompleted = preferences[DatasourceKey.User.archiveAsCompleted]
         )
     }
 
@@ -552,6 +562,7 @@ private object DatasourceKey {
         val swipeProductRight = stringPreferencesKey("swipe_product_right")
         val swipeShoppingLeft = stringPreferencesKey("swipe_shopping_left")
         val swipeShoppingRight = stringPreferencesKey("swipe_shopping_right")
+        val archiveAsCompleted = booleanPreferencesKey("archive_as_completed")
     }
 
     object CodeVersion14 {

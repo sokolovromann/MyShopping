@@ -133,7 +133,8 @@ object AppConfigMapper {
             swipeProductLeft = userPreferences.swipeProductLeft.toString(),
             swipeProductRight = userPreferences.swipeProductRight.toString(),
             swipeShoppingLeft = userPreferences.swipeShoppingLeft.toString(),
-            swipeShoppingRight = userPreferences.swipeShoppingRight.toString()
+            swipeShoppingRight = userPreferences.swipeShoppingRight.toString(),
+            archiveAsCompleted = userPreferences.archiveAsCompleted
         )
     }
 
@@ -184,7 +185,8 @@ object AppConfigMapper {
             swipeProductLeft = SwipeProduct.valueOfOrDefault(entity.swipeProductLeft),
             swipeProductRight = SwipeProduct.valueOfOrDefault(entity.swipeProductRight),
             swipeShoppingLeft = SwipeShopping.valueOfOrDefault(entity.swipeShoppingLeft),
-            swipeShoppingRight = SwipeShopping.valueOfOrDefault(entity.swipeShoppingRight)
+            swipeShoppingRight = SwipeShopping.valueOfOrDefault(entity.swipeShoppingRight),
+            archiveAsCompleted = toArchiveAsCompletedOrDefault(entity.archiveAsCompleted)
         )
     }
 
@@ -293,6 +295,10 @@ object AppConfigMapper {
 
     private fun toDisplayEmptyShoppingsOrDefault(value: Boolean?): Boolean {
         return value ?: UserPreferencesDefaults.DISPLAY_EMPTY_SHOPPINGS
+    }
+
+    private fun toArchiveAsCompletedOrDefault(value: Boolean?): Boolean {
+        return value ?: UserPreferencesDefaults.ARCHIVE_AS_COMPLETED
     }
 
     private fun toCurrencyOrDefault(entity: UserPreferencesEntity): Currency {

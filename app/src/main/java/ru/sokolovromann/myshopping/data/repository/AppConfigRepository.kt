@@ -316,4 +316,11 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
 
         return@withContext Result.success(Unit)
     }
+
+    suspend fun invertArchiveAsCompleted(): Result<Unit> = withContext(dispatcher) {
+        val valueIfNull = !UserPreferencesDefaults.ARCHIVE_AS_COMPLETED
+        appConfigDao.invertArchiveAsCompleted(valueIfNull)
+
+        return@withContext Result.success(Unit)
+    }
 }
