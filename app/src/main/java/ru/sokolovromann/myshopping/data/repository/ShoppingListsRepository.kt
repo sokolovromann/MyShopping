@@ -520,6 +520,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             Result.failure(exception)
         } else {
             shoppingListsDao.moveToArchive(shoppingUids, lastModified.millis)
+            if (appConfigDao.getAppConfig().first().userPreferences.archiveAsCompleted == true) {
+                shoppingUids.forEach { completeProducts(it, lastModified) }
+            }
             Result.success(Unit)
         }
     }
@@ -529,6 +532,9 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
         shoppingListsDao.moveToArchive(shoppingUid, lastModified.millis)
+        if (appConfigDao.getAppConfig().first().userPreferences.archiveAsCompleted == true) {
+            completeProducts(shoppingUid, lastModified)
+        }
         return@withContext Result.success(Unit)
     }
 
