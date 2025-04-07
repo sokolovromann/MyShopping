@@ -565,6 +565,7 @@
     <string name="settings_title_afterProductCompleted">Après avoir l\'achèvement le produit</string>
     <string name="settings_title_afterSaveProduct">Après avoir ajouté le produit</string>
     <string name="settings_title_afterShoppingCompleted">Après avoir l\'achèvement la liste de courses</string>
+    <string name="settings_title_archiveAsCompleted">Archiver les listes de courses comme achetés</string>
     <string name="settings_title_automaticallyEmptyTrash">Vider automatiquement corbeille</string>
     <string name="settings_title_backup">Sauvegarde</string>
     <string name="settings_title_coloredCheckbox">Cases à cocher colorées</string>

@@ -26,5 +26,6 @@ enum class SettingUid {
     SaveProductToAutocompletes,
     MaxAutocompletes,
     SwipeProduct,
-    SwipeShopping
+    SwipeShopping,
+    ArchiveShoppingsAsCompleted
 }

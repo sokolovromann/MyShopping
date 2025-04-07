@@ -513,6 +513,7 @@
     <string name="settings_title_afterProductCompleted">Після покупки товарів</string>
     <string name="settings_title_afterSaveProduct">Після додавання товару</string>
     <string name="settings_title_afterShoppingCompleted">Після покупки списку</string>
+    <string name="settings_title_archiveAsCompleted">Архівувати списки покупок як куплені</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматично очищати кошик</string>
     <string name="settings_title_backup">Резервне копіювання</string>
     <string name="settings_title_coloredCheckbox">Кольорові чекбокси</string>

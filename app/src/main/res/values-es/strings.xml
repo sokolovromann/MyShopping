@@ -552,6 +552,7 @@
     <string name="settings_title_afterProductCompleted">Después de completar el producto</string>
     <string name="settings_title_afterSaveProduct">Después de agregar el producto</string>
     <string name="settings_title_afterShoppingCompleted">Después de completar la lista de compras</string>
+    <string name="settings_title_archiveAsCompleted">Archivar listas de compras como completadas</string>
     <string name="settings_title_automaticallyEmptyTrash">Vaciar la papelera automáticamente</string>
     <string name="settings_title_backup">Respaldo</string>
     <string name="settings_title_coloredCheckbox">Casillas de verificación de colores</string>

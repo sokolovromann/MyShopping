@@ -495,6 +495,7 @@
     <string name="settings_title_afterProductCompleted">Nach dem Produkt fertig</string>
     <string name="settings_title_afterSaveProduct">Nach dem Hinzufügen des Produkts</string>
     <string name="settings_title_afterShoppingCompleted">Nach dem Einkaufsliste fertig</string>
+    <string name="settings_title_archiveAsCompleted">Einkaufslisten als fertige archivieren</string>
     <string name="settings_title_automaticallyEmptyTrash">Leeren Sie den Müll automatisch</string>
     <string name="settings_title_backup">Sicherung</string>
     <string name="settings_title_coloredCheckbox">Farbige Kontrollkästchen</string>

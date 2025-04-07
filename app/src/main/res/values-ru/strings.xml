@@ -560,6 +560,7 @@
     <string name="settings_title_afterProductCompleted">После покупки товара</string>
     <string name="settings_title_afterSaveProduct">После добавления товара</string>
     <string name="settings_title_afterShoppingCompleted">После покупки списка</string>
+    <string name="settings_title_archiveAsCompleted">Архивировать списки покупок как купленные</string>
     <string name="settings_title_automaticallyEmptyTrash">Автоматически очищать корзину</string>
     <string name="settings_title_backup">Резервное копирование</string>
     <string name="settings_title_coloredCheckbox">Цветные чекбоксы</string>

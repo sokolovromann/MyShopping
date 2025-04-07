@@ -178,6 +178,12 @@ object UiAppConfigMapper {
                 checked = null
             ),
             SettingItem(
+                uid = SettingUid.ArchiveShoppingsAsCompleted,
+                title = UiString.FromResources(R.string.settings_title_archiveAsCompleted),
+                body = UiString.FromString(""),
+                checked = userPreferences.archiveAsCompleted
+            ),
+            SettingItem(
                 uid = SettingUid.CompletedWithCheckbox,
                 title = UiString.FromResources(R.string.settings_title_completedWithCheckbox),
                 body = UiString.FromResources(R.string.settings_body_completedWithCheckbox),

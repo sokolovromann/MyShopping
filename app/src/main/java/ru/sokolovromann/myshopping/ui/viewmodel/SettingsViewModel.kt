@@ -192,6 +192,10 @@ class SettingsViewModel @Inject constructor(
             SettingUid.SwipeShopping -> {
                 _screenEventFlow.emit(SettingsScreenEvent.OnShowSwipeShopping)
             }
+
+            SettingUid.ArchiveShoppingsAsCompleted -> {
+                appConfigRepository.invertArchiveAsCompleted()
+            }
         }
     }
 
