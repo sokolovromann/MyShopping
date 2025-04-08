@@ -7,13 +7,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ArchiveState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
@@ -81,6 +84,10 @@ class ArchiveViewModel @Inject constructor(
             is ArchiveEvent.OnSelectView -> onSelectView(event)
 
             is ArchiveEvent.OnViewSelected -> onViewSelected(event)
+
+            is ArchiveEvent.OnSwipeShoppingLeft -> onSwipeShoppingLeft(event)
+
+            is ArchiveEvent.OnSwipeShoppingRight -> onSwipeShoppingRight(event)
         }
     }
 
@@ -238,5 +245,66 @@ class ArchiveViewModel @Inject constructor(
             appConfigRepository.invertShoppingListsMultiColumns()
         }
         archiveState.onSelectView(expanded = false)
+    }
+
+    private fun onSwipeShoppingLeft(
+        event: ArchiveEvent.OnSwipeShoppingLeft
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        doAfterSwipeShopping(event.uid, archiveState.swipeShoppingLeft)
+    }
+
+    private fun onSwipeShoppingRight(
+        event: ArchiveEvent.OnSwipeShoppingRight
+    ) = viewModelScope.launch(AppDispatchers.Main) {
+        doAfterSwipeShopping(event.uid, archiveState.swipeShoppingRight)
+    }
+
+    private suspend fun doAfterSwipeShopping(
+        uid: String,
+        swipeShopping: SwipeShopping
+    ) = withContext(AppDispatchers.Main) {
+        when (swipeShopping) {
+            SwipeShopping.DISABLED -> {}
+            SwipeShopping.ARCHIVE -> {
+                shoppingListsRepository.moveShoppingListToPurchases(uid)
+            }
+            SwipeShopping.DELETE -> {
+                shoppingListsRepository.moveShoppingListToTrash(uid)
+            }
+            SwipeShopping.COMPLETE -> {
+                archiveState.isShoppingListCompleted(uid)?.let { completed ->
+                    invertShoppingStatus(uid, completed).let {
+                        doAfterShoppingCompleted(uid)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun invertShoppingStatus(
+        uid: String,
+        completed: Boolean
+    ) = withContext(AppDispatchers.Main) {
+        if (completed) {
+            shoppingListsRepository.activeProducts(uid)
+        } else {
+            shoppingListsRepository.completeProducts(uid)
+        }
+    }
+
+    private suspend fun doAfterShoppingCompleted(uid: String) = withContext(AppDispatchers.Main) {
+        when (archiveState.getAfterShoppingCompleted()) {
+            AfterShoppingCompleted.NOTHING -> {}
+            AfterShoppingCompleted.ARCHIVE -> {
+                if (shoppingListsRepository.isShoppingListCompleted(uid)) {
+                    shoppingListsRepository.moveShoppingListToPurchases(uid)
+                }
+            }
+            AfterShoppingCompleted.DELETE -> {
+                if (shoppingListsRepository.isShoppingListCompleted(uid)) {
+                    shoppingListsRepository.moveShoppingListToTrash(uid)
+                }
+            }
+        }
     }
 }

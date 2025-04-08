@@ -55,5 +55,10 @@ sealed class ArchiveEvent {
     data class OnArchivePeriodSelected(val period: ShoppingPeriod) : ArchiveEvent()
 
     data class OnSelectView(val expanded: Boolean) : ArchiveEvent()
+
     data class OnViewSelected(val multiColumns: Boolean) : ArchiveEvent()
+
+    data class OnSwipeShoppingLeft(val uid: String) : ArchiveEvent()
+
+    data class OnSwipeShoppingRight(val uid: String) : ArchiveEvent()
 }

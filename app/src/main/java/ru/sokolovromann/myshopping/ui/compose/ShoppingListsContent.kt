@@ -49,7 +49,8 @@ fun ShoppingListsGrid(
     onSwipeLeft: (String) -> Unit = {},
     swipeShoppingRight: SwipeShopping = SwipeShopping.DISABLED,
     onSwipeRight: (String) -> Unit = {},
-    selectedUids: List<String>? = null
+    selectedUids: List<String>? = null,
+    archived: Boolean = false
 ) {
     val swipeLeftRightEnabled = swipeShoppingLeft != SwipeShopping.DISABLED ||
             swipeShoppingRight != SwipeShopping.DISABLED
@@ -76,9 +77,9 @@ fun ShoppingListsGrid(
 
                 AppItemSwipeableWrapper(
                     enabled = swipeEnabled,
-                    left = getSwipeShoppingContent(swipeShoppingLeft, item.completed),
+                    left = getSwipeShoppingContent(swipeShoppingLeft, archived, item.completed),
                     onSwipeLeft = { onSwipeLeft(item.uid) },
-                    right = getSwipeShoppingContent(swipeShoppingRight, item.completed),
+                    right = getSwipeShoppingContent(swipeShoppingRight, archived, item.completed),
                     backgroundColor = getSwipeBackgroundColor(item.completed),
                     onSwipeRight = { onSwipeRight(item.uid) }
                 ) {
@@ -122,9 +123,9 @@ fun ShoppingListsGrid(
 
             AppItemSwipeableWrapper(
                 enabled = swipeEnabled,
-                left = getSwipeShoppingContent(swipeShoppingLeft, item.completed),
+                left = getSwipeShoppingContent(swipeShoppingLeft, archived, item.completed),
                 onSwipeLeft = { onSwipeLeft(item.uid) },
-                right = getSwipeShoppingContent(swipeShoppingRight, item.completed),
+                right = getSwipeShoppingContent(swipeShoppingRight, archived, item.completed),
                 backgroundColor = getSwipeBackgroundColor(item.completed),
                 onSwipeRight = { onSwipeRight(item.uid) }
             ) {
@@ -690,12 +691,17 @@ private fun getShoppingListItemRightOrNull(
 @Composable
 private fun getSwipeShoppingContent(
     swipeShopping: SwipeShopping,
+    archived: Boolean,
     completed: Boolean
 ): @Composable (() -> Unit)? {
     return when (swipeShopping) {
         SwipeShopping.DISABLED -> null
         SwipeShopping.ARCHIVE -> {
-            { DefaultIcon(UiIcon.Archive) }
+            if (archived) {
+                { DefaultIcon(UiIcon.Unarchive) }
+            } else {
+                { DefaultIcon(UiIcon.Archive) }
+            }
         }
         SwipeShopping.DELETE -> {
             {

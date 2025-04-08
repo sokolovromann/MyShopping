@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
+import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayProducts
@@ -14,6 +15,7 @@ import ru.sokolovromann.myshopping.data.model.ShoppingListsWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
+import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.ui.model.mapper.UiShoppingListsMapper
 
 class ArchiveState {
@@ -86,6 +88,12 @@ class ArchiveState {
     var expandedArchivePeriod: Boolean by mutableStateOf(false)
         private set
 
+    var swipeShoppingLeft: SwipeShopping by mutableStateOf(SwipeShopping.DefaultValue)
+        private set
+
+    var swipeShoppingRight: SwipeShopping by mutableStateOf(SwipeShopping.DefaultValue)
+        private set
+
     var waiting: Boolean by mutableStateOf(true)
         private set
 
@@ -112,6 +120,8 @@ class ArchiveState {
         sortFormatted = userPreferences.shoppingsSortFormatted
         archivePeriod = toArchivePeriodValue(period)
         expandedArchivePeriod = false
+        swipeShoppingLeft = userPreferences.swipeShoppingLeft
+        swipeShoppingRight = userPreferences.swipeShoppingRight
         waiting = false
     }
 
@@ -226,6 +236,14 @@ class ArchiveState {
         } else {
             shoppingListsWithConfig.isEmpty()
         }
+    }
+
+    fun isShoppingListCompleted(uid: String): Boolean? {
+        return shoppingListsWithConfig.getSortedShoppingLists().find { it.shopping.uid == uid }?.isCompleted()
+    }
+
+    fun getAfterShoppingCompleted(): AfterShoppingCompleted {
+        return shoppingListsWithConfig.getUserPreferences().afterShoppingCompleted
     }
 
     private fun toNotFoundText(): UiString {

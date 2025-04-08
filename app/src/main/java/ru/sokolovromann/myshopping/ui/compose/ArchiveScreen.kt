@@ -377,7 +377,18 @@ fun ArchiveScreen(
                     viewModel.onEvent(event)
                 }
             },
-            selectedUids = state.selectedUids
+            swipeShoppingLeft = state.swipeShoppingLeft,
+            swipeShoppingRight = state.swipeShoppingRight,
+            onSwipeLeft = {
+                val event = ArchiveEvent.OnSwipeShoppingLeft(it)
+                viewModel.onEvent(event)
+            },
+            onSwipeRight = {
+                val event = ArchiveEvent.OnSwipeShoppingRight(it)
+                viewModel.onEvent(event)
+            },
+            selectedUids = state.selectedUids,
+            archived = true
         )
     }
 }
