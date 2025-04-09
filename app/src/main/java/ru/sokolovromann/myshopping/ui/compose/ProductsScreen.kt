@@ -979,9 +979,9 @@ private fun ProductsGrid(
 
                 AppItemSwipeableWrapper(
                     enabled = swipeEnabled,
-                    left = getSwipeProductContent(swipeProductLeft, item.completed),
+                    left = getSwipeProductContent(swipeProductLeft),
                     onSwipeLeft = { onSwipeLeft(item.uid) },
-                    right = getSwipeProductContent(swipeProductRight, item.completed),
+                    right = getSwipeProductContent(swipeProductRight),
                     backgroundColor = getSwipeBackgroundColor(item.completed),
                     onSwipeRight = { onSwipeRight(item.uid) }
                 ) {
@@ -1039,9 +1039,9 @@ private fun ProductsGrid(
 
             AppItemSwipeableWrapper(
                 enabled = swipeEnabled,
-                left = getSwipeProductContent(swipeProductLeft, item.completed),
+                left = getSwipeProductContent(swipeProductLeft),
                 onSwipeLeft = { onSwipeLeft(item.uid) },
-                right = getSwipeProductContent(swipeProductRight, item.completed),
+                right = getSwipeProductContent(swipeProductRight),
                 backgroundColor = getSwipeBackgroundColor(item.completed),
                 onSwipeRight = { onSwipeRight(item.uid) }
             ) {
@@ -1150,8 +1150,7 @@ private fun getProductItemBodyOrNull(
 
 @Composable
 private fun getSwipeProductContent(
-    swipeProduct: SwipeProduct,
-    completed: Boolean
+    swipeProduct: SwipeProduct
 ): @Composable (() -> Unit)? {
     return when (swipeProduct) {
         SwipeProduct.DISABLED -> null
@@ -1167,11 +1166,7 @@ private fun getSwipeProductContent(
             }
         }
         SwipeProduct.COMPLETE -> {
-            if (completed) {
-                { DefaultIcon(UiIcon.CheckboxOutline) }
-            } else {
-                { DefaultIcon(UiIcon.Checkbox) }
-            }
+            { DefaultIcon(UiIcon.CompletedActive) }
         }
     }
 }

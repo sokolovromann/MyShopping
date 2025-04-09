@@ -34,6 +34,7 @@ sealed class UiIcon {
         val Add: UiIcon = FromVector(Icons.Default.Add)
         val Autocompletes: UiIcon = FromVector(Icons.Default.List)
         val Archive: UiIcon = FromResources(R.drawable.ic_all_archive)
+        val ArchiveUnarchive: UiIcon = FromResources(R.drawable.ic_all_archive_unarchive)
         val Back: UiIcon = FromVector(Icons.Default.ArrowBack)
         val Cancel: UiIcon = FromVector(Icons.Default.Clear)
         val Checkbox: UiIcon = FromResources(R.drawable.ic_all_check_box)
