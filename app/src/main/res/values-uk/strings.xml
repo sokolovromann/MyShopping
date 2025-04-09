@@ -501,7 +501,7 @@
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
     <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_swipeProduct">Виберіть дію для змахування вліво або вправо (крім віджетів)</string>
-    <string name="settings_body_swipeShopping">Виберіть дію для змахування вліво або вправо в Покупках</string>
+    <string name="settings_body_swipeShopping">Виберіть дію для змахування вліво або вправо в Покупках та Архіві</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Загальні</string>
@@ -624,7 +624,7 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_archive">Архівувати/Розархівувати</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
     <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeShopping_action_delete">@string/all_action_delete</string>

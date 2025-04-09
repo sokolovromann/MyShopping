@@ -554,7 +554,7 @@
     <string name="settings_body_maxAutocompletes">Select how many autocompletes can be displayed</string>
     <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_swipeProduct">Select action to swipe left and right (except widgets)</string>
-    <string name="settings_body_swipeShopping">Select action to swipe left and right in Purchases</string>
+    <string name="settings_body_swipeShopping">Select action to swipe left and right in Purchases and Archive</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
@@ -677,7 +677,7 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_archive">Archive/Unarchive</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
     <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeShopping_action_delete">@string/all_action_delete</string>

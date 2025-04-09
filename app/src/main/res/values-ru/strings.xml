@@ -548,7 +548,7 @@
     <string name="settings_body_maxAutocompletes">Выберите сколько может отображаться подсказок</string>
     <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
     <string name="settings_body_swipeProduct">Выберите действие для смахивания влево или вправо (кроме виджетов)</string>
-    <string name="settings_body_swipeShopping">Выберите действие для смахивания влево или вправо в Покупках</string>
+    <string name="settings_body_swipeShopping">Выберите действие для смахивания влево или вправо в Покупках и Архиве</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Общие</string>
@@ -671,7 +671,7 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_archive">Архивировать/Разархивировать</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
     <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeShopping_action_delete">@string/all_action_delete</string>

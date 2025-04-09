@@ -540,7 +540,7 @@
     <string name="settings_body_maxAutocompletes">Seleccione cuántos autocompletados se pueden mostrar</string>
     <string name="settings_body_saveProductToAutocompletes">Cualquier producto quedará guardado</string>
     <string name="settings_body_swipeProduct">Seleccione la acción para deslizar hacia la izquierda y hacia la derecha (excepto los widgets)</string>
-    <string name="settings_body_swipeShopping">Seleccione la acción para deslizar hacia la izquierda y hacia la derecha en Compras</string>
+    <string name="settings_body_swipeShopping">Seleccione la acción para deslizar hacia la izquierda y hacia la derecha en Compras y Archivo</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">General</string>
@@ -663,7 +663,7 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_archive">Archivar/Desarchivar</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
     <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeShopping_action_delete">@string/all_action_delete</string>

@@ -553,7 +553,7 @@
     <string name="settings_body_maxAutocompletes">Sélectionnez le nombre de saisies semi-automatiques pouvant être affichées</string>
     <string name="settings_body_saveProductToAutocompletes">Tout produit sera enregistré</string>
     <string name="settings_body_swipeProduct">Sélectionnez l\'action pour balayer vers la gauche et la droite (sauf les widgets)</string>
-    <string name="settings_body_swipeShopping">Sélectionnez l\'action pour balayer vers la gauche et la droite dans Achats</string>
+    <string name="settings_body_swipeShopping">Sélectionnez l\'action pour balayer vers la gauche et la droite dans Achats et Archive</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Général</string>
@@ -676,7 +676,7 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_archive">Archive/Désarchiver</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
     <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeShopping_action_delete">@string/all_action_delete</string>

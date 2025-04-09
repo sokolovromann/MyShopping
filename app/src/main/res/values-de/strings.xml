@@ -483,7 +483,7 @@
     <string name="settings_body_maxAutocompletes">Wählen Sie aus, wie viele Autovervollständigungen angezeigt werden können</string>
     <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_swipeProduct">Wählen Sie die Aktion zum Wischen nach links und rechts (außer Widgets)</string>
-    <string name="settings_body_swipeShopping">Wählen Sie die Aktion zum Wischen nach links und rechts in Einkäufe</string>
+    <string name="settings_body_swipeShopping">Wählen Sie die Aktion zum Wischen nach links und rechts in Einkäufe und Archiv</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="settings_header_autocompletes">@string/all_header_autocompletes</string>
     <string name="settings_header_generalSettings">Allgemein</string>
@@ -606,7 +606,7 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">@string/all_action_archive</string>
+    <string name="swipeShopping_action_archive">Archivieren/Unarchivieren</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
     <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
     <string name="swipeShopping_action_delete">@string/all_action_delete</string>
