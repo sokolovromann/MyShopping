@@ -537,6 +537,7 @@
     <string name="settings_action_selectAppNightTheme">Uniquement application</string>
     <string name="settings_action_selectDisabledNightTheme">Désactivé</string>
     <string name="settings_action_selectWidgetNightTheme">Uniquement widget</string>
+    <string name="settings_body_archiveAsCompleted">Si activé, les listes seront toujours archivées comme achetées</string>
     <string name="settings_body_automaticallyEmptyTrash">Si activé, les données datant de plus de 10 jours seront supprimées</string>
     <string name="settings_body_backup">Exporter/importer des données l\'application</string>
     <string name="settings_body_coloredCheckbox">Si activé, les cases à cocher seront colorées en rouge ou en vert</string>

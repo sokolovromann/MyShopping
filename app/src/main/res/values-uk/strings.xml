@@ -485,6 +485,7 @@
     <string name="settings_action_selectAppNightTheme">Тільки програма</string>
     <string name="settings_action_selectDisabledNightTheme">Вимкнено</string>
     <string name="settings_action_selectWidgetNightTheme">Тільки віджет</string>
+    <string name="settings_body_archiveAsCompleted">Якщо включено, списки завжди будуть архівуватися як куплені</string>
     <string name="settings_body_automaticallyEmptyTrash">Якщо включено, то дані старше 10 днів будуть видалятися</string>
     <string name="settings_body_backup">Експорт/імпорт даних програми</string>
     <string name="settings_body_coloredCheckbox">Якщо увімкнено, то чекбокси будуть червоного або зеленого кольору</string>

@@ -180,7 +180,7 @@ object UiAppConfigMapper {
             SettingItem(
                 uid = SettingUid.ArchiveShoppingsAsCompleted,
                 title = UiString.FromResources(R.string.settings_title_archiveAsCompleted),
-                body = UiString.FromString(""),
+                body = UiString.FromResources(R.string.settings_body_archiveAsCompleted),
                 checked = userPreferences.archiveAsCompleted
             ),
             SettingItem(

@@ -532,6 +532,7 @@
     <string name="settings_action_selectAppNightTheme">Только приложение</string>
     <string name="settings_action_selectDisabledNightTheme">Отключено</string>
     <string name="settings_action_selectWidgetNightTheme">Только виджет</string>
+    <string name="settings_body_archiveAsCompleted">Если включено, то списки всегда будут архивироваться как купленные</string>
     <string name="settings_body_automaticallyEmptyTrash">Если включено, то данные старше 10 дней будут удалятся</string>
     <string name="settings_body_backup">Экспорт/импорт данных приложения</string>
     <string name="settings_body_coloredCheckbox">Если включено, то чекбоксы будут красного или зелёного цвета</string>

@@ -538,6 +538,7 @@
     <string name="settings_action_selectAppNightTheme">Only app</string>
     <string name="settings_action_selectDisabledNightTheme">Disabled</string>
     <string name="settings_action_selectWidgetNightTheme">Only widget</string>
+    <string name="settings_body_archiveAsCompleted">If enabled, lists will always be archived as completed</string>
     <string name="settings_body_automaticallyEmptyTrash">If enabled, data older than 10 days will be deleted</string>
     <string name="settings_body_backup">Export/import app data</string>
     <string name="settings_body_coloredCheckbox">If enabled, checkboxes will be colored red or green</string>

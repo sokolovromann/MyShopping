@@ -467,6 +467,7 @@
     <string name="settings_action_selectAppNightTheme">Nur Anwendung</string>
     <string name="settings_action_selectDisabledNightTheme">Deaktiviert</string>
     <string name="settings_action_selectWidgetNightTheme">Nur Widget</string>
+    <string name="settings_body_archiveAsCompleted">Wenn aktiviert, werden Listen immer als abgeschlossen archiviert</string>
     <string name="settings_body_automaticallyEmptyTrash">Wählen Sie aus, Daten die älter als 10 Tage sind, werden gelöscht</string>
     <string name="settings_body_backup">App-Daten exportieren/importieren</string>
     <string name="settings_body_coloredCheckbox">Wenn aktiviert, werden die Kontrollkästchen rot oder grün gefärbt</string>
