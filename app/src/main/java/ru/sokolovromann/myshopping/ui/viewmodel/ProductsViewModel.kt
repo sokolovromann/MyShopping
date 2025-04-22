@@ -146,9 +146,7 @@ class ProductsViewModel @Inject constructor(
     private fun onClickProduct(
         event: ProductsEvent.OnClickProduct
     ) = viewModelScope.launch(AppDispatchers.Main) {
-        invertProductStatus(event.productUid, event.completed).let {
-            doAfterProductCompleted(event.productUid)
-        }
+        invertProductStatus(event.productUid, event.completed)
     }
 
     private fun onClickAddProduct() = viewModelScope.launch(AppDispatchers.Main) {
@@ -503,6 +501,7 @@ class ProductsViewModel @Inject constructor(
             shoppingListsRepository.activeProduct(productUid)
         } else {
             shoppingListsRepository.completeProduct(productUid).let {
+                doAfterProductCompleted(productUid)
                 doAfterShoppingCompleted()
             }
         }
@@ -546,9 +545,7 @@ class ProductsViewModel @Inject constructor(
 
             SwipeProduct.COMPLETE -> {
                 productsState.isProductCompleted(productUid)?.let { completed ->
-                    invertProductStatus(productUid, completed).let {
-                        doAfterProductCompleted(productUid)
-                    }
+                    invertProductStatus(productUid, completed)
                 }
             }
         }
