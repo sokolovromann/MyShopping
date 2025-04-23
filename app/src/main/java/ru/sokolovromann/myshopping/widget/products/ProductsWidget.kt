@@ -49,6 +49,7 @@ import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.ui.activity.MainActivity
 import ru.sokolovromann.myshopping.ui.UiRouteKey
@@ -123,6 +124,17 @@ class ProductsWidget : GlanceAppWidget() {
                                     AfterShoppingCompleted.DELETE -> {
                                         if (repository.isShoppingListCompleted(shoppingUid)) {
                                             repository.moveShoppingListToTrash(shoppingUid)
+                                        }
+                                    }
+                                    AfterShoppingCompleted.DELETE_PRODUCTS -> {
+                                        if (repository.isShoppingListCompleted(shoppingUid)) {
+                                            repository.deleteProductsByStatus(shoppingUid, DisplayTotal.ALL)
+                                        }
+                                    }
+                                    AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS -> {
+                                        if (repository.isShoppingListCompleted(shoppingUid)) {
+                                            repository.moveShoppingListToTrash(shoppingUid)
+                                            repository.deleteProductsByStatus(shoppingUid, DisplayTotal.ALL)
                                         }
                                     }
                                 }

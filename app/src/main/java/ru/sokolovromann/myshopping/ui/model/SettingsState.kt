@@ -133,6 +133,8 @@ class SettingsState {
                 AfterShoppingCompleted.NOTHING -> UiString.FromResources(R.string.settings_action_nothingAfterShoppingCompleted)
                 AfterShoppingCompleted.ARCHIVE -> UiString.FromResources(R.string.settings_action_archiveAfterShoppingCompleted)
                 AfterShoppingCompleted.DELETE -> UiString.FromResources(R.string.settings_action_deleteAfterShoppingCompleted)
+                AfterShoppingCompleted.DELETE_PRODUCTS -> UiString.FromResources(R.string.settings_action_deleteProductsAfterShoppingCompleted)
+                AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS -> UiString.FromResources(R.string.settings_action_deleteListAndProductsAfterShoppingCompleted)
             }
         )
     }

@@ -2,7 +2,19 @@ package ru.sokolovromann.myshopping.data.model
 
 enum class AfterShoppingCompleted {
 
-    NOTHING, ARCHIVE, DELETE;
+    NOTHING,
+
+    /** Archive list */
+    ARCHIVE,
+
+    /** Delete list */
+    DELETE,
+
+    /** Delete only products */
+    DELETE_PRODUCTS,
+
+    /** Delete list and products */
+    DELETE_LIST_AND_PRODUCTS;
 
     companion object {
         val DefaultValue: AfterShoppingCompleted = NOTHING

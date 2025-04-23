@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
@@ -303,6 +304,17 @@ class ArchiveViewModel @Inject constructor(
             AfterShoppingCompleted.DELETE -> {
                 if (shoppingListsRepository.isShoppingListCompleted(uid)) {
                     shoppingListsRepository.moveShoppingListToTrash(uid)
+                }
+            }
+            AfterShoppingCompleted.DELETE_PRODUCTS -> {
+                if (shoppingListsRepository.isShoppingListCompleted(uid)) {
+                    shoppingListsRepository.deleteProductsByStatus(uid, DisplayTotal.ALL)
+                }
+            }
+            AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS -> {
+                if (shoppingListsRepository.isShoppingListCompleted(uid)) {
+                    shoppingListsRepository.moveShoppingListToTrash(uid)
+                    shoppingListsRepository.deleteProductsByStatus(uid, DisplayTotal.ALL)
                 }
             }
         }

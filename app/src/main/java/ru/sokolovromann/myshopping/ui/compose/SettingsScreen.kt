@@ -461,6 +461,16 @@ private fun SettingsAfterShoppingCompletedMenu(
             text = { Text(text = stringResource(R.string.settings_action_deleteAfterShoppingCompleted)) },
             right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.DELETE) }
         )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterShoppingCompleted.DELETE_PRODUCTS) },
+            text = { Text(text = stringResource(R.string.settings_action_deleteProductsAfterShoppingCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.DELETE_PRODUCTS) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS) },
+            text = { Text(text = stringResource(R.string.settings_action_deleteListAndProductsAfterShoppingCompleted)) },
+            right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS) }
+        )
     }
 }
 

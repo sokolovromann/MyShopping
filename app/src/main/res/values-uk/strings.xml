@@ -469,10 +469,12 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
-    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
+    <string name="settings_action_archiveAfterShoppingCompleted">Архівувати список</string>
     <string name="settings_action_closeAfterSaveProduct">Закрити екран</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
-    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">Видалити список</string>
+    <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Видалити список та товари</string>
+    <string name="settings_action_deleteProductsAfterShoppingCompleted">Видалити товари</string>
     <string name="settings_action_editAfterProductCompleted">Редагувати (окрім віджетів)</string>
     <string name="settings_action_nothingAfterProductCompleted">Нічого не робити</string>
     <string name="settings_action_nothingAfterSaveProduct">Нічого не робити</string>

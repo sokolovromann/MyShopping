@@ -363,10 +363,12 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">You have no autocompletes</string>
 
-    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
+    <string name="settings_action_archiveAfterShoppingCompleted">Archive list</string>
     <string name="settings_action_closeAfterSaveProduct">Close screen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
-    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">Delete list</string>
+    <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Delete list and products</string>
+    <string name="settings_action_deleteProductsAfterShoppingCompleted">Delete products</string>
     <string name="settings_action_editAfterProductCompleted">Edit (except widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nothing</string>
     <string name="settings_action_nothingAfterSaveProduct">Nothing</string>

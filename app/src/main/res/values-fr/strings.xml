@@ -521,10 +521,12 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Vous n\'avez pas de saisie automatique</string>
 
-    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
+    <string name="settings_action_archiveAfterShoppingCompleted">Archive la liste</string>
     <string name="settings_action_closeAfterSaveProduct">Fermer l\'écran</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
-    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">Supprimer la liste</string>
+    <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Supprimer la liste et les produits</string>
+    <string name="settings_action_deleteProductsAfterShoppingCompleted">Supprimer les produits</string>
     <string name="settings_action_editAfterProductCompleted">Modifier (sauf les widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Rien</string>
     <string name="settings_action_nothingAfterSaveProduct">Rien</string>

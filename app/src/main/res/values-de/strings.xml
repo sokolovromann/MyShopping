@@ -451,10 +451,12 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
-    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
+    <string name="settings_action_archiveAfterShoppingCompleted">Liste Archivieren</string>
     <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
-    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">Liste löschent</string>
+    <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Liste und Produkte löschen</string>
+    <string name="settings_action_deleteProductsAfterShoppingCompleted">Produkte löschen</string>
     <string name="settings_action_editAfterProductCompleted">Bearbeiten (Außer Widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nichts</string>
     <string name="settings_action_nothingAfterSaveProduct">Produkt speichern</string>

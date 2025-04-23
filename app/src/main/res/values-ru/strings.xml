@@ -516,10 +516,12 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
-    <string name="settings_action_archiveAfterShoppingCompleted">@string/all_action_archive</string>
+    <string name="settings_action_archiveAfterShoppingCompleted">Архивировать список</string>
     <string name="settings_action_closeAfterSaveProduct">Закрыть экран</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
-    <string name="settings_action_deleteAfterShoppingCompleted">@string/all_action_delete</string>
+    <string name="settings_action_deleteAfterShoppingCompleted">Удалить список</string>
+    <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Удалить список и товары</string>
+    <string name="settings_action_deleteProductsAfterShoppingCompleted">Удалить товары</string>
     <string name="settings_action_editAfterProductCompleted">Редактировать (кроме виджетов)</string>
     <string name="settings_action_nothingAfterProductCompleted">Ничего не делать</string>
     <string name="settings_action_nothingAfterSaveProduct">Ничего не делать</string>

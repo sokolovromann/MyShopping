@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
+import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
@@ -488,6 +489,17 @@ class ProductsViewModel @Inject constructor(
             AfterShoppingCompleted.DELETE -> {
                 if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
                     shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
+                }
+            }
+            AfterShoppingCompleted.DELETE_PRODUCTS -> {
+                if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
+                    shoppingListsRepository.deleteProductsByStatus(shoppingUid, DisplayTotal.ALL)
+                }
+            }
+            AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS -> {
+                if (shoppingListsRepository.isShoppingListCompleted(shoppingUid)) {
+                    shoppingListsRepository.moveShoppingListToTrash(shoppingUid)
+                    shoppingListsRepository.deleteProductsByStatus(shoppingUid, DisplayTotal.ALL)
                 }
             }
         }
