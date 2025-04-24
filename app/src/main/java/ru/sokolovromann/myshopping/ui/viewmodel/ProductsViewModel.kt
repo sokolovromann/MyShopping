@@ -523,11 +523,20 @@ class ProductsViewModel @Inject constructor(
         when (productsState.getAfterProductCompleted()) {
             AfterProductCompleted.NOTHING -> {}
             AfterProductCompleted.EDIT -> {
-                val showEditScreenEvent = ProductsScreenEvent.OnShowEditProductScreen(
-                    shoppingUid = shoppingUid,
-                    productUid = productUid
-                )
-                _screenEventFlow.emit(showEditScreenEvent)
+                if (productsState.isShoppingCompletedProductLast()) {
+                    when (productsState.getAfterShoppingCompleted()) {
+                        AfterShoppingCompleted.NOTHING,
+                        AfterShoppingCompleted.ARCHIVE,
+                        AfterShoppingCompleted.DELETE -> {
+                            val screenEvent = ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, productUid)
+                            _screenEventFlow.emit(screenEvent)
+                        }
+                        else -> {}
+                    }
+                } else {
+                    val screenEvent = ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, productUid)
+                    _screenEventFlow.emit(screenEvent)
+                }
             }
             AfterProductCompleted.DELETE -> {
                 shoppingListsRepository.deleteProductsByProductUids(

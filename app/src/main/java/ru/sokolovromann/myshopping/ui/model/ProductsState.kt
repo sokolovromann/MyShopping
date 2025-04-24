@@ -320,6 +320,12 @@ class ProductsState {
         return shoppingListWithConfig.getUserPreferences().afterShoppingCompleted
     }
 
+    fun isShoppingCompletedProductLast(): Boolean {
+        val allSize = shoppingListWithConfig.getSortedProducts().size
+        val completedSize = shoppingListWithConfig.getSortedProducts().filter { it.completed }.size
+        return (allSize - completedSize) == 1
+    }
+
     fun isOnlyPinned(): Boolean {
         var notPinned = false
         selectedUids?.forEach { uid ->
