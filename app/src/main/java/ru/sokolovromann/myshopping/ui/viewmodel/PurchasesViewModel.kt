@@ -170,6 +170,7 @@ class PurchasesViewModel @Inject constructor(
             shoppingListsRepository.copyShoppingLists(it)
             purchasesState.onShowItemMoreMenu(expanded = false)
         }
+        purchasesState.onAllShoppingListsSelected(selected = false)
     }
 
     private fun onClickMoveShoppingListUp(
@@ -313,6 +314,7 @@ class PurchasesViewModel @Inject constructor(
                 shoppingListsRepository.activeProducts(shoppingUid)
             }
         }
+        purchasesState.onAllShoppingListsSelected(selected = false)
     }
 
     private fun onSelectMarkAs(event: PurchasesEvent.OnSelectMarkAs) {
