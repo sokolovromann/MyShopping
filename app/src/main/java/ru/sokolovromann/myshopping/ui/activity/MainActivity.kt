@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
@@ -48,9 +47,38 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyShoppingTheme(
                 darkTheme = mainState.nightTheme.isAppNightTheme(),
-                typography = createTypography(mainState.fontSizeOffset),
-                content = { MainContent() }
-            )
+                typography = createTypography(mainState.fontSizeOffset)
+            ) {
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = UiRoute.Purchases.graph,
+                    builder = {
+                        purchasesGraph(navController) { finish() }
+                        archiveGraph(navController)
+                        trashGraph(navController)
+                        productsGraph(navController)
+                        autocompletesGraph(navController)
+                        settingsGraph(navController)
+                        aboutGraph(navController)
+                    }
+                )
+
+                viewModel.mainState.shoppingUid?.let {
+                    navController.navigate(route = UiRoute.Products.productsScreen(it))
+
+                    val event = MainEvent.OnSaveIntent(action = null, uid = null)
+                    viewModel.onEvent(event)
+                }
+
+                LaunchedEffect(Unit) {
+                    viewModel.screenEventFlow.collect {
+                        when (it) {
+                            MainScreenEvent.OnFinishApp -> finish()
+                        }
+                    }
+                }
+            }
         }
 
         val onSaveIntentEvent = MainEvent.OnSaveIntent(
@@ -60,38 +88,5 @@ class MainActivity : ComponentActivity() {
         viewModel.onEvent(onSaveIntentEvent)
 
         intent = null
-    }
-
-    @Composable
-    private fun MainContent() {
-        val navController = rememberNavController()
-        NavHost(
-            navController = navController,
-            startDestination = UiRoute.Purchases.graph,
-            builder = {
-                purchasesGraph(navController) { finish() }
-                archiveGraph(navController)
-                trashGraph(navController)
-                productsGraph(navController)
-                autocompletesGraph(navController)
-                settingsGraph(navController)
-                aboutGraph(navController)
-            }
-        )
-
-        viewModel.mainState.shoppingUid?.let {
-            navController.navigate(route = UiRoute.Products.productsScreen(it))
-
-            val event = MainEvent.OnSaveIntent(action = null, uid = null)
-            viewModel.onEvent(event)
-        }
-
-        LaunchedEffect(Unit) {
-            viewModel.screenEventFlow.collect {
-                when (it) {
-                    MainScreenEvent.OnFinishApp -> finish()
-                }
-            }
-        }
     }
 }
