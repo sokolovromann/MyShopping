@@ -82,11 +82,14 @@ class MainActivity : ComponentActivity() {
         }
 
         val onSaveIntentEvent = MainEvent.OnSaveIntent(
-            action = intent.action,
-            uid = intent.extras?.getString(UiRouteKey.ShoppingUid.key)
+            action = intent?.action,
+            uid = intent?.extras?.getString(UiRouteKey.ShoppingUid.key)
         )
-        viewModel.onEvent(onSaveIntentEvent)
-
-        intent = null
+        viewModel.onEvent(onSaveIntentEvent).let {
+            intent?.apply {
+                action = null
+                putExtras(Bundle())
+            }
+        }
     }
 }
