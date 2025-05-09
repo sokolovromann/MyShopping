@@ -9,6 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.aboutGraph
@@ -64,8 +65,21 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
-                viewModel.mainState.shoppingUid?.let {
-                    navController.navigate(route = UiRoute.Products.productsScreen(it))
+                viewModel.mainState.shoppingUid?.let { uid ->
+                    when (viewModel.mainState.afterAddShopping) {
+                        AfterAddShopping.OPEN_PRODUCTS_SCREEN -> {
+                            navController.navigate(route = UiRoute.Products.productsScreen(uid))
+                        }
+                        AfterAddShopping.OPEN_EDIT_SHOPPING_NAME_SCREEN -> {
+                            navController.navigate(route = UiRoute.Products.editShoppingListNameFromPurchasesScreen(uid))
+                        }
+                        AfterAddShopping.OPEN_ADD_PRODUCT_SCREEN -> {
+                            navController.navigate(route = UiRoute.Products.addProductScreen(uid, "true"))
+                        }
+                        null -> {
+                            navController.navigate(route = UiRoute.Products.productsScreen(uid))
+                        }
+                    }
 
                     val event = MainEvent.OnSaveIntent(action = null, uid = null)
                     viewModel.onEvent(event)

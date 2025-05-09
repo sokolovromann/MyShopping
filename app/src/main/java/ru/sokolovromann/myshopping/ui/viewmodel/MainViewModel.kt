@@ -7,6 +7,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.BuildConfig
@@ -121,8 +122,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onAddShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
-        shoppingListsRepository.addShopping()
-            .onSuccess { mainState.saveShoppingUid(it) }
+        shoppingListsRepository.addShopping().onSuccess { uid ->
+            mainState.saveShoppingUid(
+                uid = uid,
+                after = appConfigRepository.getAppConfig().first().userPreferences.afterAddShopping
+            )
+        }
     }
 
     private fun onAddDefaultAppConfig(
