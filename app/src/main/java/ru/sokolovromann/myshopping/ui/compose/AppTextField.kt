@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -50,9 +51,15 @@ fun OutlinedAppTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = {
+                val newText = it.text.replace(",", ".")
+                val newValue = TextFieldValue(
+                    text = newText,
+                    selection = TextRange(newText.length),
+                    composition = TextRange(newText.length)
+                )
                 val textFieldValue = checkTextFieldValue(
                     oldValue = value,
-                    newValue = it,
+                    newValue = newValue,
                     keyboardType = keyboardOptions.keyboardType
                 )
                 onValueChange(textFieldValue)
