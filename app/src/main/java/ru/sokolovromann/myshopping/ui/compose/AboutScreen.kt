@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.compose
 
 import android.content.Intent
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -71,21 +70,21 @@ fun AboutScreen(
                 AboutScreenEvent.OnShowAppGithub -> navController.chooseNavigate(
                     intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse(gitHubLink)
+                        gitHubLink.toUri()
                     )
                 )
 
                 AboutScreenEvent.OnShowPrivacyPolicy -> navController.chooseNavigate(
                     intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse(privacyPolicyLink)
+                        privacyPolicyLink.toUri()
                     )
                 )
 
                 AboutScreenEvent.OnShowTermsAndConditions -> navController.chooseNavigate(
                     intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse(termsAndConditionsLink)
+                        termsAndConditionsLink.toUri()
                     )
                 )
 

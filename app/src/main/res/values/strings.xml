@@ -190,14 +190,14 @@
 
     <string name="data_email_developer" translatable="false">sokolovromann+myshopping@gmail.com</string>
     <string name="data_email_subject">Feedback</string>
-    <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
-    <string name="data_link_privacy_policy">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
-    <string name="data_link_terms_and_conditions">https://sokolovromann.github.io/MyShopping/terms_and_conditions.html</string>
+    <string name="data_link_github" translatable="false">https://github.com/sokolovromann/MyShopping</string>
+    <string name="data_link_privacy_policy" translatable="false">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
+    <string name="data_link_terms_and_conditions" translatable="false">https://sokolovromann.github.io/MyShopping/terms_and_conditions.html</string>
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays"/>
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays"/>
     <string name="data_text_defaultCurrency">$</string>
     <string name="data_text_developerEmail" translatable="false">sokolovromann@gmail.com</string>
-    <string name="data_text_developerName">Roman Sokolov</string>
+    <string name="data_text_developerName" translatable="false">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
 
     <string name="displayCompleted_action_cancelSavingDisplayCompleted">@string/all_action_cancel</string>

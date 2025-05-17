@@ -189,9 +189,6 @@
     <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
     <string name="data_email_subject">Feedback</string>
-    <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
-    <string name="data_link_privacy_policy">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
-    <string name="data_link_terms_and_conditions">https://sokolovromann.github.io/MyShopping/terms_and_conditions.html</string>
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays">
         <item>Äpfel</item>
         <item>Almondnuts</item>
@@ -283,7 +280,6 @@
         <item>L</item>
     </string-array>
     <string name="data_text_defaultCurrency">€</string>
-    <string name="data_text_developerName">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">false</bool>
 
     <string name="displayCompleted_action_cancelSavingDisplayCompleted">@string/all_action_cancel</string>
