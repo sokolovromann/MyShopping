@@ -51,15 +51,9 @@ fun OutlinedAppTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = {
-                val newText = it.text.replace(",", ".")
-                val newValue = TextFieldValue(
-                    text = newText,
-                    selection = TextRange(newText.length),
-                    composition = TextRange(newText.length)
-                )
                 val textFieldValue = checkTextFieldValue(
                     oldValue = value,
-                    newValue = newValue,
+                    newValue = it,
                     keyboardType = keyboardOptions.keyboardType
                 )
                 onValueChange(textFieldValue)
@@ -85,10 +79,21 @@ private fun checkTextFieldValue(
 ): TextFieldValue {
     return when (keyboardType) {
         KeyboardType.Decimal, KeyboardType.Number -> {
-            if (newValue.toFloatOrNull() == null) {
-                if (newValue.isEmpty()) newValue else oldValue
+            var newText = newValue.text.replace(",", ".")
+            if (newText == ".") {
+               newText = "0$newText"
+            }
+
+            val newTextRange = TextRange(newText.length)
+            val textFieldValue = TextFieldValue(
+                text = newText,
+                selection = newTextRange,
+                composition = newTextRange
+            )
+            if (textFieldValue.toFloatOrNull() == null) {
+                if (textFieldValue.isEmpty()) textFieldValue else oldValue
             } else {
-                newValue
+                textFieldValue
             }
         }
         else -> newValue
