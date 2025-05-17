@@ -188,7 +188,7 @@
     <string name="copyMoveProducts_header">@string/all_header_selectShoppingList</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
-    <string name="data_email_developer">developer.myshopping@gmail.com</string>
+    <string name="data_email_developer" translatable="false">sokolovromann+myshopping@gmail.com</string>
     <string name="data_email_subject">Feedback</string>
     <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
     <string name="data_link_privacy_policy">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
@@ -196,6 +196,7 @@
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays"/>
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays"/>
     <string name="data_text_defaultCurrency">$</string>
+    <string name="data_text_developerEmail" translatable="false">sokolovromann@gmail.com</string>
     <string name="data_text_developerName">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
 

@@ -188,7 +188,6 @@
     <string name="copyMoveProducts_header">@string/all_header_selectShoppingList</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
-    <string name="data_email_developer">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Retour</string>
     <string name="data_link_github">https://github.com/sokolovromann/MyShopping</string>
     <string name="data_link_privacy_policy">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>

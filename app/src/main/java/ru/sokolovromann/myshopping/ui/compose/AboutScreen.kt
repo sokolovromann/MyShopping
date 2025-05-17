@@ -36,6 +36,7 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.AboutViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AboutEvent
+import androidx.core.net.toUri
 
 @Composable
 fun AboutScreen(
@@ -61,7 +62,7 @@ fun AboutScreen(
 
                 AboutScreenEvent.OnSendEmailToDeveloper -> navController.chooseNavigate(
                     intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:")
+                        data = "mailto:".toUri()
                         putExtra(Intent.EXTRA_EMAIL, arrayOf(developerEmail))
                         putExtra(Intent.EXTRA_SUBJECT, subjectText)
                     }
@@ -145,7 +146,7 @@ fun AboutScreen(
                 title = { Text(text = stringResource(R.string.about_text_developer)) },
                 body = {
                     Text(text = stringResource(R.string.data_text_developerName))
-                    AboutTextButton(text = stringResource(R.string.data_email_developer)) {
+                    AboutTextButton(text = stringResource(R.string.data_text_developerEmail)) {
                         viewModel.onEvent(AboutEvent.OnClickEmail)
                     }
                 }
