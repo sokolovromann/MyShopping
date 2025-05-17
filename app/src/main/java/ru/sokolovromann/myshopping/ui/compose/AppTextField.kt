@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -79,16 +78,10 @@ private fun checkTextFieldValue(
 ): TextFieldValue {
     return when (keyboardType) {
         KeyboardType.Decimal, KeyboardType.Number -> {
-            var newText = newValue.text.replace(",", ".")
-            if (newText == ".") {
-               newText = "0$newText"
-            }
-
-            val newTextRange = TextRange(newText.length)
             val textFieldValue = TextFieldValue(
-                text = newText,
-                selection = newTextRange,
-                composition = newTextRange
+                text = newValue.text.replace(",", "."),
+                selection = newValue.selection,
+                composition = newValue.composition
             )
             if (textFieldValue.toFloatOrNull() == null) {
                 if (textFieldValue.isEmpty()) textFieldValue else oldValue
