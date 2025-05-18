@@ -143,12 +143,7 @@ fun AboutScreen(
                 onClick = {},
                 clickableEnabled = false,
                 title = { Text(text = stringResource(R.string.about_text_developer)) },
-                body = {
-                    Text(text = stringResource(R.string.data_text_developerName))
-                    AboutTextButton(text = stringResource(R.string.data_text_developerEmail)) {
-                        viewModel.onEvent(AboutEvent.OnClickEmail)
-                    }
-                }
+                body = { Text(text = stringResource(R.string.data_text_developerName)) }
             )
             AppSurfaceItem(
                 onClick = {},
@@ -161,6 +156,9 @@ fun AboutScreen(
                 clickableEnabled = false,
                 title = { Text(text = stringResource(R.string.about_text_links)) },
                 body = {
+                    AboutTextButton(text = stringResource(R.string.about_text_email)) {
+                        viewModel.onEvent(AboutEvent.OnClickEmail)
+                    }
                     AboutTextButton(text = stringResource(R.string.about_text_github)) {
                         viewModel.onEvent(AboutEvent.OnClickGitHub)
                     }

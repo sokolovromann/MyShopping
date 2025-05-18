@@ -4,6 +4,7 @@
     <string name="about_text_appVersion">Версія програми</string>
     <string name="about_text_developer">Розробник</string>
     <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_email">@string/data_text_developerEmail</string>
     <string name="about_text_github">GitHub</string>
     <string name="about_text_links">Посилання</string>
     <string name="about_text_privacy_policy">Політика конфіденційності</string>

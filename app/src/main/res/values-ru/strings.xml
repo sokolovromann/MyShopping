@@ -4,6 +4,7 @@
     <string name="about_text_appVersion">Версия приложения</string>
     <string name="about_text_developer">Разработчик</string>
     <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_email">@string/data_text_developerEmail</string>
     <string name="about_text_github">GitHub</string>
     <string name="about_text_links">Ссылки</string>
     <string name="about_text_privacy_policy">Политика конфиденциальности</string>

@@ -4,6 +4,7 @@
     <string name="about_text_appVersion">App version</string>
     <string name="about_text_developer">Developer</string>
     <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_email">@string/data_text_developerEmail</string>
     <string name="about_text_github">GitHub</string>
     <string name="about_text_links">Links</string>
     <string name="about_text_privacy_policy">Privacy policy</string>
@@ -188,7 +189,7 @@
     <string name="copyMoveProducts_header">@string/all_header_selectShoppingList</string>
     <string name="copyMoveProducts_text_shoppingListsNotFound">@string/all_text_shoppingListsNotFound</string>
 
-    <string name="data_email_developer" translatable="false">sokolovromann+myshopping@gmail.com</string>
+    <string name="data_email_developer" translatable="false">developer.myshopping@gmail.com</string>
     <string name="data_email_subject">Feedback</string>
     <string name="data_link_github" translatable="false">https://github.com/sokolovromann/MyShopping</string>
     <string name="data_link_privacy_policy" translatable="false">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
@@ -196,7 +197,7 @@
     <string-array name="data_text_defaultAutocompleteNames" tools:ignore="InconsistentArrays"/>
     <string-array name="data_text_defaultAutocompleteQuantitySymbols" tools:ignore="InconsistentArrays"/>
     <string name="data_text_defaultCurrency">$</string>
-    <string name="data_text_developerEmail" translatable="false">sokolovromann@gmail.com</string>
+    <string name="data_text_developerEmail" translatable="false">Email</string>
     <string name="data_text_developerName" translatable="false">Roman Sokolov</string>
     <bool name="data_value_displayDefaultCurrencyToLeft">true</bool>
 

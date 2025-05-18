@@ -4,6 +4,7 @@
     <string name="about_text_appVersion">Version de l\'application</string>
     <string name="about_text_developer">Développeur</string>
     <string name="about_text_developerName">@string/data_text_developerName</string>
+    <string name="about_text_email">@string/data_text_developerEmail</string>
     <string name="about_text_github">GitHub</string>
     <string name="about_text_links">Liens</string>
     <string name="about_text_privacy_policy">Politique de confidentialité</string>
