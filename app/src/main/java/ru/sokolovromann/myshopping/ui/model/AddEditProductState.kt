@@ -103,9 +103,9 @@ class AddEditProductState {
     var afterSaveProduct: AfterSaveProduct by mutableStateOf(AfterSaveProduct.DefaultValue)
         private set
 
-    fun populate(productWithConfig: ProductWithConfig, isFromPurchases: Boolean?) {
+    fun populate(productWithConfig: ProductWithConfig, isFromPurchases: Boolean) {
         this.productWithConfig = productWithConfig
-        this.isFromPurchases = isFromPurchases ?: false
+        this.isFromPurchases = isFromPurchases
 
         val product = productWithConfig.product
         val userPreferences = productWithConfig.appConfig.userPreferences

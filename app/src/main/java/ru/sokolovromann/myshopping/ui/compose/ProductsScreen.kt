@@ -68,7 +68,7 @@ fun ProductsScreen(
                 }
 
                 is ProductsScreenEvent.OnShowAddProductScreen -> navController.navigate(
-                    route = UiRoute.Products.addProductScreen(it.shoppingUid)
+                    route = UiRoute.Products.addProductScreen(it.shoppingUid, "false")
                 )
 
                 is ProductsScreenEvent.OnShowSelectFromAutocompletesScreen -> navController.navigate(

@@ -121,14 +121,14 @@ class AddEditProductViewModel @Inject constructor(
     private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
         val productUid = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
         val shoppingUid = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
+        val isFromPurchases = savedStateHandle.get<String>(UiRouteKey.IsFromPurchases.key) ?: "false"
 
         shoppingListsRepository.getProductWithConfig(productUid).firstOrNull()?.let {
             val productWithConfig = if (productUid != null) it else {
                 val product = Product(shoppingUid = shoppingUid)
                 it.copy(product = product)
             }
-            val isFromPurchases = savedStateHandle.get<String>(UiRouteKey.IsFromPurchases.key).toBoolean()
-            addEditProductState.populate(productWithConfig, isFromPurchases)
+            addEditProductState.populate(productWithConfig, isFromPurchases.toBoolean())
 
             if (productUid == null) {
                 _screenEventFlow.emit(AddEditProductScreenEvent.OnShowKeyboard)

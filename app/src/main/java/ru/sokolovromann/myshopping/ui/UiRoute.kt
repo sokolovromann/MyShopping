@@ -29,7 +29,7 @@ sealed class UiRoute(val graph: String) {
             return "products/$shoppingUid"
         }
 
-        fun addProductScreen(shoppingUid: String, isFromPurchases: String = "false"): String {
+        fun addProductScreen(shoppingUid: String, isFromPurchases: String): String {
             return "add-product/$shoppingUid?${UiRouteKey.IsFromPurchases.key}=$isFromPurchases"
         }
 
