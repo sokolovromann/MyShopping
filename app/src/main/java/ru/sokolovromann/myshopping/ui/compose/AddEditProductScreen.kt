@@ -341,7 +341,7 @@ fun AddEditProductScreen(
                     enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                     label = { Text(text = stringResource(R.string.addEditProduct_label_quantity)) },
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
+                        keyboardType = KeyboardType.Decimal,
                         imeAction = imeAction
                     ),
                     keyboardActions = keyboardActions
