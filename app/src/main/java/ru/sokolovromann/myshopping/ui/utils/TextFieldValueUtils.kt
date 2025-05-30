@@ -4,6 +4,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Quantity
+import java.math.BigDecimal
 
 fun TextFieldValue.isEmpty(): Boolean {
     return text.isEmpty()
@@ -19,6 +20,14 @@ fun TextFieldValue.toFloatOrZero(): Float {
 
 fun TextFieldValue.toFloatOrNull(): Float? {
     return text.toFloatOrNull()
+}
+
+fun TextFieldValue.toBigDecimalOrZero(): BigDecimal {
+    return toBigDecimalOrNull() ?: BigDecimal.ZERO
+}
+
+fun TextFieldValue.toBigDecimalOrNull(): BigDecimal? {
+    return try { BigDecimal(text) } catch (_: Exception) { null }
 }
 
 fun String.toTextFieldValue(): TextFieldValue {
