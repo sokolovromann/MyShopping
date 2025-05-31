@@ -79,7 +79,9 @@ private fun checkTextFieldValue(
     return when (keyboardType) {
         KeyboardType.Decimal, KeyboardType.Number -> {
             val textFieldValue = TextFieldValue(
-                text = newValue.text.replace(",", "."),
+                text = newValue.text
+                    .replace(",", ".")
+                    .replace(" ", ""),
                 selection = newValue.selection,
                 composition = newValue.composition
             )
