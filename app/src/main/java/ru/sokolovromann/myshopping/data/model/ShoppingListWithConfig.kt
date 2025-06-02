@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.model
 
+import java.math.BigDecimal
+
 class ShoppingListWithConfig(
     private val shoppingList: ShoppingList = ShoppingList(),
     private val appConfig: AppConfig = AppConfig()
@@ -79,8 +81,8 @@ class ShoppingListWithConfig(
         return shoppingList.calculateTaxRatesByDisplayTotal(displayTotal, getUserPreferences().taxRate)
     }
 
-    fun calculateChange(userMoneyValue: Float): Money {
-        val value = userMoneyValue - shoppingList.shopping.total.value
+    fun calculateChange(userMoneyValue: BigDecimal): Money {
+        val value = userMoneyValue.minus(shoppingList.shopping.total.value)
         return Money(
             value = value,
             currency = appConfig.userPreferences.currency,

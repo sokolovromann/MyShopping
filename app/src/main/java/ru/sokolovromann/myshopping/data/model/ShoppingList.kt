@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
 import ru.sokolovromann.myshopping.data.utils.toSingleList
+import java.math.BigDecimal
 
 data class ShoppingList(
     val shopping: Shopping = Shopping(),
@@ -28,11 +29,11 @@ data class ShoppingList(
     }
 
     fun calculateTotalByProductUids(productUids: List<String>): Money {
-        var total = 0f
+        var total = BigDecimal.ZERO
         products.forEach { product ->
-            val totalValue = product.total.getFormattedValueWithoutSeparators().toFloat()
+            val totalValue = product.total.getFormattedValueWithoutSeparators().toBigDecimal()
             if (productUids.contains(product.productUid)) {
-                total += totalValue
+                total = total.plus(totalValue)
             }
         }
 
@@ -45,18 +46,18 @@ data class ShoppingList(
     }
 
     fun calculateTotalByDisplayTotal(displayTotal: DisplayTotal): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+        var all = BigDecimal.ZERO
+        var completed = BigDecimal.ZERO
+        var active = BigDecimal.ZERO
 
         products.forEach { product ->
-            val totalValue = product.total.getFormattedValueWithoutSeparators().toFloat()
+            val totalValue = product.total.getFormattedValueWithoutSeparators().toBigDecimal()
 
-            all += totalValue
+            all = all.plus(totalValue)
             if (product.completed) {
-                completed += totalValue
+                completed = completed.plus(totalValue)
             } else {
-                active += totalValue
+                active = active.plus(totalValue)
             }
         }
 
@@ -75,11 +76,11 @@ data class ShoppingList(
     }
 
     fun calculateCostByProductUids(productUids: List<String>): Money {
-        var total = 0f
+        var total = BigDecimal.ZERO
         products.forEach { product ->
-            val totalValue = product.getCost().getFormattedValueWithoutSeparators().toFloat()
+            val totalValue = product.getCost().getFormattedValueWithoutSeparators().toBigDecimal()
             if (productUids.contains(product.productUid)) {
-                total += totalValue
+                total = total.plus(totalValue)
             }
         }
 
@@ -92,19 +93,19 @@ data class ShoppingList(
     }
 
     fun calculateCostByDisplayTotal(displayTotal: DisplayTotal): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+        var all = BigDecimal.ZERO
+        var completed = BigDecimal.ZERO
+        var active = BigDecimal.ZERO
 
         products.forEach { product ->
             val totalValue = product.getCost()
-                .getFormattedValueWithoutSeparators().toFloat()
+                .getFormattedValueWithoutSeparators().toBigDecimal()
 
-            all += totalValue
+            all = all.plus(totalValue)
             if (product.completed) {
-                completed += totalValue
+                completed = completed.plus(totalValue)
             } else {
-                active += totalValue
+                active = active.plus(totalValue)
             }
         }
 
@@ -123,10 +124,10 @@ data class ShoppingList(
     }
 
     fun calculateDiscountsByProductUids(productUids: List<String>): Money {
-        var discounts = 0f
+        var discounts = BigDecimal.ZERO
         products.forEach { product ->
             val discountsValue = product.getDiscountAsMoney()
-                .getFormattedValueWithoutSeparators().toFloat()
+                .getFormattedValueWithoutSeparators().toBigDecimal()
             if (productUids.contains(product.productUid)) {
                 discounts += discountsValue
             }
@@ -141,19 +142,19 @@ data class ShoppingList(
     }
 
     fun calculateDiscountsByDisplayTotal(displayTotal: DisplayTotal): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+        var all = BigDecimal.ZERO
+        var completed = BigDecimal.ZERO
+        var active = BigDecimal.ZERO
 
         products.forEach { product ->
             val discountsValue = product.getDiscountAsMoney()
-                .getFormattedValueWithoutSeparators().toFloat()
+                .getFormattedValueWithoutSeparators().toBigDecimal()
 
-            all += discountsValue
+            all = all.plus(discountsValue)
             if (product.completed) {
-                completed += discountsValue
+                completed = completed.plus(discountsValue)
             } else {
-                active += discountsValue
+                active = active.plus(discountsValue)
             }
         }
 
@@ -172,12 +173,12 @@ data class ShoppingList(
     }
 
     fun calculateTaxRatesByProductUids(productUids: List<String>, userTaxRate: Money): Money {
-        var taxRates = 0f
+        var taxRates = BigDecimal.ZERO
         products.forEach { product ->
             val taxRatesValue = product.getTaxRateAsMoney(userTaxRate)
-                .getFormattedValueWithoutSeparators().toFloat()
+                .getFormattedValueWithoutSeparators().toBigDecimal()
             if (productUids.contains(product.productUid)) {
-                taxRates += taxRatesValue
+                taxRates = taxRates.plus(taxRatesValue)
             }
         }
 
@@ -190,19 +191,19 @@ data class ShoppingList(
     }
 
     fun calculateTaxRatesByDisplayTotal(displayTotal: DisplayTotal, userTaxRate: Money): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+        var all = BigDecimal.ZERO
+        var completed = BigDecimal.ZERO
+        var active = BigDecimal.ZERO
 
         products.forEach { product ->
             val taxRatesValue = product.getTaxRateAsMoney(userTaxRate)
-                .getFormattedValueWithoutSeparators().toFloat()
+                .getFormattedValueWithoutSeparators().toBigDecimal()
 
-            all += taxRatesValue
+            all = all.plus(taxRatesValue)
             if (product.completed) {
-                completed += taxRatesValue
+                completed = completed.plus(taxRatesValue)
             } else {
-                active += taxRatesValue
+                active = active.plus(taxRatesValue)
             }
         }
 

@@ -35,7 +35,7 @@ data class Shopping(
     }
 
     fun getTotalWithoutDiscount(): Money {
-        val totalWithoutDiscount = total.value + discount.calculateValueFromPercent(total.value)
+        val totalWithoutDiscount = total.value.plus(discount.calculateValueFromPercent(total.value))
         return total.copy(value = totalWithoutDiscount)
     }
 }

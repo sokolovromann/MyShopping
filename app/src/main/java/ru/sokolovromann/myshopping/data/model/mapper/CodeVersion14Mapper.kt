@@ -18,6 +18,7 @@ import ru.sokolovromann.myshopping.data.model.Sort
 import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.utils.uppercaseFirst
+import java.math.BigDecimal
 
 object CodeVersion14Mapper {
 
@@ -106,7 +107,7 @@ object CodeVersion14Mapper {
         val completed = 2130837592
 
         val quantity = Quantity(
-            value = number.toFloatOrNull() ?: 0f,
+            value = number.toBigDecimal(),
             symbol = numberMeasure.replace(".", ""),
             decimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
         )
@@ -116,7 +117,7 @@ object CodeVersion14Mapper {
             displayToLeft = preferences.displayCurrencyToLeft ?: false
         )
         val price = Money(
-            value = priceMeasure,
+            value = priceMeasure.toBigDecimal(),
             currency = currency,
             asPercent = false,
             decimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
@@ -129,7 +130,7 @@ object CodeVersion14Mapper {
             quantity = quantity,
             price = price,
             taxRate = Money(
-                value = preferences.taxRate ?: 0f,
+                value = preferences.taxRate?.toBigDecimal() ?: BigDecimal.ZERO,
                 currency = currency,
                 asPercent = true,
                 decimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
@@ -177,7 +178,7 @@ object CodeVersion14Mapper {
             firstOpened = entity.firstOpened ?: false,
             currency = currency,
             taxRate = Money(
-                value = entity.taxRate ?: 0f,
+                value = entity.taxRate?.toBigDecimal() ?: BigDecimal.ZERO,
                 currency = currency,
                 asPercent = true,
                 decimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
@@ -199,18 +200,18 @@ object CodeVersion14Mapper {
         products: List<Product>,
         userPreferencesEntity: CodeVersion14UserPreferencesEntity
     ): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+        var all = BigDecimal.ZERO
+        var completed = BigDecimal.ZERO
+        var active = BigDecimal.ZERO
 
         products.forEach {
             val totalValue = it.total.value
 
-            all += totalValue
+            all = all.plus(totalValue)
             if (it.completed) {
-                completed += totalValue
+                completed = completed.plus(totalValue)
             } else {
-                active += totalValue
+                active = active.plus(totalValue)
             }
         }
 
@@ -240,7 +241,7 @@ object CodeVersion14Mapper {
         val sortBy = toSort(sort).sortBy
         return when (sortBy) {
             SortBy.NAME -> this.sortedBy { it.shopping.name }
-            SortBy.TOTAL -> this.sortedBy { it.shopping.total.value }
+            SortBy.TOTAL -> this.sortedBy { it.shopping.total.value.toFloat() }
             else -> this.sortedBy { it.shopping.uid }
         }.withIndex().map {
             val name = it.value.shopping.name
@@ -259,7 +260,7 @@ object CodeVersion14Mapper {
         val sortBy = toSort(sort).sortBy
         return when (sortBy) {
             SortBy.NAME -> this.sortedBy { it.name }
-            SortBy.TOTAL -> this.sortedBy { it.total.value }
+            SortBy.TOTAL -> this.sortedBy { it.total.value.toFloat() }
             else -> this.sortedBy { it.productUid }
         }.withIndex().map {
             val name = it.value.name

@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.utils.sortedShoppingLists
 import ru.sokolovromann.myshopping.data.utils.toSingleList
+import java.math.BigDecimal
 
 data class ShoppingListsWithConfig(
     private val shoppingLists: List<ShoppingList> = listOf(),
@@ -46,26 +47,26 @@ data class ShoppingListsWithConfig(
     }
 
     fun getTotal(): Money {
-        var total = 0f
+        var total = BigDecimal.ZERO
         shoppingLists.forEach {
             if (it.shopping.totalFormatted) {
                 when (getUserPreferences().displayTotal) {
                     DisplayTotal.ALL -> {
-                        total += it.shopping.total.value
+                        total = total.plus(it.shopping.total.value)
                     }
                     DisplayTotal.COMPLETED -> {
                         if (it.isCompleted()) {
-                            total += it.shopping.total.value
+                            total = total.plus(it.shopping.total.value)
                         }
                     }
                     DisplayTotal.ACTIVE -> {
                         if (it.isActive()) {
-                            total += it.shopping.total.value
+                            total = total.plus(it.shopping.total.value)
                         }
                     }
                 }
             } else {
-                total += it.shopping.total.value
+                total = total.plus(it.shopping.total.value)
             }
         }
 
@@ -78,10 +79,10 @@ data class ShoppingListsWithConfig(
     }
 
     fun calculateTotalByUids(uids: List<String>): Money {
-        var total = 0f
+        var total = BigDecimal.ZERO
         shoppingLists.forEach {
             if (uids.contains(it.shopping.uid)) {
-                total += it.shopping.total.value
+                total = total.plus(it.shopping.total.value)
             }
         }
 

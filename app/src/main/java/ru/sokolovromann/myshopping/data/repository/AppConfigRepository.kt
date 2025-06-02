@@ -94,7 +94,7 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
     }
 
     suspend fun saveTaxRate(taxRate: Money): Result<Unit> = withContext(dispatcher) {
-        appConfigDao.saveTaxRate(taxRate.value)
+        appConfigDao.saveTaxRate(taxRate.value.toFloat())
         return@withContext Result.success(Unit)
     }
 

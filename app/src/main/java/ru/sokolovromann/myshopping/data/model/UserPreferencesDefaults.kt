@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.model
 
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -50,7 +51,7 @@ object UserPreferencesDefaults {
 
     fun getTaxRate(): Money {
         return Money(
-            value = 0f,
+            value = BigDecimal.ZERO,
             currency = getCurrency(),
             asPercent = true,
             decimalFormat = getMoneyDecimalFormat()

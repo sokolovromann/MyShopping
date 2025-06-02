@@ -40,7 +40,7 @@ fun List<ShoppingList>.sortedShoppingLists(
             SortBy.CREATED -> shoppings.sortedBy { it.shopping.id }
             SortBy.LAST_MODIFIED -> shoppings.sortedBy { it.shopping.lastModified.millis }
             SortBy.NAME -> shoppings.sortedBy { it.shopping.name }
-            SortBy.TOTAL -> shoppings.sortedBy { it.shopping.total.value }
+            SortBy.TOTAL -> shoppings.sortedBy { it.shopping.total.value.toFloat() }
         }
     } else {
         when (sort.sortBy) {
@@ -48,7 +48,7 @@ fun List<ShoppingList>.sortedShoppingLists(
             SortBy.CREATED -> shoppings.sortedByDescending { it.shopping.id }
             SortBy.LAST_MODIFIED -> shoppings.sortedByDescending { it.shopping.lastModified.millis }
             SortBy.NAME -> shoppings.sortedByDescending { it.shopping.name }
-            SortBy.TOTAL -> shoppings.sortedByDescending { it.shopping.total.value }
+            SortBy.TOTAL -> shoppings.sortedByDescending { it.shopping.total.value.toFloat() }
         }
     }
 
@@ -103,7 +103,7 @@ fun List<Product>.sortedProducts(
             SortBy.CREATED -> sortedBy { it.id }
             SortBy.LAST_MODIFIED -> sortedBy { it.lastModified.millis }
             SortBy.NAME -> sortedBy { it.name }
-            SortBy.TOTAL -> sortedBy { it.total.value }
+            SortBy.TOTAL -> sortedBy { it.total.value.toFloat() }
         }
     } else {
         when (sort.sortBy) {
@@ -111,7 +111,7 @@ fun List<Product>.sortedProducts(
             SortBy.CREATED -> sortedByDescending { it.id }
             SortBy.LAST_MODIFIED -> sortedByDescending { it.lastModified.millis }
             SortBy.NAME -> sortedByDescending { it.name }
-            SortBy.TOTAL -> sortedByDescending { it.total.value }
+            SortBy.TOTAL -> sortedByDescending { it.total.value.toFloat() }
         }
     }
 

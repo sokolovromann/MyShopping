@@ -1,10 +1,11 @@
 package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.utils.formattedValueWithoutSeparators
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
 data class Quantity(
-    val value: Float = 0f,
+    val value: BigDecimal = BigDecimal.ZERO,
     val symbol: String = "",
     val decimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat()
 ) {
@@ -27,11 +28,11 @@ data class Quantity(
     }
 
     fun isEmpty(): Boolean {
-        return value <= 0f
+        return value.toFloat() <= 0f
     }
 
     fun isNotEmpty(): Boolean {
-        return value > 0f
+        return value.toFloat() > 0f
     }
 
     override fun toString(): String {

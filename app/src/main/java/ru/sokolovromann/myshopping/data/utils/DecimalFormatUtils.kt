@@ -1,8 +1,9 @@
 package ru.sokolovromann.myshopping.data.utils
 
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
-fun DecimalFormat.formattedValueWithoutSeparators(value: Float): String {
+fun DecimalFormat.formattedValueWithoutSeparators(value: BigDecimal): String {
     val spaceCode = 32
     val periodCode = 46
     val formatSymbols = decimalFormatSymbols.apply {
@@ -12,7 +13,7 @@ fun DecimalFormat.formattedValueWithoutSeparators(value: Float): String {
         naN = ""
     }
     return apply { decimalFormatSymbols = formatSymbols }
-        .format(value)
+        .format(value.toFloat())
         .replace(" ", "")
 }
 

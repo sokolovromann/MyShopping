@@ -262,7 +262,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         discount: Money,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.updateTotal(shoppingUid, total.value, discount.value, discount.asPercent, lastModified.millis)
+        shoppingListsDao.updateTotal(shoppingUid, total.value.toFloat(), discount.value.toFloat(), discount.asPercent, lastModified.millis)
         return@withContext Result.success(Unit)
     }
 
@@ -272,7 +272,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         budgetProducts: DisplayTotal,
         lastModified: DateTime = DateTime.getCurrentDateTime()
     ): Result<Unit> = withContext(dispatcher) {
-        shoppingListsDao.updateBudget(shoppingUid, budget.value, budgetProducts.name, lastModified.millis)
+        shoppingListsDao.updateBudget(shoppingUid, budget.value.toFloat(), budgetProducts.name, lastModified.millis)
         return@withContext Result.success(Unit)
     }
 

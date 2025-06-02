@@ -117,7 +117,7 @@ object AppConfigMapper {
             displayMoney = userPreferences.displayMoney,
             currency = userPreferences.currency.symbol,
             displayCurrencyToLeft = userPreferences.currency.displayToLeft,
-            taxRate = userPreferences.taxRate.value,
+            taxRate = userPreferences.taxRate.value.toFloat(),
             taxRateAsPercent = userPreferences.taxRate.asPercent,
             minMoneyFractionDigits = userPreferences.moneyDecimalFormat.minimumFractionDigits,
             minQuantityFractionDigits = userPreferences.quantityDecimalFormat.minimumFractionDigits,
@@ -319,7 +319,7 @@ object AppConfigMapper {
         } else {
             val currency = toCurrencyOrDefault(entity)
             Money(
-                value = value,
+                value = value.toBigDecimal(),
                 currency = currency,
                 asPercent = asPercent,
                 decimalFormat = toMoneyDecimalFormat(entity)

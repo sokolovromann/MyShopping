@@ -19,6 +19,7 @@ import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.model.UserPreferences
+import java.math.BigDecimal
 import java.util.Calendar
 
 object ShoppingListsMapper {
@@ -31,11 +32,11 @@ object ShoppingListsMapper {
             lastModified = shopping.lastModified.millis,
             name = shopping.name,
             reminder = (shopping.reminder ?: DateTime.NO_DATE_TIME).millis,
-            discount = shopping.discount.value,
+            discount = shopping.discount.value.toFloat(),
             discountProducts = shopping.discountProducts.name,
-            total = shopping.total.value,
+            total = shopping.total.value.toFloat(),
             totalFormatted = shopping.totalFormatted,
-            budget = shopping.budget.value,
+            budget = shopping.budget.value.toFloat(),
             budgetProducts = shopping.budgetProducts.name,
             archived = shopping.location == ShoppingLocation.ARCHIVE,
             deleted = shopping.location == ShoppingLocation.TRASH,
@@ -54,14 +55,14 @@ object ShoppingListsMapper {
             shoppingUid = product.shoppingUid,
             lastModified = product.lastModified.millis,
             name = product.name,
-            quantity = product.quantity.value,
+            quantity = product.quantity.value.toFloat(),
             quantitySymbol = product.quantity.symbol,
-            price = product.price.value,
-            discount = product.discount.value,
+            price = product.price.value.toFloat(),
+            discount = product.discount.value.toFloat(),
             discountAsPercent = product.discount.asPercent,
-            taxRate = product.taxRate.value,
+            taxRate = product.taxRate.value.toFloat(),
             taxRateAsPercent = product.taxRate.asPercent,
-            total = product.total.value,
+            total = product.total.value.toFloat(),
             totalFormatted = product.totalFormatted,
             note = product.note,
             manufacturer = product.manufacturer,
@@ -186,7 +187,7 @@ object ShoppingListsMapper {
     ): Shopping {
         val total = if (entity.totalFormatted) {
             Money(
-                value = entity.total,
+                value = entity.total.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
@@ -196,7 +197,7 @@ object ShoppingListsMapper {
         }
 
         val discount = Money(
-            value = entity.discount,
+            value = entity.discount.toBigDecimal(),
             currency = userPreferences.currency,
             asPercent = entity.discountAsPercent,
             decimalFormat = userPreferences.moneyDecimalFormat
@@ -205,7 +206,7 @@ object ShoppingListsMapper {
         val discountProducts = DisplayTotal.valueOfOrDefault(entity.discountProducts)
         val calculatedTotal = if (userPreferences.displayTotal == discountProducts) {
             val discountValue = discount.calculateValueFromPercent(total.value)
-            val totalWithDiscount = total.value - discountValue
+            val totalWithDiscount = total.value.minus(discountValue)
             Money(
                 value = totalWithDiscount,
                 currency = userPreferences.currency,
@@ -228,7 +229,7 @@ object ShoppingListsMapper {
             total = calculatedTotal,
             totalFormatted = entity.totalFormatted,
             budget = Money(
-                value = entity.budget,
+                value = entity.budget.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
@@ -246,20 +247,20 @@ object ShoppingListsMapper {
 
     private fun toProduct(entity: ProductEntity, userPreferences: UserPreferences): Product {
         val quantity = Quantity(
-            value = entity.quantity,
+            value = entity.quantity.toBigDecimal(),
             symbol = entity.quantitySymbol,
             decimalFormat = userPreferences.quantityDecimalFormat
         )
 
         val price = Money(
-            value = entity.price,
+            value = entity.price.toBigDecimal(),
             currency = userPreferences.currency,
             asPercent = false,
             decimalFormat = userPreferences.moneyDecimalFormat
         )
 
         val discount = Money(
-            value = entity.discount,
+            value = entity.discount.toBigDecimal(),
             currency = userPreferences.currency,
             asPercent = entity.discountAsPercent,
             decimalFormat = userPreferences.moneyDecimalFormat
@@ -269,21 +270,21 @@ object ShoppingListsMapper {
 
         val calculateTotal = if (entity.totalFormatted) {
             val total = Money(
-                value = entity.total,
+                value = entity.total.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
             )
             if (total.isEmpty()) price else total
         } else {
-            val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
-            val total = quantityValue * price.value
+            val quantityValue = if (quantity.isEmpty()) BigDecimal.ONE else quantity.value
+            val total = quantityValue.multiply(price.value)
 
             val discountValue = discount.calculateValueFromPercent(total)
-            val totalWithDiscount = total - discountValue
+            val totalWithDiscount = total.minus(discountValue)
 
             val taxRateValue = taxRate.calculateValueFromPercent(totalWithDiscount)
-            val totalWithTaxRate = totalWithDiscount + taxRateValue
+            val totalWithTaxRate = totalWithDiscount.plus(taxRateValue)
 
             Money(
                 value = totalWithTaxRate,
@@ -337,18 +338,18 @@ object ShoppingListsMapper {
         products: List<Product>,
         userPreferences: UserPreferences
     ): Money {
-        var all = 0f
-        var completed = 0f
-        var active = 0f
+        var all = BigDecimal.ZERO
+        var completed = BigDecimal.ZERO
+        var active = BigDecimal.ZERO
 
         products.forEach {
             val totalValue = it.total.value
 
-            all += totalValue
+            all = all.plus(totalValue)
             if (it.completed) {
-                completed += totalValue
+                completed = completed.plus(totalValue)
             } else {
-                active += totalValue
+                active = active.plus(totalValue)
             }
         }
 

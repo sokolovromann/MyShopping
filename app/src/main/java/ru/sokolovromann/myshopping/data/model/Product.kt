@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.data.model
 
+import java.math.BigDecimal
+
 data class Product(
     val id: Int = IdDefaults.NO_ID,
     val position: Int = IdDefaults.FIRST_POSITION,
@@ -23,29 +25,29 @@ data class Product(
     val pinned: Boolean = false
 ) {
 
-    private val totalWithDiscount = getCost().value - discount.calculateValueFromPercent(getCost().value)
+    private val totalWithDiscount = getCost().value.minus(discount.calculateValueFromPercent(getCost().value))
 
     fun getCost(): Money {
         return if (totalFormatted) {
             total
         } else {
-            val quantityValue = if (quantity.isEmpty()) 1f else quantity.value
-            val cost = quantityValue * price.value
+            val quantityValue = if (quantity.isEmpty()) BigDecimal.ONE else quantity.value
+            val cost = quantityValue.multiply(price.value)
             total.copy(value = cost)
         }
     }
 
     fun getDiscountAsMoney(): Money {
         return discount.copy(
-            value = getCost().value - totalWithDiscount,
+            value = getCost().value.minus(totalWithDiscount),
             asPercent = false
         )
     }
 
     fun getTaxRateAsMoney(userTaxRate: Money): Money {
-        val totalWithTaxRate = totalWithDiscount + userTaxRate.calculateValueFromPercent(totalWithDiscount)
+        val totalWithTaxRate = totalWithDiscount.plus(userTaxRate.calculateValueFromPercent(totalWithDiscount))
         return userTaxRate.copy(
-            value = totalWithTaxRate - totalWithDiscount,
+            value = totalWithTaxRate.minus(totalWithDiscount),
             asPercent = false
         )
     }

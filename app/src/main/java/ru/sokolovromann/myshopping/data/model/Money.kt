@@ -1,16 +1,17 @@
 package ru.sokolovromann.myshopping.data.model
 
 import ru.sokolovromann.myshopping.data.utils.formattedValueWithoutSeparators
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
 data class Money(
-    val value: Float = 0f,
+    val value: BigDecimal = BigDecimal.ZERO,
     val currency: Currency = Currency(),
     val asPercent: Boolean = false,
     val decimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
 ) {
 
-    private val _decimalFormat = if (value % 1f == 0f) {
+    private val _decimalFormat = if (value.toFloat() % 1f == 0f) {
         decimalFormat
     } else {
         UserPreferencesDefaults.getMoneyDecimalFormat()
@@ -36,16 +37,23 @@ data class Money(
         }
     }
 
-    fun calculateValueFromPercent(money: Float): Float {
-        return if (asPercent) money * (value / 100) else value
+    fun calculateValueFromPercent(money: BigDecimal): BigDecimal {
+        val bigDecimal = BigDecimal(value.toString())
+        return if (asPercent) {
+            val percent = 100f.toBigDecimal()
+            val percentToDecimal = bigDecimal.divide(percent)
+            money.multiply(percentToDecimal)
+        } else {
+            bigDecimal
+        }
     }
 
     fun isEmpty(): Boolean {
-        return value <= 0f
+        return value.toFloat() <= 0f
     }
 
     fun isNotEmpty(): Boolean {
-        return value > 0f
+        return value.toFloat() > 0f
     }
 
     override fun toString(): String {

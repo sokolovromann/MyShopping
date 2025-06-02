@@ -18,14 +18,14 @@ object AutocompletesMapper {
             uid = autocomplete.uid,
             lastModified = autocomplete.lastModified.millis,
             name = autocomplete.name,
-            quantity = autocomplete.quantity.value,
+            quantity = autocomplete.quantity.value.toFloat(),
             quantitySymbol = autocomplete.quantity.symbol,
-            price = autocomplete.price.value,
-            discount = autocomplete.discount.value,
+            price = autocomplete.price.value.toFloat(),
+            discount = autocomplete.discount.value.toFloat(),
             discountAsPercent = autocomplete.discount.asPercent,
-            taxRate = autocomplete.taxRate.value,
+            taxRate = autocomplete.taxRate.value.toFloat(),
             taxRateAsPercent = autocomplete.taxRate.asPercent,
-            total = autocomplete.total.value,
+            total = autocomplete.total.value.toFloat(),
             manufacturer = autocomplete.manufacturer,
             brand = autocomplete.brand,
             size = autocomplete.size,
@@ -118,30 +118,30 @@ object AutocompletesMapper {
             lastModified = DateTime(entity.lastModified),
             name = entity.name,
             quantity = Quantity(
-                value = entity.quantity,
+                value = entity.quantity.toBigDecimal(),
                 symbol = entity.quantitySymbol,
                 decimalFormat = userPreferences.quantityDecimalFormat
             ),
             price = Money(
-                value = entity.price,
+                value = entity.price.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
             ),
             discount = Money(
-                value = entity.discount,
+                value = entity.discount.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = entity.discountAsPercent,
                 decimalFormat = userPreferences.moneyDecimalFormat
             ),
             taxRate = Money(
-                value = entity.taxRate,
+                value = entity.taxRate.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = entity.taxRateAsPercent,
                 decimalFormat = userPreferences.moneyDecimalFormat
             ),
             total = Money(
-                value = entity.total,
+                value = entity.total.toBigDecimal(),
                 currency = userPreferences.currency,
                 asPercent = false,
                 decimalFormat = userPreferences.moneyDecimalFormat
