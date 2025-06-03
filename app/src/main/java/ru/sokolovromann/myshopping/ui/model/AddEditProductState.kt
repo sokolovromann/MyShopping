@@ -15,7 +15,7 @@ import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class AddEditProductState {
@@ -330,18 +330,18 @@ class AddEditProductState {
             lastModified = DateTime.getCurrentDateTime(),
             name = nameValue.text.trim(),
             quantity = product.quantity.copy(
-                value = quantityValue.toFloatOrZero(),
+                value = quantityValue.toBigDecimalOrZero(),
                 symbol = quantitySymbolValue.text.trim()
             ),
             price = product.price.copy(
-                value = priceValue.toFloatOrZero()
+                value = priceValue.toBigDecimalOrZero()
             ),
             discount = product.discount.copy(
-                value = discountValue.toFloatOrZero(),
+                value = discountValue.toBigDecimalOrZero(),
                 asPercent = discountAsPercentValue.selected
             ),
             total = product.total.copy(
-                value = totalValue.toFloatOrZero()
+                value = totalValue.toBigDecimalOrZero()
             ),
             totalFormatted = lockProductElementValue.selected != LockProductElement.TOTAL,
             note = noteValue.text.trim(),

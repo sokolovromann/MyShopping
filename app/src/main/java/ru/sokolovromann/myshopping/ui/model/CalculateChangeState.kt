@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 
 class CalculateChangeState {
 
@@ -37,7 +37,7 @@ class CalculateChangeState {
     fun onUserMoneyValueChanged(value: TextFieldValue) {
         userMoneyValue = value
 
-        val change = shoppingListWithConfig.calculateChange(value.toFloatOrZero())
+        val change = shoppingListWithConfig.calculateChange(value.toBigDecimalOrZero())
         changeText = if (change.isEmpty()) {
             UiString.FromResources(R.string.calculateChange_text_noChange)
         } else {

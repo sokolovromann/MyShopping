@@ -30,9 +30,10 @@ import ru.sokolovromann.myshopping.ui.model.AddEditProductState
 import ru.sokolovromann.myshopping.ui.model.AutocompletesSelectedValue
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.isNotEmpty
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -261,7 +262,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onClickMinusOneQuantity() {
-        val value = addEditProductState.quantityValue.toFloatOrZero().minus(1)
+        val value = addEditProductState.quantityValue.toBigDecimalOrZero().minus(BigDecimal.ONE)
         val quantity = Quantity(value = value)
         val quantityValue = if (quantity.isEmpty()) {
             "".toTextFieldValue()
@@ -273,7 +274,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onClickPlusOneQuantity() {
-        val value = addEditProductState.quantityValue.toFloatOrZero().plus(1)
+        val value = addEditProductState.quantityValue.toBigDecimalOrZero().plus(BigDecimal.ONE)
         val quantityValue = Quantity(value = value).toTextFieldValue()
         addEditProductState.onQuantityValueChanged(quantityValue)
         calculatePriceAndTotal()
@@ -343,13 +344,13 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onLockQuantity() {
-        val price = addEditProductState.priceValue.toFloatOrZero()
-        val total = addEditProductState.totalValue.toFloatOrZero()
-        val fieldValue = if (price <= 0f || total <= 0f) {
+        val price = addEditProductState.priceValue.toBigDecimalOrZero()
+        val total = addEditProductState.totalValue.toBigDecimalOrZero()
+        val fieldValue = if (price.toFloat() <= 0f || total.toFloat() <= 0f) {
             "".toTextFieldValue()
         } else {
             Quantity(
-                value = total / price,
+                value = total.divide(price),
                 decimalFormat = addEditProductState.getCurrentUserPreferences().quantityDecimalFormat
             ).toTextFieldValue()
         }
@@ -358,13 +359,13 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onLockPrice() {
-        val quantity = addEditProductState.quantityValue.toFloatOrZero()
-        val total = addEditProductState.totalValue.toFloatOrZero()
-        val fieldValue = if (quantity <= 0f || total < 0f) {
+        val quantity = addEditProductState.quantityValue.toBigDecimalOrZero()
+        val total = addEditProductState.totalValue.toBigDecimalOrZero()
+        val fieldValue = if (quantity.toFloat() <= 0f || total.toFloat() < 0f) {
             "".toTextFieldValue()
         } else {
             Money(
-                value = total / quantity,
+                value = total.divide(quantity),
                 currency = addEditProductState.getCurrentUserPreferences().currency,
                 asPercent = false,
                 decimalFormat = addEditProductState.getCurrentUserPreferences().moneyDecimalFormat
@@ -375,19 +376,19 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onLockTotal() {
-        val quantity = addEditProductState.quantityValue.toFloatOrZero()
-        val price = addEditProductState.priceValue.toFloatOrZero()
-        val fieldValue = if (quantity <= 0f || price <= 0f) {
+        val quantity = addEditProductState.quantityValue.toBigDecimalOrZero()
+        val price = addEditProductState.priceValue.toBigDecimalOrZero()
+        val fieldValue = if (quantity.toFloat() <= 0f || price.toFloat() <= 0f) {
             "".toTextFieldValue()
         } else {
-            val totalValue = quantity * price
+            val totalValue = quantity.multiply(price)
             val moneyDiscount = Money(
-                value = addEditProductState.discountValue.toFloatOrZero(),
+                value = addEditProductState.discountValue.toBigDecimalOrZero(),
                 asPercent = addEditProductState.discountAsPercentValue.selected
             )
             val taxRate = addEditProductState.getCurrentUserPreferences().taxRate
-            val totalWithDiscount = totalValue - moneyDiscount.calculateValueFromPercent(totalValue)
-            val totalWithTaxRate = totalWithDiscount + taxRate.calculateValueFromPercent(totalWithDiscount)
+            val totalWithDiscount = totalValue.minus(moneyDiscount.calculateValueFromPercent(totalValue))
+            val totalWithTaxRate = totalWithDiscount.plus(taxRate.calculateValueFromPercent(totalWithDiscount))
             Money(
                 value = totalWithTaxRate,
                 currency = addEditProductState.getCurrentUserPreferences().currency,
@@ -536,7 +537,7 @@ class AddEditProductViewModel @Inject constructor(
             .map { it.quantity }
             .distinctBy { it.symbol }
             .filterIndexed { index, quantity ->
-                quantity.value > 0 && quantity.symbol.isNotEmpty() &&
+                quantity.isNotEmpty() && quantity.symbol.isNotEmpty() &&
                         index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesQuantities
             }
     }

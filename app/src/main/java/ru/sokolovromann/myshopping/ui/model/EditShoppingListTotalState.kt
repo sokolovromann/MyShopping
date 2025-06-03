@@ -10,7 +10,7 @@ import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Shopping
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditShoppingListTotalState {
@@ -104,10 +104,10 @@ class EditShoppingListTotalState {
         val oldShopping = shoppingListWithConfig.getShopping()
 
         val total = oldShopping.total.copy(
-            value = totalValue.toFloatOrZero()
+            value = totalValue.toBigDecimalOrZero()
         )
         val discount = oldShopping.discount.copy(
-            value = discountValue.toFloatOrZero(),
+            value = discountValue.toBigDecimalOrZero(),
             asPercent = discountAsPercentValue.selected
         )
         val totalsNotEquals = oldShopping.total.getFormattedValueWithoutSeparators().toFloat() != total.getFormattedValueWithoutSeparators().toFloat()
@@ -116,7 +116,7 @@ class EditShoppingListTotalState {
         val oldTotalOrCurrentTotalFormatted = totalsOrDiscountsNotEquals || oldShopping.totalFormatted
         val totalFormatted = total.isNotEmpty() && oldTotalOrCurrentTotalFormatted
         val budget = Money(
-            value = budgetValue.toFloatOrZero(),
+            value = budgetValue.toBigDecimalOrZero(),
             asPercent = false
         )
         return oldShopping.copy(

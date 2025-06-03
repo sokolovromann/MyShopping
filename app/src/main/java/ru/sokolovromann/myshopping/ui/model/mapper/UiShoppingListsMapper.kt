@@ -21,6 +21,7 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDate
 import ru.sokolovromann.myshopping.ui.utils.getDisplayDateAndTime
 import ru.sokolovromann.myshopping.ui.utils.toUiString
+import java.math.BigDecimal
 
 object UiShoppingListsMapper {
 
@@ -613,7 +614,7 @@ object UiShoppingListsMapper {
     ): String {
         val builder = StringBuilder()
         val quantity = if (product.quantity.isEmpty()) {
-            product.quantity.copy(value = 1f)
+            product.quantity.copy(value = BigDecimal.ONE)
         } else {
             product.quantity
         }

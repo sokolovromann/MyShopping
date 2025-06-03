@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
-import ru.sokolovromann.myshopping.ui.utils.toFloatOrZero
+import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 
 class EditTaxRateState {
@@ -38,7 +38,7 @@ class EditTaxRateState {
 
     fun getCurrentTaxRate(): Money {
         return settingsWithConfig.appConfig.userPreferences.taxRate.copy(
-            value = taxRateValue.toFloatOrZero()
+            value = taxRateValue.toBigDecimalOrZero()
         )
     }
 }
