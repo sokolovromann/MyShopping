@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -132,6 +133,7 @@ class AddEditProductViewModel @Inject constructor(
             addEditProductState.populate(productWithConfig, isFromPurchases.toBoolean())
 
             if (productUid == null) {
+                delay(50L)
                 _screenEventFlow.emit(AddEditProductScreenEvent.OnShowKeyboard)
             } else {
                 getAutocompletes(productWithConfig.product.name)
