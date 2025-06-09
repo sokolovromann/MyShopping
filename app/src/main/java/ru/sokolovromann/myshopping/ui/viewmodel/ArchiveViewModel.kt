@@ -272,6 +272,9 @@ class ArchiveViewModel @Inject constructor(
             SwipeShopping.DELETE -> {
                 shoppingListsRepository.moveShoppingListToTrash(uid)
             }
+            SwipeShopping.DELETE_PRODUCTS -> {
+                shoppingListsRepository.deleteProductsByShoppingUid(uid)
+            }
             SwipeShopping.COMPLETE -> {
                 archiveState.isShoppingListCompleted(uid)?.let { completed ->
                     invertShoppingStatus(uid, completed).let {

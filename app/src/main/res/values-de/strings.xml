@@ -605,10 +605,11 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">Archivieren/Unarchivieren</string>
+    <string name="swipeShopping_action_archive">Liste archivieren/dearchivieren</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
-    <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
-    <string name="swipeShopping_action_delete">@string/all_action_delete</string>
+    <string name="swipeShopping_action_completed">Liste als fertige/aktive markieren</string>
+    <string name="swipeShopping_action_delete">Liste löschen</string>
+    <string name="swipeShopping_action_deleteProducts">@string/settings_action_deleteProductsAfterShoppingCompleted</string>
     <string name="swipeShopping_action_disabled">@string/all_action_disabled</string>
     <string name="swipeShopping_action_save">@string/all_action_save</string>
     <string name="swipeShopping_header">Einkaufsliste wischen</string>

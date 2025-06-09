@@ -135,6 +135,11 @@ private fun SwipeShoppingItem(
                     right = { CheckmarkAppCheckbox(checked = selected == SwipeShopping.DELETE) }
                 )
                 AppDropdownMenuItem(
+                    onClick = { onSelected(SwipeShopping.DELETE_PRODUCTS) },
+                    text = { Text(text = stringResource(R.string.swipeShopping_action_deleteProducts)) },
+                    right = { CheckmarkAppCheckbox(checked = selected == SwipeShopping.DELETE_PRODUCTS) }
+                )
+                AppDropdownMenuItem(
                     onClick = { onSelected(SwipeShopping.COMPLETE) },
                     text = { Text(text = stringResource(R.string.swipeShopping_action_completed)) },
                     right = { CheckmarkAppCheckbox(checked = selected == SwipeShopping.COMPLETE) }

@@ -853,6 +853,15 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         return@withContext deleteShoppingLists(shoppingUids)
     }
 
+    suspend fun deleteProductsByShoppingUid(
+        shoppingUid: String,
+        lastModified: DateTime = DateTime.getCurrentDateTime()
+    ): Result<Unit> = withContext(dispatcher) {
+        productsDao.deleteProductsByShoppingUids(listOf(shoppingUid))
+        shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+        Result.success(Unit)
+    }
+
     suspend fun deleteProductsByProductUids(
         shoppingUid: String,
         productsUids: List<String>,

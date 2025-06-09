@@ -2,7 +2,7 @@ package ru.sokolovromann.myshopping.data.model
 
 enum class SwipeShopping {
 
-    DISABLED, ARCHIVE, DELETE, COMPLETE;
+    DISABLED, ARCHIVE, DELETE, COMPLETE, DELETE_PRODUCTS;
 
     companion object {
         val DefaultValue = DISABLED

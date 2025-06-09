@@ -63,6 +63,7 @@ class SwipeShoppingState {
                 SwipeShopping.DISABLED -> UiString.FromResources(R.string.swipeShopping_action_disabled)
                 SwipeShopping.ARCHIVE -> UiString.FromResources(R.string.swipeShopping_action_archive)
                 SwipeShopping.DELETE -> UiString.FromResources(R.string.swipeShopping_action_delete)
+                SwipeShopping.DELETE_PRODUCTS -> UiString.FromResources(R.string.swipeShopping_action_deleteProducts)
                 SwipeShopping.COMPLETE -> UiString.FromResources(R.string.swipeShopping_action_completed)
             }
         )

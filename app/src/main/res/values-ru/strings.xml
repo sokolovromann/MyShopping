@@ -670,10 +670,11 @@
     <string name="swipeProduct_text_left">@string/all_action_swipeLeft</string>
     <string name="swipeProduct_text_right">@string/all_action_swipeRight</string>
 
-    <string name="swipeShopping_action_archive">Архивировать/Разархивировать</string>
+    <string name="swipeShopping_action_archive">Архивировать/Разархивировать список</string>
     <string name="swipeShopping_action_cancel">@string/all_action_cancel</string>
-    <string name="swipeShopping_action_completed">@string/all_action_markAsCompletedOrActive</string>
-    <string name="swipeShopping_action_delete">@string/all_action_delete</string>
+    <string name="swipeShopping_action_completed">Отметить список как купленный/не купленный</string>
+    <string name="swipeShopping_action_delete">Удалить список</string>
+    <string name="swipeShopping_action_deleteProducts">@string/settings_action_deleteProductsAfterShoppingCompleted</string>
     <string name="swipeShopping_action_disabled">@string/all_action_disabled</string>
     <string name="swipeShopping_action_save">@string/all_action_save</string>
     <string name="swipeShopping_header">Смахивание списка покупок</string>

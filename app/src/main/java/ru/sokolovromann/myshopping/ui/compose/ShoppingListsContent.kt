@@ -704,6 +704,9 @@ private fun getSwipeShoppingContent(
                 )
             }
         }
+        SwipeShopping.DELETE_PRODUCTS -> {
+            { DefaultIcon(UiIcon.ClearProducts) }
+        }
         SwipeShopping.COMPLETE -> {
             { DefaultIcon(UiIcon.CompletedActive) }
         }
