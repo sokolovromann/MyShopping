@@ -129,7 +129,7 @@ data class ShoppingList(
             val discountsValue = product.getDiscountAsMoney()
                 .getFormattedValueWithoutSeparators().toBigDecimal()
             if (productUids.contains(product.productUid)) {
-                discounts += discountsValue
+                discounts = discounts.plus(discountsValue)
             }
         }
 

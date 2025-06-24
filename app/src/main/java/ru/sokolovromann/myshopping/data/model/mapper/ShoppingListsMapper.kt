@@ -343,7 +343,7 @@ object ShoppingListsMapper {
         var active = BigDecimal.ZERO
 
         products.forEach {
-            val totalValue = it.total.value
+            val totalValue = it.total.getFormattedValueWithoutSeparators().toBigDecimal()
 
             all = all.plus(totalValue)
             if (it.completed) {
