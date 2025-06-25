@@ -11,18 +11,12 @@ data class Money(
     val decimalFormat: DecimalFormat = UserPreferencesDefaults.getMoneyDecimalFormat()
 ) {
 
-    private val _decimalFormat = if (value.toFloat() % 1f == 0f) {
-        decimalFormat
-    } else {
-        UserPreferencesDefaults.getMoneyDecimalFormat()
-    }
-
     fun getFormattedValue(): String {
-        return _decimalFormat.format(value)
+        return createDecimalFormat().format(value)
     }
 
     fun getFormattedValueWithoutSeparators(): String {
-        return _decimalFormat.formattedValueWithoutSeparators(value)
+        return createDecimalFormat().formattedValueWithoutSeparators(value)
     }
 
     fun getDisplayValue(): String {
@@ -58,5 +52,16 @@ data class Money(
 
     override fun toString(): String {
         return getDisplayValue()
+    }
+
+    private fun createDecimalFormat(): DecimalFormat {
+        return if (value.toFloat() % 1f == 0f) {
+            UserPreferencesDefaults.getMoneyDecimalFormat().apply {
+                minimumFractionDigits = decimalFormat.minimumFractionDigits
+                maximumFractionDigits = decimalFormat.maximumFractionDigits
+            }
+        } else {
+            UserPreferencesDefaults.getMoneyDecimalFormat()
+        }
     }
 }
