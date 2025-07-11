@@ -1,12 +1,5 @@
 buildscript {
     ext {
-        compile_sdk_version = 34
-        min_sdk_version = 23
-        target_sdk_version = 34
-
-        app_code_version = 36
-        app_name_version = '2.6.4'
-
         kotlin_version = '1.8.0'
         core_ktx_version = '1.13.1'
         core_version = '1.10.1'

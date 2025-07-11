@@ -9,14 +9,15 @@ plugins {
 
 android {
     namespace 'ru.sokolovromann.myshopping'
-    compileSdk compile_sdk_version
+    buildToolsVersion '36.0.0'
+    compileSdk 36
 
     defaultConfig {
         applicationId "ru.sokolovromann.myshopping"
-        minSdk min_sdk_version
-        targetSdk target_sdk_version
-        versionCode app_code_version
-        versionName app_name_version
+        versionCode 37
+        versionName "2.7.0-dev"
+        minSdk 26
+        targetSdk 36
 
         vectorDrawables {
             useSupportLibrary true
@@ -30,7 +31,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            versionNameSuffix "-debug"
             debuggable true
         }
     }
