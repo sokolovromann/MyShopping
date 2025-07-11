@@ -58,38 +58,29 @@ android {
 }
 
 dependencies {
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.core:core-splashscreen:$core_splashscreen_version"
-
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.compose.foundation:foundation:$compose_version"
-
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$system_ui_controller_version"
-
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
-    implementation "androidx.navigation:navigation-compose:$navigation_compose_version"
-
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.activity:activity-compose:1.10.1'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'androidx.navigation:navigation-compose:2.9.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.1'
+    implementation 'androidx.work:work-runtime-ktx:2.10.2'
+    implementation 'androidx.compose.ui:ui:1.8.3'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.8.3'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.8.3'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.8.3'
+    implementation 'androidx.compose.material:material:1.8.3'
+    implementation 'androidx.compose.material:material-icons-core:1.7.8'
+    implementation 'androidx.compose.foundation:foundation:1.8.3'
+    implementation 'androidx.glance:glance:1.1.1'
+    implementation 'androidx.glance:glance-appwidget:1.1.1'
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.36.0'
     implementation 'androidx.room:room-runtime:2.7.2'
     //noinspection KaptUsageInsteadOfKsp
     kapt 'androidx.room:room-compiler:2.7.2'
     implementation 'androidx.room:room-ktx:2.7.2'
-
+    implementation 'androidx.datastore:datastore-preferences:1.1.7'
     implementation 'com.google.dagger:hilt-android:2.56.2'
     kapt 'com.google.dagger:hilt-compiler:2.56.2'
     implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
-
-    implementation "androidx.datastore:datastore-preferences:$datastore_preferences_version"
-
-    implementation "androidx.work:work-runtime-ktx:$work_version"
-
-    implementation "androidx.glance:glance:$glance_version"
-    implementation "androidx.glance:glance-appwidget:$glance_version"
-
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$json_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0'
 }

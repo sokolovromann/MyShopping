@@ -2,17 +2,17 @@ package ru.sokolovromann.myshopping.ui.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -32,10 +32,10 @@ sealed class UiIcon {
     companion object {
         val About: UiIcon = FromVector(Icons.Default.Info)
         val Add: UiIcon = FromVector(Icons.Default.Add)
-        val Autocompletes: UiIcon = FromVector(Icons.Default.List)
+        val Autocompletes: UiIcon = FromVector(Icons.AutoMirrored.Filled.List)
         val Archive: UiIcon = FromResources(R.drawable.ic_all_archive)
         val ArchiveUnarchive: UiIcon = FromResources(R.drawable.ic_all_archive_unarchive)
-        val Back: UiIcon = FromVector(Icons.Default.ArrowBack)
+        val Back: UiIcon = FromVector(Icons.AutoMirrored.Filled.ArrowBack)
         val Cancel: UiIcon = FromVector(Icons.Default.Clear)
         val Checkbox: UiIcon = FromResources(R.drawable.ic_all_check_box)
         val CheckboxOutline: UiIcon = FromResources(R.drawable.ic_all_check_box_outline)
@@ -50,7 +50,7 @@ sealed class UiIcon {
         val Edit: UiIcon = FromVector(Icons.Default.Edit)
         val HideOtherFields: UiIcon = FromVector(Icons.Default.KeyboardArrowUp)
         val More: UiIcon = FromVector(Icons.Default.MoreVert)
-        val MoreMenu: UiIcon = FromVector(Icons.Default.KeyboardArrowRight)
+        val MoreMenu: UiIcon = FromVector(Icons.AutoMirrored.Filled.KeyboardArrowRight)
         val MoveDown: UiIcon = FromResources(R.drawable.ic_all_arrow_down)
         val MoveUp: UiIcon = FromResources(R.drawable.ic_all_arrow_up)
         val NavigationMenu: UiIcon = FromVector(Icons.Default.Menu)
