@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.model
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
@@ -8,11 +7,11 @@ sealed class UiString {
 
     data class FromString(val value: String) : UiString()
 
-    data class FromResources(@StringRes val id: Int, val lowercase: Boolean = false) : UiString()
+    data class FromResources(val id: Int, val lowercase: Boolean = false) : UiString()
 
-    class FromResourcesWithArgs(@StringRes val id: Int, vararg val args: Any, val lowercase: Boolean = false) : UiString()
+    class FromResourcesWithArgs(val id: Int, vararg val args: Any, val lowercase: Boolean = false) : UiString()
 
-    data class FromResourcesWithUiString(@StringRes val id: Int, val str: UiString, val separator: UiString, val lowercase: Boolean = false) : UiString()
+    data class FromResourcesWithUiString(val id: Int, val str: UiString, val separator: UiString, val lowercase: Boolean = false) : UiString()
 
     class FromUiStrings(val strs: Array<UiString>, val separator: UiString) : UiString()
 

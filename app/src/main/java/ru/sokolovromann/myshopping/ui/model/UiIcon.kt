@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.ui.model
 
-import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -27,7 +26,7 @@ sealed class UiIcon {
 
     data class FromVector(val imageVector: ImageVector) : UiIcon()
 
-    data class FromResources(@DrawableRes val id: Int) : UiIcon()
+    data class FromResources(val id: Int) : UiIcon()
 
     companion object {
         val About: UiIcon = FromVector(Icons.Default.Info)
