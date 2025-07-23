@@ -25,7 +25,7 @@
         android:theme="@style/Theme.MyShopping.Splash"
         android:localeConfig="@xml/locale_config"
         android:requestLegacyExternalStorage="true"
-        tools:targetApi="36">
+        tools:targetApi="35">
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
