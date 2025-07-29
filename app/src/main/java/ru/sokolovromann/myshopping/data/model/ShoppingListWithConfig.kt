@@ -27,6 +27,10 @@ class ShoppingListWithConfig(
         return shoppingList.getProductUids()
     }
 
+    fun getProductsByUids(productUids: List<String>): List<Product> {
+        return shoppingList.getProductsByUids(productUids)
+    }
+
     fun getDeviceConfig(): DeviceConfig {
         return appConfig.deviceConfig
     }

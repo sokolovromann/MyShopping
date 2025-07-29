@@ -28,6 +28,10 @@ data class ShoppingList(
         return products.map { it.productUid }
     }
 
+    fun getProductsByUids(productUids: List<String>): List<Product> {
+        return products.filter { product -> productUids.find { it == product.productUid } != null }
+    }
+
     fun calculateTotalByProductUids(productUids: List<String>): Money {
         var total = BigDecimal.ZERO
         products.forEach { product ->
