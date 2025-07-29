@@ -46,6 +46,7 @@ sealed class UiIcon {
         val Delete: UiIcon = FromVector(Icons.Default.Delete)
         val DisplayHidden: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)
         val DisplayOtherFields: UiIcon = FromVector(Icons.Default.KeyboardArrowDown)
+        val Duplicate: UiIcon = FromResources(R.drawable.ic_all_duplicate)
         val Edit: UiIcon = FromVector(Icons.Default.Edit)
         val HideOtherFields: UiIcon = FromVector(Icons.Default.KeyboardArrowUp)
         val More: UiIcon = FromVector(Icons.Default.MoreVert)
