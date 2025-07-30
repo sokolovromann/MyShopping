@@ -133,6 +133,8 @@ class ProductsViewModel @Inject constructor(
             is ProductsEvent.OnSwipeProductLeft -> onSwipeProductLeft(event)
 
             is ProductsEvent.OnSwipeProductRight -> onSwipeProductRight(event)
+
+            is ProductsEvent.OnClickDuplicateProducts -> onClickDuplicateProducts()
         }
     }
 
@@ -249,6 +251,17 @@ class ProductsViewModel @Inject constructor(
         productsState.selectedUids?.let {
             shoppingListsRepository.deleteProductsByProductUids(
                 productsUids = it,
+                shoppingUid = shoppingUid
+            )
+            productsState.onAllProductsSelected(selected = false)
+            _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
+        }
+    }
+
+    private fun onClickDuplicateProducts() = viewModelScope.launch(AppDispatchers.Main) {
+        productsState.selectedUids?.let {
+            shoppingListsRepository.copyProducts(
+                products = productsState.getSelectedProducts(),
                 shoppingUid = shoppingUid
             )
             productsState.onAllProductsSelected(selected = false)

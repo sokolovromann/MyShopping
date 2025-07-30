@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.Money
+import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.model.Sort
@@ -318,6 +319,14 @@ class ProductsState {
 
     fun getAfterShoppingCompleted(): AfterShoppingCompleted {
         return shoppingListWithConfig.getUserPreferences().afterShoppingCompleted
+    }
+
+    fun getSelectedProducts(): List<Product> {
+        return if (selectedUids == null) {
+            emptyList()
+        } else {
+            shoppingListWithConfig.getProductsByUids(selectedUids!!)
+        }
     }
 
     fun isShoppingCompletedProductLast(): Boolean {

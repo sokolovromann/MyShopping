@@ -96,4 +96,6 @@ sealed class ProductsEvent {
     data class OnSwipeProductLeft(val productUid: String) : ProductsEvent()
 
     data class OnSwipeProductRight(val productUid: String) : ProductsEvent()
+
+    object OnClickDuplicateProducts : ProductsEvent()
 }

@@ -302,6 +302,16 @@ fun ProductsScreen(
                         }
                         IconButton(
                             onClick = {
+                                val event = ProductsEvent.OnClickDuplicateProducts
+                                viewModel.onEvent(event)
+                            }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Duplicate
+                            )
+                        }
+                        IconButton(
+                            onClick = {
                                 val event = ProductsEvent.OnClickDeleteProducts
                                 viewModel.onEvent(event)
                             }
