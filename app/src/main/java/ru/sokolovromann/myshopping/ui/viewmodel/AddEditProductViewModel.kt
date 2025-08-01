@@ -35,6 +35,7 @@ import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
 import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -352,7 +353,7 @@ class AddEditProductViewModel @Inject constructor(
             "".toTextFieldValue()
         } else {
             Quantity(
-                value = total.divide(price),
+                value = total.divide(price, 3, RoundingMode.HALF_UP),
                 decimalFormat = addEditProductState.getCurrentUserPreferences().quantityDecimalFormat
             ).toTextFieldValue()
         }
@@ -367,7 +368,7 @@ class AddEditProductViewModel @Inject constructor(
             "".toTextFieldValue()
         } else {
             Money(
-                value = total.divide(quantity),
+                value = total.divide(quantity, 2, RoundingMode.HALF_UP),
                 currency = addEditProductState.getCurrentUserPreferences().currency,
                 asPercent = false,
                 decimalFormat = addEditProductState.getCurrentUserPreferences().moneyDecimalFormat
