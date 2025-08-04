@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId "ru.sokolovromann.myshopping"
-        versionCode 37
-        versionName "2.7.0"
+        versionCode 38
+        versionName "2.7.1-dev"
         minSdk 26
         targetSdk 35
 
@@ -63,7 +63,7 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'androidx.navigation:navigation-compose:2.9.3'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.2'
-    implementation 'androidx.work:work-runtime-ktx:2.10.2'
+    implementation 'androidx.work:work-runtime-ktx:2.10.3'
     implementation 'androidx.compose.ui:ui:1.8.3'
     implementation 'androidx.compose.ui:ui-tooling-preview:1.8.3'
     debugImplementation 'androidx.compose.ui:ui-tooling:1.8.3'
