@@ -10,14 +10,14 @@ plugins {
 android {
     namespace 'ru.sokolovromann.myshopping'
     buildToolsVersion '36.0.0'
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "ru.sokolovromann.myshopping"
         versionCode 38
         versionName "2.7.1-dev"
         minSdk 26
-        targetSdk 35
+        targetSdk 36
 
         vectorDrawables {
             useSupportLibrary true
