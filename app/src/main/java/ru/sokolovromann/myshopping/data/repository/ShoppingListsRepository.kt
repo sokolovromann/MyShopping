@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.data.repository
 
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -628,6 +629,65 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
 
             Result.success(Unit)
         }
+    }
+    
+    suspend fun duplicateProducts(
+        products: List<Product>,
+        shoppingUid: String
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext if (products.isEmpty()) {
+            val exception = InvalidValueException("List must not be empty")
+            Result.failure(exception)
+        } else {
+            products.forEach {
+                async {
+                    duplicateProduct(it, shoppingUid)
+                }.await()
+            }
+            Result.success(Unit)
+        }
+    }
+
+    suspend fun duplicateProduct(
+        product: Product,
+        shoppingUid: String
+    ): Result<Unit> = withContext(dispatcher) {
+        val lastModified = DateTime.getCurrentDateTime()
+        shoppingListsDao.updateLastModified(shoppingUid, lastModified.millis)
+
+        val newPosition = nextPositionOrFirst(product.position)
+
+        val shoppingListWithConfig = getShoppingListWithConfig(shoppingUid).firstOrNull()
+        val products = shoppingListWithConfig?.getSortedProducts()
+        if (shoppingListWithConfig == null || products.isNullOrEmpty()) {
+            val exception = UnsupportedOperationException("Sort empty list is not supported")
+            return@withContext Result.failure(exception)
+        } else {
+            products.forEachIndexed { index, p ->
+                if (newPosition <= index) {
+                    async {
+                        productsDao.updatePosition(
+                            productUid = p.productUid,
+                            position = nextPositionOrFirst(index)
+                        )
+                    }.await()
+                }
+            }
+        }
+
+        async {
+            val newProduct = product.copy(
+                id = IdDefaults.NO_ID,
+                position = newPosition,
+                shoppingUid = shoppingUid,
+                productUid = IdDefaults.createUid(),
+                lastModified = lastModified
+            )
+            val productEntity = ShoppingListsMapper.toProductEntity(newProduct)
+            productsDao.insertProduct(productEntity)
+        }.await()
+
+        return@withContext Result.success(Unit)
     }
 
     suspend fun moveProducts(
