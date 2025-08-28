@@ -260,7 +260,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onClickDuplicateProducts() = viewModelScope.launch(AppDispatchers.Main) {
         productsState.selectedUids?.let {
-            shoppingListsRepository.copyProducts(
+            shoppingListsRepository.duplicateProducts(
                 products = productsState.getSelectedProducts(),
                 shoppingUid = shoppingUid
             )
