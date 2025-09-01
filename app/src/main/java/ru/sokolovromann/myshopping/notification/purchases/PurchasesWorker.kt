@@ -8,10 +8,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 
 class PurchasesWorker(
     context: Context,
@@ -54,7 +54,7 @@ class PurchasesWorker(
 
     private suspend fun showNotification(
         shoppingListWithConfig: ShoppingListWithConfig
-    ) = withContext(AppDispatchers.Main) {
+    ): Unit = withContext(Dispatcher.Main) {
         entryPoint.notificationManager().showNotification(shoppingListWithConfig)
     }
 }
