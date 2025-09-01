@@ -6,8 +6,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
@@ -29,6 +27,9 @@ import ru.sokolovromann.myshopping.data.model.IdDefaults
 import ru.sokolovromann.myshopping.data.model.ShoppingPeriod
 import ru.sokolovromann.myshopping.data.utils.sortedProducts
 import ru.sokolovromann.myshopping.data.utils.sortedShoppingLists
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
 
 class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasource) {
@@ -37,24 +38,22 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
     private val productsDao = localDatasource.getProductsDao()
     private val appConfigDao = localDatasource.getAppConfigDao()
 
-    private val dispatcher = AppDispatchers.IO
+    private val dispatcher = Dispatcher.IO
 
-    suspend fun getPurchasesWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
-        return@withContext getShoppingListsWithConfig(ShoppingLocation.PURCHASES)
+    fun getPurchasesWithConfig(): Flow<ShoppingListsWithConfig> {
+        return getShoppingListsWithConfig(ShoppingLocation.PURCHASES).flowOn(dispatcher)
     }
 
-    suspend fun getArchiveWithConfig(
-        period: ShoppingPeriod? = null
-    ): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
-        return@withContext getShoppingListsWithConfig(ShoppingLocation.ARCHIVE, period)
+    fun getArchiveWithConfig(period: ShoppingPeriod? = null): Flow<ShoppingListsWithConfig> {
+        return getShoppingListsWithConfig(ShoppingLocation.ARCHIVE, period).flowOn(dispatcher)
     }
 
-    suspend fun getTrashWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
-        return@withContext getShoppingListsWithConfig(ShoppingLocation.TRASH)
+    fun getTrashWithConfig(): Flow<ShoppingListsWithConfig> {
+        return getShoppingListsWithConfig(ShoppingLocation.TRASH).flowOn(dispatcher)
     }
 
-    suspend fun getRemindersWithConfig(): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
-        return@withContext shoppingListsDao.getReminders().combine(
+    fun getRemindersWithConfig(): Flow<ShoppingListsWithConfig> {
+        return shoppingListsDao.getReminders().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { shoppingListEntities, appConfigEntity ->
                 ShoppingListsMapper.toShoppingListsWithConfig(
@@ -62,11 +61,11 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
-    suspend fun getShortcuts(limit: Int): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
-        return@withContext shoppingListsDao.getShortcuts(limit).combine(
+    fun getShortcuts(limit: Int): Flow<ShoppingListsWithConfig> {
+        return shoppingListsDao.getShortcuts(limit).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { shoppingListEntities, appConfigEntity ->
                 ShoppingListsMapper.toShoppingListsWithConfig(
@@ -74,18 +73,16 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
-    suspend fun getShoppingListWithConfig(
-        shoppingUid: String?
-    ): Flow<ShoppingListWithConfig> = withContext(dispatcher) {
-        return@withContext if (shoppingUid == null) {
+    fun getShoppingListWithConfig(shoppingUid: String?): Flow<ShoppingListWithConfig> {
+        return if (shoppingUid == null) {
             appConfigDao.getAppConfig().map { appConfigEntity ->
                 ShoppingListsMapper.toShoppingListWithConfig(
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
-            }
+            }.flowOn(dispatcher)
         } else {
             shoppingListsDao.getShoppingList(shoppingUid).combine(
                 flow = appConfigDao.getAppConfig(),
@@ -95,12 +92,12 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                         appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                     )
                 }
-            )
+            ).flowOn(dispatcher)
         }
     }
 
-    suspend fun getProducts(productUids: List<String>): Flow<List<Product>> = withContext(dispatcher) {
-        return@withContext productsDao.getProducts(productUids).combine(
+    fun getProducts(productUids: List<String>): Flow<List<Product>> {
+        return productsDao.getProducts(productUids).combine(
             flow = appConfigDao.getAppConfig(),
             transform = { productEntities, appConfigEntity ->
                 ShoppingListsMapper.toProducts(
@@ -108,16 +105,16 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
-    suspend fun getProductWithConfig(productUid: String?): Flow<ProductWithConfig> = withContext(dispatcher) {
-        return@withContext if (productUid == null) {
+    fun getProductWithConfig(productUid: String?): Flow<ProductWithConfig> {
+        return if (productUid == null) {
             appConfigDao.getAppConfig().map { appConfigEntity ->
                 ShoppingListsMapper.toProductWithConfig(
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
-            }
+            }.flowOn(dispatcher)
         } else {
             productsDao.getProduct(productUid).combine(
                 flow = appConfigDao.getAppConfig(),
@@ -127,7 +124,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                         appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                     )
                 }
-            )
+            ).flowOn(dispatcher)
         }
     }
 
@@ -1000,25 +997,25 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         return@withContext Result.success(Unit)
     }
 
-    private suspend fun getShoppingListsWithConfig(
+    private fun getShoppingListsWithConfig(
         location: ShoppingLocation? = null,
         period: ShoppingPeriod? = null
-    ): Flow<ShoppingListsWithConfig> = withContext(dispatcher) {
+    ): Flow<ShoppingListsWithConfig> {
         val shoppingListsFlow = when (location) {
-            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases()
+            ShoppingLocation.PURCHASES -> shoppingListsDao.getPurchases().flowOn(dispatcher)
             ShoppingLocation.ARCHIVE -> {
                 if (period == null || period == ShoppingPeriod.ALL_TIME) {
-                    shoppingListsDao.getArchive()
+                    shoppingListsDao.getArchive().flowOn(dispatcher)
                 } else {
                     val minLastModified = ShoppingListsMapper.toMinLastModified(period) ?: 0L
-                    shoppingListsDao.getArchive(minLastModified)
+                    shoppingListsDao.getArchive(minLastModified).flowOn(dispatcher)
                 }
             }
-            ShoppingLocation.TRASH -> shoppingListsDao.getTrash()
-            null -> shoppingListsDao.getAllShoppingLists()
+            ShoppingLocation.TRASH -> shoppingListsDao.getTrash().flowOn(dispatcher)
+            null -> shoppingListsDao.getAllShoppingLists().flowOn(dispatcher)
         }
 
-        return@withContext shoppingListsFlow.combine(
+        return shoppingListsFlow.combine(
             flow = appConfigDao.getAppConfig(),
             transform = { shoppingListEntities, appConfigEntity ->
                 ShoppingListsMapper.toShoppingListsWithConfig(
@@ -1026,7 +1023,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
     private fun nextPositionOrFirst(lastPosition: Int?): Int {

@@ -2,9 +2,7 @@ package ru.sokolovromann.myshopping.data.local.dao
 
 import android.net.Uri
 import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.app.AppBase64
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.app.AppJson
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
@@ -12,6 +10,8 @@ import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
 import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
 import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
 import ru.sokolovromann.myshopping.data.model.DateTime
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -19,7 +19,7 @@ import java.io.InputStreamReader
 class BackupDao(appContent: AppContent) {
 
     private val contentResolver = appContent.getContentResolver()
-    private val dispatcher = AppDispatchers.IO
+    private val dispatcher = Dispatcher.IO
 
     private val packageNamePrefix = "ru.sokolovromann.myshopping"
     private val codeVersionPrefix = "$packageNamePrefix.CODE_VERSION:"

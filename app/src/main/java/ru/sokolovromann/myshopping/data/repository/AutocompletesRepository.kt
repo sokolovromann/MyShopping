@@ -3,8 +3,6 @@ package ru.sokolovromann.myshopping.data.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
@@ -16,6 +14,9 @@ import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
 import ru.sokolovromann.myshopping.data.model.DateTime
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import java.util.Locale
 import javax.inject.Inject
 
@@ -25,12 +26,10 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
     private val resourcesDao = localDatasource.getResourcesDao()
     private val appConfigDao = localDatasource.getAppConfigDao()
 
-    private val dispatcher = AppDispatchers.IO
+    private val dispatcher = Dispatcher.IO
 
-    suspend fun getAllAutocompletes(
-        language: String = Locale.getDefault().language
-    ): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
-        return@withContext combine(
+    fun getAllAutocompletes(language: String = Locale.getDefault().language): Flow<AutocompletesWithConfig> {
+        return combine(
             flow = autocompletesDao.getAllAutocompletes(),
             flow2 = appConfigDao.getAppConfig(),
             transform = { autocompleteEntities, appConfigEntity ->
@@ -41,13 +40,11 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
                     language = language
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
-    suspend fun getDefaultAutocompletes(
-        language: String = Locale.getDefault().language
-    ): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
-        return@withContext combine(
+    fun getDefaultAutocompletes(language: String = Locale.getDefault().language): Flow<AutocompletesWithConfig> {
+        return combine(
             flow = autocompletesDao.getDefaultAutocompletes(),
             flow2 = appConfigDao.getAppConfig(),
             transform = { autocompleteEntities, appConfigEntity ->
@@ -58,11 +55,11 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
                     language = language
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
-    suspend fun getPersonalAutocompletes(): Flow<AutocompletesWithConfig> = withContext(dispatcher) {
-        return@withContext autocompletesDao.getPersonalAutocompletes().combine(
+    fun getPersonalAutocompletes(): Flow<AutocompletesWithConfig> {
+        return autocompletesDao.getPersonalAutocompletes().combine(
             flow = appConfigDao.getAppConfig(),
             transform = { autocompleteEntities, appConfigEntity ->
                 AutocompletesMapper.toAutocompletesWithConfig(
@@ -70,16 +67,16 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
-    suspend fun getAutocomplete(uid: String?): Flow<AutocompleteWithConfig> = withContext(dispatcher) {
-        return@withContext if (uid == null) {
+    fun getAutocomplete(uid: String?): Flow<AutocompleteWithConfig> {
+        return if (uid == null) {
             appConfigDao.getAppConfig().map { appConfigEntity ->
                 AutocompletesMapper.toAutocompleteWithConfig(
                     appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                 )
-            }
+            }.flowOn(dispatcher)
         } else {
             autocompletesDao.getAutocomplete(uid).combine(
                 flow = appConfigDao.getAppConfig(),
@@ -89,15 +86,15 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
                         appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                     )
                 }
-            )
+            ).flowOn(dispatcher)
         }
     }
 
-    suspend fun searchAutocompletesLikeName(
+    fun searchAutocompletesLikeName(
         search: String,
         language: String = Locale.getDefault().language
-    ): Flow<List<Autocomplete>> = withContext(dispatcher) {
-         combine(
+    ): Flow<List<Autocomplete>> {
+         return combine(
             flow = autocompletesDao.searchAutocompletesLikeName(search),
             flow2 = appConfigDao.getAppConfig(),
             transform = { autocompleteEntities, appConfigEntity ->
@@ -108,7 +105,7 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
                     language = language
                 )
             }
-        )
+        ).flowOn(dispatcher)
     }
 
     suspend fun saveAutocompletes(autocompletes: List<Autocomplete>): Result<Unit> = withContext(dispatcher) {

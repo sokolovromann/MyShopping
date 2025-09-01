@@ -4,8 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
@@ -27,6 +25,9 @@ import ru.sokolovromann.myshopping.data.model.SwipeProduct
 import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
 
 class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) {
@@ -34,27 +35,27 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
     private val appConfigDao = localDatasource.getAppConfigDao()
     private val resourcesDao = localDatasource.getResourcesDao()
 
-    private val dispatcher = AppDispatchers.IO
+    private val dispatcher = Dispatcher.IO
 
-    suspend fun getAppConfig(): Flow<AppConfig> = withContext(dispatcher) {
-        return@withContext appConfigDao.getAppConfig().map { appConfigEntity ->
-            AppConfigMapper.toAppConfig(appConfigEntity)
-        }
+    fun getAppConfig(): Flow<AppConfig> {
+        return appConfigDao.getAppConfig()
+            .map { appConfigEntity -> AppConfigMapper.toAppConfig(appConfigEntity) }
+            .flowOn(dispatcher)
     }
 
-    suspend fun getDefaultCurrency(): Flow<Currency> = withContext(dispatcher) {
+    fun getDefaultCurrency(): Flow<Currency> {
         val currency = resourcesDao.getCurrency()
         val value = Currency(
             symbol = currency.defaultCurrency,
             displayToLeft = currency.displayDefaultCurrencyToLeft
         )
-        return@withContext flowOf(value)
+        return flowOf(value).flowOn(dispatcher)
     }
 
-    suspend fun getSettingsWithConfig(): Flow<SettingsWithConfig> = withContext(dispatcher) {
-        return@withContext appConfigDao.getAppConfig().map { appConfigEntity ->
-            AppConfigMapper.toSettingsWithConfig(appConfigEntity)
-        }
+    fun getSettingsWithConfig(): Flow<SettingsWithConfig> {
+        return appConfigDao.getAppConfig()
+            .map { appConfigEntity -> AppConfigMapper.toSettingsWithConfig(appConfigEntity) }
+            .flowOn(dispatcher)
     }
 
     suspend fun saveAppConfig(appConfig: AppConfig): Result<Unit> = withContext(dispatcher) {

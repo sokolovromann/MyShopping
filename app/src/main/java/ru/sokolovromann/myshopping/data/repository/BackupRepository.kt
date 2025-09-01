@@ -5,8 +5,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
@@ -19,6 +17,8 @@ import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
 import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
 import ru.sokolovromann.myshopping.data.model.mapper.BackupMapper
 import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import java.io.FileNotFoundException
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
     private val appConfigDao = localDatasource.getAppConfigDao()
     private val backupDao = localDatasource.getBackupDao()
 
-    private val dispatcher = AppDispatchers.IO
+    private val dispatcher = Dispatcher.IO
 
     suspend fun importBackup(uri: Uri): Result<Pair<Backup, Backup>> = withContext(dispatcher) {
         val backupFileEntity = backupDao.readBackup(uri)

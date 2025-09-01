@@ -9,14 +9,15 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
 import ru.sokolovromann.myshopping.data.local.entity.CodeVersion14UserPreferencesEntity
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 
 class AppConfigDao(appContent: AppContent) {
 
@@ -24,21 +25,26 @@ class AppConfigDao(appContent: AppContent) {
     private val userSharedPreferences = appContent.getUserSharedPreferences()
     private val openedSharedPreferences = appContent.getOpenedSharedPreferences()
     private val resources = appContent.getResources()
+    private val dispatcher = Dispatcher.IO
 
-    suspend fun getAppConfig(): Flow<AppConfigEntity> = withContext(AppDispatchers.IO) {
-        return@withContext preferences.data.map { toAppConfigEntity(it) }
+    fun getAppConfig(): Flow<AppConfigEntity> {
+        return preferences.data
+            .map { toAppConfigEntity(it) }
+            .flowOn(dispatcher)
     }
 
-    suspend fun getCodeVersion14Preferences(): Flow<CodeVersion14UserPreferencesEntity> = withContext(AppDispatchers.IO) {
-        return@withContext preferences.data.map { toVer14UserPreferences() }
+    fun getCodeVersion14Preferences(): Flow<CodeVersion14UserPreferencesEntity> {
+        return preferences.data
+            .map { toVer14UserPreferences() }
+            .flowOn(dispatcher)
     }
 
-    suspend fun saveAppConfig(appConfig: AppConfigEntity) = withContext(AppDispatchers.IO) {
+    suspend fun saveAppConfig(appConfig: AppConfigEntity) = withContext(dispatcher) {
         saveBuildConfig(appConfig.appBuildConfig)
         saveUserPreferences(appConfig.userPreferences)
     }
 
-    suspend fun saveUserCodeVersion(userCodeVersion: Int) = withContext(AppDispatchers.IO) {
+    suspend fun saveUserCodeVersion(userCodeVersion: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.Build.userCodeVersion] = userCodeVersion
         }
@@ -47,7 +53,7 @@ class AppConfigDao(appContent: AppContent) {
     suspend fun saveNightTheme(
         appNightTheme: Boolean,
         widgetNightTheme: Boolean
-    ) = withContext(AppDispatchers.IO) {
+    ) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.appNightTheme] = appNightTheme
             it[DatasourceKey.User.widgetNightTheme] = widgetNightTheme
@@ -57,99 +63,99 @@ class AppConfigDao(appContent: AppContent) {
     suspend fun saveFontSize(
         appFontSize: String,
         widgetFontSize: String
-    ) = withContext(AppDispatchers.IO) {
+    ) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.appFontSize] = appFontSize
             it[DatasourceKey.User.widgetFontSize] = widgetFontSize
         }
     }
 
-    suspend fun saveCurrency(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveCurrency(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.currency] = value
         }
     }
 
-    suspend fun saveTaxRate(value: Float) = withContext(AppDispatchers.IO) {
+    suspend fun saveTaxRate(value: Float) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.taxRate] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteNames(value: Int) = withContext(AppDispatchers.IO) {
+    suspend fun saveMaxAutocompleteNames(value: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesNames] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteQuantities(value: Int) = withContext(AppDispatchers.IO) {
+    suspend fun saveMaxAutocompleteQuantities(value: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesQuantities] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteMoneys(value: Int) = withContext(AppDispatchers.IO) {
+    suspend fun saveMaxAutocompleteMoneys(value: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesMoneys] = value
         }
     }
 
-    suspend fun saveMaxAutocompleteOthers(value: Int) = withContext(AppDispatchers.IO) {
+    suspend fun saveMaxAutocompleteOthers(value: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.maxAutocompletesOthers] = value
         }
     }
 
-    suspend fun saveMinMoneyFractionDigits(value: Int) = withContext(AppDispatchers.IO) {
+    suspend fun saveMinMoneyFractionDigits(value: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.minMoneyFractionDigits] = value
         }
     }
 
-    suspend fun saveAfterSaveProduct(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveAfterSaveProduct(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.afterSaveProduct] = value
         }
     }
 
-    suspend fun saveAfterProductCompleted(value: String, editAfterCompleted: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun saveAfterProductCompleted(value: String, editAfterCompleted: Boolean) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.afterProductCompleted] = value
             it[DatasourceKey.User.editProductAfterCompleted] = editAfterCompleted
         }
     }
 
-    suspend fun saveAfterAddShopping(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveAfterAddShopping(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.afterAddShopping] = value
         }
     }
 
-    suspend fun saveAfterShoppingCompleted(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveAfterShoppingCompleted(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.afterShoppingCompleted] = value
         }
     }
 
-    suspend fun saveSwipeProductLeft(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveSwipeProductLeft(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.swipeProductLeft] = value
         }
     }
 
-    suspend fun saveSwipeProductRight(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveSwipeProductRight(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.swipeProductRight] = value
         }
     }
 
-    suspend fun saveSwipeShoppingLeft(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveSwipeShoppingLeft(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.swipeShoppingLeft] = value
         }
     }
 
-    suspend fun saveSwipeShoppingRight(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun saveSwipeShoppingRight(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.swipeShoppingRight] = value
         }
@@ -158,7 +164,7 @@ class AppConfigDao(appContent: AppContent) {
     suspend fun enableAutomaticShoppingsSort(
         sortBy: String,
         ascending: Boolean
-    ) = withContext(AppDispatchers.IO) {
+    ) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.shoppingsSortBy] = sortBy
             it[DatasourceKey.User.shoppingsSortAscending] = ascending
@@ -169,7 +175,7 @@ class AppConfigDao(appContent: AppContent) {
     suspend fun disableAutomaticShoppingsSort(
         sortBy: String,
         ascending: Boolean
-    ) = withContext(AppDispatchers.IO) {
+    ) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.shoppingsSortBy] = sortBy
             it[DatasourceKey.User.shoppingsSortAscending] = ascending
@@ -180,32 +186,32 @@ class AppConfigDao(appContent: AppContent) {
     suspend fun displayCompleted(
         appDisplayCompleted: String,
         widgetDisplayCompleted: String
-    ) = withContext(AppDispatchers.IO) {
+    ) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.displayCompleted] = appDisplayCompleted
             it[DatasourceKey.User.widgetDisplayCompleted] = widgetDisplayCompleted
         }
     }
 
-    suspend fun displayTotal(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun displayTotal(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.displayTotal] = value
         }
     }
 
-    suspend fun displayShoppingsProducts(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun displayShoppingsProducts(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.displayShoppingsProducts] = value
         }
     }
 
-    suspend fun lockProductElement(value: String) = withContext(AppDispatchers.IO) {
+    suspend fun lockProductElement(value: String) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.lockProductElement] = value
         }
     }
 
-    suspend fun invertLongTotal(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertLongTotal(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayLongTotal]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -213,7 +219,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertDisplayMoney(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertDisplayMoney(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayMoney]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -221,7 +227,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertDisplayCurrencyToLeft(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertDisplayCurrencyToLeft(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayCurrencyToLeft]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -229,7 +235,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertShoppingsMultiColumns(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertShoppingsMultiColumns(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.shoppingsMultiColumns]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -237,7 +243,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertProductsMultiColumns(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertProductsMultiColumns(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.productsMultiColumns]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -245,7 +251,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertStrikethroughCompletedProducts(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertStrikethroughCompletedProducts(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.strikethroughCompletedProducts]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -253,7 +259,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertDisplayOtherFields(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertDisplayOtherFields(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayOtherFields]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -261,7 +267,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertColoredCheckbox(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertColoredCheckbox(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.coloredCheckbox]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -269,7 +275,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertCompletedWithCheckbox(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertCompletedWithCheckbox(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.completedWithCheckbox]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -277,7 +283,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertEnterToSaveProduct(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertEnterToSaveProduct(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.enterToSaveProduct]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -285,7 +291,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertDisplayDefaultAutocompletes(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertDisplayDefaultAutocompletes(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayDefaultAutocompletes]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -293,7 +299,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertSaveProductToAutocompletes(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertSaveProductToAutocompletes(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.saveProductToAutocompletes]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -301,7 +307,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertAutomaticallyEmptyTrash(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertAutomaticallyEmptyTrash(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.automaticallyEmptyTrash]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -309,7 +315,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertDisplayListOfAutocompletes(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertDisplayListOfAutocompletes(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayListOfAutocompletes]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -317,7 +323,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertDisplayEmptyShoppings(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertDisplayEmptyShoppings(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.displayEmptyShoppings]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
@@ -325,7 +331,7 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun invertArchiveAsCompleted(valueIfNull: Boolean) = withContext(AppDispatchers.IO) {
+    suspend fun invertArchiveAsCompleted(valueIfNull: Boolean) = withContext(dispatcher) {
         preferences.edit {
             val oldValue = it[DatasourceKey.User.archiveAsCompleted]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
