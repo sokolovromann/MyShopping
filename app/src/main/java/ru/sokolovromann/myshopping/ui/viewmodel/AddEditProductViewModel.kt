@@ -8,8 +8,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
@@ -34,6 +32,8 @@ import ru.sokolovromann.myshopping.ui.utils.isNotEmpty
 import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
@@ -50,6 +50,8 @@ class AddEditProductViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<AddEditProductScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AddEditProductScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -121,7 +123,7 @@ class AddEditProductViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         val productUid = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
         val shoppingUid = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
         val isFromPurchases = savedStateHandle.get<String>(UiRouteKey.IsFromPurchases.key) ?: "false"
@@ -142,7 +144,7 @@ class AddEditProductViewModel @Inject constructor(
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         addEditProductState.onWaiting()
 
         val product = addEditProductState.getCurrentProduct()
@@ -187,7 +189,7 @@ class AddEditProductViewModel @Inject constructor(
             }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         val shoppingUid = addEditProductState.getCurrentProduct().shoppingUid
         val event = if (addEditProductState.isFromPurchases) {
             AddEditProductScreenEvent.OnShowProductsScreen(shoppingUid)
@@ -403,7 +405,7 @@ class AddEditProductViewModel @Inject constructor(
         addEditProductState.onTotalValueChanged(fieldValue)
     }
 
-    private fun getAutocompletes(name: String) = viewModelScope.launch(AppDispatchers.Main) {
+    private fun getAutocompletes(name: String) = viewModelScope.launch(dispatcher) {
         val search = name.trim()
         val autocompletes = autocompletesRepository.searchAutocompletesLikeName(
             search = search

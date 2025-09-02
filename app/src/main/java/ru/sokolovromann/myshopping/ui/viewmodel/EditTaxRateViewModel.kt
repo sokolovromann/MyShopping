@@ -6,12 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditTaxRateScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditTaxRateState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditTaxRateEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,8 @@ class EditTaxRateViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<EditTaxRateScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditTaxRateScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -36,21 +38,21 @@ class EditTaxRateViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
             editTaxRateState.populate(it)
             _screenEventFlow.emit(EditTaxRateScreenEvent.OnShowKeyboard)
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         editTaxRateState.onWaiting()
 
         appConfigRepository.saveTaxRate(editTaxRateState.getCurrentTaxRate())
             .onSuccess { _screenEventFlow.emit(EditTaxRateScreenEvent.OnShowBackScreen) }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(EditTaxRateScreenEvent.OnShowBackScreen)
     }
 

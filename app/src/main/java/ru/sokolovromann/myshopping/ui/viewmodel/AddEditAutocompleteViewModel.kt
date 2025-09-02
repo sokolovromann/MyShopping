@@ -7,13 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AddEditAutocompleteState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditAutocompleteEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +27,8 @@ class AddEditAutocompleteViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<AddEditAutocompleteScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AddEditAutocompleteScreenEvent> = _screenEventFlow
 
+    private val dispatcher = Dispatcher.Main
+
     init { onInit() }
 
     override fun onEvent(event: AddEditAutocompleteEvent) {
@@ -39,7 +41,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.AutocompleteUid.key)
 
         autocompletesRepository.getAutocomplete(uid).firstOrNull()?.let {
@@ -48,7 +50,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         addEditAutocompleteState.onWaiting()
 
         autocompletesRepository.saveAutocomplete(addEditAutocompleteState.getAutocomplete())
@@ -56,7 +58,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
             .onFailure { addEditAutocompleteState.onInvalidNameValue() }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AddEditAutocompleteScreenEvent.OnShowBackScreen)
     }
 

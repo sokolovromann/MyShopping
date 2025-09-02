@@ -7,13 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListNameScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditShoppingListNameState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListNameEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +27,8 @@ class EditShoppingListNameViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<EditShoppingListNameScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditShoppingListNameScreenEvent> = _screenEventFlow
 
+    private val dispatcher = Dispatcher.Main
+
     init { onInit() }
 
     override fun onEvent(event: EditShoppingListNameEvent) {
@@ -39,7 +41,7 @@ class EditShoppingListNameViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
             val isFromPurchases = savedStateHandle.get<Boolean>(UiRouteKey.IsFromPurchases.key)
@@ -48,7 +50,7 @@ class EditShoppingListNameViewModel @Inject constructor(
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         editShoppingListNameState.onWaiting()
 
         val shopping = editShoppingListNameState.getCurrentShopping()
@@ -65,7 +67,7 @@ class EditShoppingListNameViewModel @Inject constructor(
         _screenEventFlow.emit(event)
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         val uid = editShoppingListNameState.getCurrentShopping().uid
         _screenEventFlow.emit(EditShoppingListNameScreenEvent.OnShowBackScreen(uid))
     }

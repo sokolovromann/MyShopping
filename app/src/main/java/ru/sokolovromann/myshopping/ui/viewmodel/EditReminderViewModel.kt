@@ -7,15 +7,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.BuildConfig
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.*
 import ru.sokolovromann.myshopping.ui.compose.event.EditReminderScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditReminderState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditReminderEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +29,8 @@ class EditReminderViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<EditReminderScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditReminderScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -52,14 +54,14 @@ class EditReminderViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
             editReminderState.populate(it, alarmManager.checkCorrectReminderPermissions())
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         editReminderState.onWaiting()
 
         val shopping = editReminderState.getCurrentShopping()
@@ -76,11 +78,11 @@ class EditReminderViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(EditReminderScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickDelete() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDelete() = viewModelScope.launch(dispatcher) {
         editReminderState.onWaiting()
 
         val shoppingUid = editReminderState.getCurrentShopping().uid
@@ -91,7 +93,7 @@ class EditReminderViewModel @Inject constructor(
             }
     }
 
-    private fun onClickOpenPermissions() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickOpenPermissions() = viewModelScope.launch(dispatcher) {
         val event = EditReminderScreenEvent.OnShowPermissionsScreen(BuildConfig.APPLICATION_ID)
         _screenEventFlow.emit(event)
     }

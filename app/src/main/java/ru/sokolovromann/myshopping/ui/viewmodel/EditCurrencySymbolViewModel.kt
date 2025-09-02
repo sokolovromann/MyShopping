@@ -6,12 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.EditCurrencySymbolScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditCurrencySymbolState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditCurrencySymbolEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,8 @@ class EditCurrencySymbolViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<EditCurrencySymbolScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditCurrencySymbolScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -36,21 +38,21 @@ class EditCurrencySymbolViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
             editCurrencySymbolState.populate(it)
             _screenEventFlow.emit(EditCurrencySymbolScreenEvent.OnShowKeyboard)
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         editCurrencySymbolState.onWaiting()
 
         appConfigRepository.saveCurrencySymbol(editCurrencySymbolState.getCurrentCurrency().symbol)
             .onSuccess { _screenEventFlow.emit(EditCurrencySymbolScreenEvent.OnShowBackScreen) }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(EditCurrencySymbolScreenEvent.OnShowBackScreen)
     }
 

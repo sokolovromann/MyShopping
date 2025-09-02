@@ -7,13 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.EditShoppingListTotalScreenEvent
 import ru.sokolovromann.myshopping.ui.model.EditShoppingListTotalState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.EditShoppingListTotalEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +26,8 @@ class EditShoppingListTotalViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<EditShoppingListTotalScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<EditShoppingListTotalScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -51,7 +53,7 @@ class EditShoppingListTotalViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         val uid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
         shoppingListsRepository.getShoppingListWithConfig(uid).firstOrNull()?.let {
             editShoppingListTotalState.populate(it)
@@ -59,7 +61,7 @@ class EditShoppingListTotalViewModel @Inject constructor(
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         editShoppingListTotalState.onWaiting()
 
         val shopping = editShoppingListTotalState.getCurrentShopping()
@@ -84,7 +86,7 @@ class EditShoppingListTotalViewModel @Inject constructor(
         _screenEventFlow.emit(event)
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         val uid = editShoppingListTotalState.getCurrentShopping().uid
         _screenEventFlow.emit(EditShoppingListTotalScreenEvent.OnShowBackScreen(uid))
     }
