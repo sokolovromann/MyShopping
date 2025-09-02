@@ -22,10 +22,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.ui.compose.AppScaffold
 import ru.sokolovromann.myshopping.ui.compose.ShoppingListsGrid
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
@@ -34,6 +31,9 @@ import ru.sokolovromann.myshopping.ui.theme.createTypography
 import ru.sokolovromann.myshopping.ui.utils.updateProductsWidgetState
 import ru.sokolovromann.myshopping.ui.viewmodel.ProductsWidgetConfigViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsWidgetConfigEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import ru.sokolovromann.myshopping.widget.products.ProductsWidget
 
 @AndroidEntryPoint
@@ -62,7 +62,7 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
             )
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatcher.Main) {
             viewModel.screenEventFlow.collect {
                 when (it) {
                     is ProductsWidgetConfigScreenEvent.OnUpdate -> updateWidget(
@@ -79,14 +79,14 @@ class ProductsWidgetConfigActivity : ComponentActivity() {
         }
     }
 
-    private suspend fun updateWidget(
+    private fun updateWidget(
         widgetId: Int,
         shoppingUid: String
-    ) = lifecycleScope.launch(AppDispatchers.IO) {
+    ) = lifecycleScope.launch(Dispatcher.IO) {
         val glanceId = GlanceAppWidgetManager(applicationContext).getGlanceIdBy(widgetId)
         updateProductsWidgetState(applicationContext, glanceId, shoppingUid)
 
-        withContext(AppDispatchers.Main) {
+        withContext(Dispatcher.Main) {
             ProductsWidget().update(applicationContext, glanceId)
 
             setResult(RESULT_OK)
