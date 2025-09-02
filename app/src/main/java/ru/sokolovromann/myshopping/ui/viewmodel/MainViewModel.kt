@@ -3,16 +3,13 @@ package ru.sokolovromann.myshopping.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.app.AppAction
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.AppOpenHelper
@@ -34,6 +31,9 @@ import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
 import ru.sokolovromann.myshopping.ui.model.MainState
 import ru.sokolovromann.myshopping.ui.shortcut.AppShortcutManager
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MainEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.async
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,6 +52,8 @@ class MainViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<MainScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<MainScreenEvent> = _screenEventFlow
 
+    private val dispatcher = Dispatcher.Main
+
     override fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.OnCreate -> onCreate(event)
@@ -60,7 +62,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onCreate(event: MainEvent.OnCreate) = viewModelScope.launch(dispatcher) {
         mainState.onWaiting(displaySplashScreen = true)
 
         val shortcutsLimit = 2
@@ -97,7 +99,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onOpenApp(userPreferences: UserPreferences) = viewModelScope.async {
+    private fun onOpenApp(userPreferences: UserPreferences) = viewModelScope.async(dispatcher) {
         if (userPreferences.automaticallyEmptyTrash) {
             val millis = DateTime.getCurrentDateTime().millis - 864000000L // 10 days
             val dateTime = DateTime(millis)
@@ -121,7 +123,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onAddShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onAddShoppingList() = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.addShopping().onSuccess { uid ->
             mainState.saveShoppingUid(
                 uid = uid,
@@ -132,7 +134,7 @@ class MainViewModel @Inject constructor(
 
     private fun onAddDefaultAppConfig(
         event: MainEvent.OnCreate
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         val deviceConfig = DeviceConfig(
             screenWidthDp = event.screenWidth,
             screenHeightDp = event.screenHeight
@@ -160,14 +162,14 @@ class MainViewModel @Inject constructor(
 
     private fun onMigrateFromCodeVersion14(
         event: MainEvent.OnCreate
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         notificationManager.createNotificationChannel()
 
         val codeVersion14 = codeVersion14Repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
         listOf(
-            viewModelScope.async { migrateShoppings(codeVersion14.shoppingLists) },
-            viewModelScope.async { migrateAutocompletes(codeVersion14.autocompletes) },
-            viewModelScope.async { migrateSettings(codeVersion14.preferences, event) }
+            viewModelScope.async(dispatcher) { migrateShoppings(codeVersion14.shoppingLists) },
+            viewModelScope.async(dispatcher) { migrateAutocompletes(codeVersion14.autocompletes) },
+            viewModelScope.async(dispatcher) { migrateSettings(codeVersion14.preferences, event) }
         ).awaitAll()
     }
 

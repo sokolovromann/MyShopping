@@ -9,8 +9,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data.utils.uppercaseFirst
@@ -18,6 +16,8 @@ import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.SelectFromAutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SelectFromAutocompletesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SelectFromAutocompletesEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,6 +32,8 @@ class SelectFromAutocompletesViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<SelectFromAutocompletesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<SelectFromAutocompletesScreenEvent> = _screenEventFlow
 
+    private val dispatcher = Dispatcher.Main
+
     init { onInit() }
 
     override fun onEvent(event: SelectFromAutocompletesEvent) {
@@ -44,7 +46,7 @@ class SelectFromAutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         selectFromAutocompletesState.onWaiting()
 
         autocompletesRepository.getAllAutocompletes().firstOrNull()?.let {
@@ -60,7 +62,7 @@ class SelectFromAutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         listOf(
             async {
                 selectFromAutocompletesState.getAddedProducts().forEach {
@@ -79,7 +81,7 @@ class SelectFromAutocompletesViewModel @Inject constructor(
         _screenEventFlow.emit(SelectFromAutocompletesScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(SelectFromAutocompletesScreenEvent.OnShowBackScreen)
     }
 

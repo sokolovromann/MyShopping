@@ -6,12 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.MaxAutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.MaxAutocompletesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MaxAutocompletesEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,8 @@ class MaxAutocompletesViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<MaxAutocompletesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<MaxAutocompletesScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -50,13 +52,13 @@ class MaxAutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
             maxAutocompletesState.populate(it)
         }
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         maxAutocompletesState.onWaiting()
 
         appConfigRepository.saveMaxAutocompletes(
@@ -67,7 +69,7 @@ class MaxAutocompletesViewModel @Inject constructor(
         ).onSuccess { _screenEventFlow.emit(MaxAutocompletesScreenEvent.OnShowBackScreen) }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(MaxAutocompletesScreenEvent.OnShowBackScreen)
     }
 

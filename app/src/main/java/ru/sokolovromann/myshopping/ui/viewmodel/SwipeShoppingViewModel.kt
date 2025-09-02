@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.SwipeShoppingScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SwipeShoppingState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SwipeShoppingEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +22,8 @@ class SwipeShoppingViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<SwipeShoppingScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<SwipeShoppingScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init {
         onInit()
@@ -38,7 +40,7 @@ class SwipeShoppingViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         swipeShoppingState.onWaiting()
 
         appConfigRepository.getAppConfig().collect {
@@ -46,11 +48,11 @@ class SwipeShoppingViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(SwipeShoppingScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         swipeShoppingState.onWaiting()
 
         appConfigRepository.saveSwipeShopping(

@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.FontSizesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.FontSizesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.FontSizesEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +22,8 @@ class FontSizesViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<FontSizesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<FontSizesScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -36,7 +38,7 @@ class FontSizesViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         fontSizesState.onWaiting()
 
         appConfigRepository.getAppConfig().collect {
@@ -44,11 +46,11 @@ class FontSizesViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(FontSizesScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickSave() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSave() = viewModelScope.launch(dispatcher) {
         fontSizesState.onWaiting()
 
         appConfigRepository.saveFontSize(
