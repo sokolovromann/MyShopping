@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 import ru.sokolovromann.myshopping.ui.model.SettingsState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SettingsEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,8 @@ class SettingsViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<SettingsScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<SettingsScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -54,7 +56,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         settingsState.onWaiting()
 
         appConfigRepository.getSettingsWithConfig().collect {
@@ -62,13 +64,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickBack() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(SettingsScreenEvent.OnShowBackScreen)
     }
 
     private fun onSettingItemSelected(
         event: SettingsEvent.OnSettingItemSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         when (event.uid) {
             SettingUid.NightTheme -> {
                 settingsState.onSelectUid(
@@ -205,19 +207,19 @@ class SettingsViewModel @Inject constructor(
 
     private fun onDrawerScreenSelected(
         event: SettingsEvent.OnDrawerScreenSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(SettingsScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
     private fun onSelectDrawerScreen(
         event: SettingsEvent.OnSelectDrawerScreen
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(SettingsScreenEvent.OnSelectDrawerScreen(event.display))
     }
 
     private fun onNightThemeSelected(
         event: SettingsEvent.OnNightThemeSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.saveNightTheme(event.nightTheme)
         settingsState.onSelectUid(
             expanded = false,
@@ -228,7 +230,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onFontSizeSelected(
         event: SettingsEvent.OnFontSizeSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.saveFontSize(event.fontSize, event.fontSize)
         settingsState.onSelectUid(
             expanded = false,
@@ -239,7 +241,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onDisplayCompletedSelected(
         event: SettingsEvent.OnDisplayCompletedSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.displayCompleted(event.displayCompleted, event.displayCompleted)
         settingsState.onSelectUid(
             expanded = false,
@@ -250,7 +252,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onAfterSaveProductSelected(
         event: SettingsEvent.OnAfterSaveProductSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.saveAfterSaveProduct(event.afterSaveProduct)
         settingsState.onSelectUid(
             expanded = false,
@@ -260,7 +262,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onAfterProductCompletedSelected(
         event: SettingsEvent.OnAfterProductCompletedSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.saveAfterProductCompleted(event.afterProductCompleted)
         settingsState.onSelectUid(
             expanded = false,
@@ -270,7 +272,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onAfterShoppingCompletedSelected(
         event: SettingsEvent.OnAfterShoppingCompletedSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.saveAfterShoppingCompleted(event.afterShoppingCompleted)
         settingsState.onSelectUid(
             expanded = false,
@@ -280,7 +282,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onAfterAddShoppingSelected(
         event: SettingsEvent.OnAfterAddShoppingSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.saveAfterAddShopping(event.afterAddShopping)
         settingsState.onSelectUid(
             expanded = false,

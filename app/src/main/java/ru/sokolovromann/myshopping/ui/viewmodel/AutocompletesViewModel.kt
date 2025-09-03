@@ -6,13 +6,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 import ru.sokolovromann.myshopping.ui.model.AutocompletesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +24,8 @@ class AutocompletesViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<AutocompletesScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AutocompletesScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -51,7 +53,7 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         autocompletesState.onWaiting()
 
         autocompletesRepository.getPersonalAutocompletes().collect {
@@ -59,11 +61,11 @@ class AutocompletesViewModel @Inject constructor(
         }
     }
 
-    private fun onClickAddAutocomplete() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickAddAutocomplete() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AutocompletesScreenEvent.OnShowAddAutocompleteScreen)
     }
 
-    private fun onClickClearAutocompletes() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickClearAutocompletes() = viewModelScope.launch(dispatcher) {
         when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
@@ -77,7 +79,7 @@ class AutocompletesViewModel @Inject constructor(
         autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
-    private fun onClickDeleteAutocompletes() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDeleteAutocompletes() = viewModelScope.launch(dispatcher) {
         when (autocompletesState.locationValue.selected) {
             AutocompleteLocation.DEFAULT -> return@launch
             AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
@@ -91,25 +93,25 @@ class AutocompletesViewModel @Inject constructor(
         autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
-    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickBack() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AutocompletesScreenEvent.OnShowBackScreen)
     }
 
     private fun onDrawerScreenSelected(
         event: AutocompletesEvent.OnDrawerScreenSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AutocompletesScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
     private fun onSelectDrawerScreen(
         event: AutocompletesEvent.OnSelectDrawerScreen
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AutocompletesScreenEvent.OnSelectDrawerScreen(event.display))
     }
 
     private fun onLocationSelected(
         event: AutocompletesEvent.OnLocationSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         autocompletesState.onSelectLocation(false)
         autocompletesState.onWaiting()
 

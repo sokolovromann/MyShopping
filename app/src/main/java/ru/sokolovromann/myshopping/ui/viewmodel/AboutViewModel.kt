@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.ui.compose.event.AboutScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AboutState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AboutEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +22,8 @@ class AboutViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<AboutScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<AboutScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -43,7 +45,7 @@ class AboutViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         aboutState.onWaiting()
 
         appConfigRepository.getSettingsWithConfig().collect {
@@ -51,35 +53,35 @@ class AboutViewModel @Inject constructor(
         }
     }
 
-    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickBack() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickEmail() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickEmail() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnSendEmailToDeveloper)
     }
 
-    private fun onClickGitHub() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickGitHub() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnShowAppGithub)
     }
 
-    private fun onClickPrivacyPolicy() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickPrivacyPolicy() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnShowPrivacyPolicy)
     }
 
-    private fun onClickTermsAndConditions() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickTermsAndConditions() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnShowTermsAndConditions)
     }
 
     private fun onDrawerScreenSelected(
         event: AboutEvent.OnDrawerScreenSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
     private fun onSelectDrawerScreen(
         event: AboutEvent.OnSelectDrawerScreen
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AboutScreenEvent.OnSelectDrawerScreen(event.display))
     }
 }

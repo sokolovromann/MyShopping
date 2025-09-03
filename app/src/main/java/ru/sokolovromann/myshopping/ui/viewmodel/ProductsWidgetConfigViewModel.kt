@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsWidgetConfigScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ProductsWidgetConfigState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsWidgetConfigEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,8 @@ class ProductsWidgetConfigViewModel @Inject constructor(
     private val _screenEventFlow: MutableSharedFlow<ProductsWidgetConfigScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ProductsWidgetConfigScreenEvent> = _screenEventFlow
 
+    private val dispatcher = Dispatcher.Main
+
     override fun onEvent(event: ProductsWidgetConfigEvent) {
         when (event) {
             ProductsWidgetConfigEvent.OnClickCancel -> onClickCancel()
@@ -33,13 +35,13 @@ class ProductsWidgetConfigViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.OnFinishApp)
     }
 
     private fun onCreate(
         event: ProductsWidgetConfigEvent.OnCreate
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         if (event.widgetId == null) {
             _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.OnFinishApp)
         } else {
@@ -52,7 +54,7 @@ class ProductsWidgetConfigViewModel @Inject constructor(
 
     private fun onShoppingListSelected(
         event: ProductsWidgetConfigEvent.OnShoppingListSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         val widgetId = productsWidgetConfigState.widgetId
         _screenEventFlow.emit(ProductsWidgetConfigScreenEvent.OnUpdate(widgetId, event.uid))
     }

@@ -7,14 +7,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.CopyMoveProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.CopyMoveProductsState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.CopyMoveProductsEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +27,8 @@ class CopyMoveProductsViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<CopyMoveProductsScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<CopyMoveProductsScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -46,7 +48,7 @@ class CopyMoveProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         copyMoveProductsState.onWaiting()
 
         savedStateHandle.get<String>(UiRouteKey.ProductUid.key)?.let { productUid ->
@@ -61,17 +63,17 @@ class CopyMoveProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickAddShoppingList() = viewModelScope.launch {
+    private fun onClickAddShoppingList() = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.addShopping()
     }
 
-    private fun onClickCancel() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(CopyMoveProductsScreenEvent.OnShowBackScreen)
     }
 
     private fun onClickCopyOrMoveProducts(
         event: CopyMoveProductsEvent.OnClickCopyOrMoveProducts
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         savedStateHandle.get<Boolean>(UiRouteKey.IsCopy.key)?.let { isCopyScreen ->
             if (isCopyScreen) {
                 shoppingListsRepository.copyProducts(
@@ -91,7 +93,7 @@ class CopyMoveProductsViewModel @Inject constructor(
 
     private fun onLocationSelected(
         event: CopyMoveProductsEvent.OnLocationSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         copyMoveProductsState.onWaiting()
 
         when (event.location) {

@@ -6,9 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
@@ -23,6 +20,9 @@ import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.ProductsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ProductsState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ProductsEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,6 +39,8 @@ class ProductsViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<ProductsScreenEvent> = _screenEventFlow
 
     private val shoppingUid: String = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -138,7 +140,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         productsState.onWaiting()
 
         shoppingListsRepository.getShoppingListWithConfig(shoppingUid).collect {
@@ -148,50 +150,50 @@ class ProductsViewModel @Inject constructor(
 
     private fun onClickProduct(
         event: ProductsEvent.OnClickProduct
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         invertProductStatus(event.productUid, event.completed)
     }
 
-    private fun onClickAddProduct() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickAddProduct() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowAddProductScreen(shoppingUid))
     }
 
-    private fun onClickSelectFromAutocompletes() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickSelectFromAutocompletes() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowSelectFromAutocompletesScreen(shoppingUid))
     }
 
     private fun onClickEditProduct(
         event: ProductsEvent.OnClickEditProduct
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowEditProductScreen(shoppingUid, event.productUid))
         productsState.onAllProductsSelected(selected = false)
     }
 
-    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickBack() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickEditName() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickEditName() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowEditNameScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
     }
 
-    private fun onClickEditReminder() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickEditReminder() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowEditReminderScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
     }
 
-    private fun onClickEditTotal() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickEditTotal() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowEditTotalScreen(shoppingUid))
         productsState.onSelectDisplayTotal(expanded = false)
     }
 
-    private fun onClickDeleteTotal() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDeleteTotal() = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.deleteShoppingListTotal(shoppingUid)
         productsState.onSelectDisplayTotal(expanded = false)
     }
 
-    private fun onClickPinProducts() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickPinProducts() = viewModelScope.launch(dispatcher) {
         productsState.selectedUids?.let {
             if (productsState.isOnlyPinned()) {
                 shoppingListsRepository.unpinProducts(it)
@@ -204,7 +206,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCopyProducts() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCopyProducts() = viewModelScope.launch(dispatcher) {
         productsState.selectedUids?.let {
             val uids = uidsToString(it)
             _screenEventFlow.emit(ProductsScreenEvent.OnShowCopyProductsScreen(uids))
@@ -213,7 +215,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickMoveProducts() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickMoveProducts() = viewModelScope.launch(dispatcher) {
         productsState.selectedUids?.let {
             val uids = uidsToString(it)
             _screenEventFlow.emit(ProductsScreenEvent.OnShowMoveProductsScreen(uids))
@@ -222,14 +224,14 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickCopyShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCopyShoppingList() = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.copyShoppingList(shoppingUid)
         _screenEventFlow.emit(ProductsScreenEvent.OnShowBackScreen)
     }
 
     private fun onClickMoveProductUp(
         event: ProductsEvent.OnClickMoveProductUp
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.moveProductUp(
             shoppingUid = shoppingUid,
             productUid = event.productUid
@@ -239,7 +241,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onClickMoveProductDown(
         event: ProductsEvent.OnClickMoveProductDown
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.moveProductDown(
             shoppingUid = shoppingUid,
             productUid = event.productUid
@@ -247,7 +249,7 @@ class ProductsViewModel @Inject constructor(
         _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
     }
 
-    private fun onClickDeleteProducts() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDeleteProducts() = viewModelScope.launch(dispatcher) {
         productsState.selectedUids?.let {
             shoppingListsRepository.deleteProductsByProductUids(
                 productsUids = it,
@@ -258,7 +260,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onClickDuplicateProducts() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDuplicateProducts() = viewModelScope.launch(dispatcher) {
         productsState.selectedUids?.let {
             shoppingListsRepository.duplicateProducts(
                 products = productsState.getSelectedProducts(),
@@ -275,13 +277,13 @@ class ProductsViewModel @Inject constructor(
 
     private fun onShareProductsSelected(
         event: ProductsEvent.OnShareProductsSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         val shareText = productsState.getShareText(event.displayTotal)
         _screenEventFlow.emit(ProductsScreenEvent.OnShareProducts(shareText))
         productsState.onShowProductsMenu(expanded = false)
     }
 
-    private fun onClickCalculateChange() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickCalculateChange() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ProductsScreenEvent.OnShowCalculateChangeScreen(shoppingUid))
         productsState.onShowProductsMenu(expanded = false)
     }
@@ -294,7 +296,7 @@ class ProductsViewModel @Inject constructor(
         productsState.onSearchValueChanged(event.value)
     }
 
-    private fun onInvertSearch() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInvertSearch() = viewModelScope.launch(dispatcher) {
         val display = !productsState.displaySearch
         productsState.onShowSearch(display)
 
@@ -303,7 +305,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onInvertPinShoppingList() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInvertPinShoppingList() = viewModelScope.launch(dispatcher) {
         if (productsState.shoppingListPinnedValue.selected) {
             shoppingListsRepository.unpinShoppingLists(listOf(shoppingUid))
         } else {
@@ -315,7 +317,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onMoveShoppingListSelected(
         event: ProductsEvent.OnMoveShoppingListSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         when (event.location) {
             ShoppingLocation.PURCHASES -> {
                 shoppingListsRepository.moveShoppingListToPurchases(shoppingUid)
@@ -335,7 +337,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onDisplayTotalSelected(
         event: ProductsEvent.OnDisplayTotalSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.displayTotal(event.displayTotal)
         productsState.onSelectDisplayTotal(expanded = false)
         _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
@@ -343,18 +345,18 @@ class ProductsViewModel @Inject constructor(
 
     private fun onSelectDisplayTotal(
         event: ProductsEvent.OnSelectDisplayTotal
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onSelectDisplayTotal(event.expanded)
     }
 
-    private fun onInvertDisplayLongTotal() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInvertDisplayLongTotal() = viewModelScope.launch(dispatcher) {
         appConfigRepository.invertLongTotal()
         productsState.onSelectDisplayTotal(expanded = false)
     }
 
     private fun onSortSelected(
         event: ProductsEvent.OnSortSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.sortProducts(
             shoppingUid = shoppingUid,
             sort = Sort(event.sortBy),
@@ -363,7 +365,7 @@ class ProductsViewModel @Inject constructor(
         productsState.onSelectSort(expanded = false)
     }
 
-    private fun onReverseSort() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onReverseSort() = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.reverseProducts(
             shoppingUid = shoppingUid,
             automaticSort = productsState.sortFormatted
@@ -373,11 +375,11 @@ class ProductsViewModel @Inject constructor(
 
     private fun onSelectSort(
         event: ProductsEvent.OnSelectSort
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onSelectSort(event.expanded)
     }
 
-    private fun onInvertSortFormatted() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInvertSortFormatted() = viewModelScope.launch(dispatcher) {
         val sort = if (productsState.sortFormatted) {
             productsState.sortValue.selected
         } else {
@@ -392,37 +394,37 @@ class ProductsViewModel @Inject constructor(
 
     private fun onShowProductsMenu(
         event: ProductsEvent.OnShowProductsMenu
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onShowProductsMenu(event.expanded)
     }
 
     private fun onShowItemMoreMenu(
         event: ProductsEvent.OnShowItemMoreMenu
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onShowItemMoreMenu(event.expanded)
     }
 
     private fun onShowShoppingMenu(
         event: ProductsEvent.OnShowShoppingMenu
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onShowShoppingMenu(event.expanded)
     }
 
     private fun onAllProductsSelected(
         event: ProductsEvent.OnAllProductsSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onAllProductsSelected(event.selected)
     }
 
     private fun onProductSelected(
         event: ProductsEvent.OnProductSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onProductSelected(event.selected, event.productUid)
     }
 
     private fun onShowHiddenProducts(
         event: ProductsEvent.OnShowHiddenProducts
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         productsState.onShowHiddenProducts(event.display)
     }
 
@@ -432,7 +434,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onViewSelected(
         event: ProductsEvent.OnViewSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         if (event.multiColumns != productsState.multiColumnsValue.selected) {
             appConfigRepository.invertProductsMultiColumns()
         }
@@ -441,7 +443,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onMarkAsSelected(
         event: ProductsEvent.OnMarkAsSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         if (event.completed) {
             shoppingListsRepository.completeProducts(shoppingUid).let {
                 doAfterShoppingCompleted()
@@ -461,7 +463,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onClearProductsSelected(
         event: ProductsEvent.OnClearProductsSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.deleteProductsByStatus(
             shoppingUid = shoppingUid,
             status = event.status
@@ -470,7 +472,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onSwipeProductLeft(
         event: ProductsEvent.OnSwipeProductLeft
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         doAfterSwipeProduct(event.productUid, productsState.swipeProductLeft).let {
             _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
         }
@@ -478,7 +480,7 @@ class ProductsViewModel @Inject constructor(
 
     private fun onSwipeProductRight(
         event: ProductsEvent.OnSwipeProductRight
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         doAfterSwipeProduct(event.productUid, productsState.swipeProductRight).let {
             _screenEventFlow.emit(ProductsScreenEvent.OnUpdateProductsWidget(shoppingUid))
         }
@@ -491,7 +493,7 @@ class ProductsViewModel @Inject constructor(
             .replace(" ", "")
     }
 
-    private suspend fun doAfterShoppingCompleted() = withContext(AppDispatchers.Main) {
+    private suspend fun doAfterShoppingCompleted() = withContext(dispatcher) {
         when (productsState.getAfterShoppingCompleted()) {
             AfterShoppingCompleted.NOTHING -> {}
             AfterShoppingCompleted.ARCHIVE -> {
@@ -521,7 +523,7 @@ class ProductsViewModel @Inject constructor(
     private suspend fun invertProductStatus(
         productUid: String,
         completed: Boolean
-    ) = withContext(AppDispatchers.Main) {
+    ) = withContext(dispatcher) {
         if (completed) {
             shoppingListsRepository.activeProduct(productUid)
         } else {
@@ -532,7 +534,7 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun doAfterProductCompleted(productUid: String) = withContext(AppDispatchers.Main) {
+    private suspend fun doAfterProductCompleted(productUid: String) = withContext(dispatcher) {
         when (productsState.getAfterProductCompleted()) {
             AfterProductCompleted.NOTHING -> {}
             AfterProductCompleted.EDIT -> {
@@ -563,7 +565,7 @@ class ProductsViewModel @Inject constructor(
     private suspend fun doAfterSwipeProduct(
         productUid: String,
         swipeProduct: SwipeProduct
-    ) = withContext(AppDispatchers.Main) {
+    ) = withContext(dispatcher) {
         when (swipeProduct) {
             SwipeProduct.DISABLED -> {}
             SwipeProduct.EDIT -> {

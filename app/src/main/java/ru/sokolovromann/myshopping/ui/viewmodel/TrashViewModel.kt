@@ -5,14 +5,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.compose.event.TrashScreenEvent
 import ru.sokolovromann.myshopping.ui.model.TrashState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.TrashEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +25,8 @@ class TrashViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<TrashScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<TrashScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -50,7 +52,7 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun onInit() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInit() = viewModelScope.launch(dispatcher) {
         trashState.onWaiting()
 
         shoppingListsRepository.getTrashWithConfig().collect {
@@ -60,17 +62,17 @@ class TrashViewModel @Inject constructor(
 
     private fun onClickShoppingList(
         event: TrashEvent.OnClickShoppingList
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(TrashScreenEvent.OnShowProductsScreen(event.uid))
     }
 
-    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickBack() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(TrashScreenEvent.OnShowBackScreen)
     }
 
     private fun onMoveShoppingListSelected(
         event: TrashEvent.OnMoveShoppingListSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         trashState.selectedUids?.let {
             when (event.location) {
                 ShoppingLocation.PURCHASES -> shoppingListsRepository.moveShoppingListsToPurchases(it)
@@ -81,7 +83,7 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun onClickDeleteShoppingLists() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickDeleteShoppingLists() = viewModelScope.launch(dispatcher) {
         trashState.selectedUids?.let {
             shoppingListsRepository.deleteShoppingLists(it)
             alarmManager.deleteReminders(it)
@@ -89,7 +91,7 @@ class TrashViewModel @Inject constructor(
         }
     }
 
-    private fun onClickEmptyTrash() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickEmptyTrash() = viewModelScope.launch(dispatcher) {
         val uids = trashState.shoppingLists.map { it.uid }
         shoppingListsRepository.deleteShoppingLists(uids)
         alarmManager.deleteReminders(uids)
@@ -98,13 +100,13 @@ class TrashViewModel @Inject constructor(
 
     private fun onDrawerScreenSelected(
         event: TrashEvent.OnDrawerScreenSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(TrashScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
     private fun onSelectDrawerScreen(
         event: TrashEvent.OnSelectDrawerScreen
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(TrashScreenEvent.OnSelectDrawerScreen(event.display))
     }
 

@@ -6,9 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.app.AppDispatchers
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayTotal
 import ru.sokolovromann.myshopping.data.model.ShoppingLocation
@@ -21,6 +18,9 @@ import ru.sokolovromann.myshopping.data.model.SwipeShopping
 import ru.sokolovromann.myshopping.ui.compose.event.ArchiveScreenEvent
 import ru.sokolovromann.myshopping.ui.model.ArchiveState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.ArchiveEvent
+import ru.sokolovromann.myshopping.utils.Dispatcher
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +33,8 @@ class ArchiveViewModel @Inject constructor(
 
     private val _screenEventFlow: MutableSharedFlow<ArchiveScreenEvent> = MutableSharedFlow()
     val screenEventFlow: SharedFlow<ArchiveScreenEvent> = _screenEventFlow
+
+    private val dispatcher = Dispatcher.Main
 
     init { onInit() }
 
@@ -96,7 +98,7 @@ class ArchiveViewModel @Inject constructor(
         getArchiveAndPopulate(ShoppingPeriod.DefaultValue)
     }
 
-    private fun getArchiveAndPopulate(period: ShoppingPeriod) = viewModelScope.launch(AppDispatchers.Main) {
+    private fun getArchiveAndPopulate(period: ShoppingPeriod) = viewModelScope.launch(dispatcher) {
         archiveState.onWaiting()
 
         shoppingListsRepository.getArchiveWithConfig(period).collectLatest {
@@ -106,17 +108,17 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onClickShoppingList(
         event: ArchiveEvent.OnClickShoppingList
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnShowProductsScreen(event.uid))
     }
 
-    private fun onClickBack() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onClickBack() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnShowBackScreen)
     }
 
     private fun onMoveShoppingListSelected(
         event: ArchiveEvent.OnMoveShoppingListSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         archiveState.selectedUids?.let {
             when (event.location) {
                 ShoppingLocation.PURCHASES -> shoppingListsRepository.moveShoppingListsToPurchases(it)
@@ -129,13 +131,13 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onDrawerScreenSelected(
         event: ArchiveEvent.OnDrawerScreenSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnDrawerScreenSelected(event.drawerScreen))
     }
 
     private fun onSelectDrawerScreen(
         event: ArchiveEvent.OnSelectDrawerScreen
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(ArchiveScreenEvent.OnSelectDrawerScreen(event.display))
     }
 
@@ -147,7 +149,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.onSearchValueChanged(event.value)
     }
 
-    private fun onInvertSearch() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInvertSearch() = viewModelScope.launch(dispatcher) {
         val display = !archiveState.displaySearch
         archiveState.onShowSearch(display)
 
@@ -158,7 +160,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onDisplayProductsSelected(
         event: ArchiveEvent.OnDisplayProductsSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.displayShoppingsProducts(event.displayProducts)
         archiveState.onSelectDisplayProducts(expanded = false)
     }
@@ -169,7 +171,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onDisplayTotalSelected(
         event: ArchiveEvent.OnDisplayTotalSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         appConfigRepository.displayTotal(event.displayTotal)
         archiveState.onSelectDisplayTotal(expanded = false)
     }
@@ -180,7 +182,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onSortSelected(
         event: ArchiveEvent.OnSortSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.sortShoppingLists(
             sort = Sort(event.sortBy),
             automaticSort = archiveState.sortFormatted
@@ -188,7 +190,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.onSelectSort(expanded = false)
     }
 
-    private fun onReverseSort() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onReverseSort() = viewModelScope.launch(dispatcher) {
         shoppingListsRepository.reverseShoppingLists(
             automaticSort = archiveState.sortFormatted
         )
@@ -199,7 +201,7 @@ class ArchiveViewModel @Inject constructor(
         archiveState.onSelectSort(event.expanded)
     }
 
-    private fun onInvertSortFormatted() = viewModelScope.launch(AppDispatchers.Main) {
+    private fun onInvertSortFormatted() = viewModelScope.launch(dispatcher) {
         val sort = if (archiveState.sortFormatted) {
             archiveState.sortValue.selected
         } else {
@@ -241,7 +243,7 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onViewSelected(
         event: ArchiveEvent.OnViewSelected
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         if (event.multiColumns != archiveState.multiColumnsValue.selected) {
             appConfigRepository.invertShoppingListsMultiColumns()
         }
@@ -250,20 +252,20 @@ class ArchiveViewModel @Inject constructor(
 
     private fun onSwipeShoppingLeft(
         event: ArchiveEvent.OnSwipeShoppingLeft
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         doAfterSwipeShopping(event.uid, archiveState.swipeShoppingLeft)
     }
 
     private fun onSwipeShoppingRight(
         event: ArchiveEvent.OnSwipeShoppingRight
-    ) = viewModelScope.launch(AppDispatchers.Main) {
+    ) = viewModelScope.launch(dispatcher) {
         doAfterSwipeShopping(event.uid, archiveState.swipeShoppingRight)
     }
 
     private suspend fun doAfterSwipeShopping(
         uid: String,
         swipeShopping: SwipeShopping
-    ) = withContext(AppDispatchers.Main) {
+    ) = withContext(dispatcher) {
         when (swipeShopping) {
             SwipeShopping.DISABLED -> {}
             SwipeShopping.ARCHIVE -> {
@@ -288,7 +290,7 @@ class ArchiveViewModel @Inject constructor(
     private suspend fun invertShoppingStatus(
         uid: String,
         completed: Boolean
-    ) = withContext(AppDispatchers.Main) {
+    ) = withContext(dispatcher) {
         if (completed) {
             shoppingListsRepository.activeProducts(uid)
         } else {
@@ -296,7 +298,7 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    private suspend fun doAfterShoppingCompleted(uid: String) = withContext(AppDispatchers.Main) {
+    private suspend fun doAfterShoppingCompleted(uid: String) = withContext(dispatcher) {
         when (archiveState.getAfterShoppingCompleted()) {
             AfterShoppingCompleted.NOTHING -> {}
             AfterShoppingCompleted.ARCHIVE -> {
