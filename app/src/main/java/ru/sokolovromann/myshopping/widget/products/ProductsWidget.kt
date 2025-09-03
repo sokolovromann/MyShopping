@@ -488,6 +488,7 @@ private fun ProductsWidgetItem(
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun ProductsWidgetCheckbox(
     checked: Boolean,
