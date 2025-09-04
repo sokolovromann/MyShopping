@@ -1,17 +1,18 @@
-package ru.sokolovromann.myshopping.app
+package ru.sokolovromann.myshopping.io
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-object AppJson {
-
-    val json = Json { ignoreUnknownKeys = true }
+class LocalJson @Inject constructor() {
 
     inline fun <reified T> encodeToString(value: T): String {
         return Json.encodeToString(value)
     }
 
     inline fun <reified T> decodeFromString(value: String): T {
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
         return json.decodeFromString(value)
     }
 }
