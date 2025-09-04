@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.io
 
 import android.os.Environment
-import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import java.io.File
 
 object LocalEnvironment {
