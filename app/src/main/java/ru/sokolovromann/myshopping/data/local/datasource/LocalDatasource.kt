@@ -12,7 +12,8 @@ import javax.inject.Inject
 class LocalDatasource @Inject constructor(
     private val appRoomDatabase: AppRoomDatabase,
     private val appSQLiteOpenHelper: AppSQLiteOpenHelper,
-    private val appContent: AppContent
+    private val appContent: AppContent,
+    private val backupDao: BackupDao
 ) {
 
     fun getShoppingListsDao(): ShoppingListsDao {
@@ -40,6 +41,6 @@ class LocalDatasource @Inject constructor(
     }
 
     fun getBackupDao(): BackupDao {
-        return BackupDao(appContent)
+        return backupDao
     }
 }

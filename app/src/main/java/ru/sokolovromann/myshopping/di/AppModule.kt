@@ -12,6 +12,9 @@ import ru.sokolovromann.myshopping.data.local.datasource.AppRoomDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppSQLiteOpenHelper
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.*
+import ru.sokolovromann.myshopping.io.LocalBase64
+import ru.sokolovromann.myshopping.io.LocalFile
+import ru.sokolovromann.myshopping.io.LocalJson
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
@@ -45,9 +48,34 @@ object AppModule {
     fun providesLocalDatasource(
         appRoomDatabase: AppRoomDatabase,
         appSQLiteOpenHelper: AppSQLiteOpenHelper,
-        appContent: AppContent
+        appContent: AppContent,
+        backupDao: BackupDao
     ): LocalDatasource {
-        return LocalDatasource(appRoomDatabase, appSQLiteOpenHelper, appContent)
+        return LocalDatasource(appRoomDatabase, appSQLiteOpenHelper, appContent, backupDao)
+    }
+
+    @Provides
+    fun providesBackupDao(
+        localFile: LocalFile,
+        localJson: LocalJson,
+        localBase64: LocalBase64
+    ): BackupDao {
+        return BackupDao(localFile, localJson, localBase64)
+    }
+
+    @Provides
+    fun providesLocalFile(@ApplicationContext context: Context): LocalFile {
+        return LocalFile(context)
+    }
+
+    @Provides
+    fun providesLocalJson(): LocalJson {
+        return LocalJson()
+    }
+
+    @Provides
+    fun providesLocalBase64(): LocalBase64 {
+        return LocalBase64()
     }
 
     @Provides
