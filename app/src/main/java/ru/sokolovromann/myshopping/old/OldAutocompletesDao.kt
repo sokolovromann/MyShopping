@@ -1,35 +1,34 @@
-package ru.sokolovromann.myshopping.data.local.dao
+package ru.sokolovromann.myshopping.old
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.local.entity.AutocompleteEntity
 
 @Dao
-interface AutocompletesDao {
+interface OldAutocompletesDao {
 
     @Query("SELECT * FROM autocompletes")
-    fun getAllAutocompletes(): Flow<List<AutocompleteEntity>>
+    fun getAllAutocompletes(): Flow<List<OldAutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE personal = 0")
-    fun getDefaultAutocompletes(): Flow<List<AutocompleteEntity>>
+    fun getDefaultAutocompletes(): Flow<List<OldAutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE personal = 1")
-    fun getPersonalAutocompletes(): Flow<List<AutocompleteEntity>>
+    fun getPersonalAutocompletes(): Flow<List<OldAutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE name LIKE '%' || :search || '%'")
-    fun searchAutocompletesLikeName(search: String): Flow<List<AutocompleteEntity>>
+    fun searchAutocompletesLikeName(search: String): Flow<List<OldAutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE uid = :uid")
-    fun getAutocomplete(uid: String): Flow<AutocompleteEntity?>
+    fun getAutocomplete(uid: String): Flow<OldAutocompleteEntity?>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAutocompletes(autocompletes: List<AutocompleteEntity>)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun insertAutocompletes(autocompletes: List<OldAutocompleteEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAutocomplete(autocomplete: AutocompleteEntity)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun insertAutocomplete(autocomplete: OldAutocompleteEntity)
 
     @Query("UPDATE autocompletes SET " +
             "last_modified = :lastModifier," +
