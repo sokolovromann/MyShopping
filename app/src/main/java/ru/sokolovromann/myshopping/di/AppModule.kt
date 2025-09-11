@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
-import ru.sokolovromann.myshopping.data.local.datasource.AppRoomDatabase
+import ru.sokolovromann.myshopping.io.LocalRoomDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppSQLiteOpenHelper
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.*
@@ -33,8 +33,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesAppRoomDatabase(@ApplicationContext context: Context): AppRoomDatabase {
-        return AppRoomDatabase.build(context)
+    fun providesLocalRoomDatabase(@ApplicationContext context: Context): LocalRoomDatabase {
+        return LocalRoomDatabase.build(context)
     }
 
     @Singleton
@@ -46,12 +46,12 @@ object AppModule {
     @Singleton
     @Provides
     fun providesLocalDatasource(
-        appRoomDatabase: AppRoomDatabase,
+        localRoomDatabase: LocalRoomDatabase,
         appSQLiteOpenHelper: AppSQLiteOpenHelper,
         appContent: AppContent,
         backupDao: BackupDao
     ): LocalDatasource {
-        return LocalDatasource(appRoomDatabase, appSQLiteOpenHelper, appContent, backupDao)
+        return LocalDatasource(localRoomDatabase, appSQLiteOpenHelper, appContent, backupDao)
     }
 
     @Provides

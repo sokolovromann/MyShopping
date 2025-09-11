@@ -1,31 +1,32 @@
 package ru.sokolovromann.myshopping.data.local.datasource
 
 import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.data.local.dao.AutocompletesDao
+import ru.sokolovromann.myshopping.old.OldAutocompletesDao
 import ru.sokolovromann.myshopping.data.local.dao.BackupDao
 import ru.sokolovromann.myshopping.data.local.dao.CodeVersion14Dao
-import ru.sokolovromann.myshopping.data.local.dao.ProductsDao
+import ru.sokolovromann.myshopping.old.OldProductsDao
 import ru.sokolovromann.myshopping.data.local.dao.ResourcesDao
-import ru.sokolovromann.myshopping.data.local.dao.ShoppingListsDao
+import ru.sokolovromann.myshopping.old.OldShoppingListsDao
+import ru.sokolovromann.myshopping.io.LocalRoomDatabase
 import javax.inject.Inject
 
 class LocalDatasource @Inject constructor(
-    private val appRoomDatabase: AppRoomDatabase,
+    private val localRoomDatabase: LocalRoomDatabase,
     private val appSQLiteOpenHelper: AppSQLiteOpenHelper,
     private val appContent: AppContent,
     private val backupDao: BackupDao
 ) {
 
-    fun getShoppingListsDao(): ShoppingListsDao {
-        return appRoomDatabase.getShoppingListsDao()
+    fun getShoppingListsDao(): OldShoppingListsDao {
+        return localRoomDatabase.getOldShoppingListsDao()
     }
 
-    fun getProductsDao(): ProductsDao {
-        return appRoomDatabase.getProductsDao()
+    fun getProductsDao(): OldProductsDao {
+        return localRoomDatabase.getOldProductsDao()
     }
 
-    fun getAutocompletesDao(): AutocompletesDao {
-        return appRoomDatabase.getAutocompletesDao()
+    fun getAutocompletesDao(): OldAutocompletesDao {
+        return localRoomDatabase.getOldAutocompletesDao()
     }
 
     fun getCodeVersion14Dao(): CodeVersion14Dao {

@@ -576,7 +576,7 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
             val newShoppingUid = IdDefaults.createUid()
             val lastModified = DateTime.getCurrentDateTime().millis
 
-            val shopping = shoppingList.shoppingEntity.copy(
+            val shopping = shoppingList.oldShoppingEntity.copy(
                 id = IdDefaults.NO_ID,
                 position = nextPositionOrFirst(shoppingListsDao.getLastPosition().firstOrNull()),
                 uid = newShoppingUid,
@@ -904,8 +904,8 @@ class ShoppingListsRepository @Inject constructor(localDatasource: LocalDatasour
         }
 
         val shoppingUids = shoppingListEntities
-            .filter { it.shoppingEntity.lastModified <= dateTime.millis }
-            .map { it.shoppingEntity.uid }
+            .filter { it.oldShoppingEntity.lastModified <= dateTime.millis }
+            .map { it.oldShoppingEntity.uid }
 
         return@withContext deleteShoppingLists(shoppingUids)
     }

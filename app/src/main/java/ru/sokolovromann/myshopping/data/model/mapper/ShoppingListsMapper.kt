@@ -1,8 +1,8 @@
 package ru.sokolovromann.myshopping.data.model.mapper
 
-import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
-import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
-import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
+import ru.sokolovromann.myshopping.old.OldProductEntity
+import ru.sokolovromann.myshopping.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.old.OldShoppingListEntity
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.Shopping
@@ -24,8 +24,8 @@ import java.util.Calendar
 
 object ShoppingListsMapper {
 
-    fun toShoppingEntity(shopping: Shopping): ShoppingEntity {
-        return ShoppingEntity(
+    fun toShoppingEntity(shopping: Shopping): OldShoppingEntity {
+        return OldShoppingEntity(
             id = shopping.id,
             position = shopping.position,
             uid = shopping.uid,
@@ -47,8 +47,8 @@ object ShoppingListsMapper {
         )
     }
 
-    fun toProductEntity(product: Product): ProductEntity {
-        return ProductEntity(
+    fun toProductEntity(product: Product): OldProductEntity {
+        return OldProductEntity(
             id = product.id,
             position = product.position,
             productUid = product.productUid,
@@ -75,21 +75,21 @@ object ShoppingListsMapper {
         )
     }
 
-    fun toProductEntities(products: List<Product>): List<ProductEntity> {
+    fun toProductEntities(products: List<Product>): List<OldProductEntity> {
         return products.map { toProductEntity(it) }
     }
 
-    fun toProducts(entities: List<ProductEntity>, appConfig: AppConfig): List<Product> {
+    fun toProducts(entities: List<OldProductEntity>, appConfig: AppConfig): List<Product> {
         return entities.map { toProduct(it, appConfig.userPreferences) }
     }
 
-    fun toShoppingEntities(shoppingLists: List<ShoppingList>): List<ShoppingEntity> {
+    fun toShoppingEntities(shoppingLists: List<ShoppingList>): List<OldShoppingEntity> {
         return shoppingLists.map { toShoppingEntity(it.shopping) }
     }
 
     fun toShoppings(
-        shoppingEntities: List<ShoppingEntity>,
-        productEntities: List<ProductEntity>,
+        shoppingEntities: List<OldShoppingEntity>,
+        productEntities: List<OldProductEntity>,
         appConfig: AppConfig
     ): List<Shopping> {
         return shoppingEntities.map { shoppingEntity ->
@@ -105,14 +105,14 @@ object ShoppingListsMapper {
         }
     }
 
-    fun toProductEntitiesFromShoppingLists(shoppingLists: List<ShoppingList>): List<ProductEntity> {
+    fun toProductEntitiesFromShoppingLists(shoppingLists: List<ShoppingList>): List<OldProductEntity> {
         val products = mutableListOf<Product>()
         shoppingLists.forEach { products.addAll(it.products) }
         return toProductEntities(products)
     }
 
     fun toProductWithConfig(
-        entity: ProductEntity? = null,
+        entity: OldProductEntity? = null,
         appConfig: AppConfig
     ): ProductWithConfig {
         val product = if (entity == null) {
@@ -127,7 +127,7 @@ object ShoppingListsMapper {
     }
 
     fun toShoppingListWithConfig(
-        entity: ShoppingListEntity? = null,
+        entity: OldShoppingListEntity? = null,
         appConfig: AppConfig
     ): ShoppingListWithConfig {
         val shoppingList = if (entity == null) {
@@ -142,7 +142,7 @@ object ShoppingListsMapper {
     }
 
     fun toShoppingListsWithConfig(
-        entities: List<ShoppingListEntity>,
+        entities: List<OldShoppingListEntity>,
         appConfig: AppConfig
     ): ShoppingListsWithConfig {
         return ShoppingListsWithConfig(
@@ -181,7 +181,7 @@ object ShoppingListsMapper {
     }
 
     private fun toShopping(
-        entity: ShoppingEntity,
+        entity: OldShoppingEntity,
         productsTotal: Money,
         userPreferences: UserPreferences
     ): Shopping {
@@ -245,7 +245,7 @@ object ShoppingListsMapper {
         )
     }
 
-    private fun toProduct(entity: ProductEntity, userPreferences: UserPreferences): Product {
+    private fun toProduct(entity: OldProductEntity, userPreferences: UserPreferences): Product {
         val quantity = Quantity(
             value = entity.quantity.toBigDecimal(),
             symbol = entity.quantitySymbol,
@@ -318,17 +318,17 @@ object ShoppingListsMapper {
         )
     }
 
-    private fun toShoppingList(entity: ShoppingListEntity, appConfig: AppConfig): ShoppingList {
+    private fun toShoppingList(entity: OldShoppingListEntity, appConfig: AppConfig): ShoppingList {
         val products = toProducts(entity.productEntities, appConfig)
         val productsTotal = calculateProductsTotal(products, appConfig.userPreferences)
         return ShoppingList(
-            shopping = toShopping(entity.shoppingEntity, productsTotal, appConfig.userPreferences),
+            shopping = toShopping(entity.oldShoppingEntity, productsTotal, appConfig.userPreferences),
             products = products
         )
     }
 
     private fun toShoppingLists(
-        entities: List<ShoppingListEntity>,
+        entities: List<OldShoppingListEntity>,
         appConfig: AppConfig
     ): List<ShoppingList> {
         return entities.map { toShoppingList(it, appConfig) }

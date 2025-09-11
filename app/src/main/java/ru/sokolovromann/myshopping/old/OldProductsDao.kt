@@ -1,26 +1,25 @@
-package ru.sokolovromann.myshopping.data.local.dao
+package ru.sokolovromann.myshopping.old
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.local.entity.ProductEntity
 
 @Dao
-interface ProductsDao {
+interface OldProductsDao {
 
     @Query("SELECT * FROM products")
-    fun getAllProducts(): Flow<List<ProductEntity>>
+    fun getAllProducts(): Flow<List<OldProductEntity>>
 
     @Query("SELECT * FROM products WHERE product_uid IN (:productUids)")
-    fun getProducts(productUids: List<String>): Flow<List<ProductEntity>>
+    fun getProducts(productUids: List<String>): Flow<List<OldProductEntity>>
 
     @Query("SELECT * FROM products WHERE name LIKE '%' || :search || '%'")
-    fun searchProductsLikeName(search: String): Flow<List<ProductEntity>>
+    fun searchProductsLikeName(search: String): Flow<List<OldProductEntity>>
 
     @Query("SELECT * FROM products WHERE product_uid = :productUid")
-    fun getProduct(productUid: String): Flow<ProductEntity?>
+    fun getProduct(productUid: String): Flow<OldProductEntity?>
 
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position ASC LIMIT 1")
     fun getFirstPosition(shoppingUid: String): Flow<Int?>
@@ -28,11 +27,11 @@ interface ProductsDao {
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position DESC LIMIT 1")
     fun getLastPosition(shoppingUid: String): Flow<Int?>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(products: List<ProductEntity>)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun insertProducts(products: List<OldProductEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProduct(product: ProductEntity)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun insertProduct(product: OldProductEntity)
 
     @Query("UPDATE products SET position = :position WHERE product_uid = :productUid")
     fun updatePosition(productUid: String, position: Int)

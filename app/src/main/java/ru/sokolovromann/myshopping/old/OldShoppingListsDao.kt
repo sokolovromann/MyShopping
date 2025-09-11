@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data.local.dao
+package ru.sokolovromann.myshopping.old
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,46 +6,44 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
-import ru.sokolovromann.myshopping.data.local.entity.ShoppingEntity
-import ru.sokolovromann.myshopping.data.local.entity.ShoppingListEntity
 
 @Dao
-interface ShoppingListsDao {
+interface OldShoppingListsDao {
 
     @Transaction
     @Query("SELECT * FROM shoppings")
-    fun getAllShoppingLists(): Flow<List<ShoppingListEntity>>
+    fun getAllShoppingLists(): Flow<List<OldShoppingListEntity>>
 
     @Query("SELECT * FROM shoppings")
-    fun getAllShoppings(): Flow<List<ShoppingEntity>>
+    fun getAllShoppings(): Flow<List<OldShoppingEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 0")
-    fun getPurchases(): Flow<List<ShoppingListEntity>>
+    fun getPurchases(): Flow<List<OldShoppingListEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 1 AND deleted = 0")
-    fun getArchive(): Flow<List<ShoppingListEntity>>
+    fun getArchive(): Flow<List<OldShoppingListEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 1 AND deleted = 0 AND last_modified >= :minLastModified")
-    fun getArchive(minLastModified: Long): Flow<List<ShoppingListEntity>>
+    fun getArchive(minLastModified: Long): Flow<List<OldShoppingListEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 1")
-    fun getTrash(): Flow<List<ShoppingListEntity>>
+    fun getTrash(): Flow<List<OldShoppingListEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE reminder > 0")
-    fun getReminders(): Flow<List<ShoppingListEntity>>
+    fun getReminders(): Flow<List<OldShoppingListEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE archived = 0 AND deleted = 0 ORDER BY last_modified DESC LIMIT :limit")
-    fun getShortcuts(limit: Int): Flow<List<ShoppingListEntity>>
+    fun getShortcuts(limit: Int): Flow<List<OldShoppingListEntity>>
 
     @Transaction
     @Query("SELECT * FROM shoppings WHERE uid = :uid")
-    fun getShoppingList(uid: String): Flow<ShoppingListEntity?>
+    fun getShoppingList(uid: String): Flow<OldShoppingListEntity?>
 
     @Query("SELECT position FROM shoppings ORDER BY position ASC LIMIT 1")
     fun getFirstPosition(): Flow<Int?>
@@ -53,11 +51,11 @@ interface ShoppingListsDao {
     @Query("SELECT position FROM shoppings ORDER BY position DESC LIMIT 1")
     fun getLastPosition(): Flow<Int?>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertShoppings(shoppings: List<ShoppingEntity>)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun insertShoppings(shoppings: List<OldShoppingEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertShopping(shopping: ShoppingEntity)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    fun insertShopping(shopping: OldShoppingEntity)
 
     @Query("UPDATE shoppings SET position = :position WHERE uid = :uid")
     fun updatePosition(uid: String, position: Int)

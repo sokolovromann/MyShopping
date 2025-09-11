@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data.local.entity
+package ru.sokolovromann.myshopping.old
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Entity(tableName = "autocompletes")
-data class AutocompleteEntity(
+data class OldAutocompleteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
