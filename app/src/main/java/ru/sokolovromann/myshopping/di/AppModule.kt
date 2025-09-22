@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.sokolovromann.myshopping.MyShoppingContext
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.io.LocalRoomDatabase
@@ -24,6 +25,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    fun providesMyShoppingContext(@ApplicationContext context: Context): MyShoppingContext {
+        return MyShoppingContext(context)
+    }
 
     @Singleton
     @Provides
