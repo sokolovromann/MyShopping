@@ -5,9 +5,9 @@ import ru.sokolovromann.myshopping.utils.Dispatcher
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
 
-class GetBackupConfigUseCase @Inject constructor() {
-
-    private val dispatcher: Dispatcher = Dispatcher.IO
+class GetBackupConfigUseCase @Inject constructor(
+    private val dispatcher: Dispatcher
+) {
 
     suspend operator fun invoke(): BackupConfig = withContext(dispatcher) {
         return@withContext BackupConfig(
