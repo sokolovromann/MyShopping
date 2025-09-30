@@ -7,33 +7,29 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.sokolovromann.myshopping.MyShoppingContext
 import ru.sokolovromann.myshopping.utils.Dispatcher
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class AddEditProductConfigDataStore @Inject constructor(
-    private val myShoppingContext: MyShoppingContext,
-    private val mapper: AddEditProductConfigMapper
+    private val context: Context,
+    private val mapper: AddEditProductConfigMapper,
+    private val dispatcher: Dispatcher
 ) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
         name = AddEditProductConfigScheme.DATA_STORE_NAME
     )
 
-    private val dispatcher: Dispatcher = Dispatcher.IO
-
     fun observe(): Flow<AddEditProductConfig> {
-        return myShoppingContext.context.dataStore.data
+        return context.dataStore.data
             .map { mapper.mapTo(it) }
             .flowOn(dispatcher)
     }
 
     suspend fun update(addEditProductConfig: AddEditProductConfig): Unit = withContext(dispatcher) {
-        myShoppingContext.context.dataStore.edit {
+        context.dataStore.edit {
             val newPreferences = mapper.mapFrom(addEditProductConfig)
             it.plusAssign(newPreferences)
         }
