@@ -5,12 +5,11 @@ import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject
 
 class UpdateCartsConfigUseCase @Inject constructor(
-    private val cartsConfigDataStore: CartsConfigDataStore
+    private val dataStore: CartsConfigDataStore,
+    private val dispatcher: Dispatcher
 ) {
 
-    private val dispatcher: Dispatcher = Dispatcher.IO
-
     suspend operator fun invoke(cartsConfig: CartsConfig) = withContext(dispatcher) {
-        cartsConfigDataStore.update(cartsConfig)
+        dataStore.update(cartsConfig)
     }
 }
