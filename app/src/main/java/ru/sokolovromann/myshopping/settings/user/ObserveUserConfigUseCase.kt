@@ -6,12 +6,11 @@ import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
 import javax.inject.Inject
 
 class ObserveUserConfigUseCase @Inject constructor(
-    private val userConfigDataStore: UserConfigDataStore
+    private val dataStore: UserConfigDataStore,
+    private val dispatcher: Dispatcher
 ) {
 
-    private val dispatcher: Dispatcher = Dispatcher.IO
-
     operator fun invoke(): Flow<UserConfig> {
-        return userConfigDataStore.observe().flowOn(dispatcher)
+        return dataStore.observe().flowOn(dispatcher)
     }
 }
