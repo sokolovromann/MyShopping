@@ -15,10 +15,9 @@ import java.io.InputStreamReader
 import javax.inject.Inject
 
 class LocalFile @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val dispatcher: Dispatcher
 ) {
-
-    private val dispatcher = Dispatcher.IO
 
     suspend fun writeFile(path: String, text: String): Boolean = withContext(dispatcher) {
         return@withContext async {
