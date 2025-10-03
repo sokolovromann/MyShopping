@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.sokolovromann.myshopping.MyShoppingContext
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.io.LocalRoomDatabase
@@ -26,21 +25,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    fun providesMyShoppingContext(@ApplicationContext context: Context): MyShoppingContext {
-        return MyShoppingContext(context)
-    }
-
     @Singleton
     @Provides
     fun providesAppContent(@ApplicationContext context: Context): AppContent {
         return AppContent(context)
-    }
-
-    @Singleton
-    @Provides
-    fun providesLocalRoomDatabase(@ApplicationContext context: Context): LocalRoomDatabase {
-        return LocalRoomDatabase.build(context)
     }
 
     @Singleton
@@ -67,21 +55,6 @@ object AppModule {
         localBase64: LocalBase64
     ): BackupDao {
         return BackupDao(localFile, localJson, localBase64)
-    }
-
-    @Provides
-    fun providesLocalFile(@ApplicationContext context: Context): LocalFile {
-        return LocalFile(context)
-    }
-
-    @Provides
-    fun providesLocalJson(): LocalJson {
-        return LocalJson()
-    }
-
-    @Provides
-    fun providesLocalBase64(): LocalBase64 {
-        return LocalBase64()
     }
 
     @Provides
