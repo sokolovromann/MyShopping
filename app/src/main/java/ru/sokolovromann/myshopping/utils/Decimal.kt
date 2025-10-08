@@ -62,6 +62,10 @@ class Decimal private constructor(private val bigDecimal: BigDecimal) {
         return bigDecimal
     }
 
+    fun getFloat(): Float {
+        return bigDecimal.abs().toFloat()
+    }
+
     fun getString(): String {
         return bigDecimal.toString()
     }
