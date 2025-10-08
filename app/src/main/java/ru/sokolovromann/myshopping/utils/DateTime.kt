@@ -101,7 +101,11 @@ class DateTime private constructor(private val calendar: Calendar) {
         return calendar.timeInMillis
     }
 
+    fun getString(): String {
+        return calendar.timeInMillis.toString()
+    }
+
     override fun toString(): String {
-        return calendar.toString()
+        return getString()
     }
 }
