@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.about
+package ru.sokolovromann.myshopping.data39.about
 
 data class About(
     val id: String,
@@ -6,7 +6,6 @@ data class About(
     val version: String,
     val developer: String,
     val email: String,
-    val linkedin: String,
     val github: String,
     val privacyPolicy: String,
     val termsOfConditions: String
