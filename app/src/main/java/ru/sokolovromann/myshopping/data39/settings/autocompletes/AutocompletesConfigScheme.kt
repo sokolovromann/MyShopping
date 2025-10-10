@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.autocompletes
+package ru.sokolovromann.myshopping.data39.settings.autocompletes
 
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey

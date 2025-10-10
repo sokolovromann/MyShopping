@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.autocompletes
+package ru.sokolovromann.myshopping.data39.settings.autocompletes
 
 data class AutocompletesConfig(
     val viewMode: AutocompletesViewMode,
