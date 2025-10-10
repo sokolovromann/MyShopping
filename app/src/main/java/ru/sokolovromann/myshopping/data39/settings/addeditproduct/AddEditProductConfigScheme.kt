@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.addeditproduct
+package ru.sokolovromann.myshopping.data39.settings.addeditproduct
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -13,7 +13,7 @@ object AddEditProductConfigScheme {
     val DISPLAY_SIZE = booleanPreferencesKey("display_size")
     val DISPLAY_COLOR = booleanPreferencesKey("display_color")
     val DISPLAY_QUANTITY = booleanPreferencesKey("display_quantity")
-    val DISPLAY_MINUS_AND_PLUS_ONE_QUANTITY = booleanPreferencesKey("display_minus_and_plus_one_quantity")
+    val DISPLAY_PLUS_MINUS_ONE_QUANTITY = booleanPreferencesKey("display_plus_minus_one_quantity")
     val DISPLAY_PRICE = booleanPreferencesKey("display_price")
     val DISPLAY_DISCOUNT = booleanPreferencesKey("display_discount")
     val DISPLAY_TAX_RATE = booleanPreferencesKey("display_taxRate")

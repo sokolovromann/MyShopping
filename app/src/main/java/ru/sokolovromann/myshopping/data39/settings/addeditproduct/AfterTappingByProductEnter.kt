@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.addeditproduct
+package ru.sokolovromann.myshopping.data39.settings.addeditproduct
 
 enum class AfterTappingByProductEnter {
 

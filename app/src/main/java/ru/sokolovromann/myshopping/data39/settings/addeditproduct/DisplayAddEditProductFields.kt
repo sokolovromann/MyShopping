@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.addeditproduct
+package ru.sokolovromann.myshopping.data39.settings.addeditproduct
 
 data class DisplayAddEditProductFields(
     val name: Boolean,
@@ -8,7 +8,7 @@ data class DisplayAddEditProductFields(
     val size: Boolean,
     val color: Boolean,
     val quantity: Boolean,
-    val minusAndPlusOneQuantity: Boolean,
+    val plusMinusOneQuantity: Boolean,
     val price: Boolean,
     val discount: Boolean,
     val taxRate: Boolean,
