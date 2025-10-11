@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.general
+package ru.sokolovromann.myshopping.data39.settings.general
 
 data class GeneralConfig(
     val theme: Theme,

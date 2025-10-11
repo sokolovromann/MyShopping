@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.general
+package ru.sokolovromann.myshopping.data39.settings.general
 
 import ru.sokolovromann.myshopping.utils.DateFormattingMode
 import ru.sokolovromann.myshopping.utils.TimeFormattingMode

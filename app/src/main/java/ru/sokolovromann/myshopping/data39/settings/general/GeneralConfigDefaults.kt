@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.general
+package ru.sokolovromann.myshopping.data39.settings.general
 
 import ru.sokolovromann.myshopping.utils.DateFormattingMode
 import ru.sokolovromann.myshopping.utils.Decimal
@@ -15,6 +15,6 @@ object GeneralConfigDefaults {
     val MONEY: MoneyConfig = MoneyConfig(
         formattingMode = DecimalFormattingMode.MoneyParams.Advanced,
         currency = Currency("$", CurrencyDisplaySide.Left),
-        taxRate = TaxRate(Decimal.Companion.getZero())
+        taxRate = Decimal.Companion.getZero()
     )
 }
