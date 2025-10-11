@@ -1,8 +1,14 @@
-package ru.sokolovromann.myshopping.settings.carts
+package ru.sokolovromann.myshopping.data39.settings.carts
 
 object CartsConfigDefaults {
-    val VIEW_MODE: CartsViewMode = CartsViewMode.List(CartsViewMode.Params.ProductHorizontally)
-    val SORT: SortCarts = SortCarts.DoNotSort
+    val VIEW_MODE: CartsViewMode = CartsViewMode(
+        name = CartsViewModeName.List,
+        params = CartsViewModeParams.ProductHorizontally
+    )
+    val SORT: SortCarts = SortCarts(
+        name = SortCartsName.DoNotSort,
+        params = null
+    )
     val GROUP: GroupCarts = GroupCarts.ActiveFirst
     val CALCULATE_TOTAL: CalculateCartsTotal = CalculateCartsTotal.AllProducts
     val AFTER_ADDING: AfterAddingCart = AfterAddingCart.OpenProductsScreen

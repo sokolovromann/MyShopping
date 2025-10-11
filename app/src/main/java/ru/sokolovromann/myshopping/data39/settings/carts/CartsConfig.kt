@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.carts
+package ru.sokolovromann.myshopping.data39.settings.carts
 
 data class CartsConfig(
     val viewMode: CartsViewMode,
