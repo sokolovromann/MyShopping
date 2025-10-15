@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.io
+package ru.sokolovromann.myshopping.data39
 
 import android.Manifest
 import android.content.Context
@@ -7,20 +7,16 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.async
-import ru.sokolovromann.myshopping.utils.Dispatcher
-import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import javax.inject.Inject
 
-class LocalFile @Inject constructor(
-    private val context: Context,
-    private val dispatcher: Dispatcher
-) {
+class LocalFile @Inject constructor(private val context: Context) {
 
-    suspend fun writeFile(path: String, text: String): Boolean = withContext(dispatcher) {
-        return@withContext async {
+    suspend fun writeFile(path: String, text: String): Boolean = withIoContext {
+        return@withIoContext async {
             if (!checkWriteAndRead()) { return@async false }
             File(path).apply {
                 parentFile?.mkdirs()
@@ -29,8 +25,8 @@ class LocalFile @Inject constructor(
         }.await()
     }
 
-    suspend fun readLine(uri: Uri): String? = withContext(dispatcher) {
-        return@withContext async {
+    suspend fun readLine(uri: Uri): String? = withIoContext {
+        return@withIoContext async {
             if (!checkWriteAndRead()) { return@async null }
             context.contentResolver.openInputStream(uri)?.use { inputStream ->
                 BufferedReader(InputStreamReader(inputStream)).use { reader ->
