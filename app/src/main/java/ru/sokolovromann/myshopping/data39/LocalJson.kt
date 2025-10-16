@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.io
+package ru.sokolovromann.myshopping.data39
 
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
