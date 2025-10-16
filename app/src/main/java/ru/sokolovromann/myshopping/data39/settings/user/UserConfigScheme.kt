@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.settings.user
+package ru.sokolovromann.myshopping.data39.settings.user
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 
