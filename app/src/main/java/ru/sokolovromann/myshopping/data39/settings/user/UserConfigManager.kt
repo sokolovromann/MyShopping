@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOnIo
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
@@ -24,6 +25,12 @@ class UserConfigManager @Inject constructor(
         return context.dataStore.data
             .map { mapper.mapEntityTo(it) }
             .flowOnIo()
+    }
+
+    suspend fun getConfig(): UserConfig = withIoContext {
+        return@withIoContext context.dataStore.data
+            .map { mapper.mapEntityTo(it) }
+            .first()
     }
 
     suspend fun updateConfig(config: UserConfig): Unit = withIoContext {
