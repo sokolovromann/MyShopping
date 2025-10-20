@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.data39.settings.autocompletes
+package ru.sokolovromann.myshopping.data39.settings.suggestions
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,51 +12,51 @@ import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOnIo
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
 import javax.inject.Inject
 
-class AutocompletesConfigManager @Inject constructor(
+class SuggestionsConfigManager @Inject constructor(
     private val context: Context,
-    private val mapper: AutocompletesConfigMapper
+    private val mapper: SuggestionsConfigMapper
 ) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-        name = AutocompletesConfigScheme.DATA_STORE_NAME
+        name = SuggestionsConfigScheme.DATA_STORE_NAME
     )
 
-    fun observeConfig(): Flow<AutocompletesConfig> {
+    fun observeConfig(): Flow<SuggestionsConfig> {
         return context.dataStore.data
             .map { mapper.mapEntityTo(it) }
             .flowOnIo()
     }
 
-    suspend fun getConfig(): AutocompletesConfig = withIoContext {
+    suspend fun getConfig(): SuggestionsConfig = withIoContext {
         return@withIoContext context.dataStore.data
             .map { mapper.mapEntityTo(it) }
             .first()
     }
 
-    suspend fun updateConfig(config: AutocompletesConfig): Unit = withIoContext {
+    suspend fun updateConfig(config: SuggestionsConfig): Unit = withIoContext {
         context.dataStore.edit {
             val newPreferences = mapper.mapEntityFrom(config)
             it.plusAssign(newPreferences)
         }
     }
 
-    suspend fun updateViewMode(viewMode: AutocompletesViewMode): Unit = withIoContext {
+    suspend fun updateViewMode(viewMode: SuggestionsViewMode): Unit = withIoContext {
         context.dataStore.edit {
             val newPreferences = mapper.mapViewModeFrom(viewMode)
             it.plusAssign(newPreferences)
         }
     }
 
-    suspend fun updateSort(sort: SortAutocompletes): Unit = withIoContext {
+    suspend fun updateSort(sort: SortSuggestions): Unit = withIoContext {
         context.dataStore.edit {
             val newPreferences = mapper.mapSortFrom(sort)
             it.plusAssign(newPreferences)
         }
     }
 
-    suspend fun updateMaxNumber(maxNumber: MaxAutocompletesNumber): Unit = withIoContext {
+    suspend fun updateTake(take: TakeSuggestions): Unit = withIoContext {
         context.dataStore.edit {
-            val newPreferences = mapper.mapMaxNumberFrom(maxNumber)
+            val newPreferences = mapper.mapTakeFrom(take)
             it.plusAssign(newPreferences)
         }
     }

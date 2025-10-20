@@ -1,6 +1,6 @@
-package ru.sokolovromann.myshopping.data39.settings.autocompletes
+package ru.sokolovromann.myshopping.data39.settings.suggestions
 
-data class MaxAutocompletesNumber(
+data class TakeSuggestions(
     val names: Int,
     val images: Int,
     val manufacturers: Int,
@@ -8,7 +8,7 @@ data class MaxAutocompletesNumber(
     val sizes: Int,
     val colors: Int,
     val quantities: Int,
-    val prices: Int,
+    val unitPrices: Int,
     val discounts: Int,
     val taxRates: Int,
     val costs: Int
