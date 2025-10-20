@@ -9,7 +9,7 @@ data class DisplayAddEditProductFields(
     val color: Boolean,
     val quantity: Boolean,
     val plusMinusOneQuantity: Boolean,
-    val price: Boolean,
+    val unitPrice: Boolean,
     val discount: Boolean,
     val taxRate: Boolean,
     val cost: Boolean,

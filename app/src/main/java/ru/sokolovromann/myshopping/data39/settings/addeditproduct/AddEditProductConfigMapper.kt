@@ -3,13 +3,12 @@ package ru.sokolovromann.myshopping.data39.settings.addeditproduct
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.preferencesOf
-import ru.sokolovromann.myshopping.data39.Mapper
 import ru.sokolovromann.myshopping.utils.EnumExtensions
 import javax.inject.Inject
 
-class AddEditProductConfigMapper @Inject constructor() : Mapper<Preferences, AddEditProductConfig>() {
+class AddEditProductConfigMapper @Inject constructor() {
 
-    override fun mapEntityTo(entity: Preferences): AddEditProductConfig {
+    fun mapEntityTo(entity: Preferences): AddEditProductConfig {
         return AddEditProductConfig(
             displayFields = mapDisplayFieldsTo(entity),
             lockField = mapLockFieldTo(entity),
@@ -20,7 +19,7 @@ class AddEditProductConfigMapper @Inject constructor() : Mapper<Preferences, Add
         )
     }
 
-    override fun mapEntityFrom(model: AddEditProductConfig): Preferences {
+    fun mapEntityFrom(model: AddEditProductConfig): Preferences {
         return mutablePreferencesOf().apply {
             val displayFields = mapDisplayFieldsFrom(model.displayFields)
             plusAssign(displayFields)
@@ -53,7 +52,7 @@ class AddEditProductConfigMapper @Inject constructor() : Mapper<Preferences, Add
             entity[AddEditProductConfigScheme.DISPLAY_COLOR] ?: default.color,
             entity[AddEditProductConfigScheme.DISPLAY_QUANTITY] ?: default.quantity,
             entity[AddEditProductConfigScheme.DISPLAY_PLUS_MINUS_ONE_QUANTITY] ?: default.plusMinusOneQuantity,
-            entity[AddEditProductConfigScheme.DISPLAY_PRICE] ?: default.price,
+            entity[AddEditProductConfigScheme.DISPLAY_UNIT_PRICE] ?: default.unitPrice,
             entity[AddEditProductConfigScheme.DISPLAY_DISCOUNT] ?: default.discount,
             entity[AddEditProductConfigScheme.DISPLAY_TAX_RATE] ?: default.taxRate,
             entity[AddEditProductConfigScheme.DISPLAY_COST] ?: default.cost,
@@ -74,7 +73,7 @@ class AddEditProductConfigMapper @Inject constructor() : Mapper<Preferences, Add
             AddEditProductConfigScheme.DISPLAY_COLOR to model.color,
             AddEditProductConfigScheme.DISPLAY_QUANTITY to model.quantity,
             AddEditProductConfigScheme.DISPLAY_PLUS_MINUS_ONE_QUANTITY to model.plusMinusOneQuantity,
-            AddEditProductConfigScheme.DISPLAY_PRICE to model.price,
+            AddEditProductConfigScheme.DISPLAY_UNIT_PRICE to model.unitPrice,
             AddEditProductConfigScheme.DISPLAY_DISCOUNT to model.discount,
             AddEditProductConfigScheme.DISPLAY_TAX_RATE to model.taxRate,
             AddEditProductConfigScheme.DISPLAY_COST to model.cost,
