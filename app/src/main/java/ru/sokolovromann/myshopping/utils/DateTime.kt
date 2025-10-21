@@ -3,29 +3,38 @@ package ru.sokolovromann.myshopping.utils
 import android.content.Context
 import android.text.format.DateFormat
 import java.util.Calendar
+import java.util.Locale
+import kotlin.text.toLong
 
-class DateTime private constructor(private val calendar: Calendar) {
+class DateTime private constructor(
+    private val calendar: Calendar,
+    private val config: DateTimeConfig
+) {
 
     companion object {
 
-        fun getCurrent(): DateTime {
+        fun fromString(millis: String, config: DateTimeConfig): DateTime {
             val calendar = Calendar.getInstance().apply {
-                timeInMillis = System.currentTimeMillis()
-                set(Calendar.MILLISECOND, 0)
+                timeInMillis = millis.toLong()
             }
-            return DateTime(calendar)
+            return DateTime(calendar, config)
         }
 
-        fun createOrNull(millis: Long?): DateTime? {
-            return millis?.let {
-                val calendar = Calendar.getInstance().apply { timeInMillis = millis }
-                DateTime(calendar)
-            }
+        fun getCurrentMillis(): Long {
+            return System.currentTimeMillis()
         }
+    }
 
-        fun createOrDefault(millis: Long?, defaultValue: DateTime = getCurrent()): DateTime {
-            return createOrNull(millis) ?: defaultValue
+    fun newMillis(millis: Long): DateTime {
+        val calendar = Calendar.getInstance().apply { timeInMillis = millis }
+        return DateTime(calendar, config)
+    }
+
+    fun newMillis(millis: String): DateTime {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = millis.toLong()
         }
+        return DateTime(calendar, config)
     }
 
     fun add(dateInfo: DateInfo): DateTime {
@@ -34,7 +43,7 @@ class DateTime private constructor(private val calendar: Calendar) {
             add(Calendar.MONTH, dateInfo.month)
             add(Calendar.DAY_OF_MONTH, dateInfo.dayOfMonth)
         }
-        return DateTime(newCalendar)
+        return DateTime(newCalendar, config)
     }
 
     fun add(timeInfo: TimeInfo): DateTime {
@@ -48,7 +57,7 @@ class DateTime private constructor(private val calendar: Calendar) {
             add(Calendar.SECOND, timeInfo.second)
             add(Calendar.MILLISECOND, 0)
         }
-        return DateTime(newCalendar)
+        return DateTime(newCalendar, config)
     }
 
     fun set(dateInfo: DateInfo): DateTime {
@@ -57,7 +66,7 @@ class DateTime private constructor(private val calendar: Calendar) {
             set(Calendar.MONTH, dateInfo.month)
             set(Calendar.DAY_OF_MONTH, dateInfo.dayOfMonth)
         }
-        return DateTime(newCalendar)
+        return DateTime(newCalendar, config)
     }
 
     fun set(timeInfo: TimeInfo): DateTime {
@@ -71,7 +80,7 @@ class DateTime private constructor(private val calendar: Calendar) {
             set(Calendar.SECOND, timeInfo.second)
             set(Calendar.MILLISECOND, 0)
         }
-        return DateTime(newCalendar)
+        return DateTime(newCalendar, config)
     }
 
     fun getDate(): DateInfo {
@@ -93,19 +102,61 @@ class DateTime private constructor(private val calendar: Calendar) {
         )
     }
 
-    fun getCalendar(): Calendar {
-        return calendar
-    }
-
     fun getMillis(): Long {
         return calendar.timeInMillis
     }
 
+    fun getDisplay(): String {
+        val dateDisplay = when (config.dateFormattingMode) {
+            DateFormattingMode.DDMMMYYYY -> when {
+                calendar.isToday() -> ""
+                calendar.isCurrentYear() -> "%td %tb "
+                else -> "%td %tb %tY "
+            }
+            DateFormattingMode.MMMDDYYYY -> when {
+                calendar.isToday() -> ""
+                calendar.isCurrentYear() -> "%tb %td, "
+                else -> "%tb %td %tY, "
+            }
+            DateFormattingMode.YYYYMMMDD -> when {
+                calendar.isToday() -> ""
+                calendar.isCurrentYear() -> "%tb %td "
+                else -> "%tY %tb %td "
+            }
+            DateFormattingMode.Timestamp -> "%tY%tm%td"
+        }
+        val timeDisplay = when (config.timeFormattingMode) {
+            TimeFormattingMode.H12 -> "%tI:%tM %tp"
+            TimeFormattingMode.H24 -> "%tH:%tM"
+            TimeFormattingMode.Timestamp -> "%tH%tM%tS"
+        }
+
+        val args = LongArray(6)
+        for (i:Int in 0..5) {
+            args[i] = getMillis()
+        }
+
+        return String.format(
+            locale = Locale.getDefault(),
+            format = "$dateDisplay$timeDisplay",
+            args = args.toTypedArray()
+        )
+    }
+
     fun getString(): String {
-        return calendar.timeInMillis.toString()
+        return getMillis().toString()
     }
 
     override fun toString(): String {
-        return getString()
+        return getDisplay()
+    }
+
+    private fun Calendar.isCurrentYear(): Boolean {
+        return get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)
+    }
+
+    private fun Calendar.isToday(): Boolean {
+        return isCurrentYear() && get(Calendar.DAY_OF_YEAR) ==
+                Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
     }
 }
