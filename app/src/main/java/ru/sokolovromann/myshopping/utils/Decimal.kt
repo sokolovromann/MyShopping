@@ -1,76 +1,113 @@
 package ru.sokolovromann.myshopping.utils
 
 import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
-class Decimal private constructor(private val bigDecimal: BigDecimal) {
+class Decimal private constructor(
+    private val bigDecimal: BigDecimal,
+    private val config: DecimalConfig
+) {
 
     companion object {
 
-        fun getZero(): Decimal {
-            return Decimal(BigDecimal.ZERO)
+        fun fromFloat(value: Float, config: DecimalConfig): Decimal {
+            return Decimal(value.toBigDecimal(), config)
         }
 
-        fun getOne(): Decimal {
-            return Decimal(BigDecimal.ONE)
-        }
-
-        fun createOrNull(value: BigDecimal?): Decimal? {
-            return value?.let { Decimal(it) }
-        }
-
-        fun createOrNull(value: String?): Decimal? {
-            return try {
-                val bigDecimal = value?.toBigDecimal() ?: throw NullPointerException()
-                Decimal(bigDecimal)
-            } catch (_: Exception) { null }
-        }
-
-        fun createOrDefault(value: BigDecimal?, defaultValue: Decimal = getZero()): Decimal {
-            return createOrNull(value) ?: defaultValue
-        }
-
-        fun createOrDefault(value: String?, defaultValue: Decimal = getZero()): Decimal {
-            return createOrNull(value) ?: defaultValue
+        fun fromString(value: String, config: DecimalConfig): Decimal? {
+            return value.toBigDecimalOrNull()?.let { Decimal(it, config) }
         }
     }
 
-    fun plus(decimal: Decimal): Decimal {
-        val other = decimal.toString().toBigDecimal()
-        val newValue = bigDecimal.plus(other)
-        return Decimal(newValue)
+    fun newValue(value: Float): Decimal {
+        return Decimal(value.toBigDecimal(), config)
     }
 
-    fun minus(decimal: Decimal): Decimal {
-        val other = decimal.toString().toBigDecimal()
-        val newValue = bigDecimal.minus(other)
-        return Decimal(newValue)
+    fun newValue(value: String): Decimal? {
+        return value.toBigDecimalOrNull()?.let { Decimal(it, config) }
     }
 
-    fun multiply(decimal: Decimal): Decimal {
-        val other = decimal.toString().toBigDecimal()
-        val newValue = bigDecimal.multiply(other)
-        return Decimal(newValue)
+    fun plus(value: Float): Decimal {
+        val newValue = bigDecimal.plus(value.toBigDecimal())
+        return Decimal(newValue, config)
     }
 
-    fun divide(decimal: Decimal): Decimal {
-        val other = decimal.toString().toBigDecimal()
-        val newValue = bigDecimal.divide(other)
-        return Decimal(newValue)
+    fun minus(value: Float): Decimal {
+        val newValue = bigDecimal.minus(value.toBigDecimal())
+        return Decimal(newValue, config)
     }
 
-    fun getBigDecimal(): BigDecimal {
-        return bigDecimal
+    fun multiply(value: Float): Decimal {
+        val newValue = bigDecimal.multiply(value.toBigDecimal())
+        return Decimal(newValue, config)
+    }
+
+    fun divide(value: Float): Decimal {
+        val newValue = bigDecimal.divide(value.toBigDecimal())
+        return Decimal(newValue, config)
     }
 
     fun getFloat(): Float {
-        return bigDecimal.abs().toFloat()
+        return getFormattedString().toFloat()
     }
 
-    fun getString(): String {
+    fun getRawString(): String {
         return bigDecimal.toString()
     }
 
+    fun getFormattedString(): String {
+        val spaceChar = Char(code = 32)
+        val periodChar = Char(code = 46)
+        val noText = ""
+        val decimalFormat = createDecimalFormat().apply {
+            decimalFormatSymbols = decimalFormatSymbols.apply {
+                groupingSeparator = spaceChar
+                decimalSeparator = periodChar
+                naN = noText
+            }
+        }
+        return decimalFormat.format(bigDecimal)
+            .replace(spaceChar.toString(), noText)
+    }
+
+    fun getDisplay(): String {
+        val value = createDecimalFormat().format(bigDecimal)
+        val sign = config.sign
+        return when (sign.displaySide) {
+            DecimalSignDisplaySide.Left -> "${sign.symbol}$value"
+            DecimalSignDisplaySide.Right -> "$value${sign.symbol}"
+        }
+    }
+
+    fun getSymbol(): String {
+        return config.sign.symbol
+    }
+
     override fun toString(): String {
-        return getString()
+        return getDisplay()
+    }
+
+    private fun createDecimalFormat(): DecimalFormat {
+        return DecimalFormat().apply {
+            roundingMode = RoundingMode.HALF_UP
+            minimumFractionDigits = when (config.fractionDigits) {
+                DecimalFractionDigits.Fixed -> {
+                    when (config) {
+                        is DecimalConfig.Unspecified -> 5
+                        is DecimalConfig.Percent -> 2
+                        is DecimalConfig.Quantity -> 3
+                        is DecimalConfig.Money -> 2
+                    }
+                }
+                DecimalFractionDigits.Unfixed -> 0
+            }
+            maximumFractionDigits = when (config) {
+                is DecimalConfig.Unspecified -> 5
+                is DecimalConfig.Percent -> 2
+                is DecimalConfig.Quantity -> 3
+                is DecimalConfig.Money -> 2
+            }
+        }
     }
 }
