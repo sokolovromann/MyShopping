@@ -8,9 +8,9 @@ enum class SortProductsName {
 
     Name,
 
-    Price,
+    UnitPrice,
 
-    Total,
+    Cost,
 
     DoNotSort;
 }

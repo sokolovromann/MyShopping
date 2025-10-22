@@ -3,16 +3,17 @@ package ru.sokolovromann.myshopping.data39.settings.general
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.preferencesOf
-import ru.sokolovromann.myshopping.data39.Mapper
+import ru.sokolovromann.myshopping.utils.DateTimeConfig
 import ru.sokolovromann.myshopping.utils.Decimal
-import ru.sokolovromann.myshopping.utils.DecimalFormatter
-import ru.sokolovromann.myshopping.utils.DecimalFormattingMode
+import ru.sokolovromann.myshopping.utils.DecimalSign
+import ru.sokolovromann.myshopping.utils.DecimalSignDisplaySide
+import ru.sokolovromann.myshopping.utils.DecimalConfig
 import ru.sokolovromann.myshopping.utils.EnumExtensions
 import javax.inject.Inject
 
-class GeneralConfigMapper @Inject constructor() : Mapper<Preferences, GeneralConfig>() {
+class GeneralConfigMapper @Inject constructor() {
 
-    override fun mapEntityTo(entity: Preferences): GeneralConfig {
+    fun mapEntityTo(entity: Preferences): GeneralConfig {
         return GeneralConfig(
             theme = mapThemeTo(entity),
             fontSize = mapFontSizeTo(entity),
@@ -21,7 +22,7 @@ class GeneralConfigMapper @Inject constructor() : Mapper<Preferences, GeneralCon
         )
     }
 
-    override fun mapEntityFrom(model: GeneralConfig): Preferences {
+    fun mapEntityFrom(model: GeneralConfig): Preferences {
         return mutablePreferencesOf().apply {
             val theme = mapThemeFrom(model.theme)
             plusAssign(theme)
@@ -82,34 +83,36 @@ class GeneralConfigMapper @Inject constructor() : Mapper<Preferences, GeneralCon
 
     fun mapMoneyTo(entity: Preferences): MoneyConfig {
         val defaultMoney = GeneralConfigDefaults.MONEY
-        val currencyDisplaySide: CurrencyDisplaySide = EnumExtensions.valueOfOrDefault(
+        val defaultDecimalConfig = defaultMoney.decimalConfig
+        val currencyDisplaySide: DecimalSignDisplaySide = EnumExtensions.valueOfOrDefault(
             entity[GeneralConfigScheme.CURRENCY_DISPLAY_SIDE],
-            defaultMoney.currency.displaySide
+            defaultDecimalConfig.sign.displaySide
         )
-        return MoneyConfig(
-            formattingMode = EnumExtensions.valueOfOrDefault(
-                entity[GeneralConfigScheme.MONEY_FORMATTING_MODE],
-                defaultMoney.formattingMode
-            ),
-            currency = Currency(
-                entity[GeneralConfigScheme.CURRENCY_SYMBOL] ?: defaultMoney.currency.symbol,
+        val decimalConfig: DecimalConfig.Money = DecimalConfig.Money(
+            moneySign = DecimalSign(
+                entity[GeneralConfigScheme.CURRENCY_SYMBOL] ?: defaultDecimalConfig.sign.symbol,
                 currencyDisplaySide
             ),
-            taxRate = Decimal.createOrDefault(
-                entity[GeneralConfigScheme.TAX_RATE],
-                defaultMoney.taxRate
+            moneyFractionDigits = EnumExtensions.valueOfOrDefault(
+                entity[GeneralConfigScheme.MONEY_FRACTION_DIGITS],
+                defaultDecimalConfig.fractionDigits
             )
+        )
+        return MoneyConfig(
+            decimalConfig = decimalConfig,
+            taxRate = Decimal.fromString(
+                entity[GeneralConfigScheme.TAX_RATE].orEmpty(),
+                DecimalConfig.Percent(decimalConfig.fractionDigits)
+            ) ?: defaultMoney.taxRate
         )
     }
 
     fun mapMoneyFrom(model: MoneyConfig): Preferences {
-        val taxRate = DecimalFormatter(DecimalFormattingMode.Percent)
-            .getString(model.taxRate)
         return preferencesOf(
-            GeneralConfigScheme.MONEY_FORMATTING_MODE to model.formattingMode.name,
-            GeneralConfigScheme.CURRENCY_SYMBOL to model.currency.symbol,
-            GeneralConfigScheme.CURRENCY_DISPLAY_SIDE to model.currency.displaySide.name,
-            GeneralConfigScheme.TAX_RATE to taxRate
+            GeneralConfigScheme.MONEY_FRACTION_DIGITS to model.decimalConfig.fractionDigits.name,
+            GeneralConfigScheme.CURRENCY_SYMBOL to model.decimalConfig.sign.symbol,
+            GeneralConfigScheme.CURRENCY_DISPLAY_SIDE to model.decimalConfig.sign.displaySide.name,
+            GeneralConfigScheme.TAX_RATE to model.taxRate.getRawString()
         )
     }
 }

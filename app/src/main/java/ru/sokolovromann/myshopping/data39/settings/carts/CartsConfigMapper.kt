@@ -3,14 +3,13 @@ package ru.sokolovromann.myshopping.data39.settings.carts
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.preferencesOf
-import ru.sokolovromann.myshopping.data39.Mapper
 import ru.sokolovromann.myshopping.utils.EnumExtensions
 import javax.inject.Inject
 import kotlin.text.orEmpty
 
-class CartsConfigMapper @Inject constructor() : Mapper<Preferences, CartsConfig>() {
+class CartsConfigMapper @Inject constructor() {
 
-    override fun mapEntityTo(entity: Preferences): CartsConfig {
+    fun mapEntityTo(entity: Preferences): CartsConfig {
         return CartsConfig(
             viewMode = mapViewModeTo(entity),
             sort = mapSortTo(entity),
@@ -28,7 +27,7 @@ class CartsConfigMapper @Inject constructor() : Mapper<Preferences, CartsConfig>
         )
     }
 
-    override fun mapEntityFrom(model: CartsConfig): Preferences {
+    fun mapEntityFrom(model: CartsConfig): Preferences {
         return mutablePreferencesOf().apply {
             val viewMode = mapViewModeFrom(model.viewMode)
             plusAssign(viewMode)

@@ -3,18 +3,17 @@ package ru.sokolovromann.myshopping.data39.settings.user
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.preferencesOf
-import ru.sokolovromann.myshopping.data39.Mapper
 import javax.inject.Inject
 
-class UserConfigMapper @Inject constructor() : Mapper<Preferences, UserConfig>() {
+class UserConfigMapper @Inject constructor() {
 
-    override fun mapEntityTo(entity: Preferences): UserConfig {
+    fun mapEntityTo(entity: Preferences): UserConfig {
         return UserConfig(
             api = mapApiTo(entity)
         )
     }
 
-    override fun mapEntityFrom(model: UserConfig): Preferences {
+    fun mapEntityFrom(model: UserConfig): Preferences {
         return mutablePreferencesOf().apply {
             val api = mapApiFrom(model.api)
             plusAssign(api)

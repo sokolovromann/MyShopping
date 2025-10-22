@@ -1,8 +1,12 @@
 package ru.sokolovromann.myshopping.data39.settings.general
 
 import ru.sokolovromann.myshopping.utils.DateFormattingMode
+import ru.sokolovromann.myshopping.utils.DateTimeConfig
 import ru.sokolovromann.myshopping.utils.Decimal
-import ru.sokolovromann.myshopping.utils.DecimalFormattingMode
+import ru.sokolovromann.myshopping.utils.DecimalFractionDigits
+import ru.sokolovromann.myshopping.utils.DecimalSign
+import ru.sokolovromann.myshopping.utils.DecimalSignDisplaySide
+import ru.sokolovromann.myshopping.utils.DecimalConfig
 import ru.sokolovromann.myshopping.utils.TimeFormattingMode
 
 object GeneralConfigDefaults {
@@ -12,9 +16,12 @@ object GeneralConfigDefaults {
         dateFormattingMode = DateFormattingMode.MMMDDYYYY,
         timeFormattingMode = TimeFormattingMode.H12
     )
+    val TAX_RATE: Decimal = Decimal.fromFloat(0f, DecimalConfig.Percent(DecimalFractionDigits.Fixed))
     val MONEY: MoneyConfig = MoneyConfig(
-        formattingMode = DecimalFormattingMode.MoneyParams.Advanced,
-        currency = Currency("$", CurrencyDisplaySide.Left),
-        taxRate = Decimal.Companion.getZero()
+        decimalConfig = DecimalConfig.Money(
+            DecimalSign("$", DecimalSignDisplaySide.Left),
+            DecimalFractionDigits.Fixed
+        ),
+        taxRate = TAX_RATE
     )
 }

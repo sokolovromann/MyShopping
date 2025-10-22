@@ -3,7 +3,6 @@ package ru.sokolovromann.myshopping.data39.settings.productswidget
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.preferencesOf
-import ru.sokolovromann.myshopping.data39.Mapper
 import ru.sokolovromann.myshopping.data39.settings.general.FontSize
 import ru.sokolovromann.myshopping.data39.settings.general.Theme
 import ru.sokolovromann.myshopping.data39.settings.products.GroupProducts
@@ -13,9 +12,9 @@ import ru.sokolovromann.myshopping.data39.settings.products.SortProductsParams
 import ru.sokolovromann.myshopping.utils.EnumExtensions
 import javax.inject.Inject
 
-class ProductsWidgetConfigMapper @Inject constructor() : Mapper<Preferences, ProductsWidgetConfig>() {
+class ProductsWidgetConfigMapper @Inject constructor() {
 
-    override fun mapEntityTo(entity: Preferences): ProductsWidgetConfig {
+    fun mapEntityTo(entity: Preferences): ProductsWidgetConfig {
         return ProductsWidgetConfig(
             theme = mapThemeTo(entity),
             fontSize = mapFontSizeTo(entity),
@@ -24,7 +23,7 @@ class ProductsWidgetConfigMapper @Inject constructor() : Mapper<Preferences, Pro
         )
     }
 
-    override fun mapEntityFrom(model: ProductsWidgetConfig): Preferences {
+    fun mapEntityFrom(model: ProductsWidgetConfig): Preferences {
         return mutablePreferencesOf().apply {
             val theme = mapThemeFrom(model.theme)
             plusAssign(theme)
