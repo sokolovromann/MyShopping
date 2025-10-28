@@ -25,15 +25,8 @@ class DateTime private constructor(
         }
     }
 
-    fun newMillis(millis: Long): DateTime {
+    fun newMillis(millis: Long = getCurrentMillis()): DateTime {
         val calendar = Calendar.getInstance().apply { timeInMillis = millis }
-        return DateTime(calendar, config)
-    }
-
-    fun newMillis(millis: String): DateTime {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = millis.toLong()
-        }
         return DateTime(calendar, config)
     }
 
