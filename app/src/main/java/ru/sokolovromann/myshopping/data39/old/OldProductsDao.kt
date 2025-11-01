@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.old
+package ru.sokolovromann.myshopping.data39.old
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.old
+package ru.sokolovromann.myshopping.data39.old
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
