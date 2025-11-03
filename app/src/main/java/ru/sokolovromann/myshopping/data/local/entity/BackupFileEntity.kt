@@ -1,8 +1,8 @@
 package ru.sokolovromann.myshopping.data.local.entity
 
-import ru.sokolovromann.myshopping.old.OldAutocompleteEntity
-import ru.sokolovromann.myshopping.old.OldProductEntity
-import ru.sokolovromann.myshopping.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.OldProductEntity
+import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
 
 data class BackupFileEntity(
     val shoppingEntities: List<OldShoppingEntity> = listOf(),
