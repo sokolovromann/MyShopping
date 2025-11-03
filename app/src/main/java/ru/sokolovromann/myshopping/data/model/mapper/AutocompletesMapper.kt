@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.data.model.mapper
 
-import ru.sokolovromann.myshopping.old.OldAutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig

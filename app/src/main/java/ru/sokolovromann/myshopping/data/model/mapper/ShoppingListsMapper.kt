@@ -1,8 +1,8 @@
 package ru.sokolovromann.myshopping.data.model.mapper
 
-import ru.sokolovromann.myshopping.old.OldProductEntity
-import ru.sokolovromann.myshopping.old.OldShoppingEntity
-import ru.sokolovromann.myshopping.old.OldShoppingListEntity
+import ru.sokolovromann.myshopping.data39.old.OldProductEntity
+import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.OldShoppingListEntity
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.Shopping

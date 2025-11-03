@@ -1,15 +1,15 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
 import android.net.Uri
-import ru.sokolovromann.myshopping.old.OldAutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
-import ru.sokolovromann.myshopping.old.OldProductEntity
-import ru.sokolovromann.myshopping.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.OldProductEntity
+import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
 import ru.sokolovromann.myshopping.data.model.DateTime
-import ru.sokolovromann.myshopping.io.LocalBase64
-import ru.sokolovromann.myshopping.io.LocalEnvironment
-import ru.sokolovromann.myshopping.io.LocalFile
-import ru.sokolovromann.myshopping.io.LocalJson
+import ru.sokolovromann.myshopping.data39.LocalBase64
+import ru.sokolovromann.myshopping.data39.LocalEnvironment
+import ru.sokolovromann.myshopping.data39.LocalFile
+import ru.sokolovromann.myshopping.data39.LocalJson
 import ru.sokolovromann.myshopping.utils.Dispatcher
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 import javax.inject.Inject

@@ -9,8 +9,8 @@ import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
-import ru.sokolovromann.myshopping.old.OldProductEntity
-import ru.sokolovromann.myshopping.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.OldProductEntity
+import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Backup
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
