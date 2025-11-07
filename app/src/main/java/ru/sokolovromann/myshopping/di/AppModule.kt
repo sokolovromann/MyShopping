@@ -8,13 +8,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.data.local.dao.*
 import ru.sokolovromann.myshopping.data.local.datasource.AppContent
-import ru.sokolovromann.myshopping.io.LocalRoomDatabase
 import ru.sokolovromann.myshopping.data.local.datasource.AppSQLiteOpenHelper
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.repository.*
-import ru.sokolovromann.myshopping.io.LocalBase64
-import ru.sokolovromann.myshopping.io.LocalFile
-import ru.sokolovromann.myshopping.io.LocalJson
+import ru.sokolovromann.myshopping.data39.LocalBase64
+import ru.sokolovromann.myshopping.data39.LocalFile
+import ru.sokolovromann.myshopping.data39.LocalJson
+import ru.sokolovromann.myshopping.data39.LocalRoomDatabase
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager

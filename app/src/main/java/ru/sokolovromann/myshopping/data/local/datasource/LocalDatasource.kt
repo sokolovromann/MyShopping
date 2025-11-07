@@ -1,13 +1,13 @@
 package ru.sokolovromann.myshopping.data.local.datasource
 
 import ru.sokolovromann.myshopping.data.local.dao.AppConfigDao
-import ru.sokolovromann.myshopping.old.OldAutocompletesDao
+import ru.sokolovromann.myshopping.data39.old.OldAutocompletesDao
 import ru.sokolovromann.myshopping.data.local.dao.BackupDao
 import ru.sokolovromann.myshopping.data.local.dao.CodeVersion14Dao
-import ru.sokolovromann.myshopping.old.OldProductsDao
+import ru.sokolovromann.myshopping.data39.old.OldProductsDao
 import ru.sokolovromann.myshopping.data.local.dao.ResourcesDao
-import ru.sokolovromann.myshopping.old.OldShoppingListsDao
-import ru.sokolovromann.myshopping.io.LocalRoomDatabase
+import ru.sokolovromann.myshopping.data39.LocalRoomDatabase
+import ru.sokolovromann.myshopping.data39.old.OldShoppingListsDao
 import javax.inject.Inject
 
 class LocalDatasource @Inject constructor(
