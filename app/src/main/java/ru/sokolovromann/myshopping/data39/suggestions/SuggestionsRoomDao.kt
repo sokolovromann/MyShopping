@@ -18,9 +18,11 @@ interface SuggestionsRoomDao {
     @Query("SELECT * FROM api39_suggestions WHERE uid = :uid")
     fun observe(uid: String): Flow<SuggestionWithDetailsRoomEntity>
 
+    @Transaction
     @Query("SELECT * FROM api39_suggestions")
     fun getAll(): List<SuggestionWithDetailsRoomEntity>
 
+    @Transaction
     @Query("SELECT * FROM api39_suggestions WHERE uid = :uid")
     fun get(uid: String): SuggestionWithDetailsRoomEntity
 
