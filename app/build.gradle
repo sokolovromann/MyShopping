@@ -74,10 +74,10 @@ dependencies {
     implementation 'androidx.glance:glance:1.1.1'
     implementation 'androidx.glance:glance-appwidget:1.1.1'
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.36.0'
-    implementation 'androidx.room:room-runtime:2.7.2'
+    implementation 'androidx.room:room-runtime:2.8.4'
     //noinspection KaptUsageInsteadOfKsp
-    kapt 'androidx.room:room-compiler:2.7.2'
-    implementation 'androidx.room:room-ktx:2.7.2'
+    kapt 'androidx.room:room-compiler:2.8.4'
+    implementation 'androidx.room:room-ktx:2.8.4'
     implementation 'androidx.datastore:datastore-preferences:1.1.7'
     implementation 'com.google.dagger:hilt-android:2.57.2'
     kapt 'com.google.dagger:hilt-compiler:2.57.2'
