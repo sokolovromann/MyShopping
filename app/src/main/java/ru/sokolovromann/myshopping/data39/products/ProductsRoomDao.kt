@@ -20,6 +20,9 @@ interface ProductsRoomDao {
     @Update(onConflict = REPLACE)
     fun update(product: ProductRoomEntity)
 
+    @Query("DELETE FROM api39_products WHERE uid IN(:uids)")
+    fun deleteAll(uids: List<String>)
+
     @Query("DELETE FROM api39_products WHERE uid = :uid")
     fun delete(uid: String)
 

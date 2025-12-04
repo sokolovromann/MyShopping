@@ -32,6 +32,9 @@ interface CartsRoomDao {
     @Insert(onConflict = REPLACE)
     fun insert(cart: CartRoomEntity)
 
+    @Query("DELETE FROM api39_carts WHERE uid IN(:uids)")
+    fun deleteAll(uids: List<String>)
+
     @Query("DELETE FROM api39_carts WHERE uid = :uid")
     fun delete(uid: String)
 

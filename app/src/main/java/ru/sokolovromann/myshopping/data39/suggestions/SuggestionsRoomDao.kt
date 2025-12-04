@@ -33,7 +33,10 @@ interface SuggestionsRoomDao {
     fun insert(suggestion: SuggestionRoomEntity)
 
     @Query("DELETE FROM api39_suggestions WHERE uid IN(:uids)")
-    fun delete(uids: List<String>)
+    fun deleteAll(uids: List<String>)
+
+    @Query("DELETE FROM api39_suggestions WHERE uid = :uid")
+    fun delete(uid: String)
 
     @Query("DELETE FROM api39_suggestions")
     fun clear()
