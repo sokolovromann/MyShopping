@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 
 @Dao
-interface SuggestionDetailRoomDao {
+interface SuggestionDetailsRoomDao {
 
     @Query("SELECT * FROM api39_suggestion_details")
     fun getAll(): List<SuggestionDetailRoomEntity>

@@ -17,7 +17,7 @@ import ru.sokolovromann.myshopping.data39.old.OldProductEntity
 import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
 import ru.sokolovromann.myshopping.data39.products.ProductRoomEntity
 import ru.sokolovromann.myshopping.data39.products.ProductsRoomDao
-import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailRoomDao
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRoomDao
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailRoomEntity
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionRoomEntity
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRoomDao
@@ -85,7 +85,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
 
     abstract fun getSuggestionsDao(): SuggestionsRoomDao
 
-    abstract fun getSuggestionDetailsDao(): SuggestionDetailRoomDao
+    abstract fun getSuggestionDetailsDao(): SuggestionDetailsRoomDao
 
     abstract fun getOldShoppingListsDao(): OldShoppingListsDao
 
