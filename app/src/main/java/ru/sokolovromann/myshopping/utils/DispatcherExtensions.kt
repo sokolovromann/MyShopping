@@ -43,6 +43,14 @@ object DispatcherExtensions {
         )
     }
 
+    fun <T> CoroutineScope.asyncOnIo(block: suspend CoroutineScope.() -> T): Deferred<T> {
+        return async(Dispatcher.IO, block)
+    }
+
+    fun <T> CoroutineScope.asyncOnMain(block: suspend CoroutineScope.() -> T): Deferred<T> {
+        return async(Dispatcher.Main, block)
+    }
+
     // LAUNCH
 
     fun CoroutineScope.launch(
@@ -55,9 +63,25 @@ object DispatcherExtensions {
         )
     }
 
+    fun CoroutineScope.launchOnIo(block: suspend CoroutineScope.() -> Unit): Job {
+        return launch(Dispatcher.IO, block)
+    }
+
+    fun CoroutineScope.launchOnMain(block: suspend CoroutineScope.() -> Unit): Job {
+        return launch(Dispatcher.Main, block)
+    }
+
     // FLOW ON
 
     fun <T> Flow<T>.flowOn(dispatcher: Dispatcher): Flow<T> {
         return flowOn(dispatcher.toCoroutineContext())
+    }
+
+    fun <T> Flow<T>.flowOnIo(): Flow<T> {
+        return flowOn(Dispatcher.IO)
+    }
+
+    fun <T> Flow<T>.flowOnMain(): Flow<T> {
+        return flowOn(Dispatcher.Main)
     }
 }
