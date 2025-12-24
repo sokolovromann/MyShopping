@@ -16,7 +16,7 @@ interface SuggestionsRoomDao {
 
     @Transaction
     @Query("SELECT * FROM api39_suggestions WHERE uid = :uid")
-    fun observe(uid: String): Flow<SuggestionWithDetailsRoomEntity>
+    fun observe(uid: String): Flow<SuggestionWithDetailsRoomEntity?>
 
     @Transaction
     @Query("SELECT * FROM api39_suggestions")
@@ -24,7 +24,7 @@ interface SuggestionsRoomDao {
 
     @Transaction
     @Query("SELECT * FROM api39_suggestions WHERE uid = :uid")
-    fun get(uid: String): SuggestionWithDetailsRoomEntity
+    fun get(uid: String): SuggestionWithDetailsRoomEntity?
 
     @Insert(onConflict = REPLACE)
     fun insertAll(suggestions: List<SuggestionRoomEntity>)
