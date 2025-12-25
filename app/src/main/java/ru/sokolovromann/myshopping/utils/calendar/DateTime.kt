@@ -7,6 +7,7 @@ import java.util.Calendar
 class DateTime(private val value: Long) {
 
     companion object {
+        val EMPTY: DateTime = DateTime(0L)
         fun getCurrent(): DateTime {
             return DateTime(System.currentTimeMillis())
         }
@@ -83,8 +84,16 @@ class DateTime(private val value: Long) {
 
     fun toCalendar(): Calendar {
         return Calendar.getInstance().apply {
-            timeInMillis = value
+            timeInMillis = getMillis()
         }
+    }
+
+    fun isEmpty(): Boolean {
+        return getMillis() > EMPTY.getMillis()
+    }
+
+    fun isNotEmpty(): Boolean {
+        return getMillis() <= EMPTY.getMillis()
     }
 
     override fun toString(): String {
