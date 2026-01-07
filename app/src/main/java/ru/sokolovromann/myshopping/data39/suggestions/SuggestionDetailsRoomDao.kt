@@ -9,13 +9,22 @@ import androidx.room.Query
 interface SuggestionDetailsRoomDao {
 
     @Query("SELECT * FROM api39_suggestion_details")
-    fun get(): List<SuggestionDetailRoomEntity>
+    fun getAll(): List<SuggestionDetailRoomEntity>
+
+    @Query("SELECT * FROM api39_suggestion_details WHERE uid = :uid")
+    fun get(uid: String): SuggestionDetailRoomEntity?
 
     @Insert(onConflict = REPLACE)
-    fun insert(details: List<SuggestionDetailRoomEntity>)
+    fun insertAll(details: List<SuggestionDetailRoomEntity>)
+
+    @Insert(onConflict = REPLACE)
+    fun insert(detail: SuggestionDetailRoomEntity)
 
     @Query("DELETE FROM api39_suggestion_details WHERE uid IN(:uids)")
-    fun delete(uids: List<String>)
+    fun deleteAll(uids: List<String>)
+
+    @Query("DELETE FROM api39_suggestion_details WHERE uid = :uid")
+    fun delete(uid: String)
 
     @Query("DELETE FROM api39_suggestion_details")
     fun clear()
