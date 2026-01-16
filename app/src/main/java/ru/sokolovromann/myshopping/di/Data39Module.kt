@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import ru.sokolovromann.myshopping.data39.LocalBase64
 import ru.sokolovromann.myshopping.data39.LocalFile
 import ru.sokolovromann.myshopping.data39.LocalJson
+import ru.sokolovromann.myshopping.data39.LocalResources
 import ru.sokolovromann.myshopping.data39.LocalRoomDatabase
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsMapper
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRepository
@@ -38,6 +39,12 @@ object Data39Module {
     @Provides
     fun providesLocalFile(@ApplicationContext context: Context): LocalFile {
         return LocalFile(context)
+    }
+
+    @Singleton
+    @Provides
+    fun providesLocalResources(@ApplicationContext context: Context): LocalResources {
+        return LocalResources(context)
     }
 
     @Singleton
