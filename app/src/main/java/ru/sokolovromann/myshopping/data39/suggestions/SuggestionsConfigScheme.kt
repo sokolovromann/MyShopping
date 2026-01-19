@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 object SuggestionsConfigScheme {
     const val DATA_STORE_NAME: String = "local_suggestions_config"
 
+    val PRE_INSTALLED = stringPreferencesKey("pre_installed")
     val VIEW_MODE = stringPreferencesKey("view_mode")
     val SORT = stringPreferencesKey("sort")
     val SORT_ORDER = stringPreferencesKey("sort_order")

@@ -21,6 +21,7 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
             }
         }
         return preferencesOf(
+            SuggestionsConfigScheme.PRE_INSTALLED to fromEnum(data.preInstalled),
             SuggestionsConfigScheme.VIEW_MODE to fromEnum(data.viewMode),
             SuggestionsConfigScheme.SORT to strSort,
             SuggestionsConfigScheme.SORT_ORDER to strOrder,
@@ -32,6 +33,10 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
     }
 
     override fun fromPreferences(preferences: Preferences): SuggestionsConfig {
+        val preInstalled = toEnum(
+            preferences[SuggestionsConfigScheme.PRE_INSTALLED],
+            SuggestionsDefaults.PRE_INSTALLED
+        )
         val viewMode = toEnum(
             preferences[SuggestionsConfigScheme.VIEW_MODE],
             SuggestionsDefaults.VIEW_MODE
@@ -65,6 +70,7 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
         )
 
         return SuggestionsConfig(
+            preInstalled = preInstalled,
             viewMode = viewMode,
             sort = sort,
             takeSuggestions = takeSuggestions,
