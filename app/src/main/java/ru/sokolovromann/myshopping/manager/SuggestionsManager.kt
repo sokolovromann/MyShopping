@@ -10,6 +10,7 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRepositor
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfig
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfigRepository
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsPreInstalled
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsViewMode
 import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetails
@@ -103,6 +104,11 @@ class SuggestionsManager @Inject constructor(
 
     suspend fun addConfig(config: SuggestionsConfig): Unit = withIoContext {
         suggestionsConfigRepository.update(config)
+    }
+
+    suspend fun updateConfig(preInstalled: SuggestionsPreInstalled): Unit = withIoContext {
+        val config = getConfig().copy(preInstalled = preInstalled)
+        addConfig(config)
     }
 
     suspend fun updateConfig(viewMode: SuggestionsViewMode): Unit = withIoContext {
