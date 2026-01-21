@@ -11,6 +11,7 @@ import ru.sokolovromann.myshopping.data39.LocalFile
 import ru.sokolovromann.myshopping.data39.LocalJson
 import ru.sokolovromann.myshopping.data39.LocalResources
 import ru.sokolovromann.myshopping.data39.LocalRoomDatabase
+import ru.sokolovromann.myshopping.data39.old.OldRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsMapper
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfigMapper
@@ -51,6 +52,21 @@ object Data39Module {
     @Provides
     fun providesLocalRoomDatabase(@ApplicationContext context: Context): LocalRoomDatabase {
         return LocalRoomDatabase.build(context)
+    }
+
+    // OLD
+
+    @Provides
+    fun providesOldRepository(
+        database: LocalRoomDatabase,
+        localResources: LocalResources
+    ): OldRepository {
+        return OldRepository(
+            database.getOldShoppingListsDao(),
+            database.getOldProductsDao(),
+            database.getOldAutocompletesDao(),
+            localResources
+        )
     }
 
     // SUGGESTIONS CONFIG
