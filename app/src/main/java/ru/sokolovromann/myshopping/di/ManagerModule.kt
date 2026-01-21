@@ -4,14 +4,21 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ru.sokolovromann.myshopping.data39.old.OldRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfigRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRepository
+import ru.sokolovromann.myshopping.manager.OldManager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ManagerModule {
+
+    @Provides
+    fun providesOldManager(oldRepository: OldRepository): OldManager {
+        return OldManager(oldRepository)
+    }
 
     @Provides
     fun providesSuggestionsManager(
