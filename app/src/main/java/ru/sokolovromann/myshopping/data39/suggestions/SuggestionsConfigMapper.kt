@@ -25,6 +25,7 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
             SuggestionsConfigScheme.VIEW_MODE to fromEnum(data.viewMode),
             SuggestionsConfigScheme.SORT to strSort,
             SuggestionsConfigScheme.SORT_ORDER to strOrder,
+            SuggestionsConfigScheme.ADD to fromEnum(data.add),
             SuggestionsConfigScheme.TAKE_NAMES to fromEnum(data.takeSuggestions),
             SuggestionsConfigScheme.TAKE_DESCRIPTIONS to fromEnum(data.takeDetails.descriptions),
             SuggestionsConfigScheme.TAKE_QUANTITIES to fromEnum(data.takeDetails.quantities),
@@ -50,6 +51,10 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
             "Popularity" -> SortSuggestions.Popularity(order)
             else -> SuggestionsDefaults.SORT
         }
+        val add = toEnum(
+            preferences[SuggestionsConfigScheme.ADD],
+            SuggestionsDefaults.ADD
+        )
         val takeSuggestions = toEnum(
             preferences[SuggestionsConfigScheme.TAKE_NAMES],
             SuggestionsDefaults.TAKE_SUGGESTIONS
@@ -73,6 +78,7 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
             preInstalled = preInstalled,
             viewMode = viewMode,
             sort = sort,
+            add = add,
             takeSuggestions = takeSuggestions,
             takeDetails = takeSuggestionDetails
         )

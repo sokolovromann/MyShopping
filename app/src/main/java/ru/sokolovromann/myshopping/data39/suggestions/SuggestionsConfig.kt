@@ -4,6 +4,7 @@ data class SuggestionsConfig(
     val preInstalled: SuggestionsPreInstalled,
     val viewMode: SuggestionsViewMode,
     val sort: SortSuggestions,
+    val add: AddSuggestionWithDetails,
     val takeSuggestions: TakeSuggestions,
     val takeDetails: TakeSuggestionDetailsInfo
 )

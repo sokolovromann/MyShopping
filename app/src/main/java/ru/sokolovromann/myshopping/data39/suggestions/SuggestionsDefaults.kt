@@ -8,6 +8,7 @@ object SuggestionsDefaults {
     val VIEW_MODE: SuggestionsViewMode = SuggestionsViewMode.List
     val SORT_ORDER: SortSuggestions.Order = SortSuggestions.Order.ByAscending
     val SORT: SortSuggestions = SortSuggestions.Name(SORT_ORDER)
+    val ADD: AddSuggestionWithDetails = AddSuggestionWithDetails.SuggestionAndDetails
     val TAKE_SUGGESTIONS: TakeSuggestions = TakeSuggestions.Ten
     val TAKE_DESCRIPTIONS: TakeSuggestionDetails = TakeSuggestionDetails.Three
     val TAKE_QUANTITIES: TakeSuggestionDetails = TakeSuggestionDetails.Five

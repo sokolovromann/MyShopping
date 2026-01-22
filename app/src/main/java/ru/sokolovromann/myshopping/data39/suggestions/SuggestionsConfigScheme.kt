@@ -9,6 +9,7 @@ object SuggestionsConfigScheme {
     val VIEW_MODE = stringPreferencesKey("view_mode")
     val SORT = stringPreferencesKey("sort")
     val SORT_ORDER = stringPreferencesKey("sort_order")
+    val ADD = stringPreferencesKey("add")
     val TAKE_NAMES = stringPreferencesKey("take_names")
     val TAKE_DESCRIPTIONS = stringPreferencesKey("take_descriptions")
     val TAKE_QUANTITIES = stringPreferencesKey("take_quantities")
