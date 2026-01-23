@@ -7,19 +7,19 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface OldProductsDao {
+interface Api15ProductsDao {
 
     @Query("SELECT * FROM products")
-    fun getAllProducts(): Flow<List<OldProductEntity>>
+    fun getAllProducts(): Flow<List<Api15ProductEntity>>
 
     @Query("SELECT * FROM products WHERE product_uid IN (:productUids)")
-    fun getProducts(productUids: List<String>): Flow<List<OldProductEntity>>
+    fun getProducts(productUids: List<String>): Flow<List<Api15ProductEntity>>
 
     @Query("SELECT * FROM products WHERE name LIKE '%' || :search || '%'")
-    fun searchProductsLikeName(search: String): Flow<List<OldProductEntity>>
+    fun searchProductsLikeName(search: String): Flow<List<Api15ProductEntity>>
 
     @Query("SELECT * FROM products WHERE product_uid = :productUid")
-    fun getProduct(productUid: String): Flow<OldProductEntity?>
+    fun getProduct(productUid: String): Flow<Api15ProductEntity?>
 
     @Query("SELECT position FROM products WHERE shopping_uid = :shoppingUid ORDER BY position ASC LIMIT 1")
     fun getFirstPosition(shoppingUid: String): Flow<Int?>
@@ -28,10 +28,10 @@ interface OldProductsDao {
     fun getLastPosition(shoppingUid: String): Flow<Int?>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insertProducts(products: List<OldProductEntity>)
+    fun insertProducts(products: List<Api15ProductEntity>)
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insertProduct(product: OldProductEntity)
+    fun insertProduct(product: Api15ProductEntity)
 
     @Query("UPDATE products SET position = :position WHERE product_uid = :productUid")
     fun updatePosition(productUid: String, position: Int)

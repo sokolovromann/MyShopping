@@ -9,8 +9,8 @@ import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
-import ru.sokolovromann.myshopping.data39.old.OldProductEntity
-import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.Api15ProductEntity
+import ru.sokolovromann.myshopping.data39.old.Api15ShoppingEntity
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Backup
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
@@ -146,16 +146,16 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
     }
 }
 
-private fun getFilteredShoppings(shoppings: List<OldShoppingEntity>): List<OldShoppingEntity> {
+private fun getFilteredShoppings(shoppings: List<Api15ShoppingEntity>): List<Api15ShoppingEntity> {
     return shoppings.filterNot { it.deleted }.map {
         it.copy(reminder = 0L)
     }
 }
 
 private fun getFilteredProducts(
-    shoppings: List<OldShoppingEntity>,
-    products: List<OldProductEntity>
-): List<OldProductEntity> {
+    shoppings: List<Api15ShoppingEntity>,
+    products: List<Api15ProductEntity>
+): List<Api15ProductEntity> {
     val shoppingUids = shoppings
         .filter { it.deleted }
         .map { it.uid }

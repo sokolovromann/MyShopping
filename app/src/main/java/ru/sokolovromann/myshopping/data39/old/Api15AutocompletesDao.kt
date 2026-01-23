@@ -7,28 +7,28 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface OldAutocompletesDao {
+interface Api15AutocompletesDao {
 
     @Query("SELECT * FROM autocompletes")
-    fun getAllAutocompletes(): Flow<List<OldAutocompleteEntity>>
+    fun getAllAutocompletes(): Flow<List<Api15AutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE personal = 0")
-    fun getDefaultAutocompletes(): Flow<List<OldAutocompleteEntity>>
+    fun getDefaultAutocompletes(): Flow<List<Api15AutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE personal = 1")
-    fun getPersonalAutocompletes(): Flow<List<OldAutocompleteEntity>>
+    fun getPersonalAutocompletes(): Flow<List<Api15AutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE name LIKE '%' || :search || '%'")
-    fun searchAutocompletesLikeName(search: String): Flow<List<OldAutocompleteEntity>>
+    fun searchAutocompletesLikeName(search: String): Flow<List<Api15AutocompleteEntity>>
 
     @Query("SELECT * FROM autocompletes WHERE uid = :uid")
-    fun getAutocomplete(uid: String): Flow<OldAutocompleteEntity?>
+    fun getAutocomplete(uid: String): Flow<Api15AutocompleteEntity?>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insertAutocompletes(autocompletes: List<OldAutocompleteEntity>)
+    fun insertAutocompletes(autocompletes: List<Api15AutocompleteEntity>)
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insertAutocomplete(autocomplete: OldAutocompleteEntity)
+    fun insertAutocomplete(autocomplete: Api15AutocompleteEntity)
 
     @Query("UPDATE autocompletes SET " +
             "last_modified = :lastModifier," +

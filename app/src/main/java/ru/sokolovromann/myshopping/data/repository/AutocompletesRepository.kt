@@ -7,7 +7,7 @@ import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.exception.InvalidValueException
 import ru.sokolovromann.myshopping.data.local.datasource.LocalDatasource
-import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompleteEntity
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
@@ -82,7 +82,7 @@ class AutocompletesRepository @Inject constructor(localDatasource: LocalDatasour
                 flow = appConfigDao.getAppConfig(),
                 transform = { autocompleteEntity, appConfigEntity ->
                     AutocompletesMapper.toAutocompleteWithConfig(
-                        entity = autocompleteEntity ?: OldAutocompleteEntity(),
+                        entity = autocompleteEntity ?: Api15AutocompleteEntity(),
                         appConfig = AppConfigMapper.toAppConfig(appConfigEntity)
                     )
                 }

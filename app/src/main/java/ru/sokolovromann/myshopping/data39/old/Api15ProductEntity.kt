@@ -6,14 +6,20 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Entity(tableName = "autocompletes")
-data class OldAutocompleteEntity(
+@Entity(tableName = "products")
+data class Api15ProductEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
 
-    @ColumnInfo(name = "uid")
-    val uid: String = "",
+    @ColumnInfo(name = "position")
+    val position: Int = 0,
+
+    @ColumnInfo(name = "product_uid")
+    val productUid: String = "",
+
+    @ColumnInfo(name = "shopping_uid")
+    val shoppingUid: String = "",
 
     @ColumnInfo(name = "last_modified")
     val lastModified: Long = 0L,
@@ -45,6 +51,12 @@ data class OldAutocompleteEntity(
     @ColumnInfo(name = "total")
     val total: Float = 0f,
 
+    @ColumnInfo(name = "total_formatted")
+    val totalFormatted: Boolean = false,
+
+    @ColumnInfo(name = "note")
+    val note: String = "",
+
     @ColumnInfo(name = "manufacturer")
     val manufacturer: String = "",
 
@@ -60,9 +72,9 @@ data class OldAutocompleteEntity(
     @ColumnInfo(name = "provider")
     val provider: String = "",
 
-    @ColumnInfo(name = "personal")
-    val personal: Boolean = true,
+    @ColumnInfo(name = "completed")
+    val completed: Boolean = false,
 
-    @ColumnInfo(name = "language")
-    val language: String = ""
+    @ColumnInfo(name = "pinned")
+    val pinned: Boolean = false
 )

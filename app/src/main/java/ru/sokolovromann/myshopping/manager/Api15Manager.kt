@@ -1,21 +1,19 @@
 package ru.sokolovromann.myshopping.manager
 
-import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
-import ru.sokolovromann.myshopping.data39.old.OldRepository
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.Api15Repository
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
 import javax.inject.Inject
 
-class OldManager @Inject constructor(
-    private val oldRepository: OldRepository
-) {
+class Api15Manager @Inject constructor(private val api15Repository: Api15Repository) {
 
-    suspend fun getAutocompletes(): Map<String, List<OldAutocompleteEntity>> = withIoContext {
-        return@withIoContext oldRepository.getAutocompletes()
+    suspend fun getAutocompletes(): Map<String, List<Api15AutocompleteEntity>> = withIoContext {
+        return@withIoContext api15Repository.getAutocompletes()
             .groupBy { it.name.lowercase() }
             .mapKeys { (key, _) -> key.replaceFirstChar { it.uppercase() } }
             .mapValues { (_, value) ->
                 val sorted = value.sortedBy { it.lastModified }
-                val details = mutableListOf<OldAutocompleteEntity>()
+                val details = mutableListOf<Api15AutocompleteEntity>()
 
                 val manufacturer = sorted
                     .distinctBy { it.manufacturer.lowercase() }
@@ -67,7 +65,7 @@ class OldManager @Inject constructor(
     }
 
     suspend fun countAutocompleteNames(name: String): Int = withIoContext {
-        return@withIoContext oldRepository.getAutocompletes().count {
+        return@withIoContext api15Repository.getAutocompletes().count {
             it.name.equals(name, true)
         }
     }

@@ -1,6 +1,6 @@
 package ru.sokolovromann.myshopping.data.model.mapper
 
-import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompleteEntity
 import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.AutocompleteWithConfig
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
@@ -12,8 +12,8 @@ import ru.sokolovromann.myshopping.data.model.UserPreferences
 
 object AutocompletesMapper {
 
-    fun toAutocompleteEntity(autocomplete: Autocomplete): OldAutocompleteEntity {
-        return OldAutocompleteEntity(
+    fun toAutocompleteEntity(autocomplete: Autocomplete): Api15AutocompleteEntity {
+        return Api15AutocompleteEntity(
             id = autocomplete.id,
             uid = autocomplete.uid,
             lastModified = autocomplete.lastModified.millis,
@@ -36,7 +36,7 @@ object AutocompletesMapper {
         )
     }
 
-    fun toAutocompleteEntities(autocompletes: List<Autocomplete>): List<OldAutocompleteEntity> {
+    fun toAutocompleteEntities(autocompletes: List<Autocomplete>): List<Api15AutocompleteEntity> {
         return autocompletes.map { toAutocompleteEntity(it) }
     }
 
@@ -48,7 +48,7 @@ object AutocompletesMapper {
     }
 
     fun toAutocompleteWithConfig(
-        entity: OldAutocompleteEntity,
+        entity: Api15AutocompleteEntity,
         appConfig: AppConfig
     ): AutocompleteWithConfig {
         return AutocompleteWithConfig(
@@ -58,7 +58,7 @@ object AutocompletesMapper {
     }
 
     fun toAutocompletesWithConfig(
-        entities: List<OldAutocompleteEntity>,
+        entities: List<Api15AutocompleteEntity>,
         appConfig: AppConfig
     ): AutocompletesWithConfig {
         val autocompletes = toAutocompletes(entities, null, appConfig, null)
@@ -69,7 +69,7 @@ object AutocompletesMapper {
     }
 
     fun toAutocompletesWithConfig(
-        entities: List<OldAutocompleteEntity>,
+        entities: List<Api15AutocompleteEntity>,
         resources: List<String>?,
         appConfig: AppConfig,
         language: String?
@@ -82,7 +82,7 @@ object AutocompletesMapper {
     }
 
     fun toAutocompletes(
-        entities: List<OldAutocompleteEntity>,
+        entities: List<Api15AutocompleteEntity>,
         resources: List<String>?,
         appConfig: AppConfig,
         language: String?
@@ -91,7 +91,7 @@ object AutocompletesMapper {
             val default = entities.filter { !it.personal && it.language == language }
             val personal = entities.filter { it.personal }
 
-            mutableListOf<OldAutocompleteEntity>().apply {
+            mutableListOf<Api15AutocompleteEntity>().apply {
                 addAll(default)
                 addAll(personal)
             }
@@ -110,7 +110,7 @@ object AutocompletesMapper {
         return autocompletes.toList()
     }
 
-    private fun toAutocomplete(entity: OldAutocompleteEntity, userPreferences: UserPreferences): Autocomplete {
+    private fun toAutocomplete(entity: Api15AutocompleteEntity, userPreferences: UserPreferences): Autocomplete {
         return Autocomplete(
             id = entity.id,
             position = entity.id,

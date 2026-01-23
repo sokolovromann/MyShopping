@@ -4,11 +4,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ru.sokolovromann.myshopping.data39.old.OldRepository
+import ru.sokolovromann.myshopping.data39.old.Api15Repository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfigRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRepository
-import ru.sokolovromann.myshopping.manager.OldManager
+import ru.sokolovromann.myshopping.manager.Api15Manager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 
 @Module
@@ -16,8 +16,8 @@ import ru.sokolovromann.myshopping.manager.SuggestionsManager
 object ManagerModule {
 
     @Provides
-    fun providesOldManager(oldRepository: OldRepository): OldManager {
-        return OldManager(oldRepository)
+    fun providesApi15Manager(api15Repository: Api15Repository): Api15Manager {
+        return Api15Manager(api15Repository)
     }
 
     @Provides

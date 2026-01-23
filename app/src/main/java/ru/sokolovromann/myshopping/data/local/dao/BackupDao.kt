@@ -1,10 +1,10 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
 import android.net.Uri
-import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompleteEntity
 import ru.sokolovromann.myshopping.data.local.entity.BackupFileEntity
-import ru.sokolovromann.myshopping.data39.old.OldProductEntity
-import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.Api15ProductEntity
+import ru.sokolovromann.myshopping.data39.old.Api15ShoppingEntity
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data39.LocalBase64
 import ru.sokolovromann.myshopping.data39.LocalEnvironment
@@ -59,15 +59,15 @@ class BackupDao @Inject constructor(
         return localBase64.encode(jsonsText.dropLast(1))
     }
 
-    private fun encodeShoppingEntities(entities: List<OldShoppingEntity>): List<String> {
+    private fun encodeShoppingEntities(entities: List<Api15ShoppingEntity>): List<String> {
         return entities.map { "$shoppingPrefix${localJson.encodeToString(it)}" }
     }
 
-    private fun encodeProductEntities(entities: List<OldProductEntity>): List<String> {
+    private fun encodeProductEntities(entities: List<Api15ProductEntity>): List<String> {
         return entities.map { "$productPrefix${localJson.encodeToString(it)}" }
     }
 
-    private fun encodeAutocompleteEntities(entities: List<OldAutocompleteEntity>): List<String> {
+    private fun encodeAutocompleteEntities(entities: List<Api15AutocompleteEntity>): List<String> {
         return entities.map { "$autocompletePrefix${localJson.encodeToString(it)}" }
     }
 
@@ -78,9 +78,9 @@ class BackupDao @Inject constructor(
         }
 
         var appVersion = 0
-        val shoppingEntities = mutableListOf<OldShoppingEntity>()
-        val productEntities = mutableListOf<OldProductEntity>()
-        val autocompleteEntities = mutableListOf<OldAutocompleteEntity>()
+        val shoppingEntities = mutableListOf<Api15ShoppingEntity>()
+        val productEntities = mutableListOf<Api15ProductEntity>()
+        val autocompleteEntities = mutableListOf<Api15AutocompleteEntity>()
         dataList.forEach { data ->
             if (data.startsWith(codeVersionPrefix)) {
                 appVersion = data.replace(codeVersionPrefix, "").toIntOrNull() ?: 0
@@ -110,17 +110,17 @@ class BackupDao @Inject constructor(
         )
     }
 
-    private fun decodeShoppingEntity(value: String): OldShoppingEntity {
+    private fun decodeShoppingEntity(value: String): Api15ShoppingEntity {
         val entityJson = value.replace(shoppingPrefix, "")
         return localJson.decodeFromString(entityJson)
     }
 
-    private fun decodeProductEntity(value: String): OldProductEntity {
+    private fun decodeProductEntity(value: String): Api15ProductEntity {
         val entityJson = value.replace(productPrefix, "")
         return localJson.decodeFromString(entityJson)
     }
 
-    private fun decodeAutocompleteEntity(value: String): OldAutocompleteEntity {
+    private fun decodeAutocompleteEntity(value: String): Api15AutocompleteEntity {
         val entityJson = value.replace(autocompletePrefix, "")
         return localJson.decodeFromString(entityJson)
     }

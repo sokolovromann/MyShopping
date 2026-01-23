@@ -9,12 +9,12 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.AutoMigrationSpec
 import ru.sokolovromann.myshopping.data39.carts.CartRoomEntity
 import ru.sokolovromann.myshopping.data39.carts.CartsRoomDao
-import ru.sokolovromann.myshopping.data39.old.OldAutocompletesDao
-import ru.sokolovromann.myshopping.data39.old.OldProductsDao
-import ru.sokolovromann.myshopping.data39.old.OldShoppingListsDao
-import ru.sokolovromann.myshopping.data39.old.OldAutocompleteEntity
-import ru.sokolovromann.myshopping.data39.old.OldProductEntity
-import ru.sokolovromann.myshopping.data39.old.OldShoppingEntity
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompletesDao
+import ru.sokolovromann.myshopping.data39.old.Api15ProductsDao
+import ru.sokolovromann.myshopping.data39.old.Api15ShoppingListsDao
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.Api15ProductEntity
+import ru.sokolovromann.myshopping.data39.old.Api15ShoppingEntity
 import ru.sokolovromann.myshopping.data39.products.ProductRoomEntity
 import ru.sokolovromann.myshopping.data39.products.ProductsRoomDao
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRoomDao
@@ -28,9 +28,9 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRoomDao
         ProductRoomEntity::class,
         SuggestionRoomEntity::class,
         SuggestionDetailRoomEntity::class,
-        OldProductEntity::class,
-        OldShoppingEntity::class,
-        OldAutocompleteEntity::class
+        Api15ProductEntity::class,
+        Api15ShoppingEntity::class,
+        Api15AutocompleteEntity::class
     ],
     version = LocalRoomDatabase.API39_DATABASE_VERSION,
     exportSchema = true,
@@ -87,9 +87,9 @@ abstract class LocalRoomDatabase : RoomDatabase() {
 
     abstract fun getSuggestionDetailsDao(): SuggestionDetailsRoomDao
 
-    abstract fun getOldShoppingListsDao(): OldShoppingListsDao
+    abstract fun getApi15ShoppingListsDao(): Api15ShoppingListsDao
 
-    abstract fun getOldProductsDao(): OldProductsDao
+    abstract fun getApi15ProductsDao(): Api15ProductsDao
 
-    abstract fun getOldAutocompletesDao(): OldAutocompletesDao
+    abstract fun getApi15AutocompletesDao(): Api15AutocompletesDao
 }
