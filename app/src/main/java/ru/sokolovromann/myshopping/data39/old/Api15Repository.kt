@@ -1,6 +1,11 @@
 package ru.sokolovromann.myshopping.data39.old
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import ru.sokolovromann.myshopping.data39.LocalEnvironment
 import ru.sokolovromann.myshopping.data39.LocalResources
@@ -14,6 +19,8 @@ class Api15Repository @Inject constructor(
     private val api15AutocompletesDao: Api15AutocompletesDao,
     private val localResources: LocalResources
 ) {
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("local_datastore")
 
     suspend fun getShoppings(): Collection<Api15ShoppingEntity> = withIoContext {
         return@withIoContext api15ShoppingListsDao.getAllShoppings().first()
@@ -31,5 +38,17 @@ class Api15Repository @Inject constructor(
                     .map { Api15AutocompleteEntity(name = it, personal = false) }
                 addAll(resAutocompletes)
             }
+    }
+
+    suspend fun getAutocompletesConfig(): Api15AutocompletesConfigEntity = withIoContext {
+        val preferences = context.dataStore.data.first()
+        return@withIoContext Api15AutocompletesConfigEntity(
+            preferences[booleanPreferencesKey("display_default_autocompletes")],
+            preferences[intPreferencesKey("max_autocomplete_names")],
+            preferences[intPreferencesKey("max_autocomplete_quantities")],
+            preferences[intPreferencesKey("max_autocomplete_moneys")],
+            preferences[intPreferencesKey("max_autocomplete_others")],
+            preferences[booleanPreferencesKey("save_product_to_autocompletes")]
+        )
     }
 }

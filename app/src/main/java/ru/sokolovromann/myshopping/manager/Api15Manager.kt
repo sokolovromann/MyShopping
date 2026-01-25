@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.manager
 
 import ru.sokolovromann.myshopping.data39.old.Api15AutocompleteEntity
+import ru.sokolovromann.myshopping.data39.old.Api15AutocompletesConfigEntity
 import ru.sokolovromann.myshopping.data39.old.Api15Repository
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
 import javax.inject.Inject
@@ -68,5 +69,9 @@ class Api15Manager @Inject constructor(private val api15Repository: Api15Reposit
         return@withIoContext api15Repository.getAutocompletes().count {
             it.name.equals(name, true)
         }
+    }
+
+    suspend fun getAutocompletesConfig(): Api15AutocompletesConfigEntity = withIoContext {
+        return@withIoContext api15Repository.getAutocompletesConfig()
     }
 }
