@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.manager
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
 import ru.sokolovromann.myshopping.data39.suggestions.SortSuggestions
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
@@ -118,6 +119,11 @@ class SuggestionsManager @Inject constructor(
 
     suspend fun updateConfig(sort: SortSuggestions): Unit = withIoContext {
         val config = getConfig().copy(sort = sort)
+        addConfig(config)
+    }
+
+    suspend fun updateConfig(add: AddSuggestionWithDetails): Unit = withIoContext {
+        val config = getConfig().copy(add = add)
         addConfig(config)
     }
 
