@@ -13,6 +13,7 @@ data class AppBuildConfig(
         const val UNKNOWN_CODE_VERSION = 0
         const val CODE_VERSION_14 = 14
         const val CODE_VERSION_18 = 18
+        const val CODE_VERSION_39 = 39
     }
 
     fun getDisplayName(): String {

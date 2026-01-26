@@ -9,7 +9,8 @@ import javax.inject.Inject
 class Api15Manager @Inject constructor(private val api15Repository: Api15Repository) {
 
     suspend fun getAutocompletes(): Map<String, List<Api15AutocompleteEntity>> = withIoContext {
-        return@withIoContext api15Repository.getAutocompletes()
+        val displayDefault = getAutocompletesConfig().displayDefaultAutocompletes
+        return@withIoContext api15Repository.getAutocompletes(displayDefault)
             .groupBy { it.name.lowercase() }
             .mapKeys { (key, _) -> key.replaceFirstChar { it.uppercase() } }
             .mapValues { (_, value) ->
@@ -66,7 +67,8 @@ class Api15Manager @Inject constructor(private val api15Repository: Api15Reposit
     }
 
     suspend fun countAutocompleteNames(name: String): Int = withIoContext {
-        return@withIoContext api15Repository.getAutocompletes().count {
+        val displayDefault = getAutocompletesConfig().displayDefaultAutocompletes
+        return@withIoContext api15Repository.getAutocompletes(displayDefault).count {
             it.name.equals(name, true)
         }
     }

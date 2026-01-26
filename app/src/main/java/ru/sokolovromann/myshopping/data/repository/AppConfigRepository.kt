@@ -283,20 +283,6 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         return@withContext Result.success(Unit)
     }
 
-    suspend fun invertDisplayDefaultAutocompletes(): Result<Unit> = withContext(dispatcher) {
-        val valueIfNull = UserPreferencesDefaults.DISPLAY_DEFAULT_AUTOCOMPLETES
-        appConfigDao.invertDisplayDefaultAutocompletes(valueIfNull)
-
-        return@withContext Result.success(Unit)
-    }
-
-    suspend fun invertSaveProductToAutocompletes(): Result<Unit> = withContext(dispatcher) {
-        val valueIfNull = UserPreferencesDefaults.SAVE_PRODUCT_TO_AUTOCOMPLETES
-        appConfigDao.invertSaveProductToAutocompletes(valueIfNull)
-
-        return@withContext Result.success(Unit)
-    }
-
     suspend fun invertAutomaticallyEmptyTrash(): Result<Unit> = withContext(dispatcher) {
         val valueIfNull = !UserPreferencesDefaults.AUTOMATICALLY_EMPTY_TRASH
         appConfigDao.invertAutomaticallyEmptyTrash(valueIfNull)

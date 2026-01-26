@@ -30,14 +30,16 @@ class Api15Repository @Inject constructor(
         return@withIoContext api15ProductsDao.getAllProducts().first()
     }
 
-    suspend fun getAutocompletes(): Collection<Api15AutocompleteEntity> = withIoContext {
-        return@withIoContext api15AutocompletesDao.getAllAutocompletes().first().toMutableList()
-            .apply {
+    suspend fun getAutocompletes(displayDefault: Boolean?): Collection<Api15AutocompleteEntity> = withIoContext {
+        val autocompletes = api15AutocompletesDao.getAllAutocompletes().first().toMutableList()
+        return@withIoContext if (displayDefault == true) {
+            autocompletes.apply {
                 val resAutocompletes = localResources
                     .getStrings(LocalEnvironment.DEFAULT_AUTOCOMPLETES_RES_ID)
                     .map { Api15AutocompleteEntity(name = it, personal = false) }
                 addAll(resAutocompletes)
             }
+        } else { autocompletes }
     }
 
     suspend fun getAutocompletesConfig(): Api15AutocompletesConfigEntity = withIoContext {
