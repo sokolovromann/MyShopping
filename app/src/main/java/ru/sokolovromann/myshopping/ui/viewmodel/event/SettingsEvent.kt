@@ -7,6 +7,7 @@ import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DisplayCompleted
 import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
+import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 
@@ -35,4 +36,6 @@ sealed class SettingsEvent {
     data class OnAfterShoppingCompletedSelected(val afterShoppingCompleted: AfterShoppingCompleted) : SettingsEvent()
 
     data class OnAfterAddShoppingSelected(val afterAddShopping: AfterAddShopping) : SettingsEvent()
+
+    data class OnAddSuggestionWithDetailsSelected(val addSuggestionWithDetails: AddSuggestionWithDetails) : SettingsEvent()
 }

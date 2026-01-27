@@ -9,7 +9,6 @@ enum class SettingUid {
     DisplayCurrencyToLeft,
     DisplayMoneyZeros,
     TaxRate,
-    DisplayDefaultAutocomplete,
     DisplayCompletedPurchases,
     DisplayEmptyShoppings,
     StrikethroughCompletedProducts,
@@ -23,9 +22,9 @@ enum class SettingUid {
     AfterShoppingCompleted,
     AutomaticallyEmptyTrash,
     ColoredCheckbox,
-    SaveProductToAutocompletes,
     MaxAutocompletes,
     SwipeProduct,
     SwipeShopping,
-    ArchiveShoppingsAsCompleted
+    ArchiveShoppingsAsCompleted,
+    AddAutocompletes
 }

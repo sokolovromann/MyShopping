@@ -512,12 +512,16 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
+    <string name="settings_action_addAutocompletes">Добавлять</string>
+    <string name="settings_action_addAutocompletesAll">Всё</string>
+    <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Архивировать список</string>
     <string name="settings_action_closeAfterSaveProduct">Закрыть экран</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">Удалить список</string>
     <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Удалить список и товары</string>
     <string name="settings_action_deleteProductsAfterShoppingCompleted">Удалить товары</string>
+    <string name="settings_action_doNotAddAutocompletes">Не добавлять</string>
     <string name="settings_action_editAfterProductCompleted">Редактировать (кроме виджетов)</string>
     <string name="settings_action_nothingAfterProductCompleted">Ничего не делать</string>
     <string name="settings_action_nothingAfterSaveProduct">Ничего не делать</string>
@@ -545,7 +549,6 @@
     <string name="settings_body_enterToSaveProduct">Если включено, то товар можно сохранять, нажав на Enter</string>
     <string name="settings_body_fontSize">Нажмите, чтобы выбрать</string>
     <string name="settings_body_maxAutocompletes">Выберите сколько может отображаться подсказок</string>
-    <string name="settings_body_saveProductToAutocompletes">Любые товары будут сохраняться</string>
     <string name="settings_body_swipeProduct">Выберите действие для смахивания влево или вправо (кроме виджетов)</string>
     <string name="settings_body_swipeShopping">Выберите действие для смахивания влево или вправо в Покупках и Архиве</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
@@ -567,7 +570,6 @@
     <string name="settings_title_currencySymbol">@string/editCurrencySymbol_header</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показывать валюту слева</string>
-    <string name="settings_title_displayDefaultAutocompletes">Показывать подсказки по-умолчанию</string>
     <string name="settings_title_displayEmptyShoppings">Показывать пустые списки покупок</string>
     <string name="settings_title_displayListOfAutocompletes">Показывать кнопку "Добавить из подсказок"</string>
     <string name="settings_title_displayMoney">Показывать деньги</string>
@@ -577,7 +579,6 @@
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Максимальное количество</string>
     <string name="settings_title_nightTheme">Ночная тема</string>
-    <string name="settings_title_saveProductToAutocompletes">Сохранять товары</string>
     <string name="settings_title_strikethroughCompletedProducts">Зачёркивать купленные товары</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>

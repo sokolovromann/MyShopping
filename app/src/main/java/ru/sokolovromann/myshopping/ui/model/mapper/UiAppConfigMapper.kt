@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.model.mapper
 
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.app.AppLocale
 import ru.sokolovromann.myshopping.data.model.AfterAddShopping
 import ru.sokolovromann.myshopping.data.model.AfterProductCompleted
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
@@ -11,6 +10,8 @@ import ru.sokolovromann.myshopping.data.model.FontSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.utils.displayZerosAfterDecimal
+import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfig
 import ru.sokolovromann.myshopping.ui.model.SettingItem
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 import ru.sokolovromann.myshopping.ui.model.UiString
@@ -43,12 +44,15 @@ object UiAppConfigMapper {
         return WidgetFontSizeOffset(offset)
     }
 
-    fun toSettingItems(settingsWithConfig: SettingsWithConfig): Map<UiString, List<SettingItem>> {
+    fun toSettingItems(
+        settingsWithConfig: SettingsWithConfig,
+        suggestionsConfig: SuggestionsConfig
+    ): Map<UiString, List<SettingItem>> {
         val map = mutableMapOf<UiString, List<SettingItem>>()
         map[UiString.FromResources(R.string.settings_header_generalSettings)] = toGeneralItems(settingsWithConfig.appConfig)
         map[UiString.FromResources(R.string.settings_header_money)] = toMoneyItems(settingsWithConfig.appConfig)
         map[UiString.FromResources(R.string.settings_header_purchases)] = toPurchasesItems(settingsWithConfig.appConfig)
-        map[UiString.FromResources(R.string.settings_header_autocompletes)] = toAutocompletesItems(settingsWithConfig.appConfig)
+        map[UiString.FromResources(R.string.settings_header_autocompletes)] = toAutocompletesItems(suggestionsConfig)
         return map.toMap()
     }
 
@@ -250,27 +254,19 @@ object UiAppConfigMapper {
         )
     }
 
-    private fun toAutocompletesItems(appConfig: AppConfig): List<SettingItem> {
+    private fun toAutocompletesItems(suggestionsConfig: SuggestionsConfig): List<SettingItem> {
         val items: MutableList<SettingItem> = mutableListOf()
-        val userPreferences = appConfig.userPreferences
-
-        if (AppLocale.isLanguageSupported()) {
-            items.add(
-                SettingItem(
-                    uid = SettingUid.DisplayDefaultAutocomplete,
-                    title = UiString.FromResources(R.string.settings_title_displayDefaultAutocompletes),
-                    body = UiString.FromString(""),
-                    checked = userPreferences.displayDefaultAutocompletes
-                )
-            )
-        }
 
         items.add(
             SettingItem(
-                uid = SettingUid.SaveProductToAutocompletes,
-                title = UiString.FromResources(R.string.settings_title_saveProductToAutocompletes),
-                body = UiString.FromResources(R.string.settings_body_saveProductToAutocompletes),
-                checked = userPreferences.saveProductToAutocompletes
+                uid = SettingUid.AddAutocompletes,
+                title = UiString.FromResources(R.string.settings_action_addAutocompletes),
+                body = when (suggestionsConfig.add) {
+                    AddSuggestionWithDetails.SuggestionAndDetails -> UiString.FromResources(R.string.settings_action_addAutocompletesAll)
+                    AddSuggestionWithDetails.Suggestion -> UiString.FromResources(R.string.settings_action_addAutocompletesName)
+                    AddSuggestionWithDetails.DoNotAdd -> UiString.FromResources(R.string.settings_action_doNotAddAutocompletes)
+                },
+                checked = null
             )
         )
 

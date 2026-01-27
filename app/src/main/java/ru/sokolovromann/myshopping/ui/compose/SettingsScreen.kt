@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
 import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
+import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
 import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
@@ -228,6 +229,24 @@ fun SettingsScreen(
                             },
                             onSelected = { afterShoppingCompleted ->
                                 val event = SettingsEvent.OnAfterShoppingCompletedSelected(afterShoppingCompleted)
+                                viewModel.onEvent(event)
+                            }
+                        )
+                    }
+
+                    SettingUid.AddAutocompletes -> {
+                        SettingsAddAutocompletesMenu(
+                            expanded = it == state.selectedUid,
+                            addSuggestionWithDetails = state.addAutocompletes.selected,
+                            onDismissRequest = {
+                                val event = SettingsEvent.OnSelectSettingItem(
+                                    expanded = false,
+                                    uid = SettingUid.AddAutocompletes
+                                )
+                                viewModel.onEvent(event)
+                            },
+                            onSelected = { addSuggestionWithDetails ->
+                                val event = SettingsEvent.OnAddSuggestionWithDetailsSelected(addSuggestionWithDetails)
                                 viewModel.onEvent(event)
                             }
                         )
@@ -470,6 +489,35 @@ private fun SettingsAfterShoppingCompletedMenu(
             onClick = { onSelected(AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS) },
             text = { Text(text = stringResource(R.string.settings_action_deleteListAndProductsAfterShoppingCompleted)) },
             right = { CheckmarkAppCheckbox(checked = afterShoppingCompleted == AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS) }
+        )
+    }
+}
+
+@Composable
+private fun SettingsAddAutocompletesMenu(
+    expanded: Boolean,
+    addSuggestionWithDetails: AddSuggestionWithDetails,
+    onDismissRequest: () -> Unit,
+    onSelected: (AddSuggestionWithDetails) -> Unit
+) {
+    AppDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        AppDropdownMenuItem(
+            onClick = { onSelected(AddSuggestionWithDetails.SuggestionAndDetails) },
+            text = { Text(text = stringResource(R.string.settings_action_addAutocompletesAll)) },
+            right = { CheckmarkAppCheckbox(checked = addSuggestionWithDetails == AddSuggestionWithDetails.SuggestionAndDetails) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AddSuggestionWithDetails.Suggestion) },
+            text = { Text(text = stringResource(R.string.settings_action_addAutocompletesName)) },
+            right = { CheckmarkAppCheckbox(checked = addSuggestionWithDetails == AddSuggestionWithDetails.Suggestion) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AddSuggestionWithDetails.DoNotAdd) },
+            text = { Text(text = stringResource(R.string.settings_action_doNotAddAutocompletes)) },
+            right = { CheckmarkAppCheckbox(checked = addSuggestionWithDetails == AddSuggestionWithDetails.DoNotAdd) }
         )
     }
 }

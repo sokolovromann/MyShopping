@@ -465,12 +465,16 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
+    <string name="settings_action_addAutocompletes">Додавати</string>
+    <string name="settings_action_addAutocompletesAll">Все</string>
+    <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Архівувати список</string>
     <string name="settings_action_closeAfterSaveProduct">Закрити екран</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">Видалити список</string>
     <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Видалити список та товари</string>
     <string name="settings_action_deleteProductsAfterShoppingCompleted">Видалити товари</string>
+    <string name="settings_action_doNotAddAutocompletes">Не додавати</string>
     <string name="settings_action_editAfterProductCompleted">Редагувати (окрім віджетів)</string>
     <string name="settings_action_nothingAfterProductCompleted">Нічого не робити</string>
     <string name="settings_action_nothingAfterSaveProduct">Нічого не робити</string>
@@ -498,7 +502,6 @@
     <string name="settings_body_enterToSaveProduct">Якщо увімкнено, то товар можна зберігати, натиснувши на Enter</string>
     <string name="settings_body_fontSize">Натисніть, щоб вибрати</string>
     <string name="settings_body_maxAutocompletes">Виберіть скільки може відображатися підказок</string>
-    <string name="settings_body_saveProductToAutocompletes">Будь-які товари зберігатимуться</string>
     <string name="settings_body_swipeProduct">Виберіть дію для змахування вліво або вправо (крім віджетів)</string>
     <string name="settings_body_swipeShopping">Виберіть дію для змахування вліво або вправо в Покупках та Архіві</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
@@ -520,7 +523,6 @@
     <string name="settings_title_currencySymbol">@string/editCurrencySymbol_header</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Показувати валюту зліва</string>
-    <string name="settings_title_displayDefaultAutocompletes">Показувати підказки за замовчуванням</string>
     <string name="settings_title_displayEmptyShoppings">Показати порожні списки покупок</string>
     <string name="settings_title_displayListOfAutocompletes">Показувати кнопку "Додати з підказок"</string>
     <string name="settings_title_displayMoney">Показувати гроші</string>
@@ -530,7 +532,6 @@
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Максимальна кількість</string>
     <string name="settings_title_nightTheme">Нічна тема</string>
-    <string name="settings_title_saveProductToAutocompletes">Зберігати товари</string>
     <string name="settings_title_strikethroughCompletedProducts">Закреслювати куплені товари</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>

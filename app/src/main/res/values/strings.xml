@@ -365,12 +365,16 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">You have no autocompletes</string>
 
+    <string name="settings_action_addAutocompletes">@string/all_action_add</string>
+    <string name="settings_action_addAutocompletesAll">All</string>
+    <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Archive list</string>
     <string name="settings_action_closeAfterSaveProduct">Close screen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">Delete list</string>
     <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Delete list and products</string>
     <string name="settings_action_deleteProductsAfterShoppingCompleted">Delete products</string>
+    <string name="settings_action_doNotAddAutocompletes">Do not add</string>
     <string name="settings_action_editAfterProductCompleted">Edit (except widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nothing</string>
     <string name="settings_action_nothingAfterSaveProduct">Nothing</string>
@@ -398,7 +402,6 @@
     <string name="settings_body_enterToSaveProduct">If enabled, a product can be saved by tapping Enter</string>
     <string name="settings_body_fontSize">Tap to select</string>
     <string name="settings_body_maxAutocompletes">Select how many autocompletes can be displayed</string>
-    <string name="settings_body_saveProductToAutocompletes">Any product will be save</string>
     <string name="settings_body_swipeProduct">Select action to swipe left and right (except widgets)</string>
     <string name="settings_body_swipeShopping">Select action to swipe left and right in Purchases and Archive</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
@@ -420,7 +423,6 @@
     <string name="settings_title_currencySymbol">@string/editCurrencySymbol_header</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Display currency to the left</string>
-    <string name="settings_title_displayDefaultAutocompletes">Display default autocompletes</string>
     <string name="settings_title_displayEmptyShoppings">Display empty shopping lists</string>
     <string name="settings_title_displayListOfAutocompletes">Display add from autocompletes button</string>
     <string name="settings_title_displayMoney">Display money</string>
@@ -430,7 +432,6 @@
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Maximum amount</string>
     <string name="settings_title_nightTheme">Night theme</string>
-    <string name="settings_title_saveProductToAutocompletes">Save products</string>
     <string name="settings_title_strikethroughCompletedProducts">Strikethrough completed products</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>

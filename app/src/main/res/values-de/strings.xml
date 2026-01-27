@@ -447,12 +447,16 @@
     <string name="selectFromAutocompletes_action_cancelAddingToShoppingList">@string/all_action_cancel</string>
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
+    <string name="settings_action_addAutocompletes">@string/all_action_add</string>
+    <string name="settings_action_addAutocompletesAll">Alle</string>
+    <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Liste Archivieren</string>
     <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>
     <string name="settings_action_deleteAfterProductCompleted">@string/all_action_delete</string>
     <string name="settings_action_deleteAfterShoppingCompleted">Liste löschent</string>
     <string name="settings_action_deleteListAndProductsAfterShoppingCompleted">Liste und Produkte löschen</string>
     <string name="settings_action_deleteProductsAfterShoppingCompleted">Produkte löschen</string>
+    <string name="settings_action_doNotAddAutocompletes">Nicht hinzufügen</string>
     <string name="settings_action_editAfterProductCompleted">Bearbeiten (Außer Widgets)</string>
     <string name="settings_action_nothingAfterProductCompleted">Nichts</string>
     <string name="settings_action_nothingAfterSaveProduct">Produkt speichern</string>
@@ -480,7 +484,6 @@
     <string name="settings_body_enterToSaveProduct">Wenn aktiviert, kann ein Produkt durch Tippen auf die Eingabetaste gespeichert werden</string>
     <string name="settings_body_fontSize">Zum Auswählen tippen</string>
     <string name="settings_body_maxAutocompletes">Wählen Sie aus, wie viele Autovervollständigungen angezeigt werden können</string>
-    <string name="settings_body_saveProductToAutocompletes">Jedes Produkt wird gespeichert</string>
     <string name="settings_body_swipeProduct">Wählen Sie die Aktion zum Wischen nach links und rechts (außer Widgets)</string>
     <string name="settings_body_swipeShopping">Wählen Sie die Aktion zum Wischen nach links und rechts in Einkäufe und Archiv</string>
     <string name="settings_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
@@ -502,7 +505,6 @@
     <string name="settings_title_currencySymbol">@string/editCurrencySymbol_header</string>
     <string name="settings_title_displayCompletedPurchases">@string/displayCompleted_header</string>
     <string name="settings_title_displayCurrencySymbolToLeft">Währung links anzeigen</string>
-    <string name="settings_title_displayDefaultAutocompletes">Standard-Autovervollständigungen anzeigen</string>
     <string name="settings_title_displayEmptyShoppings">Zeigen Sie leere Einkaufslisten</string>
     <string name="settings_title_displayListOfAutocompletes">Schaltfläche "Aus Autovervollständigung hinzufügen" anzeigen</string>
     <string name="settings_title_displayMoney">Geld anzeigen</string>
@@ -512,7 +514,6 @@
     <string name="settings_title_fontSize">@string/fontSizes_header</string>
     <string name="settings_title_maxAutocompletes">Maximale Anzahl</string>
     <string name="settings_title_nightTheme">Thema Nacht</string>
-    <string name="settings_title_saveProductToAutocompletes">Produkte speichern</string>
     <string name="settings_title_strikethroughCompletedProducts">Durchgestrichene fertige Produkte</string>
     <string name="settings_title_swipeProduct">@string/swipeProduct_header</string>
     <string name="settings_title_swipeShopping">@string/swipeShopping_header</string>

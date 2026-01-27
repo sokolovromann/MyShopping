@@ -5,7 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.combine
+import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfig
+import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.compose.event.SettingsScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SettingUid
 import ru.sokolovromann.myshopping.ui.model.SettingsState
@@ -16,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val appConfigRepository: AppConfigRepository
+    private val appConfigRepository: AppConfigRepository,
+    private val suggestionsManager: SuggestionsManager
 ) : ViewModel(), ViewModelEvent<SettingsEvent> {
 
     val settingsState: SettingsState = SettingsState()
@@ -53,15 +58,19 @@ class SettingsViewModel @Inject constructor(
             is SettingsEvent.OnAfterShoppingCompletedSelected -> onAfterShoppingCompletedSelected(event)
 
             is SettingsEvent.OnAfterAddShoppingSelected -> onAfterAddShoppingSelected(event)
+
+            is SettingsEvent.OnAddSuggestionWithDetailsSelected -> onAddSuggestionWithDetailsSelected(event)
         }
     }
 
     private fun onInit() = viewModelScope.launch(dispatcher) {
         settingsState.onWaiting()
 
-        appConfigRepository.getSettingsWithConfig().collect {
-            settingsState.populate(it)
-        }
+        combine(
+            flow = appConfigRepository.getSettingsWithConfig(),
+            flow2 = suggestionsManager.observeConfig(),
+            transform = { api15Config, config -> SettingsData(api15Config, config) }
+        ).collect { settingsState.populate(it.settingsWithConfig, it.suggestionsConfig) }
     }
 
     private fun onClickBack() = viewModelScope.launch(dispatcher) {
@@ -107,10 +116,6 @@ class SettingsViewModel @Inject constructor(
 
             SettingUid.TaxRate -> {
                 _screenEventFlow.emit(SettingsScreenEvent.OnEditTaxRateScreen)
-            }
-
-            SettingUid.DisplayDefaultAutocomplete -> {
-                appConfigRepository.invertDisplayDefaultAutocompletes()
             }
 
             SettingUid.DisplayCompletedPurchases -> {
@@ -179,10 +184,6 @@ class SettingsViewModel @Inject constructor(
                 _screenEventFlow.emit(SettingsScreenEvent.OnUpdateProductsWidgets)
             }
 
-            SettingUid.SaveProductToAutocompletes -> {
-                appConfigRepository.invertSaveProductToAutocompletes()
-            }
-
             SettingUid.MaxAutocompletes -> {
                 _screenEventFlow.emit(SettingsScreenEvent.OnShowMaxAutocompletes)
             }
@@ -197,6 +198,13 @@ class SettingsViewModel @Inject constructor(
 
             SettingUid.ArchiveShoppingsAsCompleted -> {
                 appConfigRepository.invertArchiveAsCompleted()
+            }
+
+            SettingUid.AddAutocompletes -> {
+                settingsState.onSelectUid(
+                    expanded = true,
+                    settingUid = SettingUid.AddAutocompletes
+                )
             }
         }
     }
@@ -289,4 +297,19 @@ class SettingsViewModel @Inject constructor(
             settingUid = SettingUid.AfterAddShopping
         )
     }
+
+    private fun onAddSuggestionWithDetailsSelected(
+        event: SettingsEvent.OnAddSuggestionWithDetailsSelected
+    ) = viewModelScope.launch(dispatcher) {
+        suggestionsManager.updateConfig(event.addSuggestionWithDetails)
+        settingsState.onSelectUid(
+            expanded = false,
+            settingUid = SettingUid.AddAutocompletes
+        )
+    }
+
+    private data class SettingsData(
+        val settingsWithConfig: SettingsWithConfig,
+        val suggestionsConfig: SuggestionsConfig
+    )
 }

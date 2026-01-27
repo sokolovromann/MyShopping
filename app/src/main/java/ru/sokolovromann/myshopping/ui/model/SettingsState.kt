@@ -11,6 +11,9 @@ import ru.sokolovromann.myshopping.data.model.AfterShoppingCompleted
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.NightTheme
 import ru.sokolovromann.myshopping.data.model.SettingsWithConfig
+import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfig
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsDefaults
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAppConfigMapper
 
 class SettingsState {
@@ -38,6 +41,9 @@ class SettingsState {
     var afterShoppingCompleted: SelectedValue<AfterShoppingCompleted> by mutableStateOf(SelectedValue(AfterShoppingCompleted.DefaultValue))
         private set
 
+    var addAutocompletes: SelectedValue<AddSuggestionWithDetails> by mutableStateOf(SelectedValue(SuggestionsDefaults.ADD))
+        private set
+
     var multiColumns: Boolean by mutableStateOf(false)
         private set
 
@@ -47,17 +53,18 @@ class SettingsState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(settingsWithConfig: SettingsWithConfig) {
+    fun populate(settingsWithConfig: SettingsWithConfig, suggestionsConfig: SuggestionsConfig) {
         this.settingsWithConfig = settingsWithConfig
 
         val userPreferences = settingsWithConfig.appConfig.userPreferences
-        settings = UiAppConfigMapper.toSettingItems(settingsWithConfig)
+        settings = UiAppConfigMapper.toSettingItems(settingsWithConfig, suggestionsConfig)
         selectedUid = null
         nightTheme = toNightThemeValue(userPreferences.nightTheme)
         afterSaveProduct = toAfterSaveProductValue(userPreferences.afterSaveProduct)
         afterProductCompleted = toAfterProductCompletedValue(userPreferences.afterProductCompleted)
         afterAddShopping = toAfterAddShoppingValue(userPreferences.afterAddShopping)
         afterShoppingCompleted = toAfterShoppingCompletedValue(userPreferences.afterShoppingCompleted)
+        addAutocompletes = toAddAutocompletesValue(suggestionsConfig.add)
         deviceSize = settingsWithConfig.appConfig.deviceConfig.getDeviceSize()
         multiColumns = !deviceSize.isSmartphoneScreen()
         waiting = false
@@ -135,6 +142,19 @@ class SettingsState {
                 AfterShoppingCompleted.DELETE -> UiString.FromResources(R.string.settings_action_deleteAfterShoppingCompleted)
                 AfterShoppingCompleted.DELETE_PRODUCTS -> UiString.FromResources(R.string.settings_action_deleteProductsAfterShoppingCompleted)
                 AfterShoppingCompleted.DELETE_LIST_AND_PRODUCTS -> UiString.FromResources(R.string.settings_action_deleteListAndProductsAfterShoppingCompleted)
+            }
+        )
+    }
+
+    private fun toAddAutocompletesValue(
+        addSuggestionWithDetails: AddSuggestionWithDetails
+    ): SelectedValue<AddSuggestionWithDetails> {
+        return SelectedValue(
+            selected = addSuggestionWithDetails,
+            text = when (addSuggestionWithDetails) {
+                AddSuggestionWithDetails.SuggestionAndDetails -> UiString.FromResources(R.string.settings_action_addAutocompletesAll)
+                AddSuggestionWithDetails.Suggestion -> UiString.FromResources(R.string.settings_action_addAutocompletesName)
+                AddSuggestionWithDetails.DoNotAdd -> UiString.FromResources(R.string.settings_action_doNotAddAutocompletes)
             }
         )
     }
