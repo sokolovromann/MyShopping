@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import ru.sokolovromann.myshopping.BuildConfig
 import ru.sokolovromann.myshopping.data.repository.BackupRepository
 import ru.sokolovromann.myshopping.data.model.Shopping
+import ru.sokolovromann.myshopping.manager.MigrationManager
 import ru.sokolovromann.myshopping.media.BackupMediaStore
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.ui.compose.event.BackupScreenEvent
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BackupViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
+    private val migrationManager: MigrationManager,
     private val alarmManager: PurchasesAlarmManager,
     private val mediaStore: BackupMediaStore
 ): ViewModel(), ViewModelEvent<BackupEvent> {
@@ -90,6 +92,7 @@ class BackupViewModel @Inject constructor(
         backupRepository.importBackup(event.uri)
             .onSuccess {
                 deleteRemindersIfExists(it.first.shoppings)
+                migrationManager.migrateToApi40()
                 backupState.onShowImportMessage(success = true)
             }
             .onFailure {
