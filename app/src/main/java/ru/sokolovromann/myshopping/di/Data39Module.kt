@@ -73,6 +73,7 @@ object Data39Module {
 
     // SUGGESTIONS CONFIG
 
+    @Singleton
     @Provides
     fun providesSuggestionsConfigRepository(
         @ApplicationContext context: Context,
