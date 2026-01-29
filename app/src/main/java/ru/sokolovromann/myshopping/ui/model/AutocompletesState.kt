@@ -3,19 +3,19 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.app.AppLocale
-import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAutocompletesMapper
+import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
+import ru.sokolovromann.myshopping.utils.UID
 
 class AutocompletesState {
 
-    private var autocompletesWithConfig by mutableStateOf(AutocompletesWithConfig())
+    private var autocompletesData: AutocompletesViewModel.AutocompletesData? by mutableStateOf(null)
 
     var autocompletes: List<AutocompleteItem> by mutableStateOf(listOf())
         private set
 
-    var selectedNames: List<String>? by mutableStateOf(null)
+    var selectedUids: List<UID>? by mutableStateOf(null)
         private set
 
     var multiColumns: Boolean by mutableStateOf(false)
@@ -24,45 +24,30 @@ class AutocompletesState {
     var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
         private set
 
-    var locationValue: SelectedValue<AutocompleteLocation> by mutableStateOf(SelectedValue(AutocompleteLocation.DefaultValue))
-        private set
-
-    var expandedLocation: Boolean by mutableStateOf(false)
-        private set
-
-    var locationEnabled: Boolean by mutableStateOf(true)
-        private set
-
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(autocompletesWithConfig: AutocompletesWithConfig, location: AutocompleteLocation) {
-        this.autocompletesWithConfig = autocompletesWithConfig
+    fun populate(data: AutocompletesViewModel.AutocompletesData) {
+        autocompletesData = data
 
-        val userPreferences = autocompletesWithConfig.appConfig.userPreferences
-        autocompletes = UiAutocompletesMapper.toAutocompleteItems(autocompletesWithConfig)
-        selectedNames = null
-        deviceSize = autocompletesWithConfig.appConfig.deviceConfig.getDeviceSize()
+        autocompletes = UiAutocompletesMapper.toAutocompleteItems(data.suggestionsWithDetails, data.currency)
+        selectedUids = null
+        deviceSize = DeviceSize.Medium
         multiColumns = deviceSize == DeviceSize.Large
-        locationValue = UiAutocompletesMapper.toLocationValue(location)
-        expandedLocation = false
-        locationEnabled = AppLocale.isLanguageSupported() && userPreferences.displayDefaultAutocompletes
         waiting = false
     }
 
-    fun onSelectLocation(expanded: Boolean) {
-        expandedLocation = expanded
-    }
-
     fun onAllAutocompletesSelected(selected: Boolean) {
-        selectedNames = if (selected) autocompletesWithConfig.getNames() else null
+        selectedUids = if (selected) {
+            autocompletesData?.suggestionsWithDetails?.map { it.suggestion.uid }
+        } else { null }
     }
 
-    fun onAutocompleteSelected(selected: Boolean, name: String) {
-        val names = (selectedNames?.toMutableList() ?: mutableListOf()).apply {
-            if (selected) add(name) else remove(name)
+    fun onAutocompleteSelected(selected: Boolean, uid: UID) {
+        val uids = (selectedUids?.toMutableList() ?: mutableListOf()).apply {
+            if (selected) add(uid) else remove(uid)
         }
-        selectedNames = if (names.isEmpty()) null else names
+        selectedUids = if (uids.isEmpty()) null else uids
     }
 
     fun onWaiting() {
@@ -70,6 +55,6 @@ class AutocompletesState {
     }
 
     fun isNotFound(): Boolean {
-        return autocompletesWithConfig.isEmpty()
+        return autocompletesData?.suggestionsWithDetails.isNullOrEmpty()
     }
 }

@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.firstOrNull
-import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
+import kotlinx.coroutines.flow.combine
+import ru.sokolovromann.myshopping.data.model.Currency
+import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfig
+import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
-import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
 import ru.sokolovromann.myshopping.ui.model.AutocompletesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
 import ru.sokolovromann.myshopping.utils.Dispatcher
@@ -17,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AutocompletesViewModel @Inject constructor(
-    private val autocompletesRepository: AutocompletesRepository
+    private val suggestionsManager: SuggestionsManager,
+    private val appConfigRepository: AppConfigRepository
 ) : ViewModel(), ViewModelEvent<AutocompletesEvent> {
 
     val autocompletesState: AutocompletesState = AutocompletesState()
@@ -43,10 +47,6 @@ class AutocompletesViewModel @Inject constructor(
 
             is AutocompletesEvent.OnSelectDrawerScreen -> onSelectDrawerScreen(event)
 
-            is AutocompletesEvent.OnLocationSelected -> onLocationSelected(event)
-
-            is AutocompletesEvent.OnSelectLocation -> onSelectLocation(event)
-
             is AutocompletesEvent.OnAllAutocompletesSelected -> onAllAutocompletesSelected(event)
 
             is AutocompletesEvent.OnAutocompleteSelected -> onAutocompleteSelected(event)
@@ -55,10 +55,14 @@ class AutocompletesViewModel @Inject constructor(
 
     private fun onInit() = viewModelScope.launch(dispatcher) {
         autocompletesState.onWaiting()
-
-        autocompletesRepository.getPersonalAutocompletes().collect {
-            autocompletesState.populate(it, AutocompleteLocation.PERSONAL)
-        }
+        combine(
+            flow = suggestionsManager.observeSuggestionsWithDetails(),
+            flow2 = suggestionsManager.observeConfig(),
+            flow3 = appConfigRepository.getAppConfig(),
+            transform = { suggestions, suggestionsConfig, appConfig ->
+                AutocompletesData(suggestions, suggestionsConfig, appConfig.userPreferences.currency)
+            }
+        ).collect { autocompletesState.populate(it) }
     }
 
     private fun onClickAddAutocomplete() = viewModelScope.launch(dispatcher) {
@@ -66,30 +70,16 @@ class AutocompletesViewModel @Inject constructor(
     }
 
     private fun onClickClearAutocompletes() = viewModelScope.launch(dispatcher) {
-        when (autocompletesState.locationValue.selected) {
-            AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
-            AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
-        }.firstOrNull()?.let { autocompletes ->
-            autocompletesState.selectedNames?.let { names ->
-                val uids = autocompletes.getUidsByNames(names)
-                autocompletesRepository.clearAutocompletes(uids = uids)
-            }
+        autocompletesState.selectedUids?.forEach {
+            suggestionsManager.deleteDetails(it)
         }
-
         autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
     private fun onClickDeleteAutocompletes() = viewModelScope.launch(dispatcher) {
-        when (autocompletesState.locationValue.selected) {
-            AutocompleteLocation.DEFAULT -> return@launch
-            AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
-        }.firstOrNull()?.let { autocompletes ->
-            autocompletesState.selectedNames?.let { names ->
-                val uids = autocompletes.getUidsByNames(names)
-                autocompletesRepository.deleteAutocompletes(uids)
-            }
+        autocompletesState.selectedUids?.let {
+            suggestionsManager.deleteSuggestionsWithDetails(it)
         }
-
         autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
@@ -109,29 +99,17 @@ class AutocompletesViewModel @Inject constructor(
         _screenEventFlow.emit(AutocompletesScreenEvent.OnSelectDrawerScreen(event.display))
     }
 
-    private fun onLocationSelected(
-        event: AutocompletesEvent.OnLocationSelected
-    ) = viewModelScope.launch(dispatcher) {
-        autocompletesState.onSelectLocation(false)
-        autocompletesState.onWaiting()
-
-        when (event.location) {
-            AutocompleteLocation.DEFAULT -> autocompletesRepository.getDefaultAutocompletes()
-            AutocompleteLocation.PERSONAL -> autocompletesRepository.getPersonalAutocompletes()
-        }.collect {
-            autocompletesState.populate(it, event.location)
-        }
-    }
-
-    private fun onSelectLocation(event: AutocompletesEvent.OnSelectLocation) {
-        autocompletesState.onSelectLocation(event.expanded)
-    }
-
     private fun onAllAutocompletesSelected(event: AutocompletesEvent.OnAllAutocompletesSelected) {
         autocompletesState.onAllAutocompletesSelected(event.selected)
     }
 
     private fun onAutocompleteSelected(event: AutocompletesEvent.OnAutocompleteSelected) {
-        autocompletesState.onAutocompleteSelected(event.selected, event.name)
+        autocompletesState.onAutocompleteSelected(event.selected, event.uid)
     }
+
+    data class AutocompletesData(
+        val suggestionsWithDetails: Collection<SuggestionWithDetails>,
+        val suggestionsConfig: SuggestionsConfig,
+        val currency: Currency
+    )
 }

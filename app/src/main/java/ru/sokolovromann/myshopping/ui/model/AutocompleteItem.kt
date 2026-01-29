@@ -1,8 +1,10 @@
 package ru.sokolovromann.myshopping.ui.model
 
 import androidx.compose.runtime.Composable
+import ru.sokolovromann.myshopping.utils.UID
 
 data class AutocompleteItem(
+    val uid: UID,
     val name: UiString,
     val brands: UiString,
     val sizes: UiString,

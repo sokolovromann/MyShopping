@@ -130,8 +130,6 @@
     <string name="all_text_selectedTotal">Вибрано: %s</string>
     <string name="all_text_shoppingListsNotFound">У вас немає покупок</string>
 
-    <string name="autocompletes_action_selectDefaultLocation">За замовчуванням</string>
-    <string name="autocompletes_action_selectPersonalLocation">Особисті</string>
     <string name="autocompletes_body_brands">Марки: %s</string>
     <string name="autocompletes_body_colors">Кольори: %s</string>
     <string name="autocompletes_body_dataNotFound">Немає даних</string>
@@ -148,7 +146,6 @@
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="autocompletes_header_autocompletes">@string/all_header_autocompletes</string>
-    <string name="autocompletes_header_location">@string/all_header_location</string>
     <string name="autocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
     <string name="backup_action_closeBackup">@string/all_action_back</string>

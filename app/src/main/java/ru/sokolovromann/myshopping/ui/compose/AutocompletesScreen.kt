@@ -20,13 +20,12 @@ import ru.sokolovromann.myshopping.ui.DrawerScreen
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
-import ru.sokolovromann.myshopping.ui.model.AutocompleteLocation
-import ru.sokolovromann.myshopping.ui.model.SelectedValue
 import ru.sokolovromann.myshopping.ui.model.UiIcon
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.navigateWithDrawerOption
 import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AutocompletesEvent
+import ru.sokolovromann.myshopping.utils.UID
 
 @Composable
 fun AutocompletesScreen(
@@ -72,14 +71,14 @@ fun AutocompletesScreen(
         viewModel.onEvent(AutocompletesEvent.OnSelectDrawerScreen(false))
     }
 
-    BackHandler(enabled = state.selectedNames != null) {
+    BackHandler(enabled = state.selectedUids != null) {
         viewModel.onEvent(AutocompletesEvent.OnAllAutocompletesSelected(false))
     }
 
     AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            if (state.selectedNames == null) {
+            if (state.selectedUids == null) {
                 AppTopAppBar(
                     title = { Text(text = stringResource(R.string.autocompletes_header_autocompletes)) },
                     navigationIcon = {
@@ -98,7 +97,7 @@ fun AutocompletesScreen(
                 )
             } else {
                 AppTopAppBar(
-                    title = { Text(text = state.selectedNames?.size.toString()) },
+                    title = { Text(text = state.selectedUids?.size.toString()) },
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -125,18 +124,16 @@ fun AutocompletesScreen(
                             )
                         }
 
-                        if (state.locationValue.selected == AutocompleteLocation.PERSONAL) {
-                            IconButton(
-                                onClick = {
-                                    val event = AutocompletesEvent.OnClickDeleteAutocompletes
-                                    viewModel.onEvent(event)
-                                }
-                            ) {
-                                DefaultIcon(
-                                    icon = UiIcon.Delete,
-                                    contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_deleteDataIcon)
-                                )
+                        IconButton(
+                            onClick = {
+                                val event = AutocompletesEvent.OnClickDeleteAutocompletes
+                                viewModel.onEvent(event)
                             }
+                        ) {
+                            DefaultIcon(
+                                icon = UiIcon.Delete,
+                                contentDescription = UiString.FromResources(R.string.autocompletes_contentDescription_deleteDataIcon)
+                            )
                         }
 
                         IconButton(
@@ -164,7 +161,7 @@ fun AutocompletesScreen(
             )
         },
         floatingActionButton = {
-            if (state.selectedNames == null) {
+            if (state.selectedUids == null) {
                 FloatingActionButton(
                     onClick = {
                         val event = AutocompletesEvent.OnClickAddAutocomplete
@@ -185,18 +182,6 @@ fun AutocompletesScreen(
             multiColumns = state.multiColumns,
             deviceSize = state.deviceSize,
             autocompletes = state.autocompletes,
-            topBar = {
-                AutocompleteLocationContent(
-                    locationValue = state.locationValue,
-                    enabled = state.locationEnabled,
-                    expanded = state.expandedLocation,
-                    onExpanded = { viewModel.onEvent(AutocompletesEvent.OnSelectLocation(it)) },
-                    onSelected = {
-                        val event = AutocompletesEvent.OnLocationSelected(it)
-                        viewModel.onEvent(event)
-                    }
-                )
-            },
             isWaiting = state.waiting,
             notFound = {
                 Text(
@@ -206,24 +191,24 @@ fun AutocompletesScreen(
             },
             isNotFound = state.isNotFound(),
             onClick = {
-                state.selectedNames?.let { names ->
+                state.selectedUids?.let { uids ->
                     val event = AutocompletesEvent.OnAutocompleteSelected(
-                        selected = !names.contains(it),
-                        name = it
+                        selected = !uids.contains(it),
+                        uid = it
                     )
                     viewModel.onEvent(event)
                 }
             },
             onLongClick = {
-                if (state.selectedNames == null) {
+                if (state.selectedUids == null) {
                     val event = AutocompletesEvent.OnAutocompleteSelected(
                         selected = true,
-                        name = it
+                        uid = it
                     )
                     viewModel.onEvent(event)
                 }
             },
-            selectedNames = state.selectedNames
+            selectedUids = state.selectedUids
         )
     }
 }
@@ -234,73 +219,34 @@ private fun AutocompletesGrid(
     multiColumns: Boolean,
     deviceSize: DeviceSize,
     autocompletes: List<AutocompleteItem>,
-    topBar: @Composable RowScope.() -> Unit,
     isWaiting: Boolean,
     notFound: @Composable (ColumnScope.() -> Unit)? = null,
     isNotFound: Boolean,
-    dropdownMenu: @Composable ((String) -> Unit)? = null,
-    onClick: (String) -> Unit,
-    onLongClick: (String) -> Unit,
-    selectedNames: List<String>?
+    dropdownMenu: @Composable ((UID) -> Unit)? = null,
+    onClick: (UID) -> Unit,
+    onLongClick: (UID) -> Unit,
+    selectedUids: List<UID>?
 ) {
     SmartphoneTabletAppGrid(
         modifier = modifier,
         multiColumns = multiColumns,
         multiColumnsSpace = true,
         deviceSize = deviceSize,
-        topBar = topBar,
         isWaiting = isWaiting,
         notFound = notFound,
         isNotFound = isNotFound
     ) {
         items(autocompletes) {
-            val nameToString = it.name.asCompose()
-            val selected = selectedNames?.contains(nameToString) ?: false
+            val selected = selectedUids?.contains(it.uid) ?: false
 
             AppSurfaceItem(
                 title = getAutocompleteItemTitleOrNull(it.name),
                 body = getAutocompleteItemBodyOrNull(it),
                 right = getAutocompleteItemRightOrNull(selected),
-                dropdownMenu = { dropdownMenu?.let { it(nameToString) } },
-                onClick = { onClick(nameToString) },
-                onLongClick = { onLongClick(nameToString) },
+                dropdownMenu = { dropdownMenu?.let { menu -> menu(it.uid) } },
+                onClick = { onClick(it.uid) },
+                onLongClick = { onLongClick(it.uid) },
                 backgroundColor = getAppItemBackgroundColor(selected)
-            )
-        }
-    }
-}
-
-@Composable
-private fun AutocompleteLocationContent(
-    modifier: Modifier = Modifier,
-    locationValue: SelectedValue<AutocompleteLocation>,
-    enabled: Boolean,
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    onSelected: (AutocompleteLocation) -> Unit
-) {
-    TextButton(
-        modifier = Modifier
-            .padding(AutocompleteLocationPaddings)
-            .then(modifier),
-        enabled = enabled,
-        onClick = { onExpanded(true) }
-    ) {
-        Text(text = locationValue.text.asCompose())
-        AppDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { onExpanded(false) },
-            header = { Text(text = stringResource(R.string.autocompletes_header_location)) }
-        ) {
-            AppDropdownMenuItem(
-                onClick = { onSelected(AutocompleteLocation.DEFAULT) },
-                text = { Text(text = stringResource(R.string.autocompletes_action_selectDefaultLocation)) },
-                right = { CheckmarkAppCheckbox(checked = locationValue.selected == AutocompleteLocation.DEFAULT) }
-            )
-            AppDropdownMenuItem(
-                onClick = { onSelected(AutocompleteLocation.PERSONAL) },
-                text = { Text(text = stringResource(R.string.autocompletes_action_selectPersonalLocation)) },
-                right = { CheckmarkAppCheckbox(checked = locationValue.selected == AutocompleteLocation.PERSONAL) }
             )
         }
     }
@@ -363,6 +309,3 @@ private fun getAutocompleteItemRightOrNull(
 }
 
 private val AutocompleteItemTextPaddings = PaddingValues(vertical = 4.dp)
-private val AutocompleteLocationPaddings = PaddingValues(
-    horizontal = 8.dp
-)

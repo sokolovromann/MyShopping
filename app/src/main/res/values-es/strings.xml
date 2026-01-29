@@ -130,8 +130,6 @@
     <string name="all_text_selectedTotal">Seleccionado: %s</string>
     <string name="all_text_shoppingListsNotFound">No tienes listas de compras</string>
 
-    <string name="autocompletes_action_selectDefaultLocation">Por defecto</string>
-    <string name="autocompletes_action_selectPersonalLocation">Personal</string>
     <string name="autocompletes_body_brands">Marcas: %s</string>
     <string name="autocompletes_body_colors">Colores: %s</string>
     <string name="autocompletes_body_dataNotFound">Sin datos</string>
@@ -148,7 +146,6 @@
     <string name="autocompletes_contentDescription_navigationMenuIcon">@string/all_contentDescription_navigationMenuIcon</string>
     <string name="autocompletes_contentDescription_selectAllDataIcon">@string/all_contentDescription_selectAllDataIcon</string>
     <string name="autocompletes_header_autocompletes">@string/all_header_autocompletes</string>
-    <string name="autocompletes_header_location">@string/all_header_location</string>
     <string name="autocompletes_text_autocompletesNotFound">No tienes autocompletados</string>
 
     <string name="backup_action_closeBackup">@string/all_action_back</string>
