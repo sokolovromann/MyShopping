@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailsRepositor
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfigRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRepository
 import ru.sokolovromann.myshopping.manager.Api15Manager
+import ru.sokolovromann.myshopping.manager.MigrationManager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 
 @Module
@@ -27,5 +28,13 @@ object ManagerModule {
         detailsRepository: SuggestionDetailsRepository,
     ): SuggestionsManager {
         return SuggestionsManager(suggestionsRepository, suggestionsConfigRepository, detailsRepository)
+    }
+
+    @Provides
+    fun providesMigrationManager(
+        api15Manager: Api15Manager,
+        suggestionsManager: SuggestionsManager
+    ): MigrationManager {
+        return MigrationManager(api15Manager, suggestionsManager)
     }
 }
