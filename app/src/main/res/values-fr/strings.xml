@@ -10,9 +10,7 @@
     <string name="about_text_privacy_policy">Politique de confidentialité</string>
     <string name="about_text_terms_and_conditions">Termes et conditions</string>
 
-    <string name="addEditAutocomplete_action_cancelSavingAutocomplete">@string/all_action_cancel</string>
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
-    <string name="addEditAutocomplete_header">Nouvelle saisie automatique</string>
     <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
     <string name="addEditAutocomplete_message_nameError">@string/all_message_nameError</string>
 
