@@ -26,12 +26,7 @@ class MigrationManager @Inject constructor(
     private val suggestionsManager: SuggestionsManager
 ) {
 
-    suspend fun migrateToApi40(): Unit = withIoContext {
-        migrateApi15Autocompletes()
-        migrateApi15AutocompletesConfig()
-    }
-
-    private suspend fun migrateApi15Autocompletes(): Unit = withIoContext {
+    suspend fun migrateApi15Autocompletes(): Unit = withIoContext {
         val suggestionsWithDetails = api15Manager.getAutocompletes()
             .mapKeys { (key, _) ->
                 val used = api15Manager.countAutocompleteNames(key)
@@ -46,7 +41,7 @@ class MigrationManager @Inject constructor(
         suggestionsManager.addDetails(details)
     }
 
-    private suspend fun migrateApi15AutocompletesConfig(): Unit = withIoContext {
+    suspend fun migrateApi15AutocompletesConfig(): Unit = withIoContext {
         val api15Config = api15Manager.getAutocompletesConfig()
 
         val addSuggestionWithDetails = if (api15Config.saveProductToAutocompletes == null) {
