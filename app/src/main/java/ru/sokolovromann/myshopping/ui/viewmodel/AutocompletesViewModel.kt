@@ -37,6 +37,8 @@ class AutocompletesViewModel @Inject constructor(
         when (event) {
             AutocompletesEvent.OnClickAddAutocomplete -> onClickAddAutocomplete()
 
+            AutocompletesEvent.OnClickEditAutocompletes -> onClickEditAutocompletes()
+
             AutocompletesEvent.OnClickClearAutocompletes -> onClickClearAutocompletes()
 
             AutocompletesEvent.OnClickDeleteAutocompletes -> onClickDeleteAutocompletes()
@@ -74,6 +76,12 @@ class AutocompletesViewModel @Inject constructor(
             suggestionsManager.deleteDetails(it)
         }
         autocompletesState.onAllAutocompletesSelected(selected = false)
+    }
+
+    private fun onClickEditAutocompletes() = viewModelScope.launch(dispatcher) {
+        autocompletesState.selectedUids?.first()?.value?.let {
+            _screenEventFlow.emit(AutocompletesScreenEvent.OnShowEditAutocompleteScreen(it))
+        }
     }
 
     private fun onClickDeleteAutocompletes() = viewModelScope.launch(dispatcher) {

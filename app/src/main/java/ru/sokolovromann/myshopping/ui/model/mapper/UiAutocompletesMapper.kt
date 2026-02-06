@@ -8,6 +8,7 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
 import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.toUiString
+import ru.sokolovromann.myshopping.utils.UID
 import ru.sokolovromann.myshopping.utils.math.DiscountType
 
 object UiAutocompletesMapper {
@@ -39,6 +40,51 @@ object UiAutocompletesMapper {
     ): List<UiString> {
         return autocompletesWithConfig.getNames().map {
             UiString.FromString(it)
+        }
+    }
+
+    fun toUiBrands(brands: Collection<SuggestionDetail.Brand>): Collection<Pair<String, UID>> {
+        return brands.map { Pair(it.value.data, it.value.uid) }
+    }
+
+    fun toUiSizes(sizes: Collection<SuggestionDetail.Size>): Collection<Pair<String, UID>> {
+        return sizes.map { Pair(it.value.data, it.value.uid) }
+    }
+
+    fun toUiColors(colors: Collection<SuggestionDetail.Color>): Collection<Pair<String, UID>> {
+        return colors.map { Pair(it.value.data, it.value.uid) }
+    }
+
+    fun toUiManufacturers(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<Pair<String, UID>> {
+        return manufacturers.map { Pair(it.value.data, it.value.uid) }
+    }
+
+    fun toUiQuantities(quantities: Collection<SuggestionDetail.Quantity>): Collection<Pair<String, UID>> {
+        return quantities.map {
+            val data = it.value.data
+            val quantity = "${data.decimal} ${data.params}"
+            Pair(quantity, it.value.uid)
+        }
+    }
+
+    fun toUiPrices(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, UID>> {
+        return prices.map {
+            val price = priceToString(it, currency)
+            Pair(price, it.value.uid)
+        }
+    }
+
+    fun toUiDiscounts(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Pair<String, UID>> {
+        return discounts.map {
+            val discount = discountToString(it, currency)
+            Pair(discount, it.value.uid)
+        }
+    }
+
+    fun toUiTotals(totals: Collection<SuggestionDetail.Cost>, currency: Currency): Collection<Pair<String, UID>> {
+        return totals.map {
+            val total = totalToString(it, currency)
+            Pair(total, it.value.uid)
         }
     }
 
@@ -106,15 +152,17 @@ object UiAutocompletesMapper {
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_prices,
-                prices.joinToString(SEPARATOR) {
-                    val data = it.value.data.toString()
-                    if (currency.displayToLeft) {
-                        "${currency.symbol}$data"
-                    } else {
-                        "$data${currency.symbol}"
-                    }
-                }
+                prices.joinToString(SEPARATOR) { priceToString(it, currency) }
             )
+        }
+    }
+
+    private fun priceToString(unitPrice: SuggestionDetail.UnitPrice, currency: Currency): String {
+        val data = unitPrice.value.data.toString()
+        return if (currency.displayToLeft) {
+            "${currency.symbol}$data"
+        } else {
+            "$data${currency.symbol}"
         }
     }
 
@@ -124,22 +172,24 @@ object UiAutocompletesMapper {
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_discounts,
-                discounts.joinToString(SEPARATOR) {
-                    val data = it.value.data
-                    when (data.params) {
-                        DiscountType.Percent -> {
-                            "${data.decimal} %"
-                        }
-                        DiscountType.Money -> {
-                            if (currency.displayToLeft) {
-                                "${currency.symbol}${data.decimal}"
-                            } else {
-                                "${data.decimal}${currency.symbol}"
-                            }
-                        }
-                    }
-                }
+                discounts.joinToString(SEPARATOR) { discountToString(it, currency) }
             )
+        }
+    }
+
+    private fun discountToString(discount: SuggestionDetail.Discount, currency: Currency): String {
+        val data = discount.value.data
+        return when (data.params) {
+            DiscountType.Percent -> {
+                "${data.decimal} %"
+            }
+            DiscountType.Money -> {
+                if (currency.displayToLeft) {
+                    "${currency.symbol}${data.decimal}"
+                } else {
+                    "${data.decimal}${currency.symbol}"
+                }
+            }
         }
     }
 
@@ -149,15 +199,17 @@ object UiAutocompletesMapper {
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_totals,
-                totals.joinToString(SEPARATOR) {
-                    val data = it.value.data.toString()
-                    if (currency.displayToLeft) {
-                        "${currency.symbol}$data"
-                    } else {
-                        "$data${currency.symbol}"
-                    }
-                }
+                totals.joinToString(SEPARATOR) { totalToString(it, currency) }
             )
+        }
+    }
+
+    private fun totalToString(cost: SuggestionDetail.Cost, currency: Currency): String {
+        val data = cost.value.data.toString()
+        return if (currency.displayToLeft) {
+            "${currency.symbol}$data"
+        } else {
+            "$data${currency.symbol}"
         }
     }
 }

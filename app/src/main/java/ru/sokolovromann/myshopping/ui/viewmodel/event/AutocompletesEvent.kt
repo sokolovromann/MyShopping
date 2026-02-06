@@ -7,6 +7,8 @@ sealed class AutocompletesEvent {
 
     object OnClickAddAutocomplete : AutocompletesEvent()
 
+    object OnClickEditAutocompletes : AutocompletesEvent()
+
     object OnClickClearAutocompletes : AutocompletesEvent()
 
     object OnClickDeleteAutocompletes : AutocompletesEvent()

@@ -252,10 +252,10 @@ fun NavGraphBuilder.autocompletesGraph(navController: NavController) {
         composable(route = UiRoute.Autocompletes.autocompletesScreen) {
             AutocompletesScreen(navController)
         }
-        dialog(route = UiRoute.Autocompletes.addAutocompletesScreen) {
+        composable(route = UiRoute.Autocompletes.addAutocompletesScreen) {
             AddEditAutocompleteScreen(navController)
         }
-        dialog(route = UiRoute.Autocompletes.editAutocompleteScreen(UiRouteKey.AutocompleteUid.placeholder)) {
+        composable(route = UiRoute.Autocompletes.editAutocompleteScreen(UiRouteKey.AutocompleteUid.placeholder)) {
             AddEditAutocompleteScreen(navController)
         }
     }

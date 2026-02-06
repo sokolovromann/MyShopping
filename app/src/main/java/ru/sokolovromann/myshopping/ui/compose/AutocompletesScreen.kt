@@ -112,6 +112,15 @@ fun AutocompletesScreen(
                         }
                     },
                     actions = {
+                        if (state.selectedUids?.count() == 1) {
+                            IconButton(
+                                onClick = {
+                                    val event = AutocompletesEvent.OnClickEditAutocompletes
+                                    viewModel.onEvent(event)
+                                },
+                                content = { DefaultIcon(icon = UiIcon.Edit) }
+                            )
+                        }
                         IconButton(
                             onClick = {
                                 val event = AutocompletesEvent.OnClickClearAutocompletes
