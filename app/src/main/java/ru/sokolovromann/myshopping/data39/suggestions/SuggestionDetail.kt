@@ -31,7 +31,19 @@ sealed class SuggestionDetail {
     data class Text(val value: SuggestionDetailValue<String>) : SuggestionDetail()
 
     fun getClassName(): String {
-        return this.getClassName()
+        return when (this) {
+            is Image -> "Image"
+            is Manufacturer -> "Manufacturer"
+            is Brand -> "Brand"
+            is Size -> "Size"
+            is Color -> "Color"
+            is Quantity -> "Quantity"
+            is UnitPrice -> "UnitPrice"
+            is Discount -> "Discount"
+            is TaxRate -> "TaxRate"
+            is Cost -> "Cost"
+            is Text -> "Text"
+        }
     }
 
     fun getUid(): UID {
