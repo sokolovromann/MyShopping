@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.sokolovromann.myshopping.data.local.datasource.AppContent
 import ru.sokolovromann.myshopping.data39.LocalBase64
 import ru.sokolovromann.myshopping.data39.LocalFile
 import ru.sokolovromann.myshopping.data39.LocalJson
@@ -58,16 +59,16 @@ object Data39Module {
 
     @Provides
     fun providesApi15Repository(
-        @ApplicationContext context: Context,
         database: LocalRoomDatabase,
-        localResources: LocalResources
+        localResources: LocalResources,
+        appContent: AppContent
     ): Api15Repository {
         return Api15Repository(
-            context,
             database.getApi15ShoppingListsDao(),
             database.getApi15ProductsDao(),
             database.getApi15AutocompletesDao(),
-            localResources
+            localResources,
+            appContent
         )
     }
 
