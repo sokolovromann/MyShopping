@@ -32,7 +32,7 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRoomDao
         Api15ShoppingEntity::class,
         Api15AutocompleteEntity::class
     ],
-    version = LocalRoomDatabase.API39_DATABASE_VERSION,
+    version = LocalRoomDatabase.API40_DATABASE_VERSION,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
@@ -44,6 +44,11 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRoomDao
             from = LocalRoomDatabase.API27_DATABASE_VERSION,
             to = LocalRoomDatabase.API39_DATABASE_VERSION,
             spec = LocalRoomDatabase.MigrationFrom27To39Spec::class
+        ),
+        AutoMigration(
+            from = LocalRoomDatabase.API39_DATABASE_VERSION,
+            to = LocalRoomDatabase.API40_DATABASE_VERSION,
+            spec = LocalRoomDatabase.MigrationFrom39To40Spec::class
         )
     ]
 )
@@ -56,6 +61,7 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         const val API15_DATABASE_VERSION = 1
         const val API27_DATABASE_VERSION = 2
         const val API39_DATABASE_VERSION = 3
+        const val API40_DATABASE_VERSION = 4
 
         fun build(context: Context): LocalRoomDatabase {
             return Room.databaseBuilder(context, LocalRoomDatabase::class.java, DATABASE_NAME)
@@ -78,6 +84,8 @@ abstract class LocalRoomDatabase : RoomDatabase() {
     class MigrationFrom15To27Spec : AutoMigrationSpec
 
     class MigrationFrom27To39Spec : AutoMigrationSpec
+
+    class MigrationFrom39To40Spec : AutoMigrationSpec
 
     abstract fun getCartsDao(): CartsRoomDao
 

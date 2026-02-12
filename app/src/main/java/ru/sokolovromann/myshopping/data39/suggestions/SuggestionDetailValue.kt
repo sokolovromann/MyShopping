@@ -7,5 +7,7 @@ data class SuggestionDetailValue<D>(
     val uid: UID,
     val directory: UID,
     val created: DateTime,
-    val data: D
+    val lastModified: DateTime,
+    val data: D,
+    val used: Int
 )

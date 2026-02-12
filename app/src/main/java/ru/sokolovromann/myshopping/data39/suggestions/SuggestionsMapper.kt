@@ -23,7 +23,7 @@ class SuggestionsMapper @Inject constructor(
             uid = toUid(entity.uid),
             directory = try {
                 enumValueOf(entity.directory)
-            } catch (_: Exception) { SuggestionDirectory.Personal },
+            } catch (_: Exception) { SuggestionDirectory.NoDirectory },
             created = toDateTime(entity.created),
             lastModified = toDateTime(entity.lastModified),
             name = entity.name,

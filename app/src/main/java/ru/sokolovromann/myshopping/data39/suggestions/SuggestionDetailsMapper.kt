@@ -60,9 +60,11 @@ class SuggestionDetailsMapper @Inject constructor() : LocalRoomMapper<Suggestion
             uid = fromUid(model.getUid()),
             directory = fromUid(model.getDirectory()),
             created = fromDateTime(model.getCreated()),
+            lastModified = fromDateTime(model.getLastModified()),
             type = model.getClassName(),
             value = value,
-            valueParams = valueParams
+            valueParams = valueParams,
+            used = model.getUsed().toString()
         )
     }
 
@@ -70,35 +72,37 @@ class SuggestionDetailsMapper @Inject constructor() : LocalRoomMapper<Suggestion
         val uid = toUid(entity.uid)
         val directory = toUid(entity.directory)
         val created = toDateTime(entity.created)
+        val lastModified = toDateTime(entity.lastModified)
+        val used = entity.used.toIntOrNull() ?: 0
         return when (entity.type) {
             "Image" -> {
-                val value = SuggestionDetailValue(uid, directory, created, entity.value)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, entity.value, used)
                 SuggestionDetail.Image(value)
             }
             "Manufacturer" -> {
-                val value = SuggestionDetailValue(uid, directory, created, entity.value)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, entity.value, used)
                 SuggestionDetail.Manufacturer(value)
             }
             "Brand" -> {
-                val value = SuggestionDetailValue(uid, directory, created, entity.value)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, entity.value, used)
                 SuggestionDetail.Brand(value)
             }
             "Size" -> {
-                val value = SuggestionDetailValue(uid, directory, created, entity.value)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, entity.value, used)
                 SuggestionDetail.Size(value)
             }
             "Color" -> {
-                val value = SuggestionDetailValue(uid, directory, created, entity.value)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, entity.value, used)
                 SuggestionDetail.Color(value)
             }
             "Quantity" -> {
                 val params = toDecimalWithParams(entity.value, entity.valueParams)
-                val value = SuggestionDetailValue(uid, directory, created, params)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, params, used)
                 SuggestionDetail.Quantity(value)
             }
             "UnitPrice" -> {
                 val params = toDecimal(entity.value)
-                val value = SuggestionDetailValue(uid, directory, created, params)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, params, used)
                 SuggestionDetail.UnitPrice(value)
             }
             "Discount" -> {
@@ -106,21 +110,21 @@ class SuggestionDetailsMapper @Inject constructor() : LocalRoomMapper<Suggestion
                     entity.value,
                     toEnum(entity.valueParams, SuggestionsDefaults.DISCOUNT_TYPE)
                 )
-                val value = SuggestionDetailValue(uid, directory, created, params)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, params, used)
                 SuggestionDetail.Discount(value)
             }
             "TaxRate" -> {
                 val params = toDecimal(entity.value)
-                val value = SuggestionDetailValue(uid, directory, created, params)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, params, used)
                 SuggestionDetail.TaxRate(value)
             }
             "Cost" -> {
                 val params = toDecimal(entity.value)
-                val value = SuggestionDetailValue(uid, directory, created, params)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, params, used)
                 SuggestionDetail.Cost(value)
             }
             else -> {
-                val value = SuggestionDetailValue(uid, directory, created, entity.value)
+                val value = SuggestionDetailValue(uid, directory, created, lastModified, entity.value, used)
                 SuggestionDetail.Text(value)
             }
         }

@@ -32,7 +32,7 @@ class MigrationManager @Inject constructor(
                 val used = api15Manager.countAutocompleteNames(key)
                 toSuggestion(key, used)
             }
-            .mapValues { (key, value) -> toDetails(key.uid, value) }
+            .mapValues { (key, value) -> toDetails(key, value) }
 
         val suggestions = suggestionsWithDetails.keys
         suggestionsManager.addSuggestions(suggestions)
@@ -94,7 +94,7 @@ class MigrationManager @Inject constructor(
         val currentDateTime = DateTimeAlias.getCurrent()
         return Suggestion(
             uid = UID.createRandom(),
-            directory = SuggestionDirectory.Personal,
+            directory = SuggestionDirectory.NoDirectory,
             created = currentDateTime,
             lastModified = currentDateTime,
             name = name,
@@ -102,76 +102,91 @@ class MigrationManager @Inject constructor(
         )
     }
 
-    private fun toDetails(
-        directory: UID,
+    private suspend fun toDetails(
+        suggestion: Suggestion,
         autocompletes: List<Api15AutocompleteEntity>
-    ): Collection<SuggestionDetail> {
-        return mutableListOf<SuggestionDetail>().apply {
+    ): Collection<SuggestionDetail> = withIoContext {
+        return@withIoContext mutableListOf<SuggestionDetail>().apply {
             val manufacturers = autocompletes.map {
-                val value = createStringSuggestionDetailValue(directory, it.manufacturer)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Manufacturer")
+                val value = createStringSuggestionDetailValue(suggestion.uid, it.manufacturer, used)
                 SuggestionDetail.Manufacturer(value)
             }
             addAll(manufacturers)
 
             val brands = autocompletes.map {
-                val value = createStringSuggestionDetailValue(directory, it.brand)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Brand")
+                val value = createStringSuggestionDetailValue(suggestion.uid, it.brand, used)
                 SuggestionDetail.Brand(value)
             }
             addAll(brands)
 
             val sizes = autocompletes.map {
-                val value = createStringSuggestionDetailValue(directory, it.size)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Size")
+                val value = createStringSuggestionDetailValue(suggestion.uid, it.size, used)
                 SuggestionDetail.Size(value)
             }
             addAll(sizes)
 
             val colors = autocompletes.map {
-                val value = createStringSuggestionDetailValue(directory, it.color)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Color")
+                val value = createStringSuggestionDetailValue(suggestion.uid, it.color, used)
                 SuggestionDetail.Color(value)
             }
             addAll(colors)
 
             val quantities = autocompletes.map {
+                val currentDateTime = DateTimeAlias.getCurrent()
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Quantities")
                 val value = SuggestionDetailValue(
                     uid = UID.createRandom(),
-                    directory = directory,
-                    created = DateTimeAlias.getCurrent(),
-                    data = DecimalWithParams(it.quantity.toDecimal(), it.quantitySymbol)
+                    directory = suggestion.uid,
+                    created = currentDateTime,
+                    lastModified = currentDateTime,
+                    data = DecimalWithParams(it.quantity.toDecimal(), it.quantitySymbol),
+                    used = used
                 )
                 SuggestionDetail.Quantity(value)
             }
             addAll(quantities)
 
             val unitPrices = autocompletes.map {
-                val value = createDecimalSuggestionDetailValue(directory, it.price)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "UnitPrices")
+                val value = createDecimalSuggestionDetailValue(suggestion.uid, it.price, used)
                 SuggestionDetail.UnitPrice(value)
             }
             addAll(unitPrices)
 
             val discounts = autocompletes.map {
+                val currentDateTime = DateTimeAlias.getCurrent()
                 val type: DiscountType = if (it.discountAsPercent) {
                     DiscountType.Percent
                 } else {
                     DiscountType.Money
                 }
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Discounts")
                 val value = SuggestionDetailValue(
                     uid = UID.createRandom(),
-                    directory = directory,
-                    created = DateTimeAlias.getCurrent(),
-                    data = DecimalWithParams(it.discount.toDecimal(), type)
+                    directory = suggestion.uid,
+                    created = currentDateTime,
+                    lastModified = currentDateTime,
+                    data = DecimalWithParams(it.discount.toDecimal(), type),
+                    used = used
                 )
                 SuggestionDetail.Discount(value)
             }
             addAll(discounts)
 
             val taxRates = autocompletes.map {
-                val value = createDecimalSuggestionDetailValue(directory, it.taxRate)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "TaxRates")
+                val value = createDecimalSuggestionDetailValue(suggestion.uid, it.taxRate, used)
                 SuggestionDetail.TaxRate(value)
             }
             addAll(taxRates)
 
             val costs = autocompletes.map {
-                val value = createDecimalSuggestionDetailValue(directory, it.total)
+                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Costs")
+                val value = createDecimalSuggestionDetailValue(suggestion.uid, it.total, used)
                 SuggestionDetail.Cost(value)
             }
             addAll(costs)
@@ -180,25 +195,33 @@ class MigrationManager @Inject constructor(
 
     private fun createStringSuggestionDetailValue(
         directory: UID,
-        data: String
+        data: String,
+        used: Int
     ): SuggestionDetailValue<String> {
+        val currentDateTime = DateTimeAlias.getCurrent()
         return SuggestionDetailValue(
             uid = UID.createRandom(),
             directory = directory,
-            created = DateTimeAlias.getCurrent(),
-            data = data
+            created = currentDateTime,
+            lastModified = currentDateTime,
+            data = data,
+            used = used
         )
     }
 
     private fun createDecimalSuggestionDetailValue(
         directory: UID,
-        data: Float
+        data: Float,
+        used: Int
     ): SuggestionDetailValue<Decimal> {
+        val currentDateTime = DateTimeAlias.getCurrent()
         return SuggestionDetailValue(
             uid = UID.createRandom(),
             directory = directory,
-            created = DateTimeAlias.getCurrent(),
-            data = data.toDecimal()
+            created = currentDateTime,
+            lastModified = currentDateTime,
+            data = data.toDecimal(),
+            used = used
         )
     }
 }

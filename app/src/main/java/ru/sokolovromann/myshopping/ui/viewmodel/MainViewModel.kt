@@ -154,7 +154,7 @@ class MainViewModel @Inject constructor(
                 val currentDateTime = DateTimeAlias.getCurrent()
                 Suggestion(
                     uid = UID.createRandom(),
-                    directory = SuggestionDirectory.Personal,
+                    directory = SuggestionDirectory.NoDirectory,
                     created = currentDateTime,
                     lastModified = currentDateTime,
                     name = it,

@@ -216,34 +216,34 @@ class SuggestionsManager @Inject constructor(
         }.toList()
         return SuggestionDetails(
             images = images
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.descriptions),
             manufacturers = manufacturers
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.descriptions),
             brands = brands
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.descriptions),
             sizes = sizes
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.descriptions),
             colors = colors
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.descriptions),
             quantities = quantities
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.quantities),
             unitPrices = unitPrices
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.money),
             discounts = discounts
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.money),
             taxRates = taxRates
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.money),
             costs = costs
-                .sortedByDescending { it.value.created.getMillis() }
+                .sortedByDescending { it.value.lastModified.getMillis() }
                 .take(takeDetails.money)
         )
     }

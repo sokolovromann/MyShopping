@@ -93,4 +93,36 @@ sealed class SuggestionDetail {
             is Text -> value.created
         }
     }
+
+    fun getLastModified(): DateTime {
+        return when (this) {
+            is Image -> value.lastModified
+            is Manufacturer -> value.lastModified
+            is Brand -> value.lastModified
+            is Size -> value.lastModified
+            is Color -> value.lastModified
+            is Quantity -> value.lastModified
+            is UnitPrice -> value.lastModified
+            is Discount -> value.lastModified
+            is TaxRate -> value.lastModified
+            is Cost -> value.lastModified
+            is Text -> value.lastModified
+        }
+    }
+
+    fun getUsed(): Int {
+        return when (this) {
+            is Image -> value.used
+            is Manufacturer -> value.used
+            is Brand -> value.used
+            is Size -> value.used
+            is Color -> value.used
+            is Quantity -> value.used
+            is UnitPrice -> value.used
+            is Discount -> value.used
+            is TaxRate -> value.used
+            is Cost -> value.used
+            is Text -> value.used
+        }
+    }
 }

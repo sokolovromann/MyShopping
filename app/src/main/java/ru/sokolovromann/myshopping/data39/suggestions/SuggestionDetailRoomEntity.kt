@@ -18,6 +18,9 @@ data class SuggestionDetailRoomEntity(
     @ColumnInfo(name = "created", defaultValue = "")
     val created: String,
 
+    @ColumnInfo(name = "last_modified", defaultValue = "")
+    val lastModified: String,
+
     @ColumnInfo(name = "type", defaultValue = "")
     val type: String,
 
@@ -25,5 +28,8 @@ data class SuggestionDetailRoomEntity(
     val value: String,
 
     @ColumnInfo(name = "value_params", defaultValue = "")
-    val valueParams: String
+    val valueParams: String,
+
+    @ColumnInfo(name = "used", defaultValue = "")
+    val used: String
 )
