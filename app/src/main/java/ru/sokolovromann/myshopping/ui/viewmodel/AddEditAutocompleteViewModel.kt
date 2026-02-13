@@ -76,7 +76,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
             val newSuggestion = if (oldSuggestionWithDetails?.suggestion == null) {
                 Suggestion(
                     uid = UID.createRandom(),
-                    directory = SuggestionDirectory.Personal,
+                    directory = SuggestionDirectory.NoDirectory,
                     created = currentDateTime,
                     lastModified = currentDateTime,
                     name = newName,
