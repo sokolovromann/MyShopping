@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.Currency
+import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
 import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
@@ -43,6 +44,10 @@ object UiAutocompletesMapper {
         }
     }
 
+    fun toUiNames(names: Collection<Suggestion>): Collection<Pair<String, UID>> {
+        return names.map { Pair(it.name, it.uid) }
+    }
+
     fun toUiBrands(brands: Collection<SuggestionDetail.Brand>): Collection<Pair<String, UID>> {
         return brands.map { Pair(it.value.data, it.value.uid) }
     }
@@ -67,6 +72,14 @@ object UiAutocompletesMapper {
         }
     }
 
+    fun toUiQuantitiesWithSymbols(quantities: Collection<SuggestionDetail.Quantity>): Collection<Triple<String, String, UID>> {
+        return quantities.map {
+            val data = it.value.data
+            val quantity = "${data.decimal} ${data.params}"
+            Triple(quantity, data.params, it.value.uid)
+        }
+    }
+
     fun toUiPrices(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, UID>> {
         return prices.map {
             val price = priceToString(it, currency)
@@ -78,6 +91,13 @@ object UiAutocompletesMapper {
         return discounts.map {
             val discount = discountToString(it, currency)
             Pair(discount, it.value.uid)
+        }
+    }
+
+    fun toUiDiscountsWithPercent(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Triple<String, DiscountType, UID>> {
+        return discounts.map {
+            val discount = discountToString(it, currency)
+            Triple(discount, it.value.data.params, it.value.uid)
         }
     }
 
