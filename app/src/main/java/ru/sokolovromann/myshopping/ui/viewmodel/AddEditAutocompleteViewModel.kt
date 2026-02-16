@@ -73,8 +73,12 @@ class AddEditAutocompleteViewModel @Inject constructor(
         } else {
             val oldSuggestionWithDetails = suggestionsManager.getSuggestionWithDetails(suggestionUid)
             val currentDateTime = DateTime.getCurrent()
-            val newSuggestion = if (oldSuggestionWithDetails?.suggestion == null) {
-                Suggestion(
+            if (oldSuggestionWithDetails?.suggestion == null) {
+                if (suggestionsManager.existsSuggestion(newName)) {
+                    addEditAutocompleteState.onInvalidNameValue()
+                    return@launch
+                }
+                val suggestion = Suggestion(
                     uid = UID.createRandom(),
                     directory = SuggestionDirectory.NoDirectory,
                     created = currentDateTime,
@@ -82,16 +86,18 @@ class AddEditAutocompleteViewModel @Inject constructor(
                     name = newName,
                     used = 0
                 )
+                suggestionsManager.addSuggestion(suggestion)
             } else {
-                oldSuggestionWithDetails.suggestion.copy(
+                val suggestion = oldSuggestionWithDetails.suggestion.copy(
                     lastModified = currentDateTime,
                     name = newName,
                 )
+                suggestionsManager.apply {
+                    addSuggestion(suggestion)
+                    deleteDetails(suggestionUid, deletedDetailsUids)
+                }
             }
-            suggestionsManager.apply {
-                addSuggestion(newSuggestion)
-                deleteDetails(suggestionUid, deletedDetailsUids)
-            }
+
             deletedDetailsUids.clear()
             _screenEventFlow.emit(AddEditAutocompleteScreenEvent.OnShowBackScreen)
         }

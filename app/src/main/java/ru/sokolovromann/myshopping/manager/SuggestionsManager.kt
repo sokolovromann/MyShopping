@@ -176,6 +176,12 @@ class SuggestionsManager @Inject constructor(
         detailsRepository.clear()
     }
 
+    suspend fun existsSuggestion(name: String): Boolean = withIoContext {
+        return@withIoContext getSuggestions().find {
+            it.name.trim().equals(name.trim(), true)
+        } != null
+    }
+
     private fun Collection<SuggestionWithDetails>.sorted(
         sort: SortSuggestions
     ): Collection<SuggestionWithDetails> {
