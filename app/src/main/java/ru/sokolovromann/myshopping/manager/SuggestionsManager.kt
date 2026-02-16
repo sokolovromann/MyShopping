@@ -188,8 +188,8 @@ class SuggestionsManager @Inject constructor(
         return when (sort) {
             is SortSuggestions.Name -> {
                 when (sort.order) {
-                    SortSuggestions.Order.ByAscending -> sortedBy { it.suggestion.name }
-                    SortSuggestions.Order.ByDescending -> sortedByDescending { it.suggestion.name }
+                    SortSuggestions.Order.ByAscending -> sortedBy { it.suggestion.name.lowercase() }
+                    SortSuggestions.Order.ByDescending -> sortedByDescending { it.suggestion.name.lowercase() }
                 }
             }
             is SortSuggestions.Popularity -> {
