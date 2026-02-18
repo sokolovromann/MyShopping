@@ -153,7 +153,7 @@ class MainViewModel @Inject constructor(
             .map {
                 val currentDateTime = DateTimeAlias.getCurrent()
                 Suggestion(
-                    uid = UID.createRandom(),
+                    uid = UID.createFromString(it),
                     directory = SuggestionDirectory.NoDirectory,
                     created = currentDateTime,
                     lastModified = currentDateTime,

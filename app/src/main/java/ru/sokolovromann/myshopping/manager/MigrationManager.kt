@@ -93,7 +93,7 @@ class MigrationManager @Inject constructor(
     private fun toSuggestion(name: String, used: Int): Suggestion {
         val currentDateTime = DateTimeAlias.getCurrent()
         return Suggestion(
-            uid = UID.createRandom(),
+            uid = UID.createFromString(name),
             directory = SuggestionDirectory.NoDirectory,
             created = currentDateTime,
             lastModified = currentDateTime,
