@@ -14,25 +14,28 @@ import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetailsInfo
 import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestions
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
 import ru.sokolovromann.myshopping.utils.UID
+import ru.sokolovromann.myshopping.utils.calendar.DateTime
 import ru.sokolovromann.myshopping.utils.calendar.DateTimeAlias
 import ru.sokolovromann.myshopping.utils.math.Decimal
 import ru.sokolovromann.myshopping.utils.math.DecimalExtensions.toDecimal
 import ru.sokolovromann.myshopping.utils.math.DecimalWithParams
 import ru.sokolovromann.myshopping.utils.math.DiscountType
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import javax.inject.Inject
+import kotlin.collections.count
+import kotlin.collections.filter
 
 class MigrationManager @Inject constructor(
     private val api15Manager: Api15Manager,
     private val suggestionsManager: SuggestionsManager
 ) {
 
-    suspend fun migrateApi15Autocompletes(): Unit = withIoContext {
+    suspend fun migrateAutocompletesFromApi15(): Unit = withIoContext {
         val suggestionsWithDetails = api15Manager.getAutocompletes()
-            .mapKeys { (key, _) ->
-                val used = api15Manager.countAutocompleteNames(key)
-                toSuggestion(key, used)
-            }
-            .mapValues { (key, value) -> toDetails(key, value) }
+            .groupBy { it.name.lowercase() }
+            .mapKeys { createSuggestion(it) }
+            .mapValues { createDetails(it) }
 
         val suggestions = suggestionsWithDetails.keys
         suggestionsManager.addSuggestions(suggestions)
@@ -41,7 +44,7 @@ class MigrationManager @Inject constructor(
         suggestionsManager.addDetails(details)
     }
 
-    suspend fun migrateApi15AutocompletesConfig(): Unit = withIoContext {
+    suspend fun migrateAutocompletesConfigFromApi15(): Unit = withIoContext {
         val api15Config = api15Manager.getAutocompletesConfig()
 
         val addSuggestionWithDetails = if (api15Config.saveProductToAutocompletes == null) {
@@ -90,8 +93,10 @@ class MigrationManager @Inject constructor(
         suggestionsManager.addConfig(config)
     }
 
-    private fun toSuggestion(name: String, used: Int): Suggestion {
-        val currentDateTime = DateTimeAlias.getCurrent()
+    private fun createSuggestion(entry: Map.Entry<String, List<Api15AutocompleteEntity>>): Suggestion {
+        val name = entry.key.replaceFirstChar { it.uppercase() }
+        val used = entry.value.count()
+        val currentDateTime = DateTime.getCurrent()
         return Suggestion(
             uid = UID.createFromString(name),
             directory = SuggestionDirectory.NoDirectory,
@@ -102,95 +107,164 @@ class MigrationManager @Inject constructor(
         )
     }
 
-    private suspend fun toDetails(
-        suggestion: Suggestion,
+    private fun createDetails(
+        entry: Map.Entry<Suggestion, List<Api15AutocompleteEntity>>
+    ): Collection<SuggestionDetail> {
+        return mutableListOf<SuggestionDetail>().apply {
+            val directory = entry.key.uid
+            val autocompletes = entry.value
+
+            addAll(createManufacturers(directory, autocompletes))
+            addAll(createBrands(directory, autocompletes))
+            addAll(createSizes(directory, autocompletes))
+            addAll(createColors(directory, autocompletes))
+            addAll(createQuantities(directory, autocompletes))
+            addAll(createUnitPrices(directory, autocompletes))
+            addAll(createDiscounts(directory, autocompletes))
+            addAll(createTaxRates(directory, autocompletes))
+            addAll(createCosts(directory, autocompletes))
+        }
+    }
+
+    private fun createManufacturers(
+        directory: UID,
         autocompletes: List<Api15AutocompleteEntity>
-    ): Collection<SuggestionDetail> = withIoContext {
-        return@withIoContext mutableListOf<SuggestionDetail>().apply {
-            val manufacturers = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Manufacturer")
-                val value = createStringSuggestionDetailValue(suggestion.uid, it.manufacturer, used)
+    ): List<SuggestionDetail.Manufacturer> {
+        val filtered = autocompletes.filter { it.manufacturer.isNotEmpty() }
+        return filtered
+            .distinctBy { it.manufacturer.lowercase() }
+            .map { autocomplete ->
+                val data = autocomplete.manufacturer
+                val used = filtered.count { it.manufacturer.equals(autocomplete.manufacturer, true) }
+                val value = createStringSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.Manufacturer(value)
             }
-            addAll(manufacturers)
+    }
 
-            val brands = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Brand")
-                val value = createStringSuggestionDetailValue(suggestion.uid, it.brand, used)
+    private fun createBrands(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.Brand> {
+        val filtered = autocompletes.filter { it.brand.isNotEmpty() }
+        return filtered
+            .distinctBy { it.brand.lowercase() }
+            .map { autocomplete ->
+                val data = autocomplete.brand
+                val used = filtered.count { it.brand.equals(autocomplete.brand, true) }
+                val value = createStringSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.Brand(value)
             }
-            addAll(brands)
+    }
 
-            val sizes = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Size")
-                val value = createStringSuggestionDetailValue(suggestion.uid, it.size, used)
+    private fun createSizes(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.Size> {
+        val filtered = autocompletes.filter { it.size.isNotEmpty() }
+        return filtered
+            .distinctBy { it.size.lowercase() }
+            .map { autocomplete ->
+                val data = autocomplete.size
+                val used = filtered.count { it.size.equals(autocomplete.size, true) }
+                val value = createStringSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.Size(value)
             }
-            addAll(sizes)
+    }
 
-            val colors = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Color")
-                val value = createStringSuggestionDetailValue(suggestion.uid, it.color, used)
+    private fun createColors(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.Color> {
+        val filtered = autocompletes.filter { it.color.isNotEmpty() }
+        return filtered
+            .distinctBy { it.color.lowercase() }
+            .map { autocomplete ->
+                val data = autocomplete.color
+                val used = filtered.count { it.color.equals(autocomplete.color, true) }
+                val value = createStringSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.Color(value)
             }
-            addAll(colors)
+    }
 
-            val quantities = autocompletes.map {
-                val currentDateTime = DateTimeAlias.getCurrent()
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Quantities")
-                val value = SuggestionDetailValue(
-                    uid = UID.createRandom(),
-                    directory = suggestion.uid,
-                    created = currentDateTime,
-                    lastModified = currentDateTime,
-                    data = DecimalWithParams(it.quantity.toDecimal(), it.quantitySymbol),
-                    used = used
-                )
+    private fun createQuantities(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.Quantity> {
+        val filtered = autocompletes.filter { it.quantity > 0f }
+        return filtered
+            .distinctBy { getQuantityDecimalFormat().format(it.quantity.toBigDecimal()) }
+            .map { autocomplete ->
+                val quantity = autocomplete.quantity
+                val quantitySymbol = autocomplete.quantitySymbol
+                val used = filtered.count { it.quantity == autocomplete.quantity }
+                val value = createDecimalWithParamsSuggestionDetailValue(directory, quantity, quantitySymbol, used)
                 SuggestionDetail.Quantity(value)
             }
-            addAll(quantities)
+    }
 
-            val unitPrices = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "UnitPrices")
-                val value = createDecimalSuggestionDetailValue(suggestion.uid, it.price, used)
+    private fun createUnitPrices(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.UnitPrice> {
+        val filtered = autocompletes.filter { it.price > 0f }
+        return filtered
+            .distinctBy { getMoneyDecimalFormat().format(it.price.toBigDecimal()) }
+            .map { autocomplete ->
+                val data = autocomplete.price
+                val used = filtered.count { it.price == autocomplete.price }
+                val value = createDecimalSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.UnitPrice(value)
             }
-            addAll(unitPrices)
+    }
 
-            val discounts = autocompletes.map {
-                val currentDateTime = DateTimeAlias.getCurrent()
-                val type: DiscountType = if (it.discountAsPercent) {
+    private fun createDiscounts(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.Discount> {
+        val filtered = autocompletes.filter { it.discount > 0f }
+        return filtered
+            .distinctBy { getMoneyDecimalFormat().format(it.discount.toBigDecimal()) }
+            .map { autocomplete ->
+                val discount = autocomplete.discount
+                val type: DiscountType = if (autocomplete.discountAsPercent) {
                     DiscountType.Percent
                 } else {
                     DiscountType.Money
                 }
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Discounts")
-                val value = SuggestionDetailValue(
-                    uid = UID.createRandom(),
-                    directory = suggestion.uid,
-                    created = currentDateTime,
-                    lastModified = currentDateTime,
-                    data = DecimalWithParams(it.discount.toDecimal(), type),
-                    used = used
-                )
+                val used = filtered.count { it.discount == autocomplete.discount }
+                val value = createDecimalWithParamsSuggestionDetailValue(directory, discount, type, used)
                 SuggestionDetail.Discount(value)
             }
-            addAll(discounts)
+    }
 
-            val taxRates = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "TaxRates")
-                val value = createDecimalSuggestionDetailValue(suggestion.uid, it.taxRate, used)
+    private fun createTaxRates(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.TaxRate> {
+        val filtered = autocompletes.filter { it.taxRate > 0f }
+        return filtered
+            .distinctBy {getMoneyDecimalFormat().format(it.taxRate.toBigDecimal()) }
+            .map { autocomplete ->
+                val data = autocomplete.taxRate
+                val used = filtered.count { it.taxRate == autocomplete.taxRate }
+                val value = createDecimalSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.TaxRate(value)
             }
-            addAll(taxRates)
+    }
 
-            val costs = autocompletes.map {
-                val used = api15Manager.countAutocompleteDetails(suggestion.name, "Costs")
-                val value = createDecimalSuggestionDetailValue(suggestion.uid, it.total, used)
+    private fun createCosts(
+        directory: UID,
+        autocompletes: List<Api15AutocompleteEntity>
+    ): List<SuggestionDetail.Cost> {
+        val filtered = autocompletes.filter { it.total > 0f }
+        return filtered
+            .distinctBy {getMoneyDecimalFormat().format(it.total.toBigDecimal()) }
+            .map { autocomplete ->
+                val data = autocomplete.total
+                val used = filtered.count { it.total == autocomplete.total }
+                val value = createDecimalSuggestionDetailValue(directory, data, used)
                 SuggestionDetail.Cost(value)
             }
-            addAll(costs)
-        }
     }
 
     private fun createStringSuggestionDetailValue(
@@ -223,5 +297,39 @@ class MigrationManager @Inject constructor(
             data = data.toDecimal(),
             used = used
         )
+    }
+
+    private fun<T> createDecimalWithParamsSuggestionDetailValue(
+        directory: UID,
+        data: Float,
+        params: T,
+        used: Int
+    ): SuggestionDetailValue<DecimalWithParams<T>> {
+        val currentDateTime = DateTimeAlias.getCurrent()
+        val data = DecimalWithParams(data.toDecimal(), params)
+        return SuggestionDetailValue(
+            uid = UID.createRandom(),
+            directory = directory,
+            created = currentDateTime,
+            lastModified = currentDateTime,
+            data = data,
+            used = used
+        )
+    }
+
+    private fun getQuantityDecimalFormat(): DecimalFormat {
+        return DecimalFormat().apply {
+            minimumFractionDigits = 0
+            maximumFractionDigits = 3
+            roundingMode = RoundingMode.HALF_UP
+        }
+    }
+
+    private fun getMoneyDecimalFormat(): DecimalFormat {
+        return DecimalFormat().apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+            roundingMode = RoundingMode.HALF_UP
+        }
     }
 }

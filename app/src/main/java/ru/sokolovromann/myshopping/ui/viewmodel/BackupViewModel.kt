@@ -92,7 +92,7 @@ class BackupViewModel @Inject constructor(
         backupRepository.importBackup(event.uri)
             .onSuccess {
                 deleteRemindersIfExists(it.first.shoppings)
-                migrationManager.migrateApi15Autocompletes()
+                migrationManager.migrateAutocompletesFromApi15()
                 backupState.onShowImportMessage(success = true)
             }
             .onFailure {

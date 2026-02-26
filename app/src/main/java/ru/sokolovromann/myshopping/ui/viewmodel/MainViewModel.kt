@@ -257,8 +257,8 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onMigrateFromCodeVersion39() = viewModelScope.launch(dispatcher) {
-        migrationManager.migrateApi15Autocompletes()
-        migrationManager.migrateApi15AutocompletesConfig()
+        migrationManager.migrateAutocompletesFromApi15()
+        migrationManager.migrateAutocompletesConfigFromApi15()
         appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
     }
 }
