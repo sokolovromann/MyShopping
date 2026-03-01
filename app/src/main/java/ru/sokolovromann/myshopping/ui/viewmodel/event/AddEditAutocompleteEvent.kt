@@ -11,5 +11,5 @@ sealed class AddEditAutocompleteEvent {
 
     data class OnNameValueChanged(val value: TextFieldValue) : AddEditAutocompleteEvent()
 
-    data class OnClickDeleteDetail(val uid: UID) : AddEditAutocompleteEvent()
+    data class OnClickDeleteDetail(val uid: UID, val type: String) : AddEditAutocompleteEvent()
 }

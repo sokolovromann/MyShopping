@@ -113,7 +113,7 @@ fun AddEditAutocompleteScreen(
                     AddEditAutocompleteChipContent(
                         text = { Text(it.first) },
                         onClickDelete = {
-                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "brand")
                             viewModel.onEvent(event)
                         }
                     )
@@ -127,7 +127,7 @@ fun AddEditAutocompleteScreen(
                     AddEditAutocompleteChipContent(
                         text = { Text(it.first) },
                         onClickDelete = {
-                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "size")
                             viewModel.onEvent(event)
                         }
                     )
@@ -141,7 +141,7 @@ fun AddEditAutocompleteScreen(
                     AddEditAutocompleteChipContent(
                         text = { Text(it.first) },
                         onClickDelete = {
-                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "color")
                             viewModel.onEvent(event)
                         }
                     )
@@ -155,7 +155,7 @@ fun AddEditAutocompleteScreen(
                     AddEditAutocompleteChipContent(
                         text = { Text(it.first) },
                         onClickDelete = {
-                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "manufacturer")
                             viewModel.onEvent(event)
                         }
                     )
@@ -170,7 +170,7 @@ fun AddEditAutocompleteScreen(
                     AddEditAutocompleteChipContent(
                         text = { Text(it.first) },
                         onClickDelete = {
-                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                            val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "quantity")
                             viewModel.onEvent(event)
                         }
                     )
@@ -186,7 +186,7 @@ fun AddEditAutocompleteScreen(
                         AddEditAutocompleteChipContent(
                             text = { Text(it.first) },
                             onClickDelete = {
-                                val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                                val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "price")
                                 viewModel.onEvent(event)
                             }
                         )
@@ -200,7 +200,7 @@ fun AddEditAutocompleteScreen(
                         AddEditAutocompleteChipContent(
                             text = { Text(it.first) },
                             onClickDelete = {
-                                val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                                val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "discount")
                                 viewModel.onEvent(event)
                             }
                         )
@@ -214,7 +214,7 @@ fun AddEditAutocompleteScreen(
                         AddEditAutocompleteChipContent(
                             text = { Text(it.first) },
                             onClickDelete = {
-                                val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second)
+                                val event = AddEditAutocompleteEvent.OnClickDeleteDetail(it.second, "total")
                                 viewModel.onEvent(event)
                             }
                         )

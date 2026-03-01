@@ -81,6 +81,25 @@ class AddEditAutocompleteState {
         waiting = false
     }
 
+    fun onDetailDeleted(uid: UID, type: String) {
+        fun Collection<Pair<String, UID>>.withoutDeleted(): Collection<Pair<String, UID>> {
+            return toMutableList().apply {
+                removeIf { it.second == uid }
+            }
+        }
+        when (type) {
+            "brand" -> brands = brands.withoutDeleted()
+            "size" -> sizes = sizes.withoutDeleted()
+            "color" -> colors = colors.withoutDeleted()
+            "manufacturer" -> manufacturers = manufacturers.withoutDeleted()
+            "quantity" -> quantities = quantities.withoutDeleted()
+            "price" -> prices = prices.withoutDeleted()
+            "discount" -> discounts = discounts.withoutDeleted()
+            "total" -> totals = totals.withoutDeleted()
+            else -> {}
+        }
+    }
+
     fun onWaiting() {
         waiting = true
     }

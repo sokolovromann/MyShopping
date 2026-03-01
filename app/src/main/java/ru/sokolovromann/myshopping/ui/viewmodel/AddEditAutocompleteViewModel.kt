@@ -107,5 +107,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private fun onClickDeleteDetail(event: AddEditAutocompleteEvent.OnClickDeleteDetail) {
         deletedDetailsUids.add(event.uid)
+        addEditAutocompleteState.onDetailDeleted(event.uid, event.type)
     }
 }
