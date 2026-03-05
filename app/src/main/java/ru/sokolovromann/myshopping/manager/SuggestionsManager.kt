@@ -87,6 +87,13 @@ class SuggestionsManager @Inject constructor(
         return@withIoContext suggestionsConfigRepository.get()
     }
 
+    suspend fun findSuggestionsWithDetails(name: String): Collection<SuggestionWithDetails> = withIoContext {
+        val config = getConfig()
+        return@withIoContext getSuggestionsWithDetails()
+            .filter { it.suggestion.name.contains(name.trim(), true) }
+            .take(config.takeSuggestions)
+    }
+
     suspend fun addSuggestions(suggestions: Collection<Suggestion>): Unit = withIoContext {
         suggestionsRepository.insertAll(suggestions)
     }
@@ -180,6 +187,16 @@ class SuggestionsManager @Inject constructor(
         return@withIoContext getSuggestions().find {
             it.name.trim().equals(name.trim(), true)
         } != null
+    }
+
+    private fun Collection<SuggestionWithDetails>.take(
+        take: TakeSuggestions
+    ): Collection<SuggestionWithDetails> {
+        return when (take) {
+            TakeSuggestions.Five -> take(5)
+            TakeSuggestions.Ten -> take(10)
+            TakeSuggestions.DoNotTake -> emptyList()
+        }
     }
 
     private fun Collection<SuggestionWithDetails>.sorted(
