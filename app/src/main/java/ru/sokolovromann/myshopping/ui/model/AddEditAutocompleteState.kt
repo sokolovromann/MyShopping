@@ -57,16 +57,16 @@ class AddEditAutocompleteState {
 
         nameValue = suggestionWithDetails.suggestion.name.toTextFieldValue()
         nameError = false
-        brands = UiAutocompletesMapper.toUiBrands(details.brands)
-        sizes = UiAutocompletesMapper.toUiSizes(details.sizes)
-        colors = UiAutocompletesMapper.toUiColors(details.colors)
-        manufacturers = UiAutocompletesMapper.toUiManufacturers(details.manufacturers)
+        brands = UiAutocompletesMapper.toUiBrandsWithUids(details.brands)
+        sizes = UiAutocompletesMapper.toUiSizesWithUids(details.sizes)
+        colors = UiAutocompletesMapper.toUiColorsWithUids(details.colors)
+        manufacturers = UiAutocompletesMapper.toUiManufacturersWithUids(details.manufacturers)
         displayOtherFields = userPreferences.displayOtherFields
-        quantities = UiAutocompletesMapper.toUiQuantities(details.quantities)
+        quantities = UiAutocompletesMapper.toUiQuantitiesWithUids(details.quantities)
         displayMoney = userPreferences.displayMoney
-        prices = UiAutocompletesMapper.toUiPrices(details.unitPrices, currency)
-        discounts = UiAutocompletesMapper.toUiDiscounts(details.discounts, currency)
-        totals = UiAutocompletesMapper.toUiTotals(details.costs, currency)
+        prices = UiAutocompletesMapper.toUiPricesWithUids(details.unitPrices, currency)
+        discounts = UiAutocompletesMapper.toUiDiscountsWithUids(details.discounts, currency)
+        totals = UiAutocompletesMapper.toUiTotalsWithUids(details.costs, currency)
         waiting = false
     }
 

@@ -44,27 +44,43 @@ object UiAutocompletesMapper {
         }
     }
 
-    fun toUiNames(names: Collection<Suggestion>): Collection<Pair<String, UID>> {
-        return names.map { Pair(it.name, it.uid) }
+    fun toUiNames(names: Collection<Suggestion>): Collection<String> {
+        return names.map { it.name }
     }
 
-    fun toUiBrands(brands: Collection<SuggestionDetail.Brand>): Collection<Pair<String, UID>> {
+    fun toUiBrandsWithUids(brands: Collection<SuggestionDetail.Brand>): Collection<Pair<String, UID>> {
         return brands.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiSizes(sizes: Collection<SuggestionDetail.Size>): Collection<Pair<String, UID>> {
+    fun toUiBrands(brands: Collection<SuggestionDetail.Brand>): Collection<String> {
+        return brands.map { it.value.data }
+    }
+
+    fun toUiSizesWithUids(sizes: Collection<SuggestionDetail.Size>): Collection<Pair<String, UID>> {
         return sizes.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiColors(colors: Collection<SuggestionDetail.Color>): Collection<Pair<String, UID>> {
+    fun toUiSizes(sizes: Collection<SuggestionDetail.Size>): Collection<String> {
+        return sizes.map { it.value.data }
+    }
+
+    fun toUiColorsWithUids(colors: Collection<SuggestionDetail.Color>): Collection<Pair<String, UID>> {
         return colors.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiManufacturers(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<Pair<String, UID>> {
+    fun toUiColors(colors: Collection<SuggestionDetail.Color>): Collection<String> {
+        return colors.map { it.value.data }
+    }
+
+    fun toUiManufacturersWithUids(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<Pair<String, UID>> {
         return manufacturers.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiQuantities(quantities: Collection<SuggestionDetail.Quantity>): Collection<Pair<String, UID>> {
+    fun toUiManufacturers(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<String> {
+        return manufacturers.map { it.value.data }
+    }
+
+    fun toUiQuantitiesWithUids(quantities: Collection<SuggestionDetail.Quantity>): Collection<Pair<String, UID>> {
         return quantities.map {
             val data = it.value.data
             val quantity = "${data.decimal} ${data.params}"
@@ -72,39 +88,58 @@ object UiAutocompletesMapper {
         }
     }
 
-    fun toUiQuantitiesWithSymbols(quantities: Collection<SuggestionDetail.Quantity>): Collection<Triple<String, String, UID>> {
+    fun toUiQuantities(quantities: Collection<SuggestionDetail.Quantity>): Collection<Pair<String, String>> {
         return quantities.map {
             val data = it.value.data
-            val quantity = "${data.decimal} ${data.params}"
-            Triple(quantity, data.params, it.value.uid)
+            Pair(data.decimal.toString(), data.params)
         }
     }
 
-    fun toUiPrices(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, UID>> {
+    fun toUiQuantitiesSymbols(quantities: Collection<SuggestionDetail.Quantity>): Collection<String> {
+        return quantities
+            .map { it.value.data.params }
+            .distinct()
+    }
+
+    fun toUiPricesWithUids(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, UID>> {
         return prices.map {
             val price = priceToString(it, currency)
             Pair(price, it.value.uid)
         }
     }
 
-    fun toUiDiscounts(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Pair<String, UID>> {
+    fun toUiPrices(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, String>> {
+        return prices.map {
+            val price = priceToString(it, currency)
+            Pair(price, it.value.data.toString())
+        }
+    }
+
+    fun toUiDiscountsWithUids(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Pair<String, UID>> {
         return discounts.map {
             val discount = discountToString(it, currency)
             Pair(discount, it.value.uid)
         }
     }
 
-    fun toUiDiscountsWithPercent(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Triple<String, DiscountType, UID>> {
+    fun toUiDiscounts(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Triple<String, String, DiscountType>> {
         return discounts.map {
             val discount = discountToString(it, currency)
-            Triple(discount, it.value.data.params, it.value.uid)
+            Triple(discount, it.value.data.decimal.toString(), it.value.data.params)
         }
     }
 
-    fun toUiTotals(totals: Collection<SuggestionDetail.Cost>, currency: Currency): Collection<Pair<String, UID>> {
+    fun toUiTotalsWithUids(totals: Collection<SuggestionDetail.Cost>, currency: Currency): Collection<Pair<String, UID>> {
         return totals.map {
             val total = totalToString(it, currency)
             Pair(total, it.value.uid)
+        }
+    }
+
+    fun toUiTotals(totals: Collection<SuggestionDetail.Cost>, currency: Currency): Collection<Pair<String, String>> {
+        return totals.map {
+            val total = totalToString(it, currency)
+            Pair(total, it.value.data.toString())
         }
     }
 
