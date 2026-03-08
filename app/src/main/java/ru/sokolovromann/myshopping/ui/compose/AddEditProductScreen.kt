@@ -25,10 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.LockProductElement
-import ru.sokolovromann.myshopping.data.model.Money
-import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.ui.UiRoute
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.model.UiIcon
@@ -36,6 +33,8 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
+import ru.sokolovromann.myshopping.utils.UID
+import ru.sokolovromann.myshopping.utils.math.DiscountType
 
 @Composable
 fun AddEditProductScreen(
@@ -188,7 +187,7 @@ fun AddEditProductScreen(
             }
 
             AddEditProductAutocompleteNames(
-                names = state.autocompletes.names,
+                names = state.suggestionsValue.names,
                 onClick = {
                     val event = AddEditProductEvent.OnNameSelected(it)
                     viewModel.onEvent(event)
@@ -216,7 +215,7 @@ fun AddEditProductScreen(
                 )
 
                 AddEditProductAutocompleteStrings(
-                    list = state.autocompletes.brands,
+                    list = state.suggestionsValue.brands,
                     onClick = {
                         val event = AddEditProductEvent.OnBrandSelected(it)
                         viewModel.onEvent(event)
@@ -243,7 +242,7 @@ fun AddEditProductScreen(
                 )
 
                 AddEditProductAutocompleteStrings(
-                    list = state.autocompletes.sizes,
+                    list = state.suggestionsValue.sizes,
                     onClick = {
                         val event = AddEditProductEvent.OnSizeSelected(it)
                         viewModel.onEvent(event)
@@ -270,7 +269,7 @@ fun AddEditProductScreen(
                 )
 
                 AddEditProductAutocompleteStrings(
-                    list = state.autocompletes.colors,
+                    list = state.suggestionsValue.colors,
                     onClick = {
                         val event = AddEditProductEvent.OnColorSelected(it)
                         viewModel.onEvent(event)
@@ -297,7 +296,7 @@ fun AddEditProductScreen(
                 )
 
                 AddEditProductAutocompleteStrings(
-                    list = state.autocompletes.manufacturers,
+                    list = state.suggestionsValue.manufacturers,
                     onClick = {
                         val event = AddEditProductEvent.OnManufacturerSelected(it)
                         viewModel.onEvent(event)
@@ -366,7 +365,7 @@ fun AddEditProductScreen(
             }
 
             AddEditProductAutocompleteSymbols(
-                quantities = state.autocompletes.quantitySymbols,
+                quantities = state.suggestionsValue.quantitySymbols,
                 minusOneQuantityChip = {
                     AppChip(
                         onClick = { viewModel.onEvent(AddEditProductEvent.OnClickMinusOneQuantity) },
@@ -391,7 +390,7 @@ fun AddEditProductScreen(
                         Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
                     }
                 },
-                defaultQuantitySymbolChipsEnabled = state.autocompletes.displayDefaultQuantitySymbols,
+                defaultQuantitySymbolChipsEnabled = state.suggestionsValue.displayDefaultQuantitySymbols,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
                 onClick = {
                     val event = AddEditProductEvent.OnQuantitySymbolSelected(it)
@@ -400,10 +399,10 @@ fun AddEditProductScreen(
             )
 
             AddEditProductAutocompleteQuantities(
-                quantities = state.autocompletes.quantities,
+                quantities = state.suggestionsValue.quantities,
                 enabled = state.lockProductElementValue.selected != LockProductElement.QUANTITY,
-                onClick = {
-                    val event = AddEditProductEvent.OnQuantitySelected(it)
+                onClick = { quantity, symbol ->
+                    val event = AddEditProductEvent.OnQuantitySelected(quantity, symbol)
                     viewModel.onEvent(event)
                 }
             )
@@ -458,7 +457,7 @@ fun AddEditProductScreen(
                 }
 
                 AddEditProductAutocompletePrices(
-                    prices = state.autocompletes.prices,
+                    prices = state.suggestionsValue.prices,
                     enabled = state.lockProductElementValue.selected != LockProductElement.PRICE,
                     onClick = {
                         val event = AddEditProductEvent.OnPriceSelected(it)
@@ -519,10 +518,10 @@ fun AddEditProductScreen(
                     }
 
                     AddEditProductAutocompleteDiscounts(
-                        discounts = state.autocompletes.discounts,
+                        discounts = state.suggestionsValue.discounts,
                         enabled = state.lockProductElementValue.selected == LockProductElement.TOTAL,
-                        onClick = {
-                            val event = AddEditProductEvent.OnDiscountSelected(it)
+                        onClick = { discount, type ->
+                            val event = AddEditProductEvent.OnDiscountSelected(discount, type)
                             viewModel.onEvent(event)
                         }
                     )
@@ -602,7 +601,7 @@ fun AddEditProductScreen(
                 }
 
                 AddEditProductAutocompleteTotals(
-                    totals = state.autocompletes.totals,
+                    totals = state.suggestionsValue.totals,
                     enabled = state.lockProductElementValue.selected != LockProductElement.TOTAL,
                     onClick = {
                         val event = AddEditProductEvent.OnTotalSelected(it)
@@ -654,13 +653,13 @@ private fun AddEditProductContent(
 
 @Composable
 private fun AddEditProductAutocompleteNames(
-    names: List<Autocomplete>,
-    onClick: (Autocomplete) -> Unit
+    names: Collection<String>,
+    onClick: (String) -> Unit
 ) {
     names.forEach {
         AppItem(
             modifier = Modifier.padding(AddEditProductItemPaddings),
-            body = { Text(text = it.name) },
+            body = { Text(text = it) },
             onClick = { onClick(it) },
             backgroundColor = MaterialTheme.colors.background
         )
@@ -669,7 +668,7 @@ private fun AddEditProductAutocompleteNames(
 
 @Composable
 private fun AddEditProductAutocompleteStrings(
-    list: List<String>,
+    list: Collection<String>,
     onClick: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -693,9 +692,9 @@ private fun AddEditProductAutocompleteStrings(
 
 @Composable
 private fun AddEditProductAutocompleteQuantities(
-    quantities: List<Quantity>,
+    quantities: Collection<Pair<String, String>>,
     enabled: Boolean,
-    onClick: (Quantity) -> Unit
+    onClick: (String, String) -> Unit
 ) {
 
     if (!enabled) {
@@ -712,9 +711,10 @@ private fun AddEditProductAutocompleteQuantities(
             .horizontalScroll(scrollState)
     ) {
         quantities.forEach {
+            val text = "${it.first} ${it.second}"
             AppChip(
-                onClick = { onClick(it) },
-                content = { Text(text = it.toString()) }
+                onClick = { onClick(it.first, it.second) },
+                content = { Text(text = text) }
             )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
@@ -723,13 +723,13 @@ private fun AddEditProductAutocompleteQuantities(
 
 @Composable
 private fun AddEditProductAutocompleteSymbols(
-    quantities: List<Quantity>,
+    quantities: Collection<String>,
     minusOneQuantityChip: @Composable () -> Unit,
     plusOneQuantityChip: @Composable () -> Unit,
     defaultQuantitySymbolChips: @Composable () -> Unit,
     defaultQuantitySymbolChipsEnabled: Boolean,
     enabled: Boolean,
-    onClick: (Quantity) -> Unit
+    onClick: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -754,7 +754,7 @@ private fun AddEditProductAutocompleteSymbols(
         quantities.forEach {
             AppChip(
                 onClick = { onClick(it) },
-                content = { Text(text = it.symbol) }
+                content = { Text(text = it) }
             )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
@@ -763,9 +763,9 @@ private fun AddEditProductAutocompleteSymbols(
 
 @Composable
 private fun AddEditProductAutocompletePrices(
-    prices: List<Money>,
+    prices: Collection<Pair<String, String>>,
     enabled: Boolean,
-    onClick: (Money) -> Unit
+    onClick: (String) -> Unit
 ) {
     if (!enabled) {
         return
@@ -782,8 +782,8 @@ private fun AddEditProductAutocompletePrices(
     ) {
         prices.forEach {
             AppChip(
-                onClick = { onClick(it) },
-                content = { Text(text = it.toString()) }
+                onClick = { onClick(it.second) },
+                content = { Text(text = it.first) }
             )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
@@ -792,9 +792,9 @@ private fun AddEditProductAutocompletePrices(
 
 @Composable
 private fun AddEditProductAutocompleteDiscounts(
-    discounts: List<Money>,
+    discounts: Collection<Triple<String, String, DiscountType>>,
     enabled: Boolean,
-    onClick: (Money) -> Unit
+    onClick: (String, DiscountType) -> Unit
 ) {
     if (!enabled) {
         return
@@ -811,8 +811,8 @@ private fun AddEditProductAutocompleteDiscounts(
     ) {
         discounts.forEach {
             AppChip(
-                onClick = { onClick(it) },
-                content = { Text(text = it.toString()) }
+                onClick = { onClick(it.second, it.third) },
+                content = { Text(text = it.first) }
             )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
@@ -821,9 +821,9 @@ private fun AddEditProductAutocompleteDiscounts(
 
 @Composable
 private fun AddEditProductAutocompleteTotals(
-    totals: List<Money>,
+    totals: Collection<Pair<String, String>>,
     enabled: Boolean,
-    onClick: (Money) -> Unit
+    onClick: (String) -> Unit
 ) {
     if (!enabled) {
         return
@@ -840,8 +840,8 @@ private fun AddEditProductAutocompleteTotals(
     ) {
         totals.forEach {
             AppChip(
-                onClick = { onClick(it) },
-                content = { Text(text = it.toString()) }
+                onClick = { onClick(it.second) },
+                content = { Text(text = it.first) }
             )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }

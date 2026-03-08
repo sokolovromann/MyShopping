@@ -6,17 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
-import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.LockProductElement
-import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
-import ru.sokolovromann.myshopping.data.model.Quantity
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
+import ru.sokolovromann.myshopping.utils.math.DiscountType
 
 class AddEditProductState {
 
@@ -82,7 +80,7 @@ class AddEditProductState {
     var noteValue: TextFieldValue by mutableStateOf(TextFieldValue())
         private set
 
-    var autocompletes: AutocompletesSelectedValue by mutableStateOf(AutocompletesSelectedValue())
+    var suggestionsValue: SuggestionsSelectedValue by mutableStateOf(SuggestionsSelectedValue())
         private set
 
     var displayMoney: Boolean by mutableStateOf(true)
@@ -133,7 +131,7 @@ class AddEditProductState {
         lockProductElementValue = toLockProductElementSelectedValue(userPreferences.lockProductElement)
         expandedLockProductElement = false
         noteValue = product.note.toTextFieldValue()
-        autocompletes = AutocompletesSelectedValue()
+        suggestionsValue = SuggestionsSelectedValue()
         displayMoney = userPreferences.displayMoney
         enterToSaveProduct = userPreferences.enterToSaveProduct
         displayOtherFields = userPreferences.displayOtherFields
@@ -154,14 +152,11 @@ class AddEditProductState {
         waiting = false
     }
 
-    fun onNameSelected(autocomplete: Autocomplete) {
-        nameValue = autocomplete.name.toTextFieldValue()
+    fun onNameSelected(name: String) {
+        nameValue = name.toTextFieldValue()
         nameError = false
         waiting = false
-        autocompletes = autocompletes.copy(
-            names = listOf(),
-            selected = autocomplete
-        )
+        suggestionsValue = suggestionsValue.copy(names = emptyList())
     }
 
     fun onInvalidNameValue() {
@@ -191,7 +186,7 @@ class AddEditProductState {
 
     fun onBrandSelected(brand: String) {
         brandValue = brand.toTextFieldValue()
-        autocompletes = autocompletes.copy(brands = listOf())
+        suggestionsValue = suggestionsValue.copy(brands = emptyList())
     }
 
     fun onSizeValueChanged(value: TextFieldValue) {
@@ -200,7 +195,7 @@ class AddEditProductState {
 
     fun onSizeSelected(size: String) {
         sizeValue = size.toTextFieldValue()
-        autocompletes = autocompletes.copy(sizes = listOf())
+        suggestionsValue = suggestionsValue.copy(sizes = emptyList())
     }
 
     fun onColorValueChanged(value: TextFieldValue) {
@@ -209,7 +204,7 @@ class AddEditProductState {
 
     fun onColorSelected(color: String) {
         colorValue = color.toTextFieldValue()
-        autocompletes = autocompletes.copy(colors = listOf())
+        suggestionsValue = suggestionsValue.copy(colors = emptyList())
     }
 
     fun onManufacturerValueChanged(value: TextFieldValue) {
@@ -218,33 +213,33 @@ class AddEditProductState {
 
     fun onManufacturerSelected(manufacturer: String) {
         manufacturerValue = manufacturer.toTextFieldValue()
-        autocompletes = autocompletes.copy(manufacturers = listOf())
+        suggestionsValue = suggestionsValue.copy(manufacturers = emptyList())
     }
 
     fun onQuantityValueChanged(value: TextFieldValue) {
         quantityValue = value
     }
 
-    fun onQuantitySelected(quantity: Quantity) {
+    fun onQuantitySelected(quantity: String, symbol: String) {
         quantityValue = quantity.toTextFieldValue()
-        quantitySymbolValue = quantity.symbol.toTextFieldValue()
-        autocompletes = autocompletes.copy(
-            quantities = listOf(),
-            quantitySymbols = listOf(),
+        quantitySymbolValue = symbol.toTextFieldValue()
+        suggestionsValue = suggestionsValue.copy(
+            quantities = emptyList(),
+            quantitySymbols = emptyList(),
             displayDefaultQuantitySymbols = false
         )
     }
 
     fun onQuantitySymbolValueChanged(value: TextFieldValue) {
         quantitySymbolValue = value
-        autocompletes = autocompletes.copy(displayDefaultQuantitySymbols = false)
+        suggestionsValue = suggestionsValue.copy(displayDefaultQuantitySymbols = false)
     }
 
-    fun onQuantitySymbolSelected(quantity: Quantity) {
-        quantitySymbolValue = quantity.symbol.toTextFieldValue()
-        autocompletes = autocompletes.copy(
-            quantities = listOf(),
-            quantitySymbols = listOf(),
+    fun onQuantitySymbolSelected(symbol: String) {
+        quantitySymbolValue = symbol.toTextFieldValue()
+        suggestionsValue = suggestionsValue.copy(
+            quantities = emptyList(),
+            quantitySymbols = emptyList(),
             displayDefaultQuantitySymbols = false
         )
     }
@@ -253,9 +248,9 @@ class AddEditProductState {
         priceValue = value
     }
 
-    fun onPriceSelected(price: Money) {
+    fun onPriceSelected(price: String) {
         priceValue = price.toTextFieldValue()
-        autocompletes = autocompletes.copy(prices = listOf())
+        suggestionsValue = suggestionsValue.copy(prices = emptyList())
     }
 
     fun onInvertPriceOtherFields() {
@@ -267,10 +262,10 @@ class AddEditProductState {
         discountValue = value
     }
 
-    fun onDiscountSelected(discount: Money) {
+    fun onDiscountSelected(discount: String, type: DiscountType) {
         discountValue = discount.toTextFieldValue()
-        discountAsPercentValue = toDiscountSelectedValue(discount.asPercent)
-        autocompletes = autocompletes.copy(discounts = listOf())
+        discountAsPercentValue = toDiscountSelectedValue(type == DiscountType.Percent)
+        suggestionsValue = suggestionsValue.copy(discounts = emptyList())
     }
 
     fun onDiscountAsPercentSelected(asPercent: Boolean) {
@@ -286,9 +281,9 @@ class AddEditProductState {
         totalValue = value
     }
 
-    fun onTotalSelected(total: Money) {
+    fun onTotalSelected(total: String) {
         totalValue = total.toTextFieldValue()
-        autocompletes = autocompletes.copy(totals = listOf())
+        suggestionsValue = suggestionsValue.copy(totals = emptyList())
     }
 
     fun onNoteValueChanged(value: TextFieldValue) {
@@ -308,14 +303,13 @@ class AddEditProductState {
         waiting = true
     }
 
-    fun onShowAutocomplete(value: AutocompletesSelectedValue) {
-        autocompletes = value
+    fun onShowAutocomplete(value: SuggestionsSelectedValue) {
+        suggestionsValue = value
     }
 
     fun onHideAutocompletes() {
-        autocompletes = AutocompletesSelectedValue(
-            displayDefaultQuantitySymbols = quantitySymbolValue.isEmpty(),
-            selected = autocompletes.selected
+        suggestionsValue = SuggestionsSelectedValue(
+            displayDefaultQuantitySymbols = quantitySymbolValue.isEmpty()
         )
     }
 
@@ -349,27 +343,6 @@ class AddEditProductState {
             brand = brandValue.text.trim(),
             size = sizeValue.text.trim(),
             color = colorValue.text.trim()
-        )
-    }
-
-    fun getCurrentAutocomplete(): Autocomplete {
-        val product = getCurrentProduct()
-        val selectedAutocomplete = autocompletes.selected
-
-        val namesEquals = (selectedAutocomplete?.name?.lowercase() ?: "") == product.name.lowercase()
-        val personal = (if (namesEquals) selectedAutocomplete?.personal else null) ?: true
-
-        return Autocomplete(
-            name = product.name,
-            quantity = product.quantity,
-            price = product.price,
-            discount = product.discount,
-            total = product.total,
-            manufacturer = product.manufacturer,
-            brand = product.brand,
-            size = product.size,
-            color = product.color,
-            personal = personal
         )
     }
 

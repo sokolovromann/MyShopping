@@ -11,37 +11,45 @@ import kotlinx.coroutines.flow.firstOrNull
 import ru.sokolovromann.myshopping.data.exception.InvalidNameException
 import ru.sokolovromann.myshopping.data.exception.InvalidUidException
 import ru.sokolovromann.myshopping.data.model.AfterSaveProduct
-import ru.sokolovromann.myshopping.data.model.Autocomplete
 import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.Quantity
-import ru.sokolovromann.myshopping.data.model.Sort
-import ru.sokolovromann.myshopping.data.model.SortBy
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.utils.asSearchQuery
-import ru.sokolovromann.myshopping.data.utils.sortedAutocompletes
+import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
+import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailValue
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDirectory
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
+import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
 import ru.sokolovromann.myshopping.ui.model.AddEditProductState
-import ru.sokolovromann.myshopping.ui.model.AutocompletesSelectedValue
+import ru.sokolovromann.myshopping.ui.model.SuggestionsSelectedValue
+import ru.sokolovromann.myshopping.ui.model.mapper.UiAutocompletesMapper
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
-import ru.sokolovromann.myshopping.ui.utils.isNotEmpty
 import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
 import ru.sokolovromann.myshopping.utils.Dispatcher
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.launch
+import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
+import ru.sokolovromann.myshopping.utils.UID
+import ru.sokolovromann.myshopping.utils.calendar.DateTime
+import ru.sokolovromann.myshopping.utils.math.DecimalExtensions.toDecimal
+import ru.sokolovromann.myshopping.utils.math.DecimalWithParams
+import ru.sokolovromann.myshopping.utils.math.DiscountType
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
+import kotlin.collections.emptyList
 
 @HiltViewModel
 class AddEditProductViewModel @Inject constructor(
+    private val suggestionsManager: SuggestionsManager,
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val autocompletesRepository: AutocompletesRepository,
     private val appConfigRepository: AppConfigRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditProductEvent> {
@@ -150,8 +158,15 @@ class AddEditProductViewModel @Inject constructor(
         val product = addEditProductState.getCurrentProduct()
         shoppingListsRepository.saveProduct(product)
             .onSuccess {
-                if (addEditProductState.getCurrentUserPreferences().saveProductToAutocompletes) {
-                    autocompletesRepository.saveAutocomplete(addEditProductState.getCurrentAutocomplete())
+                when (suggestionsManager.getConfig().add) {
+                    AddSuggestionWithDetails.Suggestion -> {
+                        saveSuggestion()
+                    }
+                    AddSuggestionWithDetails.SuggestionAndDetails -> {
+                        saveSuggestion()
+                        saveSuggestionDetails()
+                    }
+                    AddSuggestionWithDetails.DoNotAdd -> {}
                 }
                 appConfigRepository.lockProductElement(addEditProductState.lockProductElementValue.selected)
 
@@ -212,8 +227,8 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onNameSelected(event: AddEditProductEvent.OnNameSelected) {
-        addEditProductState.onNameSelected(event.autocomplete)
-        getAutocompletes(event.autocomplete.name)
+        addEditProductState.onNameSelected(event.name)
+        getAutocompletes(event.name)
     }
 
     private fun onInvertNameOtherFields() {
@@ -262,7 +277,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onQuantitySelected(event: AddEditProductEvent.OnQuantitySelected) {
-        addEditProductState.onQuantitySelected(event.quantity)
+        addEditProductState.onQuantitySelected(event.quantity, event.symbol)
         calculatePriceAndTotal()
     }
 
@@ -290,7 +305,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onQuantitySymbolSelected(event: AddEditProductEvent.OnQuantitySymbolSelected) {
-        addEditProductState.onQuantitySymbolSelected(event.quantity)
+        addEditProductState.onQuantitySymbolSelected(event.symbol)
     }
 
     private fun onPriceValueChanged(event: AddEditProductEvent.OnPriceValueChanged) {
@@ -313,7 +328,7 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onDiscountSelected(event: AddEditProductEvent.OnDiscountSelected) {
-        addEditProductState.onDiscountSelected(event.discount)
+        addEditProductState.onDiscountSelected(event.discount, event.type)
         calculateTotal()
     }
 
@@ -406,172 +421,75 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun getAutocompletes(name: String) = viewModelScope.launch(dispatcher) {
-        val search = name.trim()
-        val autocompletes = autocompletesRepository.searchAutocompletesLikeName(
-            search = search
-        ).firstOrNull() ?: listOf()
-
-        val autocompletesSelectedValue = createAutocompletesSelectedValue(autocompletes)
-        if (autocompletesSelectedValue == null) {
+        val suggestions = suggestionsManager.findSuggestionsWithDetails(name)
+        if (suggestions.isEmpty()) {
             addEditProductState.onHideAutocompletes()
-            return@launch
         } else {
-            addEditProductState.onShowAutocomplete(autocompletesSelectedValue)
+            val suggestionsSelected = createSuggestionsSelectedValueAndUids(name, suggestions)
+            addEditProductState.onShowAutocomplete(suggestionsSelected)
         }
     }
 
-    private fun createAutocompletesSelectedValue(
-        autocompletes: List<Autocomplete>
-    ): AutocompletesSelectedValue? {
-        val currentName = addEditProductState.nameValue.text
-        val names = searchAutocompletesLikeName(autocompletes, currentName)
-        if (names.isEmpty()) {
-            return null
-        }
+    private fun createSuggestionsSelectedValueAndUids(
+        name: String,
+        suggestions: Collection<SuggestionWithDetails>
+    ): SuggestionsSelectedValue {
+        val selectedSuggestion = suggestions.find { it.suggestion.name.equals(name, true) }
+        val mappedSuggestions = if (selectedSuggestion == null) {
+            suggestions.map { it.suggestion }
+        } else emptyList()
 
-        val containsAutocomplete = names.find { it.name.asSearchQuery() == currentName.asSearchQuery() }
-        val filterByPersonal = filterAutocompletesByPersonal(autocompletes).sortedAutocompletes(
-            Sort(SortBy.LAST_MODIFIED, false)
-        )
+        val mappedBrands = if (addEditProductState.brandValue.isEmpty()) {
+            suggestions.flatMap { it.details.brands }
+        } else emptyList()
 
-        val filterNames = if (containsAutocomplete == null) names else listOf()
-        val quantitySymbols = filterAutocompleteQuantitySymbols(filterByPersonal)
-        val displayDefaultQuantitySymbols = quantitySymbols.isEmpty() &&
+        val mappedSizes = if (addEditProductState.sizeValue.isEmpty()) {
+            suggestions.flatMap { it.details.sizes }
+        } else emptyList()
+
+        val mappedColors = if (addEditProductState.colorValue.isEmpty()) {
+            suggestions.flatMap { it.details.colors }
+        } else emptyList()
+
+        val mappedManufacturers = if (addEditProductState.manufacturerValue.isEmpty()) {
+            suggestions.flatMap { it.details.manufacturers }
+        } else emptyList()
+
+        val mappedQuantities = if (addEditProductState.quantityValue.isEmpty()) {
+            suggestions.flatMap { it.details.quantities }
+        } else emptyList()
+
+        val displayDefaultQuantitySymbols = mappedQuantities.isEmpty() &&
                 addEditProductState.quantitySymbolValue.isEmpty()
-        return addEditProductState.autocompletes.copy(
-            names = filterNames,
-            brands = filterAutocompleteBrands(filterByPersonal),
-            sizes = filterAutocompleteSizes(filterByPersonal),
-            colors = filterAutocompleteColors(filterByPersonal),
-            manufacturers = filterAutocompleteManufacturers(filterByPersonal),
-            quantities = filterAutocompleteQuantities(filterByPersonal),
-            quantitySymbols = quantitySymbols,
+
+        val mappedPrices = if (addEditProductState.priceValue.isEmpty()) {
+            suggestions.flatMap { it.details.unitPrices }
+        } else emptyList()
+
+        val mappedDiscounts = if (addEditProductState.discountValue.isEmpty()) {
+            suggestions.flatMap { it.details.discounts }
+        } else emptyList()
+
+        val mappedTotals = if (addEditProductState.totalValue.isEmpty()) {
+            suggestions.flatMap { it.details.costs }
+        } else emptyList()
+
+        val currency = addEditProductState.getCurrentUserPreferences().currency
+
+        return SuggestionsSelectedValue(
+            suggestionUid = selectedSuggestion?.suggestion?.uid,
+            names = UiAutocompletesMapper.toUiNames(mappedSuggestions),
+            brands = UiAutocompletesMapper.toUiBrands(mappedBrands),
+            sizes = UiAutocompletesMapper.toUiSizes(mappedSizes),
+            colors = UiAutocompletesMapper.toUiColors(mappedColors),
+            manufacturers = UiAutocompletesMapper.toUiManufacturers(mappedManufacturers),
+            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities),
+            quantitySymbols = UiAutocompletesMapper.toUiQuantitiesSymbols(mappedQuantities),
             displayDefaultQuantitySymbols = displayDefaultQuantitySymbols,
-            prices = filterAutocompletePrices(filterByPersonal),
-            discounts = filterAutocompleteDiscounts(filterByPersonal),
-            totals = filterAutocompleteTotals(filterByPersonal),
-            selected = containsAutocomplete
+            prices = UiAutocompletesMapper.toUiPrices(mappedPrices, currency),
+            discounts = UiAutocompletesMapper.toUiDiscounts(mappedDiscounts, currency),
+            totals = UiAutocompletesMapper.toUiTotals(mappedTotals, currency)
         )
-    }
-
-    private fun filterAutocompletesByPersonal(autocompletes: List<Autocomplete>): List<Autocomplete> {
-        return if (addEditProductState.getCurrentUserPreferences().displayDefaultAutocompletes) {
-            autocompletes
-        } else {
-            autocompletes.filter { it.personal }
-        }
-    }
-
-    private fun searchAutocompletesLikeName(
-        autocompletes: List<Autocomplete>,
-        search: String
-    ): List<Autocomplete>  {
-        val endIndex = search.length - 1
-        val partition = filterAutocompletesByPersonal(autocompletes)
-            .partition {
-                val charsName = it.name.asSearchQuery().toCharArray(endIndex = endIndex)
-                val charsSearch = search.asSearchQuery().toCharArray(endIndex = endIndex)
-                charsName.contentEquals(charsSearch)
-            }
-        val searchAutocompletes = partition.first
-            .sortedAutocompletes()
-            .distinctBy { it.name.lowercase() }
-
-        val otherAutocompletes = partition.second
-            .sortedAutocompletes()
-            .distinctBy { it.name.lowercase() }
-
-        val bothAutocompletes = mutableListOf<Autocomplete>()
-        return bothAutocompletes
-            .apply {
-                addAll(searchAutocompletes)
-                addAll(otherAutocompletes)
-            }
-            .filterIndexed { index, autocomplete ->
-                autocomplete.name.isNotEmpty() && index < addEditProductState.getCurrentUserPreferences().maxAutocompletesNames
-            }
-    }
-
-    private fun filterAutocompleteBrands(autocompletes: List<Autocomplete>): List<String> {
-        return if (addEditProductState.brandValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.brand }
-            .distinct()
-            .filterIndexed { index, brand ->
-                brand.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
-            }
-    }
-
-    private fun filterAutocompleteSizes(autocompletes: List<Autocomplete>): List<String> {
-        return if (addEditProductState.sizeValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.size }
-            .distinct()
-            .filterIndexed { index, size ->
-                size.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
-            }
-    }
-
-    private fun filterAutocompleteColors(autocompletes: List<Autocomplete>): List<String> {
-        return if (addEditProductState.colorValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.color }
-            .distinct()
-            .filterIndexed { index, color ->
-                color.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
-            }
-    }
-
-    private fun filterAutocompleteManufacturers(autocompletes: List<Autocomplete>): List<String> {
-        return if (addEditProductState.manufacturerValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.manufacturer }
-            .distinct()
-            .filterIndexed { index, manufacturer ->
-                manufacturer.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesOthers
-            }
-    }
-
-    private fun filterAutocompleteQuantities(autocompletes: List<Autocomplete>): List<Quantity> {
-        return if (addEditProductState.quantityValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.quantity }
-            .distinctBy { it.getFormattedValue() }
-            .filterIndexed { index, quantity ->
-                quantity.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesQuantities
-            }
-    }
-
-    private fun filterAutocompleteQuantitySymbols(autocompletes: List<Autocomplete>): List<Quantity> {
-        return if (addEditProductState.quantitySymbolValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.quantity }
-            .distinctBy { it.symbol }
-            .filterIndexed { index, quantity ->
-                quantity.isNotEmpty() && quantity.symbol.isNotEmpty() &&
-                        index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesQuantities
-            }
-    }
-
-    private fun filterAutocompletePrices(autocompletes: List<Autocomplete>): List<Money> {
-        return if (addEditProductState.priceValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.price }
-            .distinctBy { it.getFormattedValue() }
-            .filterIndexed { index, price ->
-                price.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesMoneys
-            }
-    }
-
-    private fun filterAutocompleteDiscounts(autocompletes: List<Autocomplete>): List<Money> {
-        return if (addEditProductState.discountValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.discount }
-            .distinctBy { it.getFormattedValue() }
-            .filterIndexed { index, discount ->
-                discount.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesMoneys
-            }
-    }
-
-    private fun filterAutocompleteTotals(autocompletes: List<Autocomplete>): List<Money> {
-        return if (addEditProductState.totalValue.isNotEmpty()) listOf() else autocompletes
-            .map { it.total }
-            .distinctBy { it.getFormattedValue() }
-            .filterIndexed { index, total ->
-                total.isNotEmpty() && index <= addEditProductState.getCurrentUserPreferences().maxAutocompletesMoneys
-            }
     }
 
     private fun calculatePriceAndTotal() {
@@ -602,5 +520,182 @@ class AddEditProductViewModel @Inject constructor(
         if (addEditProductState.lockProductElementValue.selected == LockProductElement.TOTAL) {
             onLockTotal()
         }
+    }
+
+    private fun getSelectedSuggestionUid(): UID {
+        return addEditProductState.suggestionsValue.suggestionUid ?: UID.createFromString("")
+    }
+
+    private suspend fun saveSuggestion(): Unit = withIoContext {
+        val oldSuggestion = suggestionsManager.getSuggestionWithDetails(getSelectedSuggestionUid())?.suggestion
+        val currentDateTime = DateTime.getCurrent()
+        val newSuggestion = oldSuggestion?.copy(
+            lastModified = currentDateTime,
+            used = oldSuggestion.used.plus(1)
+        ) ?: Suggestion(
+            uid = UID.createRandom(),
+            directory = SuggestionDirectory.NoDirectory,
+            created = currentDateTime,
+            lastModified = currentDateTime,
+            name = addEditProductState.nameValue.text,
+            used = 1
+        )
+        suggestionsManager.addSuggestion(newSuggestion)
+    }
+
+    private suspend fun saveSuggestionDetails(): Unit = withIoContext {
+        val details = mutableListOf<SuggestionDetail>().apply {
+            suggestionsManager.getSuggestionWithDetails(getSelectedSuggestionUid())?.let { data ->
+                createBrand(data)?.let { add(it) }
+                createSize(data)?.let { add(it) }
+                createColor(data)?.let { add(it) }
+                createManufacturer(data)?.let { add(it) }
+                createQuantity(data)?.let { add(it) }
+                createPrice(data)?.let { add(it) }
+                createDiscount(data)?.let { add(it) }
+                createTotal(data)?.let { add(it) }
+            }
+        }
+        suggestionsManager.addDetails(details)
+    }
+
+    private fun createBrand(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Brand? {
+        val currentBrand = addEditProductState.brandValue.text.trim()
+        if (currentBrand.isEmpty()) return null
+
+        val foundBrand = suggestionWithDetails.details.brands.find {
+            it.value.data.equals(currentBrand, true)
+        }
+        val newValue = foundBrand?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundBrand.value.used.plus(1)
+        ) ?: createDetailValue(suggestionWithDetails.suggestion.uid, currentBrand)
+        return SuggestionDetail.Brand(newValue)
+    }
+
+    private fun createSize(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Size? {
+        val currentSize = addEditProductState.sizeValue.text.trim()
+        if (currentSize.isEmpty()) return null
+
+        val foundSize = suggestionWithDetails.details.sizes.find {
+            it.value.data.equals(currentSize, true)
+        }
+        val newValue = foundSize?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundSize.value.used.plus(1)
+        ) ?: createDetailValue(suggestionWithDetails.suggestion.uid, currentSize)
+        return SuggestionDetail.Size(newValue)
+    }
+
+    private fun createColor(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Color? {
+        val currentColor = addEditProductState.colorValue.text.trim()
+        if (currentColor.isEmpty()) return null
+
+        val foundColor = suggestionWithDetails.details.colors.find {
+            it.value.data.equals(currentColor, true)
+        }
+        val newValue = foundColor?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundColor.value.used.plus(1)
+        ) ?: createDetailValue(suggestionWithDetails.suggestion.uid, currentColor)
+        return SuggestionDetail.Color(newValue)
+    }
+
+    private fun createManufacturer(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Manufacturer? {
+        val currentManufacturer = addEditProductState.manufacturerValue.text.trim()
+        if (currentManufacturer.isEmpty()) return null
+
+        val foundManufacturer = suggestionWithDetails.details.manufacturers.find {
+            it.value.data.equals(currentManufacturer, true)
+        }
+        val newValue = foundManufacturer?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundManufacturer.value.used.plus(1)
+        ) ?: createDetailValue(suggestionWithDetails.suggestion.uid, currentManufacturer)
+        return SuggestionDetail.Manufacturer(newValue)
+    }
+
+    private fun createQuantity(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Quantity? {
+        val currentQuantity = addEditProductState.quantityValue.text.trim()
+        val currentQuantitySymbol = addEditProductState.quantitySymbolValue.text.trim()
+        if (currentQuantity.isEmpty() && currentQuantitySymbol.isEmpty()) return null
+
+        val foundQuantity = suggestionWithDetails.details.quantities.find {
+            val data = it.value.data
+            data.decimal.toFloatOrZero() == currentQuantity.toFloatOrNull() &&
+                    data.params.equals(currentQuantitySymbol, true)
+        }
+        val newValue = foundQuantity?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundQuantity.value.used.plus(1)
+        ) ?: createDetailValue(
+            suggestionWithDetails.suggestion.uid,
+            DecimalWithParams(currentQuantity.toDecimal(), currentQuantitySymbol)
+        )
+        return SuggestionDetail.Quantity(newValue)
+    }
+
+    private fun createPrice(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.UnitPrice? {
+        val currentPrice = addEditProductState.priceValue.text.trim()
+        if (currentPrice.isEmpty()) return null
+
+        val foundPrice = suggestionWithDetails.details.unitPrices.find {
+            it.value.data.toFloatOrZero() == currentPrice.toFloatOrNull()
+        }
+        val newValue = foundPrice?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundPrice.value.used.plus(1)
+        ) ?: createDetailValue(suggestionWithDetails.suggestion.uid, currentPrice.toDecimal())
+        return SuggestionDetail.UnitPrice(newValue)
+    }
+
+    private fun createDiscount(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Discount? {
+        val currentDiscount = addEditProductState.discountValue.text.trim()
+        if (currentDiscount.isEmpty()) return null
+
+        val currentDiscountAsPercent = if (addEditProductState.discountAsPercentValue.selected) {
+            DiscountType.Percent
+        } else {
+            DiscountType.Money
+        }
+        val foundDiscount = suggestionWithDetails.details.discounts.find {
+            val data = it.value.data
+            data.decimal.toFloatOrZero() == currentDiscount.toFloatOrNull() &&
+                    data.params == currentDiscountAsPercent
+        }
+        val newValue = foundDiscount?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundDiscount.value.used.plus(1)
+        ) ?: createDetailValue(
+            suggestionWithDetails.suggestion.uid,
+            DecimalWithParams(currentDiscount.toDecimal(), currentDiscountAsPercent)
+        )
+        return SuggestionDetail.Discount(newValue)
+    }
+
+    private fun createTotal(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Cost? {
+        val currentTotal = addEditProductState.totalValue.text.trim()
+        if (currentTotal.isEmpty()) return null
+
+        val foundTotal = suggestionWithDetails.details.costs.find {
+            it.value.data.toFloatOrZero() == currentTotal.toFloatOrNull()
+        }
+        val newValue = foundTotal?.value?.copy(
+            lastModified = DateTime.getCurrent(),
+            used = foundTotal.value.used.plus(1)
+        ) ?: createDetailValue(suggestionWithDetails.suggestion.uid, currentTotal.toDecimal())
+        return SuggestionDetail.Cost(newValue)
+    }
+
+    private fun<T> createDetailValue(directory: UID, data: T): SuggestionDetailValue<T> {
+        val currentDateTime = DateTime.getCurrent()
+        return SuggestionDetailValue(
+            uid = UID.createRandom(),
+            directory = directory,
+            created = currentDateTime,
+            lastModified = currentDateTime,
+            data = data,
+            used = 1
+        )
     }
 }
