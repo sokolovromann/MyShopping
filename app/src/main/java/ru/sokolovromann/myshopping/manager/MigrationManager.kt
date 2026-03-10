@@ -32,6 +32,9 @@ class MigrationManager @Inject constructor(
 ) {
 
     suspend fun migrateAutocompletesFromApi15(): Unit = withIoContext {
+        suggestionsManager.clearSuggestions()
+        suggestionsManager.clearDetails()
+
         val suggestionsWithDetails = api15Manager.getAutocompletes()
             .groupBy { it.name.lowercase() }
             .mapKeys { createSuggestion(it) }
