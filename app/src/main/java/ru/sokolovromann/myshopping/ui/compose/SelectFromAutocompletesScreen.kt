@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.ui.compose.event.SelectFromAutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.UiIcon
-import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.viewmodel.SelectFromAutocompletesViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.SelectFromAutocompletesEvent
 
@@ -79,15 +78,14 @@ fun SelectFromAutocompletesScreen(
             isNotFound = state.isNotFound()
         ) {
             items(state.autocompleteNames) {
-                val nameToString = it.asCompose()
-                val selected = state.selectedNames?.contains(nameToString) ?: false
+                val selected = state.selectedUids.contains(it.second)
 
                 AppMultiColumnsItem(
                     multiColumns = state.multiColumns,
-                    title = getAutocompleteItemTitleOrNull(it),
+                    title = getAutocompleteItemTitleOrNull(it.first),
                     right = getAutocompleteItemRightOrNull(selected),
                     onClick = {
-                        val event = SelectFromAutocompletesEvent.OnAutocompleteSelected(!selected, nameToString)
+                        val event = SelectFromAutocompletesEvent.OnAutocompleteSelected(!selected, it.second)
                         viewModel.onEvent(event)
                     },
                     backgroundColor = getAppItemBackgroundColor(selected)
@@ -99,11 +97,11 @@ fun SelectFromAutocompletesScreen(
 
 @Composable
 private fun getAutocompleteItemTitleOrNull(
-    name: UiString
-) = itemOrNull(enabled = name.asCompose().isNotEmpty()) {
+    name: String
+) = itemOrNull(enabled = name.isNotEmpty()) {
     Text(
         modifier = Modifier.padding(AutocompleteItemTextPaddings),
-        text = name.asCompose()
+        text = name
     )
 }
 

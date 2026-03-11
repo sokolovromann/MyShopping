@@ -8,10 +8,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.firstOrNull
-import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
+import kotlinx.coroutines.flow.first
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
-import ru.sokolovromann.myshopping.data.utils.uppercaseFirst
+import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.SelectFromAutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.SelectFromAutocompletesState
@@ -23,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SelectFromAutocompletesViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val autocompletesRepository: AutocompletesRepository,
+    private val suggestionsManager: SuggestionsManager,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<SelectFromAutocompletesEvent> {
 
@@ -49,16 +48,15 @@ class SelectFromAutocompletesViewModel @Inject constructor(
     private fun onInit() = viewModelScope.launch(dispatcher) {
         selectFromAutocompletesState.onWaiting()
 
-        autocompletesRepository.getAllAutocompletes().firstOrNull()?.let {
-            selectFromAutocompletesState.populate(it)
-        }
-
+        val suggestions = suggestionsManager.getSuggestions()
         val shoppingUid: String? = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key)
-        shoppingListsRepository.getShoppingListWithConfig(shoppingUid).firstOrNull()?.let {
-            selectFromAutocompletesState.saveShoppingList(it)
-            it.getSortedProducts()
-                .map { product -> product.name.uppercaseFirst() }
-                .forEach { name -> selectFromAutocompletesState.onAutocompleteSelected(true, name) }
+        val shoppingListsWithConfig = shoppingListsRepository.getShoppingListWithConfig(shoppingUid).first()
+        selectFromAutocompletesState.populate(suggestions, shoppingListsWithConfig)
+
+        shoppingListsWithConfig.getSortedProducts().forEach { product ->
+            suggestions
+                .find { it.name.equals(product.name, true) }
+                ?.let { selectFromAutocompletesState.onSelected(true, it.uid) }
         }
     }
 
@@ -66,7 +64,8 @@ class SelectFromAutocompletesViewModel @Inject constructor(
         listOf(
             async {
                 selectFromAutocompletesState.getAddedProducts().forEach {
-                    shoppingListsRepository.saveProduct(it)
+                    shoppingListsRepository.saveProduct(it.first)
+                    suggestionsManager.addSuggestion(it.second)
                 }
             },
             async {
@@ -86,6 +85,6 @@ class SelectFromAutocompletesViewModel @Inject constructor(
     }
 
     private fun onAutocompleteSelected(event: SelectFromAutocompletesEvent.OnAutocompleteSelected) {
-        selectFromAutocompletesState.onAutocompleteSelected(event.selected, event.name)
+        selectFromAutocompletesState.onAutocompleteSelected(event.selected, event.uid)
     }
 }

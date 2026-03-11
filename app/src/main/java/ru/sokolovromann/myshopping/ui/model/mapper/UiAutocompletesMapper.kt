@@ -1,7 +1,6 @@
 package ru.sokolovromann.myshopping.ui.model.mapper
 
 import ru.sokolovromann.myshopping.R
-import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
@@ -36,12 +35,8 @@ object UiAutocompletesMapper {
         }
     }
 
-    fun toAutocompleteUiNames(
-        autocompletesWithConfig: AutocompletesWithConfig
-    ): List<UiString> {
-        return autocompletesWithConfig.getNames().map {
-            UiString.FromString(it)
-        }
+    fun toUiNamesWithUids(names: Collection<Suggestion>): Collection<Pair<String, UID>> {
+        return names.map { Pair(it.name, it.uid) }
     }
 
     fun toUiNames(names: Collection<Suggestion>): Collection<String> {

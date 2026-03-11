@@ -3,23 +3,24 @@ package ru.sokolovromann.myshopping.ui.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import ru.sokolovromann.myshopping.data.model.AutocompletesWithConfig
 import ru.sokolovromann.myshopping.data.model.DeviceSize
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ShoppingListWithConfig
-import ru.sokolovromann.myshopping.data.utils.uppercaseFirst
+import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAutocompletesMapper
+import ru.sokolovromann.myshopping.utils.UID
+import ru.sokolovromann.myshopping.utils.calendar.DateTime
 
 class SelectFromAutocompletesState {
 
-    private var autocompletesWithConfig by mutableStateOf(AutocompletesWithConfig())
+    private var suggestions: Collection<Suggestion> by mutableStateOf(listOf())
 
     private var shoppingListWithConfig by mutableStateOf(ShoppingListWithConfig())
 
-    var autocompleteNames: List<UiString> by mutableStateOf(listOf())
+    var autocompleteNames: List<Pair<String, UID>> by mutableStateOf(listOf())
         private set
 
-    var selectedNames: List<String>? by mutableStateOf(null)
+    var selectedUids: List<UID> by mutableStateOf(listOf())
         private set
 
     var deviceSize: DeviceSize by mutableStateOf(DeviceSize.DefaultValue)
@@ -31,25 +32,27 @@ class SelectFromAutocompletesState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(autocompletesWithConfig: AutocompletesWithConfig) {
-        this.autocompletesWithConfig = autocompletesWithConfig
+    fun populate(suggestions: Collection<Suggestion>, shoppingListWithConfig: ShoppingListWithConfig) {
+        this.suggestions = suggestions
+        this.shoppingListWithConfig = shoppingListWithConfig
 
-        autocompleteNames = UiAutocompletesMapper.toAutocompleteUiNames(autocompletesWithConfig)
-        selectedNames = null
-        deviceSize = autocompletesWithConfig.appConfig.deviceConfig.getDeviceSize()
+        autocompleteNames = UiAutocompletesMapper.toUiNamesWithUids(suggestions).toList()
+        selectedUids = listOf()
+        deviceSize = shoppingListWithConfig.getDeviceConfig().getDeviceSize()
         multiColumns = deviceSize == DeviceSize.Large
         waiting = false
     }
 
-    fun saveShoppingList(shoppingListWithConfig: ShoppingListWithConfig) {
-        this.shoppingListWithConfig = shoppingListWithConfig
+    fun onSelected(selected: Boolean, uid: UID) {
+        selectedUids = selectedUids.toMutableList().apply {
+            if (selected) add(uid) else remove(uid)
+        }
     }
 
-    fun onAutocompleteSelected(selected: Boolean, name: String) {
-        val names = (selectedNames?.toMutableList() ?: mutableListOf()).apply {
-            if (selected) add(name) else remove(name)
+    fun onAutocompleteSelected(selected: Boolean, uid: UID) {
+        selectedUids = selectedUids.toMutableList().apply {
+            if (selected) add(uid) else remove(uid)
         }
-        selectedNames = if (names.isEmpty()) null else names
     }
 
     fun onWaiting() {
@@ -57,35 +60,45 @@ class SelectFromAutocompletesState {
     }
 
     fun isNotFound(): Boolean {
-        return autocompletesWithConfig.isEmpty()
+        return suggestions.isEmpty()
     }
 
-    fun getAddedProducts(): List<Product> {
-        val products: MutableList<Product> = mutableListOf()
-        selectedNames?.forEach { name ->
-            if (getProducts(name).isEmpty()) {
-                val product = Product(
-                    shoppingUid = shoppingListWithConfig.getShopping().uid,
-                    name = name
-                )
-                products.add(product)
+    fun getAddedProducts(): Collection<Pair<Product, Suggestion>> {
+        val products: MutableCollection<Pair<Product, Suggestion>> = mutableListOf()
+        selectedUids.forEach { uid ->
+            suggestions.find { it.uid == uid }?.let {
+                if (findProduct(it.name) == null) {
+                    val product = Product(
+                        shoppingUid = shoppingListWithConfig.getShopping().uid,
+                        name = it.name
+                    )
+                    val newSuggestion = it.copy(
+                        lastModified = DateTime.getCurrent(),
+                        used = it.used.plus(1)
+                    )
+                    val productWithSuggestion = Pair(product, newSuggestion)
+                    products.add(productWithSuggestion)
+                }
             }
         }
         return products
     }
 
-    fun getDeletedProducts(): List<Product> {
-        val products: MutableList<Product> = mutableListOf()
-        autocompletesWithConfig.getNames().forEach { name ->
-            if (!selectedNames?.contains(name)!!) {
-                getProducts(name).forEach { products.add(it) }
+    fun getDeletedProducts(): Collection<Product> {
+        val products: MutableCollection<Product> = mutableListOf()
+        suggestions.forEach { suggestion ->
+            if (!selectedUids.contains(suggestion.uid)) {
+                findProduct(suggestion.name)?.let {
+                    products.add(it)
+                }
             }
         }
         return products
     }
 
-    private fun getProducts(name: String): List<Product> {
-        return shoppingListWithConfig.getSortedProducts()
-            .filter { it.name.uppercaseFirst() == name }
+    private fun findProduct(name: String): Product? {
+        return shoppingListWithConfig.getSortedProducts().find {
+            it.name.equals(name, true)
+        }
     }
 }
