@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.firstOrNull
-import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
+import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetailsInfo
+import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.compose.event.MaxAutocompletesScreenEvent
 import ru.sokolovromann.myshopping.ui.model.MaxAutocompletesState
 import ru.sokolovromann.myshopping.ui.viewmodel.event.MaxAutocompletesEvent
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MaxAutocompletesViewModel @Inject constructor(
-    private val appConfigRepository: AppConfigRepository
+    private val suggestionsManager: SuggestionsManager
 ) : ViewModel(), ViewModelEvent<MaxAutocompletesEvent> {
 
     val maxAutocompletesState = MaxAutocompletesState()
@@ -34,92 +34,77 @@ class MaxAutocompletesViewModel @Inject constructor(
 
             MaxAutocompletesEvent.OnClickCancel -> onClickCancel()
 
-            MaxAutocompletesEvent.OnClickPlusOneName -> onClickPlusOneName()
+            is MaxAutocompletesEvent.OnSelectTakeNames -> onSelectTakeNames(event)
 
-            MaxAutocompletesEvent.OnClickMinusOneName -> onClickMinusOneName()
+            is MaxAutocompletesEvent.OnSelectTakeDetailsDescriptions -> onSelectTakeDetailsDescriptions(event)
 
-            MaxAutocompletesEvent.OnClickPlusOneQuantity -> onClickPlusOneQuantity()
+            is MaxAutocompletesEvent.OnSelectTakeDetailsQuantities -> onSelectTakeDetailsQuantities(event)
 
-            MaxAutocompletesEvent.OnClickMinusOneQuantity -> onClickMinusOneQuantity()
+            is MaxAutocompletesEvent.OnSelectTakeDetailsMoney -> onSelectTakeDetailsMoney(event)
 
-            MaxAutocompletesEvent.OnClickPlusOneMoney -> onClickPlusOneMoney()
+            is MaxAutocompletesEvent.OnTakeNamesSelected -> onTakeNamesSelected(event)
 
-            MaxAutocompletesEvent.OnClickMinusOneMoney -> onClickMinusOneMoney()
+            is MaxAutocompletesEvent.OnTakeDetailsDescriptionsSelected -> onTakeDetailsDescriptionsSelected(event)
 
-            MaxAutocompletesEvent.OnClickPlusOneOther -> onClickPlusOneOther()
+            is MaxAutocompletesEvent.OnTakeDetailsQuantitiesSelected -> onTakeDetailsQuantitiesSelected(event)
 
-            MaxAutocompletesEvent.OnClickMinusOneOther -> onClickMinusOneOther()
+            is MaxAutocompletesEvent.OnTakeDetailsMoneySelected -> onTakeDetailsMoneySelected(event)
         }
     }
 
     private fun onInit() = viewModelScope.launch(dispatcher) {
-        appConfigRepository.getSettingsWithConfig().firstOrNull()?.let {
-            maxAutocompletesState.populate(it)
-        }
+        val config = suggestionsManager.getConfig()
+        maxAutocompletesState.populate(config)
     }
 
     private fun onClickSave() = viewModelScope.launch(dispatcher) {
         maxAutocompletesState.onWaiting()
 
-        appConfigRepository.saveMaxAutocompletes(
-            maxNames = maxAutocompletesState.maxNames,
-            maxQuantities = maxAutocompletesState.maxQuantities,
-            maxMoneys = maxAutocompletesState.maxMoneys,
-            maxOthers = maxAutocompletesState.maxOthers
-        ).onSuccess { _screenEventFlow.emit(MaxAutocompletesScreenEvent.OnShowBackScreen) }
+        suggestionsManager.updateConfig(maxAutocompletesState.takeNamesValue.selected)
+
+        val takeSuggestionDetailsInfo = TakeSuggestionDetailsInfo(
+            descriptions = maxAutocompletesState.takeDetailsDescriptions.selected,
+            quantities = maxAutocompletesState.takeDetailsQuantities.selected,
+            money = maxAutocompletesState.takeDetailsMoney.selected
+        )
+        suggestionsManager.updateConfig(takeSuggestionDetailsInfo)
+
+        _screenEventFlow.emit(MaxAutocompletesScreenEvent.OnShowBackScreen)
     }
 
     private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(MaxAutocompletesScreenEvent.OnShowBackScreen)
     }
 
-    private fun onClickPlusOneName() {
-        val value = plusOneValue(maxAutocompletesState.maxNames)
-        maxAutocompletesState.onMaxNamesChanged(value)
+    private fun onSelectTakeNames(event: MaxAutocompletesEvent.OnSelectTakeNames) {
+        maxAutocompletesState.onSelectTakeNames(event.expanded)
     }
 
-    private fun onClickMinusOneName() {
-        val value = minusOneValue(maxAutocompletesState.maxNames)
-        maxAutocompletesState.onMaxNamesChanged(value)
+    private fun onSelectTakeDetailsDescriptions(event: MaxAutocompletesEvent.OnSelectTakeDetailsDescriptions) {
+        maxAutocompletesState.onSelectTakeDetailsDescriptions(event.expanded)
     }
 
-    private fun onClickPlusOneQuantity() {
-        val value = plusOneValue(maxAutocompletesState.maxQuantities)
-        maxAutocompletesState.onMaxQuantitiesChanged(value)
+    private fun onSelectTakeDetailsQuantities(event: MaxAutocompletesEvent.OnSelectTakeDetailsQuantities) {
+        maxAutocompletesState.onSelectTakeDetailsQuantities(event.expanded)
     }
 
-    private fun onClickMinusOneQuantity() {
-        val value = minusOneValue(maxAutocompletesState.maxQuantities)
-        maxAutocompletesState.onMaxQuantitiesChanged(value)
+    private fun onSelectTakeDetailsMoney(event: MaxAutocompletesEvent.OnSelectTakeDetailsMoney) {
+        maxAutocompletesState.onSelectTakeDetailsMoney(event.expanded)
     }
 
-    private fun onClickPlusOneMoney() {
-        val value = plusOneValue(maxAutocompletesState.maxMoneys)
-        maxAutocompletesState.onMaxMoneysChanged(value)
+    private fun onTakeNamesSelected(event: MaxAutocompletesEvent.OnTakeNamesSelected) {
+        maxAutocompletesState.onTakeNamesSelected(event.takeSuggestions)
     }
 
-    private fun onClickMinusOneMoney() {
-        val value = minusOneValue(maxAutocompletesState.maxMoneys)
-        maxAutocompletesState.onMaxMoneysChanged(value)
+    private fun onTakeDetailsDescriptionsSelected(event: MaxAutocompletesEvent.OnTakeDetailsDescriptionsSelected) {
+        maxAutocompletesState.onTakeDetailsDescriptionsSelected(event.takeSuggestionDetails)
     }
 
-    private fun onClickPlusOneOther() {
-        val value = plusOneValue(maxAutocompletesState.maxOthers)
-        maxAutocompletesState.onMaxOthersChanged(value)
+    private fun onTakeDetailsQuantitiesSelected(event: MaxAutocompletesEvent.OnTakeDetailsQuantitiesSelected) {
+        maxAutocompletesState.onTakeDetailsQuantitiesSelected(event.takeSuggestionDetails)
     }
 
-    private fun onClickMinusOneOther() {
-        val value = minusOneValue(maxAutocompletesState.maxOthers)
-        maxAutocompletesState.onMaxOthersChanged(value)
-    }
-
-    private fun plusOneValue(value: Int): Int {
-        return value.plus(1)
-    }
-
-    private fun minusOneValue(value: Int): Int {
-        val defaultValue = 0
-        val calculatedValue = value.minus(1)
-        return if (calculatedValue < 0) defaultValue else calculatedValue
+    private fun onTakeDetailsMoneySelected(event: MaxAutocompletesEvent.OnTakeDetailsMoneySelected) {
+        maxAutocompletesState.onTakeDetailsMoneySelected(event.takeSuggestionDetails)
     }
 }

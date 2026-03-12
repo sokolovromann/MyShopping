@@ -361,14 +361,21 @@
     <string name="fontSizes_text_widgetFontSize">Віджет</string>
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
-    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
-    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
+    <string name="maxAutocompletes_body_doNotTakeDetails">Нуль</string>
+    <string name="maxAutocompletes_body_doNotTakeSuggestions">Нуль</string>
+    <string name="maxAutocompletes_body_takeAllDetails">Все</string>
+    <string name="maxAutocompletes_body_takeFiveDetails">П\'ять</string>
+    <string name="maxAutocompletes_body_takeFiveSuggestions">П\'ять</string>
+    <string name="maxAutocompletes_body_takeOneDetails">Одна</string>
+    <string name="maxAutocompletes_body_takeTenDetails">Десять</string>
+    <string name="maxAutocompletes_body_takeTenSuggestions">Десять</string>
+    <string name="maxAutocompletes_body_takeThreeDetails">Три</string>
     <string name="maxAutocompletes_header">Максимальна кількість</string>
-    <string name="maxAutocompletes_text_moneys">Гроші (ціни, разом і т.д.)</string>
-    <string name="maxAutocompletes_text_names">Назви</string>
-    <string name="maxAutocompletes_text_other">Додаткові (марки, розміри і т.д.)</string>
-    <string name="maxAutocompletes_text_quantities">Кількості</string>
+    <string name="maxAutocompletes_title_takeDetailsDescriptions">Описи (марки, розміри і т.д.)</string>
+    <string name="maxAutocompletes_title_takeDetailsMoney">Гроші</string>
+    <string name="maxAutocompletes_title_takeDetailsQuantities">Кількості</string>
+    <string name="maxAutocompletes_title_takeSuggestions">Назви</string>
 
     <string name="notificationChannel_description_purchases">Сповіщення для покупок</string>
     <string name="notificationChannel_name_purchases">Покупки</string>

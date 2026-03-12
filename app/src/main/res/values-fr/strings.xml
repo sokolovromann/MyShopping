@@ -413,14 +413,21 @@
     <string name="fontSizes_text_widgetFontSize">Widget</string>
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
-    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
-    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
+    <string name="maxAutocompletes_body_doNotTakeDetails">Zéro</string>
+    <string name="maxAutocompletes_body_doNotTakeSuggestions">Zéro</string>
+    <string name="maxAutocompletes_body_takeAllDetails">Tout</string>
+    <string name="maxAutocompletes_body_takeFiveDetails">Cinq</string>
+    <string name="maxAutocompletes_body_takeFiveSuggestions">Cinq</string>
+    <string name="maxAutocompletes_body_takeOneDetails">Un</string>
+    <string name="maxAutocompletes_body_takeTenDetails">Dix</string>
+    <string name="maxAutocompletes_body_takeTenSuggestions">Dix</string>
+    <string name="maxAutocompletes_body_takeThreeDetails">Trois</string>
     <string name="maxAutocompletes_header">Nombre maximum</string>
-    <string name="maxAutocompletes_text_moneys">Argent (prix, totaux, etc.)</string>
-    <string name="maxAutocompletes_text_names">Des noms</string>
-    <string name="maxAutocompletes_text_other">Supplémentaires (marques, tailles, etc.)</string>
-    <string name="maxAutocompletes_text_quantities">Quantités</string>
+    <string name="maxAutocompletes_title_takeDetailsDescriptions">Descriptions (marques, tailles, etc.)</string>
+    <string name="maxAutocompletes_title_takeDetailsMoney">Argent</string>
+    <string name="maxAutocompletes_title_takeDetailsQuantities">Quantités</string>
+    <string name="maxAutocompletes_title_takeSuggestions">Des noms</string>
 
     <string name="notificationChannel_description_purchases">Notifications de listes de courses</string>
     <string name="notificationChannel_name_purchases">Achats</string>

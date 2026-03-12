@@ -408,14 +408,21 @@
     <string name="fontSizes_text_widgetFontSize">Виджет</string>
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
-    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
-    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
+    <string name="maxAutocompletes_body_doNotTakeDetails">Ноль</string>
+    <string name="maxAutocompletes_body_doNotTakeSuggestions">Ноль</string>
+    <string name="maxAutocompletes_body_takeAllDetails">Все</string>
+    <string name="maxAutocompletes_body_takeFiveDetails">Пять</string>
+    <string name="maxAutocompletes_body_takeFiveSuggestions">Пять</string>
+    <string name="maxAutocompletes_body_takeOneDetails">Одно</string>
+    <string name="maxAutocompletes_body_takeTenDetails">Десять</string>
+    <string name="maxAutocompletes_body_takeTenSuggestions">Десять</string>
+    <string name="maxAutocompletes_body_takeThreeDetails">Три</string>
     <string name="maxAutocompletes_header">Максимальное количество</string>
-    <string name="maxAutocompletes_text_moneys">Деньги (цены, итого и т.д.)</string>
-    <string name="maxAutocompletes_text_names">Названия</string>
-    <string name="maxAutocompletes_text_other">Дополнительные (марки, размеры и т.д.)</string>
-    <string name="maxAutocompletes_text_quantities">Количества</string>
+    <string name="maxAutocompletes_title_takeDetailsDescriptions">Описания (марки, размеры и т.д.)</string>
+    <string name="maxAutocompletes_title_takeDetailsMoney">Деньги</string>
+    <string name="maxAutocompletes_title_takeDetailsQuantities">Количества</string>
+    <string name="maxAutocompletes_title_takeSuggestions">Названия</string>
 
     <string name="notificationChannel_description_purchases">Уведомления для списков покупок</string>
     <string name="notificationChannel_name_purchases">Покупки</string>

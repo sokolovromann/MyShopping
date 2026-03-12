@@ -343,14 +343,21 @@
     <string name="fontSizes_text_widgetFontSize">Widget</string>
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
-    <string name="maxAutocompletes_action_minusOne">@string/all_action_minusOne</string>
-    <string name="maxAutocompletes_action_plusOne">@string/all_action_plusOne</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
+    <string name="maxAutocompletes_body_doNotTakeDetails">Null</string>
+    <string name="maxAutocompletes_body_doNotTakeSuggestions">Null</string>
+    <string name="maxAutocompletes_body_takeAllDetails">Alle</string>
+    <string name="maxAutocompletes_body_takeFiveDetails">Fünf</string>
+    <string name="maxAutocompletes_body_takeFiveSuggestions">Fünf</string>
+    <string name="maxAutocompletes_body_takeOneDetails">Eins</string>
+    <string name="maxAutocompletes_body_takeTenDetails">Zehn</string>
+    <string name="maxAutocompletes_body_takeTenSuggestions">Zehn</string>
+    <string name="maxAutocompletes_body_takeThreeDetails">Drei</string>
     <string name="maxAutocompletes_header">Maximale Anzahl</string>
-    <string name="maxAutocompletes_text_moneys">Geld (Preise, Gesamtsumme usw.)</string>
-    <string name="maxAutocompletes_text_names">Namen</string>
-    <string name="maxAutocompletes_text_other">Andere (Marken, Größen usw.)</string>
-    <string name="maxAutocompletes_text_quantities">Mengen</string>
+    <string name="maxAutocompletes_title_takeDetailsDescriptions">Beschreibungen (Marken, Größen usw.)</string>
+    <string name="maxAutocompletes_title_takeDetailsMoney">Geld</string>
+    <string name="maxAutocompletes_title_takeDetailsQuantities">Mengen</string>
+    <string name="maxAutocompletes_title_takeSuggestions">Namen</string>
 
     <string name="notificationChannel_description_purchases">Benachrichtigungen über einkäufe</string>
     <string name="notificationChannel_name_purchases">Einkäufe</string>
