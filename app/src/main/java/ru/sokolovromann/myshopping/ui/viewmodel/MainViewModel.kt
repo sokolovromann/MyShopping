@@ -3,7 +3,6 @@ package ru.sokolovromann.myshopping.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
@@ -13,17 +12,11 @@ import ru.sokolovromann.myshopping.app.AppAction
 import ru.sokolovromann.myshopping.data.model.AppBuildConfig
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.AppOpenHelper
-import ru.sokolovromann.myshopping.data.model.Autocomplete
-import ru.sokolovromann.myshopping.data.model.CodeVersion14
-import ru.sokolovromann.myshopping.data.model.CodeVersion14Preferences
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.DateTime
 import ru.sokolovromann.myshopping.data.model.DeviceConfig
-import ru.sokolovromann.myshopping.data.model.ShoppingList
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
-import ru.sokolovromann.myshopping.data.repository.AutocompletesRepository
-import ru.sokolovromann.myshopping.data.repository.CodeVersion14Repository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data39.LocalEnvironment
 import ru.sokolovromann.myshopping.data39.LocalResources
@@ -32,7 +25,6 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDirectory
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsPreInstalled
 import ru.sokolovromann.myshopping.manager.MigrationManager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
-import ru.sokolovromann.myshopping.notification.purchases.PurchasesAlarmManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
 import ru.sokolovromann.myshopping.ui.compose.event.MainScreenEvent
 import ru.sokolovromann.myshopping.ui.model.MainState
@@ -48,11 +40,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val appConfigRepository: AppConfigRepository,
-    private val codeVersion14Repository: CodeVersion14Repository,
     private val shoppingListsRepository: ShoppingListsRepository,
-    private val autocompletesRepository: AutocompletesRepository,
     private val notificationManager: PurchasesNotificationManager,
-    private val alarmManager: PurchasesAlarmManager,
     private val appShortcutManager: AppShortcutManager,
     private val migrationManager: MigrationManager,
     private val suggestionsManager: SuggestionsManager,
@@ -92,10 +81,11 @@ class MainViewModel @Inject constructor(
                 }
 
                 AppOpenHelper.Migrate -> {
-                    when (it.getAppBuildConfig().userCodeVersion) {
-                        AppBuildConfig.CODE_VERSION_14 -> onMigrateFromCodeVersion14(event)
-                        AppBuildConfig.CODE_VERSION_39 -> onMigrateFromCodeVersion39()
-                        else -> appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
+                    val userCodeVersion = it.getAppBuildConfig().userCodeVersion
+                    if (userCodeVersion <= AppBuildConfig.CODE_VERSION_39) {
+                        onMigrateFromCodeVersion39()
+                    } else {
+                        appConfigRepository.saveUserCodeVersion(BuildConfig.VERSION_CODE)
                     }
                 }
 
@@ -189,71 +179,6 @@ class MainViewModel @Inject constructor(
         appConfigRepository.saveAppConfig(appConfig)
 
         notificationManager.createNotificationChannel()
-    }
-
-    private fun onMigrateFromCodeVersion14(
-        event: MainEvent.OnCreate
-    ) = viewModelScope.launch(dispatcher) {
-        notificationManager.createNotificationChannel()
-
-        val codeVersion14 = codeVersion14Repository.getCodeVersion14().firstOrNull() ?: CodeVersion14()
-        listOf(
-            viewModelScope.async(dispatcher) { migrateShoppings(codeVersion14.shoppingLists) },
-            viewModelScope.async(dispatcher) { migrateAutocompletes(codeVersion14.autocompletes) },
-            viewModelScope.async(dispatcher) { migrateSettings(codeVersion14.preferences, event) }
-        ).awaitAll()
-    }
-
-    private suspend fun migrateShoppings(list: List<ShoppingList>) {
-        shoppingListsRepository.saveShoppingLists(list)
-
-        list.forEach {
-            val shopping = it.shopping
-            if (shopping.reminder != null) {
-                alarmManager.deleteCodeVersion14Reminder(shopping.id)
-                alarmManager.createReminder(shopping.uid, shopping.reminder.millis)
-            }
-        }
-    }
-
-    private suspend fun migrateAutocompletes(list: List<Autocomplete>) {
-        autocompletesRepository.saveAutocompletes(list)
-    }
-
-    private suspend fun migrateSettings(
-        preferences: CodeVersion14Preferences,
-        event: MainEvent.OnCreate
-    ) {
-        val deviceConfig = DeviceConfig(
-            screenWidthDp = event.screenWidth,
-            screenHeightDp = event.screenHeight
-        )
-
-        val appBuildConfig = AppBuildConfig(
-            userCodeVersion = BuildConfig.VERSION_CODE
-        )
-
-        val userPreferences = UserPreferences(
-            appFontSize = preferences.fontSize,
-            currency = preferences.currency,
-            taxRate = preferences.taxRate,
-            shoppingsMultiColumns = preferences.multiColumns,
-            productsMultiColumns = preferences.multiColumns,
-            displayTotal = preferences.displayTotal,
-            editProductAfterCompleted = preferences.editProductAfterCompleted,
-            saveProductToAutocompletes = preferences.saveProductToAutocompletes,
-            displayMoney = preferences.displayMoney,
-            completedWithCheckbox = false,
-            automaticallyEmptyTrash = true
-        )
-
-        val appConfig = AppConfig(
-            deviceConfig = deviceConfig,
-            appBuildConfig = appBuildConfig,
-            userPreferences = userPreferences
-        )
-
-        appConfigRepository.saveAppConfig(appConfig)
     }
 
     private fun onMigrateFromCodeVersion39() = viewModelScope.launch(dispatcher) {

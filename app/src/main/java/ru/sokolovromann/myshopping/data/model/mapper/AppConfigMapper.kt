@@ -194,11 +194,7 @@ object AppConfigMapper {
         return entity.userCodeVersion ?: if (entity.appFirstTime == "NOTHING") {
             AppBuildConfig.CODE_VERSION_18
         } else {
-            if (entity.codeVersion14 == true) {
-                AppBuildConfig.CODE_VERSION_14
-            } else {
-                AppBuildConfig.UNKNOWN_CODE_VERSION
-            }
+            AppBuildConfig.UNKNOWN_CODE_VERSION
         }
     }
 

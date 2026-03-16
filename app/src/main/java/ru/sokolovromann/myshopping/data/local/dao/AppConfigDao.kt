@@ -1,6 +1,5 @@
 package ru.sokolovromann.myshopping.data.local.dao
 
-import android.content.SharedPreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -14,7 +13,6 @@ import ru.sokolovromann.myshopping.data.local.entity.AppBuildConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.AppConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.DeviceConfigEntity
 import ru.sokolovromann.myshopping.data.local.entity.UserPreferencesEntity
-import ru.sokolovromann.myshopping.data.local.entity.CodeVersion14UserPreferencesEntity
 import ru.sokolovromann.myshopping.utils.Dispatcher
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOn
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
@@ -22,20 +20,12 @@ import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withContext
 class AppConfigDao(appContent: AppContent) {
 
     private val preferences = appContent.getPreferences()
-    private val userSharedPreferences = appContent.getUserSharedPreferences()
-    private val openedSharedPreferences = appContent.getOpenedSharedPreferences()
     private val resources = appContent.getResources()
     private val dispatcher = Dispatcher.IO
 
     fun getAppConfig(): Flow<AppConfigEntity> {
         return preferences.data
             .map { toAppConfigEntity(it) }
-            .flowOn(dispatcher)
-    }
-
-    fun getCodeVersion14Preferences(): Flow<CodeVersion14UserPreferencesEntity> {
-        return preferences.data
-            .map { toVer14UserPreferences() }
             .flowOn(dispatcher)
     }
 
@@ -415,11 +405,8 @@ class AppConfigDao(appContent: AppContent) {
     }
 
     private fun toAppBuildConfig(preferences: Preferences): AppBuildConfigEntity {
-        val codeVersion14 = openedSharedPreferences.contains(DatasourceKey.CodeVersion14.firstOpened)
-
         return AppBuildConfigEntity(
             appFirstTime = preferences[DatasourceKey.Build.appFirstTime],
-            codeVersion14 = codeVersion14,
             userCodeVersion = preferences[DatasourceKey.Build.userCodeVersion]
         )
     }
@@ -476,40 +463,6 @@ class AppConfigDao(appContent: AppContent) {
             swipeShoppingRight = preferences[DatasourceKey.User.swipeShoppingRight],
             archiveAsCompleted = preferences[DatasourceKey.User.archiveAsCompleted]
         )
-    }
-
-    private fun toVer14UserPreferences(): CodeVersion14UserPreferencesEntity {
-        return CodeVersion14UserPreferencesEntity(
-            firstOpened = openedSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstOpened),
-            currency = userSharedPreferences.getStringOrNull(DatasourceKey.CodeVersion14.currency),
-            displayCurrencyToLeft = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayCurrencyToLeft),
-            taxRate = userSharedPreferences.getFloatOrNull(DatasourceKey.CodeVersion14.taxRate),
-            titleFontSize = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.titleFontSize),
-            bodyFontSize = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.bodyFontSize),
-            firstLetterUppercase = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.firstLetterUppercase),
-            columnCount = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.columnCount),
-            sort = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.sort),
-            displayMoney = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.displayMoney),
-            displayTotal = userSharedPreferences.getIntOrNull(DatasourceKey.CodeVersion14.displayTotal),
-            editProductAfterCompleted = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.editProductAfterCompleted),
-            saveProductToAutocompletes = userSharedPreferences.getBooleanOrNull(DatasourceKey.CodeVersion14.saveProductToAutocompletes)
-        )
-    }
-
-    private fun SharedPreferences.getStringOrNull(key: String): String? {
-        return if (contains(key)) getString(key, "") else null
-    }
-
-    private fun SharedPreferences.getIntOrNull(key: String): Int? {
-        return if (contains(key)) getInt(key, Int.MIN_VALUE) else null
-    }
-
-    private fun SharedPreferences.getFloatOrNull(key: String): Float? {
-        return if (contains(key)) getFloat(key, Float.MIN_VALUE) else null
-    }
-
-    private fun SharedPreferences.getBooleanOrNull(key: String): Boolean? {
-        return if (contains(key)) getBoolean(key, false) else null
     }
 }
 
@@ -569,21 +522,5 @@ private object DatasourceKey {
         val swipeShoppingLeft = stringPreferencesKey("swipe_shopping_left")
         val swipeShoppingRight = stringPreferencesKey("swipe_shopping_right")
         val archiveAsCompleted = booleanPreferencesKey("archive_as_completed")
-    }
-
-    object CodeVersion14 {
-        const val firstOpened = "pref_first"
-        const val currency = "currency"
-        const val displayCurrencyToLeft = "show_currency"
-        const val taxRate = "tax_rate"
-        const val titleFontSize = "size_main_text"
-        const val bodyFontSize = "size_dop_text"
-        const val firstLetterUppercase = "capital_text"
-        const val columnCount = "cell_text"
-        const val sort = "sort_default"
-        const val displayMoney = "show_price"
-        const val displayTotal = "sum_default"
-        const val editProductAfterCompleted = "edit_after_buy"
-        const val saveProductToAutocompletes = "auto_text"
     }
 }

@@ -25,7 +25,11 @@ data class AppBuildConfig(
             AppOpenHelper.Create
         } else {
             if (userCodeVersion < appCodeVersion) {
-                AppOpenHelper.Migrate
+                if (userCodeVersion <= CODE_VERSION_14) {
+                    AppOpenHelper.Open
+                } else {
+                    AppOpenHelper.Migrate
+                }
             } else if (userCodeVersion == appCodeVersion) {
                 AppOpenHelper.Open
             } else {
