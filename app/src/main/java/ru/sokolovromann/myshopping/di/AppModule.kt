@@ -55,11 +55,6 @@ object AppModule {
     }
 
     @Provides
-    fun providesAutocompletesRepository(localDatasource: LocalDatasource): AutocompletesRepository {
-        return AutocompletesRepository(localDatasource)
-    }
-
-    @Provides
     fun providesBackupRepository(localDatasource: LocalDatasource): BackupRepository {
         return BackupRepository(localDatasource)
     }

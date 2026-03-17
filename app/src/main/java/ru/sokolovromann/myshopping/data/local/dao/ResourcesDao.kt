@@ -8,15 +8,6 @@ class ResourcesDao(appContent: AppContent) {
 
     private val resources = appContent.getResources()
 
-    fun getAutocompleteNames(): List<String> {
-        return resources.getStringArray(R.array.data_text_defaultAutocompleteNames).toList()
-    }
-
-    fun searchAutocompleteNames(search: String): List<String> {
-        return resources.getStringArray(R.array.data_text_defaultAutocompleteNames)
-            .filter { it.lowercase().contains(search.lowercase()) }
-    }
-
     fun getCurrency(): CurrencyResourcesEntity {
         return CurrencyResourcesEntity(
             defaultCurrency = resources.getString(R.string.data_text_defaultCurrency),

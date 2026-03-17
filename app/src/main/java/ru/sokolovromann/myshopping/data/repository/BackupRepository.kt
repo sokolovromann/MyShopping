@@ -14,7 +14,6 @@ import ru.sokolovromann.myshopping.data39.old.Api15ShoppingEntity
 import ru.sokolovromann.myshopping.data.model.AppConfig
 import ru.sokolovromann.myshopping.data.model.Backup
 import ru.sokolovromann.myshopping.data.model.mapper.AppConfigMapper
-import ru.sokolovromann.myshopping.data.model.mapper.AutocompletesMapper
 import ru.sokolovromann.myshopping.data.model.mapper.BackupMapper
 import ru.sokolovromann.myshopping.data.model.mapper.ShoppingListsMapper
 import ru.sokolovromann.myshopping.utils.Dispatcher
@@ -106,12 +105,6 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
                 entities = backupFileEntity.productEntities,
                 appConfig = oldAppConfig
             ),
-            autocompletes = AutocompletesMapper.toAutocompletes(
-                entities = backupFileEntity.autocompleteEntities,
-                resources = null,
-                appConfig = oldAppConfig,
-                language = null
-            ),
             fileName = ""
         )
     }
@@ -121,7 +114,6 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             ?.let { getFilteredShoppings(it) } ?: listOf()
         val productEntities = productsDao.getAllProducts().firstOrNull()
             ?.let { getFilteredProducts(shoppingEntities, it) } ?: listOf()
-        val autocompleteEntities = autocompletesDao.getAllAutocompletes().firstOrNull() ?: listOf()
         val appConfigEntity = appConfigDao.getAppConfig().firstOrNull() ?: AppConfigEntity()
         val newAppConfig = AppConfigMapper.toAppConfig(appConfigEntity)
 
@@ -134,12 +126,6 @@ class BackupRepository @Inject constructor(localDatasource: LocalDatasource) {
             products = ShoppingListsMapper.toProducts(
                 entities = productEntities,
                 appConfig = newAppConfig
-            ),
-            autocompletes = AutocompletesMapper.toAutocompletes(
-                entities = autocompleteEntities,
-                resources = null,
-                appConfig = newAppConfig,
-                language = null
             ),
             fileName = ""
         )
