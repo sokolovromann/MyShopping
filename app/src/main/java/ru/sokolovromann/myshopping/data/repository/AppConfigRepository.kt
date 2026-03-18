@@ -99,19 +99,6 @@ class AppConfigRepository @Inject constructor(localDatasource: LocalDatasource) 
         return@withContext Result.success(Unit)
     }
 
-    suspend fun saveMaxAutocompletes(
-        maxNames: Int,
-        maxQuantities: Int,
-        maxMoneys: Int,
-        maxOthers: Int
-    ): Result<Unit> = withContext(dispatcher) {
-        appConfigDao.saveMaxAutocompleteNames(maxNames)
-        appConfigDao.saveMaxAutocompleteQuantities(maxQuantities)
-        appConfigDao.saveMaxAutocompleteMoneys(maxMoneys)
-        appConfigDao.saveMaxAutocompleteOthers(maxOthers)
-        return@withContext Result.success(Unit)
-    }
-
     suspend fun saveAfterSaveProduct(
         afterSaveProduct: AfterSaveProduct
     ): Result<Unit> = withContext(dispatcher) {

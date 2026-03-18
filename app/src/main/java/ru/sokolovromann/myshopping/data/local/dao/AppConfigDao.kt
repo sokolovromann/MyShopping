@@ -72,30 +72,6 @@ class AppConfigDao(appContent: AppContent) {
         }
     }
 
-    suspend fun saveMaxAutocompleteNames(value: Int) = withContext(dispatcher) {
-        preferences.edit {
-            it[DatasourceKey.User.maxAutocompletesNames] = value
-        }
-    }
-
-    suspend fun saveMaxAutocompleteQuantities(value: Int) = withContext(dispatcher) {
-        preferences.edit {
-            it[DatasourceKey.User.maxAutocompletesQuantities] = value
-        }
-    }
-
-    suspend fun saveMaxAutocompleteMoneys(value: Int) = withContext(dispatcher) {
-        preferences.edit {
-            it[DatasourceKey.User.maxAutocompletesMoneys] = value
-        }
-    }
-
-    suspend fun saveMaxAutocompleteOthers(value: Int) = withContext(dispatcher) {
-        preferences.edit {
-            it[DatasourceKey.User.maxAutocompletesOthers] = value
-        }
-    }
-
     suspend fun saveMinMoneyFractionDigits(value: Int) = withContext(dispatcher) {
         preferences.edit {
             it[DatasourceKey.User.minMoneyFractionDigits] = value
@@ -278,22 +254,6 @@ class AppConfigDao(appContent: AppContent) {
             val oldValue = it[DatasourceKey.User.enterToSaveProduct]
             val newValue = if (oldValue == null) valueIfNull else !oldValue
             it[DatasourceKey.User.enterToSaveProduct] = newValue
-        }
-    }
-
-    suspend fun invertDisplayDefaultAutocompletes(valueIfNull: Boolean) = withContext(dispatcher) {
-        preferences.edit {
-            val oldValue = it[DatasourceKey.User.displayDefaultAutocompletes]
-            val newValue = if (oldValue == null) valueIfNull else !oldValue
-            it[DatasourceKey.User.displayDefaultAutocompletes] = newValue
-        }
-    }
-
-    suspend fun invertSaveProductToAutocompletes(valueIfNull: Boolean) = withContext(dispatcher) {
-        preferences.edit {
-            val oldValue = it[DatasourceKey.User.saveProductToAutocompletes]
-            val newValue = if (oldValue == null) valueIfNull else !oldValue
-            it[DatasourceKey.User.saveProductToAutocompletes] = newValue
         }
     }
 
