@@ -12,7 +12,7 @@ class BackupMediaStore @Inject constructor(
 ) {
 
     fun checkCorrectWriteFilesPermissions(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
             true
         } else {
             val checkSelfPermission = ActivityCompat.checkSelfPermission(
