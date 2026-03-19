@@ -89,11 +89,11 @@ class DateTime(private val value: Long) {
     }
 
     fun isEmpty(): Boolean {
-        return getMillis() > EMPTY.getMillis()
+        return getMillis() <= EMPTY.getMillis()
     }
 
     fun isNotEmpty(): Boolean {
-        return getMillis() <= EMPTY.getMillis()
+        return getMillis() > EMPTY.getMillis()
     }
 
     override fun toString(): String {
