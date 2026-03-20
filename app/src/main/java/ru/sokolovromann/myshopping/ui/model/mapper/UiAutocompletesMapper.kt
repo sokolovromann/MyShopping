@@ -10,6 +10,7 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.toUiString
 import ru.sokolovromann.myshopping.utils.UID
 import ru.sokolovromann.myshopping.utils.math.DiscountType
+import java.text.DecimalFormat
 
 object UiAutocompletesMapper {
 
@@ -17,7 +18,9 @@ object UiAutocompletesMapper {
 
     fun toAutocompleteItems(
         suggestionsWithDetails: Collection<SuggestionWithDetails>,
-        currency: Currency
+        currency: Currency,
+        quantityDecimalFormat: DecimalFormat,
+        moneyDecimalFormat: DecimalFormat
     ): List<AutocompleteItem> {
         return suggestionsWithDetails.map { (suggestion, details) ->
             AutocompleteItem(
@@ -27,10 +30,10 @@ object UiAutocompletesMapper {
                 sizes = toSizes(details.sizes),
                 colors = toColors(details.colors),
                 manufacturers = toManufacturers(details.manufacturers),
-                quantities = toQuantities(details.quantities),
-                prices = toPrices(details.unitPrices, currency),
-                discounts = toDiscounts(details.discounts, currency),
-                totals = toTotals(details.costs, currency)
+                quantities = toQuantities(details.quantities, quantityDecimalFormat),
+                prices = toPrices(details.unitPrices, currency, moneyDecimalFormat),
+                discounts = toDiscounts(details.discounts, currency, moneyDecimalFormat),
+                totals = toTotals(details.costs, currency, moneyDecimalFormat)
             )
         }
     }
@@ -182,7 +185,10 @@ object UiAutocompletesMapper {
         }
     }
 
-    private fun toQuantities(quantities: Collection<SuggestionDetail.Quantity>): UiString {
+    private fun toQuantities(
+        quantities: Collection<SuggestionDetail.Quantity>,
+        decimalFormat: DecimalFormat
+    ): UiString {
         return if (quantities.isEmpty()) {
             UiString.FromString("")
         } else {
@@ -190,19 +196,32 @@ object UiAutocompletesMapper {
                 R.string.autocompletes_body_quantities,
                 quantities.joinToString(SEPARATOR) {
                     val data = it.value.data
-                    "${data.decimal} ${data.params}"
+                    val quantity = data.decimal.toBigDecimalOrZero()
+                    "${decimalFormat.format(quantity)} ${data.params}"
                 }
             )
         }
     }
 
-    private fun toPrices(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): UiString {
+    private fun toPrices(
+        prices: Collection<SuggestionDetail.UnitPrice>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): UiString {
         return if (prices.isEmpty()) {
             UiString.FromString("")
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_prices,
-                prices.joinToString(SEPARATOR) { priceToString(it, currency) }
+                prices.joinToString(SEPARATOR) {
+                    val data = it.value.data
+                    val price = decimalFormat.format(data.toBigDecimalOrZero())
+                    if (currency.displayToLeft) {
+                        "${currency.symbol}$price"
+                    } else {
+                        "$price${currency.symbol}"
+                    }
+                }
             )
         }
     }
@@ -216,13 +235,32 @@ object UiAutocompletesMapper {
         }
     }
 
-    private fun toDiscounts(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): UiString {
+    private fun toDiscounts(
+        discounts: Collection<SuggestionDetail.Discount>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): UiString {
         return if (discounts.isEmpty()) {
             UiString.FromString("")
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_discounts,
-                discounts.joinToString(SEPARATOR) { discountToString(it, currency) }
+                discounts.joinToString(SEPARATOR) {
+                    val data = it.value.data
+                    val discount = decimalFormat.format(data.decimal.toBigDecimalOrZero())
+                    when (data.params) {
+                        DiscountType.Percent -> {
+                            "$discount %"
+                        }
+                        DiscountType.Money -> {
+                            if (currency.displayToLeft) {
+                                "${currency.symbol}$discount"
+                            } else {
+                                "$discount${currency.symbol}"
+                            }
+                        }
+                    }
+                }
             )
         }
     }
@@ -243,13 +281,25 @@ object UiAutocompletesMapper {
         }
     }
 
-    private fun toTotals(totals: Collection<SuggestionDetail.Cost>, currency: Currency): UiString {
+    private fun toTotals(
+        totals: Collection<SuggestionDetail.Cost>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): UiString {
         return if (totals.isEmpty()) {
             UiString.FromString("")
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_totals,
-                totals.joinToString(SEPARATOR) { totalToString(it, currency) }
+                totals.joinToString(SEPARATOR) {
+                    val data = it.value.data
+                    val total = decimalFormat.format(data.toBigDecimalOrZero())
+                    if (currency.displayToLeft) {
+                        "${currency.symbol}$total"
+                    } else {
+                        "$total${currency.symbol}"
+                    }
+                }
             )
         }
     }

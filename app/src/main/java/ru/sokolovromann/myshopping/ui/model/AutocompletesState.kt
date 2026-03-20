@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import ru.sokolovromann.myshopping.data.model.DeviceSize
+import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.ui.model.mapper.UiAutocompletesMapper
 import ru.sokolovromann.myshopping.ui.viewmodel.AutocompletesViewModel
 import ru.sokolovromann.myshopping.utils.UID
@@ -27,10 +28,15 @@ class AutocompletesState {
     var waiting: Boolean by mutableStateOf(true)
         private set
 
-    fun populate(data: AutocompletesViewModel.AutocompletesData) {
+    fun populate(data: AutocompletesViewModel.AutocompletesData, userPreferences: UserPreferences) {
         autocompletesData = data
 
-        autocompletes = UiAutocompletesMapper.toAutocompleteItems(data.suggestionsWithDetails, data.currency)
+        autocompletes = UiAutocompletesMapper.toAutocompleteItems(
+            data.suggestionsWithDetails,
+            data.currency,
+            userPreferences.quantityDecimalFormat,
+            userPreferences.moneyDecimalFormat
+        )
         selectedUids = null
         deviceSize = DeviceSize.Medium
         multiColumns = deviceSize == DeviceSize.Large

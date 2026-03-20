@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
@@ -64,7 +65,7 @@ class AutocompletesViewModel @Inject constructor(
             transform = { suggestions, suggestionsConfig, appConfig ->
                 AutocompletesData(suggestions, suggestionsConfig, appConfig.userPreferences.currency)
             }
-        ).collect { autocompletesState.populate(it) }
+        ).collect { autocompletesState.populate(it, appConfigRepository.getAppConfig().first().userPreferences) }
     }
 
     private fun onClickAddAutocomplete() = viewModelScope.launch(dispatcher) {
