@@ -62,11 +62,11 @@ class AddEditAutocompleteState {
         colors = UiAutocompletesMapper.toUiColorsWithUids(details.colors)
         manufacturers = UiAutocompletesMapper.toUiManufacturersWithUids(details.manufacturers)
         displayOtherFields = userPreferences.displayOtherFields
-        quantities = UiAutocompletesMapper.toUiQuantitiesWithUids(details.quantities)
+        quantities = UiAutocompletesMapper.toUiQuantitiesWithUids(details.quantities, userPreferences.quantityDecimalFormat)
         displayMoney = userPreferences.displayMoney
-        prices = UiAutocompletesMapper.toUiPricesWithUids(details.unitPrices, currency)
-        discounts = UiAutocompletesMapper.toUiDiscountsWithUids(details.discounts, currency)
-        totals = UiAutocompletesMapper.toUiTotalsWithUids(details.costs, currency)
+        prices = UiAutocompletesMapper.toUiPricesWithUids(details.unitPrices, currency, userPreferences.moneyDecimalFormat)
+        discounts = UiAutocompletesMapper.toUiDiscountsWithUids(details.discounts, currency, userPreferences.moneyDecimalFormat)
+        totals = UiAutocompletesMapper.toUiTotalsWithUids(details.costs, currency, userPreferences.moneyDecimalFormat)
         waiting = false
     }
 

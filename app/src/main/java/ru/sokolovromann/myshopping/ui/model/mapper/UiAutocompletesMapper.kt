@@ -78,18 +78,27 @@ object UiAutocompletesMapper {
         return manufacturers.map { it.value.data }
     }
 
-    fun toUiQuantitiesWithUids(quantities: Collection<SuggestionDetail.Quantity>): Collection<Pair<String, UID>> {
+    fun toUiQuantitiesWithUids(
+        quantities: Collection<SuggestionDetail.Quantity>,
+        decimalFormat: DecimalFormat
+    ): Collection<Pair<String, UID>> {
         return quantities.map {
             val data = it.value.data
-            val quantity = "${data.decimal} ${data.params}"
-            Pair(quantity, it.value.uid)
+            val quantity = data.decimal.toBigDecimalOrZero()
+            val formatted = "${decimalFormat.format(quantity)} ${data.params}"
+            Pair(formatted, it.value.uid)
         }
     }
 
-    fun toUiQuantities(quantities: Collection<SuggestionDetail.Quantity>): Collection<Pair<String, String>> {
+    fun toUiQuantities(
+        quantities: Collection<SuggestionDetail.Quantity>,
+        decimalFormat: DecimalFormat
+    ): Collection<Triple<String, String, String>> {
         return quantities.map {
             val data = it.value.data
-            Pair(data.decimal.toString(), data.params)
+            val quantity = data.decimal.toBigDecimalOrZero()
+            val formatted = "${decimalFormat.format(quantity)} ${data.params}"
+            Triple(formatted, data.decimal.toString(), data.params)
         }
     }
 
@@ -99,45 +108,119 @@ object UiAutocompletesMapper {
             .distinct()
     }
 
-    fun toUiPricesWithUids(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, UID>> {
+    fun toUiPricesWithUids(
+        prices: Collection<SuggestionDetail.UnitPrice>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): Collection<Pair<String, UID>> {
         return prices.map {
-            val price = priceToString(it, currency)
-            Pair(price, it.value.uid)
+            val data = it.value.data
+            val price = decimalFormat.format(data.toBigDecimalOrZero())
+            val formatted = if (currency.displayToLeft) {
+                "${currency.symbol}$price"
+            } else {
+                "$price${currency.symbol}"
+            }
+            Pair(formatted, it.value.uid)
         }
     }
 
-    fun toUiPrices(prices: Collection<SuggestionDetail.UnitPrice>, currency: Currency): Collection<Pair<String, String>> {
+    fun toUiPrices(
+        prices: Collection<SuggestionDetail.UnitPrice>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): Collection<Pair<String, String>> {
         return prices.map {
-            val price = priceToString(it, currency)
-            Pair(price, it.value.data.toString())
+            val data = it.value.data
+            val price = decimalFormat.format(data.toBigDecimalOrZero())
+            val formatted = if (currency.displayToLeft) {
+                "${currency.symbol}$price"
+            } else {
+                "$price${currency.symbol}"
+            }
+            Pair(formatted, it.value.data.toString())
         }
     }
 
-    fun toUiDiscountsWithUids(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Pair<String, UID>> {
+    fun toUiDiscountsWithUids(
+        discounts: Collection<SuggestionDetail.Discount>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): Collection<Pair<String, UID>> {
         return discounts.map {
-            val discount = discountToString(it, currency)
-            Pair(discount, it.value.uid)
+            val data = it.value.data
+            val discount = decimalFormat.format(data.decimal.toBigDecimalOrZero())
+            val formatted = when (data.params) {
+                DiscountType.Percent -> {
+                    "$discount %"
+                }
+                DiscountType.Money -> {
+                    if (currency.displayToLeft) {
+                        "${currency.symbol}$discount"
+                    } else {
+                        "$discount${currency.symbol}"
+                    }
+                }
+            }
+            Pair(formatted, it.value.uid)
         }
     }
 
-    fun toUiDiscounts(discounts: Collection<SuggestionDetail.Discount>, currency: Currency): Collection<Triple<String, String, DiscountType>> {
+    fun toUiDiscounts(
+        discounts: Collection<SuggestionDetail.Discount>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): Collection<Triple<String, String, DiscountType>> {
         return discounts.map {
-            val discount = discountToString(it, currency)
-            Triple(discount, it.value.data.decimal.toString(), it.value.data.params)
+            val data = it.value.data
+            val discount = decimalFormat.format(data.decimal.toBigDecimalOrZero())
+            val formatted = when (data.params) {
+                DiscountType.Percent -> {
+                    "$discount %"
+                }
+                DiscountType.Money -> {
+                    if (currency.displayToLeft) {
+                        "${currency.symbol}$discount"
+                    } else {
+                        "$discount${currency.symbol}"
+                    }
+                }
+            }
+            Triple(formatted, it.value.data.decimal.toString(), it.value.data.params)
         }
     }
 
-    fun toUiTotalsWithUids(totals: Collection<SuggestionDetail.Cost>, currency: Currency): Collection<Pair<String, UID>> {
+    fun toUiTotalsWithUids(
+        totals: Collection<SuggestionDetail.Cost>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): Collection<Pair<String, UID>> {
         return totals.map {
-            val total = totalToString(it, currency)
-            Pair(total, it.value.uid)
+            val data = it.value.data
+            val total = decimalFormat.format(data.toBigDecimalOrZero())
+            val formatted = if (currency.displayToLeft) {
+                "${currency.symbol}$total"
+            } else {
+                "$total${currency.symbol}"
+            }
+            Pair(formatted, it.value.uid)
         }
     }
 
-    fun toUiTotals(totals: Collection<SuggestionDetail.Cost>, currency: Currency): Collection<Pair<String, String>> {
+    fun toUiTotals(
+        totals: Collection<SuggestionDetail.Cost>,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): Collection<Pair<String, String>> {
         return totals.map {
-            val total = totalToString(it, currency)
-            Pair(total, it.value.data.toString())
+            val data = it.value.data
+            val total = decimalFormat.format(data.toBigDecimalOrZero())
+            val formatted = if (currency.displayToLeft) {
+                "${currency.symbol}$total"
+            } else {
+                "$total${currency.symbol}"
+            }
+            Pair(formatted, it.value.data.toString())
         }
     }
 

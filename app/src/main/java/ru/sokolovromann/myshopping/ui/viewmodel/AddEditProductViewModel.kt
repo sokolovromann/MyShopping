@@ -15,6 +15,7 @@ import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Money
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.Quantity
+import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
 import ru.sokolovromann.myshopping.data39.suggestions.AddSuggestionWithDetails
@@ -475,6 +476,8 @@ class AddEditProductViewModel @Inject constructor(
         } else emptyList()
 
         val currency = addEditProductState.getCurrentUserPreferences().currency
+        val quantityDecimalFormat = addEditProductState.quantityDecimalFormat
+        val moneyDecimalFormat = addEditProductState.moneyDecimalFormat
 
         return SuggestionsSelectedValue(
             suggestionUid = selectedSuggestion?.suggestion?.uid,
@@ -483,12 +486,12 @@ class AddEditProductViewModel @Inject constructor(
             sizes = UiAutocompletesMapper.toUiSizes(mappedSizes),
             colors = UiAutocompletesMapper.toUiColors(mappedColors),
             manufacturers = UiAutocompletesMapper.toUiManufacturers(mappedManufacturers),
-            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities),
+            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities, quantityDecimalFormat),
             quantitySymbols = UiAutocompletesMapper.toUiQuantitiesSymbols(mappedQuantities),
             displayDefaultQuantitySymbols = displayDefaultQuantitySymbols,
-            prices = UiAutocompletesMapper.toUiPrices(mappedPrices, currency),
-            discounts = UiAutocompletesMapper.toUiDiscounts(mappedDiscounts, currency),
-            totals = UiAutocompletesMapper.toUiTotals(mappedTotals, currency)
+            prices = UiAutocompletesMapper.toUiPrices(mappedPrices, currency, moneyDecimalFormat),
+            discounts = UiAutocompletesMapper.toUiDiscounts(mappedDiscounts, currency, moneyDecimalFormat),
+            totals = UiAutocompletesMapper.toUiTotals(mappedTotals, currency, moneyDecimalFormat)
         )
     }
 

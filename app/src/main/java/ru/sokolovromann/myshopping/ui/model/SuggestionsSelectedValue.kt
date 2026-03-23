@@ -10,7 +10,7 @@ data class SuggestionsSelectedValue(
     val sizes: Collection<String> = listOf(),
     val colors: Collection<String> = listOf(),
     val manufacturers: Collection<String> = listOf(),
-    val quantities: Collection<Pair<String, String>> = listOf(),
+    val quantities: Collection<Triple<String, String, String>> = listOf(),
     val quantitySymbols: Collection<String> = listOf(),
     val displayDefaultQuantitySymbols: Boolean = true,
     val prices: Collection<Pair<String, String>> = listOf(),

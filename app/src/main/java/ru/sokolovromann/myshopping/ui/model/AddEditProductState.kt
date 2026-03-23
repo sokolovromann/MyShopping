@@ -11,10 +11,12 @@ import ru.sokolovromann.myshopping.data.model.LockProductElement
 import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.UserPreferences
+import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.utils.math.DiscountType
+import java.text.DecimalFormat
 
 class AddEditProductState {
 
@@ -101,12 +103,20 @@ class AddEditProductState {
     var afterSaveProduct: AfterSaveProduct by mutableStateOf(AfterSaveProduct.DefaultValue)
         private set
 
+    var quantityDecimalFormat: DecimalFormat by mutableStateOf(UserPreferencesDefaults.getQuantityDecimalFormat())
+        private set
+
+    var moneyDecimalFormat: DecimalFormat by mutableStateOf(UserPreferencesDefaults.getQuantityDecimalFormat())
+        private set
+
     fun populate(productWithConfig: ProductWithConfig, isFromPurchases: Boolean) {
         this.productWithConfig = productWithConfig
         this.isFromPurchases = isFromPurchases
 
         val product = productWithConfig.product
         val userPreferences = productWithConfig.appConfig.userPreferences
+        quantityDecimalFormat = userPreferences.quantityDecimalFormat
+        moneyDecimalFormat = userPreferences.moneyDecimalFormat
 
         waiting = false
         nameValue = product.name.toTextFieldValue()

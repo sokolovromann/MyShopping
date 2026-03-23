@@ -692,7 +692,7 @@ private fun AddEditProductAutocompleteStrings(
 
 @Composable
 private fun AddEditProductAutocompleteQuantities(
-    quantities: Collection<Pair<String, String>>,
+    quantities: Collection<Triple<String, String, String>>,
     enabled: Boolean,
     onClick: (String, String) -> Unit
 ) {
@@ -711,10 +711,9 @@ private fun AddEditProductAutocompleteQuantities(
             .horizontalScroll(scrollState)
     ) {
         quantities.forEach {
-            val text = "${it.first} ${it.second}"
             AppChip(
-                onClick = { onClick(it.first, it.second) },
-                content = { Text(text = text) }
+                onClick = { onClick(it.second, it.third) },
+                content = { Text(text = it.first) }
             )
             Spacer(modifier = Modifier.size(AddEditProductSpacerMediumSize))
         }
