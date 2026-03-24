@@ -33,7 +33,6 @@ import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.*
 import ru.sokolovromann.myshopping.ui.viewmodel.AddEditProductViewModel
 import ru.sokolovromann.myshopping.ui.viewmodel.event.AddEditProductEvent
-import ru.sokolovromann.myshopping.utils.UID
 import ru.sokolovromann.myshopping.utils.math.DiscountType
 
 @Composable
