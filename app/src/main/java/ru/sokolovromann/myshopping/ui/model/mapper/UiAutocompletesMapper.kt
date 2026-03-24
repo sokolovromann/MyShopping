@@ -9,6 +9,7 @@ import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.toUiString
 import ru.sokolovromann.myshopping.utils.UID
+import ru.sokolovromann.myshopping.utils.math.Decimal
 import ru.sokolovromann.myshopping.utils.math.DiscountType
 import java.text.DecimalFormat
 
@@ -114,14 +115,8 @@ object UiAutocompletesMapper {
         decimalFormat: DecimalFormat
     ): Collection<Pair<String, UID>> {
         return prices.map {
-            val data = it.value.data
-            val price = decimalFormat.format(data.toBigDecimalOrZero())
-            val formatted = if (currency.displayToLeft) {
-                "${currency.symbol}$price"
-            } else {
-                "$price${currency.symbol}"
-            }
-            Pair(formatted, it.value.uid)
+            val price = formatMoney(it.value.data, currency, decimalFormat)
+            Pair(price, it.value.uid)
         }
     }
 
@@ -131,13 +126,7 @@ object UiAutocompletesMapper {
         decimalFormat: DecimalFormat
     ): Collection<Pair<String, String>> {
         return prices.map {
-            val data = it.value.data
-            val price = decimalFormat.format(data.toBigDecimalOrZero())
-            val formatted = if (currency.displayToLeft) {
-                "${currency.symbol}$price"
-            } else {
-                "$price${currency.symbol}"
-            }
+            val formatted = formatMoney(it.value.data, currency, decimalFormat)
             Pair(formatted, it.value.data.toString())
         }
     }
@@ -148,21 +137,8 @@ object UiAutocompletesMapper {
         decimalFormat: DecimalFormat
     ): Collection<Pair<String, UID>> {
         return discounts.map {
-            val data = it.value.data
-            val discount = decimalFormat.format(data.decimal.toBigDecimalOrZero())
-            val formatted = when (data.params) {
-                DiscountType.Percent -> {
-                    "$discount %"
-                }
-                DiscountType.Money -> {
-                    if (currency.displayToLeft) {
-                        "${currency.symbol}$discount"
-                    } else {
-                        "$discount${currency.symbol}"
-                    }
-                }
-            }
-            Pair(formatted, it.value.uid)
+            val discount = formatDiscount(it, currency, decimalFormat)
+            Pair(discount, it.value.uid)
         }
     }
 
@@ -172,21 +148,9 @@ object UiAutocompletesMapper {
         decimalFormat: DecimalFormat
     ): Collection<Triple<String, String, DiscountType>> {
         return discounts.map {
+            val formatted = formatDiscount(it, currency, decimalFormat)
             val data = it.value.data
-            val discount = decimalFormat.format(data.decimal.toBigDecimalOrZero())
-            val formatted = when (data.params) {
-                DiscountType.Percent -> {
-                    "$discount %"
-                }
-                DiscountType.Money -> {
-                    if (currency.displayToLeft) {
-                        "${currency.symbol}$discount"
-                    } else {
-                        "$discount${currency.symbol}"
-                    }
-                }
-            }
-            Triple(formatted, it.value.data.decimal.toString(), it.value.data.params)
+            Triple(formatted, data.decimal.toString(), data.params)
         }
     }
 
@@ -196,14 +160,8 @@ object UiAutocompletesMapper {
         decimalFormat: DecimalFormat
     ): Collection<Pair<String, UID>> {
         return totals.map {
-            val data = it.value.data
-            val total = decimalFormat.format(data.toBigDecimalOrZero())
-            val formatted = if (currency.displayToLeft) {
-                "${currency.symbol}$total"
-            } else {
-                "$total${currency.symbol}"
-            }
-            Pair(formatted, it.value.uid)
+            val total = formatMoney(it.value.data, currency, decimalFormat)
+            Pair(total, it.value.uid)
         }
     }
 
@@ -213,13 +171,7 @@ object UiAutocompletesMapper {
         decimalFormat: DecimalFormat
     ): Collection<Pair<String, String>> {
         return totals.map {
-            val data = it.value.data
-            val total = decimalFormat.format(data.toBigDecimalOrZero())
-            val formatted = if (currency.displayToLeft) {
-                "${currency.symbol}$total"
-            } else {
-                "$total${currency.symbol}"
-            }
+            val formatted = formatMoney(it.value.data, currency, decimalFormat)
             Pair(formatted, it.value.data.toString())
         }
     }
@@ -297,24 +249,9 @@ object UiAutocompletesMapper {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_prices,
                 prices.joinToString(SEPARATOR) {
-                    val data = it.value.data
-                    val price = decimalFormat.format(data.toBigDecimalOrZero())
-                    if (currency.displayToLeft) {
-                        "${currency.symbol}$price"
-                    } else {
-                        "$price${currency.symbol}"
-                    }
+                    formatMoney(it.value.data, currency, decimalFormat)
                 }
             )
-        }
-    }
-
-    private fun priceToString(unitPrice: SuggestionDetail.UnitPrice, currency: Currency): String {
-        val data = unitPrice.value.data.toString()
-        return if (currency.displayToLeft) {
-            "${currency.symbol}$data"
-        } else {
-            "$data${currency.symbol}"
         }
     }
 
@@ -328,39 +265,8 @@ object UiAutocompletesMapper {
         } else {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_discounts,
-                discounts.joinToString(SEPARATOR) {
-                    val data = it.value.data
-                    val discount = decimalFormat.format(data.decimal.toBigDecimalOrZero())
-                    when (data.params) {
-                        DiscountType.Percent -> {
-                            "$discount %"
-                        }
-                        DiscountType.Money -> {
-                            if (currency.displayToLeft) {
-                                "${currency.symbol}$discount"
-                            } else {
-                                "$discount${currency.symbol}"
-                            }
-                        }
-                    }
-                }
+                discounts.joinToString(SEPARATOR) { formatDiscount(it, currency, decimalFormat) }
             )
-        }
-    }
-
-    private fun discountToString(discount: SuggestionDetail.Discount, currency: Currency): String {
-        val data = discount.value.data
-        return when (data.params) {
-            DiscountType.Percent -> {
-                "${data.decimal} %"
-            }
-            DiscountType.Money -> {
-                if (currency.displayToLeft) {
-                    "${currency.symbol}${data.decimal}"
-                } else {
-                    "${data.decimal}${currency.symbol}"
-                }
-            }
         }
     }
 
@@ -375,24 +281,39 @@ object UiAutocompletesMapper {
             UiString.FromResourcesWithArgs(
                 R.string.autocompletes_body_totals,
                 totals.joinToString(SEPARATOR) {
-                    val data = it.value.data
-                    val total = decimalFormat.format(data.toBigDecimalOrZero())
-                    if (currency.displayToLeft) {
-                        "${currency.symbol}$total"
-                    } else {
-                        "$total${currency.symbol}"
-                    }
+                    formatMoney(it.value.data, currency, decimalFormat)
                 }
             )
         }
     }
 
-    private fun totalToString(cost: SuggestionDetail.Cost, currency: Currency): String {
-        val data = cost.value.data.toString()
+    private fun formatMoney(
+        decimal: Decimal,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): String {
+        val money = decimalFormat.format(decimal.toBigDecimalOrZero())
         return if (currency.displayToLeft) {
-            "${currency.symbol}$data"
+            "${currency.symbol}$money"
         } else {
-            "$data${currency.symbol}"
+            "$money${currency.symbol}"
+        }
+    }
+
+    private fun formatDiscount(
+        discount: SuggestionDetail.Discount,
+        currency: Currency,
+        decimalFormat: DecimalFormat
+    ): String {
+        val data = discount.value.data
+        return when (data.params) {
+            DiscountType.Percent -> {
+                val percent = decimalFormat.format(data.decimal.toBigDecimalOrZero())
+                "$percent %"
+            }
+            DiscountType.Money -> {
+                formatMoney(data.decimal, currency, decimalFormat)
+            }
         }
     }
 }
