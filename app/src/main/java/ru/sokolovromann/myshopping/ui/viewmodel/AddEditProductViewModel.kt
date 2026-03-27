@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetailValue
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDirectory
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
+import ru.sokolovromann.myshopping.manager.Api15Manager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditProductScreenEvent
@@ -51,6 +52,7 @@ class AddEditProductViewModel @Inject constructor(
     private val suggestionsManager: SuggestionsManager,
     private val shoppingListsRepository: ShoppingListsRepository,
     private val appConfigRepository: AppConfigRepository,
+    private val api15Manager: Api15Manager,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditProductEvent> {
 
@@ -60,6 +62,8 @@ class AddEditProductViewModel @Inject constructor(
     val screenEventFlow: SharedFlow<AddEditProductScreenEvent> = _screenEventFlow
 
     private val dispatcher = Dispatcher.Main
+
+    private var tempNewSuggestion: Suggestion? = null
 
     init { onInit() }
 
@@ -132,6 +136,8 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private fun onInit() = viewModelScope.launch(dispatcher) {
+        tempNewSuggestion = null
+
         val productUid = savedStateHandle.get<String>(UiRouteKey.ProductUid.key)
         val shoppingUid = savedStateHandle.get<String>(UiRouteKey.ShoppingUid.key) ?: ""
         val isFromPurchases = savedStateHandle.get<String>(UiRouteKey.IsFromPurchases.key) ?: "false"
@@ -542,7 +548,10 @@ class AddEditProductViewModel @Inject constructor(
             name = addEditProductState.nameValue.text,
             used = 1
         )
+        api15Manager.addAutocomplete(newSuggestion)
         suggestionsManager.addSuggestion(newSuggestion)
+
+        tempNewSuggestion = newSuggestion
     }
 
     private suspend fun saveSuggestionDetails(): Unit = withIoContext {
@@ -559,6 +568,9 @@ class AddEditProductViewModel @Inject constructor(
             }
         }
         suggestionsManager.addDetails(details)
+        tempNewSuggestion?.let {
+            api15Manager.addAutocompletes(it, details)
+        }
     }
 
     private fun createBrand(suggestionWithDetails: SuggestionWithDetails): SuggestionDetail.Brand? {

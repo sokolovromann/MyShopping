@@ -23,6 +23,7 @@ import ru.sokolovromann.myshopping.data39.LocalResources
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDirectory
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsPreInstalled
+import ru.sokolovromann.myshopping.manager.Api15Manager
 import ru.sokolovromann.myshopping.manager.MigrationManager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.notification.purchases.PurchasesNotificationManager
@@ -45,6 +46,7 @@ class MainViewModel @Inject constructor(
     private val appShortcutManager: AppShortcutManager,
     private val migrationManager: MigrationManager,
     private val suggestionsManager: SuggestionsManager,
+    private val api15Manager: Api15Manager,
     private val localResources: LocalResources
 ) : ViewModel(), ViewModelEvent<MainEvent> {
 
@@ -151,6 +153,11 @@ class MainViewModel @Inject constructor(
                     used = 0
                 )
             }
+
+        suggestions.forEach {
+            api15Manager.addAutocomplete(it)
+        }
+
         suggestionsManager.apply {
             addSuggestions(suggestions)
             updateConfig(SuggestionsPreInstalled.DoNotAdd)

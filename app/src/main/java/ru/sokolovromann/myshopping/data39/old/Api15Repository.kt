@@ -48,4 +48,12 @@ class Api15Repository @Inject constructor(
             preferences[booleanPreferencesKey("save_product_to_autocompletes")]
         )
     }
+
+    suspend fun addAutocompletes(autocompletes: List<Api15AutocompleteEntity>): Unit = withIoContext {
+        api15AutocompletesDao.insertAutocompletes(autocompletes)
+    }
+
+    suspend fun addAutocomplete(autocomplete: Api15AutocompleteEntity): Unit = withIoContext {
+        api15AutocompletesDao.insertAutocomplete(autocomplete)
+    }
 }

@@ -40,6 +40,10 @@ class MigrationManager @Inject constructor(
             .mapKeys { createSuggestion(it) }
             .mapValues { createDetails(it) }
 
+        suggestionsWithDetails.forEach { (suggestion, details) ->
+            api15Manager.addAutocompletes(suggestion, details)
+        }
+
         val suggestions = suggestionsWithDetails.keys
         suggestionsManager.addSuggestions(suggestions)
 
@@ -246,7 +250,7 @@ class MigrationManager @Inject constructor(
     ): List<SuggestionDetail.TaxRate> {
         val filtered = autocompletes.filter { it.taxRate > 0f }
         return filtered
-            .distinctBy {getMoneyDecimalFormat().format(it.taxRate.toBigDecimal()) }
+            .distinctBy { getMoneyDecimalFormat().format(it.taxRate.toBigDecimal()) }
             .map { autocomplete ->
                 val data = autocomplete.taxRate
                 val used = filtered.count { it.taxRate == autocomplete.taxRate }
@@ -261,7 +265,7 @@ class MigrationManager @Inject constructor(
     ): List<SuggestionDetail.Cost> {
         val filtered = autocompletes.filter { it.total > 0f }
         return filtered
-            .distinctBy {getMoneyDecimalFormat().format(it.total.toBigDecimal()) }
+            .distinctBy { getMoneyDecimalFormat().format(it.total.toBigDecimal()) }
             .map { autocomplete ->
                 val data = autocomplete.total
                 val used = filtered.count { it.total == autocomplete.total }

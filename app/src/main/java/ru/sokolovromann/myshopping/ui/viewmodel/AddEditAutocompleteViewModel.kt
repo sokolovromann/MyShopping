@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import ru.sokolovromann.myshopping.data.repository.AppConfigRepository
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDirectory
+import ru.sokolovromann.myshopping.manager.Api15Manager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.AddEditAutocompleteScreenEvent
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class AddEditAutocompleteViewModel @Inject constructor(
     private val suggestionsManager: SuggestionsManager,
     private val appConfigRepository: AppConfigRepository,
+    private val api15Manager: Api15Manager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<AddEditAutocompleteEvent> {
 
@@ -88,6 +90,7 @@ class AddEditAutocompleteViewModel @Inject constructor(
                     name = newName,
                 )
             }
+            api15Manager.addAutocomplete(newSuggestion)
             suggestionsManager.apply {
                 addSuggestion(newSuggestion)
                 deleteDetails(suggestionUid, deletedDetailsUids)

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
 import ru.sokolovromann.myshopping.data.repository.ShoppingListsRepository
+import ru.sokolovromann.myshopping.manager.Api15Manager
 import ru.sokolovromann.myshopping.manager.SuggestionsManager
 import ru.sokolovromann.myshopping.ui.UiRouteKey
 import ru.sokolovromann.myshopping.ui.compose.event.SelectFromAutocompletesScreenEvent
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class SelectFromAutocompletesViewModel @Inject constructor(
     private val shoppingListsRepository: ShoppingListsRepository,
     private val suggestionsManager: SuggestionsManager,
+    private val api15Manager: Api15Manager,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), ViewModelEvent<SelectFromAutocompletesEvent> {
 
@@ -65,6 +67,7 @@ class SelectFromAutocompletesViewModel @Inject constructor(
             async {
                 selectFromAutocompletesState.getAddedProducts().forEach {
                     shoppingListsRepository.saveProduct(it.first)
+                    api15Manager.addAutocomplete(it.second)
                     suggestionsManager.addSuggestion(it.second)
                 }
             },
