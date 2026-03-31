@@ -88,9 +88,20 @@ class SuggestionsManager @Inject constructor(
     }
 
     suspend fun findSuggestionsWithDetails(name: String): Collection<SuggestionWithDetails> = withIoContext {
-        val config = getConfig()
-        return@withIoContext getSuggestionsWithDetails()
+        val partition = getSuggestionsWithDetails()
             .filter { it.suggestion.name.contains(name.trim(), true) }
+            .partition {
+                val endIndex = name.length - 1
+                val nameChars = it.suggestion.name.lowercase().toCharArray(endIndex = endIndex)
+                val findChars = name.lowercase().toCharArray(endIndex = endIndex)
+                nameChars.contentEquals(findChars)
+            }
+        val config = getConfig()
+        return@withIoContext mutableListOf<SuggestionWithDetails>()
+            .apply {
+                addAll(partition.first)
+                addAll(partition.second)
+            }
             .take(config.takeSuggestions)
     }
 
