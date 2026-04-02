@@ -65,72 +65,35 @@ fun MaxAutocompletesScreen(
             .scrollable(scrollState, Orientation.Vertical)
         ) {
             TakeSuggestionsItem(
-                selectedValue = state.takeNamesValue,
+                selectedValue = state.takeSuggestionsValue,
                 onSelect = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeNames(expanded = true)
+                    val event = MaxAutocompletesEvent.OnSelectTakeSuggestions(expanded = true)
                     viewModel.onEvent(event)
                 },
-                expanded = state.expandedTakeNames,
+                expanded = state.expandedTakeSuggestions,
                 onDismissRequest = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeNames(expanded = false)
+                    val event = MaxAutocompletesEvent.OnSelectTakeSuggestions(expanded = false)
                     viewModel.onEvent(event)
                 },
                 onSelected = {
-                    val event = MaxAutocompletesEvent.OnTakeNamesSelected(it)
+                    val event = MaxAutocompletesEvent.OnTakeSuggestionsSelected(it)
                     viewModel.onEvent(event)
                 }
             )
             Spacer(modifier = Modifier.size(MaxAutocompletesSpacerSize))
             TakeSuggestionsDetailsItem(
-                title = stringResource(R.string.maxAutocompletes_title_takeDetailsDescriptions),
-                selectedValue = state.takeDetailsDescriptions,
+                selectedValue = state.takeDetailsValue,
                 onSelect = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeDetailsDescriptions(expanded = true)
+                    val event = MaxAutocompletesEvent.OnSelectTakeDetails(expanded = true)
                     viewModel.onEvent(event)
                 },
-                expanded = state.expandedTakeDetailsDescriptions,
+                expanded = state.expandedTakeDetails,
                 onDismissRequest = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeDetailsDescriptions(expanded = false)
+                    val event = MaxAutocompletesEvent.OnSelectTakeDetails(expanded = false)
                     viewModel.onEvent(event)
                 },
                 onSelected = {
-                    val event = MaxAutocompletesEvent.OnTakeDetailsDescriptionsSelected(it)
-                    viewModel.onEvent(event)
-                }
-            )
-            Spacer(modifier = Modifier.size(MaxAutocompletesSpacerSize))
-            TakeSuggestionsDetailsItem(
-                title = stringResource(R.string.maxAutocompletes_title_takeDetailsQuantities),
-                selectedValue = state.takeDetailsQuantities,
-                onSelect = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeDetailsQuantities(expanded = true)
-                    viewModel.onEvent(event)
-                },
-                expanded = state.expandedTakeDetailsQuantities,
-                onDismissRequest = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeDetailsQuantities(expanded = false)
-                    viewModel.onEvent(event)
-                },
-                onSelected = {
-                    val event = MaxAutocompletesEvent.OnTakeDetailsQuantitiesSelected(it)
-                    viewModel.onEvent(event)
-                }
-            )
-            Spacer(modifier = Modifier.size(MaxAutocompletesSpacerSize))
-            TakeSuggestionsDetailsItem(
-                title = stringResource(R.string.maxAutocompletes_title_takeDetailsMoney),
-                selectedValue = state.takeDetailsMoney,
-                onSelect = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeDetailsMoney(expanded = true)
-                    viewModel.onEvent(event)
-                },
-                expanded = state.expandedTakeDetailsMoney,
-                onDismissRequest = {
-                    val event = MaxAutocompletesEvent.OnSelectTakeDetailsMoney(expanded = false)
-                    viewModel.onEvent(event)
-                },
-                onSelected = {
-                    val event = MaxAutocompletesEvent.OnTakeDetailsMoneySelected(it)
+                    val event = MaxAutocompletesEvent.OnTakeDetailsSelected(it)
                     viewModel.onEvent(event)
                 }
             )
@@ -158,19 +121,19 @@ private fun TakeSuggestionsItem(
                 onDismissRequest = onDismissRequest
             ) {
                 AppDropdownMenuItem(
+                    onClick = { onSelected(TakeSuggestions.Few) },
+                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeFewSuggestions)) },
+                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestions.Few) }
+                )
+                AppDropdownMenuItem(
+                    onClick = { onSelected(TakeSuggestions.Medium) },
+                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeMediumSuggestions)) },
+                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestions.Medium) }
+                )
+                AppDropdownMenuItem(
                     onClick = { onSelected(TakeSuggestions.DoNotTake) },
                     text = { Text(text = stringResource(R.string.maxAutocompletes_body_doNotTakeSuggestions)) },
                     right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestions.DoNotTake) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(TakeSuggestions.Five) },
-                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeFiveSuggestions)) },
-                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestions.Five) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(TakeSuggestions.Ten) },
-                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeTenSuggestions)) },
-                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestions.Ten) }
                 )
             }
         },
@@ -180,7 +143,6 @@ private fun TakeSuggestionsItem(
 
 @Composable
 private fun TakeSuggestionsDetailsItem(
-    title: String,
     selectedValue: SelectedValue<TakeSuggestionDetails>,
     onSelect: () -> Unit,
     expanded: Boolean,
@@ -191,13 +153,28 @@ private fun TakeSuggestionsDetailsItem(
 
     AppItem(
         onClick = onSelect,
-        title = { Text(text = title) },
+        title = { Text(text = stringResource(R.string.maxAutocompletes_title_takeDetails)) },
         body = { Text(text = selectedValue.text.asCompose()) },
         dropdownMenu = {
             AppDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = onDismissRequest
             ) {
+                AppDropdownMenuItem(
+                    onClick = { onSelected(TakeSuggestionDetails.Few) },
+                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeFewDetails)) },
+                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.Few) }
+                )
+                AppDropdownMenuItem(
+                    onClick = { onSelected(TakeSuggestionDetails.Medium) },
+                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeMediumDetails)) },
+                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.Medium) }
+                )
+                AppDropdownMenuItem(
+                    onClick = { onSelected(TakeSuggestionDetails.Many) },
+                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeManyDetails)) },
+                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.Many) }
+                )
                 AppDropdownMenuItem(
                     onClick = { onSelected(TakeSuggestionDetails.All) },
                     text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeAllDetails)) },
@@ -207,26 +184,6 @@ private fun TakeSuggestionsDetailsItem(
                     onClick = { onSelected(TakeSuggestionDetails.DoNotTake) },
                     text = { Text(text = stringResource(R.string.maxAutocompletes_body_doNotTakeDetails)) },
                     right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.DoNotTake) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(TakeSuggestionDetails.One) },
-                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeOneDetails)) },
-                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.One) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(TakeSuggestionDetails.Three) },
-                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeThreeDetails)) },
-                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.Three) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(TakeSuggestionDetails.Five) },
-                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeFiveDetails)) },
-                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.Five) }
-                )
-                AppDropdownMenuItem(
-                    onClick = { onSelected(TakeSuggestionDetails.Ten) },
-                    text = { Text(text = stringResource(R.string.maxAutocompletes_body_takeTenDetails)) },
-                    right = { CheckmarkAppCheckbox(checked = selected == TakeSuggestionDetails.Ten) }
                 )
             }
         },

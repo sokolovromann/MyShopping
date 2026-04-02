@@ -9,19 +9,11 @@ sealed class MaxAutocompletesEvent {
 
     object OnClickCancel : MaxAutocompletesEvent()
 
-    data class OnSelectTakeNames(val expanded: Boolean) : MaxAutocompletesEvent()
+    data class OnSelectTakeSuggestions(val expanded: Boolean) : MaxAutocompletesEvent()
 
-    data class OnSelectTakeDetailsDescriptions(val expanded: Boolean) : MaxAutocompletesEvent()
+    data class OnSelectTakeDetails(val expanded: Boolean) : MaxAutocompletesEvent()
 
-    data class OnSelectTakeDetailsQuantities(val expanded: Boolean) : MaxAutocompletesEvent()
+    data class OnTakeSuggestionsSelected(val takeSuggestions: TakeSuggestions) : MaxAutocompletesEvent()
 
-    data class OnSelectTakeDetailsMoney(val expanded: Boolean) : MaxAutocompletesEvent()
-
-    data class OnTakeNamesSelected(val takeSuggestions: TakeSuggestions) : MaxAutocompletesEvent()
-
-    data class OnTakeDetailsDescriptionsSelected(val takeSuggestionDetails: TakeSuggestionDetails) : MaxAutocompletesEvent()
-
-    data class OnTakeDetailsQuantitiesSelected(val takeSuggestionDetails: TakeSuggestionDetails) : MaxAutocompletesEvent()
-
-    data class OnTakeDetailsMoneySelected(val takeSuggestionDetails: TakeSuggestionDetails) : MaxAutocompletesEvent()
+    data class OnTakeDetailsSelected(val takeSuggestionDetails: TakeSuggestionDetails) : MaxAutocompletesEvent()
 }

@@ -15,7 +15,6 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsPreInstalled
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsRepository
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsViewMode
 import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetails
-import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetailsInfo
 import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestions
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.flowOnIo
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
@@ -150,7 +149,7 @@ class SuggestionsManager @Inject constructor(
         addConfig(config)
     }
 
-    suspend fun updateConfig(take: TakeSuggestionDetailsInfo): Unit = withIoContext {
+    suspend fun updateConfig(take: TakeSuggestionDetails): Unit = withIoContext {
         val config = getConfig().copy(takeDetails = take)
         addConfig(config)
     }
@@ -204,8 +203,8 @@ class SuggestionsManager @Inject constructor(
         take: TakeSuggestions
     ): Collection<SuggestionWithDetails> {
         return when (take) {
-            TakeSuggestions.Five -> take(5)
-            TakeSuggestions.Ten -> take(10)
+            TakeSuggestions.Few -> take(5)
+            TakeSuggestions.Medium -> take(10)
             TakeSuggestions.DoNotTake -> emptyList()
         }
     }
@@ -230,7 +229,7 @@ class SuggestionsManager @Inject constructor(
     }
 
     private fun Collection<SuggestionWithDetails>.takeDetails(
-        takeDetails: TakeSuggestionDetailsInfo
+        takeDetails: TakeSuggestionDetails
     ): Collection<SuggestionWithDetails> {
         return map {
             it.copy(details = it.details.take(takeDetails))
@@ -238,47 +237,46 @@ class SuggestionsManager @Inject constructor(
     }
 
     private fun SuggestionDetails.take(
-        takeDetails: TakeSuggestionDetailsInfo
+        takeDetails: TakeSuggestionDetails
     ): SuggestionDetails {
-        fun <T> Iterable<T>.take(take: TakeSuggestionDetails): List<T> = when (take) {
+        fun <T> Iterable<T>.take(): List<T> = when (takeDetails) {
             TakeSuggestionDetails.All -> this
-            TakeSuggestionDetails.One -> this.take(1)
-            TakeSuggestionDetails.Three -> this.take(3)
-            TakeSuggestionDetails.Five -> this.take(5)
-            TakeSuggestionDetails.Ten -> this.take(10)
+            TakeSuggestionDetails.Few -> this.take(3)
+            TakeSuggestionDetails.Medium -> this.take(5)
+            TakeSuggestionDetails.Many -> this.take(10)
             TakeSuggestionDetails.DoNotTake -> emptyList()
         }.toList()
         return SuggestionDetails(
             images = images
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.descriptions),
+                .take(),
             manufacturers = manufacturers
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.descriptions),
+                .take(),
             brands = brands
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.descriptions),
+                .take(),
             sizes = sizes
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.descriptions),
+                .take(),
             colors = colors
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.descriptions),
+                .take(),
             quantities = quantities
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.quantities),
+                .take(),
             unitPrices = unitPrices
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.money),
+                .take(),
             discounts = discounts
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.money),
+                .take(),
             taxRates = taxRates
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.money),
+                .take(),
             costs = costs
                 .sortedByDescending { it.value.lastModified.getMillis() }
-                .take(takeDetails.money)
+                .take()
         )
     }
 }

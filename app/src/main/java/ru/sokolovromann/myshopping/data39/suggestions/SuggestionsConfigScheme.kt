@@ -10,8 +10,6 @@ object SuggestionsConfigScheme {
     val SORT = stringPreferencesKey("sort")
     val SORT_ORDER = stringPreferencesKey("sort_order")
     val ADD = stringPreferencesKey("add")
-    val TAKE_NAMES = stringPreferencesKey("take_names")
-    val TAKE_DESCRIPTIONS = stringPreferencesKey("take_descriptions")
-    val TAKE_QUANTITIES = stringPreferencesKey("take_quantities")
-    val TAKE_MONEY = stringPreferencesKey("take_money")
+    val TAKE_SUGGESTIONS = stringPreferencesKey("take_suggestions")
+    val TAKE_DETAILS = stringPreferencesKey("take_details")
 }

@@ -9,8 +9,6 @@ import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDirectory
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsConfig
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsDefaults
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsPreInstalled
-import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetails
-import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetailsInfo
 import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestions
 import ru.sokolovromann.myshopping.utils.DispatcherExtensions.withIoContext
 import ru.sokolovromann.myshopping.utils.UID
@@ -70,24 +68,11 @@ class MigrationManager @Inject constructor(
             if (api15Config.maxAutocompletesNames == 0) {
                 TakeSuggestions.DoNotTake
             } else if (api15Config.maxAutocompletesNames <= 5) {
-                TakeSuggestions.Five
+                TakeSuggestions.Few
             } else {
-                TakeSuggestions.Ten
+                TakeSuggestions.Medium
             }
         }
-
-        fun toTakeDetails(max: Int): TakeSuggestionDetails = when (max) {
-            0 -> TakeSuggestionDetails.DoNotTake
-            1 -> TakeSuggestionDetails.One
-            2, 3 -> TakeSuggestionDetails.Three
-            4, 5 -> TakeSuggestionDetails.Five
-            else -> TakeSuggestionDetails.Ten
-        }
-        val takeDetails = TakeSuggestionDetailsInfo(
-            descriptions = toTakeDetails(api15Config.maxAutocompletesOthers ?: 0),
-            quantities = toTakeDetails(api15Config.maxAutocompletesQuantities ?: 0),
-            money = toTakeDetails(api15Config.maxAutocompletesMoneys ?: 0)
-        )
 
         val config = SuggestionsConfig(
             preInstalled = SuggestionsPreInstalled.DoNotAdd,
@@ -95,7 +80,7 @@ class MigrationManager @Inject constructor(
             sort = SuggestionsDefaults.SORT,
             add = addSuggestionWithDetails,
             takeSuggestions = takeSuggestion,
-            takeDetails = takeDetails
+            takeDetails = SuggestionsDefaults.TAKE_DETAILS
         )
         suggestionsManager.addConfig(config)
     }

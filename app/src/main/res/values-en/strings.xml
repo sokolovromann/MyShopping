@@ -53,6 +53,7 @@
     <string name="all_action_displayActiveTotal">Active</string>
     <string name="all_action_displayAllTotal">All</string>
     <string name="all_action_displayCompletedTotal">Completed</string>
+    <string name="all_action_doNotTake">Do not display</string>
     <string name="all_action_edit">Edit</string>
     <string name="all_action_enableMultiColumns">Multi-columns</string>
     <string name="all_action_markAs">Mark as…</string>
@@ -79,6 +80,10 @@
     <string name="all_action_sortByTotal">By total</string>
     <string name="all_action_swipeLeft">Left</string>
     <string name="all_action_swipeRight">Right</string>
+    <string name="all_action_takeAll">All</string>
+    <string name="all_action_takeFew">Few</string>
+    <string name="all_action_takeMany">Many</string>
+    <string name="all_action_takeMedium">Medium</string>
     <string name="all_action_unarchive">Unarchive</string>
     <string name="all_action_unpin">Unpin</string>
     <string name="all_contentDescription_addAutocompleteIcon">Add autocomplete</string>
@@ -415,19 +420,16 @@
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
-    <string name="maxAutocompletes_body_doNotTakeDetails">Zero</string>
-    <string name="maxAutocompletes_body_doNotTakeSuggestions">Zero</string>
-    <string name="maxAutocompletes_body_takeAllDetails">All</string>
-    <string name="maxAutocompletes_body_takeFiveDetails">Five</string>
-    <string name="maxAutocompletes_body_takeFiveSuggestions">Five</string>
-    <string name="maxAutocompletes_body_takeOneDetails">One</string>
-    <string name="maxAutocompletes_body_takeTenDetails">Ten</string>
-    <string name="maxAutocompletes_body_takeTenSuggestions">Ten</string>
-    <string name="maxAutocompletes_body_takeThreeDetails">Three</string>
+    <string name="maxAutocompletes_body_doNotTakeDetails">@string/all_action_doNotTake</string>
+    <string name="maxAutocompletes_body_doNotTakeSuggestions">@string/all_action_doNotTake</string>
+    <string name="maxAutocompletes_body_takeAllDetails">@string/all_action_takeAll</string>
+    <string name="maxAutocompletes_body_takeFewDetails">@string/all_action_takeFew</string>
+    <string name="maxAutocompletes_body_takeFewSuggestions">@string/all_action_takeFew</string>
+    <string name="maxAutocompletes_body_takeManyDetails">@string/all_action_takeMany</string>
+    <string name="maxAutocompletes_body_takeMediumDetails">@string/all_action_takeMedium</string>
+    <string name="maxAutocompletes_body_takeMediumSuggestions">@string/all_action_takeMedium</string>
     <string name="maxAutocompletes_header">Maximum amount</string>
-    <string name="maxAutocompletes_title_takeDetailsDescriptions">Descriptions (brands, sizes, etc.)</string>
-    <string name="maxAutocompletes_title_takeDetailsMoney">Money</string>
-    <string name="maxAutocompletes_title_takeDetailsQuantities">Quantities</string>
+    <string name="maxAutocompletes_title_takeDetails">Description</string>
     <string name="maxAutocompletes_title_takeSuggestions">Names</string>
 
     <string name="notificationChannel_description_purchases">Notifications of shopping lists</string>

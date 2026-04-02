@@ -11,110 +11,72 @@ import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestions
 
 class MaxAutocompletesState {
 
-    var takeNamesValue: SelectedValue<TakeSuggestions> by mutableStateOf(
+    var takeSuggestionsValue: SelectedValue<TakeSuggestions> by mutableStateOf(
         SelectedValue(SuggestionsDefaults.TAKE_SUGGESTIONS)
     )
 
-    var takeDetailsDescriptions: SelectedValue<TakeSuggestionDetails> by mutableStateOf(
-        SelectedValue(SuggestionsDefaults.TAKE_DESCRIPTIONS)
+    var takeDetailsValue: SelectedValue<TakeSuggestionDetails> by mutableStateOf(
+        SelectedValue(SuggestionsDefaults.TAKE_DETAILS)
     )
 
-    var takeDetailsQuantities: SelectedValue<TakeSuggestionDetails> by mutableStateOf(
-        SelectedValue(SuggestionsDefaults.TAKE_QUANTITIES)
-    )
-
-    var takeDetailsMoney: SelectedValue<TakeSuggestionDetails> by mutableStateOf(
-        SelectedValue(SuggestionsDefaults.TAKE_MONEY)
-    )
-
-    var expandedTakeNames: Boolean by mutableStateOf(false)
+    var expandedTakeSuggestions: Boolean by mutableStateOf(false)
         private set
 
-    var expandedTakeDetailsDescriptions: Boolean by mutableStateOf(false)
-        private set
-
-    var expandedTakeDetailsQuantities: Boolean by mutableStateOf(false)
-        private set
-
-    var expandedTakeDetailsMoney: Boolean by mutableStateOf(false)
+    var expandedTakeDetails: Boolean by mutableStateOf(false)
         private set
 
     var waiting: Boolean by mutableStateOf(true)
         private set
 
     fun populate(suggestionsConfig: SuggestionsConfig) {
-        takeNamesValue = toTakeNamesValue(suggestionsConfig.takeSuggestions)
-        takeDetailsDescriptions = toTakeDetailsDescriptions(suggestionsConfig.takeDetails.descriptions)
-        takeDetailsQuantities = toTakeDetailsDescriptions(suggestionsConfig.takeDetails.quantities)
-        takeDetailsMoney = toTakeDetailsDescriptions(suggestionsConfig.takeDetails.money)
-        expandedTakeNames = false
-        expandedTakeDetailsDescriptions = false
-        expandedTakeDetailsQuantities = false
-        expandedTakeDetailsMoney = false
+        takeSuggestionsValue = toTakeSuggestionsValue(suggestionsConfig.takeSuggestions)
+        takeDetailsValue = toTakeDetailsValue(suggestionsConfig.takeDetails)
+        expandedTakeSuggestions = false
+        expandedTakeDetails = false
         waiting = false
     }
 
-    fun onSelectTakeNames(expanded: Boolean) {
-        expandedTakeNames = expanded
+    fun onSelectTakeSuggestions(expanded: Boolean) {
+        expandedTakeSuggestions = expanded
     }
 
-    fun onSelectTakeDetailsDescriptions(expanded: Boolean) {
-        expandedTakeDetailsDescriptions = expanded
+    fun onSelectTakeDetails(expanded: Boolean) {
+        expandedTakeDetails = expanded
     }
 
-    fun onSelectTakeDetailsQuantities(expanded: Boolean) {
-        expandedTakeDetailsQuantities = expanded
+    fun onTakeSuggestionsSelected(takeSuggestions: TakeSuggestions) {
+        takeSuggestionsValue = toTakeSuggestionsValue(takeSuggestions)
+        expandedTakeSuggestions = false
     }
 
-    fun onSelectTakeDetailsMoney(expanded: Boolean) {
-        expandedTakeDetailsMoney = expanded
+    fun onTakeDetailsSelected(takeSuggestionDetails: TakeSuggestionDetails) {
+        takeDetailsValue = toTakeDetailsValue(takeSuggestionDetails)
+        expandedTakeDetails = false
     }
-
-    fun onTakeNamesSelected(takeSuggestions: TakeSuggestions) {
-        takeNamesValue = toTakeNamesValue(takeSuggestions)
-        expandedTakeNames = false
-    }
-
-    fun onTakeDetailsDescriptionsSelected(takeSuggestionDetails: TakeSuggestionDetails) {
-        takeDetailsDescriptions = toTakeDetailsDescriptions(takeSuggestionDetails)
-        expandedTakeDetailsDescriptions = false
-    }
-
-    fun onTakeDetailsQuantitiesSelected(takeSuggestionDetails: TakeSuggestionDetails) {
-        takeDetailsQuantities = toTakeDetailsDescriptions(takeSuggestionDetails)
-        expandedTakeDetailsQuantities = false
-    }
-
-    fun onTakeDetailsMoneySelected(takeSuggestionDetails: TakeSuggestionDetails) {
-        takeDetailsMoney = toTakeDetailsDescriptions(takeSuggestionDetails)
-        expandedTakeDetailsMoney = false
-    }
-
 
     fun onWaiting() {
         waiting = true
     }
 
-    private fun toTakeNamesValue(takeSuggestions: TakeSuggestions): SelectedValue<TakeSuggestions> {
+    private fun toTakeSuggestionsValue(takeSuggestions: TakeSuggestions): SelectedValue<TakeSuggestions> {
         return SelectedValue(
             selected = takeSuggestions,
             text = when (takeSuggestions) {
-                TakeSuggestions.Five -> UiString.FromResources(R.string.maxAutocompletes_body_takeFiveSuggestions)
-                TakeSuggestions.Ten -> UiString.FromResources(R.string.maxAutocompletes_body_takeTenSuggestions)
+                TakeSuggestions.Few -> UiString.FromResources(R.string.maxAutocompletes_body_takeFewSuggestions)
+                TakeSuggestions.Medium -> UiString.FromResources(R.string.maxAutocompletes_body_takeMediumSuggestions)
                 TakeSuggestions.DoNotTake -> UiString.FromResources(R.string.maxAutocompletes_body_doNotTakeSuggestions)
             }
         )
     }
 
-    private fun toTakeDetailsDescriptions(takeSuggestionDetails: TakeSuggestionDetails): SelectedValue<TakeSuggestionDetails> {
+    private fun toTakeDetailsValue(takeSuggestionDetails: TakeSuggestionDetails): SelectedValue<TakeSuggestionDetails> {
         return SelectedValue(
             selected = takeSuggestionDetails,
             text = when (takeSuggestionDetails) {
                 TakeSuggestionDetails.All -> UiString.FromResources(R.string.maxAutocompletes_body_takeAllDetails)
-                TakeSuggestionDetails.One -> UiString.FromResources(R.string.maxAutocompletes_body_takeOneDetails)
-                TakeSuggestionDetails.Three -> UiString.FromResources(R.string.maxAutocompletes_body_takeThreeDetails)
-                TakeSuggestionDetails.Five -> UiString.FromResources(R.string.maxAutocompletes_body_takeFiveDetails)
-                TakeSuggestionDetails.Ten -> UiString.FromResources(R.string.maxAutocompletes_body_takeTenDetails)
+                TakeSuggestionDetails.Few -> UiString.FromResources(R.string.maxAutocompletes_body_takeFewDetails)
+                TakeSuggestionDetails.Medium -> UiString.FromResources(R.string.maxAutocompletes_body_takeMediumDetails)
+                TakeSuggestionDetails.Many -> UiString.FromResources(R.string.maxAutocompletes_body_takeManyDetails)
                 TakeSuggestionDetails.DoNotTake -> UiString.FromResources(R.string.maxAutocompletes_body_doNotTakeDetails)
             }
         )

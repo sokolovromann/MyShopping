@@ -6,5 +6,5 @@ data class SuggestionsConfig(
     val sort: SortSuggestions,
     val add: AddSuggestionWithDetails,
     val takeSuggestions: TakeSuggestions,
-    val takeDetails: TakeSuggestionDetailsInfo
+    val takeDetails: TakeSuggestionDetails
 )

@@ -4,13 +4,11 @@ enum class TakeSuggestionDetails {
 
     All,
 
-    One,
+    Few,
 
-    Three,
+    Medium,
 
-    Five,
-
-    Ten,
+    Many,
 
     DoNotTake;
 }

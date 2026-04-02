@@ -26,10 +26,8 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
             SuggestionsConfigScheme.SORT to strSort,
             SuggestionsConfigScheme.SORT_ORDER to strOrder,
             SuggestionsConfigScheme.ADD to fromEnum(data.add),
-            SuggestionsConfigScheme.TAKE_NAMES to fromEnum(data.takeSuggestions),
-            SuggestionsConfigScheme.TAKE_DESCRIPTIONS to fromEnum(data.takeDetails.descriptions),
-            SuggestionsConfigScheme.TAKE_QUANTITIES to fromEnum(data.takeDetails.quantities),
-            SuggestionsConfigScheme.TAKE_MONEY to fromEnum(data.takeDetails.money)
+            SuggestionsConfigScheme.TAKE_SUGGESTIONS to fromEnum(data.takeSuggestions),
+            SuggestionsConfigScheme.TAKE_DETAILS to fromEnum(data.takeDetails)
         )
     }
 
@@ -56,31 +54,20 @@ class SuggestionsConfigMapper @Inject constructor() : LocalPreferencesMapper<Sug
             SuggestionsDefaults.ADD
         )
         val takeSuggestions = toEnum(
-            preferences[SuggestionsConfigScheme.TAKE_NAMES],
+            preferences[SuggestionsConfigScheme.TAKE_SUGGESTIONS],
             SuggestionsDefaults.TAKE_SUGGESTIONS
         )
-        val takeSuggestionDetails = TakeSuggestionDetailsInfo(
-            descriptions = toEnum(
-                preferences[SuggestionsConfigScheme.TAKE_DESCRIPTIONS],
-                SuggestionsDefaults.TAKE_DESCRIPTIONS
-            ),
-            quantities = toEnum(
-                preferences[SuggestionsConfigScheme.TAKE_QUANTITIES],
-                SuggestionsDefaults.TAKE_QUANTITIES
-            ),
-            money = toEnum( preferences[
-                SuggestionsConfigScheme.TAKE_MONEY],
-                SuggestionsDefaults.TAKE_MONEY
-            )
+        val takeDetails = toEnum(
+            preferences[SuggestionsConfigScheme.TAKE_DETAILS],
+            SuggestionsDefaults.TAKE_DETAILS
         )
-
         return SuggestionsConfig(
             preInstalled = preInstalled,
             viewMode = viewMode,
             sort = sort,
             add = add,
             takeSuggestions = takeSuggestions,
-            takeDetails = takeSuggestionDetails
+            takeDetails = takeDetails
         )
     }
 }

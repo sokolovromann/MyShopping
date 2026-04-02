@@ -53,6 +53,7 @@
     <string name="all_action_displayActiveTotal">Produits non achetés</string>
     <string name="all_action_displayAllTotal">Tous les produits</string>
     <string name="all_action_displayCompletedTotal">Produits achetés</string>
+    <string name="all_action_doNotTake">Ne pas afficher</string>
     <string name="all_action_edit">Modifier</string>
     <string name="all_action_enableMultiColumns">Plusieurs colonnes</string>
     <string name="all_action_markAs">Marquer comme…</string>
@@ -79,6 +80,10 @@
     <string name="all_action_sortByTotal">Par total</string>
     <string name="all_action_swipeLeft">Gauche</string>
     <string name="all_action_swipeRight">Droit</string>
+    <string name="all_action_takeAll">Tout</string>
+    <string name="all_action_takeFew">Peu</string>
+    <string name="all_action_takeMany">Beaucoup</string>
+    <string name="all_action_takeMedium">Moyen</string>
     <string name="all_action_unarchive">Désarchiver</string>
     <string name="all_action_unpin">Désépingler</string>
     <string name="all_contentDescription_addAutocompleteIcon">Ajouter la saisie semi-automatique</string>
@@ -414,19 +419,16 @@
 
     <string name="maxAutocompletes_action_cancelSavingMaxAutocompletes">@string/all_action_cancel</string>
     <string name="maxAutocompletes_action_saveMaxAutocompletes">@string/all_action_save</string>
-    <string name="maxAutocompletes_body_doNotTakeDetails">Zéro</string>
-    <string name="maxAutocompletes_body_doNotTakeSuggestions">Zéro</string>
-    <string name="maxAutocompletes_body_takeAllDetails">Tout</string>
-    <string name="maxAutocompletes_body_takeFiveDetails">Cinq</string>
-    <string name="maxAutocompletes_body_takeFiveSuggestions">Cinq</string>
-    <string name="maxAutocompletes_body_takeOneDetails">Un</string>
-    <string name="maxAutocompletes_body_takeTenDetails">Dix</string>
-    <string name="maxAutocompletes_body_takeTenSuggestions">Dix</string>
-    <string name="maxAutocompletes_body_takeThreeDetails">Trois</string>
+    <string name="maxAutocompletes_body_doNotTakeDetails">@string/all_action_doNotTake</string>
+    <string name="maxAutocompletes_body_doNotTakeSuggestions">@string/all_action_doNotTake</string>
+    <string name="maxAutocompletes_body_takeAllDetails">@string/all_action_takeAll</string>
+    <string name="maxAutocompletes_body_takeFewDetails">@string/all_action_takeFew</string>
+    <string name="maxAutocompletes_body_takeFewSuggestions">@string/all_action_takeFew</string>
+    <string name="maxAutocompletes_body_takeManyDetails">@string/all_action_takeMany</string>
+    <string name="maxAutocompletes_body_takeMediumDetails">@string/all_action_takeMedium</string>
+    <string name="maxAutocompletes_body_takeMediumSuggestions">@string/all_action_takeMedium</string>
     <string name="maxAutocompletes_header">Nombre maximum</string>
-    <string name="maxAutocompletes_title_takeDetailsDescriptions">Descriptions (marques, tailles, etc.)</string>
-    <string name="maxAutocompletes_title_takeDetailsMoney">Argent</string>
-    <string name="maxAutocompletes_title_takeDetailsQuantities">Quantités</string>
+    <string name="maxAutocompletes_title_takeDetails">Description</string>
     <string name="maxAutocompletes_title_takeSuggestions">Des noms</string>
 
     <string name="notificationChannel_description_purchases">Notifications de listes de courses</string>
