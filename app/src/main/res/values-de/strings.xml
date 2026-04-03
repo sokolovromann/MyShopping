@@ -452,7 +452,7 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Du hast kein Autovervollständigungen</string>
 
     <string name="settings_action_addAutocompletes">@string/all_action_add</string>
-    <string name="settings_action_addAutocompletesAll">Alle</string>
+    <string name="settings_action_addAutocompletesAll">Name und Beschreibung</string>
     <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Liste Archivieren</string>
     <string name="settings_action_closeAfterSaveProduct">Produkt speichern und Bildschirm schließen</string>

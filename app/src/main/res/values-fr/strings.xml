@@ -522,7 +522,7 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">Vous n\'avez pas de saisie automatique</string>
 
     <string name="settings_action_addAutocompletes">@string/all_action_add</string>
-    <string name="settings_action_addAutocompletesAll">Tout</string>
+    <string name="settings_action_addAutocompletesAll">Nom et description</string>
     <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Archive la liste</string>
     <string name="settings_action_closeAfterSaveProduct">Fermer l\'écran</string>

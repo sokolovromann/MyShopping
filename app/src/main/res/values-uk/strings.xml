@@ -470,7 +470,7 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас немає підказок</string>
 
     <string name="settings_action_addAutocompletes">Додавати</string>
-    <string name="settings_action_addAutocompletesAll">Все</string>
+    <string name="settings_action_addAutocompletesAll">Назва та опис</string>
     <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Архівувати список</string>
     <string name="settings_action_closeAfterSaveProduct">Закрити екран</string>

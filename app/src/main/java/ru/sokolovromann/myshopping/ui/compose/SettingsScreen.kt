@@ -505,14 +505,14 @@ private fun SettingsAddAutocompletesMenu(
         onDismissRequest = onDismissRequest
     ) {
         AppDropdownMenuItem(
-            onClick = { onSelected(AddSuggestionWithDetails.SuggestionAndDetails) },
-            text = { Text(text = stringResource(R.string.settings_action_addAutocompletesAll)) },
-            right = { CheckmarkAppCheckbox(checked = addSuggestionWithDetails == AddSuggestionWithDetails.SuggestionAndDetails) }
-        )
-        AppDropdownMenuItem(
             onClick = { onSelected(AddSuggestionWithDetails.Suggestion) },
             text = { Text(text = stringResource(R.string.settings_action_addAutocompletesName)) },
             right = { CheckmarkAppCheckbox(checked = addSuggestionWithDetails == AddSuggestionWithDetails.Suggestion) }
+        )
+        AppDropdownMenuItem(
+            onClick = { onSelected(AddSuggestionWithDetails.SuggestionAndDetails) },
+            text = { Text(text = stringResource(R.string.settings_action_addAutocompletesAll)) },
+            right = { CheckmarkAppCheckbox(checked = addSuggestionWithDetails == AddSuggestionWithDetails.SuggestionAndDetails) }
         )
         AppDropdownMenuItem(
             onClick = { onSelected(AddSuggestionWithDetails.DoNotAdd) },

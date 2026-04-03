@@ -523,7 +523,7 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">You have no autocompletes</string>
 
     <string name="settings_action_addAutocompletes">@string/all_action_add</string>
-    <string name="settings_action_addAutocompletesAll">All</string>
+    <string name="settings_action_addAutocompletesAll">Name and description</string>
     <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Archive list</string>
     <string name="settings_action_closeAfterSaveProduct">Close screen</string>

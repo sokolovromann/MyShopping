@@ -262,8 +262,8 @@ object UiAppConfigMapper {
                 uid = SettingUid.AddAutocompletes,
                 title = UiString.FromResources(R.string.settings_action_addAutocompletes),
                 body = when (suggestionsConfig.add) {
-                    AddSuggestionWithDetails.SuggestionAndDetails -> UiString.FromResources(R.string.settings_action_addAutocompletesAll)
                     AddSuggestionWithDetails.Suggestion -> UiString.FromResources(R.string.settings_action_addAutocompletesName)
+                    AddSuggestionWithDetails.SuggestionAndDetails -> UiString.FromResources(R.string.settings_action_addAutocompletesAll)
                     AddSuggestionWithDetails.DoNotAdd -> UiString.FromResources(R.string.settings_action_doNotAddAutocompletes)
                 },
                 checked = null

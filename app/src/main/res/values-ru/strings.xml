@@ -517,7 +517,7 @@
     <string name="selectFromAutocompletes_text_autocompletesNotFound">У вас нет подсказок</string>
 
     <string name="settings_action_addAutocompletes">Добавлять</string>
-    <string name="settings_action_addAutocompletesAll">Всё</string>
+    <string name="settings_action_addAutocompletesAll">Название и описание</string>
     <string name="settings_action_addAutocompletesName">@string/all_label_name</string>
     <string name="settings_action_archiveAfterShoppingCompleted">Архивировать список</string>
     <string name="settings_action_closeAfterSaveProduct">Закрыть экран</string>
