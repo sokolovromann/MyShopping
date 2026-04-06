@@ -147,7 +147,8 @@ class AddEditProductViewModel @Inject constructor(
                 val product = Product(shoppingUid = shoppingUid)
                 it.copy(product = product)
             }
-            addEditProductState.populate(productWithConfig, isFromPurchases.toBoolean())
+            val takeSuggestionDetail = suggestionsManager.getConfig().takeDetails
+            addEditProductState.populate(productWithConfig, isFromPurchases.toBoolean(), takeSuggestionDetail)
 
             if (productUid == null) {
                 delay(50L)
@@ -483,20 +484,21 @@ class AddEditProductViewModel @Inject constructor(
         val currency = addEditProductState.getCurrentUserPreferences().currency
         val quantityDecimalFormat = addEditProductState.quantityDecimalFormat
         val moneyDecimalFormat = addEditProductState.moneyDecimalFormat
+        val takeDetails = addEditProductState.takeDetails
 
         return SuggestionsSelectedValue(
             suggestionUid = selectedSuggestion?.suggestion?.uid,
             names = UiAutocompletesMapper.toUiNames(mappedSuggestions),
-            brands = UiAutocompletesMapper.toUiBrands(mappedBrands),
-            sizes = UiAutocompletesMapper.toUiSizes(mappedSizes),
-            colors = UiAutocompletesMapper.toUiColors(mappedColors),
-            manufacturers = UiAutocompletesMapper.toUiManufacturers(mappedManufacturers),
-            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities, quantityDecimalFormat),
-            quantitySymbols = UiAutocompletesMapper.toUiQuantitiesSymbols(mappedQuantities),
+            brands = UiAutocompletesMapper.toUiBrands(mappedBrands, takeDetails),
+            sizes = UiAutocompletesMapper.toUiSizes(mappedSizes, takeDetails),
+            colors = UiAutocompletesMapper.toUiColors(mappedColors, takeDetails),
+            manufacturers = UiAutocompletesMapper.toUiManufacturers(mappedManufacturers, takeDetails),
+            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities, quantityDecimalFormat, takeDetails),
+            quantitySymbols = UiAutocompletesMapper.toUiQuantitiesSymbols(mappedQuantities, takeDetails),
             displayDefaultQuantitySymbols = displayDefaultQuantitySymbols,
-            prices = UiAutocompletesMapper.toUiPrices(mappedPrices, currency, moneyDecimalFormat),
-            discounts = UiAutocompletesMapper.toUiDiscounts(mappedDiscounts, currency, moneyDecimalFormat),
-            totals = UiAutocompletesMapper.toUiTotals(mappedTotals, currency, moneyDecimalFormat)
+            prices = UiAutocompletesMapper.toUiPrices(mappedPrices, currency, moneyDecimalFormat, takeDetails),
+            discounts = UiAutocompletesMapper.toUiDiscounts(mappedDiscounts, currency, moneyDecimalFormat, takeDetails),
+            totals = UiAutocompletesMapper.toUiTotals(mappedTotals, currency, moneyDecimalFormat, takeDetails)
         )
     }
 

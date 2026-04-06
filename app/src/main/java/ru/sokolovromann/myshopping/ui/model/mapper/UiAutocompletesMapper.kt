@@ -5,6 +5,7 @@ import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
+import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetails
 import ru.sokolovromann.myshopping.ui.model.AutocompleteItem
 import ru.sokolovromann.myshopping.ui.model.UiString
 import ru.sokolovromann.myshopping.ui.utils.toUiString
@@ -51,32 +52,32 @@ object UiAutocompletesMapper {
         return brands.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiBrands(brands: Collection<SuggestionDetail.Brand>): Collection<String> {
-        return brands.map { it.value.data }
+    fun toUiBrands(brands: Collection<SuggestionDetail.Brand>, takeDetails: TakeSuggestionDetails): Collection<String> {
+        return brands.map { it.value.data }.takeUiDetails(takeDetails)
     }
 
     fun toUiSizesWithUids(sizes: Collection<SuggestionDetail.Size>): Collection<Pair<String, UID>> {
         return sizes.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiSizes(sizes: Collection<SuggestionDetail.Size>): Collection<String> {
-        return sizes.map { it.value.data }
+    fun toUiSizes(sizes: Collection<SuggestionDetail.Size>, takeDetails: TakeSuggestionDetails): Collection<String> {
+        return sizes.map { it.value.data }.takeUiDetails(takeDetails)
     }
 
     fun toUiColorsWithUids(colors: Collection<SuggestionDetail.Color>): Collection<Pair<String, UID>> {
         return colors.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiColors(colors: Collection<SuggestionDetail.Color>): Collection<String> {
-        return colors.map { it.value.data }
+    fun toUiColors(colors: Collection<SuggestionDetail.Color>, takeDetails: TakeSuggestionDetails): Collection<String> {
+        return colors.map { it.value.data }.takeUiDetails(takeDetails)
     }
 
     fun toUiManufacturersWithUids(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<Pair<String, UID>> {
         return manufacturers.map { Pair(it.value.data, it.value.uid) }
     }
 
-    fun toUiManufacturers(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<String> {
-        return manufacturers.map { it.value.data }
+    fun toUiManufacturers(manufacturers: Collection<SuggestionDetail.Manufacturer>, takeDetails: TakeSuggestionDetails): Collection<String> {
+        return manufacturers.map { it.value.data }.takeUiDetails(takeDetails)
     }
 
     fun toUiQuantitiesWithUids(
@@ -93,20 +94,22 @@ object UiAutocompletesMapper {
 
     fun toUiQuantities(
         quantities: Collection<SuggestionDetail.Quantity>,
-        decimalFormat: DecimalFormat
+        decimalFormat: DecimalFormat,
+        takeDetails: TakeSuggestionDetails
     ): Collection<Triple<String, String, String>> {
         return quantities.map {
             val data = it.value.data
             val quantity = data.decimal.toBigDecimalOrZero()
             val formatted = "${decimalFormat.format(quantity)} ${data.params}"
             Triple(formatted, data.decimal.toString(), data.params)
-        }
+        }.takeUiDetails(takeDetails)
     }
 
-    fun toUiQuantitiesSymbols(quantities: Collection<SuggestionDetail.Quantity>): Collection<String> {
+    fun toUiQuantitiesSymbols(quantities: Collection<SuggestionDetail.Quantity>, takeDetails: TakeSuggestionDetails): Collection<String> {
         return quantities
             .map { it.value.data.params }
             .distinct()
+            .takeUiDetails(takeDetails)
     }
 
     fun toUiPricesWithUids(
@@ -123,12 +126,13 @@ object UiAutocompletesMapper {
     fun toUiPrices(
         prices: Collection<SuggestionDetail.UnitPrice>,
         currency: Currency,
-        decimalFormat: DecimalFormat
+        decimalFormat: DecimalFormat,
+        takeDetails: TakeSuggestionDetails
     ): Collection<Pair<String, String>> {
         return prices.map {
             val formatted = formatMoney(it.value.data, currency, decimalFormat)
             Pair(formatted, it.value.data.toString())
-        }
+        }.takeUiDetails(takeDetails)
     }
 
     fun toUiDiscountsWithUids(
@@ -145,13 +149,14 @@ object UiAutocompletesMapper {
     fun toUiDiscounts(
         discounts: Collection<SuggestionDetail.Discount>,
         currency: Currency,
-        decimalFormat: DecimalFormat
+        decimalFormat: DecimalFormat,
+        takeDetails: TakeSuggestionDetails
     ): Collection<Triple<String, String, DiscountType>> {
         return discounts.map {
             val formatted = formatDiscount(it, currency, decimalFormat)
             val data = it.value.data
             Triple(formatted, data.decimal.toString(), data.params)
-        }
+        }.takeUiDetails(takeDetails)
     }
 
     fun toUiTotalsWithUids(
@@ -168,12 +173,13 @@ object UiAutocompletesMapper {
     fun toUiTotals(
         totals: Collection<SuggestionDetail.Cost>,
         currency: Currency,
-        decimalFormat: DecimalFormat
+        decimalFormat: DecimalFormat,
+        takeDetails: TakeSuggestionDetails
     ): Collection<Pair<String, String>> {
         return totals.map {
             val formatted = formatMoney(it.value.data, currency, decimalFormat)
             Pair(formatted, it.value.data.toString())
-        }
+        }.takeUiDetails(takeDetails)
     }
 
     private fun toBrands(brands: Collection<SuggestionDetail.Brand>): UiString {
@@ -314,6 +320,16 @@ object UiAutocompletesMapper {
             DiscountType.Money -> {
                 formatMoney(data.decimal, currency, decimalFormat)
             }
+        }
+    }
+
+    private fun <T> Collection<T>.takeUiDetails(takeDetails: TakeSuggestionDetails): Collection<T> {
+        return when (takeDetails) {
+            TakeSuggestionDetails.All -> this
+            TakeSuggestionDetails.Few -> take(3)
+            TakeSuggestionDetails.Medium -> take(5)
+            TakeSuggestionDetails.Many -> take(10)
+            TakeSuggestionDetails.DoNotTake -> emptyList()
         }
     }
 }

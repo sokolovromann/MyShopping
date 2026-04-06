@@ -12,6 +12,8 @@ import ru.sokolovromann.myshopping.data.model.Product
 import ru.sokolovromann.myshopping.data.model.ProductWithConfig
 import ru.sokolovromann.myshopping.data.model.UserPreferences
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data39.suggestions.SuggestionsDefaults
+import ru.sokolovromann.myshopping.data39.suggestions.TakeSuggestionDetails
 import ru.sokolovromann.myshopping.ui.utils.isEmpty
 import ru.sokolovromann.myshopping.ui.utils.toBigDecimalOrZero
 import ru.sokolovromann.myshopping.ui.utils.toTextFieldValue
@@ -109,7 +111,14 @@ class AddEditProductState {
     var moneyDecimalFormat: DecimalFormat by mutableStateOf(UserPreferencesDefaults.getQuantityDecimalFormat())
         private set
 
-    fun populate(productWithConfig: ProductWithConfig, isFromPurchases: Boolean) {
+    var takeDetails: TakeSuggestionDetails by mutableStateOf(SuggestionsDefaults.TAKE_DETAILS)
+        private set
+
+    fun populate(
+        productWithConfig: ProductWithConfig,
+        isFromPurchases: Boolean,
+        takeSuggestionDetails: TakeSuggestionDetails
+    ) {
         this.productWithConfig = productWithConfig
         this.isFromPurchases = isFromPurchases
 
@@ -154,6 +163,7 @@ class AddEditProductState {
 
         displayPriceOtherFields = product.discount.isNotEmpty()
         afterSaveProduct = userPreferences.afterSaveProduct
+        takeDetails = takeSuggestionDetails
     }
 
     fun onNameValueChanged(value: TextFieldValue) {
