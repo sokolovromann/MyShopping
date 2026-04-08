@@ -63,7 +63,20 @@ class AutocompletesViewModel @Inject constructor(
             flow2 = suggestionsManager.observeConfig(),
             flow3 = appConfigRepository.getAppConfig(),
             transform = { suggestions, suggestionsConfig, appConfig ->
-                AutocompletesData(suggestions, suggestionsConfig, appConfig.userPreferences.currency)
+                val withNewDetails = if (appConfig.userPreferences.displayMoney) {
+                    suggestions
+                } else {
+                    suggestions.map {
+                        val newDetails = it.details.copy(
+                            unitPrices = emptyList(),
+                            discounts = emptyList(),
+                            taxRates = emptyList(),
+                            costs = emptyList()
+                        )
+                        it.copy(details = newDetails)
+                    }
+                }
+                AutocompletesData(withNewDetails, suggestionsConfig, appConfig.userPreferences.currency)
             }
         ).collect { autocompletesState.populate(it, appConfigRepository.getAppConfig().first().userPreferences) }
     }
