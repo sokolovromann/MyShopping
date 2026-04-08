@@ -2,6 +2,7 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.Currency
+import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
@@ -298,7 +299,8 @@ object UiAutocompletesMapper {
         currency: Currency,
         decimalFormat: DecimalFormat
     ): String {
-        val money = decimalFormat.format(decimal.toBigDecimalOrZero())
+        val money = createMoneyDecimalFormat(decimal, decimalFormat)
+            .format(decimal.toBigDecimalOrZero())
         return if (currency.displayToLeft) {
             "${currency.symbol}$money"
         } else {
@@ -314,12 +316,27 @@ object UiAutocompletesMapper {
         val data = discount.value.data
         return when (data.params) {
             DiscountType.Percent -> {
-                val percent = decimalFormat.format(data.decimal.toBigDecimalOrZero())
+                val percent = createMoneyDecimalFormat(data.decimal, decimalFormat)
+                    .format(data.decimal.toBigDecimalOrZero())
                 "$percent %"
             }
             DiscountType.Money -> {
                 formatMoney(data.decimal, currency, decimalFormat)
             }
+        }
+    }
+
+    private fun createMoneyDecimalFormat(
+        decimal: Decimal,
+        decimalFormat: DecimalFormat
+    ): DecimalFormat {
+        return if (decimal.toFloatOrNull()?.rem(1f) == 0f) {
+            UserPreferencesDefaults.getMoneyDecimalFormat().apply {
+                minimumFractionDigits = decimalFormat.minimumFractionDigits
+                maximumFractionDigits = decimalFormat.maximumFractionDigits
+            }
+        } else {
+            UserPreferencesDefaults.getMoneyDecimalFormat()
         }
     }
 
