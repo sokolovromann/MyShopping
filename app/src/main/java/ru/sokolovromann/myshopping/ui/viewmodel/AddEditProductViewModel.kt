@@ -557,8 +557,9 @@ class AddEditProductViewModel @Inject constructor(
     }
 
     private suspend fun saveSuggestionDetails(): Unit = withIoContext {
+        val uid = tempNewSuggestion?.uid ?: return@withIoContext
         val details = mutableListOf<SuggestionDetail>().apply {
-            suggestionsManager.getSuggestionWithDetails(getSelectedSuggestionUid())?.let { data ->
+            suggestionsManager.getSuggestionWithDetails(uid)?.let { data ->
                 createBrand(data)?.let { add(it) }
                 createSize(data)?.let { add(it) }
                 createColor(data)?.let { add(it) }
