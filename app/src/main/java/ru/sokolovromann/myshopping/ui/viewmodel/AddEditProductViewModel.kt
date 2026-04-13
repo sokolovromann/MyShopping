@@ -482,7 +482,6 @@ class AddEditProductViewModel @Inject constructor(
         } else emptyList()
 
         val currency = addEditProductState.getCurrentUserPreferences().currency
-        val quantityDecimalFormat = addEditProductState.quantityDecimalFormat
         val moneyDecimalFormat = addEditProductState.moneyDecimalFormat
         val takeDetails = addEditProductState.takeDetails
 
@@ -493,7 +492,7 @@ class AddEditProductViewModel @Inject constructor(
             sizes = UiAutocompletesMapper.toUiSizes(mappedSizes, takeDetails),
             colors = UiAutocompletesMapper.toUiColors(mappedColors, takeDetails),
             manufacturers = UiAutocompletesMapper.toUiManufacturers(mappedManufacturers, takeDetails),
-            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities, quantityDecimalFormat, takeDetails),
+            quantities = UiAutocompletesMapper.toUiQuantities(mappedQuantities, takeDetails),
             quantitySymbols = UiAutocompletesMapper.toUiQuantitiesSymbols(mappedQuantities, takeDetails),
             displayDefaultQuantitySymbols = displayDefaultQuantitySymbols,
             prices = UiAutocompletesMapper.toUiPrices(mappedPrices, currency, moneyDecimalFormat, takeDetails),

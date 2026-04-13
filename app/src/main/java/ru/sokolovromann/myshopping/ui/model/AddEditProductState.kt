@@ -105,9 +105,6 @@ class AddEditProductState {
     var afterSaveProduct: AfterSaveProduct by mutableStateOf(AfterSaveProduct.DefaultValue)
         private set
 
-    var quantityDecimalFormat: DecimalFormat by mutableStateOf(UserPreferencesDefaults.getQuantityDecimalFormat())
-        private set
-
     var moneyDecimalFormat: DecimalFormat by mutableStateOf(UserPreferencesDefaults.getQuantityDecimalFormat())
         private set
 
@@ -124,7 +121,6 @@ class AddEditProductState {
 
         val product = productWithConfig.product
         val userPreferences = productWithConfig.appConfig.userPreferences
-        quantityDecimalFormat = userPreferences.quantityDecimalFormat
         moneyDecimalFormat = userPreferences.moneyDecimalFormat
 
         waiting = false

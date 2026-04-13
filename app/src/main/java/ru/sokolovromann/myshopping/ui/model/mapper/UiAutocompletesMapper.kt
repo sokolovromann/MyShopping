@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.ui.model.mapper
 import ru.sokolovromann.myshopping.R
 import ru.sokolovromann.myshopping.data.model.Currency
 import ru.sokolovromann.myshopping.data.model.UserPreferencesDefaults
+import ru.sokolovromann.myshopping.data.utils.formattedValueWithoutSeparators
 import ru.sokolovromann.myshopping.data39.suggestions.Suggestion
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionDetail
 import ru.sokolovromann.myshopping.data39.suggestions.SuggestionWithDetails
@@ -54,7 +55,7 @@ object UiAutocompletesMapper {
     }
 
     fun toUiBrands(brands: Collection<SuggestionDetail.Brand>, takeDetails: TakeSuggestionDetails): Collection<String> {
-        return brands.map { it.value.data }.takeUiDetails(takeDetails)
+        return brands.map { it.value.data }.distinct().takeUiDetails(takeDetails)
     }
 
     fun toUiSizesWithUids(sizes: Collection<SuggestionDetail.Size>): Collection<Pair<String, UID>> {
@@ -62,7 +63,7 @@ object UiAutocompletesMapper {
     }
 
     fun toUiSizes(sizes: Collection<SuggestionDetail.Size>, takeDetails: TakeSuggestionDetails): Collection<String> {
-        return sizes.map { it.value.data }.takeUiDetails(takeDetails)
+        return sizes.map { it.value.data }.distinct().takeUiDetails(takeDetails)
     }
 
     fun toUiColorsWithUids(colors: Collection<SuggestionDetail.Color>): Collection<Pair<String, UID>> {
@@ -70,7 +71,7 @@ object UiAutocompletesMapper {
     }
 
     fun toUiColors(colors: Collection<SuggestionDetail.Color>, takeDetails: TakeSuggestionDetails): Collection<String> {
-        return colors.map { it.value.data }.takeUiDetails(takeDetails)
+        return colors.map { it.value.data }.distinct().takeUiDetails(takeDetails)
     }
 
     fun toUiManufacturersWithUids(manufacturers: Collection<SuggestionDetail.Manufacturer>): Collection<Pair<String, UID>> {
@@ -78,7 +79,7 @@ object UiAutocompletesMapper {
     }
 
     fun toUiManufacturers(manufacturers: Collection<SuggestionDetail.Manufacturer>, takeDetails: TakeSuggestionDetails): Collection<String> {
-        return manufacturers.map { it.value.data }.takeUiDetails(takeDetails)
+        return manufacturers.map { it.value.data }.distinct().takeUiDetails(takeDetails)
     }
 
     fun toUiQuantitiesWithUids(
@@ -95,15 +96,17 @@ object UiAutocompletesMapper {
 
     fun toUiQuantities(
         quantities: Collection<SuggestionDetail.Quantity>,
-        decimalFormat: DecimalFormat,
         takeDetails: TakeSuggestionDetails
     ): Collection<Triple<String, String, String>> {
         return quantities.map {
             val data = it.value.data
             val quantity = data.decimal.toBigDecimalOrZero()
+            val decimalFormat: DecimalFormat = UserPreferencesDefaults.getQuantityDecimalFormat()
             val formatted = "${decimalFormat.format(quantity)} ${data.params}"
-            Triple(formatted, data.decimal.toString(), data.params)
-        }.takeUiDetails(takeDetails)
+            val formattedWithoutSeparators = decimalFormat
+                .formattedValueWithoutSeparators(quantity)
+            Triple(formatted, formattedWithoutSeparators, data.params)
+        }.distinctBy { it.first }.takeUiDetails(takeDetails)
     }
 
     fun toUiQuantitiesSymbols(quantities: Collection<SuggestionDetail.Quantity>, takeDetails: TakeSuggestionDetails): Collection<String> {
@@ -131,9 +134,12 @@ object UiAutocompletesMapper {
         takeDetails: TakeSuggestionDetails
     ): Collection<Pair<String, String>> {
         return prices.map {
-            val formatted = formatMoney(it.value.data, currency, decimalFormat)
-            Pair(formatted, it.value.data.toString())
-        }.takeUiDetails(takeDetails)
+            val data = it.value.data
+            val formatted = formatMoney(data, currency, decimalFormat)
+            val formattedWithoutSeparators = decimalFormat
+                .formattedValueWithoutSeparators(data.toBigDecimalOrZero())
+            Pair(formatted, formattedWithoutSeparators)
+        }.distinctBy { it.first }.takeUiDetails(takeDetails)
     }
 
     fun toUiDiscountsWithUids(
@@ -156,8 +162,10 @@ object UiAutocompletesMapper {
         return discounts.map {
             val formatted = formatDiscount(it, currency, decimalFormat)
             val data = it.value.data
-            Triple(formatted, data.decimal.toString(), data.params)
-        }.takeUiDetails(takeDetails)
+            val formattedWithoutSeparators = decimalFormat
+                .formattedValueWithoutSeparators(data.decimal.toBigDecimalOrZero())
+            Triple(formatted, formattedWithoutSeparators, data.params)
+        }.distinctBy { it.first }.takeUiDetails(takeDetails)
     }
 
     fun toUiTotalsWithUids(
@@ -178,9 +186,12 @@ object UiAutocompletesMapper {
         takeDetails: TakeSuggestionDetails
     ): Collection<Pair<String, String>> {
         return totals.map {
-            val formatted = formatMoney(it.value.data, currency, decimalFormat)
-            Pair(formatted, it.value.data.toString())
-        }.takeUiDetails(takeDetails)
+            val data = it.value.data
+            val formatted = formatMoney(data, currency, decimalFormat)
+            val formattedWithoutSeparators = decimalFormat
+                .formattedValueWithoutSeparators(data.toBigDecimalOrZero())
+            Pair(formatted, formattedWithoutSeparators)
+        }.distinctBy { it.first }.takeUiDetails(takeDetails)
     }
 
     private fun toBrands(brands: Collection<SuggestionDetail.Brand>): UiString {
