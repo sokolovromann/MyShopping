@@ -96,6 +96,7 @@ class AutocompletesViewModel @Inject constructor(
         autocompletesState.selectedUids?.first()?.value?.let {
             _screenEventFlow.emit(AutocompletesScreenEvent.OnShowEditAutocompleteScreen(it))
         }
+        autocompletesState.onAllAutocompletesSelected(selected = false)
     }
 
     private fun onClickDeleteAutocompletes() = viewModelScope.launch(dispatcher) {
