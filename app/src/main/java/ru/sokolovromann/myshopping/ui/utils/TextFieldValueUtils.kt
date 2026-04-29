@@ -14,10 +14,6 @@ fun TextFieldValue.isNotEmpty(): Boolean {
     return text.isNotEmpty()
 }
 
-fun TextFieldValue.toFloatOrZero(): Float {
-    return text.toFloatOrNull() ?: 0f
-}
-
 fun TextFieldValue.toFloatOrNull(): Float? {
     return text.toFloatOrNull()
 }
