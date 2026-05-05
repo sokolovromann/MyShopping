@@ -18,6 +18,12 @@ class AddEditAutocompleteState {
     var nameError: Boolean by mutableStateOf(false)
         private set
 
+    var displayAllDetails: Boolean by mutableStateOf(false)
+        private set
+
+    var displayAllDetailsEnabled: Boolean by mutableStateOf(false)
+        private set
+
     var brands: Collection<Pair<String, UID>> by mutableStateOf(listOf())
         private set
 
@@ -57,6 +63,7 @@ class AddEditAutocompleteState {
 
         nameValue = suggestionWithDetails.suggestion.name.toTextFieldValue()
         nameError = false
+        displayAllDetails = false
         brands = UiAutocompletesMapper.toUiBrandsWithUids(details.brands)
         sizes = UiAutocompletesMapper.toUiSizesWithUids(details.sizes)
         colors = UiAutocompletesMapper.toUiColorsWithUids(details.colors)
@@ -67,6 +74,7 @@ class AddEditAutocompleteState {
         prices = UiAutocompletesMapper.toUiPricesWithUids(details.unitPrices, currency, userPreferences.moneyDecimalFormat)
         discounts = UiAutocompletesMapper.toUiDiscountsWithUids(details.discounts, currency, userPreferences.moneyDecimalFormat)
         totals = UiAutocompletesMapper.toUiTotalsWithUids(details.costs, currency, userPreferences.moneyDecimalFormat)
+        displayAllDetailsEnabled = isDetailsNotEmpty()
         waiting = false
     }
 
@@ -79,6 +87,10 @@ class AddEditAutocompleteState {
     fun onInvalidNameValue() {
         nameError = true
         waiting = false
+    }
+
+    fun onDisplayAllDetailsSelected(selected: Boolean) {
+        displayAllDetails = selected
     }
 
     fun onDetailDeleted(uid: UID, type: String) {
@@ -98,9 +110,21 @@ class AddEditAutocompleteState {
             "total" -> totals = totals.withoutDeleted()
             else -> {}
         }
+        displayAllDetailsEnabled = isDetailsNotEmpty()
     }
 
     fun onWaiting() {
         waiting = true
+    }
+
+    private fun isDetailsNotEmpty(): Boolean {
+        return brands.isNotEmpty() ||
+                sizes.isNotEmpty() ||
+                colors.isNotEmpty() ||
+                manufacturers.isNotEmpty() ||
+                quantities.isNotEmpty() ||
+                prices.isNotEmpty() ||
+                discounts.isNotEmpty() ||
+                totals.isNotEmpty()
     }
 }

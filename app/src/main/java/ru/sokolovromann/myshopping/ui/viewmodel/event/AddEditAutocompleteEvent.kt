@@ -9,6 +9,8 @@ sealed class AddEditAutocompleteEvent {
 
     object OnClickCancel : AddEditAutocompleteEvent()
 
+    data class OnDisplayAllDetailsSelected(val selected: Boolean) : AddEditAutocompleteEvent()
+
     data class OnNameValueChanged(val value: TextFieldValue) : AddEditAutocompleteEvent()
 
     data class OnClickDeleteDetail(val uid: UID, val type: String) : AddEditAutocompleteEvent()

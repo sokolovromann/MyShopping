@@ -105,6 +105,18 @@ fun AddEditAutocompleteScreen(
                 )
             )
             Spacer(modifier = Modifier.size(AddEditAutocompleteSpacerMediumSize))
+            if (state.displayAllDetailsEnabled) {
+                AppItem(
+                    title = { Text(stringResource(R.string.addEditAutocomplete_text_displayAllDetails)) },
+                    right = { AppSwitch(checked = state.displayAllDetails) },
+                    longClickableEnabled = false,
+                    onClick = {
+                        val event = AddEditAutocompleteEvent.OnDisplayAllDetailsSelected(!state.displayAllDetails)
+                        viewModel.onEvent(event)
+                    }
+                )
+                Spacer(modifier = Modifier.size(AddEditAutocompleteSpacerMediumSize))
+            }
             AddEditAutocompleteChips(
                 title = stringResource(R.string.autocompletes_body_brands),
                 enabled = state.brands.isNotEmpty()
