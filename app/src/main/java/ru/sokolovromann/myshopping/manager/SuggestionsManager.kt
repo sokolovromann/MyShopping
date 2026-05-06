@@ -65,12 +65,16 @@ class SuggestionsManager @Inject constructor(
             .takeDetails(config.takeDetails)
     }
 
-    suspend fun getSuggestionWithDetails(uid: UID): SuggestionWithDetails? = withIoContext {
+    suspend fun getSuggestionWithDetails(
+        uid: UID,
+        takeAllDetails: Boolean = false
+    ): SuggestionWithDetails? = withIoContext {
         val suggestion = suggestionsRepository.get(uid)
         val config = getConfig()
+        val takeDetails = if (takeAllDetails) TakeSuggestionDetails.All else config.takeDetails
         return@withIoContext suggestion?.copy(
             suggestion = suggestion.suggestion,
-            details = suggestion.details.take(config.takeDetails)
+            details = suggestion.details.take(takeDetails)
         )
     }
 

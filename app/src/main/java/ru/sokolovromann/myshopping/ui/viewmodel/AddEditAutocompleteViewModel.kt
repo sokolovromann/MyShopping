@@ -40,8 +40,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private val dispatcher = Dispatcher.Main
 
-    private val deletedDetailsUids: MutableCollection<UID> = mutableListOf()
-
     init { onInit() }
 
     override fun onEvent(event: AddEditAutocompleteEvent) {
@@ -60,11 +58,12 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private fun onInit() = viewModelScope.launch(dispatcher) {
         val userPreferences = appConfigRepository.getAppConfig().first().userPreferences
+        val suggestionsConfig = suggestionsManager.getConfig()
         if (suggestionUid.value.isEmpty()) {
             _screenEventFlow.emit(AddEditAutocompleteScreenEvent.OnShowKeyboard)
         } else {
-            suggestionsManager.getSuggestionWithDetails(suggestionUid)
-                ?.let { addEditAutocompleteState.populate(it, userPreferences) }
+            suggestionsManager.getSuggestionWithDetails(suggestionUid, true)
+                ?.let { addEditAutocompleteState.populate(it, userPreferences, suggestionsConfig) }
         }
     }
 
@@ -95,9 +94,9 @@ class AddEditAutocompleteViewModel @Inject constructor(
             api15Manager.addAutocomplete(newSuggestion)
             suggestionsManager.apply {
                 addSuggestion(newSuggestion)
-                deleteDetails(suggestionUid, deletedDetailsUids)
+                deleteDetails(suggestionUid, addEditAutocompleteState.deletedDetailsUids)
             }
-            deletedDetailsUids.clear()
+            addEditAutocompleteState.onClearDeletedDetailsUids()
             _screenEventFlow.emit(AddEditAutocompleteScreenEvent.OnShowBackScreen)
         }
     }
@@ -115,7 +114,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
     }
 
     private fun onClickDeleteDetail(event: AddEditAutocompleteEvent.OnClickDeleteDetail) {
-        deletedDetailsUids.add(event.uid)
         addEditAutocompleteState.onDetailDeleted(event.uid, event.type)
     }
 }
