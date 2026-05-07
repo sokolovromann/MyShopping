@@ -13,7 +13,6 @@
     <string name="addEditAutocomplete_action_saveAutocomplete">@string/all_action_save</string>
     <string name="addEditAutocomplete_label_name">@string/all_label_name</string>
     <string name="addEditAutocomplete_message_nameError">@string/all_message_nameError</string>
-    <string name="addEditAutocomplete_text_displayAllDetails">Mostrar toda la descripción</string>
 
     <string name="addEditProduct_action_quantityMinusOne">@string/all_action_minusOne</string>
     <string name="addEditProduct_action_quantityPlusOne">@string/all_action_plusOne</string>

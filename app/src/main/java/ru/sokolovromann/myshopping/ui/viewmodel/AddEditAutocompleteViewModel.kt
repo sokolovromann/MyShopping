@@ -48,8 +48,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
             AddEditAutocompleteEvent.OnClickCancel -> onClickCancel()
 
-            is AddEditAutocompleteEvent.OnDisplayAllDetailsSelected -> onDisplayAllDetailsSelected(event)
-
             is AddEditAutocompleteEvent.OnNameValueChanged -> onNameValueChanged(event)
 
             is AddEditAutocompleteEvent.OnClickDeleteDetail -> onClickDeleteDetail(event)
@@ -103,10 +101,6 @@ class AddEditAutocompleteViewModel @Inject constructor(
 
     private fun onClickCancel() = viewModelScope.launch(dispatcher) {
         _screenEventFlow.emit(AddEditAutocompleteScreenEvent.OnShowBackScreen)
-    }
-
-    private fun onDisplayAllDetailsSelected(event: AddEditAutocompleteEvent.OnDisplayAllDetailsSelected) {
-        addEditAutocompleteState.onDisplayAllDetailsSelected(event.selected)
     }
 
     private fun onNameValueChanged(event: AddEditAutocompleteEvent.OnNameValueChanged) {

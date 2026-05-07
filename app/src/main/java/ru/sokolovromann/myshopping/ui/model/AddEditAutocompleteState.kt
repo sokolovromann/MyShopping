@@ -28,12 +28,6 @@ class AddEditAutocompleteState {
     var nameError: Boolean by mutableStateOf(false)
         private set
 
-    var displayAllDetails: Boolean by mutableStateOf(false)
-        private set
-
-    var displayAllDetailsEnabled: Boolean by mutableStateOf(false)
-        private set
-
     var brands: Collection<Pair<String, UID>> by mutableStateOf(listOf())
         private set
 
@@ -83,7 +77,6 @@ class AddEditAutocompleteState {
         takeDetails = suggestionsConfig.takeDetails
         nameValue = suggestionWithDetails.suggestion.name.toTextFieldValue()
         nameError = false
-        displayAllDetails = false
         brands = UiAutocompletesMapper.toUiBrandsWithUids(details.brands).takeDetails()
         sizes = UiAutocompletesMapper.toUiSizesWithUids(details.sizes).takeDetails()
         colors = UiAutocompletesMapper.toUiColorsWithUids(details.colors).takeDetails()
@@ -94,7 +87,6 @@ class AddEditAutocompleteState {
         prices = UiAutocompletesMapper.toUiPricesWithUids(details.unitPrices, currency, userPreferences.moneyDecimalFormat).takeDetails()
         discounts = UiAutocompletesMapper.toUiDiscountsWithUids(details.discounts, currency, userPreferences.moneyDecimalFormat).takeDetails()
         totals = UiAutocompletesMapper.toUiTotalsWithUids(details.costs, currency, userPreferences.moneyDecimalFormat).takeDetails()
-        displayAllDetailsEnabled = isDetailsNotEmpty()
         waiting = false
     }
 
@@ -107,10 +99,6 @@ class AddEditAutocompleteState {
     fun onInvalidNameValue() {
         nameError = true
         waiting = false
-    }
-
-    fun onDisplayAllDetailsSelected(selected: Boolean) {
-        displayAllDetails = selected
     }
 
     fun onDetailDeleted(uid: UID, type: String) {
@@ -173,7 +161,6 @@ class AddEditAutocompleteState {
             }
             else -> {}
         }
-        displayAllDetailsEnabled = isDetailsNotEmpty()
     }
 
     fun onClearDeletedDetailsUids() {
@@ -182,17 +169,6 @@ class AddEditAutocompleteState {
 
     fun onWaiting() {
         waiting = true
-    }
-
-    private fun isDetailsNotEmpty(): Boolean {
-        return brands.isNotEmpty() ||
-                sizes.isNotEmpty() ||
-                colors.isNotEmpty() ||
-                manufacturers.isNotEmpty() ||
-                quantities.isNotEmpty() ||
-                prices.isNotEmpty() ||
-                discounts.isNotEmpty() ||
-                totals.isNotEmpty()
     }
 
     private fun <T> Iterable<T>.takeDetails(): List<T> {
