@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId "ru.sokolovromann.myshopping"
-        versionCode 40
-        versionName "2.9.0"
+        versionCode 41
+        versionName "2.9.1"
         minSdk 26
         targetSdk 35
 
