@@ -4,7 +4,7 @@ import java.math.BigDecimal
 
 data class Product(
     val uid: UID,
-    val directory: UID,
+    val directory: ProductDirectory,
     val position: Position,
     val created: TimeInMillis,
     val lastModified: TimeInMillis,
@@ -15,7 +15,7 @@ data class Product(
     val unitPrice: BigDecimal?,
     val fullPrice: BigDecimal?,
     val discount: ProductDiscount?,
-    val tax: BigDecimal?,
+    val tax: Tax?,
     val cost: BigDecimal?,
     val note: String,
     val manufacturer: String,
