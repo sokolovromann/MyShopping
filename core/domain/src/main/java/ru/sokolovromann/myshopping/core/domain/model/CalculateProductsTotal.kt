@@ -9,4 +9,11 @@ sealed class CalculateProductsTotal {
     data class ActiveProducts(val calculatingMode: ProductsTotalCalculatingMode) : CalculateProductsTotal()
 
     data object DoNotCalculate : CalculateProductsTotal()
+
+    fun getCalculatingMode(): ProductsTotalCalculatingMode? = when (this) {
+        is AllProducts -> calculatingMode
+        is CompletedProducts -> calculatingMode
+        is ActiveProducts -> calculatingMode
+        DoNotCalculate -> null
+    }
 }
