@@ -6,5 +6,6 @@ data class UserPreferences(
     val products: ProductsPreferences,
     val productsWidget: ProductsWidgetPreferences,
     val addEditProduct: AddEditProductPreferences,
-    val suggestions: SuggestionsPreferences
+    val suggestions: SuggestionsPreferences,
+    val backupPreferences: BackupPreferences
 )
