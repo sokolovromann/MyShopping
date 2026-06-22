@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.core.data.mapper
 
 import ru.sokolovromann.myshopping.core.data.model.ProductEntity
 import ru.sokolovromann.myshopping.core.domain.model.DiscountMeasurementUnit
-import ru.sokolovromann.myshopping.core.domain.model.Position
 import ru.sokolovromann.myshopping.core.domain.model.Product
 import ru.sokolovromann.myshopping.core.domain.model.ProductDirectory
 import ru.sokolovromann.myshopping.core.domain.model.ProductDiscount
@@ -10,7 +9,6 @@ import ru.sokolovromann.myshopping.core.domain.model.ProductPriority
 import ru.sokolovromann.myshopping.core.domain.model.ProductQuantity
 import ru.sokolovromann.myshopping.core.domain.model.ProductStatus
 import ru.sokolovromann.myshopping.core.domain.model.Tax
-import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
 
