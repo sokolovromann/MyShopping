@@ -11,8 +11,6 @@ interface SuggestionsRepository {
 
     suspend fun getSuggestionWithFabrics(uid: UID): SuggestionWithFabrics?
 
-    suspend fun findSuggestionsWithFabrics(name: String): Collection<SuggestionWithFabrics>
-
     suspend fun insertSuggestions(suggestions: Collection<Suggestion>)
 
     suspend fun deleteSuggestions(uids: Collection<UID>)
