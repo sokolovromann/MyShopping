@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.core.data.repository
 
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsRepository
 
-class SuggestionsRepositoryImpl(
+class SuggestionsRepositoryImpl @Inject constructor(
     private val suggestionsDao: SuggestionsDao,
     private val suggestionsWithFabricsMapper: SuggestionsWithFabricsMapper,
     private val suggestionsMapper: SuggestionsMapper,

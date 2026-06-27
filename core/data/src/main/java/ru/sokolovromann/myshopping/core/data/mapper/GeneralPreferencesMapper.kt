@@ -2,6 +2,8 @@ package ru.sokolovromann.myshopping.core.data.mapper
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.datasource.GeneralPreferencesScheme
 import ru.sokolovromann.myshopping.core.domain.model.Currency
 import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
@@ -13,7 +15,8 @@ import ru.sokolovromann.myshopping.core.domain.model.Theme
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
 import kotlin.text.orEmpty
 
-class GeneralPreferencesMapper : DataStoreMapper<GeneralPreferences>() {
+@Singleton
+class GeneralPreferencesMapper @Inject constructor() : DataStoreMapper<GeneralPreferences>() {
 
     override fun toModel(preferences: Preferences) = GeneralPreferences(
         EnumUtils.valueOfOrDefault(

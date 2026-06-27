@@ -1,6 +1,7 @@
 package ru.sokolovromann.myshopping.core.data.repository
 
 import androidx.datastore.preferences.core.edit
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +27,7 @@ import ru.sokolovromann.myshopping.core.domain.model.SuggestionsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.UserPreferences
 import ru.sokolovromann.myshopping.core.domain.repository.UserPreferencesRepository
 
-class UserPreferencesRepositoryImpl(
+class UserPreferencesRepositoryImpl @Inject constructor(
     private val localDataStore: LocalDataStore,
     private val generalPreferencesMapper: GeneralPreferencesMapper,
     private val cartsPreferencesMapper: CartsPreferencesMapper,

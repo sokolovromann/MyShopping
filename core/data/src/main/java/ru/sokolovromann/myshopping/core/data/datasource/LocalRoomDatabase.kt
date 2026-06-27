@@ -80,5 +80,5 @@ abstract class LocalRoomDatabase : RoomDatabase() {
 
     abstract fun getSuggestionsDao(): SuggestionsDao
 
-    abstract fun getSuggestionDetailsDao(): FabricsDao
+    abstract fun getFabricsDao(): FabricsDao
 }

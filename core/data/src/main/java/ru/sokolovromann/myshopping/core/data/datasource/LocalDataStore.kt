@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import jakarta.inject.Inject
 
-class LocalDataStore(private val context: Context) {
+class LocalDataStore @Inject constructor(private val context: Context) {
 
     private val Context.general: DataStore<Preferences> by preferencesDataStore(
         name = GeneralPreferencesScheme.FILE_NAME

@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.core.data.mapper
 
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.model.FabricEntity
 import ru.sokolovromann.myshopping.core.domain.model.DiscountMeasurementUnit
 import ru.sokolovromann.myshopping.core.domain.model.Fabric
@@ -11,7 +13,8 @@ import ru.sokolovromann.myshopping.core.domain.model.Tax
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
 
-class FabricsMapper : RoomDatabaseMapper<FabricEntity, Fabric>() {
+@Singleton
+class FabricsMapper @Inject constructor() : RoomDatabaseMapper<FabricEntity, Fabric>() {
 
     override fun toEntity(model: Fabric) = FabricEntity(
         model.uid.value,

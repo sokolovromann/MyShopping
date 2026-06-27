@@ -1,9 +1,12 @@
 package ru.sokolovromann.myshopping.core.data.mapper
 
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.model.SuggestionWithFabricsEntity
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics
 
-class SuggestionsWithFabricsMapper(
+@Singleton
+class SuggestionsWithFabricsMapper @Inject constructor(
     private val suggestionsMapper: SuggestionsMapper,
     private val fabricsMapper: FabricsMapper
 ) : RoomDatabaseMapper<SuggestionWithFabricsEntity, SuggestionWithFabrics>() {

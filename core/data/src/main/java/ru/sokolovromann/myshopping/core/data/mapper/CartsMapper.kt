@@ -1,5 +1,7 @@
 package ru.sokolovromann.myshopping.core.data.mapper
 
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.model.CartEntity
 import ru.sokolovromann.myshopping.core.domain.model.Cart
 import ru.sokolovromann.myshopping.core.domain.model.CartBudget
@@ -15,7 +17,8 @@ import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
 
-class CartsMapper(
+@Singleton
+class CartsMapper @Inject constructor(
     private val productsPreferencesMapper: ProductsPreferencesMapper
 ) : RoomDatabaseMapper<CartEntity, Cart>() {
 

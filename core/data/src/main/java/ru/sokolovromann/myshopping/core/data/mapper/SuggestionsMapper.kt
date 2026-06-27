@@ -1,12 +1,15 @@
 package ru.sokolovromann.myshopping.core.data.mapper
 
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.model.SuggestionEntity
 import ru.sokolovromann.myshopping.core.domain.model.Suggestion
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionDirectory
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
 
-class SuggestionsMapper : RoomDatabaseMapper<SuggestionEntity, Suggestion>() {
+@Singleton
+class SuggestionsMapper @Inject constructor() : RoomDatabaseMapper<SuggestionEntity, Suggestion>() {
 
     override fun toEntity(model: Suggestion) = SuggestionEntity(
         model.uid.value,

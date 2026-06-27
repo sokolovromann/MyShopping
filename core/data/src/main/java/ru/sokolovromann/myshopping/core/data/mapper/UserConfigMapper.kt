@@ -2,11 +2,14 @@ package ru.sokolovromann.myshopping.core.data.mapper
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.datasource.UserConfigScheme
 import ru.sokolovromann.myshopping.core.domain.model.API
 import ru.sokolovromann.myshopping.core.domain.model.UserConfig
 
-class UserConfigMapper : DataStoreMapper<UserConfig>() {
+@Singleton
+class UserConfigMapper @Inject constructor() : DataStoreMapper<UserConfig>() {
 
     override fun toModel(preferences: Preferences) = UserConfig(
         preferences[UserConfigScheme.API_KEY]?.toLongOrNull()?.let { API(it) }

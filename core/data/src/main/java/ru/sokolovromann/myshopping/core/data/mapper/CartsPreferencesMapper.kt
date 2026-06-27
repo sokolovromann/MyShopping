@@ -2,6 +2,8 @@ package ru.sokolovromann.myshopping.core.data.mapper
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.datasource.CartsPreferencesScheme
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
@@ -20,7 +22,8 @@ import ru.sokolovromann.myshopping.core.domain.model.SwipeCart
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCartActionName
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
 
-class CartsPreferencesMapper : DataStoreMapper<CartsPreferences>() {
+@Singleton
+class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPreferences>() {
 
     override fun toModel(preferences: Preferences) = CartsPreferences(
         toView(
