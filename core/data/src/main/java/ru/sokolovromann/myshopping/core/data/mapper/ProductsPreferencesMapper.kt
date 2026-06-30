@@ -4,7 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import ru.sokolovromann.myshopping.core.data.datasource.ProductsPreferencesScheme
+import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
@@ -26,84 +26,84 @@ class ProductsPreferencesMapper @Inject constructor() : DataStoreMapper<Products
 
     override fun toModel(preferences: Preferences) = ProductsPreferences(
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.VIEW_KEY],
+            preferences[LocalDataStoreScheme.Products.VIEW],
             ProductsView.List
         ),
         toSort(
-            preferences[ProductsPreferencesScheme.SORT_KEY],
-            preferences[ProductsPreferencesScheme.SORT_BY_ASCENDING_KEY]
+            preferences[LocalDataStoreScheme.Products.SORT],
+            preferences[LocalDataStoreScheme.Products.SORT_BY_ASCENDING]
         ),
-        toGroupByStatus(preferences[ProductsPreferencesScheme.GROUP_BY_STATUS_KEY]),
+        toGroupByStatus(preferences[LocalDataStoreScheme.Products.GROUP_BY_STATUS]),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.ADDING_MODE_KEY],
+            preferences[LocalDataStoreScheme.Products.ADDING_MODE],
             ProductsAddingMode.Simple
         ),
         toCalculateProductsTotal(
-            preferences[ProductsPreferencesScheme.CALCULATE_PRODUCTS_TOTAL_KEY],
-            preferences[ProductsPreferencesScheme.PRODUCTS_TOTAL_CALCULATING_MODE_KEY]
+            preferences[LocalDataStoreScheme.Products.CALCULATE_PRODUCTS_TOTAL],
+            preferences[LocalDataStoreScheme.Products.PRODUCTS_TOTAL_CALCULATING_MODE]
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.STRIKETHROUGH_COMPLETED_KEY],
+            preferences[LocalDataStoreScheme.Products.STRIKETHROUGH_COMPLETED],
             StrikethroughCompletedProducts.Off
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.AFTER_COMPLETING_KEY],
+            preferences[LocalDataStoreScheme.Products.AFTER_COMPLETING],
             AfterCompletingProduct.DoNothing
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.AFTER_TAPPING_BY_CHECKBOX_KEY],
+            preferences[LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX],
             AfterTappingByProductCheckbox.ChangeProductStatus
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.CHECKBOX_COLOR_KEY],
+            preferences[LocalDataStoreScheme.Products.CHECKBOX_COLOR],
             CheckboxColor.RedOrGreen
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsPreferencesScheme.AFTER_TAPPING_BY_ITEM_KEY],
+            preferences[LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM],
             AfterTappingByProductItem.DoNothing
         ),
         SwipeProduct.Left(
             EnumUtils.valueOfOrDefault(
-                preferences[ProductsPreferencesScheme.SWIPE_LEFT_KEY],
+                preferences[LocalDataStoreScheme.Products.SWIPE_LEFT],
                 SwipeProductActionName.Off
             )
         ),
         SwipeProduct.Right(
             EnumUtils.valueOfOrDefault(
-                preferences[ProductsPreferencesScheme.SWIPE_RIGHT_KEY],
+                preferences[LocalDataStoreScheme.Products.SWIPE_RIGHT],
                 SwipeProductActionName.Off
             )
         ),
     )
 
     override fun toPreferences(model: ProductsPreferences) = preferencesOf(
-        ProductsPreferencesScheme.VIEW_KEY
+        LocalDataStoreScheme.Products.VIEW
                 to model.view.javaClass.simpleName,
-        ProductsPreferencesScheme.SORT_KEY
+        LocalDataStoreScheme.Products.SORT
                 to model.sort.javaClass.simpleName,
-        ProductsPreferencesScheme.SORT_BY_ASCENDING_KEY
+        LocalDataStoreScheme.Products.SORT_BY_ASCENDING
                 to model.sort.isByAscending().toString(),
-        ProductsPreferencesScheme.GROUP_BY_STATUS_KEY
+        LocalDataStoreScheme.Products.GROUP_BY_STATUS
                 to model.groupByStatus.javaClass.simpleName,
-        ProductsPreferencesScheme.ADDING_MODE_KEY
+        LocalDataStoreScheme.Products.ADDING_MODE
                 to model.addingMode.toString(),
-        ProductsPreferencesScheme.CALCULATE_PRODUCTS_TOTAL_KEY
+        LocalDataStoreScheme.Products.CALCULATE_PRODUCTS_TOTAL
                 to model.calculateTotal.javaClass.simpleName,
-        ProductsPreferencesScheme.PRODUCTS_TOTAL_CALCULATING_MODE_KEY
+        LocalDataStoreScheme.Products.PRODUCTS_TOTAL_CALCULATING_MODE
                 to model.calculateTotal.getCalculatingMode().toString(),
-        ProductsPreferencesScheme.STRIKETHROUGH_COMPLETED_KEY
+        LocalDataStoreScheme.Products.STRIKETHROUGH_COMPLETED
                 to model.strikethroughCompleted.toString(),
-        ProductsPreferencesScheme.AFTER_COMPLETING_KEY
+        LocalDataStoreScheme.Products.AFTER_COMPLETING
                 to model.afterCompleting.toString(),
-        ProductsPreferencesScheme.AFTER_TAPPING_BY_CHECKBOX_KEY
+        LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX
                 to model.afterTappingByCheckbox.toString(),
-        ProductsPreferencesScheme.CHECKBOX_COLOR_KEY
+        LocalDataStoreScheme.Products.CHECKBOX_COLOR
                 to model.checkboxColor.toString(),
-        ProductsPreferencesScheme.AFTER_TAPPING_BY_ITEM_KEY
+        LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM
                 to model.afterTappingByItem.toString(),
-        ProductsPreferencesScheme.SWIPE_LEFT_KEY
+        LocalDataStoreScheme.Products.SWIPE_LEFT
                 to model.swipeLeft.actionName.toString(),
-        ProductsPreferencesScheme.SWIPE_RIGHT_KEY
+        LocalDataStoreScheme.Products.SWIPE_RIGHT
                 to model.swipeRight.actionName.toString(),
     )
 

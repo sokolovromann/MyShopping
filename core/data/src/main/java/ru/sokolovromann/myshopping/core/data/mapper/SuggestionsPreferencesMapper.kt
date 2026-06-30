@@ -4,7 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import ru.sokolovromann.myshopping.core.data.datasource.SuggestionsPreferencesScheme
+import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
 import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
@@ -19,41 +19,41 @@ class SuggestionsPreferencesMapper @Inject constructor() : DataStoreMapper<Sugge
 
     override fun toModel(preferences: Preferences) = SuggestionsPreferences(
         toView(
-            preferences[SuggestionsPreferencesScheme.VIEW_KEY],
-            preferences[SuggestionsPreferencesScheme.FIELDS_DISPLAY_MODE_KEY]
+            preferences[LocalDataStoreScheme.Suggestions.VIEW],
+            preferences[LocalDataStoreScheme.Suggestions.FIELDS_DISPLAY_MODE]
         ),
         toSort(
-            preferences[SuggestionsPreferencesScheme.SORT_KEY],
-            preferences[SuggestionsPreferencesScheme.SORT_BY_ASCENDING_KEY]
+            preferences[LocalDataStoreScheme.Suggestions.SORT],
+            preferences[LocalDataStoreScheme.Suggestions.SORT_BY_ASCENDING]
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[SuggestionsPreferencesScheme.ADDING_MODE_KEY],
+            preferences[LocalDataStoreScheme.Suggestions.ADDING_MODE],
             SuggestionAddingMode.All
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[SuggestionsPreferencesScheme.DISPLAY_NAMES_KEY],
+            preferences[LocalDataStoreScheme.Suggestions.DISPLAY_NAMES],
             DisplaySuggestionNames.Medium
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[SuggestionsPreferencesScheme.DISPLAY_DETAILS_KEY],
+            preferences[LocalDataStoreScheme.Suggestions.DISPLAY_DETAILS],
             DisplaySuggestionDetails.Medium
         )
     )
 
     override fun toPreferences(model: SuggestionsPreferences) = preferencesOf(
-        SuggestionsPreferencesScheme.VIEW_KEY
+        LocalDataStoreScheme.Suggestions.VIEW
                 to model.view.javaClass.simpleName,
-        SuggestionsPreferencesScheme.FIELDS_DISPLAY_MODE_KEY
+        LocalDataStoreScheme.Suggestions.FIELDS_DISPLAY_MODE
                 to model.view.getDisplayMode().toString(),
-        SuggestionsPreferencesScheme.SORT_KEY
+        LocalDataStoreScheme.Suggestions.SORT
                 to model.sort.javaClass.simpleName,
-        SuggestionsPreferencesScheme.SORT_BY_ASCENDING_KEY
+        LocalDataStoreScheme.Suggestions.SORT_BY_ASCENDING
                 to model.sort.isByAscending().toString(),
-        SuggestionsPreferencesScheme.ADDING_MODE_KEY
+        LocalDataStoreScheme.Suggestions.ADDING_MODE
                 to model.addingMode.toString(),
-        SuggestionsPreferencesScheme.DISPLAY_NAMES_KEY
+        LocalDataStoreScheme.Suggestions.DISPLAY_NAMES
                 to model.displaySuggestionNames.toString(),
-        SuggestionsPreferencesScheme.DISPLAY_DETAILS_KEY
+        LocalDataStoreScheme.Suggestions.DISPLAY_DETAILS
                 to model.displaySuggestionDetails.toString()
     )
 

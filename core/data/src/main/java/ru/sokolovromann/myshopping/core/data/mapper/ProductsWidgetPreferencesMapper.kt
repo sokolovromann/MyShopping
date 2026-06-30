@@ -4,7 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import ru.sokolovromann.myshopping.core.data.datasource.ProductsWidgetPreferencesScheme
+import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsWidgetPreferences
@@ -17,33 +17,33 @@ class ProductsWidgetPreferencesMapper @Inject constructor() : DataStoreMapper<Pr
 
     override fun toModel(preferences: Preferences) = ProductsWidgetPreferences(
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsWidgetPreferencesScheme.THEME_KEY],
+            preferences[LocalDataStoreScheme.ProductsWidget.THEME],
             Theme.Default
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsWidgetPreferencesScheme.FONT_SIZE_KEY],
+            preferences[LocalDataStoreScheme.ProductsWidget.FONT_SIZE],
             FontSize.Medium
         ),
         toSort(
-            preferences[ProductsWidgetPreferencesScheme.SORT_KEY],
-            preferences[ProductsWidgetPreferencesScheme.SORT_BY_ASCENDING_KEY]
+            preferences[LocalDataStoreScheme.ProductsWidget.SORT],
+            preferences[LocalDataStoreScheme.ProductsWidget.SORT_BY_ASCENDING]
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[ProductsWidgetPreferencesScheme.GROUP_BY_STATUS_KEY],
+            preferences[LocalDataStoreScheme.ProductsWidget.GROUP_BY_STATUS],
             GroupProductsByStatus.ActiveFirst
         )
     )
 
     override fun toPreferences(model: ProductsWidgetPreferences) = preferencesOf(
-        ProductsWidgetPreferencesScheme.THEME_KEY
+        LocalDataStoreScheme.ProductsWidget.THEME
                 to model.theme.toString(),
-        ProductsWidgetPreferencesScheme.FONT_SIZE_KEY
+        LocalDataStoreScheme.ProductsWidget.FONT_SIZE
                 to model.fontSize.toString(),
-        ProductsWidgetPreferencesScheme.SORT_KEY
+        LocalDataStoreScheme.ProductsWidget.SORT
                 to model.sortProducts.javaClass.simpleName,
-        ProductsWidgetPreferencesScheme.SORT_BY_ASCENDING_KEY
+        LocalDataStoreScheme.ProductsWidget.SORT_BY_ASCENDING
                 to model.sortProducts.isByAscending().toString(),
-        ProductsWidgetPreferencesScheme.GROUP_BY_STATUS_KEY
+        LocalDataStoreScheme.ProductsWidget.GROUP_BY_STATUS
                 to model.groupProductsByStatus.javaClass.simpleName,
     )
 

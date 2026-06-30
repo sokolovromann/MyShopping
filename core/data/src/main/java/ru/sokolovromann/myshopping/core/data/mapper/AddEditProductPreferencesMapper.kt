@@ -4,7 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import ru.sokolovromann.myshopping.core.data.datasource.AddEditProductPreferencesScheme
+import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.AddEditProductPreferences
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterEditingProduct
@@ -19,34 +19,34 @@ class AddEditProductPreferencesMapper @Inject constructor() : DataStoreMapper<Ad
 
     override fun toModel(preferences: Preferences) = AddEditProductPreferences(
         EnumUtils.valueOfOrDefault(
-            preferences[AddEditProductPreferencesScheme.LOCK_FIELD_KEY],
+            preferences[LocalDataStoreScheme.AddEditProduct.LOCK_FIELD],
             LockProductField.Cost
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[AddEditProductPreferencesScheme.AFTER_TAPPING_BY_ENTER_KEY],
+            preferences[LocalDataStoreScheme.AddEditProduct.AFTER_TAPPING_BY_ENTER],
             AfterTappingByProductEnter.SaveProduct
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[AddEditProductPreferencesScheme.AFTER_ADDING_KEY],
+            preferences[LocalDataStoreScheme.AddEditProduct.AFTER_ADDING],
             AfterAddingProduct.CloseScreen
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[AddEditProductPreferencesScheme.AFTER_EDITING_KEY],
+            preferences[LocalDataStoreScheme.AddEditProduct.AFTER_EDITING],
             AfterEditingProduct.CloseScreen
         ),
-        toTax(preferences[AddEditProductPreferencesScheme.TAX_KEY]),
+        toTax(preferences[LocalDataStoreScheme.AddEditProduct.TAX]),
     )
 
     override fun toPreferences(model: AddEditProductPreferences) = preferencesOf(
-        AddEditProductPreferencesScheme.LOCK_FIELD_KEY
+        LocalDataStoreScheme.AddEditProduct.LOCK_FIELD
                 to model.lockField.toString(),
-        AddEditProductPreferencesScheme.AFTER_TAPPING_BY_ENTER_KEY
+        LocalDataStoreScheme.AddEditProduct.AFTER_TAPPING_BY_ENTER
                 to model.afterTappingByEnter.toString(),
-        AddEditProductPreferencesScheme.AFTER_ADDING_KEY
+        LocalDataStoreScheme.AddEditProduct.AFTER_ADDING
                 to model.afterAdding.toString(),
-        AddEditProductPreferencesScheme.AFTER_EDITING_KEY
+        LocalDataStoreScheme.AddEditProduct.AFTER_EDITING
                 to model.afterEditing.toString(),
-        AddEditProductPreferencesScheme.TAX_KEY
+        LocalDataStoreScheme.AddEditProduct.TAX
                 to model.tax?.value?.toPlainString().orEmpty()
     )
 

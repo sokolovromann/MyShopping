@@ -2,57 +2,23 @@ package ru.sokolovromann.myshopping.core.data.datasource
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import jakarta.inject.Inject
+import androidx.datastore.preferences.preferencesDataStoreFile
 
-class LocalDataStore @Inject constructor(private val context: Context) {
+object LocalDataStore {
 
-    private val Context.general: DataStore<Preferences> by preferencesDataStore(
-        name = GeneralPreferencesScheme.FILE_NAME
-    )
+    const val GENERAL_FILE_NAME = "api42_general_preferences"
+    const val CARTS_FILE_NAME = "api42_carts_preferences"
+    const val PRODUCTS_FILE_NAME = "api42_products_preferences"
+    const val PRODUCTS_WIDGET_FILE_NAME = "api42_products_widget_preferences"
+    const val ADD_EDIT_PRODUCT_FILE_NAME = "api42_add_edit_product_preferences"
+    const val SUGGESTIONS_FILE_NAME = "api42_suggestions_preferences"
+    const val BACKUP_FILE_NAME = "api42_backup_preferences"
+    const val USER_FILE_NAME = "api42_user_config"
 
-    private val Context.carts: DataStore<Preferences> by preferencesDataStore(
-        name = CartsPreferencesScheme.FILE_NAME
-    )
-
-    private val Context.products: DataStore<Preferences> by preferencesDataStore(
-        name = ProductsPreferencesScheme.FILE_NAME
-    )
-
-    private val Context.productsWidget: DataStore<Preferences> by preferencesDataStore(
-        name = ProductsWidgetPreferencesScheme.FILE_NAME
-    )
-
-    private val Context.addEditProduct: DataStore<Preferences> by preferencesDataStore(
-        name = AddEditProductPreferencesScheme.FILE_NAME
-    )
-
-    private val Context.suggestions: DataStore<Preferences> by preferencesDataStore(
-        name = SuggestionsPreferencesScheme.FILE_NAME
-    )
-
-    private val Context.backup: DataStore<Preferences> by preferencesDataStore(
-        name = BackupPreferencesScheme.FILE_NAME
-    )
-
-    private val Context.userConfig: DataStore<Preferences> by preferencesDataStore(
-        name = UserConfigScheme.FILE_NAME
-    )
-
-    fun getGeneralPreferencesDataStore(): DataStore<Preferences> = context.general
-
-    fun getCartsPreferencesDataStore(): DataStore<Preferences> = context.carts
-
-    fun getProductsPreferencesDataStore(): DataStore<Preferences> = context.products
-
-    fun getProductsWidgetPreferencesDataStore(): DataStore<Preferences> = context.productsWidget
-
-    fun getAddEditProductPreferencesDataStore(): DataStore<Preferences> = context.addEditProduct
-
-    fun getSuggestionsPreferencesDataStore(): DataStore<Preferences> = context.suggestions
-
-    fun getBackupPreferencesDataStore(): DataStore<Preferences> = context.backup
-
-    fun getUserConfig(): DataStore<Preferences> = context.userConfig
+    fun build(context: Context, fileName: String): DataStore<Preferences> =
+        PreferenceDataStoreFactory.create {
+            context.preferencesDataStoreFile(fileName)
+        }
 }

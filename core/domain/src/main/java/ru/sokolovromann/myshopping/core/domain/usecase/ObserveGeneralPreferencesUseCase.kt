@@ -6,13 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
-import ru.sokolovromann.myshopping.core.domain.repository.UserPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.GeneralPreferencesRepository
 
 class ObserveGeneralPreferencesUseCase @Inject constructor(
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val generalPreferencesRepository: GeneralPreferencesRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     operator fun invoke(): Flow<GeneralPreferences> =
-        userPreferencesRepository.observeGeneralPreferences().flowOn(ioDispatcher)
+        generalPreferencesRepository.observeGeneralPreferences().flowOn(ioDispatcher)
 }

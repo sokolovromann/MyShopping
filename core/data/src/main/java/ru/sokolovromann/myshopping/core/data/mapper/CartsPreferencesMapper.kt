@@ -4,7 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import ru.sokolovromann.myshopping.core.data.datasource.CartsPreferencesScheme
+import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
@@ -27,91 +27,91 @@ class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPrefer
 
     override fun toModel(preferences: Preferences) = CartsPreferences(
         toView(
-            preferences[CartsPreferencesScheme.VIEW_KEY],
-            preferences[CartsPreferencesScheme.PRODUCTS_DISPLAY_MODE_KEY]
+            preferences[LocalDataStoreScheme.Carts.VIEW],
+            preferences[LocalDataStoreScheme.Carts.PRODUCTS_DISPLAY_MODE]
         ),
         toSort(
-            preferences[CartsPreferencesScheme.SORT_KEY],
-            preferences[CartsPreferencesScheme.SORT_BY_ASCENDING_KEY]
+            preferences[LocalDataStoreScheme.Carts.SORT],
+            preferences[LocalDataStoreScheme.Carts.SORT_BY_ASCENDING]
         ),
         toGroupCartsByStatus(
-            preferences[CartsPreferencesScheme.GROUP_BY_STATUS_KEY],
-            preferences[CartsPreferencesScheme.DISPLAY_EMPTY_KEY]
+            preferences[LocalDataStoreScheme.Carts.GROUP_BY_STATUS],
+            preferences[LocalDataStoreScheme.Carts.DISPLAY_EMPTY]
         ),
         toCalculateProductsTotal(
-            preferences[CartsPreferencesScheme.CALCULATE_PRODUCTS_TOTAL_KEY],
-            preferences[CartsPreferencesScheme.PRODUCTS_TOTAL_CALCULATING_MODE_KEY]
+            preferences[LocalDataStoreScheme.Carts.CALCULATE_PRODUCTS_TOTAL],
+            preferences[LocalDataStoreScheme.Carts.PRODUCTS_TOTAL_CALCULATING_MODE]
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[CartsPreferencesScheme.AFTER_ADDING_KEY],
+            preferences[LocalDataStoreScheme.Carts.AFTER_ADDING],
             AfterAddingCart.OpenProductsScreen
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[CartsPreferencesScheme.AFTER_COMPLETING_KEY],
+            preferences[LocalDataStoreScheme.Carts.AFTER_COMPLETING],
             AfterCompletingCart.DoNothing
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[CartsPreferencesScheme.AFTER_ARCHIVING_KEY],
+            preferences[LocalDataStoreScheme.Carts.AFTER_ARCHIVING],
             AfterArchivingCart.DoNothing
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[CartsPreferencesScheme.AFTER_TAPPING_BY_CHECKBOX_KEY],
+            preferences[LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX],
             AfterTappingByCartCheckbox.DoNothing
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[CartsPreferencesScheme.CHECKBOX_COLOR_KEY],
+            preferences[LocalDataStoreScheme.Carts.CHECKBOX_COLOR],
             CheckboxColor.RedOrGreen
         ),
         SwipeCart.Left(
             EnumUtils.valueOfOrDefault(
-                preferences[CartsPreferencesScheme.SWIPE_LEFT_KEY],
+                preferences[LocalDataStoreScheme.Carts.SWIPE_LEFT],
                 SwipeCartActionName.Off
             )
         ),
         SwipeCart.Right(
             EnumUtils.valueOfOrDefault(
-                preferences[CartsPreferencesScheme.SWIPE_RIGHT_KEY],
+                preferences[LocalDataStoreScheme.Carts.SWIPE_RIGHT],
                 SwipeCartActionName.Off
             )
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[CartsPreferencesScheme.DELETION_FROM_TRASH_KEY],
+            preferences[LocalDataStoreScheme.Carts.DELETION_FROM_TRASH],
             DeletionCartFromTrash.DoNotDelete
         )
     )
 
     override fun toPreferences(model: CartsPreferences) = preferencesOf(
-        CartsPreferencesScheme.VIEW_KEY
+        LocalDataStoreScheme.Carts.VIEW
                 to model.view.javaClass.simpleName,
-        CartsPreferencesScheme.PRODUCTS_DISPLAY_MODE_KEY
+        LocalDataStoreScheme.Carts.PRODUCTS_DISPLAY_MODE
                 to model.view.getProductsDisplayMode().toString(),
-        CartsPreferencesScheme.SORT_KEY
+        LocalDataStoreScheme.Carts.SORT
                 to model.sort.javaClass.simpleName,
-        CartsPreferencesScheme.SORT_BY_ASCENDING_KEY
+        LocalDataStoreScheme.Carts.SORT_BY_ASCENDING
                 to model.sort.isByAscending().toString(),
-        CartsPreferencesScheme.GROUP_BY_STATUS_KEY
+        LocalDataStoreScheme.Carts.GROUP_BY_STATUS
                 to model.groupByStatus.javaClass.simpleName,
-        CartsPreferencesScheme.DISPLAY_EMPTY_KEY
+        LocalDataStoreScheme.Carts.DISPLAY_EMPTY
                 to model.groupByStatus.isDisplayEmpty().toString(),
-        CartsPreferencesScheme.CALCULATE_PRODUCTS_TOTAL_KEY
+        LocalDataStoreScheme.Carts.CALCULATE_PRODUCTS_TOTAL
                 to model.calculateProductsTotal.javaClass.simpleName,
-        CartsPreferencesScheme.PRODUCTS_TOTAL_CALCULATING_MODE_KEY
+        LocalDataStoreScheme.Carts.PRODUCTS_TOTAL_CALCULATING_MODE
                 to model.calculateProductsTotal.getCalculatingMode().toString(),
-        CartsPreferencesScheme.AFTER_ADDING_KEY
+        LocalDataStoreScheme.Carts.AFTER_ADDING
                 to model.afterAdding.toString(),
-        CartsPreferencesScheme.AFTER_COMPLETING_KEY
+        LocalDataStoreScheme.Carts.AFTER_COMPLETING
                 to model.afterCompleting.toString(),
-        CartsPreferencesScheme.AFTER_ARCHIVING_KEY
+        LocalDataStoreScheme.Carts.AFTER_ARCHIVING
                 to model.afterArchiving.toString(),
-        CartsPreferencesScheme.AFTER_TAPPING_BY_CHECKBOX_KEY
+        LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX
                 to model.afterTappingByCheckbox.toString(),
-        CartsPreferencesScheme.CHECKBOX_COLOR_KEY
+        LocalDataStoreScheme.Carts.CHECKBOX_COLOR
                 to model.checkboxColor.toString(),
-        CartsPreferencesScheme.SWIPE_LEFT_KEY
+        LocalDataStoreScheme.Carts.SWIPE_LEFT
                 to model.swipeLeft.actionName.toString(),
-        CartsPreferencesScheme.SWIPE_RIGHT_KEY
+        LocalDataStoreScheme.Carts.SWIPE_RIGHT
                 to model.swipeRight.actionName.toString(),
-        CartsPreferencesScheme.DELETION_FROM_TRASH_KEY
+        LocalDataStoreScheme.Carts.DELETION_FROM_TRASH
                 to model.deletionFromTrash.toString()
     )
 

@@ -6,13 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionsPreferences
-import ru.sokolovromann.myshopping.core.domain.repository.UserPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsPreferencesRepository
 
 class ObserveSuggestionsPreferencesUseCase @Inject constructor(
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val suggestionsPreferencesRepository: SuggestionsPreferencesRepository,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     operator fun invoke(): Flow<SuggestionsPreferences> =
-        userPreferencesRepository.observeSuggestionsPreferences().flowOn(ioDispatcher)
+        suggestionsPreferencesRepository.observeSuggestionsPreferences().flowOn(ioDispatcher)
 }
