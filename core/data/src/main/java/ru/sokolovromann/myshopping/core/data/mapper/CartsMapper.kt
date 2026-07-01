@@ -81,9 +81,9 @@ class CartsMapper @Inject constructor(
         },
         entity.note,
         productsPreferencesMapper.toSort(
-            entity.sortProduct,
-            entity.sortProductByAscending
+            entity.sortProducts,
+            entity.sortProductsByAscending
         ),
-        productsPreferencesMapper.toGroupByStatus(entity.groupProductByStatus)
+        productsPreferencesMapper.toGroupByStatus(entity.groupProductsByStatus)
     )
 }

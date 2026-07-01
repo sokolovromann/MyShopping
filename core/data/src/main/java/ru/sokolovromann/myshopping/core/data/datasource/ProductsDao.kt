@@ -9,21 +9,21 @@ import ru.sokolovromann.myshopping.core.data.model.ProductEntity
 @Dao
 interface ProductsDao {
 
-    @Query("SELECT * FROM api39_products WHERE uid = :uid")
+    @Query("SELECT * FROM products WHERE uid = :uid")
     fun getProduct(uid: String): ProductEntity?
 
-    @Query("SELECT position FROM api39_products ORDER BY CAST(position AS INT) DESC LIMIT 1")
+    @Query("SELECT position FROM products ORDER BY CAST(position AS INT) DESC LIMIT 1")
     fun getCurrentProductPosition(): String?
 
     @Insert(onConflict = REPLACE)
     fun insertProducts(products: Collection<ProductEntity>)
 
-    @Query("DELETE FROM api39_products WHERE directory = :directory")
+    @Query("DELETE FROM products WHERE directory = :directory")
     fun deleteProducts(directory: String)
 
-    @Query("DELETE FROM api39_products WHERE uid IN(:uids)")
+    @Query("DELETE FROM products WHERE uid IN(:uids)")
     fun deleteProducts(uids: Collection<String>)
 
-    @Query("DELETE FROM api39_products")
+    @Query("DELETE FROM products")
     fun clearProducts()
 }

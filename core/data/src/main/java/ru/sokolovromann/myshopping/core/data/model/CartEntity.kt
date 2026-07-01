@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "api39_carts")
+@Entity(tableName = "carts")
 data class CartEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
@@ -37,22 +37,22 @@ data class CartEntity(
     @ColumnInfo(name = "discount", defaultValue = "")
     val discount: String,
 
-    @ColumnInfo(name = "discount_type", defaultValue = "")
+    @ColumnInfo(name = "discount_measurement_unit", defaultValue = "")
     val discountMeasurementUnit: String,
 
-    @ColumnInfo(name = "filter_discount_by_status", defaultValue = "")
+    @ColumnInfo(name = "filter_discount_by_product_status", defaultValue = "")
     val filterDiscountByProductStatus: String,
 
     @ColumnInfo(name = "total", defaultValue = "")
     val total: String,
 
-    @ColumnInfo(name = "filter_total_by_status", defaultValue = "")
+    @ColumnInfo(name = "filter_total_by_product_status", defaultValue = "")
     val filterTotalByProductStatus: String,
 
     @ColumnInfo(name = "budget", defaultValue = "")
     val budget: String,
 
-    @ColumnInfo(name = "filter_budget_by_status", defaultValue = "")
+    @ColumnInfo(name = "filter_budget_by_product_status", defaultValue = "")
     val filterBudgetByProductStatus: String,
 
     @ColumnInfo(name = "note", defaultValue = "")
@@ -61,12 +61,12 @@ data class CartEntity(
     @ColumnInfo(name = "image", defaultValue = "")
     val image: String,
 
-    @ColumnInfo(name = "sort", defaultValue = "")
-    val sortProduct: String,
+    @ColumnInfo(name = "sort_products", defaultValue = "")
+    val sortProducts: String,
 
-    @ColumnInfo(name = "sort_params", defaultValue = "")
-    val sortProductByAscending: String,
+    @ColumnInfo(name = "sort_products_by_ascending", defaultValue = "")
+    val sortProductsByAscending: String,
 
-    @ColumnInfo(name = "group", defaultValue = "")
-    val groupProductByStatus: String
+    @ColumnInfo(name = "group_products_by_status", defaultValue = "")
+    val groupProductsByStatus: String
 )

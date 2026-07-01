@@ -13,28 +13,28 @@ import ru.sokolovromann.myshopping.core.data.model.CartWithProductsEntity
 interface CartsDao {
 
     @Transaction
-    @Query("SELECT * FROM api39_carts WHERE directory = :directory")
+    @Query("SELECT * FROM carts WHERE directory = :directory")
     fun observeCartsWithProducts(directory: String): Flow<Collection<CartWithProductsEntity>>
 
     @Transaction
-    @Query("SELECT * FROM api39_carts WHERE uid = :uid")
+    @Query("SELECT * FROM carts WHERE uid = :uid")
     fun observeCartWithProducts(uid: String): Flow<CartWithProductsEntity?>
 
-    @Query("SELECT * FROM api39_carts WHERE uid = :uid")
+    @Query("SELECT * FROM carts WHERE uid = :uid")
     fun getCart(uid: String): CartEntity?
 
-    @Query("SELECT position FROM api39_carts ORDER BY CAST(position as INT) DESC LIMIT 1")
+    @Query("SELECT position FROM carts ORDER BY CAST(position as INT) DESC LIMIT 1")
     fun getCurrentCartPosition(): String?
 
     @Insert(onConflict = REPLACE)
     fun insertCarts(carts: Collection<CartEntity>)
 
-    @Query("DELETE FROM api39_carts WHERE directory = :directory")
+    @Query("DELETE FROM carts WHERE directory = :directory")
     fun deleteCarts(directory: String)
 
-    @Query("DELETE FROM api39_carts WHERE uid IN(:uids)")
+    @Query("DELETE FROM carts WHERE uid IN(:uids)")
     fun deleteCarts(uids: Collection<String>)
 
-    @Query("DELETE FROM api39_carts")
+    @Query("DELETE FROM carts")
     fun clearCarts()
 }

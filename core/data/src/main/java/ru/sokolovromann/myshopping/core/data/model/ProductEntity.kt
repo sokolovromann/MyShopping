@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "api39_products")
+@Entity(tableName = "products")
 data class ProductEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
@@ -34,7 +34,7 @@ data class ProductEntity(
     @ColumnInfo(name = "quantity", defaultValue = "")
     val quantity: String,
 
-    @ColumnInfo(name = "quantity_symbol", defaultValue = "")
+    @ColumnInfo(name = "quantity_measurement_unit", defaultValue = "")
     val quantityMeasurementUnit: String,
 
     @ColumnInfo(name = "unit_price", defaultValue = "")
@@ -46,10 +46,10 @@ data class ProductEntity(
     @ColumnInfo(name = "discount", defaultValue = "")
     val discount: String,
 
-    @ColumnInfo(name = "discount_type", defaultValue = "")
+    @ColumnInfo(name = "discount_measurement_unit", defaultValue = "")
     val discountMeasurementUnit: String,
 
-    @ColumnInfo(name = "taxRate", defaultValue = "")
+    @ColumnInfo(name = "tax", defaultValue = "")
     val tax: String,
 
     @ColumnInfo(name = "cost", defaultValue = "")

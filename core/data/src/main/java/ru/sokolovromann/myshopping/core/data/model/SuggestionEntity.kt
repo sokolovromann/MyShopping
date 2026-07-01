@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "api39_suggestions")
+@Entity(tableName = "suggestions")
 data class SuggestionEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
