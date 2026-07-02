@@ -21,19 +21,18 @@ import ru.sokolovromann.myshopping.core.domain.model.Purchase
 import ru.sokolovromann.myshopping.core.domain.model.PurchaseStatus
 import ru.sokolovromann.myshopping.core.domain.model.Purchases
 import ru.sokolovromann.myshopping.core.domain.model.PurchasesStatus
-import ru.sokolovromann.myshopping.core.domain.repository.CartsRepository
 import ru.sokolovromann.myshopping.core.domain.utils.PurchaseUtils
 import java.math.BigDecimal
 
 class ObservePurchasesUseCase @Inject constructor(
-    private val cartsRepository: CartsRepository,
+    private val observeCartsWithProductsUseCase: ObserveCartsWithProductsUseCase,
     private val observeCartsPreferencesUseCase: ObserveCartsPreferencesUseCase,
     private val observeProductsPreferencesUseCase: ObserveProductsPreferencesUseCase,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     operator fun invoke(directory: CartDirectory): Flow<Purchases> = combine(
-        flow = cartsRepository.observeCartsWithProducts(directory),
+        flow = observeCartsWithProductsUseCase(directory),
         flow2 = observeCartsPreferencesUseCase(),
         flow3 = observeProductsPreferencesUseCase(),
         transform = { cartsWithProducts, cartsPreferences, productsPreferences ->
