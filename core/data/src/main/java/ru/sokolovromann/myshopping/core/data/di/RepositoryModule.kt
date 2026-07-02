@@ -5,18 +5,27 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
+import ru.sokolovromann.myshopping.core.data.repository.AddEditProductPreferencesRepositoryImpl
+import ru.sokolovromann.myshopping.core.data.repository.BackupPreferencesRepositoryImpl
+import ru.sokolovromann.myshopping.core.data.repository.CartsPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.CartsRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.FabricsRepositoryImpl
+import ru.sokolovromann.myshopping.core.data.repository.GeneralPreferencesRepositoryImpl
+import ru.sokolovromann.myshopping.core.data.repository.ProductsPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.ProductsRepositoryImpl
+import ru.sokolovromann.myshopping.core.data.repository.SuggestionsPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.SuggestionsRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.UserConfigRepositoryImpl
-import ru.sokolovromann.myshopping.core.data.repository.UserPreferencesRepositoryImpl
+import ru.sokolovromann.myshopping.core.domain.repository.AddEditProductPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.BackupPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.CartsPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.CartsRepository
 import ru.sokolovromann.myshopping.core.domain.repository.FabricsRepository
+import ru.sokolovromann.myshopping.core.domain.repository.GeneralPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.ProductsRepository
+import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsRepository
 import ru.sokolovromann.myshopping.core.domain.repository.UserConfigRepository
-import ru.sokolovromann.myshopping.core.domain.repository.UserPreferencesRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -40,7 +49,27 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindUserPreferencesRepository(repository: UserPreferencesRepositoryImpl): UserPreferencesRepository
+    abstract fun bindGeneralPreferencesRepository(repository: GeneralPreferencesRepositoryImpl): GeneralPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCartsPreferencesRepository(repository: CartsPreferencesRepositoryImpl): CartsPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindProductsPreferencesRepository(repository: ProductsPreferencesRepositoryImpl): ProductsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAddEditProductPreferencesRepository(repository: AddEditProductPreferencesRepositoryImpl): AddEditProductPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSuggestionsPreferencesRepository(repository: SuggestionsPreferencesRepositoryImpl): SuggestionsPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBackupPreferencesRepository(repository: BackupPreferencesRepositoryImpl): BackupPreferencesRepository
 
     @Binds
     @Singleton

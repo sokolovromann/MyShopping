@@ -36,5 +36,49 @@ object DatasourceModule {
 
     @Provides
     @Singleton
-    fun provideLocalDataStore(@ApplicationContext context: Context) = LocalDataStore(context)
+    @GeneralPreferencesDataStore
+    fun provideGeneralPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.GENERAL_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @CartsPreferencesDataStore
+    fun provideCartsPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.CARTS_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @ProductsPreferencesDataStore
+    fun provideProductsPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.PRODUCTS_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @ProductsWidgetPreferencesDataStore
+    fun provideProductsWidgetPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.PRODUCTS_WIDGET_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @AddEditProductPreferencesDataStore
+    fun provideAddEditProductPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.ADD_EDIT_PRODUCT_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @SuggestionsPreferencesDataStore
+    fun provideSuggestionsPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.SUGGESTIONS_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @BackupPreferencesDataStore
+    fun provideBackupPreferencesDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.BACKUP_FILE_NAME)
+
+    @Provides
+    @Singleton
+    @UserConfigDataStore
+    fun provideUserConfigDataStore(@ApplicationContext context: Context) =
+        LocalDataStore.build(context, LocalDataStore.USER_FILE_NAME)
 }
