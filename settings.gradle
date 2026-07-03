@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "MyShopping"
 include ':app'
 include ':core:data'
+include ':core:di'
 include ':core:domain'

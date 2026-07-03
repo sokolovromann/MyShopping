@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
@@ -8,10 +10,11 @@ java {
 }
 kotlin {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+        jvmTarget = JvmTarget.JVM_11
     }
 }
 
 dependencies {
+    implementation project(':core:di')
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
 }
