@@ -2,10 +2,10 @@ package ru.sokolovromann.myshopping.core.data.repository
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.ProductsDao
 import ru.sokolovromann.myshopping.core.data.mapper.ProductsMapper
+import ru.sokolovromann.myshopping.core.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Position
 import ru.sokolovromann.myshopping.core.domain.model.Product
 import ru.sokolovromann.myshopping.core.domain.model.ProductDirectory
@@ -15,7 +15,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.ProductsRepository
 class ProductsRepositoryImpl @Inject constructor(
     private val productsDao: ProductsDao,
     private val productsMapper: ProductsMapper,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ProductsRepository {
 
     override suspend fun getProduct(uid: UID): Product? =

@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.core.data.repository
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -10,6 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.SuggestionsDao
 import ru.sokolovromann.myshopping.core.data.mapper.SuggestionsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.SuggestionsWithFabricsMapper
+import ru.sokolovromann.myshopping.core.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Suggestion
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics
 import ru.sokolovromann.myshopping.core.domain.model.UID
@@ -19,7 +19,7 @@ class SuggestionsRepositoryImpl @Inject constructor(
     private val suggestionsDao: SuggestionsDao,
     private val suggestionsWithFabricsMapper: SuggestionsWithFabricsMapper,
     private val suggestionsMapper: SuggestionsMapper,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : SuggestionsRepository {
 
     override fun observeSuggestionsWithFabrics(): Flow<Collection<SuggestionWithFabrics>> =

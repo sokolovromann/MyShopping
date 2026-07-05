@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.core.data.repository
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -10,6 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.CartsDao
 import ru.sokolovromann.myshopping.core.data.mapper.CartsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.CartsWithProductsMapper
+import ru.sokolovromann.myshopping.core.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Cart
 import ru.sokolovromann.myshopping.core.domain.model.CartDirectory
 import ru.sokolovromann.myshopping.core.domain.model.CartWithProducts
@@ -21,7 +21,7 @@ class CartsRepositoryImpl @Inject constructor(
     private val cartsDao: CartsDao,
     private val cartsWithProductsMapper: CartsWithProductsMapper,
     private val cartsMapper: CartsMapper,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : CartsRepository {
 
     override fun observeCartsWithProducts(directory: CartDirectory): Flow<Collection<CartWithProducts>> =
