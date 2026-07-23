@@ -3,8 +3,10 @@ package ru.sokolovromann.myshopping.core.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = "fabrics")
+@Serializable
 data class FabricEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
