@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.repository.AddEditProductPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.BackupPreferencesRepositoryImpl
+import ru.sokolovromann.myshopping.core.data.repository.BackupRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.CartsPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.CartsRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.FabricsRepositoryImpl
@@ -18,6 +19,7 @@ import ru.sokolovromann.myshopping.core.data.repository.SuggestionsRepositoryImp
 import ru.sokolovromann.myshopping.core.data.repository.UserConfigRepositoryImpl
 import ru.sokolovromann.myshopping.core.domain.repository.AddEditProductPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.BackupPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.BackupRepository
 import ru.sokolovromann.myshopping.core.domain.repository.CartsPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.CartsRepository
 import ru.sokolovromann.myshopping.core.domain.repository.FabricsRepository
@@ -46,6 +48,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindFabricsRepository(repository: FabricsRepositoryImpl): FabricsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBackupRepository(repository: BackupRepositoryImpl): BackupRepository
 
     @Binds
     @Singleton
