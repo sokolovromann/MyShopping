@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.SuggestionsDao
 import ru.sokolovromann.myshopping.core.data.mapper.SuggestionsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.SuggestionsWithFabricsMapper
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Suggestion
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics
 import ru.sokolovromann.myshopping.core.domain.model.UID

@@ -13,7 +13,7 @@ import ru.sokolovromann.myshopping.core.data.model.CartEntity
 import ru.sokolovromann.myshopping.core.data.model.FabricEntity
 import ru.sokolovromann.myshopping.core.data.model.ProductEntity
 import ru.sokolovromann.myshopping.core.data.model.SuggestionEntity
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Backup
 import ru.sokolovromann.myshopping.core.domain.model.BackupDirectory
 import ru.sokolovromann.myshopping.core.domain.model.BackupValue

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.di.GeneralPreferencesDataStore
 import ru.sokolovromann.myshopping.core.data.mapper.GeneralPreferencesMapper
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
 import ru.sokolovromann.myshopping.core.domain.repository.GeneralPreferencesRepository
 

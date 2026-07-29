@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Dictionary
 import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics

@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.ProductsDao
 import ru.sokolovromann.myshopping.core.data.mapper.ProductsMapper
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Position
 import ru.sokolovromann.myshopping.core.domain.model.Product
 import ru.sokolovromann.myshopping.core.domain.model.ProductDirectory

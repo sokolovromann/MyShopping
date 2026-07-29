@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Currency
 import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
@@ -17,7 +17,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.GeneralPreferencesRepo
 class UpdateGeneralPreferencesUseCase @Inject constructor(
     private val generalPreferencesRepository: GeneralPreferencesRepository,
     private val observeGeneralPreferencesUseCase: ObserveGeneralPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(preferences: GeneralPreferences): Unit =

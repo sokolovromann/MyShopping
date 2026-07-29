@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Tax
 import ru.sokolovromann.myshopping.core.domain.model.AddEditProductPreferences
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingProduct
@@ -16,7 +16,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.AddEditProductPreferen
 class UpdateAddEditProductPreferencesUseCase @Inject constructor(
     private val addEditProductPreferencesRepository: AddEditProductPreferencesRepository,
     private val observeAddEditProductPreferencesUseCase: ObserveAddEditProductPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(preferences: AddEditProductPreferences): Unit =

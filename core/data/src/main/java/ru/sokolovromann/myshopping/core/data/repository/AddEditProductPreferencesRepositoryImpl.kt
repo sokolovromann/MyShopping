@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.di.AddEditProductPreferencesDataStore
 import ru.sokolovromann.myshopping.core.data.mapper.AddEditProductPreferencesMapper
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.AddEditProductPreferences
 import ru.sokolovromann.myshopping.core.domain.repository.AddEditProductPreferencesRepository
 

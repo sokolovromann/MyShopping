@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.BackupDirectory
 import ru.sokolovromann.myshopping.core.domain.model.BackupPreferences
 import ru.sokolovromann.myshopping.core.domain.repository.BackupPreferencesRepository
@@ -12,7 +12,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.BackupPreferencesRepos
 class UpdateBackupPreferencesUseCase @Inject constructor(
     private val backupPreferencesRepository: BackupPreferencesRepository,
     private val observeBackupPreferencesUseCase: ObserveBackupPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(preferences: BackupPreferences): Unit =

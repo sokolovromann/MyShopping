@@ -2,10 +2,10 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.AddEditProductPreferences
 import ru.sokolovromann.myshopping.core.domain.model.BackupPreferences
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
@@ -23,7 +23,7 @@ class ObserveUserPreferencesUseCase @Inject constructor(
     private val observeAddEditProductPreferencesUseCase: ObserveAddEditProductPreferencesUseCase,
     private val suggestionsPreferencesUseCase: ObserveSuggestionsPreferencesUseCase,
     private val backupPreferencesUseCase: ObserveBackupPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     operator fun invoke(): Flow<UserPreferences> = combine(

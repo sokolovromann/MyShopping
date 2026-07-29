@@ -8,7 +8,7 @@ import androidx.core.app.ActivityCompat
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader

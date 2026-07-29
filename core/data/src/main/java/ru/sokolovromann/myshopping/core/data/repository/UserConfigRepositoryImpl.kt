@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.di.UserConfigDataStore
 import ru.sokolovromann.myshopping.core.data.mapper.UserConfigMapper
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.UserConfig
 import ru.sokolovromann.myshopping.core.domain.repository.UserConfigRepository
 

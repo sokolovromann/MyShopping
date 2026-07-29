@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
@@ -22,7 +22,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.CartsPreferencesReposi
 class UpdateCartsPreferencesUseCase @Inject constructor(
     private val cartsPreferencesRepository: CartsPreferencesRepository,
     private val observeCartsPreferencesUseCase: ObserveCartsPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(preferences: CartsPreferences): Unit =

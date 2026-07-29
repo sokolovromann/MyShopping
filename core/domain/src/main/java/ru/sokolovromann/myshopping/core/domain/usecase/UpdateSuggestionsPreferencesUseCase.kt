@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
 import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
@@ -16,7 +16,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsPreferences
 class UpdateSuggestionsPreferencesUseCase @Inject constructor(
     private val suggestionsPreferencesRepository: SuggestionsPreferencesRepository,
     private val observeSuggestionsPreferencesUseCase: ObserveSuggestionsPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(preferences: SuggestionsPreferences): Unit =

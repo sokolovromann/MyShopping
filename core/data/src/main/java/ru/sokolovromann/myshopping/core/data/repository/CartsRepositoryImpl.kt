@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.CartsDao
 import ru.sokolovromann.myshopping.core.data.mapper.CartsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.CartsWithProductsMapper
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Cart
 import ru.sokolovromann.myshopping.core.domain.model.CartDirectory
 import ru.sokolovromann.myshopping.core.domain.model.CartWithProducts

@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.SortProducts
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
@@ -15,7 +15,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.ProductsWidgetPreferen
 class UpdateProductsWidgetPreferencesUseCase @Inject constructor(
     private val productsWidgetPreferencesRepository: ProductsWidgetPreferencesRepository,
     private val observeProductsWidgetPreferencesUseCase: ObserveProductsWidgetPreferencesUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(preferences: ProductsWidgetPreferences): Unit =

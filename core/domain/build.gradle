@@ -15,6 +15,6 @@ kotlin {
 }
 
 dependencies {
-    implementation project(':core:di')
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
 }

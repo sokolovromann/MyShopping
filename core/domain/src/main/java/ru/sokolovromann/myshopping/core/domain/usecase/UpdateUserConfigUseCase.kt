@@ -2,9 +2,9 @@ package ru.sokolovromann.myshopping.core.domain.usecase
 
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.API
 import ru.sokolovromann.myshopping.core.domain.model.UserConfig
 import ru.sokolovromann.myshopping.core.domain.repository.UserConfigRepository
@@ -12,7 +12,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.UserConfigRepository
 class UpdateUserConfigUseCase @Inject constructor(
     private val userConfigRepository: UserConfigRepository,
     private val observeUserConfigUseCase: ObserveUserConfigUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(config: UserConfig): Unit = withContext(ioDispatcher) {

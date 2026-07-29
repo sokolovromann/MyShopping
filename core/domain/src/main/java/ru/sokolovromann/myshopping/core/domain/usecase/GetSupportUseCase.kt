@@ -4,7 +4,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.core.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Support
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsRepository
@@ -16,13 +16,14 @@ class GetSupportUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(uid: UID): Support? = withContext(ioDispatcher) {
-        suggestionsRepository.getSuggestionWithFabrics(uid)?.let { suggestionWithFabrics ->
-            val preferences = observeSuggestionsPreferencesUseCase().first()
-            SupportUtils.createSupport(
-                suggestionWithFabrics,
-                preferences.displaySuggestionDetails
-            )
+    suspend operator fun invoke(uid: UID): Support? =
+        withContext(ioDispatcher) {
+            suggestionsRepository.getSuggestionWithFabrics(uid)?.let { suggestionWithFabrics ->
+                val preferences = observeSuggestionsPreferencesUseCase().first()
+                SupportUtils.createSupport(
+                    suggestionWithFabrics,
+                    preferences.displaySuggestionDetails
+                )
+            }
         }
-    }
 }
