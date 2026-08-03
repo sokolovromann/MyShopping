@@ -16,4 +16,5 @@ rootProject.name = "MyShopping"
 include ':app'
 include ':core:data'
 include ':core:domain'
+include ':core:ui'
 include ':old:api15'
