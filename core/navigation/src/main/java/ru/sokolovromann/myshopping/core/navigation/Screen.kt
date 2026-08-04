@@ -51,4 +51,7 @@ sealed interface Screen {
 
     @Serializable
     data object About : Screen
+
+    @Serializable
+    data class Migration(val api: Long) : Screen
 }
