@@ -253,7 +253,7 @@ enum class MyShoppingThemeType {
 fun MyShoppingTheme(
     themeType: MyShoppingThemeType = MyShoppingThemeType.Light,
     contrastLevel: Float = getLocalContrastLevel(),
-    fontSize: MyShoppingThemeFontSize,
+    fontSize: MyShoppingThemeFontSize = MyShoppingThemeFontSize.Medium,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
