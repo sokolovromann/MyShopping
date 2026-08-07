@@ -96,7 +96,7 @@ class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPrefer
         LocalDataStoreScheme.Carts.CALCULATE_PRODUCTS_TOTAL
                 to model.calculateProductsTotal.javaClass.simpleName,
         LocalDataStoreScheme.Carts.PRODUCTS_TOTAL_CALCULATING_MODE
-                to model.calculateProductsTotal.getCalculatingMode().toString(),
+                to model.calculateProductsTotal.getTotalCalculatingMode().toString(),
         LocalDataStoreScheme.Carts.AFTER_ADDING
                 to model.afterAdding.toString(),
         LocalDataStoreScheme.Carts.AFTER_COMPLETING

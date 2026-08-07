@@ -90,7 +90,7 @@ class ProductsPreferencesMapper @Inject constructor() : DataStoreMapper<Products
         LocalDataStoreScheme.Products.CALCULATE_PRODUCTS_TOTAL
                 to model.calculateTotal.javaClass.simpleName,
         LocalDataStoreScheme.Products.PRODUCTS_TOTAL_CALCULATING_MODE
-                to model.calculateTotal.getCalculatingMode().toString(),
+                to model.calculateTotal.getTotalCalculatingMode().toString(),
         LocalDataStoreScheme.Products.STRIKETHROUGH_COMPLETED
                 to model.strikethroughCompleted.toString(),
         LocalDataStoreScheme.Products.AFTER_COMPLETING

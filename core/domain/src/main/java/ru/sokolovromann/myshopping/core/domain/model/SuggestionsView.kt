@@ -6,7 +6,7 @@ sealed class SuggestionsView {
 
     data class Grid(val displayMode: SuggestionsFieldsDisplayMode) : SuggestionsView()
 
-    fun getDisplayMode() = when (this) {
+    fun getFieldsDisplayMode() = when (this) {
         is List -> displayMode
         is Grid -> displayMode
     }

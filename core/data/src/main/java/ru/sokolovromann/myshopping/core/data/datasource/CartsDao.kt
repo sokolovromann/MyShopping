@@ -14,7 +14,7 @@ interface CartsDao {
 
     @Transaction
     @Query("SELECT * FROM carts WHERE directory = :directory")
-    fun observeCartsWithProducts(directory: String): Flow<Collection<CartWithProductsEntity>>
+    fun observeCartsWithProducts(directory: String): Flow<List<CartWithProductsEntity>>
 
     @Transaction
     @Query("SELECT * FROM carts WHERE uid = :uid")

@@ -24,6 +24,7 @@ import ru.sokolovromann.myshopping.core.domain.repository.CartsPreferencesReposi
 import ru.sokolovromann.myshopping.core.domain.repository.CartsRepository
 import ru.sokolovromann.myshopping.core.domain.repository.FabricsRepository
 import ru.sokolovromann.myshopping.core.domain.repository.GeneralPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.ProductsPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.ProductsRepository
 import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsRepository
@@ -63,7 +64,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindProductsPreferencesRepository(repository: ProductsPreferencesRepositoryImpl): ProductsRepository
+    abstract fun bindProductsPreferencesRepository(repository: ProductsPreferencesRepositoryImpl): ProductsPreferencesRepository
 
     @Binds
     @Singleton

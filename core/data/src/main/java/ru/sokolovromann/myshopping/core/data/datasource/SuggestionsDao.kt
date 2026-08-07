@@ -16,6 +16,7 @@ interface SuggestionsDao {
     @Query("SELECT * FROM suggestions")
     fun observeSuggestionWithFabrics(): Flow<List<SuggestionWithFabricsEntity>>
 
+    @Transaction
     @Query("SELECT * FROM suggestions WHERE uid = :uid")
     fun getSuggestionWithFabrics(uid: String): SuggestionWithFabricsEntity?
 

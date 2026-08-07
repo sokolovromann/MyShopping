@@ -44,7 +44,7 @@ class SuggestionsPreferencesMapper @Inject constructor() : DataStoreMapper<Sugge
         LocalDataStoreScheme.Suggestions.VIEW
                 to model.view.javaClass.simpleName,
         LocalDataStoreScheme.Suggestions.FIELDS_DISPLAY_MODE
-                to model.view.getDisplayMode().toString(),
+                to model.view.getFieldsDisplayMode().toString(),
         LocalDataStoreScheme.Suggestions.SORT
                 to model.sort.javaClass.simpleName,
         LocalDataStoreScheme.Suggestions.SORT_BY_ASCENDING

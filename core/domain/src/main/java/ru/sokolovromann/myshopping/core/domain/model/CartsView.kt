@@ -2,12 +2,12 @@ package ru.sokolovromann.myshopping.core.domain.model
 
 sealed class CartsView {
 
-    data class List(val productsDisplayMode: CartsProductsDisplayMode) : CartsView()
+    data class List(val displayMode: CartsProductsDisplayMode) : CartsView()
 
-    data class Grid(val productsDisplayMode: CartsProductsDisplayMode) : CartsView()
+    data class Grid(val displayMode: CartsProductsDisplayMode) : CartsView()
 
     fun getProductsDisplayMode() = when (this) {
-        is List -> productsDisplayMode
-        is Grid -> productsDisplayMode
+        is List -> displayMode
+        is Grid -> displayMode
     }
 }

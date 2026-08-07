@@ -10,7 +10,7 @@ sealed class CalculateProductsTotal {
 
     data object DoNotCalculate : CalculateProductsTotal()
 
-    fun getCalculatingMode(): ProductsTotalCalculatingMode? = when (this) {
+    fun getTotalCalculatingMode(): ProductsTotalCalculatingMode? = when (this) {
         is AllProducts -> calculatingMode
         is CompletedProducts -> calculatingMode
         is ActiveProducts -> calculatingMode
