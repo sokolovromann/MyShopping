@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="navigation_header">My Shopping List</string>
+
+    <string name="navigation_icon_back">Zurück</string>
+    <string name="navigation_icon_close">Schließen</string>
+    <string name="navigation_icon_menu">Menü</string>
+
+    <string name="navigation_item_about">Über die App</string>
+    <string name="navigation_item_archive">Archiv</string>
+    <string name="navigation_item_dictionary">Vorschläge</string>
+    <string name="navigation_item_purchases">Einkäufe</string>
+    <string name="navigation_item_settings">Einstellungen</string>
+    <string name="navigation_item_trash">Müll</string>
+</resources>

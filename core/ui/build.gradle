@@ -33,6 +33,7 @@ kotlin {
 
 dependencies {
     api 'androidx.compose.material3:material3:1.4.0'
+    api 'androidx.compose.material3:material3-adaptive:1.0.0-alpha06'
     api 'androidx.compose.material3:material3-window-size-class:1.4.0'
     api 'androidx.compose.material:material-icons-extended:1.7.8'
     api 'androidx.compose.ui:ui:1.11.4'

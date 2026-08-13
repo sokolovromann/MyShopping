@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="navigation_header">Moje zakupy</string>
+
+    <string name="navigation_icon_back">Wstecz</string>
+    <string name="navigation_icon_close">Zamknąć</string>
+    <string name="navigation_icon_menu">Menu</string>
+
+    <string name="navigation_item_about">O aplikacji</string>
+    <string name="navigation_item_archive">Archiwum</string>
+    <string name="navigation_item_dictionary">Sugestie</string>
+    <string name="navigation_item_purchases">Zakupy</string>
+    <string name="navigation_item_settings">Ustawienia</string>
+    <string name="navigation_item_trash">Kosz</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="navigation_header">Мои покупки</string>
+
+    <string name="navigation_icon_back">Назад</string>
+    <string name="navigation_icon_close">Закрыть</string>
+    <string name="navigation_icon_menu">Меню</string>
+
+    <string name="navigation_item_about">О приложении</string>
+    <string name="navigation_item_archive">Архив</string>
+    <string name="navigation_item_dictionary">Подсказки</string>
+    <string name="navigation_item_purchases">Покупки</string>
+    <string name="navigation_item_settings">Настройки</string>
+    <string name="navigation_item_trash">Корзина</string>
+</resources>
