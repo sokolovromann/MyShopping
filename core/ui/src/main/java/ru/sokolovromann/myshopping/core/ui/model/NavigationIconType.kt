@@ -6,7 +6,7 @@ sealed class NavigationIconType {
 
     data object Back : NavigationIconType()
 
-    data object Close : NavigationIconType()
+    data object Cancel : NavigationIconType()
 
     data class Other(val icon: UiIcon, val description: String) : NavigationIconType()
 }

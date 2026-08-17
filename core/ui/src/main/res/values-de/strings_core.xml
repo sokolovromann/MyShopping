@@ -3,7 +3,7 @@
     <string name="navigation_header">My Shopping List</string>
 
     <string name="navigation_icon_back">Zurück</string>
-    <string name="navigation_icon_close">Schließen</string>
+    <string name="navigation_icon_cancel">Stornieren</string>
     <string name="navigation_icon_menu">Menü</string>
 
     <string name="navigation_item_about">Über die App</string>

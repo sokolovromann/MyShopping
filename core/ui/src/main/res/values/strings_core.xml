@@ -3,7 +3,7 @@
     <string name="navigation_header">My Shopping List</string>
 
     <string name="navigation_icon_back">Back</string>
-    <string name="navigation_icon_close">Close</string>
+    <string name="navigation_icon_cancel">Cancel</string>
     <string name="navigation_icon_menu">Menu</string>
 
     <string name="navigation_item_about">About</string>

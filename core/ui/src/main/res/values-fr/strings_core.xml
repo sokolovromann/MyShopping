@@ -3,7 +3,7 @@
     <string name="navigation_header">Mes achats</string>
 
     <string name="navigation_icon_back">Dos</string>
-    <string name="navigation_icon_close">Fermer</string>
+    <string name="navigation_icon_cancel">Annuler</string>
     <string name="navigation_icon_menu">Menu</string>
 
     <string name="navigation_item_about">Infos sur l\'application</string>

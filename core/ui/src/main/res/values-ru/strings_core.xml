@@ -3,7 +3,7 @@
     <string name="navigation_header">Мои покупки</string>
 
     <string name="navigation_icon_back">Назад</string>
-    <string name="navigation_icon_close">Закрыть</string>
+    <string name="navigation_icon_cancel">Отмена</string>
     <string name="navigation_icon_menu">Меню</string>
 
     <string name="navigation_item_about">О приложении</string>

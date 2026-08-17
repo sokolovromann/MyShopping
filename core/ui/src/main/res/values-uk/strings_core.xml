@@ -3,7 +3,7 @@
     <string name="navigation_header">Мої покупки</string>
 
     <string name="navigation_icon_back">Назад</string>
-    <string name="navigation_icon_close">Закрити</string>
+    <string name="navigation_icon_cancel">Скасування</string>
     <string name="navigation_icon_menu">Меню</string>
 
     <string name="navigation_item_about">Про програму</string>
