@@ -18,16 +18,14 @@ import ru.sokolovromann.myshopping.old.api15.model.Shopping
 import ru.sokolovromann.myshopping.old.api15.model.Suggestion
 import ru.sokolovromann.myshopping.old.api15.model.SuggestionDetail
 import ru.sokolovromann.myshopping.old.api15.model.UserPreferences
-import kotlin.coroutines.CoroutineContext
 
 class GetApi15DataUseCase @Inject constructor(
     private val api15Dao: Api15Dao,
-    @Api15DataStore private val dataStore: DataStore<Preferences>,
-    private val dispatcher: CoroutineContext = Dispatchers.IO
+    @Api15DataStore private val dataStore: DataStore<Preferences>
 ) {
 
     suspend operator fun invoke(): Api15Data =
-        withContext(dispatcher) {
+        withContext(Dispatchers.IO) {
             Api15Data(
                 getShoppings(),
                 getProducts(),
