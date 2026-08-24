@@ -32,6 +32,8 @@ android {
         }
         debug {
             debuggable true
+            shrinkResources true
+            minifyEnabled true
         }
     }
     compileOptions {
