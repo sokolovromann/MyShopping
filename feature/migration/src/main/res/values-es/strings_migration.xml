@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="migration_btn_finish">Continuar</string>
+    <string name="migration_btn_start">Transferir</string>
+
+    <string name="migration_header">Mis compras 3.0.0</string>
+
+    <string name="migration_text_finish">Tus datos se transfirieron correctamente.</string>
+    <string name="migration_text_initial">La aplicación se actualizó. Ahora, debes transferir tus datos a la nueva versión.</string>
+    <string name="migration_text_migrating">Espere por favor…</string>
+</resources>

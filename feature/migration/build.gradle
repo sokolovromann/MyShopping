@@ -43,6 +43,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.19.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0'
     implementation 'com.google.android.material:material:1.14.0'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.4.0'
     implementation 'com.google.dagger:hilt-android:2.60.1'
     ksp 'com.google.dagger:hilt-compiler:2.60.1'
     testImplementation 'junit:junit:4.13.2'

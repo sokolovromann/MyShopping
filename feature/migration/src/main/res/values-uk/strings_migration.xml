@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="migration_btn_finish">Продовжити</string>
+    <string name="migration_btn_start">Перенести</string>
+
+    <string name="migration_header">Мої покупки 3.0.0</string>
+
+    <string name="migration_text_finish">Дані успішно перенесено.</string>
+    <string name="migration_text_initial">Програма оновилася, тепер вам потрібно перемістити дані до нової версії програми.</string>
+    <string name="migration_text_migrating">Зачекайте, будь ласка…</string>
+</resources>
