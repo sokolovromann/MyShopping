@@ -6,5 +6,7 @@ sealed class NavigationAction {
 
     data class NavigateTo(val screen: Screen) : NavigationAction()
 
-    data object PopBackStack : NavigationAction()
+    data object NavigateBack : NavigationAction()
+
+    data object Finish : NavigationAction()
 }

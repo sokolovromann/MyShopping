@@ -18,6 +18,10 @@ class NavigatorImpl @Inject constructor() : Navigator {
     }
 
     override fun navigateBack() {
-        _navigationActions.tryEmit(NavigationAction.PopBackStack)
+        _navigationActions.tryEmit(NavigationAction.NavigateBack)
+    }
+
+    override fun finish() {
+        _navigationActions.tryEmit(NavigationAction.Finish)
     }
 }

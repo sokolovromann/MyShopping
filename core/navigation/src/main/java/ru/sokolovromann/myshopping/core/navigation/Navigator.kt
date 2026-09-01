@@ -5,4 +5,6 @@ interface Navigator {
     fun navigateTo(screen: Screen)
 
     fun navigateBack()
+
+    fun finish()
 }
