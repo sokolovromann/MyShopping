@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="data_default_currency">€</string>
+    <string name="data_default_currency_display_side">Right</string>
+    <string name="data_default_date_time_formatting_mode">DDMMMYYYY</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+    <string-array name="data_default_suggestion_names" tools:ignore="InconsistentArrays">
+        <item>Agneau</item>
+        <item>Ail</item>
+        <item>Ananas</item>
+        <item>Aneth</item>
+        <item>Asperges</item>
+        <item>Assainisseur d\'air</item>
+        <item>Aubergine</item>
+        <item>Avocats</item>
+        <item>Bagels</item>
+        <item>Bananes</item>
+        <item>Basilic</item>
+        <item>Beignets</item>
+        <item>Betterave</item>
+        <item>Beurre d\'arachide</item>
+        <item>Beurre</item>
+        <item>Biscuits</item>
+        <item>Bonbons</item>
+        <item>Brocoli</item>
+        <item>Bœuf</item>
+        <item>Cacahuètes</item>
+        <item>Café</item>
+        <item>Cannelle</item>
+        <item>Carottes</item>
+        <item>Cerise</item>
+        <item>Champignons</item>
+        <item>Chapelure</item>
+        <item>Chocolat</item>
+        <item>Chou-fleur</item>
+        <item>Chou</item>
+        <item>Choux de Bruxelles</item>
+        <item>Chéri</item>
+        <item>Citrons verts</item>
+        <item>Citrons</item>
+        <item>Citrouille</item>
+        <item>Concombres</item>
+        <item>Confiture</item>
+        <item>Coriandre</item>
+        <item>Courgettes</item>
+        <item>Craquelins</item>
+        <item>Crevette</item>
+        <item>Croûtons</item>
+        <item>Crème aigre</item>
+        <item>Crème</item>
+        <item>Céleri</item>
+        <item>Dentifrice</item>
+        <item>Des fraises</item>
+        <item>Des noisettes</item>
+        <item>Des oranges</item>
+        <item>Des poires</item>
+        <item>Déodorant</item>
+        <item>Eau gazeuse</item>
+        <item>Eau</item>
+        <item>Farine</item>
+        <item>Feuille de laurier</item>
+        <item>Figues</item>
+        <item>Fraise</item>
+        <item>Fromage Frais</item>
+        <item>Fromage blanc</item>
+        <item>Fromage en tranches</item>
+        <item>Fromage rapé</item>
+        <item>Fromage</item>
+        <item>Fruits de la passion</item>
+        <item>Fèves</item>
+        <item>Gaufres</item>
+        <item>Gencive</item>
+        <item>Glace</item>
+        <item>Grenades</item>
+        <item>Gâteau</item>
+        <item>Haricots verts</item>
+        <item>Haricots</item>
+        <item>Homard</item>
+        <item>Hot-dog</item>
+        <item>Huile d\'olive</item>
+        <item>Huile de tournesol</item>
+        <item>Huile végétale</item>
+        <item>Huile</item>
+        <item>Jambon</item>
+        <item>Jus</item>
+        <item>Kaki</item>
+        <item>Ketchup</item>
+        <item>Kiwis</item>
+        <item>Lait</item>
+        <item>Laitue</item>
+        <item>Lard</item>
+        <item>Le bœuf haché</item>
+        <item>Les pêches</item>
+        <item>Lessive</item>
+        <item>Mandarines</item>
+        <item>Mangues</item>
+        <item>Mayonnaise</item>
+        <item>Maïs</item>
+        <item>Melon</item>
+        <item>Moutarde</item>
+        <item>Muffins</item>
+        <item>Myrtille</item>
+        <item>Mûre</item>
+        <item>Noisettes</item>
+        <item>Noix d\'amandes</item>
+        <item>Noix de coco</item>
+        <item>Noix</item>
+        <item>Nouilles</item>
+        <item>Oignons</item>
+        <item>Olives</item>
+        <item>Pain aux raisins</item>
+        <item>Pain blanc</item>
+        <item>Pain de mie</item>
+        <item>Pain de seigle</item>
+        <item>Pain pita</item>
+        <item>Pain</item>
+        <item>Pamplemousses</item>
+        <item>Papaye</item>
+        <item>Pastèque</item>
+        <item>Patates</item>
+        <item>Persil</item>
+        <item>Petits pois</item>
+        <item>Pizza</item>
+        <item>Poisson</item>
+        <item>Poivre</item>
+        <item>Poivrons</item>
+        <item>Pomme de terre</item>
+        <item>Pommes</item>
+        <item>Popcorn</item>
+        <item>Porc</item>
+        <item>Poulet</item>
+        <item>Puces</item>
+        <item>Pâtes</item>
+        <item>Radis</item>
+        <item>Raisins</item>
+        <item>Rasoirs</item>
+        <item>Rembourrage</item>
+        <item>Riz</item>
+        <item>Sac poubelle</item>
+        <item>Saucisse</item>
+        <item>Savon à vaisselle</item>
+        <item>Savon</item>
+        <item>Sel</item>
+        <item>Serviettes en papier</item>
+        <item>Serviettes</item>
+        <item>Shampooing</item>
+        <item>Soupe</item>
+        <item>Squash</item>
+        <item>Steak</item>
+        <item>Sucre</item>
+        <item>Thé</item>
+        <item>Tomates</item>
+        <item>Tortillas</item>
+        <item>Turquie</item>
+        <item>Vinaigre</item>
+        <item>Yaourt</item>
+        <item>Épinard</item>
+        <item>Éponge</item>
+        <item>Œufs</item>
+    </string-array>
+</resources>

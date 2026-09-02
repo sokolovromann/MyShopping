@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="data_default_currency">\ zł</string>
+    <string name="data_default_currency_display_side">Right</string>
+    <string name="data_default_date_time_formatting_mode">DDMMMYYYY</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+    <string-array name="data_default_suggestion_names" tools:ignore="InconsistentArrays">
+        <item>Ananas</item>
+        <item>Arbuz</item>
+        <item>Awokado</item>
+        <item>Bajgle</item>
+        <item>Bakłażan</item>
+        <item>Banany</item>
+        <item>Bazylia</item>
+        <item>Bekon</item>
+        <item>Biały chleb</item>
+        <item>Biszkopt</item>
+        <item>Brokuły</item>
+        <item>Brukselka</item>
+        <item>Brzoskwinie</item>
+        <item>Burak czerwony</item>
+        <item>Bułka tarta</item>
+        <item>Bób Fasola</item>
+        <item>Cebula</item>
+        <item>Chipsy</item>
+        <item>Chleb</item>
+        <item>Chleb kanapkowy</item>
+        <item>Chleb z rodzynkami</item>
+        <item>Chleb żytni</item>
+        <item>Ciasteczka</item>
+        <item>Ciasto</item>
+        <item>Cukier</item>
+        <item>Cukinia</item>
+        <item>Cynamon</item>
+        <item>Cytryny</item>
+        <item>Czekolada</item>
+        <item>Czosnek</item>
+        <item>Dezodorant</item>
+        <item>Dynia</item>
+        <item>Dżem</item>
+        <item>Farsz</item>
+        <item>Fasola</item>
+        <item>Figi</item>
+        <item>Gofry</item>
+        <item>Granaty</item>
+        <item>Grejpfruty</item>
+        <item>Groszek</item>
+        <item>Gruszki</item>
+        <item>Grzanki</item>
+        <item>Guma do żucia</item>
+        <item>Herbata</item>
+        <item>Homar</item>
+        <item>Hot dog</item>
+        <item>Indyk</item>
+        <item>Jabłka</item>
+        <item>Jagnięcina</item>
+        <item>Jagoda</item>
+        <item>Jajka</item>
+        <item>Jeżyna</item>
+        <item>Jogurt</item>
+        <item>Kalafior</item>
+        <item>Kapusta</item>
+        <item>Karmazyna</item>
+        <item>Kawa</item>
+        <item>Ketchup</item>
+        <item>Kiełbasa</item>
+        <item>Kiwi</item>
+        <item>Kokos</item>
+        <item>Kolendra</item>
+        <item>Koperek</item>
+        <item>Krakersy</item>
+        <item>Krewetki</item>
+        <item>Kukurydza</item>
+        <item>Kurczak</item>
+        <item>Limonki</item>
+        <item>Liść laurowy</item>
+        <item>Lody</item>
+        <item>Majonez</item>
+        <item>Makaron</item>
+        <item>Mandarynki</item>
+        <item>Mango</item>
+        <item>Marakuja</item>
+        <item>Marchewka</item>
+        <item>Masło</item>
+        <item>Masło orzechowe</item>
+        <item>Melon</item>
+        <item>Mielona wołowina</item>
+        <item>Migdały</item>
+        <item>Miód</item>
+        <item>Mleko</item>
+        <item>Muffinki</item>
+        <item>Musztarda</item>
+        <item>Mydło</item>
+        <item>Mąka</item>
+        <item>Ocet</item>
+        <item>Odświeżacz powietrza</item>
+        <item>Ogórki</item>
+        <item>Olej roślinny</item>
+        <item>Olej słonecznikowy</item>
+        <item>Oliwa</item>
+        <item>Oliwa z oliwek</item>
+        <item>Oliwki</item>
+        <item>Orzechy</item>
+        <item>Orzechy laskowe</item>
+        <item>Orzechy włoskie</item>
+        <item>Orzeszki ziemne</item>
+        <item>Papaja</item>
+        <item>Papryka</item>
+        <item>Pasta do zębów</item>
+        <item>Pieczarki</item>
+        <item>Pieprz</item>
+        <item>Pietruszka</item>
+        <item>Pita Chleb</item>
+        <item>Pizza</item>
+        <item>Pomarańcze</item>
+        <item>Pomidory</item>
+        <item>Popcorn</item>
+        <item>Proszek do prania</item>
+        <item>Pączki</item>
+        <item>Płyn do mycia naczyń</item>
+        <item>Ryby</item>
+        <item>Ryż</item>
+        <item>Rzodkiewka</item>
+        <item>Ręczniki papierowe</item>
+        <item>Sałata</item>
+        <item>Seler</item>
+        <item>Ser</item>
+        <item>Ser w plasterkach</item>
+        <item>Serek śmietankowy</item>
+        <item>Serwetki</item>
+        <item>Sok</item>
+        <item>Stary ser</item>
+        <item>Stek</item>
+        <item>Szampon</item>
+        <item>Szparagi</item>
+        <item>Szpinak</item>
+        <item>Szynka</item>
+        <item>Sól</item>
+        <item>Słodycze</item>
+        <item>Tortille</item>
+        <item>Truskawka</item>
+        <item>Twaróg</item>
+        <item>Wieprzowina</item>
+        <item>Winogrona</item>
+        <item>Wiśnia</item>
+        <item>Woda</item>
+        <item>Woda gazowana</item>
+        <item>Worki na śmieci</item>
+        <item>Wołowina</item>
+        <item>Zielona fasolka</item>
+        <item>Ziemniaki</item>
+        <item>Zupa</item>
+        <item>Śmietana</item>
+        <item>Środek do czyszczenia muszli klozetowej</item>
+        <item>Żyletki</item>
+    </string-array>
+</resources>

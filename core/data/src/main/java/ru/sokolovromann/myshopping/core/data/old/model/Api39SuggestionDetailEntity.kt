@@ -1,13 +1,11 @@
-package ru.sokolovromann.myshopping.data39.suggestions
+package ru.sokolovromann.myshopping.core.data.old.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
-@Serializable
-@Entity(tableName = "api39_suggestions")
-data class SuggestionRoomEntity(
+@Entity(tableName = "api39_suggestion_details")
+data class Api39SuggestionDetailEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
     val uid: String,
@@ -21,8 +19,14 @@ data class SuggestionRoomEntity(
     @ColumnInfo(name = "last_modified", defaultValue = "")
     val lastModified: String,
 
-    @ColumnInfo(name = "name", defaultValue = "")
-    val name: String,
+    @ColumnInfo(name = "type", defaultValue = "")
+    val type: String,
+
+    @ColumnInfo(name = "value", defaultValue = "")
+    val value: String,
+
+    @ColumnInfo(name = "value_params", defaultValue = "")
+    val valueParams: String,
 
     @ColumnInfo(name = "used", defaultValue = "")
     val used: String

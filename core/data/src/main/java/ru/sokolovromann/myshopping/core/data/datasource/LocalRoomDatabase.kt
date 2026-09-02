@@ -27,12 +27,12 @@ abstract class LocalRoomDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "api42_database"
         const val API42_DATABASE_VERSION = 1
 
-        fun build(context: Context): LocalRoomDatabase =
+        fun build(context: Context, callback: LocalRoomDatabaseCallback): LocalRoomDatabase =
             Room.databaseBuilder(
                 context,
                 LocalRoomDatabase::class.java,
                 DATABASE_NAME
-            ).build()
+            ).addCallback(callback).build()
     }
 
     abstract fun getCartsDao(): CartsDao

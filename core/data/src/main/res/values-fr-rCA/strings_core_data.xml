@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="data_default_currency">$</string>
+    <string name="data_default_currency_display_side">Left</string>
+    <string name="data_default_date_time_formatting_mode">YYYYMMMDD</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+</resources>

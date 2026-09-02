@@ -64,7 +64,7 @@ class GeneralPreferencesMapper @Inject constructor() : DataStoreMapper<GeneralPr
                 to model.keyboardDisplayDelay.toString()
     )
 
-    private fun toDateTimeFormattingMode(
+    fun toDateTimeFormattingMode(
         formattingMode: String?,
         is24HourFormat: String?
     ): DateTimeFormattingMode {
@@ -77,7 +77,7 @@ class GeneralPreferencesMapper @Inject constructor() : DataStoreMapper<GeneralPr
         }
     }
 
-    private fun toCurrency(sign: String?, displaySide: String?): Currency {
+    fun toCurrency(sign: String?, displaySide: String?): Currency {
         val currencySign = sign.orEmpty()
         return when (displaySide) {
             "Left" -> Currency.Left(currencySign)

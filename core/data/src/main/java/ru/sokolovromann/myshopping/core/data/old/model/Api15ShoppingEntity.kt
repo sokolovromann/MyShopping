@@ -1,11 +1,9 @@
-package ru.sokolovromann.myshopping.data39.old
+package ru.sokolovromann.myshopping.core.data.old.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
-@Serializable
 @Entity(tableName = "shoppings")
 data class Api15ShoppingEntity(
     @PrimaryKey(autoGenerate = true)

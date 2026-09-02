@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="data_default_currency">\ ₽</string>
+    <string name="data_default_currency_display_side">Right</string>
+    <string name="data_default_date_time_formatting_mode">DDMMMYYYY</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+    <string-array name="data_default_suggestion_names" tools:ignore="InconsistentArrays">
+        <item>Авокадо</item>
+        <item>Ананас</item>
+        <item>Апельсины</item>
+        <item>Арахис</item>
+        <item>Арбуз</item>
+        <item>Баклажан</item>
+        <item>Бананы</item>
+        <item>Баранина</item>
+        <item>Батон</item>
+        <item>Бекон</item>
+        <item>Блины</item>
+        <item>Бобы</item>
+        <item>Бритвы</item>
+        <item>Брокколи</item>
+        <item>Брюссельская капуста</item>
+        <item>Вареники</item>
+        <item>Ветчина</item>
+        <item>Виноград</item>
+        <item>Вишня</item>
+        <item>Вода</item>
+        <item>Говядина</item>
+        <item>Горох</item>
+        <item>Горчица</item>
+        <item>Грейпфруты</item>
+        <item>Грецкие орехи</item>
+        <item>Гречка</item>
+        <item>Грибы</item>
+        <item>Груши</item>
+        <item>Дезодорант</item>
+        <item>Дыня</item>
+        <item>Ежевика</item>
+        <item>Зелёный горошек</item>
+        <item>Зелень</item>
+        <item>Зубная паста</item>
+        <item>Зубная щётка</item>
+        <item>Изюм</item>
+        <item>Индейка</item>
+        <item>Инжир</item>
+        <item>Йогурт</item>
+        <item>Кабачки</item>
+        <item>Капуста</item>
+        <item>Картофель</item>
+        <item>Каша</item>
+        <item>Кетчуп</item>
+        <item>Кефир</item>
+        <item>Кинза</item>
+        <item>Клубника</item>
+        <item>Кокос</item>
+        <item>Колбаса</item>
+        <item>Конфеты</item>
+        <item>Корица</item>
+        <item>Котлеты</item>
+        <item>Кофе</item>
+        <item>Красная икра</item>
+        <item>Красная рыба</item>
+        <item>Креветки</item>
+        <item>Крекеры</item>
+        <item>Кукуруза</item>
+        <item>Курага</item>
+        <item>Курица</item>
+        <item>Лаваш</item>
+        <item>Лавровый лист</item>
+        <item>Лимон</item>
+        <item>Лимонад</item>
+        <item>Лук</item>
+        <item>Майонез</item>
+        <item>Макароны</item>
+        <item>Мандарины</item>
+        <item>Манка</item>
+        <item>Масло оливковое</item>
+        <item>Масло подсолнечное</item>
+        <item>Масло сливочное</item>
+        <item>Мешки для мусора</item>
+        <item>Миндаль</item>
+        <item>Молоко</item>
+        <item>Морковь</item>
+        <item>Мороженое</item>
+        <item>Моющее средство</item>
+        <item>Мука</item>
+        <item>Мыло</item>
+        <item>Мёд</item>
+        <item>Овсянка</item>
+        <item>Окорочка</item>
+        <item>Огурцы</item>
+        <item>Оливки</item>
+        <item>Орехи</item>
+        <item>Освежитель воздуха</item>
+        <item>Паштет</item>
+        <item>Пельмени</item>
+        <item>Перец сладкий</item>
+        <item>Перец болгарский</item>
+        <item>Перец молотый</item>
+        <item>Персики</item>
+        <item>Петрушка</item>
+        <item>Печенье</item>
+        <item>Пицца</item>
+        <item>Помидоры</item>
+        <item>Пшено</item>
+        <item>Редис</item>
+        <item>Редька</item>
+        <item>Рис</item>
+        <item>Ряженка</item>
+        <item>Сахар</item>
+        <item>Свинина</item>
+        <item>Свёкла</item>
+        <item>Сгущёнка</item>
+        <item>Сельдерей</item>
+        <item>Скумбрия</item>
+        <item>Селёдка</item>
+        <item>Сливки</item>
+        <item>Сметана</item>
+        <item>Сок</item>
+        <item>Соль</item>
+        <item>Сосиски</item>
+        <item>Спагетти</item>
+        <item>Спички</item>
+        <item>Стиральный порошок</item>
+        <item>Сухарики</item>
+        <item>Сыр твёрдый</item>
+        <item>Сыр плавленый</item>
+        <item>Творог</item>
+        <item>Тесто</item>
+        <item>Томатная паста</item>
+        <item>Торт</item>
+        <item>Туалетная бумага</item>
+        <item>Тущёнка</item>
+        <item>Тыква</item>
+        <item>Укроп</item>
+        <item>Уксус</item>
+        <item>Фарш</item>
+        <item>Фасоль</item>
+        <item>Фисташки</item>
+        <item>Фундук</item>
+        <item>Хлопья</item>
+        <item>Цветная капуста</item>
+        <item>Чай чёрный</item>
+        <item>Чай зелёный</item>
+        <item>Черника</item>
+        <item>Хлеб белый</item>
+        <item>Хлеб ржаной</item>
+        <item>Чеснок</item>
+        <item>Чипсы</item>
+        <item>Шампунь</item>
+        <item>Шоколад</item>
+        <item>Яблоки</item>
+        <item>Яйца</item>
+    </string-array>
+</resources>

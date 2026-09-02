@@ -1,9 +1,6 @@
-package ru.sokolovromann.myshopping.data.local.entity
+package ru.sokolovromann.myshopping.core.data.old.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class UserPreferencesEntity(
+data class Api15UserPreferences(
     val nightTheme: Boolean? = null,
     val widgetNightTheme: Boolean? = null,
     val fontSize: String? = null,

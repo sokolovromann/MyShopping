@@ -1,13 +1,11 @@
-package ru.sokolovromann.myshopping.data39.carts
+package ru.sokolovromann.myshopping.core.data.old.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
-@Serializable
 @Entity(tableName = "api39_carts")
-data class CartRoomEntity(
+data class Api39CartEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
     val uid: String,

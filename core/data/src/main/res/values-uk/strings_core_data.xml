@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="data_default_currency">\ ₴</string>
+    <string name="data_default_currency_display_side">Right</string>
+    <string name="data_default_date_time_formatting_mode">DDMMMYYYY</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+    <string-array name="data_default_suggestion_names" tools:ignore="InconsistentArrays">
+        <item>Апельсини</item>
+        <item>Арахіс</item>
+        <item>Баклажан</item>
+        <item>Банани</item>
+        <item>Батон</item>
+        <item>Бекон</item>
+        <item>Борошно</item>
+        <item>Брокколі</item>
+        <item>Буряк</item>
+        <item>Білий хліб</item>
+        <item>Вершкове масло</item>
+        <item>Виноград</item>
+        <item>Вода</item>
+        <item>Волоські горіхи</item>
+        <item>Горох</item>
+        <item>Горіхи</item>
+        <item>Гречка</item>
+        <item>Гриби</item>
+        <item>Груші</item>
+        <item>Гірчиця</item>
+        <item>Дезодорант</item>
+        <item>Диня</item>
+        <item>Зелений горошок</item>
+        <item>Зубна паста</item>
+        <item>Йогурт</item>
+        <item>Кабачки</item>
+        <item>Кава</item>
+        <item>Кавун</item>
+        <item>Капуста</item>
+        <item>Картопля</item>
+        <item>Каша</item>
+        <item>Квасоля</item>
+        <item>Кетчуп</item>
+        <item>Кефір</item>
+        <item>Ковбаса</item>
+        <item>Креветки</item>
+        <item>Кріп</item>
+        <item>Кукуруза</item>
+        <item>Курка</item>
+        <item>Лаваш</item>
+        <item>Лавровий лист</item>
+        <item>Лимон</item>
+        <item>Лимонад</item>
+        <item>Лук</item>
+        <item>Майонез</item>
+        <item>Макарони</item>
+        <item>Мандарини</item>
+        <item>Мішки для сміття</item>
+        <item>Мигдаль</item>
+        <item>Мило</item>
+        <item>Миючий засіб</item>
+        <item>Млинці</item>
+        <item>Молоко</item>
+        <item>Морква</item>
+        <item>Морозиво</item>
+        <item>Огірки</item>
+        <item>Оливки</item>
+        <item>Оливкова олія</item>
+        <item>Освіжувач повітря</item>
+        <item>Оцет</item>
+        <item>Оселедець</item>
+        <item>Паштет</item>
+        <item>Пельмені</item>
+        <item>Перець</item>
+        <item>Персики</item>
+        <item>Пластівці</item>
+        <item>Помідори</item>
+        <item>Пральний порошок</item>
+        <item>Редис</item>
+        <item>Рис</item>
+        <item>Свинина</item>
+        <item>Сир</item>
+        <item>Скумбрія</item>
+        <item>Сливки</item>
+        <item>Сметана</item>
+        <item>Соняшникова олія</item>
+        <item>Сосиски</item>
+        <item>Спагетті</item>
+        <item>Сухарики</item>
+        <item>Сік</item>
+        <item>Сіль</item>
+        <item>Сірники</item>
+        <item>Томатна паста</item>
+        <item>Торт</item>
+        <item>Туалетний папір</item>
+        <item>Фарш</item>
+        <item>Фундук</item>
+        <item>Фісташки</item>
+        <item>Цукерки</item>
+        <item>Цукор</item>
+        <item>Чай</item>
+        <item>Часник</item>
+        <item>Червона риба</item>
+        <item>Житній хліб</item>
+        <item>Чіпси</item>
+        <item>Шампунь</item>
+        <item>Шинка</item>
+        <item>Шоколад</item>
+        <item>Яблука</item>
+        <item>Яйця</item>
+        <item>Яловичина</item>
+    </string-array>
+</resources>

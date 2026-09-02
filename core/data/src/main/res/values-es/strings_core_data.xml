@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="data_default_currency">€</string>
+    <string name="data_default_currency_display_side">Right</string>
+    <string name="data_default_date_time_formatting_mode">DDMMMYYYY</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+    <string-array name="data_default_suggestion_names" tools:ignore="InconsistentArrays">
+        <item>Aceite de girasol</item>
+        <item>Aceite de oliva</item>
+        <item>Aceite vegetal</item>
+        <item>Aceitunas</item>
+        <item>Agua</item>
+        <item>Agua con gas</item>
+        <item>Aguacates</item>
+        <item>Ajo</item>
+        <item>Albahaca</item>
+        <item>Apio</item>
+        <item>Arroz</item>
+        <item>Arándano</item>
+        <item>Avellanas</item>
+        <item>Azúcar</item>
+        <item>Bagels</item>
+        <item>Berenjena</item>
+        <item>Bife</item>
+        <item>Bolsas de basura</item>
+        <item>Brócoli</item>
+        <item>Café</item>
+        <item>Calabacín</item>
+        <item>Calabaza</item>
+        <item>Camarón</item>
+        <item>Canela</item>
+        <item>Caqui</item>
+        <item>Carne de res</item>
+        <item>Carne molida</item>
+        <item>Cebollas</item>
+        <item>Cerdo</item>
+        <item>Cereza</item>
+        <item>Champú</item>
+        <item>Chicle</item>
+        <item>Chocolate</item>
+        <item>Cilantro</item>
+        <item>Coco</item>
+        <item>Coles de Bruselas</item>
+        <item>Coliflor</item>
+        <item>Cordero</item>
+        <item>Crema agria</item>
+        <item>Crutones</item>
+        <item>Cuajada</item>
+        <item>Desodorante</item>
+        <item>Detergente de lavandería</item>
+        <item>Donas</item>
+        <item>Dulces</item>
+        <item>Embutido</item>
+        <item>Eneldo</item>
+        <item>Espinaca</item>
+        <item>Esponja</item>
+        <item>Espárragos</item>
+        <item>Fideos</item>
+        <item>Fresa</item>
+        <item>Frijoles</item>
+        <item>Frutas pasionales</item>
+        <item>Galletas</item>
+        <item>Galletas saladas</item>
+        <item>Gofres</item>
+        <item>Granadas</item>
+        <item>Guisantes</item>
+        <item>Habas</item>
+        <item>Harina</item>
+        <item>Helado</item>
+        <item>Hielo</item>
+        <item>Higos</item>
+        <item>Hoja de laurel</item>
+        <item>Hongos</item>
+        <item>Hot dog</item>
+        <item>Huevos</item>
+        <item>Jabón</item>
+        <item>Jabón para lavar platos</item>
+        <item>Jamón</item>
+        <item>Judías verdes</item>
+        <item>Jugo</item>
+        <item>Kiwis</item>
+        <item>Langosta</item>
+        <item>Leche</item>
+        <item>Lechuga</item>
+        <item>Limas</item>
+        <item>Limones</item>
+        <item>Limpiador de inodoro</item>
+        <item>Magdalenas</item>
+        <item>Mandarinas</item>
+        <item>Mangos</item>
+        <item>Manteca</item>
+        <item>Mantequilla de maní</item>
+        <item>Manzanas</item>
+        <item>Mayonesa</item>
+        <item>Maíz</item>
+        <item>Melocotones</item>
+        <item>Melón</item>
+        <item>Mermelada</item>
+        <item>Miel</item>
+        <item>Migas de pan</item>
+        <item>Miseria</item>
+        <item>Mora</item>
+        <item>Mostaza</item>
+        <item>Naranjas</item>
+        <item>Navajas de afeitar</item>
+        <item>Nueces</item>
+        <item>Nueces de almendra</item>
+        <item>Palomitas</item>
+        <item>Pan</item>
+        <item>Patata</item>
+        <item>Papas fritas</item>
+        <item>Papaya</item>
+        <item>Pasta</item>
+        <item>Pasta dental</item>
+        <item>Pastel</item>
+        <item>Pavo</item>
+        <item>Pepinos</item>
+        <item>Peras</item>
+        <item>Perejil</item>
+        <item>Pez</item>
+        <item>Pimienta</item>
+        <item>Pimientos</item>
+        <item>Pizza</item>
+        <item>Piña</item>
+        <item>Plátanos</item>
+        <item>Pollo</item>
+        <item>Pomelos</item>
+        <item>Queso</item>
+        <item>Raíz de remolacha</item>
+        <item>Relleno</item>
+        <item>Repollo</item>
+        <item>Rábano</item>
+        <item>Sal</item>
+        <item>Salsa de tomate</item>
+        <item>Sandía</item>
+        <item>Servilletas</item>
+        <item>Sopa</item>
+        <item>Toallas de papel</item>
+        <item>Tocino</item>
+        <item>Tomates</item>
+        <item>Tortillas</item>
+        <item>Té</item>
+        <item>Uvas</item>
+        <item>Vinagre</item>
+        <item>Yogur</item>
+        <item>Zanahorias</item>
+    </string-array>
+</resources>

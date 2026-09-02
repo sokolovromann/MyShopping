@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="data_default_currency">€</string>
+    <string name="data_default_currency_display_side">Right</string>
+    <string name="data_default_date_time_formatting_mode">DDMMMYYYY</string>
+    <string name="data_default_is_24_hour_time_format">true</string>
+    <string-array name="data_default_suggestion_names" tools:ignore="InconsistentArrays">
+        <item>Äpfel</item>
+        <item>Almondnuts</item>
+        <item>Aubergine</item>
+        <item>Bananen</item>
+        <item>Birnen</item>
+        <item>Bohnen</item>
+        <item>Bohnen groß</item>
+        <item>Brokkoli</item>
+        <item>Butter</item>
+        <item>Deodorant</item>
+        <item>Dill</item>
+        <item>Eier</item>
+        <item>Eis</item>
+        <item>Erdnüsse</item>
+        <item>Essig</item>
+        <item>Fisch</item>
+        <item>Fladenbrot</item>
+        <item>Füllung</item>
+        <item>Garnele</item>
+        <item>Grüne Erbsen</item>
+        <item>Gurken</item>
+        <item>Haselnüsse</item>
+        <item>Hähnchen</item>
+        <item>Joghurt</item>
+        <item>Kaffee</item>
+        <item>Kartoffeln</item>
+        <item>Ketchup</item>
+        <item>Knoblauch</item>
+        <item>Kohl</item>
+        <item>Kuchen</item>
+        <item>Käse</item>
+        <item>Lorbeerblatt</item>
+        <item>Lufterfrischer</item>
+        <item>Mais</item>
+        <item>Mandarinen</item>
+        <item>Mayonnaise</item>
+        <item>Mehl</item>
+        <item>Melone</item>
+        <item>Milch</item>
+        <item>Möhren</item>
+        <item>Nudeln</item>
+        <item>Nüsse</item>
+        <item>Oliven</item>
+        <item>Olivenöl</item>
+        <item>Orangen</item>
+        <item>Pasta Spaghetti</item>
+        <item>Pfeffer</item>
+        <item>Pfirsiche</item>
+        <item>Pilze</item>
+        <item>Pommesfrites</item>
+        <item>Quark</item>
+        <item>Reis</item>
+        <item>Rettich</item>
+        <item>Rindfleisch</item>
+        <item>Roggen brot</item>
+        <item>Rosinen brot</item>
+        <item>Rote Bete</item>
+        <item>Saft</item>
+        <item>Salz</item>
+        <item>Sauerrahm</item>
+        <item>Schokolade</item>
+        <item>Schweinefleisch</item>
+        <item>Seife</item>
+        <item>Senfsoße</item>
+        <item>Shampoo</item>
+        <item>Sonnenblumenöl</item>
+        <item>Speck</item>
+        <item>Sprudelwasser</item>
+        <item>Süßigkeiten</item>
+        <item>Tee</item>
+        <item>Tomaten</item>
+        <item>Trauben</item>
+        <item>WC-Reiniger</item>
+        <item>Walnüsse</item>
+        <item>Waschmittel</item>
+        <item>Wassermelone</item>
+        <item>Weiß brot</item>
+        <item>Wurst</item>
+        <item>Zahnpasta</item>
+        <item>Zitronen</item>
+        <item>Zucchini</item>
+        <item>Zucker</item>
+        <item>Zwiebeln</item>
+    </string-array>
+</resources>

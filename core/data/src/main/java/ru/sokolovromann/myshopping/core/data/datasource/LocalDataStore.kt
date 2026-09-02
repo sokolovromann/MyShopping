@@ -1,10 +1,16 @@
 package ru.sokolovromann.myshopping.core.data.datasource
 
 import android.content.Context
+import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 object LocalDataStore {
 
@@ -17,8 +23,14 @@ object LocalDataStore {
     const val BACKUP_FILE_NAME = "api42_backup_preferences"
     const val USER_FILE_NAME = "api42_user_config"
 
-    fun build(context: Context, fileName: String): DataStore<Preferences> =
-        PreferenceDataStoreFactory.create {
-            context.preferencesDataStoreFile(fileName)
-        }
+    fun <M : DataMigration<Preferences>> build(
+        context: Context,
+        migration: M,
+        fileName: String
+    ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+        migrations = listOf(migration),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(fileName) }
+    )
 }
