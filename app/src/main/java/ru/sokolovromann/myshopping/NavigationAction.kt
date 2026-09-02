@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.navigation
+package ru.sokolovromann.myshopping
 
 import ru.sokolovromann.myshopping.core.navigation.Screen
 
