@@ -65,8 +65,6 @@ dependencies {
     implementation project(':core:domain')
     implementation project(':core:navigation')
     implementation project(':core:ui')
-    implementation project(':feature:migration')
-    implementation project(':old:api15')
     implementation 'androidx.activity:activity-compose:1.13.0'
     implementation 'androidx.core:core-ktx:1.19.0'
     implementation 'androidx.compose.material:material:1.12.0'
