@@ -5,7 +5,7 @@ data class FilteredFabricsByType(
     val unitPrices: Collection<Fabric>,
     val discounts: Collection<Fabric>,
     val taxes: Collection<Fabric>,
-    val cost: Collection<Fabric>,
+    val costs: Collection<Fabric>,
     val manufacturers: Collection<Fabric>,
     val brands: Collection<Fabric>,
     val sizes: Collection<Fabric>,

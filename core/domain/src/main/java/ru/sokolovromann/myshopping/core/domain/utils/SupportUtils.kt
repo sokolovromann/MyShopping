@@ -33,7 +33,7 @@ object SupportUtils {
         val unitPrices = mutableListOf<Fabric>()
         val discounts = mutableListOf<Fabric>()
         val taxes = mutableListOf<Fabric>()
-        val cost = mutableListOf<Fabric>()
+        val costs = mutableListOf<Fabric>()
         val manufacturers = mutableListOf<Fabric>()
         val brands = mutableListOf<Fabric>()
         val sizes = mutableListOf<Fabric>()
@@ -44,7 +44,7 @@ object SupportUtils {
                 is FabricValue.UnitPriceType -> unitPrices.add(it)
                 is FabricValue.DiscountType -> discounts.add(it)
                 is FabricValue.TaxType -> taxes.add(it)
-                is FabricValue.CostType -> cost.add(it)
+                is FabricValue.CostType -> costs.add(it)
                 is FabricValue.ManufacturerType -> manufacturers.add(it)
                 is FabricValue.BrandType -> brands.add(it)
                 is FabricValue.ColorType -> sizes.add(it)
@@ -53,7 +53,7 @@ object SupportUtils {
             }
         }
         return FilteredFabricsByType(
-            quantities, unitPrices, discounts, taxes, cost, manufacturers, brands, sizes, colors
+            quantities, unitPrices, discounts, taxes, costs, manufacturers, brands, sizes, colors
         )
     }
 
@@ -72,7 +72,7 @@ object SupportUtils {
             unitPrices.take(),
             discounts.take(),
             taxes.take(),
-            cost.take(),
+            costs.take(),
             manufacturers.take(),
             brands.take(),
             sizes.take(),
