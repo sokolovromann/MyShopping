@@ -1,8 +1,10 @@
 package ru.sokolovromann.myshopping.core.ui.model
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.res.stringResource
 
+@Immutable
 sealed class UiText {
 
     data class FromString(val text: String) : UiText()
