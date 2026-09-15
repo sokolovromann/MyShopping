@@ -13,6 +13,13 @@ class DeleteProductsUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineContext
 ) {
 
+    suspend operator fun invoke(directories: Collection<ProductDirectory>): Unit =
+        withContext(ioDispatcher) {
+            directories.forEach {
+                productsRepository.deleteProducts(it)
+            }
+        }
+
     suspend operator fun invoke(directory: ProductDirectory): Unit =
         withContext(ioDispatcher) {
             productsRepository.deleteProducts(directory)
