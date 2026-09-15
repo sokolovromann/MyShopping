@@ -5,9 +5,6 @@ import kotlinx.serialization.Serializable
 sealed interface Screen {
 
     @Serializable
-    data object Main : Screen
-
-    @Serializable
     data object Purchases : Screen
 
     @Serializable
@@ -53,8 +50,8 @@ sealed interface Screen {
     data object Dictionary : Screen
 
     @Serializable
-    data object About : Screen
+    data class AddEditSuggestion(val directory: String? = null) : Screen
 
     @Serializable
-    data class Migration(val api: Long) : Screen
+    data object About : Screen
 }
