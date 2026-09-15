@@ -3,6 +3,7 @@ package ru.sokolovromann.myshopping.core.data.datasource
 import android.content.Context
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import jakarta.inject.Provider
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,7 @@ import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.model.UID
 
 class LocalRoomDatabaseCallback @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val suggestionsDaoProvider: Provider<SuggestionsDao>,
     private val api15RoomMigrationManager: Provider<Api15RoomMigrationManager>,
     private val applicationScope: CoroutineScope,

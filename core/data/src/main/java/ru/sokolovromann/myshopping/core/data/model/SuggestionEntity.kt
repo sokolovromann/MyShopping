@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
-@Entity(tableName = "suggestions")
+@Entity(tableName = "api42_suggestions")
 @Serializable
 data class SuggestionEntity(
     @PrimaryKey

@@ -12,12 +12,12 @@ interface FabricsDao {
     @Insert(onConflict = REPLACE)
     fun insertFabrics(fabrics: List<FabricEntity>)
 
-    @Query("DELETE FROM fabrics WHERE directory = :directory")
+    @Query("DELETE FROM api42_fabrics WHERE directory = :directory")
     fun deleteFabrics(directory: String)
 
-    @Query("DELETE FROM fabrics WHERE uid IN(:uids)")
-    fun deleteFabrics(uids: Collection<String>)
+    @Query("DELETE FROM api42_fabrics WHERE uid IN(:uids)")
+    fun deleteFabrics(uids: List<String>)
 
-    @Query("DELETE FROM fabrics")
+    @Query("DELETE FROM api42_fabrics")
     fun clearFabrics()
 }

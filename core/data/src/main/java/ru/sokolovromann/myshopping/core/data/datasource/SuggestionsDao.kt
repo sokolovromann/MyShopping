@@ -13,19 +13,19 @@ import ru.sokolovromann.myshopping.core.data.model.SuggestionWithFabricsEntity
 interface SuggestionsDao {
 
     @Transaction
-    @Query("SELECT * FROM suggestions")
+    @Query("SELECT * FROM api42_suggestions")
     fun observeSuggestionWithFabrics(): Flow<List<SuggestionWithFabricsEntity>>
 
     @Transaction
-    @Query("SELECT * FROM suggestions WHERE uid = :uid")
+    @Query("SELECT * FROM api42_suggestions WHERE uid = :uid")
     fun getSuggestionWithFabrics(uid: String): SuggestionWithFabricsEntity?
 
     @Insert(onConflict = REPLACE)
-    fun insertSuggestions(suggestions: Collection<SuggestionEntity>)
+    fun insertSuggestions(suggestions: List<SuggestionEntity>)
 
-    @Query("DELETE FROM suggestions WHERE uid IN(:uids)")
-    fun deleteSuggestions(uids: Collection<String>)
+    @Query("DELETE FROM api42_suggestions WHERE uid IN(:uids)")
+    fun deleteSuggestions(uids: List<String>)
 
-    @Query("DELETE FROM suggestions")
+    @Query("DELETE FROM api42_suggestions")
     fun clearSuggestions()
 }

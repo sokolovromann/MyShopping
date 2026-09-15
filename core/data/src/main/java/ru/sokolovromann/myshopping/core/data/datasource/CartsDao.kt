@@ -13,28 +13,28 @@ import ru.sokolovromann.myshopping.core.data.model.CartWithProductsEntity
 interface CartsDao {
 
     @Transaction
-    @Query("SELECT * FROM carts WHERE directory = :directory")
+    @Query("SELECT * FROM api42_carts WHERE directory = :directory")
     fun observeCartsWithProducts(directory: String): Flow<List<CartWithProductsEntity>>
 
     @Transaction
-    @Query("SELECT * FROM carts WHERE uid = :uid")
+    @Query("SELECT * FROM api42_carts WHERE uid = :uid")
     fun observeCartWithProducts(uid: String): Flow<CartWithProductsEntity?>
 
-    @Query("SELECT * FROM carts WHERE uid = :uid")
+    @Query("SELECT * FROM api42_carts WHERE uid = :uid")
     fun getCart(uid: String): CartEntity?
 
-    @Query("SELECT position FROM carts ORDER BY CAST(position as INT) DESC LIMIT 1")
+    @Query("SELECT position FROM api42_carts ORDER BY CAST(position as INT) DESC LIMIT 1")
     fun getCurrentCartPosition(): String?
 
     @Insert(onConflict = REPLACE)
-    fun insertCarts(carts: Collection<CartEntity>)
+    fun insertCarts(carts: List<CartEntity>)
 
-    @Query("DELETE FROM carts WHERE directory = :directory")
+    @Query("DELETE FROM api42_carts WHERE directory = :directory")
     fun deleteCarts(directory: String)
 
-    @Query("DELETE FROM carts WHERE uid IN(:uids)")
-    fun deleteCarts(uids: Collection<String>)
+    @Query("DELETE FROM api42_carts WHERE uid IN(:uids)")
+    fun deleteCarts(uids: List<String>)
 
-    @Query("DELETE FROM carts")
+    @Query("DELETE FROM api42_carts")
     fun clearCarts()
 }

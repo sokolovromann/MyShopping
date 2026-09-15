@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
-@Entity(tableName = "carts")
+@Entity(tableName = "api42_carts")
 @Serializable
 data class CartEntity(
     @PrimaryKey
