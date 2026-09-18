@@ -13,13 +13,6 @@ class DeleteFabricsUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(directories: Collection<FabricDirectory>): Unit =
-        withContext(ioDispatcher) {
-            directories.forEach {
-                fabricsRepository.deleteFabrics(it)
-            }
-        }
-
     suspend operator fun invoke(directory: FabricDirectory): Unit =
         withContext(ioDispatcher) {
             fabricsRepository.deleteFabrics(directory)
