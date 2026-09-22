@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="navigation_header">Мои покупки</string>
+    <string name="action_add">Добавить</string>
+    <string name="action_back">Назад</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_clear">Очистить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_edit">Редактировать</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_select">Выбрать</string>
+    <string name="action_select_all">Выбрать всё</string>
 
-    <string name="navigation_icon_back">Назад</string>
-    <string name="navigation_icon_cancel">Отмена</string>
-    <string name="navigation_icon_menu">Меню</string>
-
-    <string name="navigation_item_about">О приложении</string>
-    <string name="navigation_item_archive">Архив</string>
-    <string name="navigation_item_dictionary">Подсказки</string>
-    <string name="navigation_item_purchases">Покупки</string>
-    <string name="navigation_item_settings">Настройки</string>
-    <string name="navigation_item_trash">Корзина</string>
+    <string name="text_about">О приложении</string>
+    <string name="text_archive">Архив</string>
+    <string name="text_brands">Марки</string>
+    <string name="text_colors">Цвета</string>
+    <string name="text_costs">Стоимости</string>
+    <string name="text_dictionary">Подсказки</string>
+    <string name="text_discounts">Скидки</string>
+    <string name="text_manufacturers">Производители</string>
+    <string name="text_menu">Меню</string>
+    <string name="text_my_shopping_list">Мои покупки</string>
+    <string name="text_purchases">Покупки</string>
+    <string name="text_quantities">Количества</string>
+    <string name="text_selected">Выбрано</string>
+    <string name="text_settings">Настройки</string>
+    <string name="text_sizes">Размеры</string>
+    <string name="text_taxes">Налоги</string>
+    <string name="text_trash">Корзина</string>
+    <string name="text_unit_price">Цены за единицу</string>
 </resources>

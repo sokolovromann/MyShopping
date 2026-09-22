@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="navigation_header">Mes achats</string>
+    <string name="action_add">Ajouter</string>
+    <string name="action_back">Dos</string>
+    <string name="action_cancel">Annuler</string>
+    <string name="action_clear">Effacer</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_edit">Modifier</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="action_select">Sélectionner</string>
+    <string name="action_select_all">Tout sélectionner</string>
 
-    <string name="navigation_icon_back">Dos</string>
-    <string name="navigation_icon_cancel">Annuler</string>
-    <string name="navigation_icon_menu">Menu</string>
-
-    <string name="navigation_item_about">Infos sur l\'application</string>
-    <string name="navigation_item_archive">Archive</string>
-    <string name="navigation_item_dictionary">Suggestions</string>
-    <string name="navigation_item_purchases">Achats</string>
-    <string name="navigation_item_settings">Paramètres</string>
-    <string name="navigation_item_trash">Corbeille</string>
+    <string name="text_about">Infos sur l\'application</string>
+    <string name="text_archive">Archive</string>
+    <string name="text_brands">Marques</string>
+    <string name="text_colors">Couleurs</string>
+    <string name="text_costs">Coûts</string>
+    <string name="text_dictionary">Suggestions</string>
+    <string name="text_discounts">Remises</string>
+    <string name="text_manufacturers">Fabricants</string>
+    <string name="text_menu">Menu</string>
+    <string name="text_my_shopping_list">Mes achats</string>
+    <string name="text_purchases">Achats</string>
+    <string name="text_quantities">Quantités</string>
+    <string name="text_selected">Sélectionné</string>
+    <string name="text_settings">Paramètres</string>
+    <string name="text_sizes">Tailles</string>
+    <string name="text_taxes">Taxes</string>
+    <string name="text_trash">Corbeille</string>
+    <string name="text_unit_price">Prix</string>
 </resources>

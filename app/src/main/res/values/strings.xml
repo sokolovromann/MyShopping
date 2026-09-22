@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="app_name">My Shopping List</string>
+    <string name="app_name" translatable="false">@string/text_my_shopping_list</string>
 </resources>

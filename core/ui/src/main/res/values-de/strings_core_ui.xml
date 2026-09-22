@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="navigation_header">My Shopping List</string>
+    <string name="action_add">Hinzufügen</string>
+    <string name="action_back">Zurück</string>
+    <string name="action_cancel">Stornieren</string>
+    <string name="action_clear">Leeren</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_select">Auswählen</string>
+    <string name="action_select_all">Alle auswählen</string>
 
-    <string name="navigation_icon_back">Zurück</string>
-    <string name="navigation_icon_cancel">Stornieren</string>
-    <string name="navigation_icon_menu">Menü</string>
-
-    <string name="navigation_item_about">Über die App</string>
-    <string name="navigation_item_archive">Archiv</string>
-    <string name="navigation_item_dictionary">Vorschläge</string>
-    <string name="navigation_item_purchases">Einkäufe</string>
-    <string name="navigation_item_settings">Einstellungen</string>
-    <string name="navigation_item_trash">Müll</string>
+    <string name="text_about">Über die App</string>
+    <string name="text_archive">Archiv</string>
+    <string name="text_brands">Marken</string>
+    <string name="text_colors">Farben</string>
+    <string name="text_costs">Kosten</string>
+    <string name="text_dictionary">Suchvorschläge</string>
+    <string name="text_discounts">Rabatte</string>
+    <string name="text_manufacturers">Hersteller</string>
+    <string name="text_menu">Menü</string>
+    <string name="text_my_shopping_list">My Shopping List</string>
+    <string name="text_purchases">Einkäufe</string>
+    <string name="text_quantities">Mengen</string>
+    <string name="text_selected">Ausgewählt</string>
+    <string name="text_settings">Einstellungen</string>
+    <string name="text_sizes">Größen</string>
+    <string name="text_taxes">Steuern</string>
+    <string name="text_trash">Müll</string>
+    <string name="text_unit_price">Preise</string>
 </resources>

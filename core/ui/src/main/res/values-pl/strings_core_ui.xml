@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="navigation_header">Moje zakupy</string>
+    <string name="action_add">Dodaj</string>
+    <string name="action_back">Wstecz</string>
+    <string name="action_cancel">Anulować</string>
+    <string name="action_clear">Wyczyść</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_edit">Edytuj</string>
+    <string name="action_save">Zapisz</string>
+    <string name="action_select">Wybierz</string>
+    <string name="action_select_all"> Zaznacz wszystko</string>
 
-    <string name="navigation_icon_back">Wstecz</string>
-    <string name="navigation_icon_cancel">Anulować</string>
-    <string name="navigation_icon_menu">Menu</string>
-
-    <string name="navigation_item_about">O aplikacji</string>
-    <string name="navigation_item_archive">Archiwum</string>
-    <string name="navigation_item_dictionary">Sugestie</string>
-    <string name="navigation_item_purchases">Zakupy</string>
-    <string name="navigation_item_settings">Ustawienia</string>
-    <string name="navigation_item_trash">Kosz</string>
+    <string name="text_about">O aplikacji</string>
+    <string name="text_archive">Archiwum</string>
+    <string name="text_brands">Marki</string>
+    <string name="text_colors">Kolory</string>
+    <string name="text_costs">Koszty</string>
+    <string name="text_dictionary">Podpowiedzi</string>
+    <string name="text_discounts">Rabaty</string>
+    <string name="text_manufacturers">Producenci</string>
+    <string name="text_menu">Menu</string>
+    <string name="text_my_shopping_list">Moje zakupy</string>
+    <string name="text_purchases">Zakupy</string>
+    <string name="text_quantities">Ilości</string>
+    <string name="text_selected">Wybrano</string>
+    <string name="text_settings">Ustawienia</string>
+    <string name="text_sizes">Rozmiary</string>
+    <string name="text_taxes">Podatki</string>
+    <string name="text_trash">Kosz</string>
+    <string name="text_unit_price">Ceny</string>
 </resources>

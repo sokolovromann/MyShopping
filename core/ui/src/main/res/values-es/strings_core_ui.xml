@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="navigation_header">Mis compras</string>
+    <string name="action_add">Añadir</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_clear">Limpiar</string>
+    <string name="action_delete">Eliminar </string>
+    <string name="action_edit">Editar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_select">Seleccionar</string>
+    <string name="action_select_all">Seleccionar todo</string>
 
-    <string name="navigation_icon_back">Atrás</string>
-    <string name="navigation_icon_cancel">Cancelar</string>
-    <string name="navigation_icon_menu">Menú</string>
-
-    <string name="navigation_item_about">Informacion de la applicacion</string>
-    <string name="navigation_item_archive">Archivo</string>
-    <string name="navigation_item_dictionary">Sugerencias</string>
-    <string name="navigation_item_purchases">Compras</string>
-    <string name="navigation_item_settings">Ajustes</string>
-    <string name="navigation_item_trash">Papelera</string>
+    <string name="text_about">Informacion de la applicacion</string>
+    <string name="text_archive">Archivo</string>
+    <string name="text_brands">Marcas</string>
+    <string name="text_colors">Colores</string>
+    <string name="text_costs">Costes</string>
+    <string name="text_dictionary">Sugerencias</string>
+    <string name="text_discounts">Descuentos</string>
+    <string name="text_manufacturers">Fabricantes</string>
+    <string name="text_menu">Menú</string>
+    <string name="text_my_shopping_list">Mis compras</string>
+    <string name="text_purchases">Compras</string>
+    <string name="text_quantities">Cantidades</string>
+    <string name="text_selected">Seleccionado</string>
+    <string name="text_settings">Ajustes</string>
+    <string name="text_sizes">Tallas</string>
+    <string name="text_taxes">Impuestos</string>
+    <string name="text_trash">Papelera</string>
+    <string name="text_unit_price">Precios</string>
 </resources>
