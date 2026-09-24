@@ -50,7 +50,7 @@ sealed interface Screen {
     data object Dictionary : Screen
 
     @Serializable
-    data class AddEditSuggestion(val directory: String? = null) : Screen
+    data class AddEditSuggestion(val uid: String? = null) : Screen
 
     @Serializable
     data object About : Screen

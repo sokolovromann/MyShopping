@@ -96,14 +96,14 @@ class DictionaryViewModel @Inject constructor(
 
     fun onEditSuggestionClick() {
         val suggestionsState = _dictionaryState.value.suggestionsState
-        val directory = suggestionsState.selected.first()
+        val uid = suggestionsState.selected.first()
 
         val newState = _dictionaryState.value.copy(
             suggestionsState = suggestionsState.copy(selected = emptySet())
         )
         _dictionaryState.tryEmit(newState)
 
-        navigator.navigateTo(Screen.AddEditSuggestion(directory.value))
+        navigator.navigateTo(Screen.AddEditSuggestion(uid.value))
     }
 
     fun onDeleteSuggestionsClick() = viewModelScope.launch {
