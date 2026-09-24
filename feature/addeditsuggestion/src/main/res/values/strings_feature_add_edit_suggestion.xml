@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_edit_suggestion_label_name" translatable="false">@string/text_name</string>
+    <string name="add_edit_suggestion_supporting_text_name_error" translatable="false">@string/text_enter_name</string>
+</resources>

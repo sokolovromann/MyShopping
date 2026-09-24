@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/addeditsuggestion" />
             <option value="$PROJECT_DIR$/feature/dictionary" />
           </set>
         </option>
