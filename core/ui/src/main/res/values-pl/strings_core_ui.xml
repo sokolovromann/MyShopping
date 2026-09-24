@@ -17,9 +17,11 @@
     <string name="text_costs">Koszty</string>
     <string name="text_dictionary">Podpowiedzi</string>
     <string name="text_discounts">Rabaty</string>
+    <string name="text_enter_name">Wpisz nazwę</string>
     <string name="text_manufacturers">Producenci</string>
     <string name="text_menu">Menu</string>
     <string name="text_my_shopping_list">Moje zakupy</string>
+    <string name="text_name">Nazwa</string>
     <string name="text_purchases">Zakupy</string>
     <string name="text_quantities">Ilości</string>
     <string name="text_selected">Wybrano</string>

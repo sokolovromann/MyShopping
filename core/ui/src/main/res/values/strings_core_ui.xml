@@ -28,9 +28,11 @@
     <string name="text_costs">Costs</string>
     <string name="text_dictionary">Suggestions</string>
     <string name="text_discounts">Discounts</string>
+    <string name="text_enter_name">Enter name</string>
     <string name="text_manufacturers">Manufacturers</string>
     <string name="text_menu">Menu</string>
     <string name="text_my_shopping_list">My Shopping List</string>
+    <string name="text_name">Name</string>
     <string name="text_purchases">Purchases</string>
     <string name="text_quantities">Quantities</string>
     <string name="text_selected">Selected</string>
@@ -39,4 +41,6 @@
     <string name="text_taxes">Taxes</string>
     <string name="text_trash">Trash</string>
     <string name="text_unit_price">Unit prices</string>
+
+    <string name="top_app_bar_button_save" translatable="false">@string/action_save</string>
 </resources>

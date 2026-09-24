@@ -17,9 +17,11 @@
     <string name="text_costs">Вартості</string>
     <string name="text_dictionary">Підказки</string>
     <string name="text_discounts">Знижки</string>
+    <string name="text_enter_name">Введіть назву</string>
     <string name="text_manufacturers">Виробники</string>
     <string name="text_menu">Меню</string>
     <string name="text_my_shopping_list">Мої покупки</string>
+    <string name="text_name">Назва</string>
     <string name="text_purchases">Покупки</string>
     <string name="text_quantities">Кількості</string>
     <string name="text_selected">Вибрано</string>
