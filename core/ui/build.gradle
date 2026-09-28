@@ -35,6 +35,8 @@ dependencies {
     api(libs.activity.compose)
     api(libs.compose.ui)
     api(libs.compose.ui.preview)
+    api(libs.hilt.navigation)
+    api(libs.kotlin.collections.immutable)
     api(libs.material3)
     api(libs.material3.adaptive)
     api(libs.material3.icons)

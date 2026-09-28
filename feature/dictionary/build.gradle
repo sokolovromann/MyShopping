@@ -38,7 +38,5 @@ dependencies {
     implementation project(':core:ui')
     implementation(libs.android.core)
     implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation)
-    implementation(libs.kotlin.collections.immutable)
     ksp(libs.hilt.compiler)
 }
