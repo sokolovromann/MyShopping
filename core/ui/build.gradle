@@ -32,17 +32,12 @@ kotlin {
 }
 
 dependencies {
-    api 'androidx.compose.material3:material3:1.4.0'
-    api 'androidx.compose.material3:material3-adaptive:1.0.0-alpha06'
-    api 'androidx.compose.material3:material3-window-size-class:1.4.0'
-    api 'androidx.compose.material:material-icons-extended:1.7.8'
-    api 'androidx.compose.ui:ui:1.12.1'
-    api 'androidx.compose.ui:ui-tooling-preview:1.12.1'
-    implementation 'androidx.appcompat:appcompat:1.8.0'
-    implementation 'androidx.core:core-ktx:1.19.1'
-    implementation 'androidx.activity:activity-compose:1.13.0'
-    implementation 'com.google.android.material:material:1.14.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    api(libs.activity.compose)
+    api(libs.compose.ui)
+    api(libs.compose.ui.preview)
+    api(libs.material3)
+    api(libs.material3.adaptive)
+    api(libs.material3.icons)
+    api(libs.material3.windowSize)
+    implementation(libs.android.core)
 }

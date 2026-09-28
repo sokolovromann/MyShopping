@@ -36,14 +36,9 @@ dependencies {
     implementation project(':core:domain')
     implementation project(':core:navigation')
     implementation project(':core:ui')
-    implementation 'androidx.appcompat:appcompat:1.8.0'
-    implementation 'androidx.core:core-ktx:1.19.1'
-    implementation 'com.google.android.material:material:1.14.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-collections-immutable:0.5.2'
-    implementation 'androidx.hilt:hilt-navigation-compose:1.4.0'
-    implementation 'com.google.dagger:hilt-android:2.60.1'
-    ksp 'com.google.dagger:hilt-compiler:2.60.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    implementation(libs.android.core)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    implementation(libs.kotlin.collections.immutable)
+    ksp(libs.hilt.compiler)
 }

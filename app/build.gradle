@@ -67,11 +67,9 @@ dependencies {
     implementation project(':core:ui')
     implementation project(':feature:addeditsuggestion')
     implementation project(':feature:dictionary')
-    implementation 'androidx.activity:activity-compose:1.13.0'
-    implementation 'androidx.core:core-ktx:1.19.1'
-    implementation 'androidx.compose.material:material:1.12.1'
-    implementation 'androidx.navigation:navigation-compose:2.10.2'
-    implementation 'androidx.core:core-splashscreen:1.2.0'
-    implementation 'com.google.dagger:hilt-android:2.60.1'
-    ksp 'com.google.dagger:hilt-compiler:2.60.1'
+    implementation(libs.android.core)
+    implementation(libs.hilt.android)
+    implementation(libs.navigation)
+    implementation(libs.splashscreen)
+    ksp(libs.hilt.compiler)
 }
