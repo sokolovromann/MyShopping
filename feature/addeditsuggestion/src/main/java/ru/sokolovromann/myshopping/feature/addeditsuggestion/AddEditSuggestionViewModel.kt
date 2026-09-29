@@ -43,7 +43,7 @@ class AddEditSuggestionViewModel @Inject constructor(
     }
 
     fun onSaveSuggestionClick() = viewModelScope.launch(mainDispatcher) {
-        val name = _addEditSuggestionState.value.name.text
+        val name = _addEditSuggestionState.value.name.text.trim()
         if (name.isEmpty()) {
             val newState = _addEditSuggestionState.value.copy(isNameError = true)
             _addEditSuggestionState.tryEmit(newState)
