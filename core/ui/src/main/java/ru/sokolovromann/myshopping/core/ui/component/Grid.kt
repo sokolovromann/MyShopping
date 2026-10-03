@@ -36,7 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -44,19 +44,19 @@ fun SimpleVerticalGrid(
     cells: Int,
     modifier: Modifier = Modifier,
     state: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
-    contentPadding: PaddingValues = PaddingValues(all = 16.dp),
-    verticalItemSpacing: Dp = 8.dp,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(8.dp),
+    itemSpacingEnabled: Boolean = true,
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     content: LazyStaggeredGridScope.() -> Unit
 ) {
+    val contentPadding = if (itemSpacingEnabled) 16.dp else 0.dp
+    val itemSpacing = if (itemSpacingEnabled) 8.dp else 0.dp
     LazyVerticalStaggeredGrid(
         modifier = modifier,
         columns = StaggeredGridCells.Fixed(cells),
         state = state,
-        contentPadding = contentPadding,
-        verticalItemSpacing = verticalItemSpacing,
-        horizontalArrangement = horizontalArrangement,
+        contentPadding = PaddingValues(all = contentPadding),
+        verticalItemSpacing = itemSpacing,
+        horizontalArrangement = Arrangement.spacedBy(itemSpacing),
         flingBehavior = flingBehavior,
         content = content
     )
@@ -67,70 +67,29 @@ fun GridSelectableItem(
     isSelected: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
+    itemSpacingEnabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val shape = MaterialTheme.shapes.medium
-    val backgroundColor by animateColorAsState(
-        targetValue = if (isSelected) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            Color.Transparent
-        },
-        label = "CardBackgroundAnimation"
+    GridSurfaceItemImpl(
+        isSelected = isSelected,
+        onClick = onClick,
+        onLongClick = onLongClick,
+        itemSpacingEnabled = itemSpacingEnabled,
+        content = content
     )
-    val border = if (isSelected) {
-        BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-    } else {
-        BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    }
-    val textColor by animateColorAsState(
-        targetValue = if (isSelected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        },
-        label = "TextColorAnimation"
-    )
-    Surface(
-        modifier = Modifier
-            .clip(shape)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            ),
-        shape = shape,
-        color = backgroundColor,
-        border = border,
-        tonalElevation = if (isSelected) 0.dp else 2.dp,
-    ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .padding(end = if (isSelected) 24.dp else 0.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
-            ) {
-                CompositionLocalProvider(
-                    value = LocalContentColor provides textColor,
-                    content = { content() }
-                )
-            }
+}
 
-            if (isSelected) {
-                Icon(
-                    imageVector = Icons.Filled.CheckCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                        .size(20.dp)
-                )
-            }
-        }
-    }
+@Composable
+fun GridItem(
+    onClick: () -> Unit,
+    itemSpacingEnabled: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    GridSurfaceItemImpl(
+        onClick = onClick,
+        itemSpacingEnabled = itemSpacingEnabled,
+        content = content
+    )
 }
 
 @Composable
@@ -156,4 +115,91 @@ fun BottomGridSpacer() {
         .fillMaxWidth()
         .height(156.dp)
     )
+}
+
+@Composable
+fun GridSurfaceItemImpl(
+    onClick: () -> Unit,
+    isSelected: Boolean? = null,
+    onLongClick: (() -> Unit)? = null,
+    itemSpacingEnabled: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    val shape = if (itemSpacingEnabled) {
+        MaterialTheme.shapes.medium
+    } else {
+        RectangleShape
+    }
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected == true) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            Color.Transparent
+        },
+        label = "CardBackgroundAnimation"
+    )
+    val tonalElevation = if (itemSpacingEnabled) {
+        if (isSelected == true) 0.dp else 2.dp
+    } else 0.dp
+    val border = if (itemSpacingEnabled) {
+        if (isSelected == true) {
+            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+        } else {
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        }
+    } else null
+    val contentColor by animateColorAsState(
+        targetValue = if (isSelected == true) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        },
+        label = "ContentColorAnimation"
+    )
+    val contentPadding = if (isSelected == true) {
+        PaddingValues(end = 24.dp)
+    } else {
+        PaddingValues(end = 0.dp)
+    }
+    Surface(
+        modifier = Modifier
+            .clip(shape)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            ),
+        shape = shape,
+        color = backgroundColor,
+        contentColor = contentColor,
+        tonalElevation = tonalElevation,
+        border = border,
+    ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .padding(contentPadding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                CompositionLocalProvider(
+                    value = LocalContentColor provides contentColor,
+                    content = { content() }
+                )
+            }
+
+            if (isSelected == true) {
+                Icon(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .size(20.dp)
+                )
+            }
+        }
+    }
 }
