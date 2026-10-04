@@ -1,28 +1,27 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    alias(libs.plugins.android.buildInKotlin)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.room)
-    id 'com.android.library'
-    id 'com.android.built-in-kotlin'
-    id 'com.google.dagger.hilt.android'
-    id 'com.google.devtools.ksp'
-    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
-    namespace 'ru.sokolovromann.myshopping.core.data'
-    buildToolsVersion '37.0.0'
-    compileSdkVersion 37
+    namespace = "ru.sokolovromann.myshopping.core.data"
+    buildToolsVersion = libs.versions.myShopping.buildTools.get()
+    compileSdk = libs.versions.myShopping.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk 28
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
+        minSdk = libs.versions.myShopping.minSdk.get().toInt()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     room {
         schemaDirectory("$projectDir/schemas")
@@ -36,7 +35,7 @@ kotlin {
 }
 
 dependencies {
-    implementation project(':core:domain')
+    implementation(project(":core:domain"))
     implementation(libs.android.core)
     implementation(libs.datastore)
     implementation(libs.hilt.android)

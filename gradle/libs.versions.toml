@@ -9,12 +9,19 @@ hilt-navigation = "1.4.0"
 jakarta = "2.0.1"
 kotlin = "2.4.20"
 kotlin-collections-immutable = "0.5.2"
+kotlin-compilerExtension = "1.5.15"
 kotlin-coroutines = "1.11.0"
 kotlin-serialization = "1.11.0"
 ksp = "2.3.9"
 material3 = "1.4.0"
 material3-adaptive = "1.0.0-alpha06"
 material3-icons = "1.7.8"
+myShopping-buildTools = "37.0.0"
+myShopping-compileSdk = "37"
+myShopping-minSdk = "28"
+myShopping-targetSdk = "37"
+myShopping-versionCode = "42"
+myShopping-versionName = "3.0.0-dev"
 navigation = "2.10.2"
 room = "2.8.5"
 splashscreen = "1.2.0"
@@ -53,6 +60,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-buildInKotlin = { id = "com.android.built-in-kotlin", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+java-library = { id = "java-library" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

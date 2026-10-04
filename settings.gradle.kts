@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -13,10 +14,10 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "MyShopping"
-include ':app'
-include ':core:data'
-include ':core:domain'
-include ':core:navigation'
-include ':core:ui'
-include ':feature:addeditsuggestion'
-include ':feature:dictionary'
+include(":app")
+include(":core:data")
+include(":core:domain")
+include(":core:navigation")
+include(":core:ui")
+include(":feature:addeditsuggestion")
+include(":feature:dictionary")

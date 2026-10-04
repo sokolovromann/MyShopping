@@ -1,16 +1,21 @@
 package ru.sokolovromann.myshopping
 
+import android.content.Context
+import android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE
+import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.API
 import ru.sokolovromann.myshopping.core.domain.repository.BuildInfo
 
-class BuildInfoImpl @Inject constructor() : BuildInfo {
+class BuildInfoImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : BuildInfo {
 
-    override fun getPackageName() = BuildConfig.APPLICATION_ID
+    override fun getPackageName() = context.packageName.orEmpty()
 
-    override fun getApi() = API(BuildConfig.VERSION_CODE.toLong())
+    override fun getApi() = API(context.getString(R.string.app_version_code).toLong())
 
-    override fun getApiName() = "${BuildConfig.VERSION_NAME} (API ${BuildConfig.VERSION_CODE})"
+    override fun getApiName() = "${context.getString(R.string.app_version_name)} (API ${getApi().value})"
 
-    override fun isDebug() = BuildConfig.DEBUG
+    override fun isDebug() = (context.applicationInfo.flags and FLAG_DEBUGGABLE) != 0
 }

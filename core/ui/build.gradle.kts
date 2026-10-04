@@ -1,27 +1,26 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id 'com.android.library'
-    id 'com.android.built-in-kotlin'
-    id 'org.jetbrains.kotlin.plugin.compose'
+    alias(libs.plugins.android.buildInKotlin)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace 'ru.sokolovromann.myshopping.core.ui'
-    buildToolsVersion '37.0.0'
-    compileSdkVersion 37
+    namespace = "ru.sokolovromann.myshopping.core.ui"
+    buildToolsVersion = libs.versions.myShopping.buildTools.get()
+    compileSdk = libs.versions.myShopping.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk 28
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdk = libs.versions.myShopping.minSdk.get().toInt()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
         compose = true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
