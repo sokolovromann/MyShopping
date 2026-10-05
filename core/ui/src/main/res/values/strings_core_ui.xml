@@ -16,7 +16,7 @@
     <string name="navigation_icon_menu" translatable="false">@string/text_menu</string>
     <string name="navigation_item_about" translatable="false">@string/text_about</string>
     <string name="navigation_item_archive" translatable="false">@string/text_archive</string>
-    <string name="navigation_item_dictionary" translatable="false">@string/text_archive</string>
+    <string name="navigation_item_dictionary" translatable="false">@string/text_dictionary</string>
     <string name="navigation_item_purchases" translatable="false">@string/text_purchases</string>
     <string name="navigation_item_settings" translatable="false">@string/text_settings</string>
     <string name="navigation_item_trash" translatable="false">@string/text_trash</string>
