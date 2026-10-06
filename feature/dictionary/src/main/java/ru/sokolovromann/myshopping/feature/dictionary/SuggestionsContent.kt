@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.feature.dictionary
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,33 +31,23 @@ fun SuggestionsContent(
                 val isSelected = state.selected.contains(item.uid)
                 GridSelectableItem(
                     isSelected = isSelected,
+                    title = { Text(item.name.asCompose(),) },
+                    body = {
+                        item.quantities?.let { Text(it.asCompose()) }
+                        item.unitPrices?.let { Text(it.asCompose()) }
+                        item.discounts?.let { Text(it.asCompose()) }
+                        item.taxes?.let { Text(it.asCompose()) }
+                        item.costs?.let { Text(it.asCompose()) }
+                        item.manufacturers?.let { Text(it.asCompose()) }
+                        item.brands?.let { Text(it.asCompose()) }
+                        item.sizes?.let { Text(it.asCompose()) }
+                        item.colors?.let { Text(it.asCompose()) }
+                    },
                     onClick = { onItemClick(item.uid) },
                     onLongClick = { onItemLongClick(item.uid) }
-                ) {
-                    Text(
-                        text = item.name.asCompose(),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    item.quantities?.let { SuggestionsItemBodyText(it) }
-                    item.unitPrices?.let { SuggestionsItemBodyText(it) }
-                    item.discounts?.let { SuggestionsItemBodyText(it) }
-                    item.taxes?.let { SuggestionsItemBodyText(it) }
-                    item.costs?.let { SuggestionsItemBodyText(it) }
-                    item.manufacturers?.let { SuggestionsItemBodyText(it) }
-                    item.brands?.let { SuggestionsItemBodyText(it) }
-                    item.sizes?.let { SuggestionsItemBodyText(it) }
-                    item.colors?.let { SuggestionsItemBodyText(it) }
-                }
+                )
             }
             item { BottomGridSpacer() }
         }
     }
-}
-
-@Composable
-private fun SuggestionsItemBodyText(text: UiText) {
-    Text(
-        text = text.asCompose(),
-        style = MaterialTheme.typography.bodyMedium
-    )
 }

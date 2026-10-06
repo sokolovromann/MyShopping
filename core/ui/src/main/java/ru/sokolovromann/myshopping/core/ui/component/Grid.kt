@@ -6,9 +6,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -24,9 +22,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -37,7 +36,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ru.sokolovromann.myshopping.core.ui.R
 
 @Composable
 fun SimpleVerticalGrid(
@@ -63,33 +66,100 @@ fun SimpleVerticalGrid(
 }
 
 @Composable
-fun GridSelectableItem(
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    itemSpacingEnabled: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
+fun GridItem(
+    title: @Composable () -> Unit,
+    body: @Composable (() -> Unit)? = null,
+    leftIcon: @Composable (() -> Unit)? = null,
+    rightIcon: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {},
+    onLongClick: (() -> Unit)? = null,
+    borderEnabled: Boolean = true
 ) {
-    GridSurfaceItemImpl(
-        isSelected = isSelected,
-        onClick = onClick,
-        onLongClick = onLongClick,
-        itemSpacingEnabled = itemSpacingEnabled,
-        content = content
-    )
+    if (borderEnabled) {
+        GridItemContent(
+            title = title,
+            body = body,
+            leftIcon = leftIcon,
+            rightIcon = rightIcon,
+            onClick = onClick,
+            onLongClick = onLongClick,
+            shape = MaterialTheme.shapes.medium,
+            tonalElevation = 2.dp,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        )
+    } else {
+        GridItemContent(
+            title = title,
+            body = body,
+            leftIcon = leftIcon,
+            rightIcon = rightIcon,
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+    }
 }
 
 @Composable
-fun GridItem(
-    onClick: () -> Unit,
-    itemSpacingEnabled: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
+fun GridSelectableItem(
+    isSelected: Boolean,
+    title: @Composable () -> Unit,
+    body: @Composable (() -> Unit)? = null,
+    icon: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {},
+    onLongClick: (() -> Unit)? = null,
+    borderEnabled: Boolean = true
 ) {
-    GridSurfaceItemImpl(
-        onClick = onClick,
-        itemSpacingEnabled = itemSpacingEnabled,
-        content = content
+    val rightIcon = if (isSelected) {
+        @Composable { GridSelectedRightIcon() }
+    } else null
+    val color by animateColorAsState(
+        targetValue = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            Color.Transparent
+        },
+        label = "CardBackgroundAnimation"
     )
+    val contentColor by animateColorAsState(
+        targetValue = if (isSelected) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        },
+        label = "ContentColorAnimation"
+    )
+    if (borderEnabled) {
+        val tonalElevation = if (isSelected) 0.dp else 2.dp
+        val border = if (isSelected) {
+            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+        } else {
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        }
+        GridItemContent(
+            title = title,
+            body = body,
+            leftIcon = icon,
+            rightIcon = rightIcon,
+            onClick = onClick,
+            onLongClick = onLongClick,
+            shape = MaterialTheme.shapes.medium,
+            color = color,
+            contentColor = contentColor,
+            tonalElevation = tonalElevation,
+            border = border
+        )
+    } else {
+        GridItemContent(
+            title = title,
+            body = body,
+            leftIcon = icon,
+            rightIcon = rightIcon,
+            onClick = onClick,
+            onLongClick = onLongClick,
+            color = color,
+            contentColor = contentColor
+        )
+    }
 }
 
 @Composable
@@ -118,49 +188,19 @@ fun BottomGridSpacer() {
 }
 
 @Composable
-fun GridSurfaceItemImpl(
+private fun GridItemContent(
+    title: @Composable () -> Unit,
+    body: @Composable (() -> Unit)?,
+    leftIcon: @Composable (() -> Unit)?,
+    rightIcon: @Composable (() -> Unit)?,
     onClick: () -> Unit,
-    isSelected: Boolean? = null,
     onLongClick: (() -> Unit)? = null,
-    itemSpacingEnabled: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
+    shape: Shape = RectangleShape,
+    color: Color = Color.Transparent,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    tonalElevation: Dp = 0.dp,
+    border: BorderStroke? = null
 ) {
-    val shape = if (itemSpacingEnabled) {
-        MaterialTheme.shapes.medium
-    } else {
-        RectangleShape
-    }
-    val backgroundColor by animateColorAsState(
-        targetValue = if (isSelected == true) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            Color.Transparent
-        },
-        label = "CardBackgroundAnimation"
-    )
-    val tonalElevation = if (itemSpacingEnabled) {
-        if (isSelected == true) 0.dp else 2.dp
-    } else 0.dp
-    val border = if (itemSpacingEnabled) {
-        if (isSelected == true) {
-            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-        } else {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-        }
-    } else null
-    val contentColor by animateColorAsState(
-        targetValue = if (isSelected == true) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        },
-        label = "ContentColorAnimation"
-    )
-    val contentPadding = if (isSelected == true) {
-        PaddingValues(end = 24.dp)
-    } else {
-        PaddingValues(end = 0.dp)
-    }
     Surface(
         modifier = Modifier
             .clip(shape)
@@ -169,37 +209,60 @@ fun GridSurfaceItemImpl(
                 onLongClick = onLongClick
             ),
         shape = shape,
-        color = backgroundColor,
+        color = color,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
         border = border,
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+        ) {
+            leftIcon?.let {
+                it()
+                Spacer(Modifier.size(8.dp))
+            }
             Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .padding(contentPadding),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start
             ) {
                 CompositionLocalProvider(
-                    value = LocalContentColor provides contentColor,
-                    content = { content() }
+                    values = arrayOf(
+                        LocalContentColor provides contentColor,
+                        LocalTextStyle provides MaterialTheme.typography.bodyLarge
+                    ),
+                    content = title
                 )
+                body?.let {
+                    CompositionLocalProvider(
+                        values = arrayOf(
+                            LocalContentColor provides contentColor.copy(alpha = 0.7f),
+                            LocalTextStyle provides MaterialTheme.typography.bodyMedium,
+                        ),
+                        content = {
+                            Spacer(Modifier.size(4.dp))
+                            it()
+                        }
+                    )
+                }
             }
-
-            if (isSelected == true) {
-                Icon(
-                    imageVector = Icons.Filled.CheckCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                        .size(20.dp)
-                )
+            rightIcon?.let {
+                Spacer(Modifier.size(8.dp))
+                it()
             }
         }
     }
+}
+
+@Composable
+private fun GridSelectedRightIcon() {
+    Icon(
+        imageVector = Icons.Filled.Check,
+        contentDescription = stringResource(R.string.text_selected),
+        tint = MaterialTheme.colorScheme.primary
+    )
 }
