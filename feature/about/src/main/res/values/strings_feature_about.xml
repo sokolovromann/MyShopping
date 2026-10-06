@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="about_data_developer" translatable="false">Roman Sokolov</string>
+    <string name="about_data_email" translatable="false">mailto:developer.myshopping@gmail.com</string>
+    <string name="about_data_github" translatable="false">https://github.com/sokolovromann/MyShopping</string>
+    <string name="about_data_privacy_policy" translatable="false">https://sokolovromann.github.io/MyShopping/privacy_policy.html</string>
+    <string name="about_data_terms_and_conditions" translatable="false">https://sokolovromann.github.io/MyShopping/terms_and_conditions.html</string>
+
+    <string name="about_header" translatable="false">@string/text_about</string>
+
+    <string name="about_text_app_version">App version</string>
+    <string name="about_text_developer">Developer</string>
+    <string name="about_text_email" translatable="false">Email</string>
+    <string name="about_text_feedback">Feedback</string>
+    <string name="about_text_github" translatable="false">GitHub</string>
+    <string name="about_text_links">Links</string>
+    <string name="about_text_privacy_policy">Privacy policy</string>
+    <string name="about_text_terms_and_conditions">Terms and conditions</string>
+</resources>

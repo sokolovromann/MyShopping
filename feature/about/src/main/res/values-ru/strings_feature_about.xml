@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="about_text_app_version">Версия приложения</string>
+    <string name="about_text_developer">Разработчик</string>
+    <string name="about_text_feedback">Отзыв о приложении</string>
+    <string name="about_text_links">Ссылки</string>
+    <string name="about_text_privacy_policy">Политика конфиденциальности</string>
+    <string name="about_text_terms_and_conditions">Условия использования</string>
+</resources>

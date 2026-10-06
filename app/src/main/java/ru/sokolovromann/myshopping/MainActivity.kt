@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.sokolovromann.myshopping.core.navigation.Screen
 import ru.sokolovromann.myshopping.core.ui.theme.MyShoppingTheme
 import androidx.compose.runtime.collectAsState
+import ru.sokolovromann.myshopping.feature.about.AboutScreen
 import ru.sokolovromann.myshopping.feature.addeditsuggestion.AddEditSuggestionScreen
 import ru.sokolovromann.myshopping.feature.dictionary.DictionaryScreen
 
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     composable<Screen.Dictionary> { DictionaryScreen() }
                     composable<Screen.AddEditSuggestion> { AddEditSuggestionScreen() }
                     composable<Screen.Settings> { TextScreen("Settings Screen") }
-                    composable<Screen.About> { TextScreen("About Screen") }
+                    composable<Screen.About> { AboutScreen() }
                 }
             }
         }

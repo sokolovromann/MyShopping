@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="about_text_app_version">Wersja aplikacji</string>
+    <string name="about_text_developer">Deweloper</string>
+    <string name="about_text_feedback">Opinie</string>
+    <string name="about_text_links">Linki</string>
+    <string name="about_text_privacy_policy">Polityka prywatności</string>
+    <string name="about_text_terms_and_conditions">Regulamin</string>
+</resources>

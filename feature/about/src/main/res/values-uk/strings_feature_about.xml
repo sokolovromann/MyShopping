@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="about_text_app_version">Версія програми</string>
+    <string name="about_text_developer">Розробник</string>
+    <string name="about_text_feedback">Відгук про програму</string>
+    <string name="about_text_links">Посилання</string>
+    <string name="about_text_privacy_policy">Політика конфіденційності</string>
+    <string name="about_text_terms_and_conditions">Умови використання</string>
+</resources>
