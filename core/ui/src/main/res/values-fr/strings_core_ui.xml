@@ -15,6 +15,7 @@
     <string name="text_brands">Marques</string>
     <string name="text_colors">Couleurs</string>
     <string name="text_costs">Coûts</string>
+    <string name="text_do_nothing">Ne rien faire</string>
     <string name="text_dictionary">Suggestions</string>
     <string name="text_discounts">Remises</string>
     <string name="text_enter_name">Saisir le nom</string>
@@ -22,6 +23,7 @@
     <string name="text_menu">Menu</string>
     <string name="text_my_shopping_list">Mes achats</string>
     <string name="text_name">Nom</string>
+    <string name="text_off">Désactivé</string>
     <string name="text_purchases">Achats</string>
     <string name="text_quantities">Quantités</string>
     <string name="text_selected">Sélectionné</string>

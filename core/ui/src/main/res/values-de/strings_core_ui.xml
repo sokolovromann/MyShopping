@@ -15,6 +15,7 @@
     <string name="text_brands">Marken</string>
     <string name="text_colors">Farben</string>
     <string name="text_costs">Kosten</string>
+    <string name="text_do_nothing">Nichts tun</string>
     <string name="text_dictionary">Suchvorschläge</string>
     <string name="text_discounts">Rabatte</string>
     <string name="text_enter_name">Name eingeben</string>
@@ -22,12 +23,13 @@
     <string name="text_menu">Menü</string>
     <string name="text_my_shopping_list">My Shopping List</string>
     <string name="text_name">Name</string>
+    <string name="text_off">Aus</string>
     <string name="text_purchases">Einkäufe</string>
     <string name="text_quantities">Mengen</string>
     <string name="text_selected">Ausgewählt</string>
     <string name="text_settings">Einstellungen</string>
     <string name="text_sizes">Größen</string>
     <string name="text_taxes">Steuern</string>
-    <string name="text_trash">Müll</string>
+    <string name="text_trash">Papierkorb</string>
     <string name="text_unit_price">Preise</string>
 </resources>
