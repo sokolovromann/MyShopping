@@ -21,13 +21,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -37,15 +36,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ru.sokolovromann.myshopping.core.ui.R
+import ru.sokolovromann.myshopping.core.ui.utils.getWindowSize
 
 @Composable
 fun SimpleVerticalGrid(
-    cells: Int,
     modifier: Modifier = Modifier,
+    cells: Int = getDefaultGridCells(),
     state: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
     itemSpacingEnabled: Boolean = true,
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
@@ -110,7 +108,7 @@ fun GridSelectableItem(
     borderEnabled: Boolean = true
 ) {
     val rightIcon = if (isSelected) {
-        @Composable { GridSelectedRightIcon() }
+        @Composable { SelectedItemRightIcon() }
     } else null
     val color by animateColorAsState(
         targetValue = if (isSelected) {
@@ -188,6 +186,21 @@ fun BottomGridSpacer() {
 }
 
 @Composable
+fun getDefaultGridCells(): Int {
+    val windowSize = getWindowSize()
+    val widthSize = windowSize.widthSizeClass
+    val heightSize = windowSize.heightSizeClass
+    return when (widthSize) {
+        WindowWidthSizeClass.Compact -> 1
+        WindowWidthSizeClass.Medium -> {
+            if (heightSize == WindowHeightSizeClass.Compact) 1 else 2
+        }
+        WindowWidthSizeClass.Expanded -> 3
+        else -> 1
+    }
+}
+
+@Composable
 private fun GridItemContent(
     title: @Composable () -> Unit,
     body: @Composable (() -> Unit)?,
@@ -256,13 +269,4 @@ private fun GridItemContent(
             }
         }
     }
-}
-
-@Composable
-private fun GridSelectedRightIcon() {
-    Icon(
-        imageVector = Icons.Filled.Check,
-        contentDescription = stringResource(R.string.text_selected),
-        tint = MaterialTheme.colorScheme.primary
-    )
 }
