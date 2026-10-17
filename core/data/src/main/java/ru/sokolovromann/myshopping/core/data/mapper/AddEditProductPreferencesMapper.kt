@@ -50,5 +50,5 @@ class AddEditProductPreferencesMapper @Inject constructor() : DataStoreMapper<Ad
                 to model.tax?.value?.toPlainString().orEmpty()
     )
 
-    private fun toTax(tax: String?): Tax? = tax?.let { Tax(BigDecimal(it)) }
+    private fun toTax(tax: String?): Tax? = tax?.toBigDecimalOrNull()?.let { Tax(it) }
 }
