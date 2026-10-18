@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_add">Добавить</string>
     <string name="action_back">Назад</string>
@@ -9,21 +9,21 @@
     <string name="action_save">Сохранить</string>
     <string name="action_select">Выбрать</string>
     <string name="action_select_all">Выбрать всё</string>
-
     <string name="text_about">О приложении</string>
     <string name="text_archive">Архив</string>
     <string name="text_brands">Марки</string>
     <string name="text_colors">Цвета</string>
     <string name="text_costs">Стоимости</string>
-    <string name="text_do_nothing">Ничего не делать</string>
     <string name="text_dictionary">Подсказки</string>
     <string name="text_discounts">Скидки</string>
+    <string name="text_do_nothing">Ничего не делать</string>
     <string name="text_enter_name">Введите название</string>
     <string name="text_manufacturers">Производители</string>
     <string name="text_menu">Меню</string>
     <string name="text_my_shopping_list">Мои покупки</string>
     <string name="text_name">Название</string>
     <string name="text_off">Выключено</string>
+    <string name="text_on">Включено</string>
     <string name="text_purchases">Покупки</string>
     <string name="text_quantities">Количества</string>
     <string name="text_selected">Выбрано</string>

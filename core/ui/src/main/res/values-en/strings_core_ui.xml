@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_add">Add</string>
     <string name="action_back">Back</string>
@@ -9,21 +9,21 @@
     <string name="action_save">Save</string>
     <string name="action_select">Select</string>
     <string name="action_select_all">Select All</string>
-
     <string name="text_about">About</string>
     <string name="text_archive">Archive</string>
     <string name="text_brands">Brands</string>
     <string name="text_colors">Colors</string>
     <string name="text_costs">Costs</string>
-    <string name="text_do_nothing">Do nothing</string>
     <string name="text_dictionary">Suggestions</string>
     <string name="text_discounts">Discounts</string>
+    <string name="text_do_nothing">Do nothing</string>
     <string name="text_enter_name">Enter name</string>
     <string name="text_manufacturers">Manufacturers</string>
     <string name="text_menu">Menu</string>
     <string name="text_my_shopping_list">My Shopping List</string>
     <string name="text_name">Name</string>
     <string name="text_off">Off</string>
+    <string name="text_on">On</string>
     <string name="text_purchases">Purchases</string>
     <string name="text_quantities">Quantities</string>
     <string name="text_selected">Selected</string>

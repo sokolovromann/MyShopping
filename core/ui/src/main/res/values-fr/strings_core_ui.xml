@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_add">Ajouter</string>
     <string name="action_back">Dos</string>
@@ -9,21 +9,21 @@
     <string name="action_save">Enregistrer</string>
     <string name="action_select">Sélectionner</string>
     <string name="action_select_all">Tout sélectionner</string>
-
     <string name="text_about">Infos sur l\'application</string>
     <string name="text_archive">Archive</string>
     <string name="text_brands">Marques</string>
     <string name="text_colors">Couleurs</string>
     <string name="text_costs">Coûts</string>
-    <string name="text_do_nothing">Ne rien faire</string>
     <string name="text_dictionary">Suggestions</string>
     <string name="text_discounts">Remises</string>
+    <string name="text_do_nothing">Ne rien faire</string>
     <string name="text_enter_name">Saisir le nom</string>
     <string name="text_manufacturers">Fabricants</string>
     <string name="text_menu">Menu</string>
     <string name="text_my_shopping_list">Mes achats</string>
     <string name="text_name">Nom</string>
     <string name="text_off">Désactivé</string>
+    <string name="text_on">Activé</string>
     <string name="text_purchases">Achats</string>
     <string name="text_quantities">Quantités</string>
     <string name="text_selected">Sélectionné</string>
