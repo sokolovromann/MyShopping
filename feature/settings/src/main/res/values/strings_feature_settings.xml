@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_action_currency_cancel" translatable="false">@string/action_cancel</string>
+    <string name="settings_action_currency_save" translatable="false">@string/action_save</string>
+    <string name="settings_header" translatable="false">@string/text_settings</string>
+    <string name="settings_label_currency_symbol">Symbol</string>
+    <string name="settings_text_add_edit_product">Add and edit product</string>
+    <string name="settings_text_after_adding_cart">After adding</string>
+    <string name="settings_text_after_adding_cart_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_adding_cart_open_add_name">Open \"Add name\" screen</string>
+    <string name="settings_text_after_adding_cart_open_add_product">Open \"Add product\" screen</string>
+    <string name="settings_text_after_adding_cart_open_products">Open \"Products\" screen</string>
+    <string name="settings_text_after_archiving_cart">After archiving</string>
+    <string name="settings_text_after_archiving_cart_change_to_completed">Mark as Completed</string>
+    <string name="settings_text_after_archiving_cart_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_completing">After completing</string>
+    <string name="settings_text_after_completing_cart" translatable="false">@string/settings_text_after_completing</string>
+    <string name="settings_text_after_completing_cart_archive_cart">Archive list</string>
+    <string name="settings_text_after_completing_cart_delete_cart">Delete list</string>
+    <string name="settings_text_after_completing_cart_delete_cart_products">Delete list and products</string>
+    <string name="settings_text_after_completing_cart_delete_products" translatable="false">@string/settings_text_delete_products</string>
+    <string name="settings_text_after_completing_cart_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_completing_product" translatable="false">@string/settings_text_after_completing</string>
+    <string name="settings_text_after_completing_product_delete" translatable="false">@string/settings_text_delete_product</string>
+    <string name="settings_text_after_completing_product_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_completing_product_edit" translatable="false">@string/settings_text_edit_product</string>
+    <string name="settings_text_after_tapping_cart_checkbox" translatable="false">@string/settings_text_after_tapping_checkbox</string>
+    <string name="settings_text_after_tapping_cart_checkbox_change_status" translatable="false">@string/settings_text_mark_list_as_completed_active</string>
+    <string name="settings_text_after_tapping_cart_checkbox_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_tapping_checkbox">After tapping the checkbox</string>
+    <string name="settings_text_after_tapping_product_checkbox" translatable="false">@string/settings_text_after_tapping_checkbox</string>
+    <string name="settings_text_after_tapping_product_checkbox_change_status" translatable="false">@string/settings_text_change_product_status</string>
+    <string name="settings_text_after_tapping_product_checkbox_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_tapping_product_item">After tapping the product</string>
+    <string name="settings_text_after_tapping_product_item_change_status" translatable="false">@string/settings_text_change_product_status</string>
+    <string name="settings_text_after_tapping_product_item_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_backup">Backup</string>
+    <string name="settings_text_cart_checkbox_color" translatable="false">@string/settings_text_checkbox_color</string>
+    <string name="settings_text_cart_checkbox_color_grey" translatable="false">@string/settings_text_checkbox_color_grey</string>
+    <string name="settings_text_cart_checkbox_color_red_green" translatable="false">@string/settings_text_checkbox_color_red_green</string>
+    <string name="settings_text_cart_checkbox_color_red_grey" translatable="false">@string/settings_text_checkbox_color_red_grey</string>
+    <string name="settings_text_carts">Shopping lists</string>
+    <string name="settings_text_change_product_status">Mark product as Completed or Active</string>
+    <string name="settings_text_checkbox_color">Checkbox color</string>
+    <string name="settings_text_checkbox_color_grey">Grey</string>
+    <string name="settings_text_checkbox_color_red_green">Red or green</string>
+    <string name="settings_text_checkbox_color_red_grey">Red or grey</string>
+    <string name="settings_text_currency">Currency</string>
+    <string name="settings_text_currency_left">Left</string>
+    <string name="settings_text_currency_left_args">Left: %1$s</string>
+    <string name="settings_text_currency_right">Right</string>
+    <string name="settings_text_currency_right_args">Right: %1$s</string>
+    <string name="settings_text_date_time_formatting_mode">Date and time</string>
+    <string name="settings_text_date_time_formatting_mode_ddmmmyyyy_12">DD MMM YYYY, 12 h</string>
+    <string name="settings_text_date_time_formatting_mode_ddmmmyyyy_24">DD MMM YYYY, 24 h</string>
+    <string name="settings_text_date_time_formatting_mode_mmmddyyyy_12">MMM DD YYYY, 12 h</string>
+    <string name="settings_text_date_time_formatting_mode_mmmddyyyy_24">MMM DD YYYY, 24 h</string>
+    <string name="settings_text_date_time_formatting_mode_yyyymmmdd_12">YYYY MMM DD, 12 h</string>
+    <string name="settings_text_date_time_formatting_mode_yyyymmmdd_24">YYYY MMM DD, 24 h</string>
+    <string name="settings_text_delete_product">Delete product</string>
+    <string name="settings_text_delete_products">Delete products</string>
+    <string name="settings_text_deletion_cart_from_trash">Automatically delete from Trash</string>
+    <string name="settings_text_deletion_cart_from_trash_after_7_days">After 7 days</string>
+    <string name="settings_text_deletion_cart_from_trash_do_not_delete">Do not delete</string>
+    <string name="settings_text_edit_product">Edit product</string>
+    <string name="settings_text_font_size">Font size</string>
+    <string name="settings_text_font_size_extra_huge">Extra huge</string>
+    <string name="settings_text_font_size_extra_large">Extra large</string>
+    <string name="settings_text_font_size_huge">Huge</string>
+    <string name="settings_text_font_size_large">Large</string>
+    <string name="settings_text_font_size_medium">Medium</string>
+    <string name="settings_text_font_size_small">Small</string>
+    <string name="settings_text_general">General</string>
+    <string name="settings_text_keyboard_display_delay">Keyboard display delay</string>
+    <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
+    <string name="settings_text_keyboard_display_delay_off" translatable="false">@string/text_off</string>
+    <string name="settings_text_mark_list_as_completed_active">Mark list as Completed or Active</string>
+    <string name="settings_text_money_formatting_mode">Money</string>
+    <string name="settings_text_money_formatting_mode_advanced">Advanced mode</string>
+    <string name="settings_text_money_formatting_mode_simple">Simple mode</string>
+    <string name="settings_text_product_checkbox_color" translatable="false">@string/settings_text_checkbox_color</string>
+    <string name="settings_text_product_checkbox_color_grey" translatable="false">@string/settings_text_checkbox_color_grey</string>
+    <string name="settings_text_product_checkbox_color_red_green" translatable="false">@string/settings_text_checkbox_color_red_green</string>
+    <string name="settings_text_product_checkbox_color_red_grey" translatable="false">@string/settings_text_checkbox_color_red_grey</string>
+    <string name="settings_text_products">Products</string>
+    <string name="settings_text_products_adding_mode">Adding mode</string>
+    <string name="settings_text_products_adding_mode_advanced">Advanced</string>
+    <string name="settings_text_products_adding_mode_simple">Simple</string>
+    <string name="settings_text_products_widget">Widget</string>
+    <string name="settings_text_strikethrough_products_completed">Strikethrough completed</string>
+    <string name="settings_text_strikethrough_products_completed_off" translatable="false">@string/text_off</string>
+    <string name="settings_text_strikethrough_products_completed_on" translatable="false">@string/text_on</string>
+    <string name="settings_text_suggestions" translatable="false">@string/text_dictionary</string>
+    <string name="settings_text_swipe_cart_archive_unarchive_cart">Archive or unarchive list</string>
+    <string name="settings_text_swipe_cart_change_cart_status" translatable="false">@string/settings_text_mark_list_as_completed_active</string>
+    <string name="settings_text_swipe_cart_delete_products" translatable="false">@string/settings_text_delete_products</string>
+    <string name="settings_text_swipe_cart_delete_restore_cart">Delete or restore list</string>
+    <string name="settings_text_swipe_cart_left" translatable="false">@string/settings_text_swipe_left</string>
+    <string name="settings_text_swipe_cart_off" translatable="false">@string/text_off</string>
+    <string name="settings_text_swipe_cart_right" translatable="false">@string/settings_text_swipe_right</string>
+    <string name="settings_text_swipe_left">Swipe to left</string>
+    <string name="settings_text_swipe_product_change_status" translatable="false">@string/settings_text_change_product_status</string>
+    <string name="settings_text_swipe_product_delete" translatable="false">@string/settings_text_delete_product</string>
+    <string name="settings_text_swipe_product_edit" translatable="false">@string/settings_text_edit_product</string>
+    <string name="settings_text_swipe_product_left" translatable="false">@string/settings_text_swipe_left</string>
+    <string name="settings_text_swipe_product_off" translatable="false">@string/text_off</string>
+    <string name="settings_text_swipe_product_right" translatable="false">@string/settings_text_swipe_right</string>
+    <string name="settings_text_swipe_right">Swipe to right</string>
+    <string name="settings_text_theme">Theme</string>
+    <string name="settings_text_theme_dark">Dark</string>
+    <string name="settings_text_theme_default">Default</string>
+    <string name="settings_text_theme_light">Light</string>
+</resources>

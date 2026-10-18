@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":feature:about"))
     implementation(project(":feature:addeditsuggestion"))
     implementation(project(":feature:dictionary"))
+    implementation(project(":feature:settings"))
     implementation(libs.android.core)
     implementation(libs.hilt.android)
     implementation(libs.navigation)
