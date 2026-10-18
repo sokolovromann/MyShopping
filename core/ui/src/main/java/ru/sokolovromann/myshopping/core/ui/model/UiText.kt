@@ -17,7 +17,7 @@ sealed class UiText {
     fun asCompose(): String = when (this) {
         is FromString -> text
         is FromResources -> stringResource(id)
-        is FromResourcesWithArgs -> stringResource(id, args)
+        is FromResourcesWithArgs -> stringResource(id, *args)
     }
 
     @Composable
