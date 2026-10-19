@@ -4,6 +4,7 @@ import ru.sokolovromann.myshopping.core.domain.model.Currency
 import ru.sokolovromann.myshopping.core.domain.model.DiscountMeasurementUnit
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.ProductDiscount
+import ru.sokolovromann.myshopping.core.domain.model.Tax
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -35,6 +36,14 @@ object MoneyUtils {
                 is Currency.Right -> "$formatted${currency.currencySign}"
             }
         }
+    }
+
+    fun format(
+        tax: Tax,
+        formattingMode: MoneyFormattingMode
+    ): String {
+        val formatted = createDefaultDecimalFormat(formattingMode).format(tax.value)
+        return "$formatted %"
     }
 
     fun formatToPlainString(
