@@ -44,7 +44,7 @@ class ProductsWidgetPreferencesMapper @Inject constructor() : DataStoreMapper<Pr
         LocalDataStoreScheme.ProductsWidget.SORT_BY_ASCENDING
                 to model.sortProducts.isByAscending().toString(),
         LocalDataStoreScheme.ProductsWidget.GROUP_BY_STATUS
-                to model.groupProductsByStatus.javaClass.simpleName,
+                to model.groupProductsByStatus.toString(),
     )
 
     private fun toSort(sort: String?, sortByAscending: String?): SortProducts {
