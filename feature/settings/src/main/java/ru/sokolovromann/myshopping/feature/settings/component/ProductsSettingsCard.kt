@@ -12,6 +12,7 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
+import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
 import ru.sokolovromann.myshopping.core.domain.model.SwipeProduct
@@ -61,6 +62,67 @@ fun ProductsSettingsCard(
             val action = ProductsSettingsAction.OnSwipeRightSelected(it)
             onAction(action)
         }
+    }
+}
+
+// GROUP
+
+@Composable
+fun GroupProductsItem(
+    data: SettingsItem<GroupProductsByStatus>,
+    onSelected: (GroupProductsByStatus) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_group_products_by_status)) },
+        body = {
+            Text(data.text.asCompose())
+            GroupProductsMenu(
+                expanded = expanded,
+                onSelected = { newGroup ->
+                    expanded = false
+                    newGroup?.let { onSelected(it) }
+                },
+                selected = data.selected
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun GroupProductsMenu(
+    expanded: Boolean,
+    onSelected: (GroupProductsByStatus?) -> Unit,
+    selected: GroupProductsByStatus
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onSelected(null) }
+    ) {
+        DropdownMenuTitle(stringResource(R.string.settings_text_group_products_by_status))
+
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_completed_first),
+            selected = selected == GroupProductsByStatus.CompletedFirst,
+            onClick = { onSelected(GroupProductsByStatus.CompletedFirst) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_active_first),
+            selected = selected == GroupProductsByStatus.ActiveFirst,
+            onClick = { onSelected(GroupProductsByStatus.ActiveFirst) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_hide_completed),
+            selected = selected == GroupProductsByStatus.HideCompleted,
+            onClick = { onSelected(GroupProductsByStatus.HideCompleted) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_do_not_group),
+            selected = selected == GroupProductsByStatus.DoNotGroup,
+            onClick = { onSelected(GroupProductsByStatus.DoNotGroup) }
+        )
     }
 }
 

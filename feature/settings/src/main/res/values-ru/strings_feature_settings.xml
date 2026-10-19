@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_label_currency_symbol">Символ</string>
+    <string name="settings_label_tax">Налог в процентах</string>
     <string name="settings_text_add_edit_product">Добавить и редактироать товар</string>
     <string name="settings_text_after_adding_cart">После добавления</string>
     <string name="settings_text_after_adding_cart_open_add_name">Открыть экран \"Добавить название\"</string>
     <string name="settings_text_after_adding_cart_open_add_product">Открыть экран \"Добавить товар\"</string>
     <string name="settings_text_after_adding_cart_open_products">Открыть экран \"Товары\"</string>
+    <string name="settings_text_after_adding_product">После добавления</string>
+    <string name="settings_text_after_adding_product_open">Открыть новый экран</string>
     <string name="settings_text_after_archiving_cart">После архивирования</string>
     <string name="settings_text_after_archiving_cart_change_to_completed">Отметить как Купленный</string>
     <string name="settings_text_after_completing">После покупки</string>
     <string name="settings_text_after_completing_cart_archive_cart">Архивировать список</string>
     <string name="settings_text_after_completing_cart_delete_cart">Удалить список</string>
     <string name="settings_text_after_completing_cart_delete_cart_products">Удалить список и товары</string>
+    <string name="settings_text_after_editing_product">После редактирования</string>
+    <string name="settings_text_after_editing_product_next">Открыть следующий экран \"Товары\"</string>
     <string name="settings_text_after_tapping_checkbox">После нажатия на чекбокс</string>
+    <string name="settings_text_after_tapping_enter">После нажатия на Enter</string>
+    <string name="settings_text_after_tapping_enter_next_field">Перейти к следующему полю</string>
+    <string name="settings_text_after_tapping_enter_save">Сохранить товар</string>
     <string name="settings_text_after_tapping_product_item">После нажатия на товар</string>
     <string name="settings_text_backup">Резервное копирование</string>
     <string name="settings_text_carts">Списки покупок</string>
@@ -21,6 +29,7 @@
     <string name="settings_text_checkbox_color_grey">Серый</string>
     <string name="settings_text_checkbox_color_red_green">Красный или зелёный</string>
     <string name="settings_text_checkbox_color_red_grey">Красный или серый</string>
+    <string name="settings_text_close_screen">Закрыть экран</string>
     <string name="settings_text_currency">Валюта</string>
     <string name="settings_text_currency_left">Слева</string>
     <string name="settings_text_currency_left_args">Слева: %1$s</string>
@@ -47,6 +56,11 @@
     <string name="settings_text_font_size_medium">Средний</string>
     <string name="settings_text_font_size_small">Маленький</string>
     <string name="settings_text_general">Общие</string>
+    <string name="settings_text_group">Группировать</string>
+    <string name="settings_text_group_active_first">Сначала не купленные</string>
+    <string name="settings_text_group_completed_first">Сначала купленные</string>
+    <string name="settings_text_group_do_not_group">Не группировать</string>
+    <string name="settings_text_group_hide_completed">Скрывать купленные</string>
     <string name="settings_text_keyboard_display_delay">Задержка отображения клавиатуры</string>
     <string name="settings_text_keyboard_display_delay_50ms">50 мс</string>
     <string name="settings_text_mark_list_as_completed_active">Отметить список как Купленный или Не купленный</string>
@@ -63,8 +77,10 @@
     <string name="settings_text_swipe_cart_delete_restore_cart">Удалить или восстановить список</string>
     <string name="settings_text_swipe_left">Свайп влево</string>
     <string name="settings_text_swipe_right">Свайп вправо</string>
+    <string name="settings_text_tax">Налоги</string>
     <string name="settings_text_theme">Тема</string>
     <string name="settings_text_theme_dark">Тёмная</string>
     <string name="settings_text_theme_default">По-умолчанию</string>
     <string name="settings_text_theme_light">Светлая</string>
+    <string name="settings_text_widget_more_settings">Остальные настройки в соответствующих разделах</string>
 </resources>

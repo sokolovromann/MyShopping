@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_label_currency_symbol">Símbolo</string>
+    <string name="settings_label_tax">Taux de impuesto</string>
     <string name="settings_text_add_edit_product">Añadir y editar producto</string>
     <string name="settings_text_after_adding_cart">Después de añadir</string>
     <string name="settings_text_after_adding_cart_open_add_name">Abrir pantalla \"Añadir nombre\"</string>
     <string name="settings_text_after_adding_cart_open_add_product">Abrir pantalla \"Añadir productos\"</string>
     <string name="settings_text_after_adding_cart_open_products">Abrir pantalla \"Productos\"</string>
+    <string name="settings_text_after_adding_product">Después de añadir</string>
+    <string name="settings_text_after_adding_product_open">Abrir una nueva pantalla</string>
     <string name="settings_text_after_archiving_cart">Después de archivar</string>
     <string name="settings_text_after_archiving_cart_change_to_completed">Marcar como comprado</string>
     <string name="settings_text_after_completing">Después de la compra</string>
     <string name="settings_text_after_completing_cart_archive_cart">Archivar lista</string>
     <string name="settings_text_after_completing_cart_delete_cart">Eliminar lista</string>
     <string name="settings_text_after_completing_cart_delete_cart_products">Eliminar lista y productos</string>
+    <string name="settings_text_after_editing_product">Después de editar</string>
+    <string name="settings_text_after_editing_product_next">Abrir la siguiente pantalla \"Productos\"</string>
     <string name="settings_text_after_tapping_checkbox">Al marcar la casilla</string>
+    <string name="settings_text_after_tapping_enter">Al presionar Enter</string>
+    <string name="settings_text_after_tapping_enter_next_field">Ir al siguiente campo</string>
+    <string name="settings_text_after_tapping_enter_save">Guardar producto</string>
     <string name="settings_text_after_tapping_product_item">Al tocar el producto</string>
     <string name="settings_text_backup">Copia de seguridad</string>
     <string name="settings_text_carts">Listas de compras</string>
@@ -21,6 +29,7 @@
     <string name="settings_text_checkbox_color_grey">Gris</string>
     <string name="settings_text_checkbox_color_red_green">Rojo o verde</string>
     <string name="settings_text_checkbox_color_red_grey">Rojo o gris</string>
+    <string name="settings_text_close_screen">Cerrar pantalla</string>
     <string name="settings_text_currency">Moneda</string>
     <string name="settings_text_currency_left">Izquierda</string>
     <string name="settings_text_currency_left_args">Izquierda: %1$s</string>
@@ -47,6 +56,11 @@
     <string name="settings_text_font_size_medium">Mediano</string>
     <string name="settings_text_font_size_small">Pequeño</string>
     <string name="settings_text_general">General</string>
+    <string name="settings_text_group">Agrupar</string>
+    <string name="settings_text_group_active_first">No comprados primero</string>
+    <string name="settings_text_group_completed_first">Comprados primero</string>
+    <string name="settings_text_group_do_not_group">No agrupar</string>
+    <string name="settings_text_group_hide_completed">Ocultar comprados</string>
     <string name="settings_text_keyboard_display_delay">Retraso al mostrar el teclado</string>
     <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
     <string name="settings_text_mark_list_as_completed_active">Marcar lista como comprada o no comprada</string>
@@ -63,8 +77,10 @@
     <string name="settings_text_swipe_cart_delete_restore_cart">Eliminar o restaurar lista</string>
     <string name="settings_text_swipe_left">Deslizar a la izquierda</string>
     <string name="settings_text_swipe_right">Deslizar a la derecha</string>
+    <string name="settings_text_tax">Impuestos</string>
     <string name="settings_text_theme">Tema</string>
     <string name="settings_text_theme_dark">Oscuro</string>
     <string name="settings_text_theme_default">Predeterminado</string>
     <string name="settings_text_theme_light">Claro</string>
+    <string name="settings_text_widget_more_settings">El resto de los ajustes se encuentra en las secciones correspondientes</string>
 </resources>

@@ -12,9 +12,11 @@ import ru.sokolovromann.myshopping.core.ui.component.isCloseableNavigationDrawer
 import ru.sokolovromann.myshopping.core.ui.component.rememberDefaultDrawerState
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
 import ru.sokolovromann.myshopping.feature.settings.SettingsViewModel
+import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.CartsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 @Composable
@@ -26,6 +28,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()) {
         onGeneralSettingsAction = { settingsViewModel.onGeneralSettingsActions(it) },
         onCartsSettingsAction = { settingsViewModel.onCartsSettingsAction(it) },
         onProductsSettingsAction = { settingsViewModel.onProductsSettingsAction(it) },
+        onProductsWidgetSettingsAction = { settingsViewModel.onProductsWidgetSettingsAction(it) },
+        onAddEditProductSettingsAction = { settingsViewModel.onAddEditProductSettingsAction(it) },
         state = settingsState
     )
 }
@@ -37,6 +41,8 @@ private fun SettingsScreenImpl(
     onGeneralSettingsAction: (GeneralSettingsAction) -> Unit,
     onCartsSettingsAction: (CartsSettingsAction) -> Unit,
     onProductsSettingsAction: (ProductsSettingsAction) -> Unit,
+    onProductsWidgetSettingsAction: (ProductsWidgetSettingsAction) -> Unit,
+    onAddEditProductSettingsAction: (AddEditProductSettingsAction) -> Unit,
     state: SettingsState
 ) {
     val drawerState = rememberDefaultDrawerState()
@@ -61,6 +67,8 @@ private fun SettingsScreenImpl(
                     onGeneralSettingsAction = onGeneralSettingsAction,
                     onCartsSettingsAction = onCartsSettingsAction,
                     onProductsSettingsAction = onProductsSettingsAction,
+                    onProductsWidgetSettingsAction = onProductsWidgetSettingsAction,
+                    onAddEditProductSettingsAction = onAddEditProductSettingsAction,
                     settingsState = state
                 )
             }

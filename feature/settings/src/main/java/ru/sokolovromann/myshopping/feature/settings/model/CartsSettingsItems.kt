@@ -7,11 +7,13 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
+import ru.sokolovromann.myshopping.core.domain.model.GroupCartsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCart
 import ru.sokolovromann.myshopping.core.domain.model.UserPreferencesDefaults
 
 @Immutable
 data class CartsSettingsItems(
+    val groupByStatus: SettingsItem<GroupCartsByStatus> = SettingsItem(UserPreferencesDefaults.Carts.groupByStatus),
     val afterAdding: SettingsItem<AfterAddingCart> = SettingsItem(UserPreferencesDefaults.Carts.afterAdding),
     val afterCompleting: SettingsItem<AfterCompletingCart> = SettingsItem(UserPreferencesDefaults.Carts.afterCompleting),
     val afterArchiving: SettingsItem<AfterArchivingCart> = SettingsItem(UserPreferencesDefaults.Carts.afterArchiving),

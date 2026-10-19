@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_label_currency_symbol">Символ</string>
+    <string name="settings_label_tax">Ставка податку</string>
     <string name="settings_text_add_edit_product">Додати та редагувати товар</string>
     <string name="settings_text_after_adding_cart">Після додавання</string>
     <string name="settings_text_after_adding_cart_open_add_name">Відкрити екран \"Додати назву\"</string>
     <string name="settings_text_after_adding_cart_open_add_product">Відкрити екран \"Додати товари\"</string>
     <string name="settings_text_after_adding_cart_open_products">Відкрити екран \"Товари\"</string>
+    <string name="settings_text_after_adding_product">Після додавання</string>
+    <string name="settings_text_after_adding_product_open">Відкрити новий екран</string>
     <string name="settings_text_after_archiving_cart">Після архівування</string>
     <string name="settings_text_after_archiving_cart_change_to_completed">Позначити як куплене</string>
     <string name="settings_text_after_completing">Після купівлі</string>
     <string name="settings_text_after_completing_cart_archive_cart">Архівувати список</string>
     <string name="settings_text_after_completing_cart_delete_cart">Видалити список</string>
     <string name="settings_text_after_completing_cart_delete_cart_products">Видалити список і товари</string>
+    <string name="settings_text_after_editing_product">Після редагування</string>
+    <string name="settings_text_after_editing_product_next">Відкрити наступний екран \"Товари\"</string>
     <string name="settings_text_after_tapping_checkbox">Після вибору чекбокса</string>
+    <string name="settings_text_after_tapping_enter">Після натискання на Enter</string>
+    <string name="settings_text_after_tapping_enter_next_field">Перейти до наступного поля</string>
+    <string name="settings_text_after_tapping_enter_save">Зберегти товар</string>
     <string name="settings_text_after_tapping_product_item">Після натискання на товар</string>
     <string name="settings_text_backup">Резервна копія</string>
     <string name="settings_text_carts">Списки покупок</string>
@@ -21,6 +29,7 @@
     <string name="settings_text_checkbox_color_grey">Сірий</string>
     <string name="settings_text_checkbox_color_red_green">Червоний або зелений</string>
     <string name="settings_text_checkbox_color_red_grey">Червоний або сірий</string>
+    <string name="settings_text_close_screen">Закрити екран</string>
     <string name="settings_text_currency">Валюта</string>
     <string name="settings_text_currency_left">Ліворуч</string>
     <string name="settings_text_currency_left_args">Ліворуч: %1$s</string>
@@ -47,6 +56,11 @@
     <string name="settings_text_font_size_medium">Середній</string>
     <string name="settings_text_font_size_small">Малий</string>
     <string name="settings_text_general">Загальні</string>
+    <string name="settings_text_group">Групувати</string>
+    <string name="settings_text_group_active_first">Спочатку некуплені</string>
+    <string name="settings_text_group_completed_first">Спочатку куплені</string>
+    <string name="settings_text_group_do_not_group">Не групувати</string>
+    <string name="settings_text_group_hide_completed">Приховати куплені</string>
     <string name="settings_text_keyboard_display_delay">Затримка відображення клавіатури</string>
     <string name="settings_text_keyboard_display_delay_50ms">50 мс</string>
     <string name="settings_text_mark_list_as_completed_active">Позначити список як куплений або некуплений</string>
@@ -63,8 +77,10 @@
     <string name="settings_text_swipe_cart_delete_restore_cart">Видалити або відновити список</string>
     <string name="settings_text_swipe_left">Свайп ліворуч</string>
     <string name="settings_text_swipe_right">Свайп праворуч</string>
+    <string name="settings_text_tax">Податки</string>
     <string name="settings_text_theme">Тема</string>
     <string name="settings_text_theme_dark">Темна</string>
     <string name="settings_text_theme_default">За замовчуванням</string>
     <string name="settings_text_theme_light">Світла</string>
+    <string name="settings_text_widget_more_settings">Інші налаштування знаходяться у відповідних розділах</string>
 </resources>

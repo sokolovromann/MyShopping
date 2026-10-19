@@ -69,7 +69,7 @@ fun GeneralSettingsCard(
 // THEME
 
 @Composable
-private fun ThemeItem(
+fun ThemeItem(
     data: SettingsItem<Theme>,
     onSelected: (Theme) -> Unit
 ) {
@@ -125,7 +125,7 @@ private fun ThemeMenu(
 // FONT SIZE
 
 @Composable
-private fun FontSizeItem(
+fun FontSizeItem(
     data: SettingsItem<FontSize>,
     onSelected: (FontSize) -> Unit
 ) {

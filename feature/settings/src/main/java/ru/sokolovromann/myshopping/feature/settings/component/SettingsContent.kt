@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import ru.sokolovromann.myshopping.core.ui.component.BottomGridSpacer
 import ru.sokolovromann.myshopping.core.ui.component.LoadingContent
 import ru.sokolovromann.myshopping.core.ui.component.SimpleVerticalGrid
+import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.CartsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 @Composable
@@ -14,6 +16,8 @@ fun SettingsContent(
     onGeneralSettingsAction: (GeneralSettingsAction) -> Unit,
     onCartsSettingsAction: (CartsSettingsAction) -> Unit,
     onProductsSettingsAction: (ProductsSettingsAction) -> Unit,
+    onProductsWidgetSettingsAction: (ProductsWidgetSettingsAction) -> Unit,
+    onAddEditProductSettingsAction: (AddEditProductSettingsAction) -> Unit,
     settingsState: SettingsState
 ) {
     if (settingsState.isLoading) {
@@ -36,6 +40,18 @@ fun SettingsContent(
                 ProductsSettingsCard(
                     onAction = onProductsSettingsAction,
                     items = settingsState.productsItems
+                )
+            }
+            item {
+                ProductsWidgetSettingsCard(
+                    onAction = onProductsWidgetSettingsAction,
+                    items = settingsState.productsWidgetItems
+                )
+            }
+            item {
+                AddEditProductSettingsCard(
+                    onAction = onAddEditProductSettingsAction,
+                    items = settingsState.addEditProductItems
                 )
             }
             item { BottomGridSpacer() }

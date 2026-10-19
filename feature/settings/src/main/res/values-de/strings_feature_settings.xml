@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_label_currency_symbol">Symbol</string>
+    <string name="settings_label_tax">Steuersatz</string>
     <string name="settings_text_add_edit_product">Produkt hinzufügen und bearbeiten</string>
     <string name="settings_text_after_adding_cart">Nach dem Hinzufügen</string>
     <string name="settings_text_after_adding_cart_open_add_name">Bildschirm „Name hinzufügen“ öffnen</string>
     <string name="settings_text_after_adding_cart_open_add_product">Bildschirm „Produkte hinzufügen“ öffnen</string>
     <string name="settings_text_after_adding_cart_open_products">Bildschirm „Produkte“ öffnen</string>
+    <string name="settings_text_after_adding_product">Nach dem Hinzufügen</string>
+    <string name="settings_text_after_adding_product_open">Neuen Bildschirm öffnen</string>
     <string name="settings_text_after_archiving_cart">Nach dem Archivieren</string>
     <string name="settings_text_after_archiving_cart_change_to_completed">Als erledigt markieren</string>
     <string name="settings_text_after_completing">Nach dem Erledigen</string>
     <string name="settings_text_after_completing_cart_archive_cart">Liste archivieren</string>
     <string name="settings_text_after_completing_cart_delete_cart">Liste löschen</string>
     <string name="settings_text_after_completing_cart_delete_cart_products">Liste und Produkte löschen</string>
+    <string name="settings_text_after_editing_product">Nach dem Bearbeiten</string>
+    <string name="settings_text_after_editing_product_next">Nächsten Bildschirm „Produkte“ öffnen</string>
     <string name="settings_text_after_tapping_checkbox">Beim Aktivieren des Checkbox</string>
+    <string name="settings_text_after_tapping_enter">Beim Drücken der Eingabetaste</string>
+    <string name="settings_text_after_tapping_enter_next_field">Zum nächsten Feld wechseln</string>
+    <string name="settings_text_after_tapping_enter_save">Produkt speichern</string>
     <string name="settings_text_after_tapping_product_item">Beim Tippen auf das Produkt</string>
     <string name="settings_text_backup">Datensicherung</string>
     <string name="settings_text_carts">Einkaufslisten</string>
@@ -21,6 +29,7 @@
     <string name="settings_text_checkbox_color_grey">Grau</string>
     <string name="settings_text_checkbox_color_red_green">Rot oder Grün</string>
     <string name="settings_text_checkbox_color_red_grey">Rot oder Grau</string>
+    <string name="settings_text_close_screen">Bildschirm schließen</string>
     <string name="settings_text_currency">Währung</string>
     <string name="settings_text_currency_left">Links</string>
     <string name="settings_text_currency_left_args">Links: %1$s</string>
@@ -47,6 +56,11 @@
     <string name="settings_text_font_size_medium">Mittel</string>
     <string name="settings_text_font_size_small">Klein</string>
     <string name="settings_text_general">Allgemein</string>
+    <string name="settings_text_group">Gruppieren</string>
+    <string name="settings_text_group_active_first">Aktive zuerst</string>
+    <string name="settings_text_group_completed_first">Erledigte zuerst</string>
+    <string name="settings_text_group_do_not_group">Nicht gruppieren</string>
+    <string name="settings_text_group_hide_completed">Erledigte ausblenden</string>
     <string name="settings_text_keyboard_display_delay">Verzögerung der Tastaturanzeige</string>
     <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
     <string name="settings_text_mark_list_as_completed_active">Liste als erledigt oder aktiv markieren</string>
@@ -63,8 +77,10 @@
     <string name="settings_text_swipe_cart_delete_restore_cart">Liste löschen oder wiederherstellen</string>
     <string name="settings_text_swipe_left">Nach links wischen</string>
     <string name="settings_text_swipe_right">Nach rechts wischen</string>
+    <string name="settings_text_tax">Steuern</string>
     <string name="settings_text_theme">Design</string>
     <string name="settings_text_theme_dark">Dunkel</string>
     <string name="settings_text_theme_default">Standard</string>
     <string name="settings_text_theme_light">Hell</string>
+    <string name="settings_text_widget_more_settings">Weitere Einstellungen finden Sie in den entsprechenden Bereichen</string>
 </resources>

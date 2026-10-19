@@ -2,14 +2,21 @@
 <resources>
     <string name="settings_action_currency_cancel" translatable="false">@string/action_cancel</string>
     <string name="settings_action_currency_save" translatable="false">@string/action_save</string>
+    <string name="settings_action_tax_cancel" translatable="false">@string/action_cancel</string>
+    <string name="settings_action_tax_save" translatable="false">@string/action_save</string>
     <string name="settings_header" translatable="false">@string/text_settings</string>
     <string name="settings_label_currency_symbol">Symbol</string>
+    <string name="settings_label_tax">Tax rate</string>
     <string name="settings_text_add_edit_product">Add and edit product</string>
     <string name="settings_text_after_adding_cart">After adding</string>
     <string name="settings_text_after_adding_cart_do_nothing" translatable="false">@string/text_do_nothing</string>
     <string name="settings_text_after_adding_cart_open_add_name">Open \"Add name\" screen</string>
     <string name="settings_text_after_adding_cart_open_add_product">Open \"Add product\" screen</string>
     <string name="settings_text_after_adding_cart_open_products">Open \"Products\" screen</string>
+    <string name="settings_text_after_adding_product">After adding</string>
+    <string name="settings_text_after_adding_product_close" translatable="false">@string/settings_text_close_screen</string>
+    <string name="settings_text_after_adding_product_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_adding_product_open">Open a new screen</string>
     <string name="settings_text_after_archiving_cart">After archiving</string>
     <string name="settings_text_after_archiving_cart_change_to_completed">Mark as Completed</string>
     <string name="settings_text_after_archiving_cart_do_nothing" translatable="false">@string/text_do_nothing</string>
@@ -24,10 +31,17 @@
     <string name="settings_text_after_completing_product_delete" translatable="false">@string/settings_text_delete_product</string>
     <string name="settings_text_after_completing_product_do_nothing" translatable="false">@string/text_do_nothing</string>
     <string name="settings_text_after_completing_product_edit" translatable="false">@string/settings_text_edit_product</string>
+    <string name="settings_text_after_editing_product">After editing</string>
+    <string name="settings_text_after_editing_product_close" translatable="false">@string/settings_text_close_screen</string>
+    <string name="settings_text_after_editing_product_do_nothing" translatable="false">@string/text_do_nothing</string>
+    <string name="settings_text_after_editing_product_next">Open the next \"Products\" screen</string>
     <string name="settings_text_after_tapping_cart_checkbox" translatable="false">@string/settings_text_after_tapping_checkbox</string>
     <string name="settings_text_after_tapping_cart_checkbox_change_status" translatable="false">@string/settings_text_mark_list_as_completed_active</string>
     <string name="settings_text_after_tapping_cart_checkbox_do_nothing" translatable="false">@string/text_do_nothing</string>
     <string name="settings_text_after_tapping_checkbox">After tapping the checkbox</string>
+    <string name="settings_text_after_tapping_enter">After pressing Enter</string>
+    <string name="settings_text_after_tapping_enter_next_field">Go to the next field</string>
+    <string name="settings_text_after_tapping_enter_save">Save product</string>
     <string name="settings_text_after_tapping_product_checkbox" translatable="false">@string/settings_text_after_tapping_checkbox</string>
     <string name="settings_text_after_tapping_product_checkbox_change_status" translatable="false">@string/settings_text_change_product_status</string>
     <string name="settings_text_after_tapping_product_checkbox_do_nothing" translatable="false">@string/text_do_nothing</string>
@@ -45,6 +59,7 @@
     <string name="settings_text_checkbox_color_grey">Grey</string>
     <string name="settings_text_checkbox_color_red_green">Red or green</string>
     <string name="settings_text_checkbox_color_red_grey">Red or grey</string>
+    <string name="settings_text_close_screen">Close screen</string>
     <string name="settings_text_currency">Currency</string>
     <string name="settings_text_currency_left">Left</string>
     <string name="settings_text_currency_left_args">Left: %1$s</string>
@@ -71,6 +86,16 @@
     <string name="settings_text_font_size_medium">Medium</string>
     <string name="settings_text_font_size_small">Small</string>
     <string name="settings_text_general">General</string>
+    <string name="settings_text_group">Group</string>
+    <string name="settings_text_group_active_first">Active first</string>
+    <string name="settings_text_group_completed_first">Completed first</string>
+    <string name="settings_text_group_do_not_group">Do not group</string>
+    <string name="settings_text_group_hide_completed">Hide completed</string>
+    <string name="settings_text_group_products_by_status" translatable="false">@string/settings_text_group</string>
+    <string name="settings_text_group_products_by_status_active_first" translatable="false">@string/settings_text_group_active_first</string>
+    <string name="settings_text_group_products_by_status_completed_first" translatable="false">@string/settings_text_group_completed_first</string>
+    <string name="settings_text_group_products_by_status_do_not_group" translatable="false">@string/settings_text_group_do_not_group</string>
+    <string name="settings_text_group_products_by_status_hide_completed" translatable="false">@string/settings_text_group_hide_completed</string>
     <string name="settings_text_keyboard_display_delay">Keyboard display delay</string>
     <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
     <string name="settings_text_keyboard_display_delay_off" translatable="false">@string/text_off</string>
@@ -106,8 +131,10 @@
     <string name="settings_text_swipe_product_off" translatable="false">@string/text_off</string>
     <string name="settings_text_swipe_product_right" translatable="false">@string/settings_text_swipe_right</string>
     <string name="settings_text_swipe_right">Swipe to right</string>
+    <string name="settings_text_tax">Taxes</string>
     <string name="settings_text_theme">Theme</string>
     <string name="settings_text_theme_dark">Dark</string>
     <string name="settings_text_theme_default">Default</string>
     <string name="settings_text_theme_light">Light</string>
+    <string name="settings_text_widget_more_settings">More settings are available in their respective sections</string>
 </resources>

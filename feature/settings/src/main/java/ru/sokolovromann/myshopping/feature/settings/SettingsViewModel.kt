@@ -21,9 +21,11 @@ import ru.sokolovromann.myshopping.core.domain.usecase.UpdateSuggestionsPreferen
 import ru.sokolovromann.myshopping.core.navigation.Navigator
 import ru.sokolovromann.myshopping.core.navigation.Screen
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
+import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.CartsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.mapper.SettingsMapper
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
@@ -116,6 +118,30 @@ class SettingsViewModel @Inject constructor(
                 updateProductsPreferencesUseCase(action.swipe)
             is ProductsSettingsAction.OnSwipeRightSelected ->
                 updateProductsPreferencesUseCase(action.swipe)
+        }
+    }
+
+    fun onProductsWidgetSettingsAction(action: ProductsWidgetSettingsAction) = viewModelScope.launch {
+        when (action) {
+            is ProductsWidgetSettingsAction.OnThemeSelected ->
+                updateProductsWidgetPreferencesUseCase(action.theme)
+            is ProductsWidgetSettingsAction.OnFontSizeSelected ->
+                updateProductsWidgetPreferencesUseCase(action.fontSize)
+            is ProductsWidgetSettingsAction.OnGroupProductsSelected ->
+                updateProductsWidgetPreferencesUseCase(action.groupProducts)
+        }
+    }
+
+    fun onAddEditProductSettingsAction(action: AddEditProductSettingsAction) = viewModelScope.launch {
+        when (action) {
+            is AddEditProductSettingsAction.OnAfterTappingEnterSelected ->
+                updateAddEditProductPreferencesUseCase(action.afterTappingEnter)
+            is AddEditProductSettingsAction.OnAfterAddingSelected ->
+                updateAddEditProductPreferencesUseCase(action.afterAdding)
+            is AddEditProductSettingsAction.OnAfterEditingSelected ->
+                updateAddEditProductPreferencesUseCase(action.afterEditing)
+            is AddEditProductSettingsAction.OnTaxSaved ->
+                updateAddEditProductPreferencesUseCase(action.tax)
         }
     }
 
