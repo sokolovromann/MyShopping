@@ -2,8 +2,6 @@ package ru.sokolovromann.myshopping.feature.settings.mapper
 
 import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.UserPreferences
-import ru.sokolovromann.myshopping.core.ui.model.UiText
-import ru.sokolovromann.myshopping.feature.settings.R
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 class SettingsMapper @Inject constructor(
@@ -12,6 +10,8 @@ class SettingsMapper @Inject constructor(
     private val products: ProductsSettingsMapper,
     private val productsWidget: ProductsWidgetSettingsMapper,
     private val addEditProduct: AddEditProductSettingsMapper,
+    private val suggestions: SuggestionsSettingsMapper,
+    private val backup: BackupSettingsMapper
 ) {
 
     fun createSettingsState(userPreferences: UserPreferences) = SettingsState(
@@ -23,6 +23,8 @@ class SettingsMapper @Inject constructor(
         addEditProductItems = addEditProduct.toItems(
             userPreferences.addEditProduct,
             userPreferences.general.moneyFormattingMode
-        )
+        ),
+        suggestionsItems = suggestions.toItems(userPreferences.suggestions),
+        backupItems = backup.toItems(userPreferences.backupPreferences)
     )
 }

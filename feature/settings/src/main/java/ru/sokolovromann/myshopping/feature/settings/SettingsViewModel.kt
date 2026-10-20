@@ -10,9 +10,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.MainDispatcher
+import ru.sokolovromann.myshopping.core.domain.usecase.ExportBackupUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ImportBackupUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.ObserveUserPreferencesUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.UpdateAddEditProductPreferencesUseCase
-import ru.sokolovromann.myshopping.core.domain.usecase.UpdateBackupPreferencesUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.UpdateCartsPreferencesUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.UpdateGeneralPreferencesUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.UpdateProductsPreferencesUseCase
@@ -22,10 +23,12 @@ import ru.sokolovromann.myshopping.core.navigation.Navigator
 import ru.sokolovromann.myshopping.core.navigation.Screen
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
 import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.BackupSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.CartsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.SuggestionsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.mapper.SettingsMapper
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
@@ -38,7 +41,8 @@ class SettingsViewModel @Inject constructor(
     private val updateProductsWidgetPreferencesUseCase: UpdateProductsWidgetPreferencesUseCase,
     private val updateAddEditProductPreferencesUseCase: UpdateAddEditProductPreferencesUseCase,
     private val updateSuggestionsPreferencesUseCase: UpdateSuggestionsPreferencesUseCase,
-    private val updateBackupPreferencesUseCase: UpdateBackupPreferencesUseCase,
+    private val exportBackupUseCase: ExportBackupUseCase,
+    private val importBackupUseCase: ImportBackupUseCase,
     private val settingsMapper: SettingsMapper,
     private val navigator: Navigator,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
@@ -142,6 +146,24 @@ class SettingsViewModel @Inject constructor(
                 updateAddEditProductPreferencesUseCase(action.afterEditing)
             is AddEditProductSettingsAction.OnTaxSaved ->
                 updateAddEditProductPreferencesUseCase(action.tax)
+        }
+    }
+
+    fun onSuggestionsSettingsAction(action: SuggestionsSettingsAction) = viewModelScope.launch {
+        when (action) {
+            is SuggestionsSettingsAction.OnAddingModeSelected ->
+                updateSuggestionsPreferencesUseCase(action.addingMode)
+            is SuggestionsSettingsAction.OnDisplayNamesSelected ->
+                updateSuggestionsPreferencesUseCase(action.displayNames)
+            is SuggestionsSettingsAction.OnDisplayDetailsSelected ->
+                updateSuggestionsPreferencesUseCase(action.displayDetails)
+        }
+    }
+
+    fun onBackupSettingsAction(action: BackupSettingsAction) = viewModelScope.launch {
+        when (action) {
+            BackupSettingsAction.OnExportBackupClicked -> {}
+            is BackupSettingsAction.OnImportBackupClicked -> {}
         }
     }
 

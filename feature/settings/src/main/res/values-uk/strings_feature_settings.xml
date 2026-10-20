@@ -3,6 +3,7 @@
     <string name="settings_label_currency_symbol">Символ</string>
     <string name="settings_label_tax">Ставка податку</string>
     <string name="settings_text_add_edit_product">Додати та редагувати товар</string>
+    <string name="settings_text_adding_mode">Режим додавання</string>
     <string name="settings_text_after_adding_cart">Після додавання</string>
     <string name="settings_text_after_adding_cart_open_add_name">Відкрити екран \"Додати назву\"</string>
     <string name="settings_text_after_adding_cart_open_add_product">Відкрити екран \"Додати товари\"</string>
@@ -23,6 +24,9 @@
     <string name="settings_text_after_tapping_enter_save">Зберегти товар</string>
     <string name="settings_text_after_tapping_product_item">Після натискання на товар</string>
     <string name="settings_text_backup">Резервна копія</string>
+    <string name="settings_text_backup_directory">Розташування</string>
+    <string name="settings_text_backup_export">Створити</string>
+    <string name="settings_text_backup_import">Завантажити</string>
     <string name="settings_text_carts">Списки покупок</string>
     <string name="settings_text_change_product_status">Позначити товар як куплений або некуплений</string>
     <string name="settings_text_checkbox_color">Колір чекбокса</string>
@@ -47,6 +51,14 @@
     <string name="settings_text_deletion_cart_from_trash">Автоматичне видалення з кошика</string>
     <string name="settings_text_deletion_cart_from_trash_after_7_days">Через 7 днів</string>
     <string name="settings_text_deletion_cart_from_trash_do_not_delete">Не видаляти</string>
+    <string name="settings_text_display_few">Мало</string>
+    <string name="settings_text_display_medium">Середнє</string>
+    <string name="settings_text_display_suggestion_details">Показувати подробиці (ціна, кількість, вартість і т.д.)</string>
+    <string name="settings_text_display_suggestion_details_all">Все</string>
+    <string name="settings_text_display_suggestion_details_many">Багато</string>
+    <string name="settings_text_display_suggestion_details_menu">Показувати подробиці</string>
+    <string name="settings_text_display_suggestion_names">Показувати назви</string>
+    <string name="settings_text_do_not_display">Не показувати</string>
     <string name="settings_text_edit_product">Редагувати товар</string>
     <string name="settings_text_font_size">Розмір шрифту</string>
     <string name="settings_text_font_size_extra_huge">Гігантський</string>
@@ -68,11 +80,11 @@
     <string name="settings_text_money_formatting_mode_advanced">Розширений режим</string>
     <string name="settings_text_money_formatting_mode_simple">Простий режим</string>
     <string name="settings_text_products">Товари</string>
-    <string name="settings_text_products_adding_mode">Режим додавання</string>
     <string name="settings_text_products_adding_mode_advanced">Розширений</string>
     <string name="settings_text_products_adding_mode_simple">Простий</string>
     <string name="settings_text_products_widget">Віджет</string>
     <string name="settings_text_strikethrough_products_completed">Закреслювати куплені</string>
+    <string name="settings_text_suggestion_adding_mode_all">Все</string>
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Архівувати або розархівувати список</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Видалити або відновити список</string>
     <string name="settings_text_swipe_left">Свайп ліворуч</string>

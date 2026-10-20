@@ -3,6 +3,7 @@
     <string name="settings_label_currency_symbol">Symbol</string>
     <string name="settings_label_tax">Stawka podatkowa</string>
     <string name="settings_text_add_edit_product">Dodaj i edytuj produkt</string>
+    <string name="settings_text_adding_mode">Tryb dodawania</string>
     <string name="settings_text_after_adding_cart">Po dodaniu</string>
     <string name="settings_text_after_adding_cart_open_add_name">Otwórz ekran „Dodaj nazwę”</string>
     <string name="settings_text_after_adding_cart_open_add_product">Otwórz ekran „Dodaj produkty”</string>
@@ -23,6 +24,9 @@
     <string name="settings_text_after_tapping_enter_save">Zapisz produkt</string>
     <string name="settings_text_after_tapping_product_item">Po stuknięciu w produkt</string>
     <string name="settings_text_backup">Kopia zapasowa</string>
+    <string name="settings_text_backup_directory">Lokalizacja</string>
+    <string name="settings_text_backup_export">Utwórz</string>
+    <string name="settings_text_backup_import">Wczytaj</string>
     <string name="settings_text_carts">Listy zakupów</string>
     <string name="settings_text_change_product_status">Oznacz produkt jako kupiony lub niekupiony</string>
     <string name="settings_text_checkbox_color">Kolor checkboxa</string>
@@ -47,6 +51,14 @@
     <string name="settings_text_deletion_cart_from_trash">Automatyczne usuwanie z kosza</string>
     <string name="settings_text_deletion_cart_from_trash_after_7_days">Po 7 dniach</string>
     <string name="settings_text_deletion_cart_from_trash_do_not_delete">Nie usuwaj</string>
+    <string name="settings_text_display_few">Mało</string>
+    <string name="settings_text_display_medium">Średnio</string>
+    <string name="settings_text_display_suggestion_details">Pokazuj szczegóły (cena, ilość, koszt itp.)</string>
+    <string name="settings_text_display_suggestion_details_all">Wszystko</string>
+    <string name="settings_text_display_suggestion_details_many">Dużo</string>
+    <string name="settings_text_display_suggestion_details_menu">Pokazuj szczegóły</string>
+    <string name="settings_text_display_suggestion_names">Pokazuj nazwy</string>
+    <string name="settings_text_do_not_display">Nie pokazuj</string>
     <string name="settings_text_edit_product">Edytuj produkt</string>
     <string name="settings_text_font_size">Rozmiar czcionki</string>
     <string name="settings_text_font_size_extra_huge">Gigantyczny</string>
@@ -68,11 +80,11 @@
     <string name="settings_text_money_formatting_mode_advanced">Tryb zaawansowany</string>
     <string name="settings_text_money_formatting_mode_simple">Tryb prosty</string>
     <string name="settings_text_products">Produkty</string>
-    <string name="settings_text_products_adding_mode">Tryb dodawania</string>
     <string name="settings_text_products_adding_mode_advanced">Zaawansowany</string>
     <string name="settings_text_products_adding_mode_simple">Prosty</string>
     <string name="settings_text_products_widget">Widżet</string>
     <string name="settings_text_strikethrough_products_completed">Przekreśl kupione</string>
+    <string name="settings_text_suggestion_adding_mode_all">Wszystko</string>
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Archiwizuj lub przywróć listę</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Usuń lub przywróć listę</string>
     <string name="settings_text_swipe_left">Przesuń в lewo</string>

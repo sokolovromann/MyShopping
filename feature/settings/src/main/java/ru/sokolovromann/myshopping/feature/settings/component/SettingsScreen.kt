@@ -13,10 +13,12 @@ import ru.sokolovromann.myshopping.core.ui.component.rememberDefaultDrawerState
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
 import ru.sokolovromann.myshopping.feature.settings.SettingsViewModel
 import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.BackupSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.CartsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.SuggestionsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 @Composable
@@ -30,6 +32,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()) {
         onProductsSettingsAction = { settingsViewModel.onProductsSettingsAction(it) },
         onProductsWidgetSettingsAction = { settingsViewModel.onProductsWidgetSettingsAction(it) },
         onAddEditProductSettingsAction = { settingsViewModel.onAddEditProductSettingsAction(it) },
+        onSuggestionsSettingsAction = { settingsViewModel.onSuggestionsSettingsAction(it) },
+        onBackupSettingsAction = { settingsViewModel.onBackupSettingsAction(it) },
         state = settingsState
     )
 }
@@ -43,6 +47,8 @@ private fun SettingsScreenImpl(
     onProductsSettingsAction: (ProductsSettingsAction) -> Unit,
     onProductsWidgetSettingsAction: (ProductsWidgetSettingsAction) -> Unit,
     onAddEditProductSettingsAction: (AddEditProductSettingsAction) -> Unit,
+    onSuggestionsSettingsAction: (SuggestionsSettingsAction) -> Unit,
+    onBackupSettingsAction: (BackupSettingsAction) -> Unit,
     state: SettingsState
 ) {
     val drawerState = rememberDefaultDrawerState()
@@ -69,6 +75,8 @@ private fun SettingsScreenImpl(
                     onProductsSettingsAction = onProductsSettingsAction,
                     onProductsWidgetSettingsAction = onProductsWidgetSettingsAction,
                     onAddEditProductSettingsAction = onAddEditProductSettingsAction,
+                    onSuggestionsSettingsAction = onSuggestionsSettingsAction,
+                    onBackupSettingsAction = onBackupSettingsAction,
                     settingsState = state
                 )
             }

@@ -3,6 +3,7 @@
     <string name="settings_label_currency_symbol">Símbolo</string>
     <string name="settings_label_tax">Taux de impuesto</string>
     <string name="settings_text_add_edit_product">Añadir y editar producto</string>
+    <string name="settings_text_adding_mode">Modo de adición</string>
     <string name="settings_text_after_adding_cart">Después de añadir</string>
     <string name="settings_text_after_adding_cart_open_add_name">Abrir pantalla \"Añadir nombre\"</string>
     <string name="settings_text_after_adding_cart_open_add_product">Abrir pantalla \"Añadir productos\"</string>
@@ -23,6 +24,9 @@
     <string name="settings_text_after_tapping_enter_save">Guardar producto</string>
     <string name="settings_text_after_tapping_product_item">Al tocar el producto</string>
     <string name="settings_text_backup">Copia de seguridad</string>
+    <string name="settings_text_backup_directory">Ubicación</string>
+    <string name="settings_text_backup_export">Crear</string>
+    <string name="settings_text_backup_import">Cargar</string>
     <string name="settings_text_carts">Listas de compras</string>
     <string name="settings_text_change_product_status">Marcar producto como comprado o no comprado</string>
     <string name="settings_text_checkbox_color">Color de la casilla</string>
@@ -47,6 +51,14 @@
     <string name="settings_text_deletion_cart_from_trash">Eliminación automática de la papelera</string>
     <string name="settings_text_deletion_cart_from_trash_after_7_days">Después de 7 días</string>
     <string name="settings_text_deletion_cart_from_trash_do_not_delete">No eliminar</string>
+    <string name="settings_text_display_few">Pocos</string>
+    <string name="settings_text_display_medium">Medio</string>
+    <string name="settings_text_display_suggestion_details">Mostrar detalles (precio, cantidad, costo, etc.)</string>
+    <string name="settings_text_display_suggestion_details_all">Todos</string>
+    <string name="settings_text_display_suggestion_details_many">Muchos</string>
+    <string name="settings_text_display_suggestion_details_menu">Mostrar detalles</string>
+    <string name="settings_text_display_suggestion_names">Mostrar nombres</string>
+    <string name="settings_text_do_not_display">No mostrar</string>
     <string name="settings_text_edit_product">Editar producto</string>
     <string name="settings_text_font_size">Tamaño de fuente</string>
     <string name="settings_text_font_size_extra_huge">Gigante</string>
@@ -68,11 +80,11 @@
     <string name="settings_text_money_formatting_mode_advanced">Modo avanzado</string>
     <string name="settings_text_money_formatting_mode_simple">Modo simple</string>
     <string name="settings_text_products">Productos</string>
-    <string name="settings_text_products_adding_mode">Modo de adición</string>
     <string name="settings_text_products_adding_mode_advanced">Avanzado</string>
     <string name="settings_text_products_adding_mode_simple">Simple</string>
     <string name="settings_text_products_widget">Widget</string>
     <string name="settings_text_strikethrough_products_completed">Tachar comprados</string>
+    <string name="settings_text_suggestion_adding_mode_all">Todo</string>
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Archivar o desarchivar lista</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Eliminar o restaurar lista</string>
     <string name="settings_text_swipe_left">Deslizar a la izquierda</string>

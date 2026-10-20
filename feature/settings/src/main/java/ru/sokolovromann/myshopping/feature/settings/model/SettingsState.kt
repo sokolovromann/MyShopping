@@ -9,5 +9,7 @@ data class SettingsState(
     val cartsItems: CartsSettingsItems = CartsSettingsItems(),
     val productsItems: ProductsSettingsItems = ProductsSettingsItems(),
     val productsWidgetItems: ProductsWidgetSettingsItems = ProductsWidgetSettingsItems(),
-    val addEditProductItems: AddEditProductSettingsItems = AddEditProductSettingsItems()
+    val addEditProductItems: AddEditProductSettingsItems = AddEditProductSettingsItems(),
+    val suggestionsItems: SuggestionsSettingsItems = SuggestionsSettingsItems(),
+    val backupItems: BackupSettingsItems = BackupSettingsItems()
 )

@@ -5,10 +5,12 @@ import ru.sokolovromann.myshopping.core.ui.component.BottomGridSpacer
 import ru.sokolovromann.myshopping.core.ui.component.LoadingContent
 import ru.sokolovromann.myshopping.core.ui.component.SimpleVerticalGrid
 import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.BackupSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.CartsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.action.SuggestionsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 @Composable
@@ -18,6 +20,8 @@ fun SettingsContent(
     onProductsSettingsAction: (ProductsSettingsAction) -> Unit,
     onProductsWidgetSettingsAction: (ProductsWidgetSettingsAction) -> Unit,
     onAddEditProductSettingsAction: (AddEditProductSettingsAction) -> Unit,
+    onSuggestionsSettingsAction: (SuggestionsSettingsAction) -> Unit,
+    onBackupSettingsAction: (BackupSettingsAction) -> Unit,
     settingsState: SettingsState
 ) {
     if (settingsState.isLoading) {
@@ -52,6 +56,18 @@ fun SettingsContent(
                 AddEditProductSettingsCard(
                     onAction = onAddEditProductSettingsAction,
                     items = settingsState.addEditProductItems
+                )
+            }
+            item {
+                SuggestionsSettingsCard(
+                    onAction = onSuggestionsSettingsAction,
+                    items = settingsState.suggestionsItems
+                )
+            }
+            item {
+                BackupSettingsCard(
+                    onAction = onBackupSettingsAction,
+                    items = settingsState.backupItems
                 )
             }
             item { BottomGridSpacer() }
