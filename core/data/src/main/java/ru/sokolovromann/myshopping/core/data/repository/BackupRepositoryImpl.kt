@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.core.data.repository
 
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.data.datasource.LocalBase64
@@ -25,7 +26,7 @@ import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.repository.BackupRepository
 import java.util.Locale
 
-class BackupRepositoryImpl(
+class BackupRepositoryImpl @Inject constructor(
     private val fileManager: LocalFileManager,
     private val localJson: LocalJson,
     private val localBase64: LocalBase64,

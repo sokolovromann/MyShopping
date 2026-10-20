@@ -1,7 +1,7 @@
 package ru.sokolovromann.myshopping.core.data.datasource
 
+import jakarta.inject.Inject
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
 
 class LocalJson @Inject constructor() {
 

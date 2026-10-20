@@ -13,9 +13,10 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import androidx.core.net.toUri
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 class LocalFileManager @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
