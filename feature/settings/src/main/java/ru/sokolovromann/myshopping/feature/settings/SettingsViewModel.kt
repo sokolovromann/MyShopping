@@ -1,17 +1,34 @@
 package ru.sokolovromann.myshopping.feature.settings
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.MainDispatcher
+import ru.sokolovromann.myshopping.core.domain.model.Backup
+import ru.sokolovromann.myshopping.core.domain.model.BackupValue
+import ru.sokolovromann.myshopping.core.domain.model.CartDirectory
+import ru.sokolovromann.myshopping.core.domain.usecase.ClearCartsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ClearFabricsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ClearProductsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ClearSuggestionsUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.ExportBackupUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.ImportBackupUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.InsertCartsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.InsertFabricsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.InsertProductsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.InsertSuggestionsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ObserveCartsWithProductsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ObserveSuggestionsWithFabricsUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.ObserveUserPreferencesUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.UpdateAddEditProductPreferencesUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.UpdateCartsPreferencesUseCase
@@ -29,18 +46,29 @@ import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.SuggestionsSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.event.SettingsEvent
 import ru.sokolovromann.myshopping.feature.settings.mapper.SettingsMapper
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val observeUserPreferencesUseCase: ObserveUserPreferencesUseCase,
+    private val observeCartsWithProductsUseCase: ObserveCartsWithProductsUseCase,
+    private val observeSuggestionsWithFabricsUseCase: ObserveSuggestionsWithFabricsUseCase,
     private val updateGeneralPreferencesUseCase: UpdateGeneralPreferencesUseCase,
     private val updateCartsPreferencesUseCase: UpdateCartsPreferencesUseCase,
     private val updateProductsPreferencesUseCase: UpdateProductsPreferencesUseCase,
     private val updateProductsWidgetPreferencesUseCase: UpdateProductsWidgetPreferencesUseCase,
     private val updateAddEditProductPreferencesUseCase: UpdateAddEditProductPreferencesUseCase,
     private val updateSuggestionsPreferencesUseCase: UpdateSuggestionsPreferencesUseCase,
+    private val insertCartsUseCase: InsertCartsUseCase,
+    private val insertProductsUseCase: InsertProductsUseCase,
+    private val insertSuggestionsUseCase: InsertSuggestionsUseCase,
+    private val insertFabricsUseCase: InsertFabricsUseCase,
+    private val clearCartsUseCase: ClearCartsUseCase,
+    private val clearProductsUseCase: ClearProductsUseCase,
+    private val clearSuggestionsUseCase: ClearSuggestionsUseCase,
+    private val clearFabricsUseCase: ClearFabricsUseCase,
     private val exportBackupUseCase: ExportBackupUseCase,
     private val importBackupUseCase: ImportBackupUseCase,
     private val settingsMapper: SettingsMapper,
@@ -50,6 +78,9 @@ class SettingsViewModel @Inject constructor(
 
     private val _settingsState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState())
     val settingsState: StateFlow<SettingsState> = _settingsState
+
+    private val _settingsEvent = Channel<SettingsEvent>()
+    val settingsEvent = _settingsEvent.receiveAsFlow()
 
     init { onInit() }
 
@@ -162,8 +193,8 @@ class SettingsViewModel @Inject constructor(
 
     fun onBackupSettingsAction(action: BackupSettingsAction) = viewModelScope.launch {
         when (action) {
-            BackupSettingsAction.OnExportBackupClicked -> {}
-            is BackupSettingsAction.OnImportBackupClicked -> {}
+            BackupSettingsAction.OnExportBackupClicked -> onExportBackup()
+            is BackupSettingsAction.OnImportBackupClicked -> onImportBackup(action.uri)
         }
     }
 
@@ -173,6 +204,66 @@ class SettingsViewModel @Inject constructor(
                 val state = settingsMapper.createSettingsState(userPreferences)
                 _settingsState.tryEmit(state)
             }
+        }
+    }
+
+    private suspend fun onExportBackup() {
+        _settingsState.tryEmit(
+            _settingsState.value.copy(isLoading = true)
+        )
+
+        val currentCartsWithProducts = observeCartsWithProductsUseCase(CartDirectory.Current).first()
+        val currentCarts = currentCartsWithProducts.map { it.cart }
+        val currentProducts = currentCartsWithProducts.flatMap { it.products }
+
+        val archivedCartsWithProducts = observeCartsWithProductsUseCase(CartDirectory.Archived).first()
+        val archivedCarts = archivedCartsWithProducts.map { it.cart }
+        val archivedProducts = archivedCartsWithProducts.flatMap { it.products }
+
+        val suggestionsWithFabrics = observeSuggestionsWithFabricsUseCase().first()
+
+        val backupValue = BackupValue(
+            carts = mutableListOf(currentCarts, archivedCarts).flatten(),
+            products = mutableListOf(currentProducts, archivedProducts).flatten(),
+            suggestions = suggestionsWithFabrics.map { it.suggestion },
+            fabrics = suggestionsWithFabrics.flatMap { it.fabrics }
+        )
+        val backup = Backup(
+            directory = _settingsState.value.backupItems.directory.selected,
+            value = backupValue
+        )
+        val result = exportBackupUseCase(backup)
+        _settingsState.tryEmit(
+            _settingsState.value.copy(isLoading = false)
+        )
+        if (result) {
+            _settingsEvent.send(SettingsEvent.ShowExportBackupSuccessMessage)
+        } else {
+            _settingsEvent.send(SettingsEvent.ShowBackupFailureMessage)
+        }
+    }
+
+    private suspend fun onImportBackup(uri: Uri) {
+        _settingsState.tryEmit(
+            _settingsState.value.copy(isLoading = true)
+        )
+
+        clearCartsUseCase()
+        clearProductsUseCase()
+        clearSuggestionsUseCase()
+        clearFabricsUseCase()
+
+        val result = importBackupUseCase(uri.toString())
+        if (result == null) {
+            _settingsEvent.send(SettingsEvent.ShowBackupFailureMessage)
+        } else {
+            val carts = result.carts.map { it.copy(reminder = null) }
+            insertCartsUseCase(carts)
+            insertProductsUseCase(result.products)
+            insertSuggestionsUseCase(result.suggestions)
+            insertFabricsUseCase(result.fabrics)
+
+            _settingsEvent.send(SettingsEvent.ShowImportBackupSuccessMessage)
         }
     }
 }

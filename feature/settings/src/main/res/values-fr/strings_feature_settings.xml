@@ -26,7 +26,12 @@
     <string name="settings_text_backup">Sauvegarde</string>
     <string name="settings_text_backup_directory">Emplacement</string>
     <string name="settings_text_backup_export">Créer</string>
-    <string name="settings_text_backup_import">Charger</string>
+    <string name="settings_text_backup_export_description">Sauvegarde des produits et des listes d\'Achats, de l\'Archive et des Suggestions</string>
+    <string name="settings_text_backup_export_success">Sauvegarde créée avec succès</string>
+    <string name="settings_text_backup_failure">Erreur : vérifiez les autorisations et réessayez</string>
+    <string name="settings_text_backup_import">Restaurer</string>
+    <string name="settings_text_backup_import_description">Toutes les données actuelles seront supprimées</string>
+    <string name="settings_text_backup_import_success">Données restaurées avec succès</string>
     <string name="settings_text_carts">Listes de courses</string>
     <string name="settings_text_change_product_status">Marquer le produit comme acheté ou non acheté</string>
     <string name="settings_text_checkbox_color">Couleur de la case</string>

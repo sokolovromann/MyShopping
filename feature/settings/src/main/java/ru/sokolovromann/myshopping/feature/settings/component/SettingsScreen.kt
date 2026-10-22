@@ -1,8 +1,14 @@
 package ru.sokolovromann.myshopping.feature.settings.component
 
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
@@ -11,6 +17,7 @@ import ru.sokolovromann.myshopping.core.ui.component.SimpleScaffold
 import ru.sokolovromann.myshopping.core.ui.component.isCloseableNavigationDrawer
 import ru.sokolovromann.myshopping.core.ui.component.rememberDefaultDrawerState
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
+import ru.sokolovromann.myshopping.feature.settings.R
 import ru.sokolovromann.myshopping.feature.settings.SettingsViewModel
 import ru.sokolovromann.myshopping.feature.settings.action.AddEditProductSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.BackupSettingsAction
@@ -19,11 +26,13 @@ import ru.sokolovromann.myshopping.feature.settings.action.GeneralSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.ProductsWidgetSettingsAction
 import ru.sokolovromann.myshopping.feature.settings.action.SuggestionsSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.event.SettingsEvent
 import ru.sokolovromann.myshopping.feature.settings.model.SettingsState
 
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()) {
     val settingsState by settingsViewModel.settingsState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
     SettingsScreenImpl(
         onNavigationItemSelected = { settingsViewModel.onNavigationItemSelected(it) },
         onBackClick = { settingsViewModel.onBackClick() },
@@ -34,8 +43,32 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()) {
         onAddEditProductSettingsAction = { settingsViewModel.onAddEditProductSettingsAction(it) },
         onSuggestionsSettingsAction = { settingsViewModel.onSuggestionsSettingsAction(it) },
         onBackupSettingsAction = { settingsViewModel.onBackupSettingsAction(it) },
-        state = settingsState
+        snackbarHostState = snackbarHostState,
+        settingsState = settingsState
     )
+
+    val successExportMessage = stringResource(R.string.settings_text_backup_export_success)
+    val successImportMessage = stringResource(R.string.settings_text_backup_import_success)
+    val failureMessage = stringResource(R.string.settings_text_backup_failure)
+    LaunchedEffect(key1 = true) {
+        settingsViewModel.settingsEvent.collect { event ->
+            when (event) {
+                SettingsEvent.ShowExportBackupSuccessMessage ->
+                    snackbarHostState.showSnackbar(
+                        message = successExportMessage
+                    )
+                SettingsEvent.ShowImportBackupSuccessMessage ->
+                    snackbarHostState.showSnackbar(
+                        message = successImportMessage
+                    )
+                SettingsEvent.ShowBackupFailureMessage ->
+                    snackbarHostState.showSnackbar(
+                        message = failureMessage,
+                        duration = SnackbarDuration.Long
+                    )
+            }
+        }
+    }
 }
 
 @Composable
@@ -49,7 +82,8 @@ private fun SettingsScreenImpl(
     onAddEditProductSettingsAction: (AddEditProductSettingsAction) -> Unit,
     onSuggestionsSettingsAction: (SuggestionsSettingsAction) -> Unit,
     onBackupSettingsAction: (BackupSettingsAction) -> Unit,
-    state: SettingsState
+    snackbarHostState: SnackbarHostState,
+    settingsState: SettingsState
 ) {
     val drawerState = rememberDefaultDrawerState()
     val isCloseableNavigationDrawer = isCloseableNavigationDrawer()
@@ -67,6 +101,7 @@ private fun SettingsScreenImpl(
     ) {
         SimpleScaffold(
             topBar = { SettingsNavigationTopAppBar { openDrawer() } },
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
             onBackClick = onBackClick,
             content = {
                 SettingsContent(
@@ -77,7 +112,7 @@ private fun SettingsScreenImpl(
                     onAddEditProductSettingsAction = onAddEditProductSettingsAction,
                     onSuggestionsSettingsAction = onSuggestionsSettingsAction,
                     onBackupSettingsAction = onBackupSettingsAction,
-                    settingsState = state
+                    settingsState = settingsState
                 )
             }
         )

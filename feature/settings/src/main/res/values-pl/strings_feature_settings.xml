@@ -26,7 +26,12 @@
     <string name="settings_text_backup">Kopia zapasowa</string>
     <string name="settings_text_backup_directory">Lokalizacja</string>
     <string name="settings_text_backup_export">Utwórz</string>
-    <string name="settings_text_backup_import">Wczytaj</string>
+    <string name="settings_text_backup_export_description">Kopia zapasowa produktów i list z Zakupów, Archiwum oraz Podpowiedzi</string>
+    <string name="settings_text_backup_export_success">Kopia zapasowa została pomyślnie utworzona</string>
+    <string name="settings_text_backup_failure">Błąd: sprawdź uprawnienia i spróbuj ponownie</string>
+    <string name="settings_text_backup_import">Przywróć</string>
+    <string name="settings_text_backup_import_description">Wszystkie bieżące dane zostaną usunięte</string>
+    <string name="settings_text_backup_import_success">Dane zostały pomyślnie przywrócone</string>
     <string name="settings_text_carts">Listy zakupów</string>
     <string name="settings_text_change_product_status">Oznacz produkt jako kupiony lub niekupiony</string>
     <string name="settings_text_checkbox_color">Kolor checkboxa</string>

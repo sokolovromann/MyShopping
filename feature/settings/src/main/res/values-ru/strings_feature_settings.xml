@@ -26,7 +26,12 @@
     <string name="settings_text_backup">Резервное копирование</string>
     <string name="settings_text_backup_directory">Расположение</string>
     <string name="settings_text_backup_export">Создать</string>
-    <string name="settings_text_backup_import">Загрузить</string>
+    <string name="settings_text_backup_export_description">Резервная копия товаров и списков из Покупок, Архива, Подсказок</string>
+    <string name="settings_text_backup_export_success">Резервная копия успешно создана</string>
+    <string name="settings_text_backup_failure">Ошибка: проверьте разрешения и попробуйте ещё раз</string>
+    <string name="settings_text_backup_import">Восстановить</string>
+    <string name="settings_text_backup_import_description">Все текущие данные будут удалены</string>
+    <string name="settings_text_backup_import_success">Данные успешно восстановлены</string>
     <string name="settings_text_carts">Списки покупок</string>
     <string name="settings_text_change_product_status">Отметить товар как Купленный или Не купленный</string>
     <string name="settings_text_checkbox_color">Цвет чекбокса</string>

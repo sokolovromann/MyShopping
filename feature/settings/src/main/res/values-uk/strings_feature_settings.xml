@@ -26,7 +26,12 @@
     <string name="settings_text_backup">Резервна копія</string>
     <string name="settings_text_backup_directory">Розташування</string>
     <string name="settings_text_backup_export">Створити</string>
-    <string name="settings_text_backup_import">Завантажити</string>
+    <string name="settings_text_backup_export_description">Резервна копія товарів та списків із Покупок, Архіву, Підказок</string>
+    <string name="settings_text_backup_export_success">Резервну копію успішно створено</string>
+    <string name="settings_text_backup_failure">Помилка: перевірте дозволи та спробуйте ще раз</string>
+    <string name="settings_text_backup_import">Відновити</string>
+    <string name="settings_text_backup_import_description">Усі поточні дані будуть видалені</string>
+    <string name="settings_text_backup_import_success">Дані успішно відновлено</string>
     <string name="settings_text_carts">Списки покупок</string>
     <string name="settings_text_change_product_status">Позначити товар як куплений або некуплений</string>
     <string name="settings_text_checkbox_color">Колір чекбокса</string>

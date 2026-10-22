@@ -26,7 +26,12 @@
     <string name="settings_text_backup">Datensicherung</string>
     <string name="settings_text_backup_directory">Verzeichnis</string>
     <string name="settings_text_backup_export">Erstellen</string>
-    <string name="settings_text_backup_import">Laden</string>
+    <string name="settings_text_backup_export_description">Sicherung von Produkten und Listen aus Käufen, Archiv und Vorschlägen</string>
+    <string name="settings_text_backup_export_success">Backup erfolgreich erstellt</string>
+    <string name="settings_text_backup_failure">Fehler: Prüfen Sie die Berechtigungen und versuchen Sie es erneut</string>
+    <string name="settings_text_backup_import">Wiederherstellen</string>
+    <string name="settings_text_backup_import_description">Alle aktuellen Daten werden gelöscht</string>
+    <string name="settings_text_backup_import_success">Daten erfolgreich wiederhergestellt</string>
     <string name="settings_text_carts">Einkaufslisten</string>
     <string name="settings_text_change_product_status">Produkt als erledigt oder aktiv markieren</string>
     <string name="settings_text_checkbox_color">Kontrollkästchen-Farbe</string>

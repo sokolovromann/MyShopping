@@ -26,7 +26,12 @@
     <string name="settings_text_backup">Copia de seguridad</string>
     <string name="settings_text_backup_directory">Ubicación</string>
     <string name="settings_text_backup_export">Crear</string>
-    <string name="settings_text_backup_import">Cargar</string>
+    <string name="settings_text_backup_export_description">Copia de seguridad de productos y listas de Compras, Archivo y Sugerencias</string>
+    <string name="settings_text_backup_export_success">Copia de seguridad creada con éxito</string>
+    <string name="settings_text_backup_failure">Error: compruebe los permisos e inténtelo de nuevo</string>
+    <string name="settings_text_backup_import">Restaurar</string>
+    <string name="settings_text_backup_import_description">Se eliminarán todos los datos actuales</string>
+    <string name="settings_text_backup_import_success">Datos restaurados con éxito</string>
     <string name="settings_text_carts">Listas de compras</string>
     <string name="settings_text_change_product_status">Marcar producto como comprado o no comprado</string>
     <string name="settings_text_checkbox_color">Color de la casilla</string>
