@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 fun SimpleScaffold(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable (() -> Unit) = {},
+    snackbarHost: @Composable (() -> Unit) = {},
     floatingActionButton: @Composable (() -> Unit) = {},
     onBackClick: () -> Unit = {},
     content: @Composable BoxScope.() -> Unit
@@ -21,6 +22,7 @@ fun SimpleScaffold(
     Scaffold(
         topBar = topBar,
         bottomBar = bottomBar,
+        snackbarHost = snackbarHost,
         floatingActionButton = floatingActionButton,
         content = { paddings ->
             Box(
