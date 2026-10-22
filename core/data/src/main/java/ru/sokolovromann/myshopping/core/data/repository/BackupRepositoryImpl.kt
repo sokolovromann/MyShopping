@@ -161,11 +161,17 @@ class BackupRepositoryImpl @Inject constructor(
 
     private fun createPath(directory: BackupDirectory): String {
         val format = "%tY%tm%td_%tH%tM%tS"
-        val millis = mutableListOf<Long>().apply {
-            val timeInMillis = TimeInMillis.getCurrent().value
-            (1..6).forEach { _ -> add(timeInMillis) }
-        }
-        val dateTime = String.format(Locale.getDefault(), format, millis)
+        val timeInMillis = TimeInMillis.getCurrent().value
+        val dateTime = String.format(
+            Locale.getDefault(),
+            format,
+            timeInMillis,
+            timeInMillis,
+            timeInMillis,
+            timeInMillis,
+            timeInMillis,
+            timeInMillis
+        )
         return "${directory.value}/Backup_$dateTime"
     }
 }
