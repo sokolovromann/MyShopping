@@ -18,6 +18,7 @@ import ru.sokolovromann.myshopping.core.data.mapper.SuggestionsPreferencesMapper
 import ru.sokolovromann.myshopping.core.data.mapper.UserConfigMapper
 import ru.sokolovromann.myshopping.core.data.old.Api15DataStoreMigrationManager
 import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.model.BackupDirectory
 import ru.sokolovromann.myshopping.core.domain.model.UserConfig
 import ru.sokolovromann.myshopping.core.domain.model.UserPreferencesDefaults
 import ru.sokolovromann.myshopping.core.domain.repository.BuildInfo
@@ -168,7 +169,10 @@ class BackupPreferencesMigration @Inject constructor(
 
     override suspend fun addDefault(): Preferences =
         withContext(ioDispatcher) {
-            backupPreferencesMapper.toPreferences(UserPreferencesDefaults.Backup)
+            val backup = UserPreferencesDefaults.Backup.copy(
+                directory = BackupDirectory(LocalEnvironment.ROOT_DIRECTORY)
+            )
+            backupPreferencesMapper.toPreferences(backup)
         }
 }
 
