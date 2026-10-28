@@ -3,12 +3,6 @@ package ru.sokolovromann.myshopping.core.domain.model
 @JvmInline
 value class Position(val value: Int) {
 
-    init {
-        require(value >= MIN.value && value <= MAX.value) {
-            "The value must be greater than or equal ${MIN.value} and less than ${MAX.value}."
-        }
-    }
-
     companion object {
         val MIN: Position = Position(1)
         val MAX: Position = Position(Int.MAX_VALUE)
