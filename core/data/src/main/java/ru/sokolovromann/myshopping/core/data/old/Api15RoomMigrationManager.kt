@@ -8,6 +8,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.data.R
 import ru.sokolovromann.myshopping.core.data.datasource.CartsDao
 import ru.sokolovromann.myshopping.core.data.datasource.FabricsDao
 import ru.sokolovromann.myshopping.core.data.datasource.ProductsDao
@@ -58,52 +59,94 @@ class Api15RoomMigrationManager @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun migrate(): Unit = withContext(ioDispatcher) {
-        val api15Shoppings = api15Dao.getShoppings()
-        val carts = fromApi15ShoppingsToCarts(api15Shoppings)
-        cartsDao.insertCarts(carts)
-
-        val api15Products = api15Dao.getProducts()
-        val products = fromApi15ProductsToProducts(api15Products)
-        productsDao.insertProducts(products)
-
-        val api = api15DataStore.data.first()[Api15LocalDataStoreScheme.Build.userCodeVersion]
-        when (api) {
-            in 15..38 -> {
-                val api15Autocompletes = api15Dao.getAutocompletes()
-
-                val suggestions = fromApi15AutocompletesToSuggestions(api15Autocompletes)
-                suggestionsDao.insertSuggestions(suggestions)
-
-                val fabrics = fromApi15AutocompletesToFabrics(api15Autocompletes)
-                fabricsDao.insertFabrics(fabrics)
-            }
-            in 39..41 -> {
-                val api39Suggestions = api15Dao.getSuggestions()
-                val suggestions = fromApi39SuggestionsToSuggestions(api39Suggestions)
-                suggestionsDao.insertSuggestions(suggestions)
-
-                val api39SuggestionDetails = api15Dao.getSuggestionDetails()
-                val fabrics = toApi39SuggestionDetailsToFabrics(api39SuggestionDetails)
-                fabricsDao.insertFabrics(fabrics)
-            }
-            else -> {}
-        }
-    }
-
-    fun deleteDatabase() {
-        if (exists()) {
-            Api15LocalRoomDatabase.build(context).close()
-            getDatabaseFile().delete()
-            context.getDatabasePath("${Api15LocalRoomDatabase.DATABASE_NAME}-shm").delete()
-            context.getDatabasePath("${Api15LocalRoomDatabase.DATABASE_NAME}-wal").delete()
-        }
+    suspend fun migrate(ignoreApi: Boolean = false): Unit = withContext(ioDispatcher) {
+        migrateApi15Carts()
+        migrateApi15Products()
+        migrateAutocompletes(ignoreApi)
+        deleteDatabase()
     }
 
     fun exists(): Boolean = getDatabaseFile().exists()
 
+    private suspend fun migrateApi15Carts() = withContext(ioDispatcher) {
+        val api15Shoppings = api15Dao.getShoppings()
+        val carts = fromApi15ShoppingsToCarts(api15Shoppings)
+        cartsDao.insertCarts(carts)
+    }
+
+    private suspend fun migrateApi15Products() = withContext(ioDispatcher) {
+        val api15Products = api15Dao.getProducts()
+        val products = fromApi15ProductsToProducts(api15Products)
+        productsDao.insertProducts(products)
+    }
+
+    private suspend fun migrateAutocompletes(ignoreApi: Boolean) = withContext(ioDispatcher) {
+        if (ignoreApi) {
+            migrateApi15Autocompletes()
+        } else {
+            val api = api15DataStore.data.first()[Api15LocalDataStoreScheme.Build.userCodeVersion]
+            when (api) {
+                in 15..38 -> { migrateApi15Autocompletes() }
+                in 39..41 -> {
+                    val api39Suggestions = api15Dao.getSuggestions().toMutableList()
+                        .apply { addAll(getDefaultApi39Suggestions()) }
+                    val suggestions = fromApi39SuggestionsToSuggestions(api39Suggestions)
+                    suggestionsDao.insertSuggestions(suggestions)
+
+                    val api39SuggestionDetails = api15Dao.getSuggestionDetails()
+                    val fabrics = toApi39SuggestionDetailsToFabrics(api39SuggestionDetails)
+                    fabricsDao.insertFabrics(fabrics)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private suspend fun migrateApi15Autocompletes() = withContext(ioDispatcher) {
+        val api15Autocompletes = api15Dao.getAutocompletes().toMutableList()
+            .apply { addAll(getDefaultApi15Autocompletes()) }
+        val suggestionsWithFabrics = fromApi15AutocompletesToSuggestionsWithFabrics(api15Autocompletes)
+
+        val suggestions = suggestionsWithFabrics.keys.toList()
+        suggestionsDao.insertSuggestions(suggestions)
+
+        val fabrics = suggestionsWithFabrics.values.flatten()
+        fabricsDao.insertFabrics(fabrics)
+    }
+
+    private suspend fun deleteDatabase() = withContext(ioDispatcher) {
+        Api15LocalRoomDatabase.build(context).close()
+        getDatabaseFile().delete()
+        context.getDatabasePath("${Api15LocalRoomDatabase.DATABASE_NAME}-shm").delete()
+        context.getDatabasePath("${Api15LocalRoomDatabase.DATABASE_NAME}-wal").delete()
+    }
+
     private fun getDatabaseFile(): File =
         context.getDatabasePath(Api15LocalRoomDatabase.DATABASE_NAME)
+
+    private fun getDefaultApi15Autocompletes() =
+        context.resources.getStringArray(R.array.data_default_suggestion_names)
+            .map { name ->
+                Api15AutocompleteEntity(
+                    uid = UID.createRandom().value,
+                    lastModified = TimeInMillis.getCurrent().value,
+                    name = name
+                )
+            }
+
+    private fun getDefaultApi39Suggestions() =
+        context.resources.getStringArray(R.array.data_default_suggestion_names)
+            .map { name ->
+                val timeInMillis = TimeInMillis.getCurrent().value.toString()
+                Api39SuggestionEntity(
+                    uid = UID.createRandom().value,
+                    directory = SuggestionDirectory.NoDirectory.toString(),
+                    created = timeInMillis,
+                    lastModified = timeInMillis,
+                    name = name,
+                    used = "0"
+                )
+            }
 
     private fun fromApi15ShoppingsToCarts(shoppings: Collection<Api15ShoppingEntity>) = shoppings.map {
         val directory = if (it.deleted) {
@@ -209,12 +252,6 @@ class Api15RoomMigrationManager @Inject constructor(
         )
     }
 
-    private fun fromApi15AutocompletesToSuggestions(autocompletes: Collection<Api15AutocompleteEntity>) =
-        fromApi15AutocompletesToSuggestionsWithFabrics(autocompletes).flatMap { it.keys }
-
-    private fun fromApi15AutocompletesToFabrics(autocompletes: Collection<Api15AutocompleteEntity>) =
-        fromApi15AutocompletesToSuggestionsWithFabrics(autocompletes).flatMap { it.values.flatten() }
-
     private fun fromApi39SuggestionsToSuggestions(suggestions: Collection<Api39SuggestionEntity>) = suggestions.map {
         SuggestionEntity(
             uid = it.uid,
@@ -262,45 +299,45 @@ class Api15RoomMigrationManager @Inject constructor(
         )
     }
 
-    private fun fromApi15AutocompletesToSuggestionsWithFabrics(autocompletes: Collection<Api15AutocompleteEntity>) = autocompletes.map {
+    private fun fromApi15AutocompletesToSuggestionsWithFabrics(autocompletes: Collection<Api15AutocompleteEntity>) =
         autocompletes
-            .groupBy { autocomplete -> autocomplete.name.lowercase() }
-            .mapKeys { autocompletes ->
+            .groupBy { it.name }
+            .mapKeys { entry ->
                 val currentDateTime = TimeInMillis.getCurrent().value.toString()
                 SuggestionEntity(
                     uid = UID.createRandom().value,
                     directory = SuggestionDirectory.NoDirectory.toString(),
                     created = currentDateTime,
                     lastModified = currentDateTime,
-                    name = autocompletes.key.replaceFirstChar { it.uppercase() },
-                    used = autocompletes.value.count().toString()
+                    name = entry.key.replaceFirstChar { it.uppercase() },
+                    used = entry.value.count().toString()
                 )
             }
-            .mapValues { autocompletes ->
-                val quantities = autocompletes.value.filter { it.quantity > 0f }
+            .mapValues { entry ->
+                val quantities = entry.value.filter { it.quantity > 0f }
                 val quantityTypes = quantities
                     .distinctBy { getQuantityDecimalFormat().format(it.quantity.toBigDecimal()) }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "QuantityType",
                             value = autocomplete.quantity.toString(),
                             valueParams = autocomplete.quantitySymbol,
                             used = quantities.count { it.quantity == autocomplete.quantity }.toString()
                         )
                     }
-                val unitPrices = autocompletes.value.filter { it.price > 0f }
+                val unitPrices = entry.value.filter { it.price > 0f }
                 val unitPriceTypes = unitPrices
                     .distinctBy { getMoneyDecimalFormat().format(it.price.toBigDecimal()) }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "UnitPriceType",
                             value = autocomplete.price.toString(),
                             used = unitPrices.count { it.price == autocomplete.price }.toString()
                         )
                     }
-                val discounts = autocompletes.value.filter { it.discount > 0f }
+                val discounts = entry.value.filter { it.discount > 0f }
                 val discountTypes = discounts
                     .distinctBy { getMoneyDecimalFormat().format(it.discount.toBigDecimal()) }
                     .map { autocomplete ->
@@ -310,84 +347,75 @@ class Api15RoomMigrationManager @Inject constructor(
                             DiscountMeasurementUnit.Money
                         }
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "DiscountType",
                             value = autocomplete.discount.toString(),
                             valueParams = measurementUnit.toString()
                         )
                     }
-                val taxRates = autocompletes.value.filter { it.taxRate > 0f }
+                val taxRates = entry.value.filter { it.taxRate > 0f }
                 val taxTypes = taxRates
                     .distinctBy { getMoneyDecimalFormat().format(it.taxRate.toBigDecimal()) }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "TaxType",
                             value = autocomplete.taxRate.toString()
                         )
                     }
-                val costs = autocompletes.value.filter { it.total > 0f }
+                val costs = entry.value.filter { it.total > 0f }
                 val costsType = costs
                     .distinctBy { getMoneyDecimalFormat().format(it.total.toBigDecimal()) }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "CostType",
                             value = autocomplete.total.toString()
                         )
                     }
-                val manufacturers = autocompletes.value.filter { it.manufacturer.isNotEmpty() }
+                val manufacturers = entry.value.filter { it.manufacturer.isNotEmpty() }
                 val manufacturerTypes = manufacturers
                     .distinctBy { it.manufacturer.lowercase() }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "ManufacturerType",
                             value = autocomplete.manufacturer
                         )
                     }
-                val brands = autocompletes.value.filter { it.brand.isNotEmpty() }
+                val brands = entry.value.filter { it.brand.isNotEmpty() }
                 val brandTypes = brands
                     .distinctBy { it.brand.lowercase() }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "BrandType",
                             value = autocomplete.brand
                         )
                     }
-                val sizes = autocompletes.value.filter { it.size.isNotEmpty() }
+                val sizes = entry.value.filter { it.size.isNotEmpty() }
                 val sizeTypes = sizes
                     .distinctBy { it.size.lowercase() }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "SizeType",
                             value = autocomplete.size
                         )
                     }
-                val colors = autocompletes.value.filter { it.color.isNotEmpty() }
+                val colors = entry.value.filter { it.color.isNotEmpty() }
                 val colorTypes = colors
                     .distinctBy { it.color.lowercase() }
                     .map { autocomplete ->
                         createFabric().copy(
-                            directory = autocompletes.key.uid,
+                            directory = entry.key.uid,
                             type = "ColorType",
                             value = autocomplete.color
                         )
                     }
-                quantityTypes.toMutableList().apply {
-                    addAll(unitPriceTypes)
-                    addAll(discountTypes)
-                    addAll(taxTypes)
-                    addAll(costsType)
-                    addAll(manufacturerTypes)
-                    addAll(brandTypes)
-                    addAll(sizeTypes)
-                    addAll(colorTypes)
-                }
+                mutableListOf(quantityTypes, unitPriceTypes, discountTypes, taxTypes, costsType,
+                    manufacturerTypes, brandTypes, sizeTypes, colorTypes).flatten()
             }
-    }
 
 
     private fun createFabric(): FabricEntity {

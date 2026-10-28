@@ -3,8 +3,10 @@ package ru.sokolovromann.myshopping.core.data.old.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = "products")
+@Serializable
 data class Api15ProductEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

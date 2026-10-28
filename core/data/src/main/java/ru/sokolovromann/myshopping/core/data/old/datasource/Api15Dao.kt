@@ -1,6 +1,8 @@
 package ru.sokolovromann.myshopping.core.data.old.datasource
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import ru.sokolovromann.myshopping.core.data.old.model.Api15AutocompleteEntity
 import ru.sokolovromann.myshopping.core.data.old.model.Api15ProductEntity
@@ -25,4 +27,13 @@ interface Api15Dao {
 
     @Query("SELECT * FROM api39_suggestion_details")
     fun getSuggestionDetails(): List<Api39SuggestionDetailEntity>
+
+    @Insert(onConflict = REPLACE)
+    fun insertShoppings(shoppings: List<Api15ShoppingEntity>)
+
+    @Insert(onConflict = REPLACE)
+    fun insertProducts(products: List<Api15ProductEntity>)
+
+    @Insert(onConflict = REPLACE)
+    fun insertAutocompletes(autocompletes: List<Api15AutocompleteEntity>)
 }

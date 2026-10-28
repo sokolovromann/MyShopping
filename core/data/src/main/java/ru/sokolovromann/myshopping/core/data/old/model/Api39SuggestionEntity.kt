@@ -3,8 +3,10 @@ package ru.sokolovromann.myshopping.core.data.old.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = "api39_suggestions")
+@Serializable
 data class Api39SuggestionEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")

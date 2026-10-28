@@ -3,8 +3,10 @@ package ru.sokolovromann.myshopping.core.data.old.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = "autocompletes")
+@Serializable
 data class Api15AutocompleteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
