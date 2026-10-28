@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
+import ru.sokolovromann.myshopping.core.data.old.Api15BackupManagerImpl
 import ru.sokolovromann.myshopping.core.data.repository.AddEditProductPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.BackupPreferencesRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.BackupRepositoryImpl
@@ -19,6 +20,7 @@ import ru.sokolovromann.myshopping.core.data.repository.SuggestionsPreferencesRe
 import ru.sokolovromann.myshopping.core.data.repository.SuggestionsRepositoryImpl
 import ru.sokolovromann.myshopping.core.data.repository.UserConfigRepositoryImpl
 import ru.sokolovromann.myshopping.core.domain.repository.AddEditProductPreferencesRepository
+import ru.sokolovromann.myshopping.core.domain.repository.Api15BackupManager
 import ru.sokolovromann.myshopping.core.domain.repository.BackupPreferencesRepository
 import ru.sokolovromann.myshopping.core.domain.repository.BackupRepository
 import ru.sokolovromann.myshopping.core.domain.repository.CartsPreferencesRepository
@@ -87,4 +89,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindUserConfigRepository(repository: UserConfigRepositoryImpl): UserConfigRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindApi15BackupManager(manager: Api15BackupManagerImpl) : Api15BackupManager
 }
