@@ -35,7 +35,7 @@ fun BackupSettingsCard(
         SettingsCardItem(
             title = { Text(stringResource(R.string.settings_text_backup_import)) },
             body = { Text(stringResource(R.string.settings_text_backup_import_description)) },
-            onClick = { filePickerLauncher.launch("text/plain") }
+            onClick = { filePickerLauncher.launch("*/*") }
         )
         SettingsCardItem(
             title = { Text(stringResource(R.string.settings_text_backup_directory)) },
