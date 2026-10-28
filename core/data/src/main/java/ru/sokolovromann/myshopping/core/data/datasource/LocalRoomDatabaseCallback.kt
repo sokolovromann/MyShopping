@@ -29,10 +29,7 @@ class LocalRoomDatabaseCallback @Inject constructor(
         applicationScope.launch(Dispatchers.IO) {
             val migrationManager = api15RoomMigrationManager.get()
             if (migrationManager.exists()) {
-                migrationManager.apply {
-                    migrate()
-                    deleteDatabase()
-                }
+                migrationManager.migrate(ignoreApi = false)
             } else {
                 populateDefaultData()
             }
