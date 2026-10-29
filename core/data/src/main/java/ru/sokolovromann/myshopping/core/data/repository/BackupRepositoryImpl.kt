@@ -10,6 +10,8 @@ import ru.sokolovromann.myshopping.core.data.mapper.CartsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.FabricsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.ProductsMapper
 import ru.sokolovromann.myshopping.core.data.mapper.SuggestionsMapper
+import ru.sokolovromann.myshopping.core.data.model.BackupInfoEntity
+import ru.sokolovromann.myshopping.core.data.model.Backupable
 import ru.sokolovromann.myshopping.core.data.model.CartEntity
 import ru.sokolovromann.myshopping.core.data.model.FabricEntity
 import ru.sokolovromann.myshopping.core.data.model.ProductEntity
@@ -24,6 +26,7 @@ import ru.sokolovromann.myshopping.core.domain.model.Product
 import ru.sokolovromann.myshopping.core.domain.model.Suggestion
 import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.repository.BackupRepository
+import ru.sokolovromann.myshopping.core.domain.repository.BuildInfo
 import java.util.Locale
 
 class BackupRepositoryImpl @Inject constructor(
@@ -34,129 +37,54 @@ class BackupRepositoryImpl @Inject constructor(
     private val productsMapper: ProductsMapper,
     private val suggestionsMapper: SuggestionsMapper,
     private val fabricsMapper: FabricsMapper,
+    private val buildInfo: BuildInfo,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BackupRepository {
 
-    private val head = "ru.sokolovromann.myshopping.BACKUP"
-    private val cartPrefix = "Cart_"
-    private val productPrefix = "Product_"
-    private val suggestionPrefix = "Suggestion_"
-    private val fabricPrefix = "Fabric_"
-
     override suspend fun exportBackup(backup: Backup): Boolean =
         withContext(ioDispatcher) {
-            val builder = StringBuilder()
-            builder.appendLine(head)
-            builder.append(encodeCarts(backup.value.carts))
-            builder.append(encodeProducts(backup.value.products))
-            builder.append(encodeSuggestions(backup.value.suggestions))
-            builder.append(encodeFabrics(backup.value.fabrics))
-
             val path = createPath(backup.directory)
-            fileManager.writeFile(path, builder.toString())
+            fileManager.writeFile(path, encodeToJsonBase64(backup.value))
         }
 
     override suspend fun importBackup(uriString: String): BackupValue? =
         withContext(ioDispatcher) {
-            val content = fileManager.readFile(uriString) ?: return@withContext null
-            val lines = localBase64.decode(content).split("\n")
-            if (lines.first() == head) {
-                val carts = mutableListOf<Cart>()
-                val products = mutableListOf<Product>()
-                val suggestions = mutableListOf<Suggestion>()
-                val fabrics = mutableListOf<Fabric>()
-                lines.forEach { line ->
-                    if (line.startsWith(cartPrefix)) {
-                        carts.add(decodeCart(line))
-                    }
-                    if (line.startsWith(productPrefix)) {
-                        products.add(decodeProduct(line))
-                    }
-                    if (line.startsWith(suggestionPrefix)) {
-                        suggestions.add(decodeSuggestion(line))
-                    }
-                    if (line.startsWith(fabricPrefix)) {
-                        fabrics.add(decodeFabric(line))
-                    }
+            fileManager.readFile(uriString)?.let {
+                decodeFromJsonBase64(it)
+            }
+        }
+
+    private suspend fun encodeToJsonBase64(backupValue: BackupValue): String =
+        withContext(ioDispatcher) {
+            val data = mutableListOf<Backupable>().apply {
+                add(BackupInfoEntity(buildInfo.getApi().value.toString()))
+                addAll(cartsMapper.toEntities(backupValue.carts))
+                addAll(productsMapper.toEntities(backupValue.products))
+                addAll(suggestionsMapper.toEntities(backupValue.suggestions))
+                addAll(fabricsMapper.toEntities(backupValue.fabrics))
+            }.toList()
+            val json = localJson.encodeToString<List<Backupable>>(data)
+            localBase64.encode(json)
+        }
+
+    private suspend fun decodeFromJsonBase64(content: String): BackupValue =
+        withContext(ioDispatcher) {
+            val json = localBase64.decode(content)
+            val carts = mutableListOf<Cart>()
+            val products = mutableListOf<Product>()
+            val suggestions = mutableListOf<Suggestion>()
+            val fabrics = mutableListOf<Fabric>()
+
+            for (entity in localJson.decodeFromString<List<Backupable>>(json)) {
+                when (entity) {
+                    is BackupInfoEntity -> {}
+                    is CartEntity -> carts.add(cartsMapper.toModel(entity))
+                    is ProductEntity -> products.add(productsMapper.toModel(entity))
+                    is SuggestionEntity -> suggestions.add(suggestionsMapper.toModel(entity))
+                    is FabricEntity -> fabrics.add(fabricsMapper.toModel(entity))
                 }
-                BackupValue(carts, products, suggestions, fabrics)
-            } else null
-        }
-
-    private suspend fun encodeCarts(carts: Collection<Cart>): String =
-        withContext(ioDispatcher) {
-            val builder = StringBuilder()
-            builder.appendLine(cartPrefix)
-            cartsMapper.toEntities(carts).forEach {
-                val json = localJson.encodeToString(it)
-                val base64 = localBase64.encode(json)
-                builder.append(base64)
             }
-            builder.toString()
-        }
-
-    private suspend fun encodeProducts(products: Collection<Product>): String =
-        withContext(ioDispatcher) {
-            val builder = StringBuilder()
-            builder.appendLine(productPrefix)
-            productsMapper.toEntities(products).forEach {
-                val json = localJson.encodeToString(it)
-                val base64 = localBase64.encode(json)
-                builder.append(base64)
-            }
-            builder.toString()
-        }
-
-    private suspend fun encodeSuggestions(suggestions: Collection<Suggestion>): String =
-        withContext(ioDispatcher) {
-            val builder = StringBuilder()
-            builder.appendLine(suggestionPrefix)
-            suggestionsMapper.toEntities(suggestions).forEach {
-                val json = localJson.encodeToString(it)
-                val base64 = localBase64.encode(json)
-                builder.append(base64)
-            }
-            builder.toString()
-        }
-
-    private suspend fun encodeFabrics(fabrics: Collection<Fabric>): String =
-        withContext(ioDispatcher) {
-            val builder = StringBuilder()
-            builder.appendLine(fabricPrefix)
-            fabricsMapper.toEntities(fabrics).forEach {
-                val json = localJson.encodeToString(it)
-                val base64 = localBase64.encode(json)
-                builder.append(base64)
-            }
-            builder.toString()
-        }
-
-    private suspend fun decodeCart(line: String): Cart =
-        withContext(ioDispatcher) {
-            val lineWithoutPrefix = line.replace(cartPrefix, "")
-            val entity = localJson.decodeFromString<CartEntity>(lineWithoutPrefix)
-            cartsMapper.toModel(entity)
-        }
-
-    private suspend fun decodeProduct(line: String): Product =
-        withContext(ioDispatcher) {
-            val lineWithoutPrefix = line.replace(productPrefix, "")
-            val entity = localJson.decodeFromString<ProductEntity>(lineWithoutPrefix)
-            productsMapper.toModel(entity)
-        }
-
-    private suspend fun decodeSuggestion(line: String): Suggestion =
-        withContext(ioDispatcher) {
-            val lineWithoutPrefix = line.replace(suggestionPrefix, "")
-            val entity = localJson.decodeFromString<SuggestionEntity>(lineWithoutPrefix)
-            suggestionsMapper.toModel(entity)
-        }
-
-    private suspend fun decodeFabric(line: String): Fabric =
-        withContext(ioDispatcher) {
-            val lineWithoutPrefix = line.replace(fabricPrefix, "")
-            val entity = localJson.decodeFromString<FabricEntity>(lineWithoutPrefix)
-            fabricsMapper.toModel(entity)
+            BackupValue(carts, products, suggestions, fabrics)
         }
 
     private fun createPath(directory: BackupDirectory): String {

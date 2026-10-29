@@ -3,10 +3,12 @@ package ru.sokolovromann.myshopping.core.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "api42_fabrics")
 @Serializable
+@SerialName(value = "fabric")
 data class FabricEntity(
     @PrimaryKey
     @ColumnInfo(name = "uid", defaultValue = "")
@@ -22,6 +24,7 @@ data class FabricEntity(
     val lastModified: String,
 
     @ColumnInfo(name = "type", defaultValue = "")
+    @SerialName(value = "data_type")
     val type: String,
 
     @ColumnInfo(name = "value", defaultValue = "")
@@ -32,4 +35,4 @@ data class FabricEntity(
 
     @ColumnInfo(name = "used", defaultValue = "")
     val used: String
-)
+) : Backupable
