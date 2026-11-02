@@ -66,7 +66,6 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":feature:about"))
-    implementation(project(":feature:addeditsuggestion"))
     implementation(project(":feature:dictionary"))
     implementation(project(":feature:settings"))
     implementation(libs.android.core)

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="add_edit_suggestion_label_name" translatable="false">@string/text_name</string>
+    <string name="add_edit_suggestion_supporting_text_name_error" translatable="false">@string/text_enter_name</string>
     <string name="dictionary_header" translatable="false">@string/text_dictionary</string>
-
     <string name="dictionary_icon_add_suggestion" translatable="false">@string/action_add</string>
     <string name="dictionary_icon_delete_suggestions" translatable="false">@string/action_delete</string>
     <string name="dictionary_icon_edit_suggestion" translatable="false">@string/action_edit</string>
     <string name="dictionary_icon_select_all_suggestions" translatable="false">@string/action_select_all</string>
     <string name="dictionary_icon_selected" translatable="false">@string/text_selected</string>
-
     <string name="dictionary_item_brands" translatable="false">@string/text_brands</string>
     <string name="dictionary_item_colors" translatable="false">@string/text_colors</string>
     <string name="dictionary_item_costs" translatable="false">@string/text_costs</string>
@@ -17,6 +17,6 @@
     <string name="dictionary_item_sizes" translatable="false">@string/text_sizes</string>
     <string name="dictionary_item_taxes" translatable="false">@string/text_taxes</string>
     <string name="dictionary_item_unit_price" translatable="false">@string/text_unit_price</string>
-
     <string name="dictionary_text_suggestions_not_found">You have no suggestions</string>
+    <string name="suggestions_items_no_details">No data</string>
 </resources>

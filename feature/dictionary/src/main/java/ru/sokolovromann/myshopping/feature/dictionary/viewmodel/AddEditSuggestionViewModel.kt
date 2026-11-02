@@ -1,6 +1,5 @@
-package ru.sokolovromann.myshopping.feature.addeditsuggestion
+package ru.sokolovromann.myshopping.feature.dictionary.viewmodel
 
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -11,30 +10,41 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.MainDispatcher
-import ru.sokolovromann.myshopping.core.domain.model.Suggestion
-import ru.sokolovromann.myshopping.core.domain.model.SuggestionDirectory
-import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.model.UID
+import ru.sokolovromann.myshopping.core.domain.usecase.DeleteFabricsUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.GetSupportUseCase
 import ru.sokolovromann.myshopping.core.domain.usecase.InsertSuggestionsUseCase
+import ru.sokolovromann.myshopping.core.domain.usecase.ObserveGeneralPreferencesUseCase
 import ru.sokolovromann.myshopping.core.navigation.Navigator
 import ru.sokolovromann.myshopping.core.navigation.Screen
+import ru.sokolovromann.myshopping.feature.dictionary.mapper.AddEditSuggestionMapper
+import ru.sokolovromann.myshopping.feature.dictionary.model.AddEditSuggestionState
 
 @HiltViewModel
 class AddEditSuggestionViewModel @Inject constructor(
+    private val observeGeneralPreferencesUseCase: ObserveGeneralPreferencesUseCase,
     private val getSupportUseCase: GetSupportUseCase,
     private val insertSuggestionsUseCase: InsertSuggestionsUseCase,
+    private val deleteFabricsUseCase: DeleteFabricsUseCase,
+    private val addEditSuggestionMapper: AddEditSuggestionMapper,
     private val navigator: Navigator,
     private val savedStateHandle: SavedStateHandle,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _addEditSuggestionState: MutableStateFlow<AddEditSuggestionState> =
-        MutableStateFlow(AddEditSuggestionState())
+        MutableStateFlow(addEditSuggestionMapper.getDefaultAddEditSuggestionState())
     val addEditSuggestionState: StateFlow<AddEditSuggestionState> = _addEditSuggestionState
+
+    private val suggestionUid: UID? get() = savedStateHandle
+        .toRoute<Screen.AddEditSuggestion>().uid
+        ?.let { UID(it) }
+
+    private val deletedFabricUids: MutableSet<UID> = mutableSetOf()
 
     init { onInit() }
 
@@ -50,33 +60,29 @@ class AddEditSuggestionViewModel @Inject constructor(
             return@launch
         }
 
-        val uid = _addEditSuggestionState.value.uid
-        val timeInMillis = TimeInMillis.getCurrent()
-        val newSuggestion = if (uid == null) {
-            Suggestion(
-                uid = UID.createRandom(),
-                directory = SuggestionDirectory.NoDirectory,
-                created = timeInMillis,
-                lastModified = timeInMillis,
-                name = name,
-                used = 0
-            )
-        } else {
-            getSupportUseCase(uid)?.let {
-                Suggestion(
-                    uid = it.uid,
-                    directory = it.directory,
-                    created = it.created,
-                    lastModified = timeInMillis,
-                    name = name,
-                    used = it.used.plus(1)
-                )
-            }
-        }
-        if (newSuggestion != null) {
+        if (suggestionUid == null) {
+            val newSuggestion = addEditSuggestionMapper.createSuggestion(name)
             insertSuggestionsUseCase(newSuggestion)
+        } else {
+            getSupportUseCase(suggestionUid!!)?.let {
+                val newSuggestion = addEditSuggestionMapper.changeSuggestion(it, name)
+                insertSuggestionsUseCase(newSuggestion)
+            }
+            deleteFabricsUseCase(deletedFabricUids)
         }
+
         navigator.navigateBack()
+    }
+
+    fun onDeleteFabricClick(uid: UID) {
+        deletedFabricUids.add(uid)
+
+        val oldState = _addEditSuggestionState.value
+        val newFabrics = oldState.fabrics.mapValues { (_, values) ->
+            values.filter { it.uid != uid }
+        }
+        val newState = oldState.copy(fabrics = newFabrics)
+        _addEditSuggestionState.tryEmit(newState)
     }
 
     fun onSuggestionNameChange(value: TextFieldValue) {
@@ -88,29 +94,23 @@ class AddEditSuggestionViewModel @Inject constructor(
     }
 
     private fun onInit() = viewModelScope.launch {
-        val uidValue = savedStateHandle.toRoute<Screen.AddEditSuggestion>().uid
-        if (uidValue == null) {
+        if (suggestionUid == null) {
             withContext(mainDispatcher) {
-                _addEditSuggestionState.tryEmit(AddEditSuggestionState())
+                val newState = addEditSuggestionMapper.getDefaultAddEditSuggestionState()
+                _addEditSuggestionState.tryEmit(newState)
             }
         } else {
-            val uid = UID(uidValue)
-            val support = getSupportUseCase(uid)
+            val support = getSupportUseCase(suggestionUid!!)
+            val generalPreferences = observeGeneralPreferencesUseCase().first()
             withContext(mainDispatcher) {
-                val state = if (support == null) {
-                    AddEditSuggestionState()
+                deletedFabricUids.clear()
+
+                val newState = if (support == null) {
+                    addEditSuggestionMapper.getDefaultAddEditSuggestionState()
                 } else {
-                    AddEditSuggestionState(
-                        uid = uid,
-                        name = TextFieldValue(
-                            text = support.name,
-                            selection = TextRange(support.name.length),
-                            composition = TextRange(support.name.length)
-                        ),
-                        isNameError = false
-                    )
+                    addEditSuggestionMapper.createAddEditSuggestionState(support, generalPreferences)
                 }
-                _addEditSuggestionState.tryEmit(state)
+                _addEditSuggestionState.tryEmit(newState)
             }
         }
     }

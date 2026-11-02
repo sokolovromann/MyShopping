@@ -64,7 +64,7 @@ class SettingsViewModel @Inject constructor(
         NavigationItem.Purchases -> navigator.navigateTo(Screen.Purchases)
         NavigationItem.Archive -> navigator.navigateTo(Screen.Archive)
         NavigationItem.Trash -> navigator.navigateTo(Screen.Trash)
-        NavigationItem.Dictionary -> navigator.navigateTo(Screen.Dictionary)
+        NavigationItem.Dictionary -> navigator.navigateTo(Screen.Suggestions)
         NavigationItem.Settings -> {}
         NavigationItem.About -> navigator.navigateTo(Screen.About)
     }

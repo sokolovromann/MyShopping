@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="dictionary_text_suggestions_not_found">У вас нет подсказок</string>
+    <string name="suggestions_items_no_details">Нет данных</string>
 </resources>

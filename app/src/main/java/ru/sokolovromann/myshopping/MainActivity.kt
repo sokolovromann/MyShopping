@@ -22,8 +22,8 @@ import ru.sokolovromann.myshopping.core.navigation.Screen
 import ru.sokolovromann.myshopping.core.ui.theme.MyShoppingTheme
 import androidx.compose.runtime.collectAsState
 import ru.sokolovromann.myshopping.feature.about.AboutScreen
-import ru.sokolovromann.myshopping.feature.addeditsuggestion.AddEditSuggestionScreen
-import ru.sokolovromann.myshopping.feature.dictionary.DictionaryScreen
+import ru.sokolovromann.myshopping.feature.dictionary.component.AddEditSuggestionScreen
+import ru.sokolovromann.myshopping.feature.dictionary.component.SuggestionsScreen
 import ru.sokolovromann.myshopping.feature.settings.component.SettingsScreen
 
 @AndroidEntryPoint
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     composable<Screen.Purchases> { TextScreen("Purchases Screen") }
                     composable<Screen.Archive> { TextScreen("Archive Screen") }
                     composable<Screen.Trash> { TextScreen("Trash Screen") }
-                    composable<Screen.Dictionary> { DictionaryScreen() }
+                    composable<Screen.Suggestions> { SuggestionsScreen() }
                     composable<Screen.AddEditSuggestion> { AddEditSuggestionScreen() }
                     composable<Screen.Settings> { SettingsScreen() }
                     composable<Screen.About> { AboutScreen() }

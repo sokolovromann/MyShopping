@@ -47,7 +47,7 @@ sealed interface Screen {
     data object Settings : Screen
 
     @Serializable
-    data object Dictionary : Screen
+    data object Suggestions : Screen
 
     @Serializable
     data class AddEditSuggestion(val uid: String? = null) : Screen
