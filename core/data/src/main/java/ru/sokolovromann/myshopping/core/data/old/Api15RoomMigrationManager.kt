@@ -301,7 +301,7 @@ class Api15RoomMigrationManager @Inject constructor(
 
     private fun fromApi15AutocompletesToSuggestionsWithFabrics(autocompletes: Collection<Api15AutocompleteEntity>) =
         autocompletes
-            .groupBy { it.name }
+            .groupBy { it.name.lowercase() }
             .mapKeys { entry ->
                 val currentDateTime = TimeInMillis.getCurrent().value.toString()
                 SuggestionEntity(

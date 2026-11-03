@@ -23,27 +23,20 @@ class ImportBackupUseCase @Inject constructor(
 
     suspend operator fun invoke(uriString: String): Boolean =
         withContext(ioDispatcher) {
+            cartsRepository.clearCarts()
+            productsRepository.clearProducts()
+            suggestionsRepository.clearSuggestions()
+            fabricsRepository.clearFabrics()
+
             val api15Result = api15BackupManager.importBackup(uriString)
             if (api15Result) return@withContext true
 
             val backupValue = backupRepository.importBackup(uriString)
             if (backupValue != null) {
-                cartsRepository.apply {
-                    clearCarts()
-                    insertCarts(backupValue.carts)
-                }
-                productsRepository.apply {
-                    clearProducts()
-                    insertProducts(backupValue.products)
-                }
-                suggestionsRepository.apply {
-                    clearSuggestions()
-                    insertSuggestions(backupValue.suggestions)
-                }
-                fabricsRepository.apply {
-                    clearFabrics()
-                    insertFabrics(backupValue.fabrics)
-                }
+                cartsRepository.insertCarts(backupValue.carts)
+                productsRepository.insertProducts(backupValue.products)
+                suggestionsRepository.insertSuggestions(backupValue.suggestions)
+                fabricsRepository.insertFabrics(backupValue.fabrics)
                 true
             } else false
         }
