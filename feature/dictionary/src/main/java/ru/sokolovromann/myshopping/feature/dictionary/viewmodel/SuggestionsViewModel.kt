@@ -45,7 +45,7 @@ class SuggestionsViewModel @Inject constructor(
         NavigationItem.Purchases -> navigator.navigateTo(Screen.Purchases)
         NavigationItem.Archive -> navigator.navigateTo(Screen.Archive)
         NavigationItem.Trash -> navigator.navigateTo(Screen.Trash)
-        NavigationItem.Dictionary -> {}
+        NavigationItem.Suggestions -> {}
         NavigationItem.Settings -> navigator.navigateTo(Screen.Settings)
         NavigationItem.About -> navigator.navigateTo(Screen.About)
     }

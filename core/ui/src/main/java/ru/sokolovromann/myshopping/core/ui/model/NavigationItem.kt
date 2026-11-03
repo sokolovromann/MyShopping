@@ -25,9 +25,9 @@ sealed class NavigationItem(
         AppIcons.Trash
     )
 
-    data object Dictionary : NavigationItem(
+    data object Suggestions : NavigationItem(
         UiText.FromResources(R.string.navigation_item_dictionary),
-        AppIcons.Dictionary
+        AppIcons.Suggestions
     )
 
     data object Settings : NavigationItem(

@@ -93,7 +93,7 @@ private fun NavigationDrawerSheetContent(
             NavigationItem.Purchases,
             NavigationItem.Archive,
             NavigationItem.Trash,
-            NavigationItem.Dictionary,
+            NavigationItem.Suggestions,
             NavigationItem.Settings,
             NavigationItem.About
         ).forEach { item ->

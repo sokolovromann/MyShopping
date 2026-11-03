@@ -11,7 +11,7 @@ object AppIcons {
 
     val About: UiIcon = Icons.Default.Info.toUiIcon()
 
-    val Dictionary: UiIcon = Icons.AutoMirrored.Default.List.toUiIcon()
+    val Suggestions: UiIcon = Icons.AutoMirrored.Default.List.toUiIcon()
 
     val Purchases: UiIcon = R.drawable.ic_purchases.toUiIcon()
 
