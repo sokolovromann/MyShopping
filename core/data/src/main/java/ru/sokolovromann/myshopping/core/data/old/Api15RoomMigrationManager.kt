@@ -320,7 +320,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "QuantityType",
+                            type = "Quantity",
                             value = autocomplete.quantity.toString(),
                             valueParams = autocomplete.quantitySymbol,
                             used = quantities.count { it.quantity == autocomplete.quantity }.toString()
@@ -332,7 +332,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "UnitPriceType",
+                            type = "UnitPrice",
                             value = autocomplete.price.toString(),
                             used = unitPrices.count { it.price == autocomplete.price }.toString()
                         )
@@ -348,7 +348,7 @@ class Api15RoomMigrationManager @Inject constructor(
                         }
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "DiscountType",
+                            type = "Discount",
                             value = autocomplete.discount.toString(),
                             valueParams = measurementUnit.toString()
                         )
@@ -359,7 +359,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "TaxType",
+                            type = "Tax",
                             value = autocomplete.taxRate.toString()
                         )
                     }
@@ -369,7 +369,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "CostType",
+                            type = "Cost",
                             value = autocomplete.total.toString()
                         )
                     }
@@ -379,7 +379,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "ManufacturerType",
+                            type = "Manufacturer",
                             value = autocomplete.manufacturer
                         )
                     }
@@ -389,7 +389,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "BrandType",
+                            type = "Brand",
                             value = autocomplete.brand
                         )
                     }
@@ -399,7 +399,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "SizeType",
+                            type = "Size",
                             value = autocomplete.size
                         )
                     }
@@ -409,7 +409,7 @@ class Api15RoomMigrationManager @Inject constructor(
                     .map { autocomplete ->
                         createFabric().copy(
                             directory = entry.key.uid,
-                            type = "ColorType",
+                            type = "Color",
                             value = autocomplete.color
                         )
                     }

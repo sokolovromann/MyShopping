@@ -47,8 +47,8 @@ object SupportUtils {
                 is FabricValue.CostType -> costs.add(it)
                 is FabricValue.ManufacturerType -> manufacturers.add(it)
                 is FabricValue.BrandType -> brands.add(it)
-                is FabricValue.ColorType -> sizes.add(it)
-                is FabricValue.SizeType -> colors.add(it)
+                is FabricValue.SizeType -> sizes.add(it)
+                is FabricValue.ColorType -> colors.add(it)
                 FabricValue.NoData -> {}
             }
         }
