@@ -1,6 +1,6 @@
 [versions]
 activity = "1.13.0"
-agp = "9.4.1"
+agp = "9.5.0"
 android-core = "1.19.1"
 compose-ui = "1.12.1"
 datastore = "1.2.1"
