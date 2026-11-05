@@ -6,7 +6,7 @@ import ru.sokolovromann.myshopping.core.ui.model.UiText
 
 @Immutable
 data class AddEditSuggestionState(
-    val focusRequired: Boolean = false,
+    val showKeyboard: Boolean = false,
     val name: TextFieldValue = TextFieldValue(),
     val isNameError: Boolean = false,
     val fabrics: Map<UiText, List<FabricItem>> = emptyMap()

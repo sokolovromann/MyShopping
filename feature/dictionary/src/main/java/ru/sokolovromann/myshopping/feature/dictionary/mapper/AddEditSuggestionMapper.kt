@@ -21,7 +21,7 @@ class AddEditSuggestionMapper @Inject constructor(
 
     fun createAddEditSuggestionState(support: Support, preferences: GeneralPreferences) =
         AddEditSuggestionState(
-            focusRequired = true,
+            showKeyboard = true,
             name = support.name.toTextFieldValue(),
             isNameError = false,
             fabrics = createFabrics(support, preferences)

@@ -1,5 +1,6 @@
 package ru.sokolovromann.myshopping.feature.dictionary.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,12 +37,14 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.ui.component.ErrorSupportingText
 import ru.sokolovromann.myshopping.core.ui.model.UiText
 import ru.sokolovromann.myshopping.feature.dictionary.R
 import ru.sokolovromann.myshopping.feature.dictionary.model.AddEditSuggestionState
 import ru.sokolovromann.myshopping.feature.dictionary.model.FabricItem
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun AddEditSuggestionContent(
@@ -61,12 +65,15 @@ fun AddEditSuggestionContent(
             onDoneClick = onDoneClick,
             name = addEditSuggestionState.name,
             isNameError = addEditSuggestionState.isNameError,
-            focusRequired = addEditSuggestionState.focusRequired
+            showKeyboard = addEditSuggestionState.showKeyboard
         )
-        FabricsSurface(
-            onDeleteClick = onDeleteFabricClick,
-            fabrics = addEditSuggestionState.fabrics
-        )
+        addEditSuggestionState.fabrics.forEach { (text, items) ->
+            FabricsSurface(
+                onDeleteClick = onDeleteFabricClick,
+                text = text,
+                items = items
+            )
+        }
     }
 }
 
@@ -76,11 +83,12 @@ private fun NameTextField(
     onDoneClick: () -> Unit,
     name: TextFieldValue,
     isNameError: Boolean,
-    focusRequired: Boolean
+    showKeyboard: Boolean
 ) {
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        if (focusRequired) {
+    LaunchedEffect(key1 = showKeyboard) {
+        if (showKeyboard) {
+            delay(100.milliseconds)
             focusRequester.requestFocus()
         }
     }
@@ -115,52 +123,70 @@ private fun NameTextField(
 @Composable
 private fun FabricsSurface(
     onDeleteClick: (UID) -> Unit,
-    fabrics: Map<UiText, List<FabricItem>>
+    text: UiText,
+    items: List<FabricItem>
 ) {
-    if (fabrics.isEmpty()) return
+    if (items.isEmpty()) return
 
-    fabrics.forEach { (text, items) ->
-        val scrollState = rememberScrollState()
-        Surface(
+    val scrollState = rememberScrollState()
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        shape = MaterialTheme.shapes.medium,
+        tonalElevation = 1.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text.asCompose())
-                Spacer(Modifier.size(4.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(scrollState),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            Text(text.asCompose())
+            Spacer(Modifier.size(4.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(scrollState),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                content = {
                     items.forEach { item ->
-                        InputChip(
-                            selected = false,
-                            onClick = {},
-                            label = { Text(item.text) },
-                            trailingIcon = {
-                                IconButton(
-                                    onClick = { onDeleteClick(item.uid) },
-                                    modifier = Modifier.size(InputChipDefaults.IconSize)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Close,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(16.dp)
-                                    )
-                                }
-                            }
-                        )
+                        FabricItemInputChip(onDeleteClick, item)
                     }
                 }
-            }
+            )
         }
     }
+}
+
+@Composable
+private fun FabricItemInputChip(
+    onDeleteClick: (UID) -> Unit,
+    item: FabricItem
+) {
+    InputChip(
+        selected = false,
+        onClick = {},
+        label = { Text(item.text) },
+        trailingIcon = {
+            IconButton(
+                onClick = { onDeleteClick(item.uid) },
+                modifier = Modifier.size(InputChipDefaults.IconSize)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        },
+        colors = InputChipDefaults.inputChipColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            disabledContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
+        )
+    )
+    Spacer(Modifier.size(4.dp))
 }

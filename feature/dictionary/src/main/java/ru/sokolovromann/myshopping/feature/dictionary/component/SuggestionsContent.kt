@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.ui.component.BottomGridSpacer
 import ru.sokolovromann.myshopping.core.ui.component.GridSelectableItem
@@ -60,7 +61,14 @@ fun SuggestionsContent(
 @Composable
 private fun BodyText(key: UiText, value: String) {
     Row {
-        Text(key.asCompose())
-        Text(value)
+        Text(
+            text = key.asCompose(),
+            maxLines = 1
+        )
+        Text(
+            text = value,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

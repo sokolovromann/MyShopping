@@ -51,7 +51,7 @@ private fun SuggestionsScreenImpl(
 
     NavigationDrawer(
         drawerState = drawerState,
-        initialItem = NavigationItem.Settings,
+        initialItem = NavigationItem.Suggestions,
         onItemClick = {
             if (isCloseableNavigationDrawer) closeDrawer()
             onNavigationItemSelected(it)
