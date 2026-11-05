@@ -114,7 +114,7 @@ fun GridSelectableItem(
         targetValue = if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            Color.Transparent
+            MaterialTheme.colorScheme.surface
         },
         label = "CardBackgroundAnimation"
     )
@@ -127,7 +127,7 @@ fun GridSelectableItem(
         label = "ContentColorAnimation"
     )
     if (borderEnabled) {
-        val tonalElevation = if (isSelected) 0.dp else 2.dp
+        val tonalElevation = if (isSelected) 0.dp else 1.dp
         val border = if (isSelected) {
             BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
         } else {
