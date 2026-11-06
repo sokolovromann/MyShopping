@@ -9,7 +9,6 @@ data class CartsPreferences(
     val afterCompleting: AfterCompletingCart,
     val afterArchiving: AfterArchivingCart,
     val afterTappingByCheckbox: AfterTappingByCartCheckbox,
-    val checkboxColor: CheckboxColor,
     val swipeLeft: SwipeCart.Left,
     val swipeRight: SwipeCart.Right,
     val deletionFromTrash: DeletionCartFromTrash

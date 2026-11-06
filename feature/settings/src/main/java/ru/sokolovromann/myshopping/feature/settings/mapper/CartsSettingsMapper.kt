@@ -6,7 +6,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCartActionName
 import ru.sokolovromann.myshopping.core.ui.model.UiText
@@ -63,17 +62,6 @@ class CartsSettingsMapper @Inject constructor() {
                     UiText.FromResources(R.string.settings_text_after_tapping_cart_checkbox_do_nothing)
             }
         )
-        val checkboxColor = SettingsItem(
-            selected = preferences.checkboxColor,
-            text = when (preferences.checkboxColor) {
-                CheckboxColor.RedOrGreen ->
-                    UiText.FromResources(R.string.settings_text_cart_checkbox_color_red_green)
-                CheckboxColor.RedOrGray ->
-                    UiText.FromResources(R.string.settings_text_cart_checkbox_color_red_grey)
-                CheckboxColor.Gray ->
-                    UiText.FromResources(R.string.settings_text_cart_checkbox_color_grey)
-            }
-        )
         val swipeLeft = SettingsItem(
             selected = preferences.swipeLeft,
             text = when (preferences.swipeLeft.actionName) {
@@ -118,7 +106,6 @@ class CartsSettingsMapper @Inject constructor() {
             afterCompleting = afterCompleting,
             afterArchiving = afterArchiving,
             afterTappingCheckbox = afterTappingCheckbox,
-            checkboxColor = checkboxColor,
             swipeLeft = swipeLeft,
             swipeRight = swipeRight,
             deletionFromTrash = deletionFromTrash

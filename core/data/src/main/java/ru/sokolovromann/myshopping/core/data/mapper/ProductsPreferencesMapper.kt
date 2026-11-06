@@ -9,7 +9,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.ProductsPreferences
@@ -55,10 +54,6 @@ class ProductsPreferencesMapper @Inject constructor() : DataStoreMapper<Products
             AfterTappingByProductCheckbox.ChangeProductStatus
         ),
         EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Products.CHECKBOX_COLOR],
-            CheckboxColor.RedOrGreen
-        ),
-        EnumUtils.valueOfOrDefault(
             preferences[LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM],
             AfterTappingByProductItem.DoNothing
         ),
@@ -97,8 +92,6 @@ class ProductsPreferencesMapper @Inject constructor() : DataStoreMapper<Products
                 to model.afterCompleting.toString(),
         LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX
                 to model.afterTappingByCheckbox.toString(),
-        LocalDataStoreScheme.Products.CHECKBOX_COLOR
-                to model.checkboxColor.toString(),
         LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM
                 to model.afterTappingByItem.toString(),
         LocalDataStoreScheme.Products.SWIPE_LEFT

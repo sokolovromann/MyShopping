@@ -34,10 +34,6 @@
     <string name="settings_text_backup_import_success">Dane zostały pomyślnie przywrócone</string>
     <string name="settings_text_carts">Listy zakupów</string>
     <string name="settings_text_change_product_status">Oznacz produkt jako kupiony lub niekupiony</string>
-    <string name="settings_text_checkbox_color">Kolor checkboxa</string>
-    <string name="settings_text_checkbox_color_grey">Szary</string>
-    <string name="settings_text_checkbox_color_red_green">Czerwony lub zielony</string>
-    <string name="settings_text_checkbox_color_red_grey">Czerwony lub szary</string>
     <string name="settings_text_close_screen">Zamknij ekran</string>
     <string name="settings_text_currency">Waluta</string>
     <string name="settings_text_currency_left">Po lewej</string>

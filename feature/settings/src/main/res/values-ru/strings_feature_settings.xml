@@ -34,10 +34,6 @@
     <string name="settings_text_backup_import_success">Данные успешно восстановлены</string>
     <string name="settings_text_carts">Списки покупок</string>
     <string name="settings_text_change_product_status">Отметить товар как Купленный или Не купленный</string>
-    <string name="settings_text_checkbox_color">Цвет чекбокса</string>
-    <string name="settings_text_checkbox_color_grey">Серый</string>
-    <string name="settings_text_checkbox_color_red_green">Красный или зелёный</string>
-    <string name="settings_text_checkbox_color_red_grey">Красный или серый</string>
     <string name="settings_text_close_screen">Закрыть экран</string>
     <string name="settings_text_currency">Валюта</string>
     <string name="settings_text_currency_left">Слева</string>

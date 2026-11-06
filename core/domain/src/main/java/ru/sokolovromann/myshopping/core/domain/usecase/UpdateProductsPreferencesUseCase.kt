@@ -9,7 +9,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.ProductsPreferences
@@ -75,12 +74,6 @@ class UpdateProductsPreferencesUseCase @Inject constructor(
     suspend operator fun invoke(afterTappingByCheckbox: AfterTappingByProductCheckbox): Unit =
         withContext(ioDispatcher) {
             val preferences = getPreferences().copy(afterTappingByCheckbox = afterTappingByCheckbox)
-            productsPreferencesRepository.updateProductsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(checkboxColor: CheckboxColor): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(checkboxColor = checkboxColor)
             productsPreferencesRepository.updateProductsPreferences(preferences)
         }
 

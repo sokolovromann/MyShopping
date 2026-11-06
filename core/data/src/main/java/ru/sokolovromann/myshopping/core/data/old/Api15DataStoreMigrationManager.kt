@@ -26,7 +26,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckb
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductEnter
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CartsProductsDisplayMode
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
@@ -142,10 +141,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             true -> AfterArchivingCart.ChangeCartStatusToCompleted
             else -> AfterArchivingCart.DoNothing
         }
-        val checkboxColor = when (api15Preferences[Api15LocalDataStoreScheme.User.coloredCheckbox]) {
-            true -> CheckboxColor.RedOrGreen
-            else -> CheckboxColor.Gray
-        }
         fun swipeActionName(name: String?) = when (name) {
             "ARCHIVE" -> SwipeCartActionName.ArchiveOrUnarchiveCart
             "DELETE" -> SwipeCartActionName.DeleteOrRestoreCart
@@ -170,7 +165,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             LocalDataStoreScheme.Carts.AFTER_COMPLETING to afterCompleting.toString(),
             LocalDataStoreScheme.Carts.AFTER_ARCHIVING to afterArchiving.toString(),
             LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX to AfterTappingByCartCheckbox.DoNothing.toString(),
-            LocalDataStoreScheme.Carts.CHECKBOX_COLOR to checkboxColor.toString(),
             LocalDataStoreScheme.Carts.SWIPE_LEFT to
                     swipeActionName(api15Preferences[Api15LocalDataStoreScheme.User.swipeShoppingLeft]),
             LocalDataStoreScheme.Carts.SWIPE_RIGHT to
@@ -220,10 +214,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             true -> AfterTappingByProductCheckbox.ChangeProductStatus
             else -> AfterTappingByProductCheckbox.DoNothing
         }
-        val checkboxColor = when (api15Preferences[Api15LocalDataStoreScheme.User.coloredCheckbox]) {
-            true -> CheckboxColor.RedOrGreen
-            else -> CheckboxColor.Gray
-        }
         val afterTappingByItem = when (api15Preferences[Api15LocalDataStoreScheme.User.completedWithCheckbox]) {
             true -> AfterTappingByProductItem.DoNothing
             else -> AfterTappingByProductItem.ChangeProductStatus
@@ -245,7 +235,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             LocalDataStoreScheme.Products.STRIKETHROUGH_COMPLETED to strikethroughCompleted.toString(),
             LocalDataStoreScheme.Products.AFTER_COMPLETING to afterCompleting.toString(),
             LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX to afterTappingByCheckbox.toString(),
-            LocalDataStoreScheme.Products.CHECKBOX_COLOR to checkboxColor.toString(),
             LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM to afterTappingByItem.toString(),
             LocalDataStoreScheme.Products.SWIPE_LEFT to
                     swipeActionName(api15Preferences[Api15LocalDataStoreScheme.User.swipeProductLeft]),

@@ -12,7 +12,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCart
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCartActionName
@@ -43,10 +42,6 @@ fun CartsSettingsCard(
         }
         AfterTappingCheckboxItem(items.afterTappingCheckbox) {
             val action = CartsSettingsAction.OnTappingCheckboxSelected(it)
-            onAction(action)
-        }
-        CheckboxColorItem(items.checkboxColor) {
-            val action = CartsSettingsAction.OnCheckboxColorSelected(it)
             onAction(action)
         }
         SwipeCartLeftItem(items.swipeLeft) {
@@ -289,62 +284,6 @@ private fun AfterTappingCheckboxMenu(
             text = stringResource(R.string.settings_text_after_tapping_cart_checkbox_do_nothing),
             selected = selected == AfterTappingByCartCheckbox.DoNothing,
             onClick = { onSelected(AfterTappingByCartCheckbox.DoNothing) }
-        )
-    }
-}
-
-// CHECKBOX COLOR
-
-@Composable
-private fun CheckboxColorItem(
-    data: SettingsItem<CheckboxColor>,
-    onSelected: (CheckboxColor) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SettingsCardItem(
-        title = { Text(stringResource(R.string.settings_text_cart_checkbox_color)) },
-        body = {
-            Text(data.text.asCompose())
-            CheckboxColorMenu(
-                expanded = expanded,
-                onSelected = { newColor ->
-                    expanded = false
-                    newColor?.let { onSelected(it) }
-                },
-                selected = data.selected
-            )
-        },
-        onClick = { expanded = true }
-    )
-}
-
-@Composable
-private fun CheckboxColorMenu(
-    expanded: Boolean,
-    onSelected: (CheckboxColor?) -> Unit,
-    selected: CheckboxColor
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onSelected(null) }
-    ) {
-        DropdownMenuTitle(stringResource(R.string.settings_text_cart_checkbox_color))
-
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_cart_checkbox_color_red_green),
-            selected = selected == CheckboxColor.RedOrGreen,
-            onClick = { onSelected(CheckboxColor.RedOrGreen) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_cart_checkbox_color_red_grey),
-            selected = selected == CheckboxColor.RedOrGray,
-            onClick = { onSelected(CheckboxColor.RedOrGray) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_cart_checkbox_color_grey),
-            selected = selected == CheckboxColor.Gray,
-            onClick = { onSelected(CheckboxColor.Gray) }
         )
     }
 }

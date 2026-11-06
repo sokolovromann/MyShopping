@@ -98,8 +98,6 @@ class SettingsViewModel @Inject constructor(
                 updateCartsPreferencesUseCase(action.afterArchiving)
             is CartsSettingsAction.OnTappingCheckboxSelected ->
                 updateCartsPreferencesUseCase(action.afterTappingCheckbox)
-            is CartsSettingsAction.OnCheckboxColorSelected ->
-                updateCartsPreferencesUseCase(action.checkboxColor)
             is CartsSettingsAction.OnSwipeLeftSelected ->
                 updateCartsPreferencesUseCase(action.swipe)
             is CartsSettingsAction.OnSwipeRightSelected ->
@@ -119,8 +117,6 @@ class SettingsViewModel @Inject constructor(
                 updateProductsPreferencesUseCase(action.afterCompleting)
             is ProductsSettingsAction.OnAfterTappingCheckboxSelected ->
                 updateProductsPreferencesUseCase(action.afterTappingCheckbox)
-            is ProductsSettingsAction.OnCheckboxColorSelected ->
-                updateProductsPreferencesUseCase(action.checkboxColor)
             is ProductsSettingsAction.OnAfterTappingItemSelected ->
                 updateProductsPreferencesUseCase(action.afterTappingItem)
             is ProductsSettingsAction.OnSwipeLeftSelected ->

@@ -13,7 +13,6 @@ import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.CartsProductsDisplayMode
 import ru.sokolovromann.myshopping.core.domain.model.CartsView
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.GroupCartsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsTotalCalculatingMode
@@ -58,10 +57,6 @@ class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPrefer
             preferences[LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX],
             AfterTappingByCartCheckbox.DoNothing
         ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Carts.CHECKBOX_COLOR],
-            CheckboxColor.RedOrGreen
-        ),
         SwipeCart.Left(
             EnumUtils.valueOfOrDefault(
                 preferences[LocalDataStoreScheme.Carts.SWIPE_LEFT],
@@ -105,8 +100,6 @@ class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPrefer
                 to model.afterArchiving.toString(),
         LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX
                 to model.afterTappingByCheckbox.toString(),
-        LocalDataStoreScheme.Carts.CHECKBOX_COLOR
-                to model.checkboxColor.toString(),
         LocalDataStoreScheme.Carts.SWIPE_LEFT
                 to model.swipeLeft.actionName.toString(),
         LocalDataStoreScheme.Carts.SWIPE_RIGHT

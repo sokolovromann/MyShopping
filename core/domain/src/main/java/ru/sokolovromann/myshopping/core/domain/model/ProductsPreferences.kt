@@ -9,7 +9,6 @@ data class ProductsPreferences(
     val strikethroughCompleted: StrikethroughCompletedProducts,
     val afterCompleting: AfterCompletingProduct,
     val afterTappingByCheckbox: AfterTappingByProductCheckbox,
-    val checkboxColor: CheckboxColor,
     val afterTappingByItem: AfterTappingByProductItem,
     val swipeLeft: SwipeProduct.Left,
     val swipeRight: SwipeProduct.Right

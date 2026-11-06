@@ -59,16 +59,8 @@
     <string name="settings_text_backup_import">Restore</string>
     <string name="settings_text_backup_import_description">All current data will be deleted</string>
     <string name="settings_text_backup_import_success">Data restored successfully</string>
-    <string name="settings_text_cart_checkbox_color" translatable="false">@string/settings_text_checkbox_color</string>
-    <string name="settings_text_cart_checkbox_color_grey" translatable="false">@string/settings_text_checkbox_color_grey</string>
-    <string name="settings_text_cart_checkbox_color_red_green" translatable="false">@string/settings_text_checkbox_color_red_green</string>
-    <string name="settings_text_cart_checkbox_color_red_grey" translatable="false">@string/settings_text_checkbox_color_red_grey</string>
     <string name="settings_text_carts">Shopping lists</string>
     <string name="settings_text_change_product_status">Mark product as Completed or Active</string>
-    <string name="settings_text_checkbox_color">Checkbox color</string>
-    <string name="settings_text_checkbox_color_grey">Grey</string>
-    <string name="settings_text_checkbox_color_red_green">Red or green</string>
-    <string name="settings_text_checkbox_color_red_grey">Red or grey</string>
     <string name="settings_text_close_screen">Close screen</string>
     <string name="settings_text_currency">Currency</string>
     <string name="settings_text_currency_left">Left</string>
@@ -124,10 +116,6 @@
     <string name="settings_text_money_formatting_mode">Money</string>
     <string name="settings_text_money_formatting_mode_advanced">Advanced mode</string>
     <string name="settings_text_money_formatting_mode_simple">Simple mode</string>
-    <string name="settings_text_product_checkbox_color" translatable="false">@string/settings_text_checkbox_color</string>
-    <string name="settings_text_product_checkbox_color_grey" translatable="false">@string/settings_text_checkbox_color_grey</string>
-    <string name="settings_text_product_checkbox_color_red_green" translatable="false">@string/settings_text_checkbox_color_red_green</string>
-    <string name="settings_text_product_checkbox_color_red_grey" translatable="false">@string/settings_text_checkbox_color_red_grey</string>
     <string name="settings_text_products">Products</string>
     <string name="settings_text_products_adding_mode" translatable="false">@string/settings_text_adding_mode</string>
     <string name="settings_text_products_adding_mode_advanced">Advanced</string>

@@ -19,7 +19,6 @@ object UserPreferencesDefaults {
         afterCompleting = AfterCompletingCart.DoNothing,
         afterArchiving = AfterArchivingCart.DoNothing,
         afterTappingByCheckbox = AfterTappingByCartCheckbox.DoNothing,
-        checkboxColor = CheckboxColor.RedOrGreen,
         swipeLeft = SwipeCart.Left(SwipeCartActionName.ChangeCartStatusToCompletedOrActive),
         swipeRight = SwipeCart.Right(SwipeCartActionName.ArchiveOrUnarchiveCart),
         deletionFromTrash = DeletionCartFromTrash.DoNotDelete
@@ -34,7 +33,6 @@ object UserPreferencesDefaults {
         strikethroughCompleted = StrikethroughCompletedProducts.Off,
         afterCompleting = AfterCompletingProduct.DoNothing,
         afterTappingByCheckbox = AfterTappingByProductCheckbox.ChangeProductStatus,
-        checkboxColor = CheckboxColor.RedOrGreen,
         afterTappingByItem = AfterTappingByProductItem.DoNothing,
         swipeLeft = SwipeProduct.Left(SwipeProductActionName.EditProduct),
         swipeRight = SwipeProduct.Right(SwipeProductActionName.DeleteProduct)

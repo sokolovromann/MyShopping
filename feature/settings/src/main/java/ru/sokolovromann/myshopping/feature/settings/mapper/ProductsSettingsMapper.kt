@@ -4,7 +4,6 @@ import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.ProductsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
@@ -55,17 +54,6 @@ class ProductsSettingsMapper @Inject constructor() {
                     UiText.FromResources(R.string.settings_text_after_tapping_product_checkbox_do_nothing)
             }
         )
-        val checkboxColor = SettingsItem(
-            selected = preferences.checkboxColor,
-            text = when (preferences.checkboxColor) {
-                CheckboxColor.RedOrGreen ->
-                    UiText.FromResources(R.string.settings_text_product_checkbox_color_red_green)
-                CheckboxColor.RedOrGray ->
-                    UiText.FromResources(R.string.settings_text_product_checkbox_color_red_grey)
-                CheckboxColor.Gray ->
-                    UiText.FromResources(R.string.settings_text_product_checkbox_color_grey)
-            }
-        )
         val afterTappingItem = SettingsItem(
             selected = preferences.afterTappingByItem,
             text = when (preferences.afterTappingByItem) {
@@ -106,7 +94,6 @@ class ProductsSettingsMapper @Inject constructor() {
             strikethroughCompleted = strikethroughCompleted,
             afterCompleting = afterCompleting,
             afterTappingCheckbox = afterTappingCheckbox,
-            checkboxColor = checkboxColor,
             afterTappingItem = afterTappingItem,
             swipeLeft = swipeLeft,
             swipeRight = swipeRight

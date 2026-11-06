@@ -12,7 +12,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.CartsView
-import ru.sokolovromann.myshopping.core.domain.model.CheckboxColor
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.GroupCartsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.SortCarts
@@ -75,12 +74,6 @@ class UpdateCartsPreferencesUseCase @Inject constructor(
     suspend operator fun invoke(afterTappingByCheckbox: AfterTappingByCartCheckbox): Unit =
         withContext(ioDispatcher) {
             val preferences = getPreferences().copy(afterTappingByCheckbox = afterTappingByCheckbox)
-            cartsPreferencesRepository.updateCartsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(checkboxColor: CheckboxColor): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(checkboxColor = checkboxColor)
             cartsPreferencesRepository.updateCartsPreferences(preferences)
         }
 

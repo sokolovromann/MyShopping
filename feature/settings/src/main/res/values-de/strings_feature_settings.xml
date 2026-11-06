@@ -34,10 +34,6 @@
     <string name="settings_text_backup_import_success">Daten erfolgreich wiederhergestellt</string>
     <string name="settings_text_carts">Einkaufslisten</string>
     <string name="settings_text_change_product_status">Produkt als erledigt oder aktiv markieren</string>
-    <string name="settings_text_checkbox_color">Kontrollkästchen-Farbe</string>
-    <string name="settings_text_checkbox_color_grey">Grau</string>
-    <string name="settings_text_checkbox_color_red_green">Rot oder Grün</string>
-    <string name="settings_text_checkbox_color_red_grey">Rot oder Grau</string>
     <string name="settings_text_close_screen">Bildschirm schließen</string>
     <string name="settings_text_currency">Währung</string>
     <string name="settings_text_currency_left">Links</string>
