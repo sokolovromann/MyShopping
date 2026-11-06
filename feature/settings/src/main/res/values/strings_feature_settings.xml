@@ -120,9 +120,6 @@
     <string name="settings_text_group_products_by_status_completed_first" translatable="false">@string/settings_text_group_completed_first</string>
     <string name="settings_text_group_products_by_status_do_not_group" translatable="false">@string/settings_text_group_do_not_group</string>
     <string name="settings_text_group_products_by_status_hide_completed" translatable="false">@string/settings_text_group_hide_completed</string>
-    <string name="settings_text_keyboard_display_delay">Keyboard display delay</string>
-    <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
-    <string name="settings_text_keyboard_display_delay_off" translatable="false">@string/text_off</string>
     <string name="settings_text_mark_list_as_completed_active">Mark list as Completed or Active</string>
     <string name="settings_text_money_formatting_mode">Money</string>
     <string name="settings_text_money_formatting_mode_advanced">Advanced mode</string>

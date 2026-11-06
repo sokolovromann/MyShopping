@@ -78,8 +78,6 @@
     <string name="settings_text_group_completed_first">Comprados primero</string>
     <string name="settings_text_group_do_not_group">No agrupar</string>
     <string name="settings_text_group_hide_completed">Ocultar comprados</string>
-    <string name="settings_text_keyboard_display_delay">Retraso al mostrar el teclado</string>
-    <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
     <string name="settings_text_mark_list_as_completed_active">Marcar lista como comprada o no comprada</string>
     <string name="settings_text_money_formatting_mode">Dinero</string>
     <string name="settings_text_money_formatting_mode_advanced">Modo avanzado</string>

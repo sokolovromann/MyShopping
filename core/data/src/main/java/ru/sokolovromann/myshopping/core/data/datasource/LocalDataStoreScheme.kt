@@ -12,7 +12,6 @@ object LocalDataStoreScheme {
         val MONEY_FORMATTING_MODE= stringPreferencesKey("money_formatting_mode")
         val CURRENCY = stringPreferencesKey("currency")
         val CURRENCY_DISPLAY_SIDE = stringPreferencesKey("currency_display_side")
-        val KEYBOARD_DISPLAY_DELAY = stringPreferencesKey("keyboard_display_delay")
     }
 
     object Carts {

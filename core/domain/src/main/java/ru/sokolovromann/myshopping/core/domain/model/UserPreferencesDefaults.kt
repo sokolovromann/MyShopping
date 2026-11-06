@@ -7,8 +7,7 @@ object UserPreferencesDefaults {
         fontSize = FontSize.Medium,
         dateTimeFormattingMode = DateTimeFormattingMode.DDMMMYYYY(is24hour = true),
         moneyFormattingMode = MoneyFormattingMode.Simple,
-        currency = Currency.Right(""),
-        keyboardDisplayDelay = KeyboardDisplayDelay.Off
+        currency = Currency.Right("")
     )
 
     val Carts = CartsPreferences(

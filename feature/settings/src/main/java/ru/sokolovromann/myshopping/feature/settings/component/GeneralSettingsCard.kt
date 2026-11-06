@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.core.domain.model.Currency
 import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
-import ru.sokolovromann.myshopping.core.domain.model.KeyboardDisplayDelay
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.Theme
 import ru.sokolovromann.myshopping.core.ui.component.DialogContent
@@ -57,10 +56,6 @@ fun GeneralSettingsCard(
         }
         CurrencyItem(items.currency) {
             val action = GeneralSettingsAction.OnCurrencySaved(it)
-            onAction(action)
-        }
-        KeyboardDisplayDelayItem(items.keyboardDisplayDelay) {
-            val action = GeneralSettingsAction.OnKeyboardDisplayDelaySelected(it)
             onAction(action)
         }
     }
@@ -433,55 +428,4 @@ private fun DisplayCurrencyButton(
             }
         }
     )
-}
-
-// KEYBOARD DISPLAY DELAY
-
-@Composable
-private fun KeyboardDisplayDelayItem(
-    data: SettingsItem<KeyboardDisplayDelay>,
-    onSelected: (KeyboardDisplayDelay) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SettingsCardItem(
-        title = { Text(stringResource(R.string.settings_text_keyboard_display_delay)) },
-        body = {
-            Text(data.text.asCompose())
-            KeyboardDisplayDelayMenu(
-                expanded = expanded,
-                onSelected = { newDelay ->
-                    expanded = false
-                    newDelay?.let { onSelected(it) }
-                },
-                selected = data.selected
-            )
-        },
-        onClick = { expanded = true }
-    )
-}
-
-@Composable
-private fun KeyboardDisplayDelayMenu(
-    expanded: Boolean,
-    onSelected: (KeyboardDisplayDelay?) -> Unit,
-    selected: KeyboardDisplayDelay
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onSelected(null) }
-    ) {
-        DropdownMenuTitle(stringResource(R.string.settings_text_keyboard_display_delay))
-
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_keyboard_display_delay_50ms),
-            selected = selected == KeyboardDisplayDelay.Ms50,
-            onClick = { onSelected(KeyboardDisplayDelay.Ms50) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_keyboard_display_delay_off),
-            selected = selected == KeyboardDisplayDelay.Off,
-            onClick = { onSelected(KeyboardDisplayDelay.Off) }
-        )
-    }
 }

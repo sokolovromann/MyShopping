@@ -85,8 +85,6 @@ class SettingsViewModel @Inject constructor(
                 updateGeneralPreferencesUseCase(action.formattingMode)
             is GeneralSettingsAction.OnCurrencySaved ->
                 updateGeneralPreferencesUseCase(action.currency)
-            is GeneralSettingsAction.OnKeyboardDisplayDelaySelected ->
-                updateGeneralPreferencesUseCase(action.displayDelay)
         }
     }
 

@@ -78,8 +78,6 @@
     <string name="settings_text_group_completed_first">Спочатку куплені</string>
     <string name="settings_text_group_do_not_group">Не групувати</string>
     <string name="settings_text_group_hide_completed">Приховати куплені</string>
-    <string name="settings_text_keyboard_display_delay">Затримка відображення клавіатури</string>
-    <string name="settings_text_keyboard_display_delay_50ms">50 мс</string>
     <string name="settings_text_mark_list_as_completed_active">Позначити список як куплений або некуплений</string>
     <string name="settings_text_money_formatting_mode">Гроші</string>
     <string name="settings_text_money_formatting_mode_advanced">Розширений режим</string>

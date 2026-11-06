@@ -9,7 +9,6 @@ import ru.sokolovromann.myshopping.core.domain.model.Currency
 import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
-import ru.sokolovromann.myshopping.core.domain.model.KeyboardDisplayDelay
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.Theme
 import ru.sokolovromann.myshopping.core.domain.utils.EnumUtils
@@ -38,10 +37,6 @@ class GeneralPreferencesMapper @Inject constructor() : DataStoreMapper<GeneralPr
         toCurrency(
             preferences[LocalDataStoreScheme.General.CURRENCY],
             preferences[LocalDataStoreScheme.General.CURRENCY_DISPLAY_SIDE]
-        ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.General.KEYBOARD_DISPLAY_DELAY],
-            KeyboardDisplayDelay.Off
         )
     )
 
@@ -59,9 +54,7 @@ class GeneralPreferencesMapper @Inject constructor() : DataStoreMapper<GeneralPr
         LocalDataStoreScheme.General.CURRENCY
                 to model.currency.getSign(),
         LocalDataStoreScheme.General.CURRENCY_DISPLAY_SIDE
-                to model.currency.javaClass.simpleName,
-        LocalDataStoreScheme.General.KEYBOARD_DISPLAY_DELAY
-                to model.keyboardDisplayDelay.toString()
+                to model.currency.javaClass.simpleName
     )
 
     fun toDateTimeFormattingMode(

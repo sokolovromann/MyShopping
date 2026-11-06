@@ -78,8 +78,6 @@
     <string name="settings_text_group_completed_first">Achetés en premier</string>
     <string name="settings_text_group_do_not_group">Ne pas grouper</string>
     <string name="settings_text_group_hide_completed">Masquer les articles achetés</string>
-    <string name="settings_text_keyboard_display_delay">Délai d\'affichage du clavier</string>
-    <string name="settings_text_keyboard_display_delay_50ms">50 ms</string>
     <string name="settings_text_mark_list_as_completed_active">Marquer la liste comme achetée ou non achetée</string>
     <string name="settings_text_money_formatting_mode">Argent</string>
     <string name="settings_text_money_formatting_mode_advanced">Mode avancé</string>

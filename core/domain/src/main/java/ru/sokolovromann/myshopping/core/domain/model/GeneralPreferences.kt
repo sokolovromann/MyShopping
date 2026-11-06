@@ -5,6 +5,5 @@ data class GeneralPreferences(
     val fontSize: FontSize,
     val dateTimeFormattingMode: DateTimeFormattingMode,
     val moneyFormattingMode: MoneyFormattingMode,
-    val currency: Currency,
-    val keyboardDisplayDelay: KeyboardDisplayDelay
+    val currency: Currency
 )

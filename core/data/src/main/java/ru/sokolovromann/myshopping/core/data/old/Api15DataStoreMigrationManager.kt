@@ -32,7 +32,6 @@ import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
 import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
-import ru.sokolovromann.myshopping.core.domain.model.KeyboardDisplayDelay
 import ru.sokolovromann.myshopping.core.domain.model.LockProductField
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
@@ -83,8 +82,7 @@ class Api15DataStoreMigrationManager @Inject constructor(
             LocalDataStoreScheme.General.IS_24_HOUR_TIME_FORMAT to is24hourTimeFormat,
             LocalDataStoreScheme.General.MONEY_FORMATTING_MODE to moneyFormattingMode.toString(),
             LocalDataStoreScheme.General.CURRENCY to currency.orEmpty(),
-            LocalDataStoreScheme.General.CURRENCY_DISPLAY_SIDE to displayCurrencyToLeft,
-            LocalDataStoreScheme.General.KEYBOARD_DISPLAY_DELAY to KeyboardDisplayDelay.Ms50.toString()
+            LocalDataStoreScheme.General.CURRENCY_DISPLAY_SIDE to displayCurrencyToLeft
         )
     }
 

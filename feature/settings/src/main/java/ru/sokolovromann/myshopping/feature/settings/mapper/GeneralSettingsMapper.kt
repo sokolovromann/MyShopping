@@ -5,7 +5,6 @@ import ru.sokolovromann.myshopping.core.domain.model.Currency
 import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
-import ru.sokolovromann.myshopping.core.domain.model.KeyboardDisplayDelay
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.Theme
 import ru.sokolovromann.myshopping.core.ui.model.UiText
@@ -87,22 +86,12 @@ class GeneralSettingsMapper @Inject constructor() {
                 }
             }
         )
-        val keyboardDisplayDelay = SettingsItem(
-            selected = preferences.keyboardDisplayDelay,
-            text = when (preferences.keyboardDisplayDelay) {
-                KeyboardDisplayDelay.Ms50 ->
-                    UiText.FromResources(R.string.settings_text_keyboard_display_delay_50ms)
-                KeyboardDisplayDelay.Off ->
-                    UiText.FromResources(R.string.settings_text_keyboard_display_delay_off)
-            }
-        )
         return GeneralSettingsItems(
             theme = theme,
             fontSize = fontSize,
             dateTime = dateTime,
             money = money,
-            currency = currency,
-            keyboardDisplayDelay = keyboardDisplayDelay
+            currency = currency
         )
     }
 }
