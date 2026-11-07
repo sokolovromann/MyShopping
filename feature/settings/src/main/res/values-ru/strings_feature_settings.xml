@@ -2,7 +2,7 @@
 <resources>
     <string name="settings_label_currency_symbol">Символ</string>
     <string name="settings_label_tax">Налог в процентах</string>
-    <string name="settings_text_add_edit_product">Добавить и редактироать товар</string>
+    <string name="settings_text_add_edit_product">Добавить и редактировать товар</string>
     <string name="settings_text_adding_mode">Режим добавления</string>
     <string name="settings_text_after_adding_cart">После добавления</string>
     <string name="settings_text_after_adding_cart_open_add_name">Открыть экран \"Добавить название\"</string>
