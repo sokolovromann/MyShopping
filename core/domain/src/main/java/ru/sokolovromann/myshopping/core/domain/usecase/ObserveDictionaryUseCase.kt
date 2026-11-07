@@ -10,7 +10,6 @@ import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Dictionary
 import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics
-import ru.sokolovromann.myshopping.core.domain.model.SuggestionsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.Support
 import ru.sokolovromann.myshopping.core.domain.utils.SupportUtils
 
@@ -26,7 +25,7 @@ class ObserveDictionaryUseCase @Inject constructor(
         transform = { suggestionsWithFabrics, suggestionsPreferences ->
             Dictionary(
                 suggestionsWithFabrics
-                    .mapped(suggestionsPreferences)
+                    .mapped()
                     .sorted(suggestionsPreferences.sort)
             )
         }
@@ -39,14 +38,8 @@ class ObserveDictionaryUseCase @Inject constructor(
             )
         }
 
-    private fun Collection<SuggestionWithFabrics>.mapped(
-        suggestionsPreferences: SuggestionsPreferences
-    ) = map { suggestionWithFabrics ->
-        SupportUtils.createSupport(
-            suggestionWithFabrics,
-            suggestionsPreferences.displaySuggestionDetails
-        )
-    }
+    private fun Collection<SuggestionWithFabrics>.mapped() =
+        map { SupportUtils.createSupport(it) }
 
     private fun Collection<Support>.sorted(
         sort: SortSuggestions

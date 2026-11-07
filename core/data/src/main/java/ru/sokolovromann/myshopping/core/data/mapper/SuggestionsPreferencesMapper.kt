@@ -5,8 +5,6 @@ import androidx.datastore.preferences.core.preferencesOf
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
-import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
-import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
 import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionsFieldsDisplayMode
@@ -29,14 +27,6 @@ class SuggestionsPreferencesMapper @Inject constructor() : DataStoreMapper<Sugge
         EnumUtils.valueOfOrDefault(
             preferences[LocalDataStoreScheme.Suggestions.ADDING_MODE],
             SuggestionAddingMode.All
-        ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Suggestions.DISPLAY_NAMES],
-            DisplaySuggestionNames.Medium
-        ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Suggestions.DISPLAY_DETAILS],
-            DisplaySuggestionDetails.Medium
         )
     )
 
@@ -50,11 +40,7 @@ class SuggestionsPreferencesMapper @Inject constructor() : DataStoreMapper<Sugge
         LocalDataStoreScheme.Suggestions.SORT_BY_ASCENDING
                 to model.sort.isByAscending().toString(),
         LocalDataStoreScheme.Suggestions.ADDING_MODE
-                to model.addingMode.toString(),
-        LocalDataStoreScheme.Suggestions.DISPLAY_NAMES
-                to model.displaySuggestionNames.toString(),
-        LocalDataStoreScheme.Suggestions.DISPLAY_DETAILS
-                to model.displaySuggestionDetails.toString()
+                to model.addingMode.toString()
     )
 
     private fun toView(view: String?, displayMode: String?): SuggestionsView {

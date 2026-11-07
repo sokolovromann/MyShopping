@@ -5,8 +5,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
-import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
-import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
 import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionsPreferences
@@ -39,18 +37,6 @@ class UpdateSuggestionsPreferencesUseCase @Inject constructor(
     suspend operator fun invoke(addingMode: SuggestionAddingMode): Unit =
         withContext(ioDispatcher) {
             val preferences = getPreferences().copy(addingMode = addingMode)
-            suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(displayNames: DisplaySuggestionNames): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(displaySuggestionNames = displayNames)
-            suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(displayDetails: DisplaySuggestionDetails): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(displaySuggestionDetails = displayDetails)
             suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
         }
 

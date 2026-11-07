@@ -154,10 +154,6 @@ class SettingsViewModel @Inject constructor(
         when (action) {
             is SuggestionsSettingsAction.OnAddingModeSelected ->
                 updateSuggestionsPreferencesUseCase(action.addingMode)
-            is SuggestionsSettingsAction.OnDisplayNamesSelected ->
-                updateSuggestionsPreferencesUseCase(action.displayNames)
-            is SuggestionsSettingsAction.OnDisplayDetailsSelected ->
-                updateSuggestionsPreferencesUseCase(action.displayDetails)
         }
     }
 

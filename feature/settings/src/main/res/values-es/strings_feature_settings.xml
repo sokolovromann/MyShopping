@@ -52,14 +52,6 @@
     <string name="settings_text_deletion_cart_from_trash">Eliminación automática de la papelera</string>
     <string name="settings_text_deletion_cart_from_trash_after_7_days">Después de 7 días</string>
     <string name="settings_text_deletion_cart_from_trash_do_not_delete">No eliminar</string>
-    <string name="settings_text_display_few">Pocos</string>
-    <string name="settings_text_display_medium">Medio</string>
-    <string name="settings_text_display_suggestion_details">Mostrar detalles (precio, cantidad, costo, etc.)</string>
-    <string name="settings_text_display_suggestion_details_all">Todos</string>
-    <string name="settings_text_display_suggestion_details_many">Muchos</string>
-    <string name="settings_text_display_suggestion_details_menu">Mostrar detalles</string>
-    <string name="settings_text_display_suggestion_names">Mostrar nombres</string>
-    <string name="settings_text_do_not_display">No mostrar</string>
     <string name="settings_text_edit_product">Editar producto</string>
     <string name="settings_text_font_size">Tamaño de fuente</string>
     <string name="settings_text_font_size_extra_huge">Gigante</string>

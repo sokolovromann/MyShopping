@@ -56,9 +56,7 @@ object UserPreferencesDefaults {
     val Suggestions = SuggestionsPreferences(
         view = SuggestionsView.List(SuggestionsFieldsDisplayMode.All),
         sort = SortSuggestions.ByName(byAscending = true),
-        addingMode = SuggestionAddingMode.All,
-        displaySuggestionNames = DisplaySuggestionNames.Medium,
-        displaySuggestionDetails = DisplaySuggestionDetails.Medium
+        addingMode = SuggestionAddingMode.All
     )
 
     val Backup = BackupPreferences(

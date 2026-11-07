@@ -70,8 +70,6 @@ object LocalDataStoreScheme {
         val SORT = stringPreferencesKey("sort")
         val SORT_BY_ASCENDING = stringPreferencesKey("sort_by_ascending")
         val ADDING_MODE = stringPreferencesKey("adding_mode")
-        val DISPLAY_NAMES = stringPreferencesKey("display_names")
-        val DISPLAY_DETAILS = stringPreferencesKey("display_details")
     }
 
     object Backup {

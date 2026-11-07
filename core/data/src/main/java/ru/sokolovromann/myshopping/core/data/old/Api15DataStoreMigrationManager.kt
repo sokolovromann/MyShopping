@@ -27,8 +27,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductEnter
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CartsProductsDisplayMode
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
-import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionDetails
-import ru.sokolovromann.myshopping.core.domain.model.DisplaySuggestionNames
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.LockProductField
@@ -304,19 +302,12 @@ class Api15DataStoreMigrationManager @Inject constructor(
             true -> SuggestionAddingMode.All
             else -> SuggestionAddingMode.Off
         }
-        val displayNames = when (api15Preferences[Api15LocalDataStoreScheme.User.maxAutocompletesNames]) {
-            0 -> DisplaySuggestionNames.DoNotDisplay
-            in 1..5 -> DisplaySuggestionNames.Low
-            else -> DisplaySuggestionNames.Medium
-        }
         preferencesOf(
             LocalDataStoreScheme.Suggestions.VIEW to "List",
             LocalDataStoreScheme.Suggestions.FIELDS_DISPLAY_MODE to "All",
             LocalDataStoreScheme.Suggestions.SORT to "ByName",
             LocalDataStoreScheme.Suggestions.SORT_BY_ASCENDING to "true",
-            LocalDataStoreScheme.Suggestions.ADDING_MODE to addingMode.toString(),
-            LocalDataStoreScheme.Suggestions.DISPLAY_NAMES to displayNames.toString(),
-            LocalDataStoreScheme.Suggestions.DISPLAY_DETAILS to DisplaySuggestionDetails.Medium.toString()
+            LocalDataStoreScheme.Suggestions.ADDING_MODE to addingMode.toString()
         )
     }
 
