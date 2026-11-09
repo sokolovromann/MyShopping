@@ -18,7 +18,6 @@ import ru.sokolovromann.myshopping.core.data.model.ProductEntity
 import ru.sokolovromann.myshopping.core.data.model.SuggestionEntity
 import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Backup
-import ru.sokolovromann.myshopping.core.domain.model.BackupDirectory
 import ru.sokolovromann.myshopping.core.domain.model.BackupValue
 import ru.sokolovromann.myshopping.core.domain.model.Cart
 import ru.sokolovromann.myshopping.core.domain.model.Fabric
@@ -27,7 +26,6 @@ import ru.sokolovromann.myshopping.core.domain.model.Suggestion
 import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.repository.BackupRepository
 import ru.sokolovromann.myshopping.core.domain.repository.BuildInfo
-import java.util.Locale
 
 class BackupRepositoryImpl @Inject constructor(
     private val fileManager: LocalFileManager,
@@ -43,7 +41,8 @@ class BackupRepositoryImpl @Inject constructor(
 
     override suspend fun exportBackup(backup: Backup): Boolean =
         withContext(ioDispatcher) {
-            val path = createPath(backup.directory)
+            val dateTime = TimeInMillis.getCurrent().getDisplay("yyyyMMdd_HHmmss")
+            val path = "${backup.directory.value}/Backup_$dateTime"
             fileManager.writeFile(path, encodeToJsonBase64(backup.value))
         }
 
@@ -86,20 +85,4 @@ class BackupRepositoryImpl @Inject constructor(
             }
             BackupValue(carts, products, suggestions, fabrics)
         }
-
-    private fun createPath(directory: BackupDirectory): String {
-        val format = "%tY%tm%td_%tH%tM%tS"
-        val timeInMillis = TimeInMillis.getCurrent().value
-        val dateTime = String.format(
-            Locale.getDefault(),
-            format,
-            timeInMillis,
-            timeInMillis,
-            timeInMillis,
-            timeInMillis,
-            timeInMillis,
-            timeInMillis
-        )
-        return "${directory.value}/Backup_$dateTime"
-    }
 }
