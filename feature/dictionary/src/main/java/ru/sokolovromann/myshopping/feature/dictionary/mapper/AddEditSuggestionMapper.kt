@@ -7,8 +7,8 @@ import ru.sokolovromann.myshopping.core.domain.model.SuggestionDirectory
 import ru.sokolovromann.myshopping.core.domain.model.Support
 import ru.sokolovromann.myshopping.core.domain.model.TimeInMillis
 import ru.sokolovromann.myshopping.core.domain.model.UID
+import ru.sokolovromann.myshopping.core.ui.extension.toTextFieldValue
 import ru.sokolovromann.myshopping.core.ui.model.UiText
-import ru.sokolovromann.myshopping.core.ui.utils.toTextFieldValue
 import ru.sokolovromann.myshopping.feature.dictionary.R
 import ru.sokolovromann.myshopping.feature.dictionary.model.AddEditSuggestionState
 import ru.sokolovromann.myshopping.feature.dictionary.model.FabricItem
