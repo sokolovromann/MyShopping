@@ -24,7 +24,6 @@ object LocalDataStoreScheme {
         val AFTER_ADDING = stringPreferencesKey("after_adding")
         val AFTER_COMPLETING = stringPreferencesKey("after_completing")
         val AFTER_ARCHIVING = stringPreferencesKey("after_archiving")
-        val AFTER_TAPPING_BY_CHECKBOX = stringPreferencesKey("after_tapping_by_checkbox")
         val SWIPE_LEFT = stringPreferencesKey("swipe_left")
         val SWIPE_RIGHT = stringPreferencesKey("swipe_right")
         val DELETION_FROM_TRASH = stringPreferencesKey("deletion_from_trash")

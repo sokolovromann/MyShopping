@@ -8,7 +8,6 @@ data class CartsPreferences(
     val afterAdding: AfterAddingCart,
     val afterCompleting: AfterCompletingCart,
     val afterArchiving: AfterArchivingCart,
-    val afterTappingByCheckbox: AfterTappingByCartCheckbox,
     val swipeLeft: SwipeCart.Left,
     val swipeRight: SwipeCart.Right,
     val deletionFromTrash: DeletionCartFromTrash

@@ -18,7 +18,6 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterEditingProduct
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductEnter
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
@@ -154,7 +153,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             LocalDataStoreScheme.Carts.AFTER_ADDING to afterAdding.toString(),
             LocalDataStoreScheme.Carts.AFTER_COMPLETING to afterCompleting.toString(),
             LocalDataStoreScheme.Carts.AFTER_ARCHIVING to afterArchiving.toString(),
-            LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX to AfterTappingByCartCheckbox.DoNothing.toString(),
             LocalDataStoreScheme.Carts.SWIPE_LEFT to
                     swipeActionName(api15Preferences[Api15LocalDataStoreScheme.User.swipeShoppingLeft]),
             LocalDataStoreScheme.Carts.SWIPE_RIGHT to

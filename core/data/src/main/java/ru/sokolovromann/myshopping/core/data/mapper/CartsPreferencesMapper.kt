@@ -8,7 +8,6 @@ import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.CartsProductsDisplayMode
@@ -53,10 +52,6 @@ class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPrefer
             preferences[LocalDataStoreScheme.Carts.AFTER_ARCHIVING],
             AfterArchivingCart.DoNothing
         ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX],
-            AfterTappingByCartCheckbox.DoNothing
-        ),
         SwipeCart.Left(
             EnumUtils.valueOfOrDefault(
                 preferences[LocalDataStoreScheme.Carts.SWIPE_LEFT],
@@ -98,8 +93,6 @@ class CartsPreferencesMapper @Inject constructor() : DataStoreMapper<CartsPrefer
                 to model.afterCompleting.toString(),
         LocalDataStoreScheme.Carts.AFTER_ARCHIVING
                 to model.afterArchiving.toString(),
-        LocalDataStoreScheme.Carts.AFTER_TAPPING_BY_CHECKBOX
-                to model.afterTappingByCheckbox.toString(),
         LocalDataStoreScheme.Carts.SWIPE_LEFT
                 to model.swipeLeft.actionName.toString(),
         LocalDataStoreScheme.Carts.SWIPE_RIGHT

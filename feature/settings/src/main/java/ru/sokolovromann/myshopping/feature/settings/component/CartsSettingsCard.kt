@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCart
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCartActionName
@@ -38,10 +37,6 @@ fun CartsSettingsCard(
         }
         AfterArchivingItem(items.afterArchiving) {
             val action = CartsSettingsAction.OnAfterArchivingSelected(it)
-            onAction(action)
-        }
-        AfterTappingCheckboxItem(items.afterTappingCheckbox) {
-            val action = CartsSettingsAction.OnTappingCheckboxSelected(it)
             onAction(action)
         }
         SwipeCartLeftItem(items.swipeLeft) {
@@ -233,57 +228,6 @@ private fun AfterArchivingMenu(
             text = stringResource(R.string.settings_text_after_archiving_cart_do_nothing),
             selected = selected == AfterArchivingCart.DoNothing,
             onClick = { onSelected(AfterArchivingCart.DoNothing) }
-        )
-    }
-}
-
-// AFTER TAPPING CHECKBOX
-
-@Composable
-private fun AfterTappingCheckboxItem(
-    data: SettingsItem<AfterTappingByCartCheckbox>,
-    onSelected: (AfterTappingByCartCheckbox) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SettingsCardItem(
-        title = { Text(stringResource(R.string.settings_text_after_tapping_cart_checkbox)) },
-        body = {
-            Text(data.text.asCompose())
-            AfterTappingCheckboxMenu(
-                expanded = expanded,
-                onSelected = { newAfterTapping ->
-                    expanded = false
-                    newAfterTapping?.let { onSelected(it) }
-                },
-                selected = data.selected
-            )
-        },
-        onClick = { expanded = true }
-    )
-}
-
-@Composable
-private fun AfterTappingCheckboxMenu(
-    expanded: Boolean,
-    onSelected: (AfterTappingByCartCheckbox?) -> Unit,
-    selected: AfterTappingByCartCheckbox
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onSelected(null) }
-    ) {
-        DropdownMenuTitle(stringResource(R.string.settings_text_after_tapping_cart_checkbox))
-
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_after_tapping_cart_checkbox_change_status),
-            selected = selected == AfterTappingByCartCheckbox.ChangeCartStatus,
-            onClick = { onSelected(AfterTappingByCartCheckbox.ChangeCartStatus) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_after_tapping_cart_checkbox_do_nothing),
-            selected = selected == AfterTappingByCartCheckbox.DoNothing,
-            onClick = { onSelected(AfterTappingByCartCheckbox.DoNothing) }
         )
     }
 }

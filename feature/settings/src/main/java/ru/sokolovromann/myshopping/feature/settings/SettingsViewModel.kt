@@ -94,8 +94,6 @@ class SettingsViewModel @Inject constructor(
                 updateCartsPreferencesUseCase(action.afterCompleting)
             is CartsSettingsAction.OnAfterArchivingSelected ->
                 updateCartsPreferencesUseCase(action.afterArchiving)
-            is CartsSettingsAction.OnTappingCheckboxSelected ->
-                updateCartsPreferencesUseCase(action.afterTappingCheckbox)
             is CartsSettingsAction.OnSwipeLeftSelected ->
                 updateCartsPreferencesUseCase(action.swipe)
             is CartsSettingsAction.OnSwipeRightSelected ->

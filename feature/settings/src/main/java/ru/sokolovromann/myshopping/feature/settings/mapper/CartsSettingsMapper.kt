@@ -4,7 +4,6 @@ import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.SwipeCartActionName
@@ -53,15 +52,6 @@ class CartsSettingsMapper @Inject constructor() {
                     UiText.FromResources(R.string.settings_text_after_archiving_cart_do_nothing)
             }
         )
-        val afterTappingCheckbox = SettingsItem(
-            selected = preferences.afterTappingByCheckbox,
-            text = when (preferences.afterTappingByCheckbox) {
-                AfterTappingByCartCheckbox.ChangeCartStatus ->
-                    UiText.FromResources(R.string.settings_text_after_tapping_cart_checkbox_change_status)
-                AfterTappingByCartCheckbox.DoNothing ->
-                    UiText.FromResources(R.string.settings_text_after_tapping_cart_checkbox_do_nothing)
-            }
-        )
         val swipeLeft = SettingsItem(
             selected = preferences.swipeLeft,
             text = when (preferences.swipeLeft.actionName) {
@@ -105,7 +95,6 @@ class CartsSettingsMapper @Inject constructor() {
             afterAdding = afterAdding,
             afterCompleting = afterCompleting,
             afterArchiving = afterArchiving,
-            afterTappingCheckbox = afterTappingCheckbox,
             swipeLeft = swipeLeft,
             swipeRight = swipeRight,
             deletionFromTrash = deletionFromTrash

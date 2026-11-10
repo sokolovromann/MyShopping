@@ -17,7 +17,6 @@ object UserPreferencesDefaults {
         afterAdding = AfterAddingCart.OpenProductsScreen,
         afterCompleting = AfterCompletingCart.DoNothing,
         afterArchiving = AfterArchivingCart.DoNothing,
-        afterTappingByCheckbox = AfterTappingByCartCheckbox.DoNothing,
         swipeLeft = SwipeCart.Left(SwipeCartActionName.ChangeCartStatusToCompletedOrActive),
         swipeRight = SwipeCart.Right(SwipeCartActionName.ArchiveOrUnarchiveCart),
         deletionFromTrash = DeletionCartFromTrash.DoNotDelete

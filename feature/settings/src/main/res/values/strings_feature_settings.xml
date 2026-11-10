@@ -36,9 +36,6 @@
     <string name="settings_text_after_editing_product_close" translatable="false">@string/settings_text_close_screen</string>
     <string name="settings_text_after_editing_product_do_nothing" translatable="false">@string/text_do_nothing</string>
     <string name="settings_text_after_editing_product_next">Open the next \"Products\" screen</string>
-    <string name="settings_text_after_tapping_cart_checkbox" translatable="false">@string/settings_text_after_tapping_checkbox</string>
-    <string name="settings_text_after_tapping_cart_checkbox_change_status" translatable="false">@string/settings_text_mark_list_as_completed_active</string>
-    <string name="settings_text_after_tapping_cart_checkbox_do_nothing" translatable="false">@string/text_do_nothing</string>
     <string name="settings_text_after_tapping_checkbox">After tapping the checkbox</string>
     <string name="settings_text_after_tapping_enter">After pressing Enter</string>
     <string name="settings_text_after_tapping_enter_next_field">Go to the next field</string>

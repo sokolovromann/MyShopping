@@ -8,7 +8,6 @@ import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.AfterAddingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByCartCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
 import ru.sokolovromann.myshopping.core.domain.model.CartsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.CartsView
@@ -68,12 +67,6 @@ class UpdateCartsPreferencesUseCase @Inject constructor(
     suspend operator fun invoke(afterArchiving: AfterArchivingCart): Unit =
         withContext(ioDispatcher) {
             val preferences = getPreferences().copy(afterArchiving = afterArchiving)
-            cartsPreferencesRepository.updateCartsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(afterTappingByCheckbox: AfterTappingByCartCheckbox): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(afterTappingByCheckbox = afterTappingByCheckbox)
             cartsPreferencesRepository.updateCartsPreferences(preferences)
         }
 
