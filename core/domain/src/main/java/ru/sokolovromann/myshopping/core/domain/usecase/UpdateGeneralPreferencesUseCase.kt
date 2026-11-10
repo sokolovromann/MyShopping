@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.Currency
-import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
@@ -33,12 +32,6 @@ class UpdateGeneralPreferencesUseCase @Inject constructor(
     suspend operator fun invoke(fontSize: FontSize): Unit =
         withContext(ioDispatcher) {
             val preferences = getPreferences().copy(fontSize = fontSize)
-            generalPreferencesRepository.updateGeneralPreferences(preferences)
-        }
-
-    suspend operator fun invoke(formattingMode: DateTimeFormattingMode): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(dateTimeFormattingMode = formattingMode)
             generalPreferencesRepository.updateGeneralPreferences(preferences)
         }
 

@@ -40,13 +40,6 @@
     <string name="settings_text_currency_left_args">Ліворуч: %1$s</string>
     <string name="settings_text_currency_right">Праворуч</string>
     <string name="settings_text_currency_right_args">Праворуч: %1$s</string>
-    <string name="settings_text_date_time_formatting_mode">Дата і час</string>
-    <string name="settings_text_date_time_formatting_mode_ddmmmyyyy_12">ДД МММ РРРР, 12 год.</string>
-    <string name="settings_text_date_time_formatting_mode_ddmmmyyyy_24">ДД МММ РРРР, 24 год.</string>
-    <string name="settings_text_date_time_formatting_mode_mmmddyyyy_12">МММ ДД РРРР, 12 год.</string>
-    <string name="settings_text_date_time_formatting_mode_mmmddyyyy_24">МММ ДД РРРР, 24 год.</string>
-    <string name="settings_text_date_time_formatting_mode_yyyymmmdd_12">РРРР МММ ДД, 12 год.</string>
-    <string name="settings_text_date_time_formatting_mode_yyyymmmdd_24">РРРР МММ ДД, 24 год.</string>
     <string name="settings_text_delete_product">Видалити товар</string>
     <string name="settings_text_delete_products">Видалити товари</string>
     <string name="settings_text_deletion_cart_from_trash">Автоматичне видалення з кошика</string>

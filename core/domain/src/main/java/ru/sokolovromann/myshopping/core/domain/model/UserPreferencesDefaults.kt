@@ -5,7 +5,6 @@ object UserPreferencesDefaults {
     val General = GeneralPreferences(
         theme = Theme.Default,
         fontSize = FontSize.Medium,
-        dateTimeFormattingMode = DateTimeFormattingMode.DDMMMYYYY(is24hour = true),
         moneyFormattingMode = MoneyFormattingMode.Simple,
         currency = Currency.Right("")
     )

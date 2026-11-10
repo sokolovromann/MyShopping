@@ -40,13 +40,6 @@
     <string name="settings_text_currency_left_args">À gauche: %1$s</string>
     <string name="settings_text_currency_right">À droite</string>
     <string name="settings_text_currency_right_args">À droite: %1$s</string>
-    <string name="settings_text_date_time_formatting_mode">Date et heure</string>
-    <string name="settings_text_date_time_formatting_mode_ddmmmyyyy_12">JJ MMM AAAA, 12 h</string>
-    <string name="settings_text_date_time_formatting_mode_ddmmmyyyy_24">JJ MMM AAAA, 24 h</string>
-    <string name="settings_text_date_time_formatting_mode_mmmddyyyy_12">MMM JJ AAAA, 12 h</string>
-    <string name="settings_text_date_time_formatting_mode_mmmddyyyy_24">MMM JJ AAAA, 24 h</string>
-    <string name="settings_text_date_time_formatting_mode_yyyymmmdd_12">AAAA MMM JJ, 12 h</string>
-    <string name="settings_text_date_time_formatting_mode_yyyymmmdd_24">AAAA MMM JJ, 24 h</string>
     <string name="settings_text_delete_product">Supprimer le produit</string>
     <string name="settings_text_delete_products">Supprimer les produits</string>
     <string name="settings_text_deletion_cart_from_trash">Suppression automatique de la corbeille</string>

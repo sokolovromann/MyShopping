@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.sokolovromann.myshopping.core.domain.model.Currency
-import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.Theme
@@ -44,10 +43,6 @@ fun GeneralSettingsCard(
         }
         FontSizeItem(items.fontSize) {
             val action = GeneralSettingsAction.OnFontSizeSelected(it)
-            onAction(action)
-        }
-        DateTimeItem(items.dateTime) {
-            val action = GeneralSettingsAction.OnDateTimeSelected(it)
             onAction(action)
         }
         MoneyItem(items.money) {
@@ -184,77 +179,6 @@ private fun FontSizeMenu(
             text = stringResource(R.string.settings_text_font_size_extra_huge),
             selected = selected == FontSize.ExtraHuge,
             onClick = { onSelected(FontSize.ExtraHuge) }
-        )
-    }
-}
-
-// DATE TIME
-
-@Composable
-private fun DateTimeItem(
-    data: SettingsItem<DateTimeFormattingMode>,
-    onSelected: (DateTimeFormattingMode) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SettingsCardItem(
-        title = { Text(stringResource(R.string.settings_text_date_time_formatting_mode)) },
-        body = {
-            Text(data.text.asCompose())
-            DateTimeMenu(
-                expanded = expanded,
-                onSelected = { newFormattingMode ->
-                    expanded = false
-                    newFormattingMode?.let { onSelected(it) }
-                },
-                selected = data.selected
-            )
-        },
-        onClick = { expanded = true }
-    )
-}
-
-@Composable
-private fun DateTimeMenu(
-    expanded: Boolean,
-    onSelected: (DateTimeFormattingMode?) -> Unit,
-    selected: DateTimeFormattingMode
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onSelected(null) }
-    ) {
-        DropdownMenuTitle(stringResource(R.string.settings_text_date_time_formatting_mode))
-
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_date_time_formatting_mode_ddmmmyyyy_12),
-            selected = selected == DateTimeFormattingMode.DDMMMYYYY(is24hour = false),
-            onClick = { onSelected(DateTimeFormattingMode.DDMMMYYYY(is24hour = false)) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_date_time_formatting_mode_ddmmmyyyy_24),
-            selected = selected == DateTimeFormattingMode.DDMMMYYYY(is24hour = true),
-            onClick = { onSelected(DateTimeFormattingMode.DDMMMYYYY(is24hour = true)) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_date_time_formatting_mode_mmmddyyyy_12),
-            selected = selected == DateTimeFormattingMode.MMMDDYYYY(is24hour = false),
-            onClick = { onSelected(DateTimeFormattingMode.MMMDDYYYY(is24hour = false)) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_date_time_formatting_mode_mmmddyyyy_24),
-            selected = selected == DateTimeFormattingMode.MMMDDYYYY(is24hour = true),
-            onClick = { onSelected(DateTimeFormattingMode.MMMDDYYYY(is24hour = true)) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_date_time_formatting_mode_yyyymmmdd_12),
-            selected = selected == DateTimeFormattingMode.YYYYMMMDD(is24hour = false),
-            onClick = { onSelected(DateTimeFormattingMode.YYYYMMMDD(is24hour = false)) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_date_time_formatting_mode_yyyymmmdd_24),
-            selected = selected == DateTimeFormattingMode.YYYYMMMDD(is24hour = true),
-            onClick = { onSelected(DateTimeFormattingMode.YYYYMMMDD(is24hour = true)) }
         )
     }
 }

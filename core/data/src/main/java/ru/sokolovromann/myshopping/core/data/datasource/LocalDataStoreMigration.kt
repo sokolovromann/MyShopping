@@ -67,16 +67,11 @@ class GeneralPreferencesMigration @Inject constructor(
 
     private suspend fun getDefaultPreferences(): Preferences =
         withContext(ioDispatcher) {
-            val dateTimeFormattingMode = generalPreferencesMapper.toDateTimeFormattingMode(
-                formattingMode = context.resources.getString(R.string.data_default_date_time_formatting_mode),
-                is24HourFormat = context.resources.getString(R.string.data_default_is_24_hour_time_format)
-            )
             val currency = generalPreferencesMapper.toCurrency(
                 sign = context.resources.getString(R.string.data_default_currency),
                 displaySide = context.resources.getString(R.string.data_default_currency_display_side)
             )
             val default = UserPreferencesDefaults.General.copy(
-                dateTimeFormattingMode = dateTimeFormattingMode,
                 currency = currency
             )
             generalPreferencesMapper.toPreferences(default)

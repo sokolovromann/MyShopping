@@ -2,7 +2,6 @@ package ru.sokolovromann.myshopping.feature.settings.mapper
 
 import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.Currency
-import ru.sokolovromann.myshopping.core.domain.model.DateTimeFormattingMode
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
 import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
 import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
@@ -34,32 +33,6 @@ class GeneralSettingsMapper @Inject constructor() {
                 FontSize.ExtraHuge -> UiText.FromResources(R.string.settings_text_font_size_extra_huge)
             }
         )
-        val dateTime = SettingsItem(
-            selected = preferences.dateTimeFormattingMode,
-            text = when (val mode = preferences.dateTimeFormattingMode) {
-                is DateTimeFormattingMode.DDMMMYYYY -> {
-                    if (mode.is24hour) {
-                        UiText.FromResources(R.string.settings_text_date_time_formatting_mode_ddmmmyyyy_24)
-                    } else {
-                        UiText.FromResources(R.string.settings_text_date_time_formatting_mode_ddmmmyyyy_12)
-                    }
-                }
-                is DateTimeFormattingMode.MMMDDYYYY -> {
-                    if (mode.is24hour) {
-                        UiText.FromResources(R.string.settings_text_date_time_formatting_mode_mmmddyyyy_24)
-                    } else {
-                        UiText.FromResources(R.string.settings_text_date_time_formatting_mode_mmmddyyyy_12)
-                    }
-                }
-                is DateTimeFormattingMode.YYYYMMMDD -> {
-                    if (mode.is24hour) {
-                        UiText.FromResources(R.string.settings_text_date_time_formatting_mode_yyyymmmdd_24)
-                    } else {
-                        UiText.FromResources(R.string.settings_text_date_time_formatting_mode_yyyymmmdd_12)
-                    }
-                }
-            }
-        )
         val money = SettingsItem(
             selected = preferences.moneyFormattingMode,
             text = when (preferences.moneyFormattingMode) {
@@ -89,7 +62,6 @@ class GeneralSettingsMapper @Inject constructor() {
         return GeneralSettingsItems(
             theme = theme,
             fontSize = fontSize,
-            dateTime = dateTime,
             money = money,
             currency = currency
         )

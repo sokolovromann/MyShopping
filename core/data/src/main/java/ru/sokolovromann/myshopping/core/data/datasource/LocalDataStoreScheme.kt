@@ -7,8 +7,6 @@ object LocalDataStoreScheme {
     object General {
         val THEME = stringPreferencesKey("theme")
         val FONT_SIZE = stringPreferencesKey("font_size")
-        val DATE_TIME_FORMATTING_MODE = stringPreferencesKey("date_time_formatting_mode")
-        val IS_24_HOUR_TIME_FORMAT = stringPreferencesKey("is_24_hour_time_format")
         val MONEY_FORMATTING_MODE= stringPreferencesKey("money_formatting_mode")
         val CURRENCY = stringPreferencesKey("currency")
         val CURRENCY_DISPLAY_SIDE = stringPreferencesKey("currency_display_side")

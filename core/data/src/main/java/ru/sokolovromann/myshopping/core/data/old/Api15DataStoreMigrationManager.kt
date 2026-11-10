@@ -1,15 +1,12 @@
 package ru.sokolovromann.myshopping.core.data.old
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.preferencesOf
-import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import ru.sokolovromann.myshopping.core.data.R
 import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.data.datasource.LocalEnvironment
 import ru.sokolovromann.myshopping.core.data.di.Api15DataStore
@@ -42,7 +39,6 @@ import ru.sokolovromann.myshopping.core.domain.model.Theme
 import kotlin.text.orEmpty
 
 class Api15DataStoreMigrationManager @Inject constructor(
-    @ApplicationContext private val context: Context,
     @Api15DataStore private val api15DataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -61,8 +57,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             "HUGE_3" -> FontSize.ExtraHuge
             else -> FontSize.Medium
         }
-        val dateTimeFormattingMode = context.resources.getString(R.string.data_default_date_time_formatting_mode)
-        val is24hourTimeFormat = context.resources.getString(R.string.data_default_is_24_hour_time_format)
         val moneyFormattingMode = when (api15Preferences[Api15LocalDataStoreScheme.User.minMoneyFractionDigits]) {
             0 -> MoneyFormattingMode.Advanced
             else -> MoneyFormattingMode.Simple
@@ -75,8 +69,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
         preferencesOf(
             LocalDataStoreScheme.General.THEME to theme.toString(),
             LocalDataStoreScheme.General.FONT_SIZE to fontSize.toString(),
-            LocalDataStoreScheme.General.DATE_TIME_FORMATTING_MODE to dateTimeFormattingMode,
-            LocalDataStoreScheme.General.IS_24_HOUR_TIME_FORMAT to is24hourTimeFormat,
             LocalDataStoreScheme.General.MONEY_FORMATTING_MODE to moneyFormattingMode.toString(),
             LocalDataStoreScheme.General.CURRENCY to currency.orEmpty(),
             LocalDataStoreScheme.General.CURRENCY_DISPLAY_SIDE to displayCurrencyToLeft

@@ -79,8 +79,6 @@ class SettingsViewModel @Inject constructor(
                 updateGeneralPreferencesUseCase(action.theme)
             is GeneralSettingsAction.OnFontSizeSelected ->
                 updateGeneralPreferencesUseCase(action.fontSize)
-            is GeneralSettingsAction.OnDateTimeSelected ->
-                updateGeneralPreferencesUseCase(action.formattingMode)
             is GeneralSettingsAction.OnMoneySelected ->
                 updateGeneralPreferencesUseCase(action.formattingMode)
             is GeneralSettingsAction.OnCurrencySaved ->
