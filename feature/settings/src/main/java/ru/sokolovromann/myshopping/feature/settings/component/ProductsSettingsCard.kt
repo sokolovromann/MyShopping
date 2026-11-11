@@ -9,8 +9,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
@@ -39,14 +37,6 @@ fun ProductsSettingsCard(
         }
         AfterCompletingItem(items.afterCompleting) {
             val action = ProductsSettingsAction.OnAfterCompletingSelected(it)
-            onAction(action)
-        }
-        AfterTappingCheckboxItem(items.afterTappingCheckbox) {
-            val action = ProductsSettingsAction.OnAfterTappingCheckboxSelected(it)
-            onAction(action)
-        }
-        AfterTappingProductItemItem(items.afterTappingItem) {
-            val action = ProductsSettingsAction.OnAfterTappingItemSelected(it)
             onAction(action)
         }
         SwipeProductLeftItem(items.swipeLeft) {
@@ -275,108 +265,6 @@ private fun AfterCompletingMenu(
             text = stringResource(R.string.settings_text_after_completing_product_do_nothing),
             selected = selected == AfterCompletingProduct.DoNothing,
             onClick = { onSelected(AfterCompletingProduct.DoNothing) }
-        )
-    }
-}
-
-// AFTER TAPPING CHECKBOX
-
-@Composable
-private fun AfterTappingCheckboxItem(
-    data: SettingsItem<AfterTappingByProductCheckbox>,
-    onSelected: (AfterTappingByProductCheckbox) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SettingsCardItem(
-        title = { Text(stringResource(R.string.settings_text_after_tapping_product_checkbox)) },
-        body = {
-            Text(data.text.asCompose())
-            AfterTappingCheckboxMenu(
-                expanded = expanded,
-                onSelected = { newAfterTappingCheckbox ->
-                    expanded = false
-                    newAfterTappingCheckbox?.let { onSelected(it) }
-                },
-                selected = data.selected
-            )
-        },
-        onClick = { expanded = true }
-    )
-}
-
-@Composable
-private fun AfterTappingCheckboxMenu(
-    expanded: Boolean,
-    onSelected: (AfterTappingByProductCheckbox?) -> Unit,
-    selected: AfterTappingByProductCheckbox
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onSelected(null) }
-    ) {
-        DropdownMenuTitle(stringResource(R.string.settings_text_after_tapping_product_checkbox))
-
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_after_tapping_product_checkbox_change_status),
-            selected = selected == AfterTappingByProductCheckbox.ChangeProductStatus,
-            onClick = { onSelected(AfterTappingByProductCheckbox.ChangeProductStatus) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_after_tapping_product_checkbox_do_nothing),
-            selected = selected == AfterTappingByProductCheckbox.DoNothing,
-            onClick = { onSelected(AfterTappingByProductCheckbox.DoNothing) }
-        )
-    }
-}
-
-// AFTER TAPPING PRODUCT ITEM
-
-@Composable
-private fun AfterTappingProductItemItem(
-    data: SettingsItem<AfterTappingByProductItem>,
-    onSelected: (AfterTappingByProductItem) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SettingsCardItem(
-        title = { Text(stringResource(R.string.settings_text_after_tapping_product_item)) },
-        body = {
-            Text(data.text.asCompose())
-            AfterTappingProductItemMenu(
-                expanded = expanded,
-                onSelected = { newAfterTappingByProductItem ->
-                    expanded = false
-                    newAfterTappingByProductItem?.let { onSelected(it) }
-                },
-                selected = data.selected
-            )
-        },
-        onClick = { expanded = true }
-    )
-}
-
-@Composable
-private fun AfterTappingProductItemMenu(
-    expanded: Boolean,
-    onSelected: (AfterTappingByProductItem?) -> Unit,
-    selected: AfterTappingByProductItem
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onSelected(null) }
-    ) {
-        DropdownMenuTitle(stringResource(R.string.settings_text_after_tapping_product_item))
-
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_after_tapping_product_item_change_status),
-            selected = selected == AfterTappingByProductItem.ChangeProductStatus,
-            onClick = { onSelected(AfterTappingByProductItem.ChangeProductStatus) }
-        )
-        DropdownMenuSelectableItem(
-            text = stringResource(R.string.settings_text_after_tapping_product_item_do_nothing),
-            selected = selected == AfterTappingByProductItem.DoNothing,
-            onClick = { onSelected(AfterTappingByProductItem.DoNothing) }
         )
     }
 }

@@ -111,10 +111,6 @@ class SettingsViewModel @Inject constructor(
                 updateProductsPreferencesUseCase(action.strikethroughCompleted)
             is ProductsSettingsAction.OnAfterCompletingSelected ->
                 updateProductsPreferencesUseCase(action.afterCompleting)
-            is ProductsSettingsAction.OnAfterTappingCheckboxSelected ->
-                updateProductsPreferencesUseCase(action.afterTappingCheckbox)
-            is ProductsSettingsAction.OnAfterTappingItemSelected ->
-                updateProductsPreferencesUseCase(action.afterTappingItem)
             is ProductsSettingsAction.OnSwipeLeftSelected ->
                 updateProductsPreferencesUseCase(action.swipe)
             is ProductsSettingsAction.OnSwipeRightSelected ->

@@ -18,11 +18,9 @@
     <string name="settings_text_after_completing_cart_delete_cart_products">Supprimer la liste et les produits</string>
     <string name="settings_text_after_editing_product">Après la modification</string>
     <string name="settings_text_after_editing_product_next">Ouvrir l\'écran suivant \"Produits\"</string>
-    <string name="settings_text_after_tapping_checkbox">En cochant la case</string>
     <string name="settings_text_after_tapping_enter">Lors de l\'appui sur Entrée</string>
     <string name="settings_text_after_tapping_enter_next_field">Passer au champ suivant</string>
     <string name="settings_text_after_tapping_enter_save">Enregistrer le produit</string>
-    <string name="settings_text_after_tapping_product_item">En appuyant sur le produit</string>
     <string name="settings_text_backup">Sauvegarde</string>
     <string name="settings_text_backup_directory">Emplacement</string>
     <string name="settings_text_backup_export">Créer</string>
@@ -33,7 +31,6 @@
     <string name="settings_text_backup_import_description">Toutes les données actuelles seront supprimées</string>
     <string name="settings_text_backup_import_success">Données restaurées avec succès</string>
     <string name="settings_text_carts">Listes de courses</string>
-    <string name="settings_text_change_product_status">Marquer le produit comme acheté ou non acheté</string>
     <string name="settings_text_close_screen">Fermer l\'écran</string>
     <string name="settings_text_currency">Devise</string>
     <string name="settings_text_currency_left">À gauche</string>
@@ -72,6 +69,7 @@
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Archiver ou désarchiver la liste</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Supprimer ou restaurer la liste</string>
     <string name="settings_text_swipe_left">Glisser vers la gauche</string>
+    <string name="settings_text_swipe_product_change_status">Marquer le produit comme acheté ou non acheté</string>
     <string name="settings_text_swipe_right">Glisser vers la droite</string>
     <string name="settings_text_tax">Taxes</string>
     <string name="settings_text_theme">Thème</string>

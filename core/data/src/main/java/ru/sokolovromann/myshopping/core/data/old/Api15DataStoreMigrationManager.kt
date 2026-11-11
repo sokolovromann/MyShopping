@@ -18,9 +18,7 @@ import ru.sokolovromann.myshopping.core.domain.model.AfterArchivingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingCart
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
 import ru.sokolovromann.myshopping.core.domain.model.AfterEditingProduct
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
 import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductEnter
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CartsProductsDisplayMode
 import ru.sokolovromann.myshopping.core.domain.model.DeletionCartFromTrash
 import ru.sokolovromann.myshopping.core.domain.model.FontSize
@@ -198,14 +196,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             "DELETE" -> AfterCompletingProduct.DeleteProduct
             else -> AfterCompletingProduct.DoNothing
         }
-        val afterTappingByCheckbox = when (api15Preferences[Api15LocalDataStoreScheme.User.completedWithCheckbox]) {
-            true -> AfterTappingByProductCheckbox.ChangeProductStatus
-            else -> AfterTappingByProductCheckbox.DoNothing
-        }
-        val afterTappingByItem = when (api15Preferences[Api15LocalDataStoreScheme.User.completedWithCheckbox]) {
-            true -> AfterTappingByProductItem.DoNothing
-            else -> AfterTappingByProductItem.ChangeProductStatus
-        }
         fun swipeActionName(name: String?) = when (name) {
             "EDIT" -> SwipeProductActionName.EditProduct
             "DELETE" -> SwipeProductActionName.DeleteProduct
@@ -222,8 +212,6 @@ class Api15DataStoreMigrationManager @Inject constructor(
             LocalDataStoreScheme.Products.PRODUCTS_TOTAL_CALCULATING_MODE to totalCalculatingMode.toString(),
             LocalDataStoreScheme.Products.STRIKETHROUGH_COMPLETED to strikethroughCompleted.toString(),
             LocalDataStoreScheme.Products.AFTER_COMPLETING to afterCompleting.toString(),
-            LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX to afterTappingByCheckbox.toString(),
-            LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM to afterTappingByItem.toString(),
             LocalDataStoreScheme.Products.SWIPE_LEFT to
                     swipeActionName(api15Preferences[Api15LocalDataStoreScheme.User.swipeProductLeft]),
             LocalDataStoreScheme.Products.SWIPE_RIGHT to

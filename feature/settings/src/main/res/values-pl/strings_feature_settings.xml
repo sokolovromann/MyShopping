@@ -18,11 +18,9 @@
     <string name="settings_text_after_completing_cart_delete_cart_products">Usuń listę i produkty</string>
     <string name="settings_text_after_editing_product">Po edycji</string>
     <string name="settings_text_after_editing_product_next">Otwórz następny ekran „Produkty”</string>
-    <string name="settings_text_after_tapping_checkbox">Po zaznaczeniu checkboxa</string>
     <string name="settings_text_after_tapping_enter">Po naciśnięciu Enter</string>
     <string name="settings_text_after_tapping_enter_next_field">Przejdź do następnego pola</string>
     <string name="settings_text_after_tapping_enter_save">Zapisz produkt</string>
-    <string name="settings_text_after_tapping_product_item">Po stuknięciu w produkt</string>
     <string name="settings_text_backup">Kopia zapasowa</string>
     <string name="settings_text_backup_directory">Lokalizacja</string>
     <string name="settings_text_backup_export">Utwórz</string>
@@ -33,7 +31,6 @@
     <string name="settings_text_backup_import_description">Wszystkie bieżące dane zostaną usunięte</string>
     <string name="settings_text_backup_import_success">Dane zostały pomyślnie przywrócone</string>
     <string name="settings_text_carts">Listy zakupów</string>
-    <string name="settings_text_change_product_status">Oznacz produkt jako kupiony lub niekupiony</string>
     <string name="settings_text_close_screen">Zamknij ekran</string>
     <string name="settings_text_currency">Waluta</string>
     <string name="settings_text_currency_left">Po lewej</string>
@@ -72,6 +69,7 @@
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Archiwizuj lub przywróć listę</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Usuń lub przywróć listę</string>
     <string name="settings_text_swipe_left">Przesuń в lewo</string>
+    <string name="settings_text_swipe_product_change_status">Oznacz produkt jako kupiony lub niekupiony</string>
     <string name="settings_text_swipe_right">Przesuń в prawo</string>
     <string name="settings_text_tax">Podatki</string>
     <string name="settings_text_theme">Motyw</string>

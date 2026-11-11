@@ -18,11 +18,9 @@
     <string name="settings_text_after_completing_cart_delete_cart_products">Liste und Produkte löschen</string>
     <string name="settings_text_after_editing_product">Nach dem Bearbeiten</string>
     <string name="settings_text_after_editing_product_next">Nächsten Bildschirm „Produkte“ öffnen</string>
-    <string name="settings_text_after_tapping_checkbox">Beim Aktivieren des Checkbox</string>
     <string name="settings_text_after_tapping_enter">Beim Drücken der Eingabetaste</string>
     <string name="settings_text_after_tapping_enter_next_field">Zum nächsten Feld wechseln</string>
     <string name="settings_text_after_tapping_enter_save">Produkt speichern</string>
-    <string name="settings_text_after_tapping_product_item">Beim Tippen auf das Produkt</string>
     <string name="settings_text_backup">Datensicherung</string>
     <string name="settings_text_backup_directory">Verzeichnis</string>
     <string name="settings_text_backup_export">Erstellen</string>
@@ -33,7 +31,6 @@
     <string name="settings_text_backup_import_description">Alle aktuellen Daten werden gelöscht</string>
     <string name="settings_text_backup_import_success">Daten erfolgreich wiederhergestellt</string>
     <string name="settings_text_carts">Einkaufslisten</string>
-    <string name="settings_text_change_product_status">Produkt als erledigt oder aktiv markieren</string>
     <string name="settings_text_close_screen">Bildschirm schließen</string>
     <string name="settings_text_currency">Währung</string>
     <string name="settings_text_currency_left">Links</string>
@@ -72,6 +69,7 @@
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Liste archivieren oder wiederherstellen</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Liste löschen oder wiederherstellen</string>
     <string name="settings_text_swipe_left">Nach links wischen</string>
+    <string name="settings_text_swipe_product_change_status">Produkt als erledigt oder aktiv markieren</string>
     <string name="settings_text_swipe_right">Nach rechts wischen</string>
     <string name="settings_text_tax">Steuern</string>
     <string name="settings_text_theme">Design</string>

@@ -6,8 +6,6 @@ import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import ru.sokolovromann.myshopping.core.data.datasource.LocalDataStoreScheme
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
@@ -49,14 +47,6 @@ class ProductsPreferencesMapper @Inject constructor() : DataStoreMapper<Products
             preferences[LocalDataStoreScheme.Products.AFTER_COMPLETING],
             AfterCompletingProduct.DoNothing
         ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX],
-            AfterTappingByProductCheckbox.ChangeProductStatus
-        ),
-        EnumUtils.valueOfOrDefault(
-            preferences[LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM],
-            AfterTappingByProductItem.DoNothing
-        ),
         SwipeProduct.Left(
             EnumUtils.valueOfOrDefault(
                 preferences[LocalDataStoreScheme.Products.SWIPE_LEFT],
@@ -90,10 +80,6 @@ class ProductsPreferencesMapper @Inject constructor() : DataStoreMapper<Products
                 to model.strikethroughCompleted.toString(),
         LocalDataStoreScheme.Products.AFTER_COMPLETING
                 to model.afterCompleting.toString(),
-        LocalDataStoreScheme.Products.AFTER_TAPPING_BY_CHECKBOX
-                to model.afterTappingByCheckbox.toString(),
-        LocalDataStoreScheme.Products.AFTER_TAPPING_BY_ITEM
-                to model.afterTappingByItem.toString(),
         LocalDataStoreScheme.Products.SWIPE_LEFT
                 to model.swipeLeft.actionName.toString(),
         LocalDataStoreScheme.Products.SWIPE_RIGHT

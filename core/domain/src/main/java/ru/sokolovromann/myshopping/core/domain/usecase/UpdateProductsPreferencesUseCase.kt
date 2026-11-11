@@ -6,8 +6,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
 import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
@@ -68,18 +66,6 @@ class UpdateProductsPreferencesUseCase @Inject constructor(
     suspend operator fun invoke(afterCompleting: AfterCompletingProduct): Unit =
         withContext(ioDispatcher) {
             val preferences = getPreferences().copy(afterCompleting = afterCompleting)
-            productsPreferencesRepository.updateProductsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(afterTappingByCheckbox: AfterTappingByProductCheckbox): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(afterTappingByCheckbox = afterTappingByCheckbox)
-            productsPreferencesRepository.updateProductsPreferences(preferences)
-        }
-
-    suspend operator fun invoke(afterTappingByItem: AfterTappingByProductItem): Unit =
-        withContext(ioDispatcher) {
-            val preferences = getPreferences().copy(afterTappingByItem = afterTappingByItem)
             productsPreferencesRepository.updateProductsPreferences(preferences)
         }
 

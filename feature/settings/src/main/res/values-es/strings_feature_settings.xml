@@ -18,11 +18,9 @@
     <string name="settings_text_after_completing_cart_delete_cart_products">Eliminar lista y productos</string>
     <string name="settings_text_after_editing_product">Después de editar</string>
     <string name="settings_text_after_editing_product_next">Abrir la siguiente pantalla \"Productos\"</string>
-    <string name="settings_text_after_tapping_checkbox">Al marcar la casilla</string>
     <string name="settings_text_after_tapping_enter">Al presionar Enter</string>
     <string name="settings_text_after_tapping_enter_next_field">Ir al siguiente campo</string>
     <string name="settings_text_after_tapping_enter_save">Guardar producto</string>
-    <string name="settings_text_after_tapping_product_item">Al tocar el producto</string>
     <string name="settings_text_backup">Copia de seguridad</string>
     <string name="settings_text_backup_directory">Ubicación</string>
     <string name="settings_text_backup_export">Crear</string>
@@ -33,7 +31,6 @@
     <string name="settings_text_backup_import_description">Se eliminarán todos los datos actuales</string>
     <string name="settings_text_backup_import_success">Datos restaurados con éxito</string>
     <string name="settings_text_carts">Listas de compras</string>
-    <string name="settings_text_change_product_status">Marcar producto como comprado o no comprado</string>
     <string name="settings_text_close_screen">Cerrar pantalla</string>
     <string name="settings_text_currency">Moneda</string>
     <string name="settings_text_currency_left">Izquierda</string>
@@ -72,6 +69,7 @@
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Archivar o desarchivar lista</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Eliminar o restaurar lista</string>
     <string name="settings_text_swipe_left">Deslizar a la izquierda</string>
+    <string name="settings_text_swipe_product_change_status">Marcar producto como comprado o no comprado</string>
     <string name="settings_text_swipe_right">Deslizar a la derecha</string>
     <string name="settings_text_tax">Impuestos</string>
     <string name="settings_text_theme">Tema</string>

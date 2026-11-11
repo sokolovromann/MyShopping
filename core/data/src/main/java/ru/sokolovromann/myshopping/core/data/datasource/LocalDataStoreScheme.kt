@@ -39,8 +39,6 @@ object LocalDataStoreScheme {
         val PRODUCTS_TOTAL_CALCULATING_MODE = stringPreferencesKey("products_total_calculating_mode")
         val STRIKETHROUGH_COMPLETED = stringPreferencesKey("strikethrough_completed")
         val AFTER_COMPLETING = stringPreferencesKey("after_completing")
-        val AFTER_TAPPING_BY_CHECKBOX = stringPreferencesKey("after_tapping_by_checkbox")
-        val AFTER_TAPPING_BY_ITEM = stringPreferencesKey("after_tapping_by_item")
         val SWIPE_LEFT = stringPreferencesKey("swipe_left")
         val SWIPE_RIGHT = stringPreferencesKey("swipe_right")
     }

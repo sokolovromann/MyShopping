@@ -18,11 +18,9 @@
     <string name="settings_text_after_completing_cart_delete_cart_products">Видалити список і товари</string>
     <string name="settings_text_after_editing_product">Після редагування</string>
     <string name="settings_text_after_editing_product_next">Відкрити наступний екран \"Товари\"</string>
-    <string name="settings_text_after_tapping_checkbox">Після вибору чекбокса</string>
     <string name="settings_text_after_tapping_enter">Після натискання на Enter</string>
     <string name="settings_text_after_tapping_enter_next_field">Перейти до наступного поля</string>
     <string name="settings_text_after_tapping_enter_save">Зберегти товар</string>
-    <string name="settings_text_after_tapping_product_item">Після натискання на товар</string>
     <string name="settings_text_backup">Резервна копія</string>
     <string name="settings_text_backup_directory">Розташування</string>
     <string name="settings_text_backup_export">Створити</string>
@@ -33,7 +31,6 @@
     <string name="settings_text_backup_import_description">Усі поточні дані будуть видалені</string>
     <string name="settings_text_backup_import_success">Дані успішно відновлено</string>
     <string name="settings_text_carts">Списки покупок</string>
-    <string name="settings_text_change_product_status">Позначити товар як куплений або некуплений</string>
     <string name="settings_text_close_screen">Закрити екран</string>
     <string name="settings_text_currency">Валюта</string>
     <string name="settings_text_currency_left">Ліворуч</string>
@@ -72,6 +69,7 @@
     <string name="settings_text_swipe_cart_archive_unarchive_cart">Архівувати або розархівувати список</string>
     <string name="settings_text_swipe_cart_delete_restore_cart">Видалити або відновити список</string>
     <string name="settings_text_swipe_left">Свайп ліворуч</string>
+    <string name="settings_text_swipe_product_change_status">Позначити товар як куплений або некуплений</string>
     <string name="settings_text_swipe_right">Свайп праворуч</string>
     <string name="settings_text_tax">Податки</string>
     <string name="settings_text_theme">Тема</string>

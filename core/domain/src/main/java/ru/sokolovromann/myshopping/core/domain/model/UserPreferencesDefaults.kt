@@ -30,8 +30,6 @@ object UserPreferencesDefaults {
         calculateTotal = CalculateProductsTotal.AllProducts(ProductsTotalCalculatingMode.Short),
         strikethroughCompleted = StrikethroughCompletedProducts.Off,
         afterCompleting = AfterCompletingProduct.DoNothing,
-        afterTappingByCheckbox = AfterTappingByProductCheckbox.ChangeProductStatus,
-        afterTappingByItem = AfterTappingByProductItem.DoNothing,
         swipeLeft = SwipeProduct.Left(SwipeProductActionName.EditProduct),
         swipeRight = SwipeProduct.Right(SwipeProductActionName.DeleteProduct)
     )

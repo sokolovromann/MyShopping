@@ -2,8 +2,6 @@ package ru.sokolovromann.myshopping.feature.settings.mapper
 
 import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductCheckbox
-import ru.sokolovromann.myshopping.core.domain.model.AfterTappingByProductItem
 import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
 import ru.sokolovromann.myshopping.core.domain.model.ProductsPreferences
 import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
@@ -45,24 +43,6 @@ class ProductsSettingsMapper @Inject constructor() {
                     UiText.FromResources(R.string.settings_text_after_completing_product_do_nothing)
             }
         )
-        val afterTappingCheckbox = SettingsItem(
-            selected = preferences.afterTappingByCheckbox,
-            text = when (preferences.afterTappingByCheckbox) {
-                AfterTappingByProductCheckbox.ChangeProductStatus ->
-                    UiText.FromResources(R.string.settings_text_after_tapping_product_checkbox_change_status)
-                AfterTappingByProductCheckbox.DoNothing ->
-                    UiText.FromResources(R.string.settings_text_after_tapping_product_checkbox_do_nothing)
-            }
-        )
-        val afterTappingItem = SettingsItem(
-            selected = preferences.afterTappingByItem,
-            text = when (preferences.afterTappingByItem) {
-                AfterTappingByProductItem.ChangeProductStatus ->
-                    UiText.FromResources(R.string.settings_text_after_tapping_product_item_change_status)
-                AfterTappingByProductItem.DoNothing ->
-                    UiText.FromResources(R.string.settings_text_after_tapping_product_item_do_nothing)
-            }
-        )
         val swipeLeft = SettingsItem(
             selected = preferences.swipeLeft,
             text = when (preferences.swipeLeft.actionName) {
@@ -93,8 +73,6 @@ class ProductsSettingsMapper @Inject constructor() {
             addingMode = addingMode,
             strikethroughCompleted = strikethroughCompleted,
             afterCompleting = afterCompleting,
-            afterTappingCheckbox = afterTappingCheckbox,
-            afterTappingItem = afterTappingItem,
             swipeLeft = swipeLeft,
             swipeRight = swipeRight
         )

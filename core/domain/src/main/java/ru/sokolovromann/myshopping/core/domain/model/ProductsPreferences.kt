@@ -8,8 +8,6 @@ data class ProductsPreferences(
     val calculateTotal: CalculateProductsTotal,
     val strikethroughCompleted: StrikethroughCompletedProducts,
     val afterCompleting: AfterCompletingProduct,
-    val afterTappingByCheckbox: AfterTappingByProductCheckbox,
-    val afterTappingByItem: AfterTappingByProductItem,
     val swipeLeft: SwipeProduct.Left,
     val swipeRight: SwipeProduct.Right
 )
