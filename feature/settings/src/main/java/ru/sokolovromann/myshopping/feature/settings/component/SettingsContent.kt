@@ -47,12 +47,6 @@ fun SettingsContent(
                 )
             }
             item {
-                ProductsWidgetSettingsCard(
-                    onAction = onProductsWidgetSettingsAction,
-                    items = settingsState.productsWidgetItems
-                )
-            }
-            item {
                 AddEditProductSettingsCard(
                     onAction = onAddEditProductSettingsAction,
                     items = settingsState.addEditProductItems
@@ -62,6 +56,12 @@ fun SettingsContent(
                 SuggestionsSettingsCard(
                     onAction = onSuggestionsSettingsAction,
                     items = settingsState.suggestionsItems
+                )
+            }
+            item {
+                ProductsWidgetSettingsCard(
+                    onAction = onProductsWidgetSettingsAction,
+                    items = settingsState.productsWidgetItems
                 )
             }
             item {
