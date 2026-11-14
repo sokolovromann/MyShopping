@@ -22,6 +22,7 @@ import ru.sokolovromann.myshopping.core.navigation.Screen
 import ru.sokolovromann.myshopping.core.ui.theme.MyShoppingTheme
 import androidx.compose.runtime.collectAsState
 import ru.sokolovromann.myshopping.feature.about.AboutScreen
+import ru.sokolovromann.myshopping.feature.carts.component.PurchasesScreen
 import ru.sokolovromann.myshopping.feature.dictionary.component.AddEditSuggestionScreen
 import ru.sokolovromann.myshopping.feature.dictionary.component.SuggestionsScreen
 import ru.sokolovromann.myshopping.feature.settings.component.SettingsScreen
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = Screen.Purchases
                 ) {
-                    composable<Screen.Purchases> { TextScreen("Purchases Screen") }
+                    composable<Screen.Purchases> { PurchasesScreen() }
                     composable<Screen.Archive> { TextScreen("Archive Screen") }
                     composable<Screen.Trash> { TextScreen("Trash Screen") }
                     composable<Screen.Suggestions> { SuggestionsScreen() }

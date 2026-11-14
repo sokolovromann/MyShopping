@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carts_text_total_all_args">All: %1$s</string>
+    <string name="carts_text_total_completed_args">Completed: %1$s</string>
+    <string name="carts_text_total_active_args">Active: %1$s</string>
+    <string name="purchases_header">@string/text_purchases</string>
+    <string name="purchases_text_not_found_purchases">You have no purchases</string>
+    <string name="purchases_text_pinned">Pinned</string>
+    <string name="purchases_text_other">Other</string>
+</resources>

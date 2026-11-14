@@ -12,4 +12,9 @@ sealed class PurchaseTotal {
         is Calculated -> total.money
         is Edited -> total.money
     }
+
+    fun getFilterByStatus(): FilterProductsByStatus = when (this) {
+        is Calculated -> total.filterByStatus
+        is Edited -> total.filterByStatus
+    }
 }
