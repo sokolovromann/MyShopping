@@ -46,11 +46,11 @@ fun SimpleVerticalGrid(
     cells: Int = getDefaultGridCells(),
     state: LazyStaggeredGridState = rememberLazyStaggeredGridState(),
     itemSpacingEnabled: Boolean = true,
+    contentPadding: Dp = createContentPadding(itemSpacingEnabled),
+    itemSpacing: Dp = createItemSpacing(itemSpacingEnabled),
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     content: LazyStaggeredGridScope.() -> Unit
 ) {
-    val contentPadding = if (itemSpacingEnabled) 8.dp else 0.dp
-    val itemSpacing = if (itemSpacingEnabled) 8.dp else 0.dp
     LazyVerticalStaggeredGrid(
         modifier = modifier,
         columns = StaggeredGridCells.Fixed(cells),
@@ -231,7 +231,7 @@ private fun GridItemContent(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
                 .fillMaxWidth(),
         ) {
             leftIcon?.let {
@@ -270,3 +270,11 @@ private fun GridItemContent(
         }
     }
 }
+
+@Composable
+private fun createContentPadding(itemSpacingEnabled: Boolean) =
+    if (itemSpacingEnabled) 8.dp else 0.dp
+
+@Composable
+private fun createItemSpacing(itemSpacingEnabled: Boolean) =
+    if (itemSpacingEnabled) 8.dp else 0.dp
