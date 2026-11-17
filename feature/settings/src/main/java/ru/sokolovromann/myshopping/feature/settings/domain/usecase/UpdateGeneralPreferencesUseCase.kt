@@ -1,0 +1,51 @@
+package ru.sokolovromann.myshopping.feature.settings.domain.usecase
+
+import jakarta.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.model.Currency
+import ru.sokolovromann.myshopping.core.domain.model.FontSize
+import ru.sokolovromann.myshopping.core.domain.model.GeneralPreferences
+import ru.sokolovromann.myshopping.core.domain.model.MoneyFormattingMode
+import ru.sokolovromann.myshopping.core.domain.model.Theme
+import ru.sokolovromann.myshopping.core.domain.repository.GeneralPreferencesRepository
+
+class UpdateGeneralPreferencesUseCase @Inject constructor(
+    private val generalPreferencesRepository: GeneralPreferencesRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) {
+
+    suspend operator fun invoke(preferences: GeneralPreferences): Unit =
+        withContext(ioDispatcher) {
+            generalPreferencesRepository.updateGeneralPreferences(preferences)
+        }
+
+    suspend operator fun invoke(theme: Theme): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(theme = theme)
+            generalPreferencesRepository.updateGeneralPreferences(preferences)
+        }
+
+    suspend operator fun invoke(fontSize: FontSize): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(fontSize = fontSize)
+            generalPreferencesRepository.updateGeneralPreferences(preferences)
+        }
+
+    suspend operator fun invoke(formattingMode: MoneyFormattingMode): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(moneyFormattingMode = formattingMode)
+            generalPreferencesRepository.updateGeneralPreferences(preferences)
+        }
+
+    suspend operator fun invoke(currency: Currency): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(currency = currency)
+            generalPreferencesRepository.updateGeneralPreferences(preferences)
+        }
+
+    private suspend fun getPreferences() =
+        generalPreferencesRepository.observeGeneralPreferences().first()
+}

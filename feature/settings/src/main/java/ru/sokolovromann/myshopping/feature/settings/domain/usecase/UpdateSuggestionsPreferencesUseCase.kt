@@ -1,0 +1,44 @@
+package ru.sokolovromann.myshopping.feature.settings.domain.usecase
+
+import jakarta.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.model.SortSuggestions
+import ru.sokolovromann.myshopping.core.domain.model.SuggestionAddingMode
+import ru.sokolovromann.myshopping.core.domain.model.SuggestionsPreferences
+import ru.sokolovromann.myshopping.core.domain.model.SuggestionsView
+import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsPreferencesRepository
+
+class UpdateSuggestionsPreferencesUseCase @Inject constructor(
+    private val suggestionsPreferencesRepository: SuggestionsPreferencesRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) {
+
+    suspend operator fun invoke(preferences: SuggestionsPreferences): Unit =
+        withContext(ioDispatcher) {
+            suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(view: SuggestionsView): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(view = view)
+            suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(sort: SortSuggestions): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(sort = sort)
+            suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(addingMode: SuggestionAddingMode): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(addingMode = addingMode)
+            suggestionsPreferencesRepository.updateSuggestionsPreferences(preferences)
+        }
+
+    private suspend fun getPreferences() =
+        suggestionsPreferencesRepository.observeSuggestionsPreferences().first()
+}

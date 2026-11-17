@@ -1,0 +1,82 @@
+package ru.sokolovromann.myshopping.feature.settings.domain.usecase
+
+import jakarta.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
+import ru.sokolovromann.myshopping.core.domain.di.IoDispatcher
+import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
+import ru.sokolovromann.myshopping.core.domain.model.CalculateProductsTotal
+import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
+import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
+import ru.sokolovromann.myshopping.core.domain.model.ProductsPreferences
+import ru.sokolovromann.myshopping.core.domain.model.ProductsView
+import ru.sokolovromann.myshopping.core.domain.model.SortProducts
+import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
+import ru.sokolovromann.myshopping.core.domain.model.SwipeProduct
+import ru.sokolovromann.myshopping.core.domain.repository.ProductsPreferencesRepository
+
+class UpdateProductsPreferencesUseCase @Inject constructor(
+    private val productsPreferencesRepository: ProductsPreferencesRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) {
+
+    suspend operator fun invoke(preferences: ProductsPreferences): Unit =
+        withContext(ioDispatcher) {
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(view: ProductsView): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(view = view)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(sort: SortProducts): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(sort = sort)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(groupByStatus: GroupProductsByStatus): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(groupByStatus = groupByStatus)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(addingMode: ProductsAddingMode): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(addingMode = addingMode)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(calculateTotal: CalculateProductsTotal): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(calculateTotal = calculateTotal)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(strikethroughCompleted: StrikethroughCompletedProducts): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(strikethroughCompleted = strikethroughCompleted)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(afterCompleting: AfterCompletingProduct): Unit =
+        withContext(ioDispatcher) {
+            val preferences = getPreferences().copy(afterCompleting = afterCompleting)
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    suspend operator fun invoke(swipeProduct: SwipeProduct): Unit =
+        withContext(ioDispatcher) {
+            val preferences = when (swipeProduct) {
+                is SwipeProduct.Left -> getPreferences().copy(swipeLeft = swipeProduct)
+                is SwipeProduct.Right -> getPreferences().copy(swipeRight = swipeProduct)
+            }
+            productsPreferencesRepository.updateProductsPreferences(preferences)
+        }
+
+    private suspend fun getPreferences() =
+        productsPreferencesRepository.observeProductsPreferences().first()
+}

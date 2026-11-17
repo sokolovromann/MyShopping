@@ -1,0 +1,19 @@
+package ru.sokolovromann.myshopping.feature.settings.ui.action
+
+import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
+import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
+import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
+import ru.sokolovromann.myshopping.core.domain.model.SwipeProduct
+
+sealed class ProductsSettingsAction {
+
+    data class OnAddingModeSelected(val addingMode: ProductsAddingMode) : ProductsSettingsAction()
+
+    data class OnStrikethroughCompletedSelected(val strikethroughCompleted: StrikethroughCompletedProducts) : ProductsSettingsAction()
+
+    data class OnAfterCompletingSelected(val afterCompleting: AfterCompletingProduct) : ProductsSettingsAction()
+
+    data class OnSwipeLeftSelected(val swipe: SwipeProduct.Left) : ProductsSettingsAction()
+
+    data class OnSwipeRightSelected(val swipe: SwipeProduct.Right) : ProductsSettingsAction()
+}

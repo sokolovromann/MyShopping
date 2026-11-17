@@ -25,7 +25,7 @@ import ru.sokolovromann.myshopping.feature.about.AboutScreen
 import ru.sokolovromann.myshopping.feature.carts.component.PurchasesScreen
 import ru.sokolovromann.myshopping.feature.dictionary.component.AddEditSuggestionScreen
 import ru.sokolovromann.myshopping.feature.dictionary.component.SuggestionsScreen
-import ru.sokolovromann.myshopping.feature.settings.component.SettingsScreen
+import ru.sokolovromann.myshopping.feature.settings.ui.component.SettingsScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

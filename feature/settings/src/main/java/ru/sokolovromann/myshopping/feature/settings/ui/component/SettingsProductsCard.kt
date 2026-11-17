@@ -1,0 +1,358 @@
+package ru.sokolovromann.myshopping.feature.settings.ui.component
+
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import ru.sokolovromann.myshopping.core.domain.model.AfterCompletingProduct
+import ru.sokolovromann.myshopping.core.domain.model.GroupProductsByStatus
+import ru.sokolovromann.myshopping.core.domain.model.ProductsAddingMode
+import ru.sokolovromann.myshopping.core.domain.model.StrikethroughCompletedProducts
+import ru.sokolovromann.myshopping.core.domain.model.SwipeProduct
+import ru.sokolovromann.myshopping.core.domain.model.SwipeProductActionName
+import ru.sokolovromann.myshopping.core.ui.component.DropdownMenuSelectableItem
+import ru.sokolovromann.myshopping.core.ui.component.DropdownMenuTitle
+import ru.sokolovromann.myshopping.feature.settings.R
+import ru.sokolovromann.myshopping.feature.settings.ui.action.ProductsSettingsAction
+import ru.sokolovromann.myshopping.feature.settings.ui.model.UiPreference
+import ru.sokolovromann.myshopping.feature.settings.ui.model.UiProductsPreferences
+
+@Composable
+fun SettingsProductsCard(
+    onAction: (ProductsSettingsAction) -> Unit,
+    preferences: UiProductsPreferences
+) {
+    SettingsCard(stringResource(R.string.settings_text_products)) {
+        AddingModeItem(preferences.addingMode) {
+            val action = ProductsSettingsAction.OnAddingModeSelected(it)
+            onAction(action)
+        }
+        StrikethroughCompletedItem(preferences.strikethroughCompleted) {
+            val action = ProductsSettingsAction.OnStrikethroughCompletedSelected(it)
+            onAction(action)
+        }
+        AfterCompletingItem(preferences.afterCompleting) {
+            val action = ProductsSettingsAction.OnAfterCompletingSelected(it)
+            onAction(action)
+        }
+        SwipeProductLeftItem(preferences.swipeLeft) {
+            val action = ProductsSettingsAction.OnSwipeLeftSelected(it)
+            onAction(action)
+        }
+        SwipeProductRightItem(preferences.swipeRight) {
+            val action = ProductsSettingsAction.OnSwipeRightSelected(it)
+            onAction(action)
+        }
+    }
+}
+
+// GROUP
+
+@Composable
+fun GroupProductsItem(
+    data: UiPreference<GroupProductsByStatus>,
+    onSelected: (GroupProductsByStatus) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_group_products_by_status)) },
+        body = {
+            Text(data.text.asCompose())
+            GroupProductsMenu(
+                expanded = expanded,
+                onSelected = { newGroup ->
+                    expanded = false
+                    newGroup?.let { onSelected(it) }
+                },
+                selected = data.selected
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun GroupProductsMenu(
+    expanded: Boolean,
+    onSelected: (GroupProductsByStatus?) -> Unit,
+    selected: GroupProductsByStatus
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onSelected(null) }
+    ) {
+        DropdownMenuTitle(stringResource(R.string.settings_text_group_products_by_status))
+
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_completed_first),
+            selected = selected == GroupProductsByStatus.CompletedFirst,
+            onClick = { onSelected(GroupProductsByStatus.CompletedFirst) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_active_first),
+            selected = selected == GroupProductsByStatus.ActiveFirst,
+            onClick = { onSelected(GroupProductsByStatus.ActiveFirst) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_hide_completed),
+            selected = selected == GroupProductsByStatus.HideCompleted,
+            onClick = { onSelected(GroupProductsByStatus.HideCompleted) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_group_products_by_status_do_not_group),
+            selected = selected == GroupProductsByStatus.DoNotGroup,
+            onClick = { onSelected(GroupProductsByStatus.DoNotGroup) }
+        )
+    }
+}
+
+// ADDING MODE
+
+@Composable
+private fun AddingModeItem(
+    data: UiPreference<ProductsAddingMode>,
+    onSelected: (ProductsAddingMode) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_products_adding_mode)) },
+        body = {
+            Text(data.text.asCompose())
+            AddingModeMenu(
+                expanded = expanded,
+                onSelected = { newAddingMode ->
+                    expanded = false
+                    newAddingMode?.let { onSelected(it) }
+                },
+                selected = data.selected
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun AddingModeMenu(
+    expanded: Boolean,
+    onSelected: (ProductsAddingMode?) -> Unit,
+    selected: ProductsAddingMode
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onSelected(null) }
+    ) {
+        DropdownMenuTitle(stringResource(R.string.settings_text_products_adding_mode))
+
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_products_adding_mode_simple),
+            selected = selected == ProductsAddingMode.Simple,
+            onClick = { onSelected(ProductsAddingMode.Simple) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_products_adding_mode_advanced),
+            selected = selected == ProductsAddingMode.Advanced,
+            onClick = { onSelected(ProductsAddingMode.Advanced) }
+        )
+    }
+}
+
+// STRIKETHROUGH COMPLETED
+
+@Composable
+private fun StrikethroughCompletedItem(
+    data: UiPreference<StrikethroughCompletedProducts>,
+    onSelected: (StrikethroughCompletedProducts) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_strikethrough_products_completed)) },
+        body = {
+            Text(data.text.asCompose())
+            StrikethroughCompletedMenu(
+                expanded = expanded,
+                onSelected = { newStrikethroughCompleted ->
+                    expanded = false
+                    newStrikethroughCompleted?.let { onSelected(it) }
+                },
+                selected = data.selected
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun StrikethroughCompletedMenu(
+    expanded: Boolean,
+    onSelected: (StrikethroughCompletedProducts?) -> Unit,
+    selected: StrikethroughCompletedProducts
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onSelected(null) }
+    ) {
+        DropdownMenuTitle(stringResource(R.string.settings_text_strikethrough_products_completed))
+
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_strikethrough_products_completed_on),
+            selected = selected == StrikethroughCompletedProducts.On,
+            onClick = { onSelected(StrikethroughCompletedProducts.On) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_strikethrough_products_completed_off),
+            selected = selected == StrikethroughCompletedProducts.Off,
+            onClick = { onSelected(StrikethroughCompletedProducts.Off) }
+        )
+    }
+}
+
+// AFTER COMPLETING
+
+@Composable
+private fun AfterCompletingItem(
+    data: UiPreference<AfterCompletingProduct>,
+    onSelected: (AfterCompletingProduct) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_after_completing_product)) },
+        body = {
+            Text(data.text.asCompose())
+            AfterCompletingMenu(
+                expanded = expanded,
+                onSelected = { newAfterCompleting ->
+                    expanded = false
+                    newAfterCompleting?.let { onSelected(it) }
+                },
+                selected = data.selected
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun AfterCompletingMenu(
+    expanded: Boolean,
+    onSelected: (AfterCompletingProduct?) -> Unit,
+    selected: AfterCompletingProduct
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onSelected(null) }
+    ) {
+        DropdownMenuTitle(stringResource(R.string.settings_text_after_completing_product))
+
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_after_completing_product_edit),
+            selected = selected == AfterCompletingProduct.EditProduct,
+            onClick = { onSelected(AfterCompletingProduct.EditProduct) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_after_completing_product_delete),
+            selected = selected == AfterCompletingProduct.DeleteProduct,
+            onClick = { onSelected(AfterCompletingProduct.DeleteProduct) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_after_completing_product_do_nothing),
+            selected = selected == AfterCompletingProduct.DoNothing,
+            onClick = { onSelected(AfterCompletingProduct.DoNothing) }
+        )
+    }
+}
+
+// SWIPE
+
+@Composable
+private fun SwipeProductLeftItem(
+    data: UiPreference<SwipeProduct.Left>,
+    onSelected: (SwipeProduct.Left) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_swipe_product_left)) },
+        body = {
+            Text(data.text.asCompose())
+            SwipeProductMenu(
+                expanded = expanded,
+                title = stringResource(R.string.settings_text_swipe_product_left),
+                onSelected = { newAfterTappingByProductItem ->
+                    expanded = false
+                    newAfterTappingByProductItem?.let { onSelected(SwipeProduct.Left(it)) }
+                },
+                selected = data.selected.actionName
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun SwipeProductRightItem(
+    data: UiPreference<SwipeProduct.Right>,
+    onSelected: (SwipeProduct.Right) -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    SettingsCardItem(
+        title = { Text(stringResource(R.string.settings_text_swipe_product_right)) },
+        body = {
+            Text(data.text.asCompose())
+            SwipeProductMenu(
+                expanded = expanded,
+                title = stringResource(R.string.settings_text_swipe_product_right),
+                onSelected = { newAfterTappingByProductItem ->
+                    expanded = false
+                    newAfterTappingByProductItem?.let { onSelected(SwipeProduct.Right(it)) }
+                },
+                selected = data.selected.actionName
+            )
+        },
+        onClick = { expanded = true }
+    )
+}
+
+@Composable
+private fun SwipeProductMenu(
+    expanded: Boolean,
+    title: String,
+    onSelected: (SwipeProductActionName?) -> Unit,
+    selected: SwipeProductActionName
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onSelected(null) }
+    ) {
+        DropdownMenuTitle(title)
+
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_swipe_product_edit),
+            selected = selected == SwipeProductActionName.EditProduct,
+            onClick = { onSelected(SwipeProductActionName.EditProduct) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_swipe_product_delete),
+            selected = selected == SwipeProductActionName.DeleteProduct,
+            onClick = { onSelected(SwipeProductActionName.DeleteProduct) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_swipe_product_change_status),
+            selected = selected == SwipeProductActionName.ChangeProductStatusToCompletedOrActive,
+            onClick = { onSelected(SwipeProductActionName.ChangeProductStatusToCompletedOrActive) }
+        )
+        DropdownMenuSelectableItem(
+            text = stringResource(R.string.settings_text_swipe_product_off),
+            selected = selected == SwipeProductActionName.Off,
+            onClick = { onSelected(SwipeProductActionName.Off) }
+        )
+    }
+}
