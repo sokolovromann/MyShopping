@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.component
+package ru.sokolovromann.myshopping.feature.dictionary.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline

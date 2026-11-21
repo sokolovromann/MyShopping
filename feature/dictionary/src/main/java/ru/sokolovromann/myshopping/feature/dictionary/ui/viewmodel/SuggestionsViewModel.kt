@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.viewmodel
+package ru.sokolovromann.myshopping.feature.dictionary.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,39 +7,36 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sokolovromann.myshopping.core.domain.di.MainDispatcher
 import ru.sokolovromann.myshopping.core.domain.model.FabricDirectory
 import ru.sokolovromann.myshopping.core.domain.model.UID
-import ru.sokolovromann.myshopping.core.domain.usecase.DeleteFabricsUseCase
-import ru.sokolovromann.myshopping.core.domain.usecase.DeleteSuggestionsUseCase
-import ru.sokolovromann.myshopping.core.domain.usecase.ObserveDictionaryUseCase
-import ru.sokolovromann.myshopping.core.domain.usecase.ObserveGeneralPreferencesUseCase
-import ru.sokolovromann.myshopping.core.domain.usecase.ObserveSuggestionsPreferencesUseCase
+import ru.sokolovromann.myshopping.core.domain.repository.FabricsRepository
+import ru.sokolovromann.myshopping.core.domain.repository.SuggestionsRepository
 import ru.sokolovromann.myshopping.core.navigation.Navigator
 import ru.sokolovromann.myshopping.core.navigation.Screen
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
-import ru.sokolovromann.myshopping.feature.dictionary.mapper.SuggestionsMapper
-import ru.sokolovromann.myshopping.feature.dictionary.model.SuggestionsState
+import ru.sokolovromann.myshopping.feature.dictionary.domain.usecase.ObserveDictionaryUseCase
+import ru.sokolovromann.myshopping.feature.dictionary.ui.mapper.SuggestionsStateMapper
+import ru.sokolovromann.myshopping.feature.dictionary.ui.model.SuggestionsState
 
 @HiltViewModel
 class SuggestionsViewModel @Inject constructor(
+    private val suggestionsRepository: SuggestionsRepository,
+    private val fabricsRepository: FabricsRepository,
     private val observeDictionaryUseCase: ObserveDictionaryUseCase,
-    private val observeSuggestionsPreferencesUseCase: ObserveSuggestionsPreferencesUseCase,
-    private val observeGeneralPreferencesUseCase: ObserveGeneralPreferencesUseCase,
-    private val deleteSuggestionsUseCase: DeleteSuggestionsUseCase,
-    private val deleteFabricsUseCase: DeleteFabricsUseCase,
-    private val suggestionsMapper: SuggestionsMapper,
+    private val stateMapper: SuggestionsStateMapper,
     private val navigator: Navigator,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _suggestionsState: MutableStateFlow<SuggestionsState> = MutableStateFlow(SuggestionsState())
+    private val _suggestionsState: MutableStateFlow<SuggestionsState> =
+        MutableStateFlow(SuggestionsState())
     val suggestionsState: StateFlow<SuggestionsState> = _suggestionsState
 
-    init { onInit() }
+    init { observeDictionary() }
 
     fun onNavigationItemSelected(navigationItem: NavigationItem) = when (navigationItem) {
         NavigationItem.Purchases -> navigator.navigateTo(Screen.Purchases)
@@ -51,31 +48,32 @@ class SuggestionsViewModel @Inject constructor(
     }
 
     fun onBackClick() {
-        val oldState = _suggestionsState.value
-        if (oldState.itemsSelected.isEmpty()) {
+        if (_suggestionsState.value.selected.isEmpty()) {
             navigator.navigateBack()
         } else {
-            val newState = oldState.copy(itemsSelected = emptySet())
+            val newState = _suggestionsState.value.copy(
+                selected = emptySet()
+            )
             _suggestionsState.tryEmit(newState)
         }
     }
 
     fun onSuggestionItemClick(uid: UID) {
         val oldState = _suggestionsState.value
-        if (oldState.itemsSelected.isNotEmpty()) {
-            val newItemSelected = oldState.itemsSelected.toMutableSet().apply {
+        if (oldState.selected.isNotEmpty()) {
+            val newItemSelected = oldState.selected.toMutableSet().apply {
                 if (contains(uid)) remove(uid) else add(uid)
             }
-            val newState = oldState.copy(itemsSelected = newItemSelected)
+            val newState = oldState.copy(selected = newItemSelected)
             _suggestionsState.tryEmit(newState)
         }
     }
 
     fun onSuggestionItemLongClick(uid: UID) {
         val oldState = _suggestionsState.value
-        if (oldState.itemsSelected.isEmpty()) {
+        if (oldState.selected.isEmpty()) {
             val itemSelected = setOf(uid)
-            val newState = oldState.copy(itemsSelected = itemSelected)
+            val newState = oldState.copy(selected = itemSelected)
             _suggestionsState.tryEmit(newState)
         } else { onSuggestionItemClick(uid) }
     }
@@ -85,55 +83,46 @@ class SuggestionsViewModel @Inject constructor(
     }
 
     fun onEditSuggestionClick() {
-        val oldState = _suggestionsState.value
+        val uid = _suggestionsState.value.selected.first()
 
-        val uid = oldState.itemsSelected.first()
-        val newState = oldState.copy(itemsSelected = emptySet())
+        val newState = _suggestionsState.value.copy(selected = emptySet())
         _suggestionsState.tryEmit(newState)
 
         navigator.navigateTo(Screen.AddEditSuggestion(uid.value))
     }
 
     fun onDeleteSuggestionsClick() = viewModelScope.launch {
-        val oldState = _suggestionsState.value
+        val uids = _suggestionsState.value.selected
 
-        val uids = oldState.itemsSelected
-        val newState = oldState.copy(itemsSelected = emptySet())
+        val newState = _suggestionsState.value.copy(selected = emptySet())
         _suggestionsState.tryEmit(newState)
 
-        deleteSuggestionsUseCase.invoke(uids)
+        suggestionsRepository.deleteSuggestions(uids)
         uids.forEach {
             val directory = FabricDirectory(it)
-            deleteFabricsUseCase.invoke(directory)
+            fabricsRepository.deleteFabrics(directory)
         }
     }
 
     fun onSelectAllSuggestionsClick() {
         val oldState = _suggestionsState.value
         val newState = oldState.copy(
-            itemsSelected = suggestionsMapper.toUids(oldState.items)
+            selected = stateMapper.toUids(oldState.suggestions)
         )
         _suggestionsState.tryEmit(newState)
     }
 
-    private fun onInit() = viewModelScope.launch {
-        combine(
-            flow = observeDictionaryUseCase(),
-            flow2 = observeSuggestionsPreferencesUseCase(),
-            flow3 = observeGeneralPreferencesUseCase(),
-            transform = { dictionary, suggestionsPreferences, generalPreferences ->
-                withContext(mainDispatcher) {
-                    suggestionsMapper.createSuggestionState(
-                        dictionary,
-                        suggestionsPreferences,
-                        generalPreferences
-                    )
-                }
-            }
-        ).collect { state ->
-            withContext(mainDispatcher) {
+    private fun observeDictionary() = viewModelScope.launch {
+        observeDictionaryUseCase()
+            .onStart {
+                val state = SuggestionsState(isProgress = true)
                 _suggestionsState.tryEmit(state)
             }
-        }
+            .collect { dictionary ->
+                withContext(mainDispatcher) {
+                    val state = stateMapper.toSuggestionsState(dictionary)
+                    _suggestionsState.tryEmit(state)
+                }
+            }
     }
 }

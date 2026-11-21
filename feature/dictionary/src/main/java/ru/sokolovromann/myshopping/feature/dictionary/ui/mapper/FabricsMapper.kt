@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.mapper
+package ru.sokolovromann.myshopping.feature.dictionary.ui.mapper
 
 import jakarta.inject.Inject
 import ru.sokolovromann.myshopping.core.domain.model.Fabric

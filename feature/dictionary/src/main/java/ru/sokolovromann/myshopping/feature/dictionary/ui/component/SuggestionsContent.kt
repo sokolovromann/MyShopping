@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.component
+package ru.sokolovromann.myshopping.feature.dictionary.ui.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +16,7 @@ import ru.sokolovromann.myshopping.core.ui.component.NotFoundContent
 import ru.sokolovromann.myshopping.core.ui.component.SimpleVerticalGrid
 import ru.sokolovromann.myshopping.core.ui.model.UiText
 import ru.sokolovromann.myshopping.feature.dictionary.R
-import ru.sokolovromann.myshopping.feature.dictionary.model.SuggestionsState
+import ru.sokolovromann.myshopping.feature.dictionary.ui.model.SuggestionsState
 
 @Composable
 fun SuggestionsContent(
@@ -24,20 +24,20 @@ fun SuggestionsContent(
     onItemLongClick: (UID) -> Unit,
     suggestionsState: SuggestionsState
 ) {
-    if (suggestionsState.isLoading) {
+    if (suggestionsState.isProgress) {
         LoadingContent()
     } else {
-        if (suggestionsState.items.isEmpty()) {
+        if (suggestionsState.suggestions.isEmpty()) {
             NotFoundContent(
                 text = UiText.FromResources(R.string.dictionary_text_suggestions_not_found)
             )
         } else {
             SimpleVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
-                cells = suggestionsState.itemsCells
+                cells = suggestionsState.cells
             ) {
-                items(suggestionsState.items, key = { it.uid.value }) { item ->
-                    val isSelected = suggestionsState.itemsSelected.contains(item.uid)
+                items(suggestionsState.suggestions, key = { it.uid.value }) { item ->
+                    val isSelected = suggestionsState.selected.contains(item.uid)
                     GridSelectableItem(
                         isSelected = isSelected,
                         title = { Text(item.name.asCompose()) },

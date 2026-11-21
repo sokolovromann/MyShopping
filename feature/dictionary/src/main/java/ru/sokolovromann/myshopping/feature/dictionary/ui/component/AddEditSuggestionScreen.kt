@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.component
+package ru.sokolovromann.myshopping.feature.dictionary.ui.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,8 +7,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.ui.component.SimpleScaffold
-import ru.sokolovromann.myshopping.feature.dictionary.model.AddEditSuggestionState
-import ru.sokolovromann.myshopping.feature.dictionary.viewmodel.AddEditSuggestionViewModel
+import ru.sokolovromann.myshopping.feature.dictionary.ui.model.AddEditSuggestionState
+import ru.sokolovromann.myshopping.feature.dictionary.ui.viewmodel.AddEditSuggestionViewModel
 
 @Composable
 fun AddEditSuggestionScreen(addEditSuggestionViewModel: AddEditSuggestionViewModel = hiltViewModel()) {

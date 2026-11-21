@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.component
+package ru.sokolovromann.myshopping.feature.dictionary.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
@@ -42,8 +42,8 @@ import ru.sokolovromann.myshopping.core.domain.model.UID
 import ru.sokolovromann.myshopping.core.ui.component.ErrorSupportingText
 import ru.sokolovromann.myshopping.core.ui.model.UiText
 import ru.sokolovromann.myshopping.feature.dictionary.R
-import ru.sokolovromann.myshopping.feature.dictionary.model.AddEditSuggestionState
-import ru.sokolovromann.myshopping.feature.dictionary.model.FabricItem
+import ru.sokolovromann.myshopping.feature.dictionary.ui.model.AddEditSuggestionState
+import ru.sokolovromann.myshopping.feature.dictionary.ui.model.UiFabric
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
@@ -67,11 +67,11 @@ fun AddEditSuggestionContent(
             isNameError = addEditSuggestionState.isNameError,
             showKeyboard = addEditSuggestionState.showKeyboard
         )
-        addEditSuggestionState.fabrics.forEach { (text, items) ->
+        addEditSuggestionState.fabrics.forEach { (text, fabrics) ->
             FabricsSurface(
                 onDeleteClick = onDeleteFabricClick,
                 text = text,
-                items = items
+                fabrics = fabrics
             )
         }
     }
@@ -124,9 +124,9 @@ private fun NameTextField(
 private fun FabricsSurface(
     onDeleteClick: (UID) -> Unit,
     text: UiText,
-    items: List<FabricItem>
+    fabrics: List<UiFabric>
 ) {
-    if (items.isEmpty()) return
+    if (fabrics.isEmpty()) return
 
     val scrollState = rememberScrollState()
     Surface(
@@ -153,8 +153,8 @@ private fun FabricsSurface(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
                 content = {
-                    items.forEach { item ->
-                        FabricItemInputChip(onDeleteClick, item)
+                    fabrics.forEach { fabric ->
+                        FabricInputChip(onDeleteClick, fabric)
                     }
                 }
             )
@@ -163,17 +163,17 @@ private fun FabricsSurface(
 }
 
 @Composable
-private fun FabricItemInputChip(
+private fun FabricInputChip(
     onDeleteClick: (UID) -> Unit,
-    item: FabricItem
+    fabric: UiFabric
 ) {
     InputChip(
         selected = false,
         onClick = {},
-        label = { Text(item.text) },
+        label = { Text(fabric.text) },
         trailingIcon = {
             IconButton(
-                onClick = { onDeleteClick(item.uid) },
+                onClick = { onDeleteClick(fabric.uid) },
                 modifier = Modifier.size(InputChipDefaults.IconSize)
             ) {
                 Icon(

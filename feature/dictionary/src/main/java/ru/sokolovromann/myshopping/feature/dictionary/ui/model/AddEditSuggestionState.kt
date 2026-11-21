@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.model
+package ru.sokolovromann.myshopping.feature.dictionary.ui.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
@@ -9,5 +9,5 @@ data class AddEditSuggestionState(
     val showKeyboard: Boolean = false,
     val name: TextFieldValue = TextFieldValue(),
     val isNameError: Boolean = false,
-    val fabrics: Map<UiText, List<FabricItem>> = emptyMap()
+    val fabrics: Map<UiText, List<UiFabric>> = emptyMap()
 )

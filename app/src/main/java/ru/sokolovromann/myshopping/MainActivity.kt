@@ -23,8 +23,8 @@ import ru.sokolovromann.myshopping.core.ui.theme.MyShoppingTheme
 import androidx.compose.runtime.collectAsState
 import ru.sokolovromann.myshopping.feature.about.AboutScreen
 import ru.sokolovromann.myshopping.feature.carts.component.PurchasesScreen
-import ru.sokolovromann.myshopping.feature.dictionary.component.AddEditSuggestionScreen
-import ru.sokolovromann.myshopping.feature.dictionary.component.SuggestionsScreen
+import ru.sokolovromann.myshopping.feature.dictionary.ui.component.AddEditSuggestionScreen
+import ru.sokolovromann.myshopping.feature.dictionary.ui.component.SuggestionsScreen
 import ru.sokolovromann.myshopping.feature.settings.ui.component.SettingsScreen
 
 @AndroidEntryPoint

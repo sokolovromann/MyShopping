@@ -1,4 +1,4 @@
-package ru.sokolovromann.myshopping.feature.dictionary.component
+package ru.sokolovromann.myshopping.feature.dictionary.ui.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,8 +12,8 @@ import ru.sokolovromann.myshopping.core.ui.component.SimpleScaffold
 import ru.sokolovromann.myshopping.core.ui.component.isCloseableNavigationDrawer
 import ru.sokolovromann.myshopping.core.ui.component.rememberDefaultDrawerState
 import ru.sokolovromann.myshopping.core.ui.model.NavigationItem
-import ru.sokolovromann.myshopping.feature.dictionary.model.SuggestionsState
-import ru.sokolovromann.myshopping.feature.dictionary.viewmodel.SuggestionsViewModel
+import ru.sokolovromann.myshopping.feature.dictionary.ui.model.SuggestionsState
+import ru.sokolovromann.myshopping.feature.dictionary.ui.viewmodel.SuggestionsViewModel
 
 @Composable
 fun SuggestionsScreen(suggestionsViewModel: SuggestionsViewModel = hiltViewModel()) {
@@ -32,7 +32,7 @@ fun SuggestionsScreen(suggestionsViewModel: SuggestionsViewModel = hiltViewModel
 }
 
 @Composable
-private fun SuggestionsScreenImpl(
+fun SuggestionsScreenImpl(
     onNavigationItemSelected: (NavigationItem) -> Unit,
     onBackClick: () -> Unit,
     onAddSuggestionClick: () -> Unit,
@@ -65,7 +65,7 @@ private fun SuggestionsScreenImpl(
                     onDeleteSuggestionsClick = onDeleteSuggestionsClick,
                     onSelectAllSuggestionsClick = onSelectAllSuggestionsClick,
                     onDeselectAllSuggestionsClick = onBackClick,
-                    itemsSelected = suggestionsState.itemsSelected
+                    itemsSelected = suggestionsState.selected
                 )
             },
             onBackClick = {
