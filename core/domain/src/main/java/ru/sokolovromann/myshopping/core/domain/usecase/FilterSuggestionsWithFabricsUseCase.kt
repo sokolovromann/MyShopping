@@ -8,7 +8,7 @@ import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFabrics
 import ru.sokolovromann.myshopping.core.domain.model.SuggestionWithFilteredFabrics
 import kotlin.collections.forEach
 
-class FilterSuggestionWithFabricsUseCase @Inject constructor() {
+class FilterSuggestionsWithFabricsUseCase @Inject constructor() {
 
     operator fun invoke(suggestionsWithFabrics: Collection<SuggestionWithFabrics>) =
         suggestionsWithFabrics.map { (suggestion, fabrics) ->
