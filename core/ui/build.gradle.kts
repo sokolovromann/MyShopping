@@ -40,5 +40,6 @@ dependencies {
     api(libs.material3.adaptive)
     api(libs.material3.icons)
     api(libs.material3.windowSize)
+    api(libs.reorderable)
     implementation(libs.android.core)
 }

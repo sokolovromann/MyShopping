@@ -23,6 +23,7 @@ myShopping-targetSdk = "37"
 myShopping-versionCode = "42"
 myShopping-versionName = "3.0.0-dev"
 navigation = "2.10.2"
+reorderable = "3.1.0"
 room = "2.8.5"
 splashscreen = "1.2.0"
 test-espresso = "3.7.0"
@@ -47,6 +48,7 @@ material3-adaptive = { group = "androidx.compose.material3", name = "material3-a
 material3-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material3-icons" }
 material3-windowSize = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3" }
 navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
